@@ -1,0 +1,69 @@
+<tt>
+&lt;div&nbsp;class=&quot;gmail_quote&quot;&gt;On&nbsp;Mon,&nbsp;Sep&nbsp;3,&nbsp;2012&nbsp;at&nbsp;6:28&nbsp;AM,&nbsp;Michael&nbsp;Stapelberg&nbsp;&lt;span&nbsp;dir=&quot;ltr&quot;&gt;&lt;&lt;a&nbsp;href=&quot;mailto:michael@i3wm.org&quot;&nbsp;target=&quot;_blank&quot;&gt;michael@i3wm.org&lt;/a&gt;&gt;&lt;/span&gt;&nbsp;wrote:&lt;br&gt;&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;<br>
+<br>
+Hi&nbsp;darkraven,&lt;br&gt;<br>
+&lt;br&gt;<br>
+Quoting&nbsp;DR&nbsp;(2012-08-20&nbsp;17:52:16)&lt;br&gt;<br>
+&lt;div&gt;&lt;div&nbsp;class=&quot;h5&quot;&gt;&gt;&nbsp;This&nbsp;patch&nbsp;clean&nbsp;up&nbsp;some&nbsp;of&nbsp;the&nbsp;render.c&nbsp;logic,&nbsp;make&nbsp;way&nbsp;for&nbsp;implement&lt;br&gt;<br>
+&gt;&nbsp;popup-while-fullscreen&nbsp;behavior.&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&nbsp;This&nbsp;patch&nbsp;hasn&#39;t&nbsp;been&nbsp;heavily&nbsp;tested.&nbsp;So&nbsp;maybe&nbsp;this&nbsp;patch&nbsp;would&nbsp;change&nbsp;the&lt;br&gt;<br>
+&gt;&nbsp;rendering&nbsp;result&nbsp;under&nbsp;some&nbsp;circumstance.&lt;br&gt;<br>
+&lt;/div&gt;&lt;/div&gt;First&nbsp;of&nbsp;all,&nbsp;I&nbsp;apologize&nbsp;for&nbsp;taking&nbsp;so&nbsp;long&nbsp;to&nbsp;comment&nbsp;on&nbsp;this&nbsp;patch.&lt;br&gt;<br>
+I&nbsp;want&nbsp;to&nbsp;clearly&nbsp;point&nbsp;out&nbsp;why&nbsp;reviewing&nbsp;your&nbsp;patches&nbsp;is&nbsp;really&nbsp;hard&lt;br&gt;<br>
+for&nbsp;me&nbsp;and&nbsp;what&nbsp;you&nbsp;can&nbsp;do&nbsp;to&nbsp;improve&nbsp;the&nbsp;situation.&lt;/blockquote&gt;&lt;div&gt;I&nbsp;apologize&nbsp;for&nbsp;the&nbsp;poor&nbsp;quality. &lt;/div&gt;&lt;div&gt;Thought&nbsp;this&nbsp;was&nbsp;a&nbsp;draft&nbsp;patch,&nbsp;I&nbsp;hadn&#39;t&nbsp;put&nbsp;time&nbsp;to&nbsp;refine&nbsp;this&nbsp;patch.&nbsp;But&nbsp;I&nbsp;didn&#39;t&nbsp;realize&nbsp;this&nbsp;would&nbsp;cause&nbsp;so&nbsp;much&nbsp;difficulties&nbsp;in&nbsp;patch&nbsp;reviewing.&nbsp;I&nbsp;really&nbsp;sorry&nbsp;for&nbsp;wasting&nbsp;your&nbsp;time.&lt;/div&gt;<br>
+<br>
+&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;<br>
+&lt;br&gt;<br>
+The&nbsp;patch&nbsp;which&nbsp;you&nbsp;posted&nbsp;has&nbsp;multiple&nbsp;issues:&lt;br&gt;<br>
+&lt;br&gt;<br>
+1)&nbsp;The&nbsp;commit&nbsp;title&nbsp;is&nbsp;absolutely&nbsp;meaningless.&nbsp;&quot;make&nbsp;render_con&nbsp;logic&lt;br&gt;<br>
+ &nbsp; more&nbsp;clearer&quot;&nbsp;is&nbsp;a&nbsp;subjective&nbsp;thing.&nbsp;While&nbsp;it’s&nbsp;okay&nbsp;as&nbsp;a&nbsp;title,&nbsp;you&lt;br&gt;<br>
+ &nbsp; absolutely&nbsp;need&nbsp;to&nbsp;provide&nbsp;a&nbsp;description&nbsp;consisting&nbsp;of&nbsp;the&nbsp;individual&lt;br&gt;<br>
+ &nbsp; changes&nbsp;you&nbsp;have&nbsp;done.&nbsp;It&nbsp;would&nbsp;be&nbsp;even&nbsp;better&nbsp;if&nbsp;the&nbsp;individual&lt;br&gt;<br>
+ &nbsp; changes&nbsp;were&nbsp;individual&nbsp;commits,&nbsp;but&nbsp;I&nbsp;don’t&nbsp;pose&nbsp;that&nbsp;as&nbsp;a&lt;br&gt;<br>
+ &nbsp; requirement.&lt;br&gt;<br>
+&lt;br&gt;<br>
+ &nbsp; An&nbsp;example&nbsp;for&nbsp;a&nbsp;good&nbsp;description&nbsp;would&nbsp;be:&lt;br&gt;<br>
+ &nbsp; &quot;Refactored&nbsp;identical&nbsp;code&nbsp;from&nbsp;render_x&nbsp;and&nbsp;render_y&nbsp;into&nbsp;new&lt;br&gt;<br>
+ &nbsp; function&nbsp;render_xy_common(),&nbsp;no&nbsp;functional&nbsp;changes&nbsp;at&nbsp;all.&quot;&lt;br&gt;<br>
+&lt;br&gt;<br>
+2)&nbsp;You&nbsp;introduce&nbsp;new&nbsp;unnecessary&nbsp;whitespace&nbsp;(first&nbsp;hunk,&lt;br&gt;<br>
+ &nbsp; src/render.c:24).&lt;br&gt;&lt;/blockquote&gt;&lt;div&gt;Just&nbsp;out&nbsp;of&nbsp;curiosity:&nbsp;Why&nbsp;are&nbsp;there&nbsp;whitespaces&nbsp;after&nbsp;if&nbsp;()&nbsp;/&nbsp;for&nbsp;()&nbsp;but&nbsp;not&nbsp;function&nbsp;definitions?&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;<br>
+<br>
+<br>
+&lt;br&gt;<br>
+3)&nbsp;You&nbsp;change&nbsp;our&nbsp;if&nbsp;(fullscreen)&nbsp;{&nbsp;…;&nbsp;return;&nbsp;}&nbsp;block&nbsp;to&nbsp;if&lt;br&gt;<br>
+ &nbsp; (!fullscreen){&nbsp;/*&nbsp;other&nbsp;stuff&nbsp;*/&nbsp;}&nbsp;…;&nbsp;without&nbsp;any&nbsp;obvious&nbsp;reason.&lt;br&gt;<br>
+ &nbsp; Why?&nbsp;Returning&nbsp;early&nbsp;is&nbsp;good&nbsp;style&nbsp;and&nbsp;consistently&nbsp;used&nbsp;within&nbsp;i3.&lt;br&gt;<br>
+ &nbsp; Also,&nbsp;we&nbsp;use&nbsp;blanks&nbsp;before&nbsp;brackets.&lt;br&gt;&lt;/blockquote&gt;&lt;div&gt;Because&nbsp;there&nbsp;possibly&nbsp;are&nbsp;popup&nbsp;windows.&nbsp;So&nbsp;we&nbsp;couldn&#39;t&nbsp;return&nbsp;so&nbsp;early.&lt;/div&gt;&lt;div&gt; &lt;/div&gt;&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;<br>
+<br>
+<br>
+&lt;br&gt;<br>
+4)&nbsp;More&nbsp;importantly,&nbsp;you&nbsp;refactor&nbsp;two&nbsp;loops&nbsp;into&nbsp;one,&nbsp;but&nbsp;this&nbsp;breaks&lt;br&gt;<br>
+ &nbsp; things!&nbsp;The&nbsp;first&nbsp;loop&nbsp;only&nbsp;cares&nbsp;for&nbsp;cons&nbsp;with&nbsp;-&gt;type&nbsp;==&lt;br&gt;<br>
+ &nbsp; CT_DOCKAREA,&nbsp;the&nbsp;second&nbsp;one&nbsp;handles&nbsp;all&nbsp;cons.&lt;br&gt;&lt;/blockquote&gt;&lt;div&gt;There&nbsp;could&nbsp;only&nbsp;be&nbsp;one&nbsp;CT_CON.&nbsp;And&nbsp;that&nbsp;con&nbsp;is&nbsp;taken&nbsp;care&nbsp;of&nbsp;outside&nbsp;of&nbsp;the&nbsp;loop.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;<br>
+<br>
+<br>
+&lt;br&gt;<br>
+5)&nbsp;I&nbsp;can’t&nbsp;really&nbsp;figure&nbsp;out&nbsp;what&nbsp;the&nbsp;rest&nbsp;of&nbsp;your&nbsp;changes&nbsp;do.&nbsp;They&nbsp;seem&lt;br&gt;<br>
+ &nbsp; to&nbsp;move&nbsp;code&nbsp;around,&nbsp;but&nbsp;it’s&nbsp;not&nbsp;clear&nbsp;based&nbsp;on&nbsp;the&nbsp;diff.&nbsp;You&nbsp;really&lt;br&gt;<br>
+ &nbsp; should&nbsp;provide&nbsp;an&nbsp;explanation&nbsp;and/or&nbsp;split&nbsp;it&nbsp;up&nbsp;into&nbsp;multiple&lt;br&gt;<br>
+ &nbsp; smaller&nbsp;commits.&lt;br&gt;&lt;/blockquote&gt;&lt;div&gt;I&nbsp;will&nbsp;add&nbsp;more&nbsp;comments.&lt;/div&gt;&lt;div&gt; &lt;/div&gt;&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;<br>
+&lt;br&gt;<br>
+I&nbsp;also&nbsp;want&nbsp;to&nbsp;point&nbsp;out&nbsp;that&nbsp;similar&nbsp;comments&nbsp;have&nbsp;been&nbsp;made&nbsp;multiple&lt;br&gt;<br>
+times&nbsp;before&nbsp;in&nbsp;your&nbsp;threads:&lt;br&gt;<br>
+&lt;br&gt;<br>
+&lt;a&nbsp;href=&quot;http://article.gmane.org/gmane.comp.window-managers.i3.general/200&quot;&nbsp;target=&quot;_blank&quot;&gt;http://article.gmane.org/gmane.comp.window-managers.i3.general/200&lt;/a&gt;&lt;br&gt;<br>
+&lt;a&nbsp;href=&quot;http://article.gmane.org/gmane.comp.window-managers.i3.general/343&quot;&nbsp;target=&quot;_blank&quot;&gt;http://article.gmane.org/gmane.comp.window-managers.i3.general/343&lt;/a&gt;&lt;br&gt;<br>
+&lt;a&nbsp;href=&quot;http://article.gmane.org/gmane.comp.window-managers.i3.general/279&quot;&nbsp;target=&quot;_blank&quot;&gt;http://article.gmane.org/gmane.comp.window-managers.i3.general/279&lt;/a&gt;&lt;br&gt;<br>
+&lt;br&gt;<br>
+Why&nbsp;do&nbsp;you&nbsp;keep&nbsp;sending&nbsp;patches&nbsp;like&nbsp;these&nbsp;and&nbsp;don’t&nbsp;pay&nbsp;attention&nbsp;to&lt;br&gt;<br>
+the&nbsp;things&nbsp;we&nbsp;point&nbsp;you&nbsp;to?&nbsp;This&nbsp;makes&nbsp;the&nbsp;whole&nbsp;reviewing&nbsp;and&nbsp;merging&lt;br&gt;<br>
+workflow&nbsp;really&nbsp;hard&nbsp;:-/.&lt;br&gt;&lt;/blockquote&gt;&lt;div&gt;Sorry&nbsp;again. &lt;/div&gt;&lt;div&gt; &lt;/div&gt;&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;<br>
+&lt;br&gt;<br>
+Best&nbsp;regards,&lt;br&gt;<br>
+Michael&lt;br&gt;<br>
+&lt;/blockquote&gt;&lt;/div&gt;&lt;br&gt;<br>
+
+</tt>

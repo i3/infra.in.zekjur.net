@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Split-Views in Tabs: Display Window Titles,	not process name
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Split-Views%20in%20Tabs%3A%20Display%20Window%20Titles%2C%0A%09not%20process%20name&In-Reply-To=%3CCANnVG6kAjWPbRUVnVse3dBL_5dVOnd4wzXYRZnHKPfGqg7Lw6Q%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002028.html">
+   <LINK REL="Next"  HREF="002029.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Split-Views in Tabs: Display Window Titles,	not process name</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Split-Views%20in%20Tabs%3A%20Display%20Window%20Titles%2C%0A%09not%20process%20name&In-Reply-To=%3CCANnVG6kAjWPbRUVnVse3dBL_5dVOnd4wzXYRZnHKPfGqg7Lw6Q%40mail.gmail.com%3E"
+       TITLE="[i3] Split-Views in Tabs: Display Window Titles,	not process name">michael at i3wm.org
+       </A><BR>
+    <I>Sat Mar 21 22:40:21 CET 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002028.html">[i3] Split-Views in Tabs: Display Window Titles,	not process name
+</A></li>
+        <LI>Next message: <A HREF="002029.html">[i3] Assign workspaces to outputs dynamically.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2031">[ date ]</a>
+              <a href="thread.html#2031">[ thread ]</a>
+              <a href="subject.html#2031">[ subject ]</a>
+              <a href="author.html#2031">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Technically, what you want is easily achieved. The relevant code is
+con_get_tree_representation() in src/con.c.
+
+However, I’m not convinced using the window titles makes sense. Titles
+very quickly exceed the screen space you have in a tabbed container,
+so keeping the description as short as possible makes it more useful.
+
+Personally, I am typically interested in the full window titles, which
+is why I use stacked mode instead of tabbed mode.
+
+On Fri, Mar 20, 2015 at 5:07 PM, Stefano Ghirlanda
+&lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">dr.ghirlanda at gmail.com</A>&gt; wrote:
+&gt;<i> I was also thinking the same thing a few days ago! It would be a useful
+</I>&gt;<i> feature.
+</I>&gt;<i>
+</I>&gt;<i> S
+</I>&gt;<i>
+</I>&gt;<i> On Fri, Mar 20, 2015 at 12:01 PM, Eric Duncan &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">eduncan911 at gmail.com</A>&gt; wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hello!
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've been using i3wm for a little over a year.  Recently I've been using
+</I>&gt;&gt;<i> the Tabs feature, grouping several terminal windows in different tabs
+</I>&gt;&gt;<i> (monitoring a dozen or so logs).  I have my .bash environment set the Window
+</I>&gt;&gt;<i> Title properly for terminals, and that works with single tabs - displaying
+</I>&gt;&gt;<i> the gnome-terminal's title in the Tab's title just like it should.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> &quot;Single Tabs&quot; meaning with only 1 process running within that tab, i3wm
+</I>&gt;&gt;<i> shows the Window Title of that one process.  E.g. my gnome-terminal's window
+</I>&gt;&gt;<i> title.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> This message is about tabs that have multiple processes running within the
+</I>&gt;&gt;<i> tab's i3wm container.  E.g. two or more terminal windows.  i3wm currently
+</I>&gt;&gt;<i> displays in the window title of the tab:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     i3: H[gnome-terminal gnome-terminal]
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> It is obviously showing the process name, and that I am split via Height.
+</I>&gt;&gt;<i> Cool, but I am missing the Window Title I have set in the terminals.  Again,
+</I>&gt;&gt;<i> the Tab's Window Title normally displays the Window Title of the executing
+</I>&gt;&gt;<i> process.  It's when grouping multiple processes within a single tab.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I think the &quot;H&quot; and &quot;V&quot; is fine. I get things like this:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     i3: H[V[gnome-terminal gnome-terminal] V[gnome-terminal
+</I>&gt;&gt;<i> gnome-terminal]]
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> That obviously says I have a 2x2 arrangement in that tab.  It would really
+</I>&gt;&gt;<i> nice if it showed the Window Title of those processes though.  For example,
+</I>&gt;&gt;<i> if the terminal has the current path set for Window Title, it would look
+</I>&gt;&gt;<i> like:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     i3: H[V[&quot;~/code/sp-validator&quot; &quot;~/code/sp-juke&quot;]
+</I>&gt;&gt;<i> V[&quot;~/go/src/github.com/eduncan911/go-mspec&quot; &quot;~/&quot;]]
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Now, you'll notice I put in quotations. An additional tweak may be to put
+</I>&gt;&gt;<i> in some type of delimier for when titles have spaces - so we know the
+</I>&gt;&gt;<i> different in a title like this:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     i3: H[Evolution Inbox ~/code/sp-validator:grep]
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ^- That's two different apps running in horizonal split view.  Without
+</I>&gt;&gt;<i> quotes around &quot;Evolution Inbox&quot;, it would hard to determine where the first
+</I>&gt;&gt;<i> one ends and second begins.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Just a suggestion to an awesome window manager!
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thanks!
+</I>&gt;&gt;<i> Eric
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Stefano Ghirlanda - www.intercult.su.se/~stefano - drghirlanda.com
+</I>&gt;<i> Full Professor of Psychology, Biology, and Anthropology, Brooklyn College
+</I>&gt;<i> Founder and Fellow, Stockholm University Centre for the Study of Cultural
+</I>&gt;<i> Evolution
+</I>
+
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002028.html">[i3] Split-Views in Tabs: Display Window Titles,	not process name
+</A></li>
+	<LI>Next message: <A HREF="002029.html">[i3] Assign workspaces to outputs dynamically.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2031">[ date ]</a>
+              <a href="thread.html#2031">[ thread ]</a>
+              <a href="subject.html#2031">[ subject ]</a>
+              <a href="author.html#2031">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

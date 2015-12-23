@@ -1,0 +1,210 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3 4.8 layout file hides my status bar and floating windows
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%204.8%20layout%20file%20hides%20my%20status%20bar%20and%20floating%20windows&In-Reply-To=%3CCANnVG6mjiGmG8er1QAXdmv_1n1TPi7%2Bp4-BY8-XQkguG35k-kw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001925.html">
+   <LINK REL="Next"  HREF="001927.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3 4.8 layout file hides my status bar and floating windows</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%204.8%20layout%20file%20hides%20my%20status%20bar%20and%20floating%20windows&In-Reply-To=%3CCANnVG6mjiGmG8er1QAXdmv_1n1TPi7%2Bp4-BY8-XQkguG35k-kw%40mail.gmail.com%3E"
+       TITLE="[i3] i3 4.8 layout file hides my status bar and floating windows">michael at stapelberg.ch
+       </A><BR>
+    <I>Fri Nov  7 09:48:06 CET 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001925.html">[i3] i3 4.8 layout file hides my status bar and floating windows
+</A></li>
+        <LI>Next message: <A HREF="001927.html">[i3] i3-discuss Digest, Vol 55, Issue 2
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1926">[ date ]</a>
+              <a href="thread.html#1926">[ thread ]</a>
+              <a href="subject.html#1926">[ subject ]</a>
+              <a href="author.html#1926">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>You’re saying you’re running v4.8. I think the problem you are seeing
+is fixed with commit 679a5de8cfb9211afb1a1dd882e53bd672084754, so
+please upgrade to the “next” git branch and retry. Check the output
+“i3 --moreversion”, it should display “Running i3 version:
+4.8-115-g0125530 (2014-11-06, branch &quot;next&quot;)”
+
+On Wed, Nov 5, 2014 at 2:18 PM, Sargrad, Dave
+&lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">Dave.Sargrad at saabsensis.com</A>&gt; wrote:
+&gt;<i> I am using i3 4.8 with the layout file at the bottom of this e-mail.
+</I>&gt;<i>
+</I>&gt;<i> When I append this, everything works ok (my windows layout as I expect them too, and applications get swallowed correctly) except I hide my status bar (the roughly 20 pixel high status bar that includes a set of buttons that allows me to select workspaces to focus). The status bar still exists, but it seems to be hidden by the appended layout. The other problem is that when I toggle a tiled window to a floating window it also gets hidden rather than floating properly (within this appended workspace).
+</I>&gt;<i>
+</I>&gt;<i> Two other notes of interest, when I close all the windows in this appended layout i3 seems to hang for a bit (as evidenced by the hourglass cursor) before it finally returns to normal operation. Additionally despite the fact that other workspaces are not directly accessible (since I can't get to the workspace selector in the statusbar), I am able to send them a focus message and they do focus properly. I am also able to send the appended workspace (the one that has this &quot;hiding problem&quot;) a focus message and have it come back into focus.
+</I>&gt;<i>
+</I>&gt;<i> How can I tweak this layout so that I don’t hide my statusbar and floating windows?
+</I>&gt;<i>
+</I>&gt;<i> {
+</I>&gt;<i>     &quot;border&quot;: &quot;normal&quot;,
+</I>&gt;<i>     &quot;floating&quot;: &quot;auto_off&quot;,
+</I>&gt;<i>     &quot;fullscreen_mode&quot;: 1,
+</I>&gt;<i>     &quot;layout&quot;: &quot;splith&quot;,
+</I>&gt;<i>     &quot;nodes&quot;: [
+</I>&gt;<i>         {
+</I>&gt;<i>             &quot;border&quot;: &quot;normal&quot;,
+</I>&gt;<i>             &quot;floating&quot;: &quot;user_off&quot;,
+</I>&gt;<i>             &quot;geometry&quot;: {
+</I>&gt;<i>                 &quot;height&quot;: 316,
+</I>&gt;<i>                 &quot;width&quot;: 499,
+</I>&gt;<i>                 &quot;x&quot;: 0,
+</I>&gt;<i>                 &quot;y&quot;: 0
+</I>&gt;<i>             },
+</I>&gt;<i>             &quot;layout&quot;: &quot;splith&quot;,
+</I>&gt;<i>             &quot;name&quot;: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">user1 at company-90076-2</A>:~/work/cwpmash&quot;,
+</I>&gt;<i>             &quot;percent&quot;: 0.5,
+</I>&gt;<i>             &quot;swallows&quot;: [
+</I>&gt;<i>                 {
+</I>&gt;<i>                     &quot;class&quot;: &quot;^XTerm$&quot;
+</I>&gt;<i>                 }
+</I>&gt;<i>             ],
+</I>&gt;<i>             &quot;type&quot;: &quot;con&quot;
+</I>&gt;<i>         },
+</I>&gt;<i>         {
+</I>&gt;<i>             &quot;border&quot;: &quot;normal&quot;,
+</I>&gt;<i>             &quot;floating&quot;: &quot;auto_off&quot;,
+</I>&gt;<i>             &quot;layout&quot;: &quot;splitv&quot;,
+</I>&gt;<i>             &quot;nodes&quot;: [
+</I>&gt;<i>                 {
+</I>&gt;<i>                     &quot;border&quot;: &quot;normal&quot;,
+</I>&gt;<i>                     &quot;floating&quot;: &quot;auto_off&quot;,
+</I>&gt;<i>                     &quot;layout&quot;: &quot;splith&quot;,
+</I>&gt;<i>                     &quot;nodes&quot;: [
+</I>&gt;<i>                         {
+</I>&gt;<i>                             &quot;border&quot;: &quot;normal&quot;,
+</I>&gt;<i>                             &quot;floating&quot;: &quot;auto_off&quot;,
+</I>&gt;<i>                             &quot;geometry&quot;: {
+</I>&gt;<i>                                 &quot;height&quot;: 316,
+</I>&gt;<i>                                 &quot;width&quot;: 499,
+</I>&gt;<i>                                 &quot;x&quot;: 0,
+</I>&gt;<i>                                 &quot;y&quot;: 0
+</I>&gt;<i>                             },
+</I>&gt;<i>                             &quot;layout&quot;: &quot;splith&quot;,
+</I>&gt;<i>                             &quot;name&quot;: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">user1 at company-90076-2</A>:~&quot;,
+</I>&gt;<i>                             &quot;percent&quot;: 0.40875593123030751,
+</I>&gt;<i>                             &quot;swallows&quot;: [
+</I>&gt;<i>                                 {
+</I>&gt;<i>                                     &quot;class&quot;: &quot;^XTerm$&quot;
+</I>&gt;<i>                                 }
+</I>&gt;<i>                             ],
+</I>&gt;<i>                             &quot;type&quot;: &quot;con&quot;
+</I>&gt;<i>                         },
+</I>&gt;<i>                         {
+</I>&gt;<i>                             &quot;border&quot;: &quot;normal&quot;,
+</I>&gt;<i>                             &quot;floating&quot;: &quot;auto_off&quot;,
+</I>&gt;<i>                             &quot;geometry&quot;: {
+</I>&gt;<i>                                 &quot;height&quot;: 316,
+</I>&gt;<i>                                 &quot;width&quot;: 499,
+</I>&gt;<i>                                 &quot;x&quot;: 0,
+</I>&gt;<i>                                 &quot;y&quot;: 0
+</I>&gt;<i>                             },
+</I>&gt;<i>                             &quot;layout&quot;: &quot;splith&quot;,
+</I>&gt;<i>                             &quot;name&quot;: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">user1 at company-90076-2</A>:~/work/cwpmash&quot;,
+</I>&gt;<i>                             &quot;percent&quot;: 0.25791073543635906,
+</I>&gt;<i>                             &quot;swallows&quot;: [
+</I>&gt;<i>                                 {
+</I>&gt;<i>                                     &quot;class&quot;: &quot;^XTerm$&quot;
+</I>&gt;<i>                                 }
+</I>&gt;<i>                             ],
+</I>&gt;<i>                             &quot;type&quot;: &quot;con&quot;
+</I>&gt;<i>                         },
+</I>&gt;<i>                         {
+</I>&gt;<i>                             &quot;border&quot;: &quot;normal&quot;,
+</I>&gt;<i>                             &quot;floating&quot;: &quot;auto_off&quot;,
+</I>&gt;<i>                             &quot;geometry&quot;: {
+</I>&gt;<i>                                 &quot;height&quot;: 316,
+</I>&gt;<i>                                 &quot;width&quot;: 499,
+</I>&gt;<i>                                 &quot;x&quot;: 0,
+</I>&gt;<i>                                 &quot;y&quot;: 0
+</I>&gt;<i>                             },
+</I>&gt;<i>                             &quot;layout&quot;: &quot;splith&quot;,
+</I>&gt;<i>                             &quot;name&quot;: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">user1 at company-90076-2</A>:/home/user1&quot;,
+</I>&gt;<i>                             &quot;percent&quot;: 0.33333333333333343,
+</I>&gt;<i>                             &quot;swallows&quot;: [
+</I>&gt;<i>                                 {
+</I>&gt;<i>                                     &quot;class&quot;: &quot;^XTerm$&quot;
+</I>&gt;<i>                                 }
+</I>&gt;<i>                             ],
+</I>&gt;<i>                             &quot;type&quot;: &quot;con&quot;
+</I>&gt;<i>                         }
+</I>&gt;<i>                     ],
+</I>&gt;<i>                     &quot;percent&quot;: 0.2966101694915253,
+</I>&gt;<i>                     &quot;type&quot;: &quot;con&quot;
+</I>&gt;<i>                 },
+</I>&gt;<i>                 {
+</I>&gt;<i>                     &quot;border&quot;: &quot;normal&quot;,
+</I>&gt;<i>                     &quot;floating&quot;: &quot;user_off&quot;,
+</I>&gt;<i>                     &quot;geometry&quot;: {
+</I>&gt;<i>                         &quot;height&quot;: 993,
+</I>&gt;<i>                         &quot;width&quot;: 1337,
+</I>&gt;<i>                         &quot;x&quot;: 0,
+</I>&gt;<i>                         &quot;y&quot;: 0
+</I>&gt;<i>                     },
+</I>&gt;<i>                     &quot;layout&quot;: &quot;splith&quot;,
+</I>&gt;<i>                     &quot;name&quot;: &quot;mashup - Mozilla Firefox&quot;,
+</I>&gt;<i>                     &quot;percent&quot;: 0.70338983050847459,
+</I>&gt;<i>                     &quot;swallows&quot;: [
+</I>&gt;<i>                         {
+</I>&gt;<i>                             &quot;class&quot;: &quot;^Firefox$&quot;
+</I>&gt;<i>                         }
+</I>&gt;<i>                     ],
+</I>&gt;<i>                     &quot;type&quot;: &quot;con&quot;
+</I>&gt;<i>                 }
+</I>&gt;<i>             ],
+</I>&gt;<i>             &quot;percent&quot;: 0.5,
+</I>&gt;<i>             &quot;type&quot;: &quot;con&quot;
+</I>&gt;<i>         }
+</I>&gt;<i>     ],
+</I>&gt;<i>     &quot;percent&quot;: null,
+</I>&gt;<i>     &quot;type&quot;: &quot;workspace&quot;
+</I>&gt;<i> }
+</I>&gt;<i>
+</I>&gt;<i> -
+</I>&gt;<i> This message is intended only for the addressee and may contain information that is company confidential or privileged.  Any technical data in this message may be exported only in accordance with the U.S. International Traffic in Arms Regulations (22 CFR Parts 120-130) or the Export Administration Regulations (15 CFR Parts 730-774). Unauthorized use is strictly prohibited and may be unlawful. If you are not the intended recipient, or the person responsible for delivering to the intended recipient, you should not read, copy, disclose or otherwise use this message. If you have received this email in error, please delete it, and advise the sender immediately.
+</I>&gt;<i> -
+</I>
+
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001925.html">[i3] i3 4.8 layout file hides my status bar and floating windows
+</A></li>
+	<LI>Next message: <A HREF="001927.html">[i3] i3-discuss Digest, Vol 55, Issue 2
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1926">[ date ]</a>
+              <a href="thread.html#1926">[ thread ]</a>
+              <a href="subject.html#1926">[ subject ]</a>
+              <a href="author.html#1926">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,50 @@
+From f179e7492f9c030231deef8a55d36ea828a0c324 Mon Sep 17 00:00:00 2001
+From: Marius Muja <mariusm@cs.ubc.ca>
+Date: Thu, 27 Dec 2012 20:55:57 -0800
+Subject: [PATCH 6/8] Allow focusing to change to worskpaces that are not
+ visible
+
+---
+ src/handlers.c                      |    6 +++++-
+ testcases/t/195-net-active-window.t |    5 +++--
+ 2 files changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/src/handlers.c b/src/handlers.c
+index c0fd0d9..0a3fd9d 100644
+--- a/src/handlers.c
++++ b/src/handlers.c
+@@ -663,10 +663,14 @@ static void handle_client_message(xcb_client_message_event_t *event) {
+         }
+ 
+         Con *ws = con_get_workspace(con);
+-        if (! (ws && workspace_is_visible(ws))) {
++        if (!ws) {
++            return;
++        }
++/*        if (! (ws && workspace_is_visible(ws))) {
+             DLOG("Workspace not visible, ignoring _NET_ACTIVE_WINDOW\n");
+             return;
+         }
++        */
+ 
+         if (ws != con_get_workspace(focused))
+             workspace_show(ws);
+diff --git a/testcases/t/195-net-active-window.t b/testcases/t/195-net-active-window.t
+index c62d4fd..4ff843c 100644
+--- a/testcases/t/195-net-active-window.t
++++ b/testcases/t/195-net-active-window.t
+@@ -61,8 +61,9 @@ my $win3 = open_window;
+ 
+ is($x->input_focus, $win3->id, 'window 3 has focus');
+ 
+-send_net_active_window($win1->id);
++# allowing focus to be changed to a different workspace
++#send_net_active_window($win1->id);
+ 
+-is($x->input_focus, $win3->id, 'window 3 still has focus');
++#is($x->input_focus, $win3->id, 'window 3 still has focus');
+ 
+ done_testing;
+-- 
+1.7.10.4
+

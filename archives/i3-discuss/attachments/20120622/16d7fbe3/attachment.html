@@ -1,0 +1,15 @@
+<tt>
+Forgot&nbsp;to&nbsp;attach&nbsp;the&nbsp;patch...&lt;div&gt;&lt;br&gt;&lt;div&nbsp;class=&quot;gmail_quote&quot;&gt;On&nbsp;Fri,&nbsp;Jun&nbsp;22,&nbsp;2012&nbsp;at&nbsp;9:14&nbsp;PM,&nbsp;DR&nbsp;&lt;span&nbsp;dir=&quot;ltr&quot;&gt;&lt;&lt;a&nbsp;href=&quot;mailto:drdarkraven@gmail.com&quot;&nbsp;target=&quot;_blank&quot;&gt;drdarkraven@gmail.com&lt;/a&gt;&gt;&lt;/span&gt;&nbsp;wrote:&lt;br&gt;&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;<br>
+<br>
+&lt;div&nbsp;style=&quot;text-align:left&quot;&gt;(Eventually&nbsp;I&#39;ve&nbsp;got&nbsp;some&nbsp;time&nbsp;to&nbsp;rework&nbsp;patches&nbsp;I&nbsp;sent&nbsp;previously.&nbsp;I&nbsp;divide&nbsp;them&nbsp;into&nbsp;mutually&nbsp;unrelated&nbsp;parts,&nbsp;and&nbsp;will&nbsp;send&nbsp;them&nbsp;in&nbsp;different&nbsp;threads,&nbsp;according&nbsp;to Fernando&#39;s&nbsp;suggestion.&nbsp;So&nbsp;this&nbsp;is&nbsp;the&nbsp;first&nbsp;one).&lt;/div&gt;<br>
+<br>
+<br>
+<br>
+&lt;div&nbsp;style=&quot;text-align:left&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div&nbsp;style=&quot;text-align:left&quot;&gt;Currently&nbsp;i3&nbsp;sends&nbsp;event&nbsp;with&nbsp;quite&nbsp;bad&nbsp;timing.&nbsp;For&nbsp;example,&nbsp;the&nbsp;workspaces&nbsp;event&nbsp;&#39;focus&#39;&nbsp;is&nbsp;sent&nbsp;before&nbsp;the&nbsp;tree_render()&nbsp;is&nbsp;called&nbsp;(in&nbsp;other&nbsp;words,&nbsp;the&nbsp;focus&nbsp;has&nbsp;not&nbsp;been&nbsp;actually&nbsp;changed,&nbsp;only&nbsp;the&nbsp;internal&nbsp;states&nbsp;of&nbsp;i3wm&nbsp;is&nbsp;changed).&nbsp;Although&nbsp;the&nbsp;differences&nbsp;is&nbsp;just&nbsp;fractions&nbsp;of&nbsp;a&nbsp;second,&nbsp;it&nbsp;may&nbsp;confuse&nbsp;some&nbsp;applications&nbsp;which&nbsp;rely&nbsp;heavily&nbsp;on&nbsp;the&nbsp;correct&nbsp;timing&nbsp;(for&nbsp;example,&nbsp;i3bar&nbsp;with&nbsp;my&nbsp;upcoming&nbsp;patches).&lt;/div&gt;<br>
+<br>
+<br>
+<br>
+&lt;div&nbsp;style=&quot;text-align:left&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div&nbsp;style=&quot;text-align:left&quot;&gt;So&nbsp;I&nbsp;add&nbsp;facilities&nbsp;to&nbsp;queue&nbsp;outward&nbsp;events&nbsp;up&nbsp;until&nbsp;the&nbsp;tree_render&nbsp;is&nbsp;done.&lt;/div&gt;<br>
+&lt;/blockquote&gt;&lt;/div&gt;&lt;br&gt;&lt;/div&gt;<br>
+
+</tt>

@@ -1,0 +1,3885 @@
+From michael at i3wm.org  Sun Nov  1 18:34:14 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 1 Nov 2015 18:34:14 +0100
+Subject: [i3] Debugging techniques.
+In-Reply-To: <5633E7A4.1010201@gmail.com>
+References: <562F83C6.2050204@gmail.com>
+ <CANnVG6=CU7KGxj9GYXEfCOC5TA7NTJL_CEH=Qsub_O_hktqZ9g@mail.gmail.com>
+ <5633E7A4.1010201@gmail.com>
+Message-ID: <CANnVG6mjfr_=0g_FiaGtWsvNF+fZ683OD2BZ=Dju9NfdUDkV7A@mail.gmail.com>
+
+Starting i3 with --shmlog-size is a good idea if you’re interested in the
+logs, and we even ship a session file for that (so that you can just select
+“i3 (with debug log)” in your session manager:
+https://github.com/i3/i3/blob/next/i3-with-shmlog.xsession.desktop
+
+As for “-V -d all”, I already mentioned how it might be inconvenient for
+users to rotate the log files away. As long as you’re prepared for that, go
+ahead :).
+
+On Fri, Oct 30, 2015 at 10:56 PM, Layus <layus.on at gmail.com> wrote:
+
+> Thank you for the detailed answer.
+>
+> I think I have sorted it all out.
+>
+> My use case is an i3 session started with some session manager like gdm or
+> kdm (or any other *dm).
+> In that setup, the users have little access to the arguments passed to i3.
+>
+> Let's assume the system uses an i3 build from git at master.
+> It should be sufficient to start i3 as "i3 --shmlog-size=25000000 -V -d
+> all" to get extended logs including the starting phase, and suitable for
+> bug reports.
+>
+> If users are annoyed by the memory usage, they can add 'exec
+> --no-startup-id i3-msg shmlog no' to their config.
+>
+> This way, I enable users to
+> 1) access complete logs suitable for debug without needing root access
+> 2) disable i3 logging if they do not want it
+>
+> If it is not an up-to-date git build, they can still use the logs it for
+> their own debug purposes.
+>
+> Do you think the idea of always starting i3 with the
+> "--shmlog-size=25000000 -V -d all" parameters makes sense ?
+>
+> --
+> Regards,
+> Layus
+>
+>
+> On 27/10/15 15:22, Michael Stapelberg wrote:
+>
+>
+>
+> On Tue, Oct 27, 2015 at 7:01 AM, Guillaume Maudoux (Layus) <
+> <layus.on at gmail.com>layus.on at gmail.com> wrote:
+>
+>> Hello world!
+>>
+>> I am trying to enable debugging in i3, and I am confused by the number of
+>> different options to do this.
+>>
+>>    command line          config option
+>> -- --------------------  -----------------------------
+>> 1 i3 --shmlog-size=X shmlog on|off|toggle|<size>
+>>
+>
+> Note that “shmlog on|off|toggle|<size>” refers to a command, not a config
+> directive.
+>
+> 2  i3 -V ?
+>>
+>
+> Errors (ELOG in the code) are always printed to stdout.
+> Verbose log messages (LOG in the code) are printed to stdout if -V is
+> enabled. Intended for curious users.
+> Debug log messages (DLOG in the code) are printed if -d is enabled.
+>
+>
+>> 3  i3 -d all             ?
+>> 4  ? debuglog on|off|toggle
+>>
+>
+> 3 and 4 are the same setting. The “all” argument to -d is obsolete, but
+> kept for backwards compatibility.
+>
+> See also https://github.com/i3/i3/issues/1823 for a related discussion.
+>
+>
+>>
+>> So my question are:
+>>
+>> Which one is the recommended way ?
+>>
+>
+> The recommended way is to use an automatically built version from
+> http://i3wm.org/docs/repositories.html (or i3-git if your package manager
+> knows how to build automatically build software from git) because otherwise
+> any of your findings will need to be confirmed again on a more recent
+> version.
+>
+> These versions automatically enable debug logging to shared memory (they
+> check whether they were built from a git version that is not a release
+> version).
+>
+>
+>> Does `shmlog on` imply  `debuglog on` ?
+>>
+>
+> No.
+>
+>
+>> Does `-d all` imply `-V` ?
+>>
+>
+> No.
+>
+>
+>> What size do you recommend for the shmlog size ?
+>>
+>
+> 25MB (arbitrarily chosen, but proven to be enough for all issues we’ve
+> encountered so far).
+>
+>
+>> May I assume that the config options cannot be used to debug issues prior
+>> to loading the configuration file (nor issues while loading the
+>> configuration file) ?
+>>
+>
+> If you specify them as command-line parameters to i3, they will be active
+> before loading the configuration file.
+>
+>
+>> Which of these options provide enough information for a bug report ? Is
+>> -V enough ?
+>>
+>
+> Please use -V -d all, as per section 2 of
+> <http://i3wm.org/docs/debugging.html>http://i3wm.org/docs/debugging.html
+>
+>
+>>
+>> It seems that shm logging is better in the sense that it does not
+>> increase a log file size, but not as nice as it locks some memory space.
+>>
+>
+> Correct.
+>
+>
+>> What is the reason behind shm logging, instead of the usual logging to
+>> file + logrotate ?
+>
+>
+> It’s easier for us to set aside a chunk of memory than to make sure that
+> every user of i3 knows about having to logrotate a file away. Anecdotally,
+> we’ve had a bunch of users whose hard drive (or RAM, in case of /tmp being
+> on tmpfs) filled up because of an ever-growing i3 logfile.
+>
+> --
+> Best regards,
+> Michael
+>
+>
+>
+
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151101/576dba2d/attachment.html>
+
+From michael at i3wm.org  Mon Nov  2 09:00:19 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 2 Nov 2015 09:00:19 +0100
+Subject: [i3] Weird keybinding issue after suspend
+In-Reply-To: <CAKV6X6wU04fFqnn=mQ_7V1PZJ9j0Lj60W0XT=pSKoQV_ym8DNA@mail.gmail.com>
+References: <CAKV6X6wU04fFqnn=mQ_7V1PZJ9j0Lj60W0XT=pSKoQV_ym8DNA@mail.gmail.com>
+Message-ID: <CANnVG6nNoTxEQQr9wJwR+O0jAfySb6Un7OoiLxajKWv2L+68PQ@mail.gmail.com>
+
+When this situation happens:
+
+1. Does running xev(1) still show keyboard events?
+
+2. Does using setxkbmap to set your layout make the problem go away? That
+should force i3 to re-grab all keys.
+
+On Fri, Oct 30, 2015 at 12:38 PM, Benjamin Kaiser <benjaminjkaiser at gmail.com
+> wrote:
+
+> Hello,
+>
+> I've got a really weird issue that's been bothering me for perhaps the
+> last 6 months (before then it worked fine, perhaps could have been around
+> when I switched to using my keyboard to suspend). Sometimes when I resume
+> from suspend (I have i3lock launching at the same time as when I suspend) I
+> can unlock my computer, but then no more keyboard events work. The keyboard
+> remains active (lights on) and I can switch to a TTY, but none of the i3
+> events fire. The only way I can fix it is to use the mouse (which is still
+> working) to click on a workspace in the statusbar and then the keyboard
+> responds again.
+>
+>  As mentioned above, it only happens sometimes, and as a fellow dev it
+> really annoys me to no end when something is unreproducible. Things I have
+> tried to reproduce are just suspending, then detaching my keyboard and
+> attaching it again before resuming from suspend, but that doesn't trigger
+> the issue. Just about the only common thing I can find is time (after being
+> suspended for a long time, 12hours+, it seems to happen more frequently).
+>
+> One idea I've had is that because I use a keyboard shortcut to suspend
+> (`bindsym --release $mod+Control+Shift+s exec "systemctl suspend; i3lock"`
+> in my config, the --
+>
+
+nit: you should i3lock first, then suspend. That way, your screen is
+guaranteed to be locked in a race-free way when you resume. “i3lock &&
+systemctl” suspend should work.
+
+
+> release was me weeks ago trying to rectify the issue, but it still
+> persisted) i3wm is somehow holding onto the keyboard before flushing, but
+> then post-suspend, i3lock takes the keyboards focus, i3wm holds onto an old
+> un-flushed pointer to the keyboard (not sure if that is how that works) and
+> doesn't refresh it upon i3lock giving up focus.
+> From searching around in the i3 source code, seeing the line in
+> main.c:main() with the comment annotation
+>     /* Grab the keyboard to get all input */
+>     xcb_flush(conn);
+> And that function also occuring in click.c:route_click() (i.e. when I
+> click the workspaces in the status bar)
+>     xcb_flush(conn);
+> Maybe this is what is allowing the keyboard to work again. Is there some
+> way this could be run upon i3lock giving up focus / i3wm resuming focus?
+>
+> Any help in solving this would be much appreciated!
+>
+> Here is some information about my system:
+> Mouse: Razer Naga, (one with 12 buttons on side)
+> Keyboard: ducky shine 3 with mini usb cable for connection (issue has
+> occurred on my laptops internal keyboard also though)
+> Distro: Arch Linux
+> i3 Version: 4.11
+> Kernel version: 4.2.3-1-ARCH
+>
+> Cheers,
+> Ben Kaiser
+>
+
+
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151102/e9be472a/attachment.html>
+
+From benjaminjkaiser at gmail.com  Mon Nov  2 10:54:00 2015
+From: benjaminjkaiser at gmail.com (Benjamin Kaiser)
+Date: Mon, 02 Nov 2015 09:54:00 +0000
+Subject: [i3] Weird keybinding issue after suspend
+In-Reply-To: <CANnVG6nNoTxEQQr9wJwR+O0jAfySb6Un7OoiLxajKWv2L+68PQ@mail.gmail.com>
+References: <CAKV6X6wU04fFqnn=mQ_7V1PZJ9j0Lj60W0XT=pSKoQV_ym8DNA@mail.gmail.com>
+ <CANnVG6nNoTxEQQr9wJwR+O0jAfySb6Un7OoiLxajKWv2L+68PQ@mail.gmail.com>
+Message-ID: <CAKV6X6zBc=Ef+jdTYKizS_LcR2pJGv9AAqpwuARN2yWbGkB07A@mail.gmail.com>
+
+Thanks for the reply Michael,
+
+I had the issue happen again yesterday and ran `sudo
+libinput-debug-events`, then changed back to i3, run a bunch of shortcuts
+and pressed a bunch of keys (all of which did nothing) then changed back to
+the tty only to see that it was registering those keys being pressed.
+
+I'll try running `setxkbmap` and `xev` from a TTY next time the issue
+occurs to see if it fixes it / gives me any more information.
+
+Also another small thing I noticed. To get out of the situation I click the
+workspaces, but the keyboard only works if I click a different workspace
+the the one I am currently in, it doesn't do anything (keyboard still won't
+register shortcuts) if I click the current workspace.
+
+modified my i3config to that (i3lock then systemctl suspend), I think it
+was that at some point and the issue still occurred, but I'll try it out
+let you know if the issue happens again.
+
+Cheers,
+Ben Kaiser
+
+On Mon, 2 Nov 2015 at 19:00 Michael Stapelberg <michael at i3wm.org> wrote:
+
+> When this situation happens:
+>
+> 1. Does running xev(1) still show keyboard events?
+>
+> 2. Does using setxkbmap to set your layout make the problem go away? That
+> should force i3 to re-grab all keys.
+>
+> On Fri, Oct 30, 2015 at 12:38 PM, Benjamin Kaiser <
+> benjaminjkaiser at gmail.com> wrote:
+>
+>> Hello,
+>>
+>> I've got a really weird issue that's been bothering me for perhaps the
+>> last 6 months (before then it worked fine, perhaps could have been around
+>> when I switched to using my keyboard to suspend). Sometimes when I resume
+>> from suspend (I have i3lock launching at the same time as when I suspend) I
+>> can unlock my computer, but then no more keyboard events work. The keyboard
+>> remains active (lights on) and I can switch to a TTY, but none of the i3
+>> events fire. The only way I can fix it is to use the mouse (which is still
+>> working) to click on a workspace in the statusbar and then the keyboard
+>> responds again.
+>>
+>>  As mentioned above, it only happens sometimes, and as a fellow dev it
+>> really annoys me to no end when something is unreproducible. Things I have
+>> tried to reproduce are just suspending, then detaching my keyboard and
+>> attaching it again before resuming from suspend, but that doesn't trigger
+>> the issue. Just about the only common thing I can find is time (after being
+>> suspended for a long time, 12hours+, it seems to happen more frequently).
+>>
+>> One idea I've had is that because I use a keyboard shortcut to suspend
+>> (`bindsym --release $mod+Control+Shift+s exec "systemctl suspend; i3lock"`
+>> in my config, the --
+>>
+>
+> nit: you should i3lock first, then suspend. That way, your screen is
+> guaranteed to be locked in a race-free way when you resume. “i3lock &&
+> systemctl” suspend should work.
+>
+>
+>> release was me weeks ago trying to rectify the issue, but it still
+>> persisted) i3wm is somehow holding onto the keyboard before flushing, but
+>> then post-suspend, i3lock takes the keyboards focus, i3wm holds onto an old
+>> un-flushed pointer to the keyboard (not sure if that is how that works) and
+>> doesn't refresh it upon i3lock giving up focus.
+>> From searching around in the i3 source code, seeing the line in
+>> main.c:main() with the comment annotation
+>>     /* Grab the keyboard to get all input */
+>>     xcb_flush(conn);
+>> And that function also occuring in click.c:route_click() (i.e. when I
+>> click the workspaces in the status bar)
+>>     xcb_flush(conn);
+>> Maybe this is what is allowing the keyboard to work again. Is there some
+>> way this could be run upon i3lock giving up focus / i3wm resuming focus?
+>>
+>> Any help in solving this would be much appreciated!
+>>
+>> Here is some information about my system:
+>> Mouse: Razer Naga, (one with 12 buttons on side)
+>> Keyboard: ducky shine 3 with mini usb cable for connection (issue has
+>> occurred on my laptops internal keyboard also though)
+>> Distro: Arch Linux
+>> i3 Version: 4.11
+>> Kernel version: 4.2.3-1-ARCH
+>>
+>> Cheers,
+>> Ben Kaiser
+>>
+>
+>
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151102/57dd053d/attachment-0001.html>
+
+From dieter at plaetinck.be  Tue Nov  3 21:32:17 2015
+From: dieter at plaetinck.be (Dieter Plaetinck)
+Date: Tue, 3 Nov 2015 15:32:17 -0500
+Subject: [i3] ssh askpass window too small + "sticks around"
+Message-ID: <20151103153217.0fd581d0@dieter-m6800>
+
+hello everyone,
+long time no see! i've been a long time i3 user but only since a recent upgrade i've started having issues with 
+ssh-askpass.
+
+
+to be specific, in my .xinitrc I have:
+
+i3 -d all >> ~/i3-out 2>> ~/i3-err &
+waitpid=$!
+ssh-add ~/.ssh/id_rsa_dieter-ws-a7n8x-arch < /dev/null
+(.. some more stuff)
+wait $waitpid
+
+i posted my i3 config to https://gist.github.com/Dieterbe/d5870b230369818d2d47 (it's pretty much default, with a few extra binds and a different bar)
+
+
+the ssh-add spawns the x11-ssh-askpass program and since recently i've been seeing these two problems:
+
+screenshots of both issues @ http://imgur.com/a/TbNn1
+
+1) the window is way too small. it used to be just the right size for the popup.
+
+2) after entering the password and hitting enter, a "ghost" of the window stays stuck in all of my i3 workspaces.
+those workspaces that have windows in them will have the windows cover it, but otherwise if i go to say workspace number 5 while no windows are there, it'll show a ghost of the ask pass window.
+
+any idea what might be the cause? i'm using 4.11
+
+thanks,
+Dieter
+
+From admin at airblader.de  Tue Nov  3 22:05:31 2015
+From: admin at airblader.de (=?UTF-8?Q?Ingo_B=c3=bcrk?=)
+Date: Tue, 3 Nov 2015 16:05:31 -0500
+Subject: [i3] ssh askpass window too small + "sticks around"
+In-Reply-To: <20151103153217.0fd581d0@dieter-m6800>
+References: <20151103153217.0fd581d0@dieter-m6800>
+Message-ID: <5639219B.8010400@airblader.de>
+
+Hi Dieter,
+
+can you do the following?
+
+1) Downgrade to i3 4.10.4 and see if it fixes the problem. If so, please
+run a git bisect to figure out which commit broke it. If 4.10.4 has the
+same problem, try downgrading askpass or report a bug there.
+2) Provide a complete i3 log file where you started it. See the
+debugging docs on the i3 website for information. Also provide the
+output of "xprop" and "xwininfo -all" when clicking on the opened
+askpass window.
+
+
+Ingo
+
+On 11/03/2015 03:32 PM, Dieter Plaetinck wrote:
+> hello everyone,
+> long time no see! i've been a long time i3 user but only since a recent upgrade i've started having issues with 
+> ssh-askpass.
+>
+>
+> to be specific, in my .xinitrc I have:
+>
+> i3 -d all >> ~/i3-out 2>> ~/i3-err &
+> waitpid=$!
+> ssh-add ~/.ssh/id_rsa_dieter-ws-a7n8x-arch < /dev/null
+> (.. some more stuff)
+> wait $waitpid
+>
+> i posted my i3 config to https://gist.github.com/Dieterbe/d5870b230369818d2d47 (it's pretty much default, with a few extra binds and a different bar)
+>
+>
+> the ssh-add spawns the x11-ssh-askpass program and since recently i've been seeing these two problems:
+>
+> screenshots of both issues @ http://imgur.com/a/TbNn1
+>
+> 1) the window is way too small. it used to be just the right size for the popup.
+>
+> 2) after entering the password and hitting enter, a "ghost" of the window stays stuck in all of my i3 workspaces.
+> those workspaces that have windows in them will have the windows cover it, but otherwise if i go to say workspace number 5 while no windows are there, it'll show a ghost of the ask pass window.
+>
+> any idea what might be the cause? i'm using 4.11
+>
+> thanks,
+> Dieter
+
+
+From dieter at plaetinck.be  Tue Nov  3 22:46:57 2015
+From: dieter at plaetinck.be (Dieter Plaetinck)
+Date: Tue, 3 Nov 2015 16:46:57 -0500
+Subject: [i3] ssh askpass window too small + "sticks around"
+In-Reply-To: <5639219B.8010400@airblader.de>
+References: <20151103153217.0fd581d0@dieter-m6800>
+ <5639219B.8010400@airblader.de>
+Message-ID: <20151103164657.70803852@dieter-m6800>
+
+I can confirm the first problem is gone (the window has the correct size) with 4.10.4
+However the ghosting problem still exists, though now it also has the correct size and a black background instead of grey like before.
+see http://i.imgur.com/2uF25R8.png
+
+still want me to do a bisect? for all versions i would just run make clean && make && restart x using the new i3 binary right? anything else needed?
+
+Dieter
+
+On Tue, 3 Nov 2015 16:05:31 -0500
+Ingo Bürk <admin at airblader.de> wrote:
+
+> Hi Dieter,
+> 
+> can you do the following?
+> 
+> 1) Downgrade to i3 4.10.4 and see if it fixes the problem. If so, please
+> run a git bisect to figure out which commit broke it. If 4.10.4 has the
+> same problem, try downgrading askpass or report a bug there.
+> 2) Provide a complete i3 log file where you started it. See the
+> debugging docs on the i3 website for information. Also provide the
+> output of "xprop" and "xwininfo -all" when clicking on the opened
+> askpass window.
+> 
+> 
+> Ingo
+> 
+> On 11/03/2015 03:32 PM, Dieter Plaetinck wrote:
+> > hello everyone,
+> > long time no see! i've been a long time i3 user but only since a recent upgrade i've started having issues with 
+> > ssh-askpass.
+> >
+> >
+> > to be specific, in my .xinitrc I have:
+> >
+> > i3 -d all >> ~/i3-out 2>> ~/i3-err &
+> > waitpid=$!
+> > ssh-add ~/.ssh/id_rsa_dieter-ws-a7n8x-arch < /dev/null
+> > (.. some more stuff)
+> > wait $waitpid
+> >
+> > i posted my i3 config to https://gist.github.com/Dieterbe/d5870b230369818d2d47 (it's pretty much default, with a few extra binds and a different bar)
+> >
+> >
+> > the ssh-add spawns the x11-ssh-askpass program and since recently i've been seeing these two problems:
+> >
+> > screenshots of both issues @ http://imgur.com/a/TbNn1
+> >
+> > 1) the window is way too small. it used to be just the right size for the popup.
+> >
+> > 2) after entering the password and hitting enter, a "ghost" of the window stays stuck in all of my i3 workspaces.
+> > those workspaces that have windows in them will have the windows cover it, but otherwise if i go to say workspace number 5 while no windows are there, it'll show a ghost of the ask pass window.
+> >
+> > any idea what might be the cause? i'm using 4.11
+> >
+> > thanks,
+> > Dieter  
+> 
+
+
+From admin at airblader.de  Tue Nov  3 23:19:02 2015
+From: admin at airblader.de (=?UTF-8?Q?Ingo_B=c3=bcrk?=)
+Date: Tue, 3 Nov 2015 17:19:02 -0500
+Subject: [i3] ssh askpass window too small + "sticks around"
+In-Reply-To: <20151103164657.70803852@dieter-m6800>
+References: <20151103153217.0fd581d0@dieter-m6800>
+ <5639219B.8010400@airblader.de> <20151103164657.70803852@dieter-m6800>
+Message-ID: <563932D6.5050501@airblader.de>
+
+Yeah, a bisect would be useful. You need to run make clean && make &&
+sudo make install (to actually install the new binary -- unless you
+change your xinitrc to run the local file in your checkout instead).
+
+Restarting X isn't necessary, restarting i3 in-place would suffice. But
+since you have wrapped askpass around the i3 session, you'll indeed
+probably need to exit your X session and startx again.
+
+
+Ingo
+
+On 11/03/2015 04:46 PM, Dieter Plaetinck wrote:
+> I can confirm the first problem is gone (the window has the correct size) with 4.10.4
+> However the ghosting problem still exists, though now it also has the correct size and a black background instead of grey like before.
+> see http://i.imgur.com/2uF25R8.png
+>
+> still want me to do a bisect? for all versions i would just run make clean && make && restart x using the new i3 binary right? anything else needed?
+>
+> Dieter
+>
+> On Tue, 3 Nov 2015 16:05:31 -0500
+> Ingo Bürk <admin at airblader.de> wrote:
+>
+>> Hi Dieter,
+>>
+>> can you do the following?
+>>
+>> 1) Downgrade to i3 4.10.4 and see if it fixes the problem. If so, please
+>> run a git bisect to figure out which commit broke it. If 4.10.4 has the
+>> same problem, try downgrading askpass or report a bug there.
+>> 2) Provide a complete i3 log file where you started it. See the
+>> debugging docs on the i3 website for information. Also provide the
+>> output of "xprop" and "xwininfo -all" when clicking on the opened
+>> askpass window.
+>>
+>>
+>> Ingo
+>>
+>> On 11/03/2015 03:32 PM, Dieter Plaetinck wrote:
+>>> hello everyone,
+>>> long time no see! i've been a long time i3 user but only since a recent upgrade i've started having issues with 
+>>> ssh-askpass.
+>>>
+>>>
+>>> to be specific, in my .xinitrc I have:
+>>>
+>>> i3 -d all >> ~/i3-out 2>> ~/i3-err &
+>>> waitpid=$!
+>>> ssh-add ~/.ssh/id_rsa_dieter-ws-a7n8x-arch < /dev/null
+>>> (.. some more stuff)
+>>> wait $waitpid
+>>>
+>>> i posted my i3 config to https://gist.github.com/Dieterbe/d5870b230369818d2d47 (it's pretty much default, with a few extra binds and a different bar)
+>>>
+>>>
+>>> the ssh-add spawns the x11-ssh-askpass program and since recently i've been seeing these two problems:
+>>>
+>>> screenshots of both issues @ http://imgur.com/a/TbNn1
+>>>
+>>> 1) the window is way too small. it used to be just the right size for the popup.
+>>>
+>>> 2) after entering the password and hitting enter, a "ghost" of the window stays stuck in all of my i3 workspaces.
+>>> those workspaces that have windows in them will have the windows cover it, but otherwise if i go to say workspace number 5 while no windows are there, it'll show a ghost of the ask pass window.
+>>>
+>>> any idea what might be the cause? i'm using 4.11
+>>>
+>>> thanks,
+>>> Dieter  
+
+
+From dieter at plaetinck.be  Wed Nov  4 00:04:21 2015
+From: dieter at plaetinck.be (Dieter Plaetinck)
+Date: Tue, 3 Nov 2015 18:04:21 -0500
+Subject: [i3] ssh askpass window too small + "sticks around"
+In-Reply-To: <563932D6.5050501@airblader.de>
+References: <20151103153217.0fd581d0@dieter-m6800>
+ <5639219B.8010400@airblader.de>
+ <20151103164657.70803852@dieter-m6800>
+ <563932D6.5050501@airblader.de>
+Message-ID: <20151103180421.00bae10a@dieter-m6800>
+
+thanks Ingo,
+due to i3's easy reloading and the fact that i could just run the ssh-add command in a terminal without restarting X, the bisect process was very easy and smooth.
+
+it found the commit. see below
+
+d1262f2b6ae713266b5a1e8cab368333bb332033 is the first bad commit
+commit d1262f2b6ae713266b5a1e8cab368333bb332033
+Author: Andrzej Pronobis <a.pronobis at gmail.com>
+Date:   Sun Feb 1 17:04:41 2015 -0800
+
+    Use WM_SIZE_HINTS whenever it's provided to set the geometry of floating windows.
+
+:040000 040000 e7c887b2b14e2b24830840133045fe0ba232c3e0 3dd6d2d2864ab7aaec50cb2bff93031170bd50e8 M	src
+~/w/e/i3 ❯❯❯ 
+
+
+On Tue, 3 Nov 2015 17:19:02 -0500
+Ingo Bürk <admin at airblader.de> wrote:
+
+> Yeah, a bisect would be useful. You need to run make clean && make &&
+> sudo make install (to actually install the new binary -- unless you
+> change your xinitrc to run the local file in your checkout instead).
+> 
+> Restarting X isn't necessary, restarting i3 in-place would suffice. But
+> since you have wrapped askpass around the i3 session, you'll indeed
+> probably need to exit your X session and startx again.
+> 
+> 
+> Ingo
+> 
+> On 11/03/2015 04:46 PM, Dieter Plaetinck wrote:
+> > I can confirm the first problem is gone (the window has the correct size) with 4.10.4
+> > However the ghosting problem still exists, though now it also has the correct size and a black background instead of grey like before.
+> > see http://i.imgur.com/2uF25R8.png
+> >
+> > still want me to do a bisect? for all versions i would just run make clean && make && restart x using the new i3 binary right? anything else needed?
+> >
+> > Dieter
+> >
+> > On Tue, 3 Nov 2015 16:05:31 -0500
+> > Ingo Bürk <admin at airblader.de> wrote:
+> >  
+> >> Hi Dieter,
+> >>
+> >> can you do the following?
+> >>
+> >> 1) Downgrade to i3 4.10.4 and see if it fixes the problem. If so, please
+> >> run a git bisect to figure out which commit broke it. If 4.10.4 has the
+> >> same problem, try downgrading askpass or report a bug there.
+> >> 2) Provide a complete i3 log file where you started it. See the
+> >> debugging docs on the i3 website for information. Also provide the
+> >> output of "xprop" and "xwininfo -all" when clicking on the opened
+> >> askpass window.
+> >>
+> >>
+> >> Ingo
+> >>
+> >> On 11/03/2015 03:32 PM, Dieter Plaetinck wrote:  
+> >>> hello everyone,
+> >>> long time no see! i've been a long time i3 user but only since a recent upgrade i've started having issues with 
+> >>> ssh-askpass.
+> >>>
+> >>>
+> >>> to be specific, in my .xinitrc I have:
+> >>>
+> >>> i3 -d all >> ~/i3-out 2>> ~/i3-err &
+> >>> waitpid=$!
+> >>> ssh-add ~/.ssh/id_rsa_dieter-ws-a7n8x-arch < /dev/null
+> >>> (.. some more stuff)
+> >>> wait $waitpid
+> >>>
+> >>> i posted my i3 config to https://gist.github.com/Dieterbe/d5870b230369818d2d47 (it's pretty much default, with a few extra binds and a different bar)
+> >>>
+> >>>
+> >>> the ssh-add spawns the x11-ssh-askpass program and since recently i've been seeing these two problems:
+> >>>
+> >>> screenshots of both issues @ http://imgur.com/a/TbNn1
+> >>>
+> >>> 1) the window is way too small. it used to be just the right size for the popup.
+> >>>
+> >>> 2) after entering the password and hitting enter, a "ghost" of the window stays stuck in all of my i3 workspaces.
+> >>> those workspaces that have windows in them will have the windows cover it, but otherwise if i go to say workspace number 5 while no windows are there, it'll show a ghost of the ask pass window.
+> >>>
+> >>> any idea what might be the cause? i'm using 4.11
+> >>>
+> >>> thanks,
+> >>> Dieter    
+> 
+
+
+From admin at airblader.de  Wed Nov  4 00:09:10 2015
+From: admin at airblader.de (=?UTF-8?Q?Ingo_B=c3=bcrk?=)
+Date: Tue, 3 Nov 2015 18:09:10 -0500
+Subject: [i3] ssh askpass window too small + "sticks around"
+In-Reply-To: <20151103180421.00bae10a@dieter-m6800>
+References: <20151103153217.0fd581d0@dieter-m6800>
+ <5639219B.8010400@airblader.de> <20151103164657.70803852@dieter-m6800>
+ <563932D6.5050501@airblader.de> <20151103180421.00bae10a@dieter-m6800>
+Message-ID: <56393E96.7000804@airblader.de>
+
+Thanks. I sort of figured it'd be that commit. Can you please provide
+the files I described earlier? This will likely be a bug in askpass. See
+also the discussions in the end of https://github.com/i3/i3/issues/1970.
+
+
+Ingo
+
+On 11/03/2015 06:04 PM, Dieter Plaetinck wrote:
+> thanks Ingo,
+> due to i3's easy reloading and the fact that i could just run the ssh-add command in a terminal without restarting X, the bisect process was very easy and smooth.
+>
+> it found the commit. see below
+>
+> d1262f2b6ae713266b5a1e8cab368333bb332033 is the first bad commit
+> commit d1262f2b6ae713266b5a1e8cab368333bb332033
+> Author: Andrzej Pronobis <a.pronobis at gmail.com>
+> Date:   Sun Feb 1 17:04:41 2015 -0800
+>
+>     Use WM_SIZE_HINTS whenever it's provided to set the geometry of floating windows.
+>
+> :040000 040000 e7c887b2b14e2b24830840133045fe0ba232c3e0 3dd6d2d2864ab7aaec50cb2bff93031170bd50e8 M	src
+> ~/w/e/i3 ❯❯❯ 
+>
+>
+> On Tue, 3 Nov 2015 17:19:02 -0500
+> Ingo Bürk <admin at airblader.de> wrote:
+>
+>> Yeah, a bisect would be useful. You need to run make clean && make &&
+>> sudo make install (to actually install the new binary -- unless you
+>> change your xinitrc to run the local file in your checkout instead).
+>>
+>> Restarting X isn't necessary, restarting i3 in-place would suffice. But
+>> since you have wrapped askpass around the i3 session, you'll indeed
+>> probably need to exit your X session and startx again.
+>>
+>>
+>> Ingo
+>>
+>> On 11/03/2015 04:46 PM, Dieter Plaetinck wrote:
+>>> I can confirm the first problem is gone (the window has the correct size) with 4.10.4
+>>> However the ghosting problem still exists, though now it also has the correct size and a black background instead of grey like before.
+>>> see http://i.imgur.com/2uF25R8.png
+>>>
+>>> still want me to do a bisect? for all versions i would just run make clean && make && restart x using the new i3 binary right? anything else needed?
+>>>
+>>> Dieter
+>>>
+>>> On Tue, 3 Nov 2015 16:05:31 -0500
+>>> Ingo Bürk <admin at airblader.de> wrote:
+>>>  
+>>>> Hi Dieter,
+>>>>
+>>>> can you do the following?
+>>>>
+>>>> 1) Downgrade to i3 4.10.4 and see if it fixes the problem. If so, please
+>>>> run a git bisect to figure out which commit broke it. If 4.10.4 has the
+>>>> same problem, try downgrading askpass or report a bug there.
+>>>> 2) Provide a complete i3 log file where you started it. See the
+>>>> debugging docs on the i3 website for information. Also provide the
+>>>> output of "xprop" and "xwininfo -all" when clicking on the opened
+>>>> askpass window.
+>>>>
+>>>>
+>>>> Ingo
+>>>>
+>>>> On 11/03/2015 03:32 PM, Dieter Plaetinck wrote:  
+>>>>> hello everyone,
+>>>>> long time no see! i've been a long time i3 user but only since a recent upgrade i've started having issues with 
+>>>>> ssh-askpass.
+>>>>>
+>>>>>
+>>>>> to be specific, in my .xinitrc I have:
+>>>>>
+>>>>> i3 -d all >> ~/i3-out 2>> ~/i3-err &
+>>>>> waitpid=$!
+>>>>> ssh-add ~/.ssh/id_rsa_dieter-ws-a7n8x-arch < /dev/null
+>>>>> (.. some more stuff)
+>>>>> wait $waitpid
+>>>>>
+>>>>> i posted my i3 config to https://gist.github.com/Dieterbe/d5870b230369818d2d47 (it's pretty much default, with a few extra binds and a different bar)
+>>>>>
+>>>>>
+>>>>> the ssh-add spawns the x11-ssh-askpass program and since recently i've been seeing these two problems:
+>>>>>
+>>>>> screenshots of both issues @ http://imgur.com/a/TbNn1
+>>>>>
+>>>>> 1) the window is way too small. it used to be just the right size for the popup.
+>>>>>
+>>>>> 2) after entering the password and hitting enter, a "ghost" of the window stays stuck in all of my i3 workspaces.
+>>>>> those workspaces that have windows in them will have the windows cover it, but otherwise if i go to say workspace number 5 while no windows are there, it'll show a ghost of the ask pass window.
+>>>>>
+>>>>> any idea what might be the cause? i'm using 4.11
+>>>>>
+>>>>> thanks,
+>>>>> Dieter    
+
+
+From dieter at plaetinck.be  Wed Nov  4 00:51:47 2015
+From: dieter at plaetinck.be (Dieter Plaetinck)
+Date: Tue, 3 Nov 2015 18:51:47 -0500
+Subject: [i3] ssh askpass window too small + "sticks around"
+In-Reply-To: <56393E96.7000804@airblader.de>
+References: <20151103153217.0fd581d0@dieter-m6800>
+ <5639219B.8010400@airblader.de>
+ <20151103164657.70803852@dieter-m6800>
+ <563932D6.5050501@airblader.de>
+ <20151103180421.00bae10a@dieter-m6800>
+ <56393E96.7000804@airblader.de>
+Message-ID: <20151103185147.070f18a7@dieter-m6800>
+
+the i3 log, obtained via i3-dump-log as described on the debugging web page.
+http://logs.i3wm.org/logs/5652536396611584.bz2
+FWIW this was a minimal i3 session, i quit all my apps, just had a termite terminal so i could invoke ssh-add and the i3-dump-log, and it also had a bar running, but nothing else.
+
+xprop and xwininfo -all output: https://gist.github.com/Dieterbe/93ec75c6e891a04b8776
+
+
+
+
+On Tue, 3 Nov 2015 18:09:10 -0500
+Ingo Bürk <admin at airblader.de> wrote:
+
+> Thanks. I sort of figured it'd be that commit. Can you please provide
+> the files I described earlier? This will likely be a bug in askpass. See
+> also the discussions in the end of https://github.com/i3/i3/issues/1970.
+> 
+> 
+> Ingo
+> 
+> On 11/03/2015 06:04 PM, Dieter Plaetinck wrote:
+> > thanks Ingo,
+> > due to i3's easy reloading and the fact that i could just run the ssh-add command in a terminal without restarting X, the bisect process was very easy and smooth.
+> >
+> > it found the commit. see below
+> >
+> > d1262f2b6ae713266b5a1e8cab368333bb332033 is the first bad commit
+> > commit d1262f2b6ae713266b5a1e8cab368333bb332033
+> > Author: Andrzej Pronobis <a.pronobis at gmail.com>
+> > Date:   Sun Feb 1 17:04:41 2015 -0800
+> >
+> >     Use WM_SIZE_HINTS whenever it's provided to set the geometry of floating windows.
+> >
+> > :040000 040000 e7c887b2b14e2b24830840133045fe0ba232c3e0 3dd6d2d2864ab7aaec50cb2bff93031170bd50e8 M	src
+> > ~/w/e/i3 ❯❯❯ 
+> >
+> >
+> > On Tue, 3 Nov 2015 17:19:02 -0500
+> > Ingo Bürk <admin at airblader.de> wrote:
+> >  
+> >> Yeah, a bisect would be useful. You need to run make clean && make &&
+> >> sudo make install (to actually install the new binary -- unless you
+> >> change your xinitrc to run the local file in your checkout instead).
+> >>
+> >> Restarting X isn't necessary, restarting i3 in-place would suffice. But
+> >> since you have wrapped askpass around the i3 session, you'll indeed
+> >> probably need to exit your X session and startx again.
+> >>
+> >>
+> >> Ingo
+> >>
+> >> On 11/03/2015 04:46 PM, Dieter Plaetinck wrote:  
+> >>> I can confirm the first problem is gone (the window has the correct size) with 4.10.4
+> >>> However the ghosting problem still exists, though now it also has the correct size and a black background instead of grey like before.
+> >>> see http://i.imgur.com/2uF25R8.png
+> >>>
+> >>> still want me to do a bisect? for all versions i would just run make clean && make && restart x using the new i3 binary right? anything else needed?
+> >>>
+> >>> Dieter
+> >>>
+> >>> On Tue, 3 Nov 2015 16:05:31 -0500
+> >>> Ingo Bürk <admin at airblader.de> wrote:
+> >>>    
+> >>>> Hi Dieter,
+> >>>>
+> >>>> can you do the following?
+> >>>>
+> >>>> 1) Downgrade to i3 4.10.4 and see if it fixes the problem. If so, please
+> >>>> run a git bisect to figure out which commit broke it. If 4.10.4 has the
+> >>>> same problem, try downgrading askpass or report a bug there.
+> >>>> 2) Provide a complete i3 log file where you started it. See the
+> >>>> debugging docs on the i3 website for information. Also provide the
+> >>>> output of "xprop" and "xwininfo -all" when clicking on the opened
+> >>>> askpass window.
+> >>>>
+> >>>>
+> >>>> Ingo
+> >>>>
+> >>>> On 11/03/2015 03:32 PM, Dieter Plaetinck wrote:    
+> >>>>> hello everyone,
+> >>>>> long time no see! i've been a long time i3 user but only since a recent upgrade i've started having issues with 
+> >>>>> ssh-askpass.
+> >>>>>
+> >>>>>
+> >>>>> to be specific, in my .xinitrc I have:
+> >>>>>
+> >>>>> i3 -d all >> ~/i3-out 2>> ~/i3-err &
+> >>>>> waitpid=$!
+> >>>>> ssh-add ~/.ssh/id_rsa_dieter-ws-a7n8x-arch < /dev/null
+> >>>>> (.. some more stuff)
+> >>>>> wait $waitpid
+> >>>>>
+> >>>>> i posted my i3 config to https://gist.github.com/Dieterbe/d5870b230369818d2d47 (it's pretty much default, with a few extra binds and a different bar)
+> >>>>>
+> >>>>>
+> >>>>> the ssh-add spawns the x11-ssh-askpass program and since recently i've been seeing these two problems:
+> >>>>>
+> >>>>> screenshots of both issues @ http://imgur.com/a/TbNn1
+> >>>>>
+> >>>>> 1) the window is way too small. it used to be just the right size for the popup.
+> >>>>>
+> >>>>> 2) after entering the password and hitting enter, a "ghost" of the window stays stuck in all of my i3 workspaces.
+> >>>>> those workspaces that have windows in them will have the windows cover it, but otherwise if i go to say workspace number 5 while no windows are there, it'll show a ghost of the ask pass window.
+> >>>>>
+> >>>>> any idea what might be the cause? i'm using 4.11
+> >>>>>
+> >>>>> thanks,
+> >>>>> Dieter      
+> 
+
+
+From admin at airblader.de  Wed Nov  4 01:43:22 2015
+From: admin at airblader.de (=?UTF-8?Q?Ingo_B=c3=bcrk?=)
+Date: Tue, 3 Nov 2015 19:43:22 -0500
+Subject: [i3] ssh askpass window too small + "sticks around"
+In-Reply-To: <20151103185147.070f18a7@dieter-m6800>
+References: <20151103153217.0fd581d0@dieter-m6800>
+ <5639219B.8010400@airblader.de> <20151103164657.70803852@dieter-m6800>
+ <563932D6.5050501@airblader.de> <20151103180421.00bae10a@dieter-m6800>
+ <56393E96.7000804@airblader.de> <20151103185147.070f18a7@dieter-m6800>
+Message-ID: <563954AA.9070904@airblader.de>
+
+Thanks! Yeah, the problem is that askpass specifies size flags in
+WM_SIZE_HINTS, but doesn't set useful values (it just says 0x0). i3 then
+falls back to the floating minimum size, which by default is 75x50. You
+should file this as a bug against keepass. keepass should either not set
+these flags in the size hints or give them a reasonable value.
+
+It should be noted that these values in the size hints are considered
+obsolete[1], but that doesn't mean they won't (or shouldn't) be
+interpreted. That's what the flag mask is for. :)
+
+[1]
+https://tronche.com/gui/x/xlib/ICC/client-to-window-manager/wm-normal-hints.html
+
+
+Ingo
+
+On 11/03/2015 06:51 PM, Dieter Plaetinck wrote:
+> the i3 log, obtained via i3-dump-log as described on the debugging web page.
+> http://logs.i3wm.org/logs/5652536396611584.bz2
+> FWIW this was a minimal i3 session, i quit all my apps, just had a termite terminal so i could invoke ssh-add and the i3-dump-log, and it also had a bar running, but nothing else.
+>
+> xprop and xwininfo -all output: https://gist.github.com/Dieterbe/93ec75c6e891a04b8776
+>
+>
+>
+>
+> On Tue, 3 Nov 2015 18:09:10 -0500
+> Ingo Bürk <admin at airblader.de> wrote:
+>
+>> Thanks. I sort of figured it'd be that commit. Can you please provide
+>> the files I described earlier? This will likely be a bug in askpass. See
+>> also the discussions in the end of https://github.com/i3/i3/issues/1970.
+>>
+>>
+>> Ingo
+>>
+>> On 11/03/2015 06:04 PM, Dieter Plaetinck wrote:
+>>> thanks Ingo,
+>>> due to i3's easy reloading and the fact that i could just run the ssh-add command in a terminal without restarting X, the bisect process was very easy and smooth.
+>>>
+>>> it found the commit. see below
+>>>
+>>> d1262f2b6ae713266b5a1e8cab368333bb332033 is the first bad commit
+>>> commit d1262f2b6ae713266b5a1e8cab368333bb332033
+>>> Author: Andrzej Pronobis <a.pronobis at gmail.com>
+>>> Date:   Sun Feb 1 17:04:41 2015 -0800
+>>>
+>>>     Use WM_SIZE_HINTS whenever it's provided to set the geometry of floating windows.
+>>>
+>>> :040000 040000 e7c887b2b14e2b24830840133045fe0ba232c3e0 3dd6d2d2864ab7aaec50cb2bff93031170bd50e8 M	src
+>>> ~/w/e/i3 ❯❯❯ 
+>>>
+>>>
+>>> On Tue, 3 Nov 2015 17:19:02 -0500
+>>> Ingo Bürk <admin at airblader.de> wrote:
+>>>  
+>>>> Yeah, a bisect would be useful. You need to run make clean && make &&
+>>>> sudo make install (to actually install the new binary -- unless you
+>>>> change your xinitrc to run the local file in your checkout instead).
+>>>>
+>>>> Restarting X isn't necessary, restarting i3 in-place would suffice. But
+>>>> since you have wrapped askpass around the i3 session, you'll indeed
+>>>> probably need to exit your X session and startx again.
+>>>>
+>>>>
+>>>> Ingo
+>>>>
+>>>> On 11/03/2015 04:46 PM, Dieter Plaetinck wrote:  
+>>>>> I can confirm the first problem is gone (the window has the correct size) with 4.10.4
+>>>>> However the ghosting problem still exists, though now it also has the correct size and a black background instead of grey like before.
+>>>>> see http://i.imgur.com/2uF25R8.png
+>>>>>
+>>>>> still want me to do a bisect? for all versions i would just run make clean && make && restart x using the new i3 binary right? anything else needed?
+>>>>>
+>>>>> Dieter
+>>>>>
+>>>>> On Tue, 3 Nov 2015 16:05:31 -0500
+>>>>> Ingo Bürk <admin at airblader.de> wrote:
+>>>>>    
+>>>>>> Hi Dieter,
+>>>>>>
+>>>>>> can you do the following?
+>>>>>>
+>>>>>> 1) Downgrade to i3 4.10.4 and see if it fixes the problem. If so, please
+>>>>>> run a git bisect to figure out which commit broke it. If 4.10.4 has the
+>>>>>> same problem, try downgrading askpass or report a bug there.
+>>>>>> 2) Provide a complete i3 log file where you started it. See the
+>>>>>> debugging docs on the i3 website for information. Also provide the
+>>>>>> output of "xprop" and "xwininfo -all" when clicking on the opened
+>>>>>> askpass window.
+>>>>>>
+>>>>>>
+>>>>>> Ingo
+>>>>>>
+>>>>>> On 11/03/2015 03:32 PM, Dieter Plaetinck wrote:    
+>>>>>>> hello everyone,
+>>>>>>> long time no see! i've been a long time i3 user but only since a recent upgrade i've started having issues with 
+>>>>>>> ssh-askpass.
+>>>>>>>
+>>>>>>>
+>>>>>>> to be specific, in my .xinitrc I have:
+>>>>>>>
+>>>>>>> i3 -d all >> ~/i3-out 2>> ~/i3-err &
+>>>>>>> waitpid=$!
+>>>>>>> ssh-add ~/.ssh/id_rsa_dieter-ws-a7n8x-arch < /dev/null
+>>>>>>> (.. some more stuff)
+>>>>>>> wait $waitpid
+>>>>>>>
+>>>>>>> i posted my i3 config to https://gist.github.com/Dieterbe/d5870b230369818d2d47 (it's pretty much default, with a few extra binds and a different bar)
+>>>>>>>
+>>>>>>>
+>>>>>>> the ssh-add spawns the x11-ssh-askpass program and since recently i've been seeing these two problems:
+>>>>>>>
+>>>>>>> screenshots of both issues @ http://imgur.com/a/TbNn1
+>>>>>>>
+>>>>>>> 1) the window is way too small. it used to be just the right size for the popup.
+>>>>>>>
+>>>>>>> 2) after entering the password and hitting enter, a "ghost" of the window stays stuck in all of my i3 workspaces.
+>>>>>>> those workspaces that have windows in them will have the windows cover it, but otherwise if i go to say workspace number 5 while no windows are there, it'll show a ghost of the ask pass window.
+>>>>>>>
+>>>>>>> any idea what might be the cause? i'm using 4.11
+>>>>>>>
+>>>>>>> thanks,
+>>>>>>> Dieter      
+
+
+From admin at airblader.de  Wed Nov  4 01:59:45 2015
+From: admin at airblader.de (=?UTF-8?Q?Ingo_B=c3=bcrk?=)
+Date: Tue, 3 Nov 2015 19:59:45 -0500
+Subject: [i3] ssh askpass window too small + "sticks around"
+In-Reply-To: <563954AA.9070904@airblader.de>
+References: <20151103153217.0fd581d0@dieter-m6800>
+ <5639219B.8010400@airblader.de> <20151103164657.70803852@dieter-m6800>
+ <563932D6.5050501@airblader.de> <20151103180421.00bae10a@dieter-m6800>
+ <56393E96.7000804@airblader.de> <20151103185147.070f18a7@dieter-m6800>
+ <563954AA.9070904@airblader.de>
+Message-ID: <56395881.4010106@airblader.de>
+
+Hi,
+
+one more thing, to make life easier for yourself you can either locally
+revert the commit or use a for_window directive matching that popup and
+do something like
+
+    for_window [class="(?i)keepass" …] resize set 500 300
+
+
+
+Ingo
+
+On 11/03/2015 07:43 PM, Ingo Bürk wrote:
+> Thanks! Yeah, the problem is that askpass specifies size flags in
+> WM_SIZE_HINTS, but doesn't set useful values (it just says 0x0). i3 then
+> falls back to the floating minimum size, which by default is 75x50. You
+> should file this as a bug against keepass. keepass should either not set
+> these flags in the size hints or give them a reasonable value.
+>
+> It should be noted that these values in the size hints are considered
+> obsolete[1], but that doesn't mean they won't (or shouldn't) be
+> interpreted. That's what the flag mask is for. :)
+>
+> [1]
+> https://tronche.com/gui/x/xlib/ICC/client-to-window-manager/wm-normal-hints.html
+>
+>
+> Ingo
+>
+> On 11/03/2015 06:51 PM, Dieter Plaetinck wrote:
+>> the i3 log, obtained via i3-dump-log as described on the debugging web page.
+>> http://logs.i3wm.org/logs/5652536396611584.bz2
+>> FWIW this was a minimal i3 session, i quit all my apps, just had a termite terminal so i could invoke ssh-add and the i3-dump-log, and it also had a bar running, but nothing else.
+>>
+>> xprop and xwininfo -all output: https://gist.github.com/Dieterbe/93ec75c6e891a04b8776
+>>
+>>
+>>
+>>
+>> On Tue, 3 Nov 2015 18:09:10 -0500
+>> Ingo Bürk <admin at airblader.de> wrote:
+>>
+>>> Thanks. I sort of figured it'd be that commit. Can you please provide
+>>> the files I described earlier? This will likely be a bug in askpass. See
+>>> also the discussions in the end of https://github.com/i3/i3/issues/1970.
+>>>
+>>>
+>>> Ingo
+>>>
+>>> On 11/03/2015 06:04 PM, Dieter Plaetinck wrote:
+>>>> thanks Ingo,
+>>>> due to i3's easy reloading and the fact that i could just run the ssh-add command in a terminal without restarting X, the bisect process was very easy and smooth.
+>>>>
+>>>> it found the commit. see below
+>>>>
+>>>> d1262f2b6ae713266b5a1e8cab368333bb332033 is the first bad commit
+>>>> commit d1262f2b6ae713266b5a1e8cab368333bb332033
+>>>> Author: Andrzej Pronobis <a.pronobis at gmail.com>
+>>>> Date:   Sun Feb 1 17:04:41 2015 -0800
+>>>>
+>>>>     Use WM_SIZE_HINTS whenever it's provided to set the geometry of floating windows.
+>>>>
+>>>> :040000 040000 e7c887b2b14e2b24830840133045fe0ba232c3e0 3dd6d2d2864ab7aaec50cb2bff93031170bd50e8 M	src
+>>>> ~/w/e/i3 ❯❯❯ 
+>>>>
+>>>>
+>>>> On Tue, 3 Nov 2015 17:19:02 -0500
+>>>> Ingo Bürk <admin at airblader.de> wrote:
+>>>>  
+>>>>> Yeah, a bisect would be useful. You need to run make clean && make &&
+>>>>> sudo make install (to actually install the new binary -- unless you
+>>>>> change your xinitrc to run the local file in your checkout instead).
+>>>>>
+>>>>> Restarting X isn't necessary, restarting i3 in-place would suffice. But
+>>>>> since you have wrapped askpass around the i3 session, you'll indeed
+>>>>> probably need to exit your X session and startx again.
+>>>>>
+>>>>>
+>>>>> Ingo
+>>>>>
+>>>>> On 11/03/2015 04:46 PM, Dieter Plaetinck wrote:  
+>>>>>> I can confirm the first problem is gone (the window has the correct size) with 4.10.4
+>>>>>> However the ghosting problem still exists, though now it also has the correct size and a black background instead of grey like before.
+>>>>>> see http://i.imgur.com/2uF25R8.png
+>>>>>>
+>>>>>> still want me to do a bisect? for all versions i would just run make clean && make && restart x using the new i3 binary right? anything else needed?
+>>>>>>
+>>>>>> Dieter
+>>>>>>
+>>>>>> On Tue, 3 Nov 2015 16:05:31 -0500
+>>>>>> Ingo Bürk <admin at airblader.de> wrote:
+>>>>>>    
+>>>>>>> Hi Dieter,
+>>>>>>>
+>>>>>>> can you do the following?
+>>>>>>>
+>>>>>>> 1) Downgrade to i3 4.10.4 and see if it fixes the problem. If so, please
+>>>>>>> run a git bisect to figure out which commit broke it. If 4.10.4 has the
+>>>>>>> same problem, try downgrading askpass or report a bug there.
+>>>>>>> 2) Provide a complete i3 log file where you started it. See the
+>>>>>>> debugging docs on the i3 website for information. Also provide the
+>>>>>>> output of "xprop" and "xwininfo -all" when clicking on the opened
+>>>>>>> askpass window.
+>>>>>>>
+>>>>>>>
+>>>>>>> Ingo
+>>>>>>>
+>>>>>>> On 11/03/2015 03:32 PM, Dieter Plaetinck wrote:    
+>>>>>>>> hello everyone,
+>>>>>>>> long time no see! i've been a long time i3 user but only since a recent upgrade i've started having issues with 
+>>>>>>>> ssh-askpass.
+>>>>>>>>
+>>>>>>>>
+>>>>>>>> to be specific, in my .xinitrc I have:
+>>>>>>>>
+>>>>>>>> i3 -d all >> ~/i3-out 2>> ~/i3-err &
+>>>>>>>> waitpid=$!
+>>>>>>>> ssh-add ~/.ssh/id_rsa_dieter-ws-a7n8x-arch < /dev/null
+>>>>>>>> (.. some more stuff)
+>>>>>>>> wait $waitpid
+>>>>>>>>
+>>>>>>>> i posted my i3 config to https://gist.github.com/Dieterbe/d5870b230369818d2d47 (it's pretty much default, with a few extra binds and a different bar)
+>>>>>>>>
+>>>>>>>>
+>>>>>>>> the ssh-add spawns the x11-ssh-askpass program and since recently i've been seeing these two problems:
+>>>>>>>>
+>>>>>>>> screenshots of both issues @ http://imgur.com/a/TbNn1
+>>>>>>>>
+>>>>>>>> 1) the window is way too small. it used to be just the right size for the popup.
+>>>>>>>>
+>>>>>>>> 2) after entering the password and hitting enter, a "ghost" of the window stays stuck in all of my i3 workspaces.
+>>>>>>>> those workspaces that have windows in them will have the windows cover it, but otherwise if i go to say workspace number 5 while no windows are there, it'll show a ghost of the ask pass window.
+>>>>>>>>
+>>>>>>>> any idea what might be the cause? i'm using 4.11
+>>>>>>>>
+>>>>>>>> thanks,
+>>>>>>>> Dieter      
+
+
+From dieter at plaetinck.be  Wed Nov  4 02:57:45 2015
+From: dieter at plaetinck.be (Dieter Plaetinck)
+Date: Tue, 3 Nov 2015 20:57:45 -0500
+Subject: [i3] ssh askpass window too small + "sticks around"
+In-Reply-To: <56395881.4010106@airblader.de>
+References: <20151103153217.0fd581d0@dieter-m6800>
+ <5639219B.8010400@airblader.de>
+ <20151103164657.70803852@dieter-m6800>
+ <563932D6.5050501@airblader.de>
+ <20151103180421.00bae10a@dieter-m6800>
+ <56393E96.7000804@airblader.de>
+ <20151103185147.070f18a7@dieter-m6800>
+ <563954AA.9070904@airblader.de> <56395881.4010106@airblader.de>
+Message-ID: <20151103205745.0216b065@dieter-m6800>
+
+thanks Ingo,
+reported @ https://bugzilla.mindrot.org/show_bug.cgi?id=2491
+
+btw I tried setting the window to 426x94 (cause those values appeared in other size hints)
+but that ended up being too low.  I just estimated a height and 115 seems to look good.
+I wonder why it hinted at 94..
+
+On Tue, 3 Nov 2015 19:59:45 -0500
+Ingo Bürk <admin at airblader.de> wrote:
+
+> Hi,
+> 
+> one more thing, to make life easier for yourself you can either locally
+> revert the commit or use a for_window directive matching that popup and
+> do something like
+> 
+>     for_window [class="(?i)keepass" …] resize set 500 300
+> 
+> 
+> 
+> Ingo
+> 
+> On 11/03/2015 07:43 PM, Ingo Bürk wrote:
+> > Thanks! Yeah, the problem is that askpass specifies size flags in
+> > WM_SIZE_HINTS, but doesn't set useful values (it just says 0x0). i3 then
+> > falls back to the floating minimum size, which by default is 75x50. You
+> > should file this as a bug against keepass. keepass should either not set
+> > these flags in the size hints or give them a reasonable value.
+> >
+> > It should be noted that these values in the size hints are considered
+> > obsolete[1], but that doesn't mean they won't (or shouldn't) be
+> > interpreted. That's what the flag mask is for. :)
+> >
+> > [1]
+> > https://tronche.com/gui/x/xlib/ICC/client-to-window-manager/wm-normal-hints.html
+> >
+> >
+> > Ingo
+> >
+> > On 11/03/2015 06:51 PM, Dieter Plaetinck wrote:  
+> >> the i3 log, obtained via i3-dump-log as described on the debugging web page.
+> >> http://logs.i3wm.org/logs/5652536396611584.bz2
+> >> FWIW this was a minimal i3 session, i quit all my apps, just had a termite terminal so i could invoke ssh-add and the i3-dump-log, and it also had a bar running, but nothing else.
+> >>
+> >> xprop and xwininfo -all output: https://gist.github.com/Dieterbe/93ec75c6e891a04b8776
+> >>
+> >>
+> >>
+> >>
+> >> On Tue, 3 Nov 2015 18:09:10 -0500
+> >> Ingo Bürk <admin at airblader.de> wrote:
+> >>  
+> >>> Thanks. I sort of figured it'd be that commit. Can you please provide
+> >>> the files I described earlier? This will likely be a bug in askpass. See
+> >>> also the discussions in the end of https://github.com/i3/i3/issues/1970.
+> >>>
+> >>>
+> >>> Ingo
+> >>>
+> >>> On 11/03/2015 06:04 PM, Dieter Plaetinck wrote:  
+> >>>> thanks Ingo,
+> >>>> due to i3's easy reloading and the fact that i could just run the ssh-add command in a terminal without restarting X, the bisect process was very easy and smooth.
+> >>>>
+> >>>> it found the commit. see below
+> >>>>
+> >>>> d1262f2b6ae713266b5a1e8cab368333bb332033 is the first bad commit
+> >>>> commit d1262f2b6ae713266b5a1e8cab368333bb332033
+> >>>> Author: Andrzej Pronobis <a.pronobis at gmail.com>
+> >>>> Date:   Sun Feb 1 17:04:41 2015 -0800
+> >>>>
+> >>>>     Use WM_SIZE_HINTS whenever it's provided to set the geometry of floating windows.
+> >>>>
+> >>>> :040000 040000 e7c887b2b14e2b24830840133045fe0ba232c3e0 3dd6d2d2864ab7aaec50cb2bff93031170bd50e8 M	src
+> >>>> ~/w/e/i3 ❯❯❯ 
+> >>>>
+> >>>>
+> >>>> On Tue, 3 Nov 2015 17:19:02 -0500
+> >>>> Ingo Bürk <admin at airblader.de> wrote:
+> >>>>    
+> >>>>> Yeah, a bisect would be useful. You need to run make clean && make &&
+> >>>>> sudo make install (to actually install the new binary -- unless you
+> >>>>> change your xinitrc to run the local file in your checkout instead).
+> >>>>>
+> >>>>> Restarting X isn't necessary, restarting i3 in-place would suffice. But
+> >>>>> since you have wrapped askpass around the i3 session, you'll indeed
+> >>>>> probably need to exit your X session and startx again.
+> >>>>>
+> >>>>>
+> >>>>> Ingo
+> >>>>>
+> >>>>> On 11/03/2015 04:46 PM, Dieter Plaetinck wrote:    
+> >>>>>> I can confirm the first problem is gone (the window has the correct size) with 4.10.4
+> >>>>>> However the ghosting problem still exists, though now it also has the correct size and a black background instead of grey like before.
+> >>>>>> see http://i.imgur.com/2uF25R8.png
+> >>>>>>
+> >>>>>> still want me to do a bisect? for all versions i would just run make clean && make && restart x using the new i3 binary right? anything else needed?
+> >>>>>>
+> >>>>>> Dieter
+> >>>>>>
+> >>>>>> On Tue, 3 Nov 2015 16:05:31 -0500
+> >>>>>> Ingo Bürk <admin at airblader.de> wrote:
+> >>>>>>      
+> >>>>>>> Hi Dieter,
+> >>>>>>>
+> >>>>>>> can you do the following?
+> >>>>>>>
+> >>>>>>> 1) Downgrade to i3 4.10.4 and see if it fixes the problem. If so, please
+> >>>>>>> run a git bisect to figure out which commit broke it. If 4.10.4 has the
+> >>>>>>> same problem, try downgrading askpass or report a bug there.
+> >>>>>>> 2) Provide a complete i3 log file where you started it. See the
+> >>>>>>> debugging docs on the i3 website for information. Also provide the
+> >>>>>>> output of "xprop" and "xwininfo -all" when clicking on the opened
+> >>>>>>> askpass window.
+> >>>>>>>
+> >>>>>>>
+> >>>>>>> Ingo
+> >>>>>>>
+> >>>>>>> On 11/03/2015 03:32 PM, Dieter Plaetinck wrote:      
+> >>>>>>>> hello everyone,
+> >>>>>>>> long time no see! i've been a long time i3 user but only since a recent upgrade i've started having issues with 
+> >>>>>>>> ssh-askpass.
+> >>>>>>>>
+> >>>>>>>>
+> >>>>>>>> to be specific, in my .xinitrc I have:
+> >>>>>>>>
+> >>>>>>>> i3 -d all >> ~/i3-out 2>> ~/i3-err &
+> >>>>>>>> waitpid=$!
+> >>>>>>>> ssh-add ~/.ssh/id_rsa_dieter-ws-a7n8x-arch < /dev/null
+> >>>>>>>> (.. some more stuff)
+> >>>>>>>> wait $waitpid
+> >>>>>>>>
+> >>>>>>>> i posted my i3 config to https://gist.github.com/Dieterbe/d5870b230369818d2d47 (it's pretty much default, with a few extra binds and a different bar)
+> >>>>>>>>
+> >>>>>>>>
+> >>>>>>>> the ssh-add spawns the x11-ssh-askpass program and since recently i've been seeing these two problems:
+> >>>>>>>>
+> >>>>>>>> screenshots of both issues @ http://imgur.com/a/TbNn1
+> >>>>>>>>
+> >>>>>>>> 1) the window is way too small. it used to be just the right size for the popup.
+> >>>>>>>>
+> >>>>>>>> 2) after entering the password and hitting enter, a "ghost" of the window stays stuck in all of my i3 workspaces.
+> >>>>>>>> those workspaces that have windows in them will have the windows cover it, but otherwise if i go to say workspace number 5 while no windows are there, it'll show a ghost of the ask pass window.
+> >>>>>>>>
+> >>>>>>>> any idea what might be the cause? i'm using 4.11
+> >>>>>>>>
+> >>>>>>>> thanks,
+> >>>>>>>> Dieter        
+> 
+
+
+From dieter at plaetinck.be  Wed Nov  4 04:21:54 2015
+From: dieter at plaetinck.be (Dieter Plaetinck)
+Date: Tue, 3 Nov 2015 22:21:54 -0500
+Subject: [i3] ssh askpass window too small + "sticks around"
+In-Reply-To: <20151103205745.0216b065@dieter-m6800>
+References: <20151103153217.0fd581d0@dieter-m6800>
+ <5639219B.8010400@airblader.de>
+ <20151103164657.70803852@dieter-m6800>
+ <563932D6.5050501@airblader.de>
+ <20151103180421.00bae10a@dieter-m6800>
+ <56393E96.7000804@airblader.de>
+ <20151103185147.070f18a7@dieter-m6800>
+ <563954AA.9070904@airblader.de> <56395881.4010106@airblader.de>
+ <20151103205745.0216b065@dieter-m6800>
+Message-ID: <20151103222154.3542fd92@dieter-m6800>
+
+btw i have configured the askpass window to have a 0px border,
+so the other problem (the "ghosting") is now a little less annoying
+(looks like http://i.imgur.com/qgnOTaV.png now)
+though it 'd be nice if we could solve this one too. any ideas ?
+
+
+
+On Tue, 3 Nov 2015 20:57:45 -0500
+Dieter Plaetinck <dieter at plaetinck.be> wrote:
+
+> thanks Ingo,
+> reported @ https://bugzilla.mindrot.org/show_bug.cgi?id=2491
+> 
+> btw I tried setting the window to 426x94 (cause those values appeared in other size hints)
+> but that ended up being too low.  I just estimated a height and 115 seems to look good.
+> I wonder why it hinted at 94..
+> 
+> On Tue, 3 Nov 2015 19:59:45 -0500
+> Ingo Bürk <admin at airblader.de> wrote:
+> 
+> > Hi,
+> > 
+> > one more thing, to make life easier for yourself you can either locally
+> > revert the commit or use a for_window directive matching that popup and
+> > do something like
+> > 
+> >     for_window [class="(?i)keepass" …] resize set 500 300
+> > 
+> > 
+> > 
+> > Ingo
+> > 
+> > On 11/03/2015 07:43 PM, Ingo Bürk wrote:  
+> > > Thanks! Yeah, the problem is that askpass specifies size flags in
+> > > WM_SIZE_HINTS, but doesn't set useful values (it just says 0x0). i3 then
+> > > falls back to the floating minimum size, which by default is 75x50. You
+> > > should file this as a bug against keepass. keepass should either not set
+> > > these flags in the size hints or give them a reasonable value.
+> > >
+> > > It should be noted that these values in the size hints are considered
+> > > obsolete[1], but that doesn't mean they won't (or shouldn't) be
+> > > interpreted. That's what the flag mask is for. :)
+> > >
+> > > [1]
+> > > https://tronche.com/gui/x/xlib/ICC/client-to-window-manager/wm-normal-hints.html
+> > >
+> > >
+> > > Ingo
+> > >
+> > > On 11/03/2015 06:51 PM, Dieter Plaetinck wrote:    
+> > >> the i3 log, obtained via i3-dump-log as described on the debugging web page.
+> > >> http://logs.i3wm.org/logs/5652536396611584.bz2
+> > >> FWIW this was a minimal i3 session, i quit all my apps, just had a termite terminal so i could invoke ssh-add and the i3-dump-log, and it also had a bar running, but nothing else.
+> > >>
+> > >> xprop and xwininfo -all output: https://gist.github.com/Dieterbe/93ec75c6e891a04b8776
+> > >>
+> > >>
+> > >>
+> > >>
+> > >> On Tue, 3 Nov 2015 18:09:10 -0500
+> > >> Ingo Bürk <admin at airblader.de> wrote:
+> > >>    
+> > >>> Thanks. I sort of figured it'd be that commit. Can you please provide
+> > >>> the files I described earlier? This will likely be a bug in askpass. See
+> > >>> also the discussions in the end of https://github.com/i3/i3/issues/1970.
+> > >>>
+> > >>>
+> > >>> Ingo
+> > >>>
+> > >>> On 11/03/2015 06:04 PM, Dieter Plaetinck wrote:    
+> > >>>> thanks Ingo,
+> > >>>> due to i3's easy reloading and the fact that i could just run the ssh-add command in a terminal without restarting X, the bisect process was very easy and smooth.
+> > >>>>
+> > >>>> it found the commit. see below
+> > >>>>
+> > >>>> d1262f2b6ae713266b5a1e8cab368333bb332033 is the first bad commit
+> > >>>> commit d1262f2b6ae713266b5a1e8cab368333bb332033
+> > >>>> Author: Andrzej Pronobis <a.pronobis at gmail.com>
+> > >>>> Date:   Sun Feb 1 17:04:41 2015 -0800
+> > >>>>
+> > >>>>     Use WM_SIZE_HINTS whenever it's provided to set the geometry of floating windows.
+> > >>>>
+> > >>>> :040000 040000 e7c887b2b14e2b24830840133045fe0ba232c3e0 3dd6d2d2864ab7aaec50cb2bff93031170bd50e8 M	src
+> > >>>> ~/w/e/i3 ❯❯❯ 
+> > >>>>
+> > >>>>
+> > >>>> On Tue, 3 Nov 2015 17:19:02 -0500
+> > >>>> Ingo Bürk <admin at airblader.de> wrote:
+> > >>>>      
+> > >>>>> Yeah, a bisect would be useful. You need to run make clean && make &&
+> > >>>>> sudo make install (to actually install the new binary -- unless you
+> > >>>>> change your xinitrc to run the local file in your checkout instead).
+> > >>>>>
+> > >>>>> Restarting X isn't necessary, restarting i3 in-place would suffice. But
+> > >>>>> since you have wrapped askpass around the i3 session, you'll indeed
+> > >>>>> probably need to exit your X session and startx again.
+> > >>>>>
+> > >>>>>
+> > >>>>> Ingo
+> > >>>>>
+> > >>>>> On 11/03/2015 04:46 PM, Dieter Plaetinck wrote:      
+> > >>>>>> I can confirm the first problem is gone (the window has the correct size) with 4.10.4
+> > >>>>>> However the ghosting problem still exists, though now it also has the correct size and a black background instead of grey like before.
+> > >>>>>> see http://i.imgur.com/2uF25R8.png
+> > >>>>>>
+> > >>>>>> still want me to do a bisect? for all versions i would just run make clean && make && restart x using the new i3 binary right? anything else needed?
+> > >>>>>>
+> > >>>>>> Dieter
+> > >>>>>>
+> > >>>>>> On Tue, 3 Nov 2015 16:05:31 -0500
+> > >>>>>> Ingo Bürk <admin at airblader.de> wrote:
+> > >>>>>>        
+> > >>>>>>> Hi Dieter,
+> > >>>>>>>
+> > >>>>>>> can you do the following?
+> > >>>>>>>
+> > >>>>>>> 1) Downgrade to i3 4.10.4 and see if it fixes the problem. If so, please
+> > >>>>>>> run a git bisect to figure out which commit broke it. If 4.10.4 has the
+> > >>>>>>> same problem, try downgrading askpass or report a bug there.
+> > >>>>>>> 2) Provide a complete i3 log file where you started it. See the
+> > >>>>>>> debugging docs on the i3 website for information. Also provide the
+> > >>>>>>> output of "xprop" and "xwininfo -all" when clicking on the opened
+> > >>>>>>> askpass window.
+> > >>>>>>>
+> > >>>>>>>
+> > >>>>>>> Ingo
+> > >>>>>>>
+> > >>>>>>> On 11/03/2015 03:32 PM, Dieter Plaetinck wrote:        
+> > >>>>>>>> hello everyone,
+> > >>>>>>>> long time no see! i've been a long time i3 user but only since a recent upgrade i've started having issues with 
+> > >>>>>>>> ssh-askpass.
+> > >>>>>>>>
+> > >>>>>>>>
+> > >>>>>>>> to be specific, in my .xinitrc I have:
+> > >>>>>>>>
+> > >>>>>>>> i3 -d all >> ~/i3-out 2>> ~/i3-err &
+> > >>>>>>>> waitpid=$!
+> > >>>>>>>> ssh-add ~/.ssh/id_rsa_dieter-ws-a7n8x-arch < /dev/null
+> > >>>>>>>> (.. some more stuff)
+> > >>>>>>>> wait $waitpid
+> > >>>>>>>>
+> > >>>>>>>> i posted my i3 config to https://gist.github.com/Dieterbe/d5870b230369818d2d47 (it's pretty much default, with a few extra binds and a different bar)
+> > >>>>>>>>
+> > >>>>>>>>
+> > >>>>>>>> the ssh-add spawns the x11-ssh-askpass program and since recently i've been seeing these two problems:
+> > >>>>>>>>
+> > >>>>>>>> screenshots of both issues @ http://imgur.com/a/TbNn1
+> > >>>>>>>>
+> > >>>>>>>> 1) the window is way too small. it used to be just the right size for the popup.
+> > >>>>>>>>
+> > >>>>>>>> 2) after entering the password and hitting enter, a "ghost" of the window stays stuck in all of my i3 workspaces.
+> > >>>>>>>> those workspaces that have windows in them will have the windows cover it, but otherwise if i go to say workspace number 5 while no windows are there, it'll show a ghost of the ask pass window.
+> > >>>>>>>>
+> > >>>>>>>> any idea what might be the cause? i'm using 4.11
+> > >>>>>>>>
+> > >>>>>>>> thanks,
+> > >>>>>>>> Dieter          
+> >   
+> 
+
+
+From admin at airblader.de  Wed Nov  4 15:43:45 2015
+From: admin at airblader.de (=?UTF-8?Q?Ingo_B=c3=bcrk?=)
+Date: Wed, 4 Nov 2015 09:43:45 -0500
+Subject: [i3] ssh askpass window too small + "sticks around"
+In-Reply-To: <20151103222154.3542fd92@dieter-m6800>
+References: <20151103153217.0fd581d0@dieter-m6800>
+ <5639219B.8010400@airblader.de> <20151103164657.70803852@dieter-m6800>
+ <563932D6.5050501@airblader.de> <20151103180421.00bae10a@dieter-m6800>
+ <56393E96.7000804@airblader.de> <20151103185147.070f18a7@dieter-m6800>
+ <563954AA.9070904@airblader.de> <56395881.4010106@airblader.de>
+ <20151103205745.0216b065@dieter-m6800> <20151103222154.3542fd92@dieter-m6800>
+Message-ID: <563A19A1.80108@airblader.de>
+
+Hi Dieter,
+
+sorry, I completely forgot about the second issue. Can you check whether
+there actually IS a window? For example, try pgrep-ing for keepass and
+also try "xprop"-selecting that window on an empty workspace (where it's
+not covered by other windows).
+
+If there isn't actually a window, this sounds like a typical graphics
+glitch. If you haven't set a background to your desktop yet, you should
+do this, even if you want it to be just black. See [1] for some
+orientation. If that's done and the issue persists, I'd try running a
+compositor (e.g., compton) if you aren't already. If it STILL persists
+after that, I would look into my graphics driver.
+
+However, if there actually IS a window, tell the keepass guys to look
+into it. :)
+
+[1]
+https://faq.i3wm.org/question/6/how-can-i-set-a-desktop-background-image-in-i3/
+
+
+Ingo
+
+On 11/03/2015 10:21 PM, Dieter Plaetinck wrote:
+> btw i have configured the askpass window to have a 0px border,
+> so the other problem (the "ghosting") is now a little less annoying
+> (looks like http://i.imgur.com/qgnOTaV.png now)
+> though it 'd be nice if we could solve this one too. any ideas ?
+>
+>
+>
+> On Tue, 3 Nov 2015 20:57:45 -0500
+> Dieter Plaetinck <dieter at plaetinck.be> wrote:
+>
+>> thanks Ingo,
+>> reported @ https://bugzilla.mindrot.org/show_bug.cgi?id=2491
+>>
+>> btw I tried setting the window to 426x94 (cause those values appeared in other size hints)
+>> but that ended up being too low.  I just estimated a height and 115 seems to look good.
+>> I wonder why it hinted at 94..
+>>
+>> On Tue, 3 Nov 2015 19:59:45 -0500
+>> Ingo Bürk <admin at airblader.de> wrote:
+>>
+>>> Hi,
+>>>
+>>> one more thing, to make life easier for yourself you can either locally
+>>> revert the commit or use a for_window directive matching that popup and
+>>> do something like
+>>>
+>>>     for_window [class="(?i)keepass" …] resize set 500 300
+>>>
+>>>
+>>>
+>>> Ingo
+>>>
+>>> On 11/03/2015 07:43 PM, Ingo Bürk wrote:  
+>>>> Thanks! Yeah, the problem is that askpass specifies size flags in
+>>>> WM_SIZE_HINTS, but doesn't set useful values (it just says 0x0). i3 then
+>>>> falls back to the floating minimum size, which by default is 75x50. You
+>>>> should file this as a bug against keepass. keepass should either not set
+>>>> these flags in the size hints or give them a reasonable value.
+>>>>
+>>>> It should be noted that these values in the size hints are considered
+>>>> obsolete[1], but that doesn't mean they won't (or shouldn't) be
+>>>> interpreted. That's what the flag mask is for. :)
+>>>>
+>>>> [1]
+>>>> https://tronche.com/gui/x/xlib/ICC/client-to-window-manager/wm-normal-hints.html
+>>>>
+>>>>
+>>>> Ingo
+>>>>
+>>>> On 11/03/2015 06:51 PM, Dieter Plaetinck wrote:    
+>>>>> the i3 log, obtained via i3-dump-log as described on the debugging web page.
+>>>>> http://logs.i3wm.org/logs/5652536396611584.bz2
+>>>>> FWIW this was a minimal i3 session, i quit all my apps, just had a termite terminal so i could invoke ssh-add and the i3-dump-log, and it also had a bar running, but nothing else.
+>>>>>
+>>>>> xprop and xwininfo -all output: https://gist.github.com/Dieterbe/93ec75c6e891a04b8776
+>>>>>
+>>>>>
+>>>>>
+>>>>>
+>>>>> On Tue, 3 Nov 2015 18:09:10 -0500
+>>>>> Ingo Bürk <admin at airblader.de> wrote:
+>>>>>    
+>>>>>> Thanks. I sort of figured it'd be that commit. Can you please provide
+>>>>>> the files I described earlier? This will likely be a bug in askpass. See
+>>>>>> also the discussions in the end of https://github.com/i3/i3/issues/1970.
+>>>>>>
+>>>>>>
+>>>>>> Ingo
+>>>>>>
+>>>>>> On 11/03/2015 06:04 PM, Dieter Plaetinck wrote:    
+>>>>>>> thanks Ingo,
+>>>>>>> due to i3's easy reloading and the fact that i could just run the ssh-add command in a terminal without restarting X, the bisect process was very easy and smooth.
+>>>>>>>
+>>>>>>> it found the commit. see below
+>>>>>>>
+>>>>>>> d1262f2b6ae713266b5a1e8cab368333bb332033 is the first bad commit
+>>>>>>> commit d1262f2b6ae713266b5a1e8cab368333bb332033
+>>>>>>> Author: Andrzej Pronobis <a.pronobis at gmail.com>
+>>>>>>> Date:   Sun Feb 1 17:04:41 2015 -0800
+>>>>>>>
+>>>>>>>     Use WM_SIZE_HINTS whenever it's provided to set the geometry of floating windows.
+>>>>>>>
+>>>>>>> :040000 040000 e7c887b2b14e2b24830840133045fe0ba232c3e0 3dd6d2d2864ab7aaec50cb2bff93031170bd50e8 M	src
+>>>>>>> ~/w/e/i3 ❯❯❯ 
+>>>>>>>
+>>>>>>>
+>>>>>>> On Tue, 3 Nov 2015 17:19:02 -0500
+>>>>>>> Ingo Bürk <admin at airblader.de> wrote:
+>>>>>>>      
+>>>>>>>> Yeah, a bisect would be useful. You need to run make clean && make &&
+>>>>>>>> sudo make install (to actually install the new binary -- unless you
+>>>>>>>> change your xinitrc to run the local file in your checkout instead).
+>>>>>>>>
+>>>>>>>> Restarting X isn't necessary, restarting i3 in-place would suffice. But
+>>>>>>>> since you have wrapped askpass around the i3 session, you'll indeed
+>>>>>>>> probably need to exit your X session and startx again.
+>>>>>>>>
+>>>>>>>>
+>>>>>>>> Ingo
+>>>>>>>>
+>>>>>>>> On 11/03/2015 04:46 PM, Dieter Plaetinck wrote:      
+>>>>>>>>> I can confirm the first problem is gone (the window has the correct size) with 4.10.4
+>>>>>>>>> However the ghosting problem still exists, though now it also has the correct size and a black background instead of grey like before.
+>>>>>>>>> see http://i.imgur.com/2uF25R8.png
+>>>>>>>>>
+>>>>>>>>> still want me to do a bisect? for all versions i would just run make clean && make && restart x using the new i3 binary right? anything else needed?
+>>>>>>>>>
+>>>>>>>>> Dieter
+>>>>>>>>>
+>>>>>>>>> On Tue, 3 Nov 2015 16:05:31 -0500
+>>>>>>>>> Ingo Bürk <admin at airblader.de> wrote:
+>>>>>>>>>        
+>>>>>>>>>> Hi Dieter,
+>>>>>>>>>>
+>>>>>>>>>> can you do the following?
+>>>>>>>>>>
+>>>>>>>>>> 1) Downgrade to i3 4.10.4 and see if it fixes the problem. If so, please
+>>>>>>>>>> run a git bisect to figure out which commit broke it. If 4.10.4 has the
+>>>>>>>>>> same problem, try downgrading askpass or report a bug there.
+>>>>>>>>>> 2) Provide a complete i3 log file where you started it. See the
+>>>>>>>>>> debugging docs on the i3 website for information. Also provide the
+>>>>>>>>>> output of "xprop" and "xwininfo -all" when clicking on the opened
+>>>>>>>>>> askpass window.
+>>>>>>>>>>
+>>>>>>>>>>
+>>>>>>>>>> Ingo
+>>>>>>>>>>
+>>>>>>>>>> On 11/03/2015 03:32 PM, Dieter Plaetinck wrote:        
+>>>>>>>>>>> hello everyone,
+>>>>>>>>>>> long time no see! i've been a long time i3 user but only since a recent upgrade i've started having issues with 
+>>>>>>>>>>> ssh-askpass.
+>>>>>>>>>>>
+>>>>>>>>>>>
+>>>>>>>>>>> to be specific, in my .xinitrc I have:
+>>>>>>>>>>>
+>>>>>>>>>>> i3 -d all >> ~/i3-out 2>> ~/i3-err &
+>>>>>>>>>>> waitpid=$!
+>>>>>>>>>>> ssh-add ~/.ssh/id_rsa_dieter-ws-a7n8x-arch < /dev/null
+>>>>>>>>>>> (.. some more stuff)
+>>>>>>>>>>> wait $waitpid
+>>>>>>>>>>>
+>>>>>>>>>>> i posted my i3 config to https://gist.github.com/Dieterbe/d5870b230369818d2d47 (it's pretty much default, with a few extra binds and a different bar)
+>>>>>>>>>>>
+>>>>>>>>>>>
+>>>>>>>>>>> the ssh-add spawns the x11-ssh-askpass program and since recently i've been seeing these two problems:
+>>>>>>>>>>>
+>>>>>>>>>>> screenshots of both issues @ http://imgur.com/a/TbNn1
+>>>>>>>>>>>
+>>>>>>>>>>> 1) the window is way too small. it used to be just the right size for the popup.
+>>>>>>>>>>>
+>>>>>>>>>>> 2) after entering the password and hitting enter, a "ghost" of the window stays stuck in all of my i3 workspaces.
+>>>>>>>>>>> those workspaces that have windows in them will have the windows cover it, but otherwise if i go to say workspace number 5 while no windows are there, it'll show a ghost of the ask pass window.
+>>>>>>>>>>>
+>>>>>>>>>>> any idea what might be the cause? i'm using 4.11
+>>>>>>>>>>>
+>>>>>>>>>>> thanks,
+>>>>>>>>>>> Dieter          
+>>>   
+
+
+From dieter at plaetinck.be  Thu Nov  5 05:15:39 2015
+From: dieter at plaetinck.be (Dieter Plaetinck)
+Date: Wed, 4 Nov 2015 23:15:39 -0500
+Subject: [i3] ssh askpass window too small + "sticks around"
+In-Reply-To: <563A19A1.80108@airblader.de>
+References: <20151103153217.0fd581d0@dieter-m6800>
+ <5639219B.8010400@airblader.de>
+ <20151103164657.70803852@dieter-m6800>
+ <563932D6.5050501@airblader.de>
+ <20151103180421.00bae10a@dieter-m6800>
+ <56393E96.7000804@airblader.de>
+ <20151103185147.070f18a7@dieter-m6800>
+ <563954AA.9070904@airblader.de> <56395881.4010106@airblader.de>
+ <20151103205745.0216b065@dieter-m6800>
+ <20151103222154.3542fd92@dieter-m6800>
+ <563A19A1.80108@airblader.de>
+Message-ID: <20151104231539.42df6cec@dieter-m6800>
+
+with background it looks like so (set via nitrogen)
+http://i.imgur.com/RX7syWq.png
+however it seems like if i set the background again after ssh-add finished, the background shows fine without the ghost window. not 100% sure yet on the conditions that trigger the issue. i can play with it a bit more and can probably succesfully work around it. (though it's still weird)
+
+
+process is no longer running:
+~ ❯❯❯ ps aux | grep ssh-add
+dieter    4286  0.0  0.0  10728  2384 pts/3    S+   23:07   0:00 grep --color=auto ssh-add
+~ ❯❯❯ ps aux | grep keepass
+dieter    4315  0.0  0.0  10728  2248 pts/3    S+   23:07   0:00 grep --color=auto keepass
+~ ❯❯❯ ps aux | grep x11
+dieter    4352  0.0  0.0  10728  2140 pts/3    S+   23:07   0:00 grep --color=auto x11
+~ ❯❯❯ 
+
+
+when i run xprop and then click on the ghost window i get:
+~ ❯❯❯ xprop
+GDK_VISUALS(INTEGER) = 233, 165
+_NET_DESKTOP_VIEWPORT(CARDINAL) = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+_NET_DESKTOP_NAMES(UTF8_STRING) = "1", "2", "3", "4", "5", "6", "7", "8"
+_NET_NUMBER_OF_DESKTOPS(CARDINAL) = 8
+_NET_CURRENT_DESKTOP(CARDINAL) = 5
+I3_SHMLOG_PATH(UTF8_STRING) = "/i3-log-769"
+I3_CONFIG_PATH(UTF8_STRING) = "/home/dieter/.i3/config"
+I3_PID(CARDINAL) = 769
+I3_SOCKET_PATH(UTF8_STRING) = "/run/user/1011/i3/ipc-socket.769"
+_NET_ACTIVE_WINDOW(WINDOW): window id # 0x0
+_NET_CLIENT_LIST(WINDOW): window id # 0x1000003, 0x1a00001, 0x180009b, 0x1400003, 0x2000007, 0x2400003, 0x2600003, 0x2800003
+_NET_CLIENT_LIST_STACKING(WINDOW): window id # 0x2000007, 0x2400003, 0x180009b, 0x2600003, 0x1a00001, 0x1000003, 0x2800003, 0x1400003
+_NET_SUPPORTED(ATOM) = _NET_SUPPORTED, _NET_SUPPORTING_WM_CHECK, _NET_WM_NAME, _NET_WM_VISIBLE_NAME, _NET_WM_MOVERESIZE, _NET_WM_STATE_STICKY, _NET_WM_STATE_FULLSCREEN, _NET_WM_STATE_DEMANDS_ATTENTION, _NET_WM_STATE_MODAL, _NET_WM_STATE_HIDDEN, _NET_WM_STATE, _NET_WM_WINDOW_TYPE, _NET_WM_WINDOW_TYPE_NORMAL, _NET_WM_WINDOW_TYPE_DOCK, _NET_WM_WINDOW_TYPE_DIALOG, _NET_WM_WINDOW_TYPE_UTILITY, _NET_WM_WINDOW_TYPE_TOOLBAR, _NET_WM_WINDOW_TYPE_SPLASH, _NET_WM_WINDOW_TYPE_MENU, _NET_WM_WINDOW_TYPE_DROPDOWN_MENU, _NET_WM_WINDOW_TYPE_POPUP_MENU, _NET_WM_WINDOW_TYPE_TOOLTIP, _NET_WM_DESKTOP, _NET_WM_STRUT_PARTIAL, _NET_CLIENT_LIST, _NET_CLIENT_LIST_STACKING, _NET_CURRENT_DESKTOP, _NET_NUMBER_OF_DESKTOPS, _NET_DESKTOP_NAMES, _NET_DESKTOP_VIEWPORT, _NET_ACTIVE_WINDOW, _NET_CLOSE_WINDOW
+_NET_WM_NAME(UTF8_STRING) = "i3"
+_NET_SUPPORTING_WM_CHECK(WINDOW): window id # 0x800062
+RESOURCE_MANAGER(STRING) = "urxvt.font:\txft:Terminus\nx11-ssh-askpass*font:\t-*-dina-medium-r-*-*-12-*-*-*-*-*-*-*\nx11-ssh-askpass*background:\t#000000\nx11-ssh-askpass*foreground:\t#ffffff\nx11-ssh-askpass.Button*background:\t#000000\nx11-ssh-askpass.Indicator*foreground:\t#ff9900\nx11-ssh-askpass.Indicator*background:\t#090909\nx11-ssh-askpass*topShadowColor:\t#000000\nx11-ssh-askpass*bottomShadowColor:\t#000000\nx11-ssh-askpass.*borderWidth:\t1\n"
+ESETROOT_PMAP_ID(PIXMAP): pixmap id # 0x600004
+_XROOTPMAP_ID(PIXMAP): pixmap id # 0x600004
+_XKB_RULES_NAMES(STRING) = "evdev", "pc105", "dvorak", "", ""
+XFree86_has_VT(INTEGER) = 1
+XFree86_VT(INTEGER) = 1
+~ ❯❯❯ 
+
+
+am i seeing this right? it's i3 itself?
+
+On Wed, 4 Nov 2015 09:43:45 -0500
+Ingo Bürk <admin at airblader.de> wrote:
+
+> Hi Dieter,
+> 
+> sorry, I completely forgot about the second issue. Can you check whether
+> there actually IS a window? For example, try pgrep-ing for keepass and
+> also try "xprop"-selecting that window on an empty workspace (where it's
+> not covered by other windows).
+> 
+> If there isn't actually a window, this sounds like a typical graphics
+> glitch. If you haven't set a background to your desktop yet, you should
+> do this, even if you want it to be just black. See [1] for some
+> orientation. If that's done and the issue persists, I'd try running a
+> compositor (e.g., compton) if you aren't already. If it STILL persists
+> after that, I would look into my graphics driver.
+> 
+> However, if there actually IS a window, tell the keepass guys to look
+> into it. :)
+> 
+> [1]
+> https://faq.i3wm.org/question/6/how-can-i-set-a-desktop-background-image-in-i3/
+> 
+> 
+> Ingo
+> 
+> On 11/03/2015 10:21 PM, Dieter Plaetinck wrote:
+> > btw i have configured the askpass window to have a 0px border,
+> > so the other problem (the "ghosting") is now a little less annoying
+> > (looks like http://i.imgur.com/qgnOTaV.png now)
+> > though it 'd be nice if we could solve this one too. any ideas ?
+> >
+> >
+> >
+> > On Tue, 3 Nov 2015 20:57:45 -0500
+> > Dieter Plaetinck <dieter at plaetinck.be> wrote:
+> >  
+> >> thanks Ingo,
+> >> reported @ https://bugzilla.mindrot.org/show_bug.cgi?id=2491
+> >>
+> >> btw I tried setting the window to 426x94 (cause those values appeared in other size hints)
+> >> but that ended up being too low.  I just estimated a height and 115 seems to look good.
+> >> I wonder why it hinted at 94..
+> >>
+> >> On Tue, 3 Nov 2015 19:59:45 -0500
+> >> Ingo Bürk <admin at airblader.de> wrote:
+> >>  
+> >>> Hi,
+> >>>
+> >>> one more thing, to make life easier for yourself you can either locally
+> >>> revert the commit or use a for_window directive matching that popup and
+> >>> do something like
+> >>>
+> >>>     for_window [class="(?i)keepass" …] resize set 500 300
+> >>>
+> >>>
+> >>>
+> >>> Ingo
+> >>>
+> >>> On 11/03/2015 07:43 PM, Ingo Bürk wrote:    
+> >>>> Thanks! Yeah, the problem is that askpass specifies size flags in
+> >>>> WM_SIZE_HINTS, but doesn't set useful values (it just says 0x0). i3 then
+> >>>> falls back to the floating minimum size, which by default is 75x50. You
+> >>>> should file this as a bug against keepass. keepass should either not set
+> >>>> these flags in the size hints or give them a reasonable value.
+> >>>>
+> >>>> It should be noted that these values in the size hints are considered
+> >>>> obsolete[1], but that doesn't mean they won't (or shouldn't) be
+> >>>> interpreted. That's what the flag mask is for. :)
+> >>>>
+> >>>> [1]
+> >>>> https://tronche.com/gui/x/xlib/ICC/client-to-window-manager/wm-normal-hints.html
+> >>>>
+> >>>>
+> >>>> Ingo
+> >>>>
+> >>>> On 11/03/2015 06:51 PM, Dieter Plaetinck wrote:      
+> >>>>> the i3 log, obtained via i3-dump-log as described on the debugging web page.
+> >>>>> http://logs.i3wm.org/logs/5652536396611584.bz2
+> >>>>> FWIW this was a minimal i3 session, i quit all my apps, just had a termite terminal so i could invoke ssh-add and the i3-dump-log, and it also had a bar running, but nothing else.
+> >>>>>
+> >>>>> xprop and xwininfo -all output: https://gist.github.com/Dieterbe/93ec75c6e891a04b8776
+> >>>>>
+> >>>>>
+> >>>>>
+> >>>>>
+> >>>>> On Tue, 3 Nov 2015 18:09:10 -0500
+> >>>>> Ingo Bürk <admin at airblader.de> wrote:
+> >>>>>      
+> >>>>>> Thanks. I sort of figured it'd be that commit. Can you please provide
+> >>>>>> the files I described earlier? This will likely be a bug in askpass. See
+> >>>>>> also the discussions in the end of https://github.com/i3/i3/issues/1970.
+> >>>>>>
+> >>>>>>
+> >>>>>> Ingo
+> >>>>>>
+> >>>>>> On 11/03/2015 06:04 PM, Dieter Plaetinck wrote:      
+> >>>>>>> thanks Ingo,
+> >>>>>>> due to i3's easy reloading and the fact that i could just run the ssh-add command in a terminal without restarting X, the bisect process was very easy and smooth.
+> >>>>>>>
+> >>>>>>> it found the commit. see below
+> >>>>>>>
+> >>>>>>> d1262f2b6ae713266b5a1e8cab368333bb332033 is the first bad commit
+> >>>>>>> commit d1262f2b6ae713266b5a1e8cab368333bb332033
+> >>>>>>> Author: Andrzej Pronobis <a.pronobis at gmail.com>
+> >>>>>>> Date:   Sun Feb 1 17:04:41 2015 -0800
+> >>>>>>>
+> >>>>>>>     Use WM_SIZE_HINTS whenever it's provided to set the geometry of floating windows.
+> >>>>>>>
+> >>>>>>> :040000 040000 e7c887b2b14e2b24830840133045fe0ba232c3e0 3dd6d2d2864ab7aaec50cb2bff93031170bd50e8 M	src
+> >>>>>>> ~/w/e/i3 ❯❯❯ 
+> >>>>>>>
+> >>>>>>>
+> >>>>>>> On Tue, 3 Nov 2015 17:19:02 -0500
+> >>>>>>> Ingo Bürk <admin at airblader.de> wrote:
+> >>>>>>>        
+> >>>>>>>> Yeah, a bisect would be useful. You need to run make clean && make &&
+> >>>>>>>> sudo make install (to actually install the new binary -- unless you
+> >>>>>>>> change your xinitrc to run the local file in your checkout instead).
+> >>>>>>>>
+> >>>>>>>> Restarting X isn't necessary, restarting i3 in-place would suffice. But
+> >>>>>>>> since you have wrapped askpass around the i3 session, you'll indeed
+> >>>>>>>> probably need to exit your X session and startx again.
+> >>>>>>>>
+> >>>>>>>>
+> >>>>>>>> Ingo
+> >>>>>>>>
+> >>>>>>>> On 11/03/2015 04:46 PM, Dieter Plaetinck wrote:        
+> >>>>>>>>> I can confirm the first problem is gone (the window has the correct size) with 4.10.4
+> >>>>>>>>> However the ghosting problem still exists, though now it also has the correct size and a black background instead of grey like before.
+> >>>>>>>>> see http://i.imgur.com/2uF25R8.png
+> >>>>>>>>>
+> >>>>>>>>> still want me to do a bisect? for all versions i would just run make clean && make && restart x using the new i3 binary right? anything else needed?
+> >>>>>>>>>
+> >>>>>>>>> Dieter
+> >>>>>>>>>
+> >>>>>>>>> On Tue, 3 Nov 2015 16:05:31 -0500
+> >>>>>>>>> Ingo Bürk <admin at airblader.de> wrote:
+> >>>>>>>>>          
+> >>>>>>>>>> Hi Dieter,
+> >>>>>>>>>>
+> >>>>>>>>>> can you do the following?
+> >>>>>>>>>>
+> >>>>>>>>>> 1) Downgrade to i3 4.10.4 and see if it fixes the problem. If so, please
+> >>>>>>>>>> run a git bisect to figure out which commit broke it. If 4.10.4 has the
+> >>>>>>>>>> same problem, try downgrading askpass or report a bug there.
+> >>>>>>>>>> 2) Provide a complete i3 log file where you started it. See the
+> >>>>>>>>>> debugging docs on the i3 website for information. Also provide the
+> >>>>>>>>>> output of "xprop" and "xwininfo -all" when clicking on the opened
+> >>>>>>>>>> askpass window.
+> >>>>>>>>>>
+> >>>>>>>>>>
+> >>>>>>>>>> Ingo
+> >>>>>>>>>>
+> >>>>>>>>>> On 11/03/2015 03:32 PM, Dieter Plaetinck wrote:          
+> >>>>>>>>>>> hello everyone,
+> >>>>>>>>>>> long time no see! i've been a long time i3 user but only since a recent upgrade i've started having issues with 
+> >>>>>>>>>>> ssh-askpass.
+> >>>>>>>>>>>
+> >>>>>>>>>>>
+> >>>>>>>>>>> to be specific, in my .xinitrc I have:
+> >>>>>>>>>>>
+> >>>>>>>>>>> i3 -d all >> ~/i3-out 2>> ~/i3-err &
+> >>>>>>>>>>> waitpid=$!
+> >>>>>>>>>>> ssh-add ~/.ssh/id_rsa_dieter-ws-a7n8x-arch < /dev/null
+> >>>>>>>>>>> (.. some more stuff)
+> >>>>>>>>>>> wait $waitpid
+> >>>>>>>>>>>
+> >>>>>>>>>>> i posted my i3 config to https://gist.github.com/Dieterbe/d5870b230369818d2d47 (it's pretty much default, with a few extra binds and a different bar)
+> >>>>>>>>>>>
+> >>>>>>>>>>>
+> >>>>>>>>>>> the ssh-add spawns the x11-ssh-askpass program and since recently i've been seeing these two problems:
+> >>>>>>>>>>>
+> >>>>>>>>>>> screenshots of both issues @ http://imgur.com/a/TbNn1
+> >>>>>>>>>>>
+> >>>>>>>>>>> 1) the window is way too small. it used to be just the right size for the popup.
+> >>>>>>>>>>>
+> >>>>>>>>>>> 2) after entering the password and hitting enter, a "ghost" of the window stays stuck in all of my i3 workspaces.
+> >>>>>>>>>>> those workspaces that have windows in them will have the windows cover it, but otherwise if i go to say workspace number 5 while no windows are there, it'll show a ghost of the ask pass window.
+> >>>>>>>>>>>
+> >>>>>>>>>>> any idea what might be the cause? i'm using 4.11
+> >>>>>>>>>>>
+> >>>>>>>>>>> thanks,
+> >>>>>>>>>>> Dieter            
+> >>>     
+> 
+
+
+From admin at airblader.de  Thu Nov  5 16:33:31 2015
+From: admin at airblader.de (=?UTF-8?Q?Ingo_B=c3=bcrk?=)
+Date: Thu, 5 Nov 2015 10:33:31 -0500
+Subject: [i3] ssh askpass window too small + "sticks around"
+In-Reply-To: <20151104231539.42df6cec@dieter-m6800>
+References: <20151103153217.0fd581d0@dieter-m6800>
+ <5639219B.8010400@airblader.de> <20151103164657.70803852@dieter-m6800>
+ <563932D6.5050501@airblader.de> <20151103180421.00bae10a@dieter-m6800>
+ <56393E96.7000804@airblader.de> <20151103185147.070f18a7@dieter-m6800>
+ <563954AA.9070904@airblader.de> <56395881.4010106@airblader.de>
+ <20151103205745.0216b065@dieter-m6800> <20151103222154.3542fd92@dieter-m6800>
+ <563A19A1.80108@airblader.de> <20151104231539.42df6cec@dieter-m6800>
+Message-ID: <563B76CB.6090609@airblader.de>
+
+No, it's not i3. It's the root window. Which means there is no actual
+keepass window. :) I'd try running a compositor and setting the
+background to see what that does. Making sure your graphics driver is up
+to date also won't hurt.
+
+
+Ingo
+
+On 11/04/2015 11:15 PM, Dieter Plaetinck wrote:
+> with background it looks like so (set via nitrogen)
+> http://i.imgur.com/RX7syWq.png
+> however it seems like if i set the background again after ssh-add finished, the background shows fine without the ghost window. not 100% sure yet on the conditions that trigger the issue. i can play with it a bit more and can probably succesfully work around it. (though it's still weird)
+>
+>
+> process is no longer running:
+> ~ ❯❯❯ ps aux | grep ssh-add
+> dieter    4286  0.0  0.0  10728  2384 pts/3    S+   23:07   0:00 grep --color=auto ssh-add
+> ~ ❯❯❯ ps aux | grep keepass
+> dieter    4315  0.0  0.0  10728  2248 pts/3    S+   23:07   0:00 grep --color=auto keepass
+> ~ ❯❯❯ ps aux | grep x11
+> dieter    4352  0.0  0.0  10728  2140 pts/3    S+   23:07   0:00 grep --color=auto x11
+> ~ ❯❯❯ 
+>
+>
+> when i run xprop and then click on the ghost window i get:
+> ~ ❯❯❯ xprop
+> GDK_VISUALS(INTEGER) = 233, 165
+> _NET_DESKTOP_VIEWPORT(CARDINAL) = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+> _NET_DESKTOP_NAMES(UTF8_STRING) = "1", "2", "3", "4", "5", "6", "7", "8"
+> _NET_NUMBER_OF_DESKTOPS(CARDINAL) = 8
+> _NET_CURRENT_DESKTOP(CARDINAL) = 5
+> I3_SHMLOG_PATH(UTF8_STRING) = "/i3-log-769"
+> I3_CONFIG_PATH(UTF8_STRING) = "/home/dieter/.i3/config"
+> I3_PID(CARDINAL) = 769
+> I3_SOCKET_PATH(UTF8_STRING) = "/run/user/1011/i3/ipc-socket.769"
+> _NET_ACTIVE_WINDOW(WINDOW): window id # 0x0
+> _NET_CLIENT_LIST(WINDOW): window id # 0x1000003, 0x1a00001, 0x180009b, 0x1400003, 0x2000007, 0x2400003, 0x2600003, 0x2800003
+> _NET_CLIENT_LIST_STACKING(WINDOW): window id # 0x2000007, 0x2400003, 0x180009b, 0x2600003, 0x1a00001, 0x1000003, 0x2800003, 0x1400003
+> _NET_SUPPORTED(ATOM) = _NET_SUPPORTED, _NET_SUPPORTING_WM_CHECK, _NET_WM_NAME, _NET_WM_VISIBLE_NAME, _NET_WM_MOVERESIZE, _NET_WM_STATE_STICKY, _NET_WM_STATE_FULLSCREEN, _NET_WM_STATE_DEMANDS_ATTENTION, _NET_WM_STATE_MODAL, _NET_WM_STATE_HIDDEN, _NET_WM_STATE, _NET_WM_WINDOW_TYPE, _NET_WM_WINDOW_TYPE_NORMAL, _NET_WM_WINDOW_TYPE_DOCK, _NET_WM_WINDOW_TYPE_DIALOG, _NET_WM_WINDOW_TYPE_UTILITY, _NET_WM_WINDOW_TYPE_TOOLBAR, _NET_WM_WINDOW_TYPE_SPLASH, _NET_WM_WINDOW_TYPE_MENU, _NET_WM_WINDOW_TYPE_DROPDOWN_MENU, _NET_WM_WINDOW_TYPE_POPUP_MENU, _NET_WM_WINDOW_TYPE_TOOLTIP, _NET_WM_DESKTOP, _NET_WM_STRUT_PARTIAL, _NET_CLIENT_LIST, _NET_CLIENT_LIST_STACKING, _NET_CURRENT_DESKTOP, _NET_NUMBER_OF_DESKTOPS, _NET_DESKTOP_NAMES, _NET_DESKTOP_VIEWPORT, _NET_ACTIVE_WINDOW, _NET_CLOSE_WINDOW
+> _NET_WM_NAME(UTF8_STRING) = "i3"
+> _NET_SUPPORTING_WM_CHECK(WINDOW): window id # 0x800062
+> RESOURCE_MANAGER(STRING) = "urxvt.font:\txft:Terminus\nx11-ssh-askpass*font:\t-*-dina-medium-r-*-*-12-*-*-*-*-*-*-*\nx11-ssh-askpass*background:\t#000000\nx11-ssh-askpass*foreground:\t#ffffff\nx11-ssh-askpass.Button*background:\t#000000\nx11-ssh-askpass.Indicator*foreground:\t#ff9900\nx11-ssh-askpass.Indicator*background:\t#090909\nx11-ssh-askpass*topShadowColor:\t#000000\nx11-ssh-askpass*bottomShadowColor:\t#000000\nx11-ssh-askpass.*borderWidth:\t1\n"
+> ESETROOT_PMAP_ID(PIXMAP): pixmap id # 0x600004
+> _XROOTPMAP_ID(PIXMAP): pixmap id # 0x600004
+> _XKB_RULES_NAMES(STRING) = "evdev", "pc105", "dvorak", "", ""
+> XFree86_has_VT(INTEGER) = 1
+> XFree86_VT(INTEGER) = 1
+> ~ ❯❯❯ 
+>
+>
+> am i seeing this right? it's i3 itself?
+>
+> On Wed, 4 Nov 2015 09:43:45 -0500
+> Ingo Bürk <admin at airblader.de> wrote:
+>
+>> Hi Dieter,
+>>
+>> sorry, I completely forgot about the second issue. Can you check whether
+>> there actually IS a window? For example, try pgrep-ing for keepass and
+>> also try "xprop"-selecting that window on an empty workspace (where it's
+>> not covered by other windows).
+>>
+>> If there isn't actually a window, this sounds like a typical graphics
+>> glitch. If you haven't set a background to your desktop yet, you should
+>> do this, even if you want it to be just black. See [1] for some
+>> orientation. If that's done and the issue persists, I'd try running a
+>> compositor (e.g., compton) if you aren't already. If it STILL persists
+>> after that, I would look into my graphics driver.
+>>
+>> However, if there actually IS a window, tell the keepass guys to look
+>> into it. :)
+>>
+>> [1]
+>> https://faq.i3wm.org/question/6/how-can-i-set-a-desktop-background-image-in-i3/
+>>
+>>
+>> Ingo
+>>
+>> On 11/03/2015 10:21 PM, Dieter Plaetinck wrote:
+>>> btw i have configured the askpass window to have a 0px border,
+>>> so the other problem (the "ghosting") is now a little less annoying
+>>> (looks like http://i.imgur.com/qgnOTaV.png now)
+>>> though it 'd be nice if we could solve this one too. any ideas ?
+>>>
+>>>
+>>>
+>>> On Tue, 3 Nov 2015 20:57:45 -0500
+>>> Dieter Plaetinck <dieter at plaetinck.be> wrote:
+>>>  
+>>>> thanks Ingo,
+>>>> reported @ https://bugzilla.mindrot.org/show_bug.cgi?id=2491
+>>>>
+>>>> btw I tried setting the window to 426x94 (cause those values appeared in other size hints)
+>>>> but that ended up being too low.  I just estimated a height and 115 seems to look good.
+>>>> I wonder why it hinted at 94..
+>>>>
+>>>> On Tue, 3 Nov 2015 19:59:45 -0500
+>>>> Ingo Bürk <admin at airblader.de> wrote:
+>>>>  
+>>>>> Hi,
+>>>>>
+>>>>> one more thing, to make life easier for yourself you can either locally
+>>>>> revert the commit or use a for_window directive matching that popup and
+>>>>> do something like
+>>>>>
+>>>>>     for_window [class="(?i)keepass" …] resize set 500 300
+>>>>>
+>>>>>
+>>>>>
+>>>>> Ingo
+>>>>>
+>>>>> On 11/03/2015 07:43 PM, Ingo Bürk wrote:    
+>>>>>> Thanks! Yeah, the problem is that askpass specifies size flags in
+>>>>>> WM_SIZE_HINTS, but doesn't set useful values (it just says 0x0). i3 then
+>>>>>> falls back to the floating minimum size, which by default is 75x50. You
+>>>>>> should file this as a bug against keepass. keepass should either not set
+>>>>>> these flags in the size hints or give them a reasonable value.
+>>>>>>
+>>>>>> It should be noted that these values in the size hints are considered
+>>>>>> obsolete[1], but that doesn't mean they won't (or shouldn't) be
+>>>>>> interpreted. That's what the flag mask is for. :)
+>>>>>>
+>>>>>> [1]
+>>>>>> https://tronche.com/gui/x/xlib/ICC/client-to-window-manager/wm-normal-hints.html
+>>>>>>
+>>>>>>
+>>>>>> Ingo
+>>>>>>
+>>>>>> On 11/03/2015 06:51 PM, Dieter Plaetinck wrote:      
+>>>>>>> the i3 log, obtained via i3-dump-log as described on the debugging web page.
+>>>>>>> http://logs.i3wm.org/logs/5652536396611584.bz2
+>>>>>>> FWIW this was a minimal i3 session, i quit all my apps, just had a termite terminal so i could invoke ssh-add and the i3-dump-log, and it also had a bar running, but nothing else.
+>>>>>>>
+>>>>>>> xprop and xwininfo -all output: https://gist.github.com/Dieterbe/93ec75c6e891a04b8776
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>> On Tue, 3 Nov 2015 18:09:10 -0500
+>>>>>>> Ingo Bürk <admin at airblader.de> wrote:
+>>>>>>>      
+>>>>>>>> Thanks. I sort of figured it'd be that commit. Can you please provide
+>>>>>>>> the files I described earlier? This will likely be a bug in askpass. See
+>>>>>>>> also the discussions in the end of https://github.com/i3/i3/issues/1970.
+>>>>>>>>
+>>>>>>>>
+>>>>>>>> Ingo
+>>>>>>>>
+>>>>>>>> On 11/03/2015 06:04 PM, Dieter Plaetinck wrote:      
+>>>>>>>>> thanks Ingo,
+>>>>>>>>> due to i3's easy reloading and the fact that i could just run the ssh-add command in a terminal without restarting X, the bisect process was very easy and smooth.
+>>>>>>>>>
+>>>>>>>>> it found the commit. see below
+>>>>>>>>>
+>>>>>>>>> d1262f2b6ae713266b5a1e8cab368333bb332033 is the first bad commit
+>>>>>>>>> commit d1262f2b6ae713266b5a1e8cab368333bb332033
+>>>>>>>>> Author: Andrzej Pronobis <a.pronobis at gmail.com>
+>>>>>>>>> Date:   Sun Feb 1 17:04:41 2015 -0800
+>>>>>>>>>
+>>>>>>>>>     Use WM_SIZE_HINTS whenever it's provided to set the geometry of floating windows.
+>>>>>>>>>
+>>>>>>>>> :040000 040000 e7c887b2b14e2b24830840133045fe0ba232c3e0 3dd6d2d2864ab7aaec50cb2bff93031170bd50e8 M	src
+>>>>>>>>> ~/w/e/i3 ❯❯❯ 
+>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>> On Tue, 3 Nov 2015 17:19:02 -0500
+>>>>>>>>> Ingo Bürk <admin at airblader.de> wrote:
+>>>>>>>>>        
+>>>>>>>>>> Yeah, a bisect would be useful. You need to run make clean && make &&
+>>>>>>>>>> sudo make install (to actually install the new binary -- unless you
+>>>>>>>>>> change your xinitrc to run the local file in your checkout instead).
+>>>>>>>>>>
+>>>>>>>>>> Restarting X isn't necessary, restarting i3 in-place would suffice. But
+>>>>>>>>>> since you have wrapped askpass around the i3 session, you'll indeed
+>>>>>>>>>> probably need to exit your X session and startx again.
+>>>>>>>>>>
+>>>>>>>>>>
+>>>>>>>>>> Ingo
+>>>>>>>>>>
+>>>>>>>>>> On 11/03/2015 04:46 PM, Dieter Plaetinck wrote:        
+>>>>>>>>>>> I can confirm the first problem is gone (the window has the correct size) with 4.10.4
+>>>>>>>>>>> However the ghosting problem still exists, though now it also has the correct size and a black background instead of grey like before.
+>>>>>>>>>>> see http://i.imgur.com/2uF25R8.png
+>>>>>>>>>>>
+>>>>>>>>>>> still want me to do a bisect? for all versions i would just run make clean && make && restart x using the new i3 binary right? anything else needed?
+>>>>>>>>>>>
+>>>>>>>>>>> Dieter
+>>>>>>>>>>>
+>>>>>>>>>>> On Tue, 3 Nov 2015 16:05:31 -0500
+>>>>>>>>>>> Ingo Bürk <admin at airblader.de> wrote:
+>>>>>>>>>>>          
+>>>>>>>>>>>> Hi Dieter,
+>>>>>>>>>>>>
+>>>>>>>>>>>> can you do the following?
+>>>>>>>>>>>>
+>>>>>>>>>>>> 1) Downgrade to i3 4.10.4 and see if it fixes the problem. If so, please
+>>>>>>>>>>>> run a git bisect to figure out which commit broke it. If 4.10.4 has the
+>>>>>>>>>>>> same problem, try downgrading askpass or report a bug there.
+>>>>>>>>>>>> 2) Provide a complete i3 log file where you started it. See the
+>>>>>>>>>>>> debugging docs on the i3 website for information. Also provide the
+>>>>>>>>>>>> output of "xprop" and "xwininfo -all" when clicking on the opened
+>>>>>>>>>>>> askpass window.
+>>>>>>>>>>>>
+>>>>>>>>>>>>
+>>>>>>>>>>>> Ingo
+>>>>>>>>>>>>
+>>>>>>>>>>>> On 11/03/2015 03:32 PM, Dieter Plaetinck wrote:          
+>>>>>>>>>>>>> hello everyone,
+>>>>>>>>>>>>> long time no see! i've been a long time i3 user but only since a recent upgrade i've started having issues with 
+>>>>>>>>>>>>> ssh-askpass.
+>>>>>>>>>>>>>
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> to be specific, in my .xinitrc I have:
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> i3 -d all >> ~/i3-out 2>> ~/i3-err &
+>>>>>>>>>>>>> waitpid=$!
+>>>>>>>>>>>>> ssh-add ~/.ssh/id_rsa_dieter-ws-a7n8x-arch < /dev/null
+>>>>>>>>>>>>> (.. some more stuff)
+>>>>>>>>>>>>> wait $waitpid
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> i posted my i3 config to https://gist.github.com/Dieterbe/d5870b230369818d2d47 (it's pretty much default, with a few extra binds and a different bar)
+>>>>>>>>>>>>>
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> the ssh-add spawns the x11-ssh-askpass program and since recently i've been seeing these two problems:
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> screenshots of both issues @ http://imgur.com/a/TbNn1
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> 1) the window is way too small. it used to be just the right size for the popup.
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> 2) after entering the password and hitting enter, a "ghost" of the window stays stuck in all of my i3 workspaces.
+>>>>>>>>>>>>> those workspaces that have windows in them will have the windows cover it, but otherwise if i go to say workspace number 5 while no windows are there, it'll show a ghost of the ask pass window.
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> any idea what might be the cause? i'm using 4.11
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> thanks,
+>>>>>>>>>>>>> Dieter            
+>>>>>     
+
+
+From dieter at plaetinck.be  Thu Nov  5 16:41:03 2015
+From: dieter at plaetinck.be (Dieter Plaetinck)
+Date: Thu, 5 Nov 2015 10:41:03 -0500
+Subject: [i3] ssh askpass window too small + "sticks around"
+In-Reply-To: <563B76CB.6090609@airblader.de>
+References: <20151103153217.0fd581d0@dieter-m6800>
+ <5639219B.8010400@airblader.de>
+ <20151103164657.70803852@dieter-m6800>
+ <563932D6.5050501@airblader.de>
+ <20151103180421.00bae10a@dieter-m6800>
+ <56393E96.7000804@airblader.de>
+ <20151103185147.070f18a7@dieter-m6800>
+ <563954AA.9070904@airblader.de> <56395881.4010106@airblader.de>
+ <20151103205745.0216b065@dieter-m6800>
+ <20151103222154.3542fd92@dieter-m6800>
+ <563A19A1.80108@airblader.de>
+ <20151104231539.42df6cec@dieter-m6800>
+ <563B76CB.6090609@airblader.de>
+Message-ID: <20151105104103.29f9b37f@dieter-m6800>
+
+ok, thanks a lot for your help!
+
+On Thu, 5 Nov 2015 10:33:31 -0500
+Ingo Bürk <admin at airblader.de> wrote:
+
+> No, it's not i3. It's the root window. Which means there is no actual
+> keepass window. :) I'd try running a compositor and setting the
+> background to see what that does. Making sure your graphics driver is up
+> to date also won't hurt.
+> 
+> 
+> Ingo
+> 
+> On 11/04/2015 11:15 PM, Dieter Plaetinck wrote:
+> > with background it looks like so (set via nitrogen)
+> > http://i.imgur.com/RX7syWq.png
+> > however it seems like if i set the background again after ssh-add finished, the background shows fine without the ghost window. not 100% sure yet on the conditions that trigger the issue. i can play with it a bit more and can probably succesfully work around it. (though it's still weird)
+> >
+> >
+> > process is no longer running:
+> > ~ ❯❯❯ ps aux | grep ssh-add
+> > dieter    4286  0.0  0.0  10728  2384 pts/3    S+   23:07   0:00 grep --color=auto ssh-add
+> > ~ ❯❯❯ ps aux | grep keepass
+> > dieter    4315  0.0  0.0  10728  2248 pts/3    S+   23:07   0:00 grep --color=auto keepass
+> > ~ ❯❯❯ ps aux | grep x11
+> > dieter    4352  0.0  0.0  10728  2140 pts/3    S+   23:07   0:00 grep --color=auto x11
+> > ~ ❯❯❯ 
+> >
+> >
+> > when i run xprop and then click on the ghost window i get:
+> > ~ ❯❯❯ xprop
+> > GDK_VISUALS(INTEGER) = 233, 165
+> > _NET_DESKTOP_VIEWPORT(CARDINAL) = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+> > _NET_DESKTOP_NAMES(UTF8_STRING) = "1", "2", "3", "4", "5", "6", "7", "8"
+> > _NET_NUMBER_OF_DESKTOPS(CARDINAL) = 8
+> > _NET_CURRENT_DESKTOP(CARDINAL) = 5
+> > I3_SHMLOG_PATH(UTF8_STRING) = "/i3-log-769"
+> > I3_CONFIG_PATH(UTF8_STRING) = "/home/dieter/.i3/config"
+> > I3_PID(CARDINAL) = 769
+> > I3_SOCKET_PATH(UTF8_STRING) = "/run/user/1011/i3/ipc-socket.769"
+> > _NET_ACTIVE_WINDOW(WINDOW): window id # 0x0
+> > _NET_CLIENT_LIST(WINDOW): window id # 0x1000003, 0x1a00001, 0x180009b, 0x1400003, 0x2000007, 0x2400003, 0x2600003, 0x2800003
+> > _NET_CLIENT_LIST_STACKING(WINDOW): window id # 0x2000007, 0x2400003, 0x180009b, 0x2600003, 0x1a00001, 0x1000003, 0x2800003, 0x1400003
+> > _NET_SUPPORTED(ATOM) = _NET_SUPPORTED, _NET_SUPPORTING_WM_CHECK, _NET_WM_NAME, _NET_WM_VISIBLE_NAME, _NET_WM_MOVERESIZE, _NET_WM_STATE_STICKY, _NET_WM_STATE_FULLSCREEN, _NET_WM_STATE_DEMANDS_ATTENTION, _NET_WM_STATE_MODAL, _NET_WM_STATE_HIDDEN, _NET_WM_STATE, _NET_WM_WINDOW_TYPE, _NET_WM_WINDOW_TYPE_NORMAL, _NET_WM_WINDOW_TYPE_DOCK, _NET_WM_WINDOW_TYPE_DIALOG, _NET_WM_WINDOW_TYPE_UTILITY, _NET_WM_WINDOW_TYPE_TOOLBAR, _NET_WM_WINDOW_TYPE_SPLASH, _NET_WM_WINDOW_TYPE_MENU, _NET_WM_WINDOW_TYPE_DROPDOWN_MENU, _NET_WM_WINDOW_TYPE_POPUP_MENU, _NET_WM_WINDOW_TYPE_TOOLTIP, _NET_WM_DESKTOP, _NET_WM_STRUT_PARTIAL, _NET_CLIENT_LIST, _NET_CLIENT_LIST_STACKING, _NET_CURRENT_DESKTOP, _NET_NUMBER_OF_DESKTOPS, _NET_DESKTOP_NAMES, _NET_DESKTOP_VIEWPORT, _NET_ACTIVE_WINDOW, _NET_CLOSE_WINDOW
+> > _NET_WM_NAME(UTF8_STRING) = "i3"
+> > _NET_SUPPORTING_WM_CHECK(WINDOW): window id # 0x800062
+> > RESOURCE_MANAGER(STRING) = "urxvt.font:\txft:Terminus\nx11-ssh-askpass*font:\t-*-dina-medium-r-*-*-12-*-*-*-*-*-*-*\nx11-ssh-askpass*background:\t#000000\nx11-ssh-askpass*foreground:\t#ffffff\nx11-ssh-askpass.Button*background:\t#000000\nx11-ssh-askpass.Indicator*foreground:\t#ff9900\nx11-ssh-askpass.Indicator*background:\t#090909\nx11-ssh-askpass*topShadowColor:\t#000000\nx11-ssh-askpass*bottomShadowColor:\t#000000\nx11-ssh-askpass.*borderWidth:\t1\n"
+> > ESETROOT_PMAP_ID(PIXMAP): pixmap id # 0x600004
+> > _XROOTPMAP_ID(PIXMAP): pixmap id # 0x600004
+> > _XKB_RULES_NAMES(STRING) = "evdev", "pc105", "dvorak", "", ""
+> > XFree86_has_VT(INTEGER) = 1
+> > XFree86_VT(INTEGER) = 1
+> > ~ ❯❯❯ 
+> >
+> >
+> > am i seeing this right? it's i3 itself?
+> >
+> > On Wed, 4 Nov 2015 09:43:45 -0500
+> > Ingo Bürk <admin at airblader.de> wrote:
+> >  
+> >> Hi Dieter,
+> >>
+> >> sorry, I completely forgot about the second issue. Can you check whether
+> >> there actually IS a window? For example, try pgrep-ing for keepass and
+> >> also try "xprop"-selecting that window on an empty workspace (where it's
+> >> not covered by other windows).
+> >>
+> >> If there isn't actually a window, this sounds like a typical graphics
+> >> glitch. If you haven't set a background to your desktop yet, you should
+> >> do this, even if you want it to be just black. See [1] for some
+> >> orientation. If that's done and the issue persists, I'd try running a
+> >> compositor (e.g., compton) if you aren't already. If it STILL persists
+> >> after that, I would look into my graphics driver.
+> >>
+> >> However, if there actually IS a window, tell the keepass guys to look
+> >> into it. :)
+> >>
+> >> [1]
+> >> https://faq.i3wm.org/question/6/how-can-i-set-a-desktop-background-image-in-i3/
+> >>
+> >>
+> >> Ingo
+> >>
+> >> On 11/03/2015 10:21 PM, Dieter Plaetinck wrote:  
+> >>> btw i have configured the askpass window to have a 0px border,
+> >>> so the other problem (the "ghosting") is now a little less annoying
+> >>> (looks like http://i.imgur.com/qgnOTaV.png now)
+> >>> though it 'd be nice if we could solve this one too. any ideas ?
+> >>>
+> >>>
+> >>>
+> >>> On Tue, 3 Nov 2015 20:57:45 -0500
+> >>> Dieter Plaetinck <dieter at plaetinck.be> wrote:
+> >>>    
+> >>>> thanks Ingo,
+> >>>> reported @ https://bugzilla.mindrot.org/show_bug.cgi?id=2491
+> >>>>
+> >>>> btw I tried setting the window to 426x94 (cause those values appeared in other size hints)
+> >>>> but that ended up being too low.  I just estimated a height and 115 seems to look good.
+> >>>> I wonder why it hinted at 94..
+> >>>>
+> >>>> On Tue, 3 Nov 2015 19:59:45 -0500
+> >>>> Ingo Bürk <admin at airblader.de> wrote:
+> >>>>    
+> >>>>> Hi,
+> >>>>>
+> >>>>> one more thing, to make life easier for yourself you can either locally
+> >>>>> revert the commit or use a for_window directive matching that popup and
+> >>>>> do something like
+> >>>>>
+> >>>>>     for_window [class="(?i)keepass" …] resize set 500 300
+> >>>>>
+> >>>>>
+> >>>>>
+> >>>>> Ingo
+> >>>>>
+> >>>>> On 11/03/2015 07:43 PM, Ingo Bürk wrote:      
+> >>>>>> Thanks! Yeah, the problem is that askpass specifies size flags in
+> >>>>>> WM_SIZE_HINTS, but doesn't set useful values (it just says 0x0). i3 then
+> >>>>>> falls back to the floating minimum size, which by default is 75x50. You
+> >>>>>> should file this as a bug against keepass. keepass should either not set
+> >>>>>> these flags in the size hints or give them a reasonable value.
+> >>>>>>
+> >>>>>> It should be noted that these values in the size hints are considered
+> >>>>>> obsolete[1], but that doesn't mean they won't (or shouldn't) be
+> >>>>>> interpreted. That's what the flag mask is for. :)
+> >>>>>>
+> >>>>>> [1]
+> >>>>>> https://tronche.com/gui/x/xlib/ICC/client-to-window-manager/wm-normal-hints.html
+> >>>>>>
+> >>>>>>
+> >>>>>> Ingo
+> >>>>>>
+> >>>>>> On 11/03/2015 06:51 PM, Dieter Plaetinck wrote:        
+> >>>>>>> the i3 log, obtained via i3-dump-log as described on the debugging web page.
+> >>>>>>> http://logs.i3wm.org/logs/5652536396611584.bz2
+> >>>>>>> FWIW this was a minimal i3 session, i quit all my apps, just had a termite terminal so i could invoke ssh-add and the i3-dump-log, and it also had a bar running, but nothing else.
+> >>>>>>>
+> >>>>>>> xprop and xwininfo -all output: https://gist.github.com/Dieterbe/93ec75c6e891a04b8776
+> >>>>>>>
+> >>>>>>>
+> >>>>>>>
+> >>>>>>>
+> >>>>>>> On Tue, 3 Nov 2015 18:09:10 -0500
+> >>>>>>> Ingo Bürk <admin at airblader.de> wrote:
+> >>>>>>>        
+> >>>>>>>> Thanks. I sort of figured it'd be that commit. Can you please provide
+> >>>>>>>> the files I described earlier? This will likely be a bug in askpass. See
+> >>>>>>>> also the discussions in the end of https://github.com/i3/i3/issues/1970.
+> >>>>>>>>
+> >>>>>>>>
+> >>>>>>>> Ingo
+> >>>>>>>>
+> >>>>>>>> On 11/03/2015 06:04 PM, Dieter Plaetinck wrote:        
+> >>>>>>>>> thanks Ingo,
+> >>>>>>>>> due to i3's easy reloading and the fact that i could just run the ssh-add command in a terminal without restarting X, the bisect process was very easy and smooth.
+> >>>>>>>>>
+> >>>>>>>>> it found the commit. see below
+> >>>>>>>>>
+> >>>>>>>>> d1262f2b6ae713266b5a1e8cab368333bb332033 is the first bad commit
+> >>>>>>>>> commit d1262f2b6ae713266b5a1e8cab368333bb332033
+> >>>>>>>>> Author: Andrzej Pronobis <a.pronobis at gmail.com>
+> >>>>>>>>> Date:   Sun Feb 1 17:04:41 2015 -0800
+> >>>>>>>>>
+> >>>>>>>>>     Use WM_SIZE_HINTS whenever it's provided to set the geometry of floating windows.
+> >>>>>>>>>
+> >>>>>>>>> :040000 040000 e7c887b2b14e2b24830840133045fe0ba232c3e0 3dd6d2d2864ab7aaec50cb2bff93031170bd50e8 M	src
+> >>>>>>>>> ~/w/e/i3 ❯❯❯ 
+> >>>>>>>>>
+> >>>>>>>>>
+> >>>>>>>>> On Tue, 3 Nov 2015 17:19:02 -0500
+> >>>>>>>>> Ingo Bürk <admin at airblader.de> wrote:
+> >>>>>>>>>          
+> >>>>>>>>>> Yeah, a bisect would be useful. You need to run make clean && make &&
+> >>>>>>>>>> sudo make install (to actually install the new binary -- unless you
+> >>>>>>>>>> change your xinitrc to run the local file in your checkout instead).
+> >>>>>>>>>>
+> >>>>>>>>>> Restarting X isn't necessary, restarting i3 in-place would suffice. But
+> >>>>>>>>>> since you have wrapped askpass around the i3 session, you'll indeed
+> >>>>>>>>>> probably need to exit your X session and startx again.
+> >>>>>>>>>>
+> >>>>>>>>>>
+> >>>>>>>>>> Ingo
+> >>>>>>>>>>
+> >>>>>>>>>> On 11/03/2015 04:46 PM, Dieter Plaetinck wrote:          
+> >>>>>>>>>>> I can confirm the first problem is gone (the window has the correct size) with 4.10.4
+> >>>>>>>>>>> However the ghosting problem still exists, though now it also has the correct size and a black background instead of grey like before.
+> >>>>>>>>>>> see http://i.imgur.com/2uF25R8.png
+> >>>>>>>>>>>
+> >>>>>>>>>>> still want me to do a bisect? for all versions i would just run make clean && make && restart x using the new i3 binary right? anything else needed?
+> >>>>>>>>>>>
+> >>>>>>>>>>> Dieter
+> >>>>>>>>>>>
+> >>>>>>>>>>> On Tue, 3 Nov 2015 16:05:31 -0500
+> >>>>>>>>>>> Ingo Bürk <admin at airblader.de> wrote:
+> >>>>>>>>>>>            
+> >>>>>>>>>>>> Hi Dieter,
+> >>>>>>>>>>>>
+> >>>>>>>>>>>> can you do the following?
+> >>>>>>>>>>>>
+> >>>>>>>>>>>> 1) Downgrade to i3 4.10.4 and see if it fixes the problem. If so, please
+> >>>>>>>>>>>> run a git bisect to figure out which commit broke it. If 4.10.4 has the
+> >>>>>>>>>>>> same problem, try downgrading askpass or report a bug there.
+> >>>>>>>>>>>> 2) Provide a complete i3 log file where you started it. See the
+> >>>>>>>>>>>> debugging docs on the i3 website for information. Also provide the
+> >>>>>>>>>>>> output of "xprop" and "xwininfo -all" when clicking on the opened
+> >>>>>>>>>>>> askpass window.
+> >>>>>>>>>>>>
+> >>>>>>>>>>>>
+> >>>>>>>>>>>> Ingo
+> >>>>>>>>>>>>
+> >>>>>>>>>>>> On 11/03/2015 03:32 PM, Dieter Plaetinck wrote:            
+> >>>>>>>>>>>>> hello everyone,
+> >>>>>>>>>>>>> long time no see! i've been a long time i3 user but only since a recent upgrade i've started having issues with 
+> >>>>>>>>>>>>> ssh-askpass.
+> >>>>>>>>>>>>>
+> >>>>>>>>>>>>>
+> >>>>>>>>>>>>> to be specific, in my .xinitrc I have:
+> >>>>>>>>>>>>>
+> >>>>>>>>>>>>> i3 -d all >> ~/i3-out 2>> ~/i3-err &
+> >>>>>>>>>>>>> waitpid=$!
+> >>>>>>>>>>>>> ssh-add ~/.ssh/id_rsa_dieter-ws-a7n8x-arch < /dev/null
+> >>>>>>>>>>>>> (.. some more stuff)
+> >>>>>>>>>>>>> wait $waitpid
+> >>>>>>>>>>>>>
+> >>>>>>>>>>>>> i posted my i3 config to https://gist.github.com/Dieterbe/d5870b230369818d2d47 (it's pretty much default, with a few extra binds and a different bar)
+> >>>>>>>>>>>>>
+> >>>>>>>>>>>>>
+> >>>>>>>>>>>>> the ssh-add spawns the x11-ssh-askpass program and since recently i've been seeing these two problems:
+> >>>>>>>>>>>>>
+> >>>>>>>>>>>>> screenshots of both issues @ http://imgur.com/a/TbNn1
+> >>>>>>>>>>>>>
+> >>>>>>>>>>>>> 1) the window is way too small. it used to be just the right size for the popup.
+> >>>>>>>>>>>>>
+> >>>>>>>>>>>>> 2) after entering the password and hitting enter, a "ghost" of the window stays stuck in all of my i3 workspaces.
+> >>>>>>>>>>>>> those workspaces that have windows in them will have the windows cover it, but otherwise if i go to say workspace number 5 while no windows are there, it'll show a ghost of the ask pass window.
+> >>>>>>>>>>>>>
+> >>>>>>>>>>>>> any idea what might be the cause? i'm using 4.11
+> >>>>>>>>>>>>>
+> >>>>>>>>>>>>> thanks,
+> >>>>>>>>>>>>> Dieter              
+> >>>>>       
+> 
+
+
+From benjaminjkaiser at gmail.com  Sun Nov  8 06:01:32 2015
+From: benjaminjkaiser at gmail.com (Benjamin Kaiser)
+Date: Sun, 08 Nov 2015 05:01:32 +0000
+Subject: [i3] Weird keybinding issue after suspend
+In-Reply-To: <CAKV6X6zBc=Ef+jdTYKizS_LcR2pJGv9AAqpwuARN2yWbGkB07A@mail.gmail.com>
+References: <CAKV6X6wU04fFqnn=mQ_7V1PZJ9j0Lj60W0XT=pSKoQV_ym8DNA@mail.gmail.com>
+ <CANnVG6nNoTxEQQr9wJwR+O0jAfySb6Un7OoiLxajKWv2L+68PQ@mail.gmail.com>
+ <CAKV6X6zBc=Ef+jdTYKizS_LcR2pJGv9AAqpwuARN2yWbGkB07A@mail.gmail.com>
+Message-ID: <CAKV6X6xpDbHY1gY3Rod3sjkT2jDwnvoHt23jxxA4foVQ29j6SQ@mail.gmail.com>
+
+So the issue popped up again, these were the steps I did to debug it:
+
+- jump to TTY3
+- run: `DISAPLY=:1 setxkbmap | tee /tmp/setxkbmap.out` (not sure if I
+should have been passing any arguments specifically)
+- observe there was no output
+- jump back to TTY2, keyboard/keybindings still unresponsive in i3
+- jump back to TTY2
+- run `DISAPLY=:1 xev | tee /tmp/xev.out` (output starts spewing out, and
+also to the file)
+- jump back to TTY2, keyboard is now responsive to i3wm bindings
+- jump back to TTY3 and kill xev
+
+Output in `/tmp/xev.out`: http://p.nnev.de/7524
+
+Hope this helps with tracking down what could be causing this, as I still
+don't have much of a clue how to fix it.
+
+Cheers,
+Ben Kaiser
+
+On Mon, 2 Nov 2015 at 20:54 Benjamin Kaiser <benjaminjkaiser at gmail.com>
+wrote:
+
+> Thanks for the reply Michael,
+>
+> I had the issue happen again yesterday and ran `sudo
+> libinput-debug-events`, then changed back to i3, run a bunch of shortcuts
+> and pressed a bunch of keys (all of which did nothing) then changed back to
+> the tty only to see that it was registering those keys being pressed.
+>
+> I'll try running `setxkbmap` and `xev` from a TTY next time the issue
+> occurs to see if it fixes it / gives me any more information.
+>
+> Also another small thing I noticed. To get out of the situation I click
+> the workspaces, but the keyboard only works if I click a different
+> workspace the the one I am currently in, it doesn't do anything (keyboard
+> still won't register shortcuts) if I click the current workspace.
+>
+> modified my i3config to that (i3lock then systemctl suspend), I think it
+> was that at some point and the issue still occurred, but I'll try it out
+> let you know if the issue happens again.
+>
+> Cheers,
+> Ben Kaiser
+>
+> On Mon, 2 Nov 2015 at 19:00 Michael Stapelberg <michael at i3wm.org> wrote:
+>
+>> When this situation happens:
+>>
+>> 1. Does running xev(1) still show keyboard events?
+>>
+>> 2. Does using setxkbmap to set your layout make the problem go away? That
+>> should force i3 to re-grab all keys.
+>>
+>> On Fri, Oct 30, 2015 at 12:38 PM, Benjamin Kaiser <
+>> benjaminjkaiser at gmail.com> wrote:
+>>
+>>> Hello,
+>>>
+>>> I've got a really weird issue that's been bothering me for perhaps the
+>>> last 6 months (before then it worked fine, perhaps could have been around
+>>> when I switched to using my keyboard to suspend). Sometimes when I resume
+>>> from suspend (I have i3lock launching at the same time as when I suspend) I
+>>> can unlock my computer, but then no more keyboard events work. The keyboard
+>>> remains active (lights on) and I can switch to a TTY, but none of the i3
+>>> events fire. The only way I can fix it is to use the mouse (which is still
+>>> working) to click on a workspace in the statusbar and then the keyboard
+>>> responds again.
+>>>
+>>>  As mentioned above, it only happens sometimes, and as a fellow dev it
+>>> really annoys me to no end when something is unreproducible. Things I have
+>>> tried to reproduce are just suspending, then detaching my keyboard and
+>>> attaching it again before resuming from suspend, but that doesn't trigger
+>>> the issue. Just about the only common thing I can find is time (after being
+>>> suspended for a long time, 12hours+, it seems to happen more frequently).
+>>>
+>>> One idea I've had is that because I use a keyboard shortcut to suspend
+>>> (`bindsym --release $mod+Control+Shift+s exec "systemctl suspend; i3lock"`
+>>> in my config, the --
+>>>
+>>
+>> nit: you should i3lock first, then suspend. That way, your screen is
+>> guaranteed to be locked in a race-free way when you resume. “i3lock &&
+>> systemctl” suspend should work.
+>>
+>>
+>>> release was me weeks ago trying to rectify the issue, but it still
+>>> persisted) i3wm is somehow holding onto the keyboard before flushing, but
+>>> then post-suspend, i3lock takes the keyboards focus, i3wm holds onto an old
+>>> un-flushed pointer to the keyboard (not sure if that is how that works) and
+>>> doesn't refresh it upon i3lock giving up focus.
+>>> From searching around in the i3 source code, seeing the line in
+>>> main.c:main() with the comment annotation
+>>>     /* Grab the keyboard to get all input */
+>>>     xcb_flush(conn);
+>>> And that function also occuring in click.c:route_click() (i.e. when I
+>>> click the workspaces in the status bar)
+>>>     xcb_flush(conn);
+>>> Maybe this is what is allowing the keyboard to work again. Is there some
+>>> way this could be run upon i3lock giving up focus / i3wm resuming focus?
+>>>
+>>> Any help in solving this would be much appreciated!
+>>>
+>>> Here is some information about my system:
+>>> Mouse: Razer Naga, (one with 12 buttons on side)
+>>> Keyboard: ducky shine 3 with mini usb cable for connection (issue has
+>>> occurred on my laptops internal keyboard also though)
+>>> Distro: Arch Linux
+>>> i3 Version: 4.11
+>>> Kernel version: 4.2.3-1-ARCH
+>>>
+>>> Cheers,
+>>> Ben Kaiser
+>>>
+>>
+>>
+>>
+>> --
+>> Best regards,
+>> Michael
+>>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151108/e3b53412/attachment.html>
+
+From garbytrash at gmail.com  Sun Nov  8 10:16:30 2015
+From: garbytrash at gmail.com (Zenny)
+Date: Sun, 8 Nov 2015 10:16:30 +0100
+Subject: [i3] binding the same key to revert the command?
+Message-ID: <CACuV5sDjOykLw_S-qW70cGVOgFrT6ARNX7QX32dDWEnXuvc3Nw@mail.gmail.com>
+
+Hi,
+
+I am trying to use a keybinding to pause a process temporily,
+
+bindsym $mod+p exec pkill -SIGSTOP <processname>
+
+But I could not figure out how to make pressing to same keybinding to
+restart the process?
+
+Currenlty I am using,
+
+bindsym $mod+c exec pkill -SIGCONT <processname>
+
+Instead, I want something like re-pressing $mod+p executes pkill
+-SIGCONT <processname>.
+
+Thanks!
+
+/z
+
+From admin at airblader.de  Sun Nov  8 10:30:56 2015
+From: admin at airblader.de (=?UTF-8?Q?Ingo_B=c3=bcrk?=)
+Date: Sun, 8 Nov 2015 04:30:56 -0500
+Subject: [i3] binding the same key to revert the command?
+In-Reply-To: <CACuV5sDjOykLw_S-qW70cGVOgFrT6ARNX7QX32dDWEnXuvc3Nw@mail.gmail.com>
+References: <CACuV5sDjOykLw_S-qW70cGVOgFrT6ARNX7QX32dDWEnXuvc3Nw@mail.gmail.com>
+Message-ID: <563F1650.5050009@airblader.de>
+
+Hi,
+
+one possible solution: save the following as /some/path/stopcont.sh and bind
+
+    bindsym $mod+p exec --no-startup-id /some/path/stopcont.sh <processname>
+
+Script:
+===========
+#!/usr/bin/env bash
+PROCESS=${1}
+FILE="/tmp/${PROCESS}.signal"
+
+if [[ -f "${FILE}" ]]; then
+  rm ${FILE}
+  pkill -SIGCONT ${PROCESS}
+else
+  touch ${FILE}
+  pkill -SIGSTOP ${PROCESS}
+fi
+===========
+
+This will, of course, assume that the process isn't paused by anything
+else as that would make it go out of sync. A better and more robust way
+would be to write the script such that it instead uses the information
+of /proc/<pid>/stat to check whether the process is currently paused. If
+you use a higher-level language such as Python, you can do this nicely
+instead of manually parsing the output. See [1] for some more information.
+
+[1]
+http://stackoverflow.com/questions/6021771/is-there-a-way-to-determine-if-a-linux-pid-is-paused-or-not
+
+
+Ingo
+
+On 11/08/2015 04:16 AM, Zenny wrote:
+> Hi,
+>
+> I am trying to use a keybinding to pause a process temporily,
+>
+> bindsym $mod+p exec pkill -SIGSTOP <processname>
+>
+> But I could not figure out how to make pressing to same keybinding to
+> restart the process?
+>
+> Currenlty I am using,
+>
+> bindsym $mod+c exec pkill -SIGCONT <processname>
+>
+> Instead, I want something like re-pressing $mod+p executes pkill
+> -SIGCONT <processname>.
+>
+> Thanks!
+>
+> /z
+
+
+From serge at vanginderachter.be  Sun Nov  8 11:12:29 2015
+From: serge at vanginderachter.be (Serge van Ginderachter)
+Date: Sun, 8 Nov 2015 11:12:29 +0100
+Subject: [i3] binding the same key to revert the command?
+In-Reply-To: <CACuV5sDjOykLw_S-qW70cGVOgFrT6ARNX7QX32dDWEnXuvc3Nw@mail.gmail.com>
+References: <CACuV5sDjOykLw_S-qW70cGVOgFrT6ARNX7QX32dDWEnXuvc3Nw@mail.gmail.com>
+Message-ID: <CAEhzMJDeKiOG3sfrrMPe75+raBtVbMk2KaDndrJgfnPaDJcWBw@mail.gmail.com>
+
+I have a script that does that, to pause dunst (whilst locking) and/or
+disabling the autolock screensaver (for a presentation mode).
+
+The trick is to be able to check for a state, which I do by using gtrayicon
+to visually show the current state, so the script can check whether to
+enable or disable the mode.
+
+See https://github.com/srvg/dotfiles/blob/master/bin/presentation-mode
+
+On 8 November 2015 at 10:16, Zenny <garbytrash at gmail.com> wrote:
+
+> Hi,
+>
+> I am trying to use a keybinding to pause a process temporily,
+>
+> bindsym $mod+p exec pkill -SIGSTOP <processname>
+>
+> But I could not figure out how to make pressing to same keybinding to
+> restart the process?
+>
+> Currenlty I am using,
+>
+> bindsym $mod+c exec pkill -SIGCONT <processname>
+>
+> Instead, I want something like re-pressing $mod+p executes pkill
+> -SIGCONT <processname>.
+>
+> Thanks!
+>
+> /z
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151108/c9e3219b/attachment.html>
+
+From michael at i3wm.org  Sun Nov  8 17:47:42 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 8 Nov 2015 17:47:42 +0100
+Subject: [i3] Weird keybinding issue after suspend
+In-Reply-To: <CAKV6X6xpDbHY1gY3Rod3sjkT2jDwnvoHt23jxxA4foVQ29j6SQ@mail.gmail.com>
+References: <CAKV6X6wU04fFqnn=mQ_7V1PZJ9j0Lj60W0XT=pSKoQV_ym8DNA@mail.gmail.com>
+ <CANnVG6nNoTxEQQr9wJwR+O0jAfySb6Un7OoiLxajKWv2L+68PQ@mail.gmail.com>
+ <CAKV6X6zBc=Ef+jdTYKizS_LcR2pJGv9AAqpwuARN2yWbGkB07A@mail.gmail.com>
+ <CAKV6X6xpDbHY1gY3Rod3sjkT2jDwnvoHt23jxxA4foVQ29j6SQ@mail.gmail.com>
+Message-ID: <CANnVG6mkD+vRaa19CkkXik-qF1Szs610O5gYCUgB0mWGE3gOMg@mail.gmail.com>
+
+On Sun, Nov 8, 2015 at 6:01 AM, Benjamin Kaiser <benjaminjkaiser at gmail.com>
+wrote:
+
+> So the issue popped up again, these were the steps I did to debug it:
+>
+> - jump to TTY3
+> - run: `DISAPLY=:1 setxkbmap | tee /tmp/setxkbmap.out` (not sure if I
+> should have been passing any arguments specifically)
+>
+
+I meant using e.g. “setxkbmap de” to set the keyboard layout. Also, I think
+you meant DISPLAY.
+
+
+> - observe there was no output
+> - jump back to TTY2, keyboard/keybindings still unresponsive in i3
+> - jump back to TTY2
+> - run `DISAPLY=:1 xev | tee /tmp/xev.out` (output starts spewing out, and
+> also to the file)
+> - jump back to TTY2, keyboard is now responsive to i3wm bindings
+> - jump back to TTY3 and kill xev
+>
+> Output in `/tmp/xev.out`: http://p.nnev.de/7524
+>
+> Hope this helps with tracking down what could be causing this, as I still
+> don't have much of a clue how to fix it.
+>
+> Cheers,
+> Ben Kaiser
+>
+> On Mon, 2 Nov 2015 at 20:54 Benjamin Kaiser <benjaminjkaiser at gmail.com>
+> wrote:
+>
+>> Thanks for the reply Michael,
+>>
+>> I had the issue happen again yesterday and ran `sudo
+>> libinput-debug-events`, then changed back to i3, run a bunch of shortcuts
+>> and pressed a bunch of keys (all of which did nothing) then changed back to
+>> the tty only to see that it was registering those keys being pressed.
+>>
+>> I'll try running `setxkbmap` and `xev` from a TTY next time the issue
+>> occurs to see if it fixes it / gives me any more information.
+>>
+>> Also another small thing I noticed. To get out of the situation I click
+>> the workspaces, but the keyboard only works if I click a different
+>> workspace the the one I am currently in, it doesn't do anything (keyboard
+>> still won't register shortcuts) if I click the current workspace.
+>>
+>> modified my i3config to that (i3lock then systemctl suspend), I think it
+>> was that at some point and the issue still occurred, but I'll try it out
+>> let you know if the issue happens again.
+>>
+>> Cheers,
+>> Ben Kaiser
+>>
+>> On Mon, 2 Nov 2015 at 19:00 Michael Stapelberg <michael at i3wm.org> wrote:
+>>
+>>> When this situation happens:
+>>>
+>>> 1. Does running xev(1) still show keyboard events?
+>>>
+>>> 2. Does using setxkbmap to set your layout make the problem go away?
+>>> That should force i3 to re-grab all keys.
+>>>
+>>> On Fri, Oct 30, 2015 at 12:38 PM, Benjamin Kaiser <
+>>> benjaminjkaiser at gmail.com> wrote:
+>>>
+>>>> Hello,
+>>>>
+>>>> I've got a really weird issue that's been bothering me for perhaps the
+>>>> last 6 months (before then it worked fine, perhaps could have been around
+>>>> when I switched to using my keyboard to suspend). Sometimes when I resume
+>>>> from suspend (I have i3lock launching at the same time as when I suspend) I
+>>>> can unlock my computer, but then no more keyboard events work. The keyboard
+>>>> remains active (lights on) and I can switch to a TTY, but none of the i3
+>>>> events fire. The only way I can fix it is to use the mouse (which is still
+>>>> working) to click on a workspace in the statusbar and then the keyboard
+>>>> responds again.
+>>>>
+>>>>  As mentioned above, it only happens sometimes, and as a fellow dev it
+>>>> really annoys me to no end when something is unreproducible. Things I have
+>>>> tried to reproduce are just suspending, then detaching my keyboard and
+>>>> attaching it again before resuming from suspend, but that doesn't trigger
+>>>> the issue. Just about the only common thing I can find is time (after being
+>>>> suspended for a long time, 12hours+, it seems to happen more frequently).
+>>>>
+>>>> One idea I've had is that because I use a keyboard shortcut to suspend
+>>>> (`bindsym --release $mod+Control+Shift+s exec "systemctl suspend; i3lock"`
+>>>> in my config, the --
+>>>>
+>>>
+>>> nit: you should i3lock first, then suspend. That way, your screen is
+>>> guaranteed to be locked in a race-free way when you resume. “i3lock &&
+>>> systemctl” suspend should work.
+>>>
+>>>
+>>>> release was me weeks ago trying to rectify the issue, but it still
+>>>> persisted) i3wm is somehow holding onto the keyboard before flushing, but
+>>>> then post-suspend, i3lock takes the keyboards focus, i3wm holds onto an old
+>>>> un-flushed pointer to the keyboard (not sure if that is how that works) and
+>>>> doesn't refresh it upon i3lock giving up focus.
+>>>> From searching around in the i3 source code, seeing the line in
+>>>> main.c:main() with the comment annotation
+>>>>     /* Grab the keyboard to get all input */
+>>>>     xcb_flush(conn);
+>>>> And that function also occuring in click.c:route_click() (i.e. when I
+>>>> click the workspaces in the status bar)
+>>>>     xcb_flush(conn);
+>>>> Maybe this is what is allowing the keyboard to work again. Is there
+>>>> some way this could be run upon i3lock giving up focus / i3wm resuming
+>>>> focus?
+>>>>
+>>>> Any help in solving this would be much appreciated!
+>>>>
+>>>> Here is some information about my system:
+>>>> Mouse: Razer Naga, (one with 12 buttons on side)
+>>>> Keyboard: ducky shine 3 with mini usb cable for connection (issue has
+>>>> occurred on my laptops internal keyboard also though)
+>>>> Distro: Arch Linux
+>>>> i3 Version: 4.11
+>>>> Kernel version: 4.2.3-1-ARCH
+>>>>
+>>>> Cheers,
+>>>> Ben Kaiser
+>>>>
+>>>
+>>>
+>>>
+>>> --
+>>> Best regards,
+>>> Michael
+>>>
+>>
+
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151108/a90ca5c9/attachment.html>
+
+From garbytrash at gmail.com  Sun Nov  8 19:03:14 2015
+From: garbytrash at gmail.com (Zenny)
+Date: Sun, 8 Nov 2015 19:03:14 +0100
+Subject: [i3] binding the same key to revert the command?
+In-Reply-To: <CAEhzMJDeKiOG3sfrrMPe75+raBtVbMk2KaDndrJgfnPaDJcWBw@mail.gmail.com>
+References: <CACuV5sDjOykLw_S-qW70cGVOgFrT6ARNX7QX32dDWEnXuvc3Nw@mail.gmail.com>
+ <CAEhzMJDeKiOG3sfrrMPe75+raBtVbMk2KaDndrJgfnPaDJcWBw@mail.gmail.com>
+Message-ID: <CACuV5sA+76L8e68yoZWDg05=WpN+jRCi62tbCjJ8gmVpqhTLDg@mail.gmail.com>
+
+Hi Sege,
+
+On 11/8/15, Serge van Ginderachter <serge at vanginderachter.be> wrote:
+> I have a script that does that, to pause dunst (whilst locking) and/or
+> disabling the autolock screensaver (for a presentation mode).
+>
+> The trick is to be able to check for a state, which I do by using gtrayicon
+> to visually show the current state, so the script can check whether to
+> enable or disable the mode.
+>
+> See https://github.com/srvg/dotfiles/blob/master/bin/presentation-mode
+
+Thanks for the input. Can you explain the usage in my case in particular.
+
+Cheers,
+/z
+
+>
+> On 8 November 2015 at 10:16, Zenny <garbytrash at gmail.com> wrote:
+>
+>> Hi,
+>>
+>> I am trying to use a keybinding to pause a process temporily,
+>>
+>> bindsym $mod+p exec pkill -SIGSTOP <processname>
+>>
+>> But I could not figure out how to make pressing to same keybinding to
+>> restart the process?
+>>
+>> Currenlty I am using,
+>>
+>> bindsym $mod+c exec pkill -SIGCONT <processname>
+>>
+>> Instead, I want something like re-pressing $mod+p executes pkill
+>> -SIGCONT <processname>.
+>>
+>> Thanks!
+>>
+>> /z
+>>
+>
+
+From joepvandelft at xs4all.nl  Sun Nov  8 23:22:44 2015
+From: joepvandelft at xs4all.nl (Joep van Delft)
+Date: Sun, 08 Nov 2015 23:22:44 +0100
+Subject: [i3] binding the same key to revert the command?
+In-Reply-To: <563F1650.5050009@airblader.de>
+References: <CACuV5sDjOykLw_S-qW70cGVOgFrT6ARNX7QX32dDWEnXuvc3Nw@mail.gmail.com>
+ <563F1650.5050009@airblader.de>
+Message-ID: <c0131d94cfadbd41ec5f2a1f283405d9@xs4all.nl>
+
+Elaborating on Ingo's hints: Something like this could be used to not to 
+have
+to maintain the state somewhere on disk:
+
+===========
+#!/usr/bin/env bash
+process_name=$1
+for pid in $(pgrep --exact $process_name); do
+     # Assumes there is no space in the command name
+     if   awk '$3=="T"{exit 1}' /proc/$pid/stat 2>/dev/null
+     then kill -SIGCONT $pid
+     else kill -SIGKILL $pid
+     fi
+done
+===========
+
+
+Kind regards,
+
+Joep
+
+
+Ingo Bürk schreef op 2015-11-08 10:30:
+> Hi,
+> 
+> one possible solution: save the following as /some/path/stopcont.sh and 
+> bind
+> 
+>     bindsym $mod+p exec --no-startup-id /some/path/stopcont.sh 
+> <processname>
+> 
+> Script:
+> ===========
+> #!/usr/bin/env bash
+> PROCESS=${1}
+> FILE="/tmp/${PROCESS}.signal"
+> 
+> if [[ -f "${FILE}" ]]; then
+>   rm ${FILE}
+>   pkill -SIGCONT ${PROCESS}
+> else
+>   touch ${FILE}
+>   pkill -SIGSTOP ${PROCESS}
+> fi
+> ===========
+> 
+> This will, of course, assume that the process isn't paused by anything
+> else as that would make it go out of sync. A better and more robust way
+> would be to write the script such that it instead uses the information
+> of /proc/<pid>/stat to check whether the process is currently paused. 
+> If
+> you use a higher-level language such as Python, you can do this nicely
+> instead of manually parsing the output. See [1] for some more 
+> information.
+> 
+> [1]
+> http://stackoverflow.com/questions/6021771/is-there-a-way-to-determine-if-a-linux-pid-is-paused-or-not
+> 
+> 
+> Ingo
+> 
+> On 11/08/2015 04:16 AM, Zenny wrote:
+>> Hi,
+>> 
+>> I am trying to use a keybinding to pause a process temporily,
+>> 
+>> bindsym $mod+p exec pkill -SIGSTOP <processname>
+>> 
+>> But I could not figure out how to make pressing to same keybinding to
+>> restart the process?
+>> 
+>> Currenlty I am using,
+>> 
+>> bindsym $mod+c exec pkill -SIGCONT <processname>
+>> 
+>> Instead, I want something like re-pressing $mod+p executes pkill
+>> -SIGCONT <processname>.
+>> 
+>> Thanks!
+>> 
+>> /z
+
+From admin at airblader.de  Sun Nov  8 23:25:50 2015
+From: admin at airblader.de (=?UTF-8?Q?Ingo_B=c3=bcrk?=)
+Date: Sun, 8 Nov 2015 17:25:50 -0500
+Subject: [i3] binding the same key to revert the command?
+In-Reply-To: <c0131d94cfadbd41ec5f2a1f283405d9@xs4all.nl>
+References: <CACuV5sDjOykLw_S-qW70cGVOgFrT6ARNX7QX32dDWEnXuvc3Nw@mail.gmail.com>
+ <563F1650.5050009@airblader.de> <c0131d94cfadbd41ec5f2a1f283405d9@xs4all.nl>
+Message-ID: <563FCBEE.7040303@airblader.de>
+
+Hi,
+
+sorry, my last email didn't go to the mailing list which I diidn't even
+notice until this email. Below is my previous email as a quote which
+also has a script using /proc/../stat. Never hurts to have multiple
+solutions :)
+> Hi,
+>
+> here's a script using /proc/.../stat. The usage is as before. The only
+> assumption now is that the process is running exactly once.
+>
+> ====
+> #!/usr/bin/env bash
+> PROCESS=${1}
+> STATE=$(cat /proc/$(pgrep ${PROCESS})/stat | awk -F' ' '{print $3}')
+>
+> [[ "${STATE}" = "T" ]] && pkill -SIGCONT ${PROCESS} || pkill -SIGSTOP
+> ${PROCESS}
+> =====
+
+
+
+On 11/08/2015 05:22 PM, Joep van Delft wrote:
+> Elaborating on Ingo's hints: Something like this could be used to not
+> to have
+> to maintain the state somewhere on disk:
+>
+> ===========
+> #!/usr/bin/env bash
+> process_name=$1
+> for pid in $(pgrep --exact $process_name); do
+>     # Assumes there is no space in the command name
+>     if   awk '$3=="T"{exit 1}' /proc/$pid/stat 2>/dev/null
+>     then kill -SIGCONT $pid
+>     else kill -SIGKILL $pid
+>     fi
+> done
+> ===========
+>
+>
+> Kind regards,
+>
+> Joep
+>
+>
+> Ingo Bürk schreef op 2015-11-08 10:30:
+>> Hi,
+>>
+>> one possible solution: save the following as /some/path/stopcont.sh
+>> and bind
+>>
+>>     bindsym $mod+p exec --no-startup-id /some/path/stopcont.sh
+>> <processname>
+>>
+>> Script:
+>> ===========
+>> #!/usr/bin/env bash
+>> PROCESS=${1}
+>> FILE="/tmp/${PROCESS}.signal"
+>>
+>> if [[ -f "${FILE}" ]]; then
+>>   rm ${FILE}
+>>   pkill -SIGCONT ${PROCESS}
+>> else
+>>   touch ${FILE}
+>>   pkill -SIGSTOP ${PROCESS}
+>> fi
+>> ===========
+>>
+>> This will, of course, assume that the process isn't paused by anything
+>> else as that would make it go out of sync. A better and more robust way
+>> would be to write the script such that it instead uses the information
+>> of /proc/<pid>/stat to check whether the process is currently paused. If
+>> you use a higher-level language such as Python, you can do this nicely
+>> instead of manually parsing the output. See [1] for some more
+>> information.
+>>
+>> [1]
+>> http://stackoverflow.com/questions/6021771/is-there-a-way-to-determine-if-a-linux-pid-is-paused-or-not
+>>
+>>
+>>
+>> Ingo
+>>
+>> On 11/08/2015 04:16 AM, Zenny wrote:
+>>> Hi,
+>>>
+>>> I am trying to use a keybinding to pause a process temporily,
+>>>
+>>> bindsym $mod+p exec pkill -SIGSTOP <processname>
+>>>
+>>> But I could not figure out how to make pressing to same keybinding to
+>>> restart the process?
+>>>
+>>> Currenlty I am using,
+>>>
+>>> bindsym $mod+c exec pkill -SIGCONT <processname>
+>>>
+>>> Instead, I want something like re-pressing $mod+p executes pkill
+>>> -SIGCONT <processname>.
+>>>
+>>> Thanks!
+>>>
+>>> /z
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151108/1235384e/attachment-0001.html>
+
+From benjaminjkaiser at gmail.com  Wed Nov 11 02:55:51 2015
+From: benjaminjkaiser at gmail.com (Benjamin Kaiser)
+Date: Wed, 11 Nov 2015 01:55:51 +0000
+Subject: [i3] Weird keybinding issue after suspend
+In-Reply-To: <CANnVG6mkD+vRaa19CkkXik-qF1Szs610O5gYCUgB0mWGE3gOMg@mail.gmail.com>
+References: <CAKV6X6wU04fFqnn=mQ_7V1PZJ9j0Lj60W0XT=pSKoQV_ym8DNA@mail.gmail.com>
+ <CANnVG6nNoTxEQQr9wJwR+O0jAfySb6Un7OoiLxajKWv2L+68PQ@mail.gmail.com>
+ <CAKV6X6zBc=Ef+jdTYKizS_LcR2pJGv9AAqpwuARN2yWbGkB07A@mail.gmail.com>
+ <CAKV6X6xpDbHY1gY3Rod3sjkT2jDwnvoHt23jxxA4foVQ29j6SQ@mail.gmail.com>
+ <CANnVG6mkD+vRaa19CkkXik-qF1Szs610O5gYCUgB0mWGE3gOMg@mail.gmail.com>
+Message-ID: <CAKV6X6x0NDoiciuwbExXrvG-5u_NDBQj3onbiZYrEGTgKbi7zA@mail.gmail.com>
+
+Okay I tried with `DISPLAY=:1 setxkbmap us` (wasn't 100% if us was what I
+wanted, it didn't print an error when I ran it) and then changed back to
+TTY2 (where i3 was loaded) and the keyboard was still unresponsive.
+
+And yes I meant DISPLAY, that's what I typed, I just copied it out wrong in
+the email.
+
+What commands can I run to list all input devices? Maybe that might help
+investigate things.
+Do you have any other ideas what could be causing it?
+
+Thanks again for your help!
+
+On Mon, 9 Nov 2015 at 03:48 Michael Stapelberg <michael at i3wm.org> wrote:
+
+> On Sun, Nov 8, 2015 at 6:01 AM, Benjamin Kaiser <benjaminjkaiser at gmail.com
+> > wrote:
+>
+>> So the issue popped up again, these were the steps I did to debug it:
+>>
+>> - jump to TTY3
+>> - run: `DISAPLY=:1 setxkbmap | tee /tmp/setxkbmap.out` (not sure if I
+>> should have been passing any arguments specifically)
+>>
+>
+> I meant using e.g. “setxkbmap de” to set the keyboard layout. Also, I
+> think you meant DISPLAY.
+>
+>
+>> - observe there was no output
+>> - jump back to TTY2, keyboard/keybindings still unresponsive in i3
+>> - jump back to TTY2
+>> - run `DISAPLY=:1 xev | tee /tmp/xev.out` (output starts spewing out,
+>> and also to the file)
+>> - jump back to TTY2, keyboard is now responsive to i3wm bindings
+>> - jump back to TTY3 and kill xev
+>>
+>> Output in `/tmp/xev.out`: http://p.nnev.de/7524
+>>
+>> Hope this helps with tracking down what could be causing this, as I still
+>> don't have much of a clue how to fix it.
+>>
+>> Cheers,
+>> Ben Kaiser
+>>
+>> On Mon, 2 Nov 2015 at 20:54 Benjamin Kaiser <benjaminjkaiser at gmail.com>
+>> wrote:
+>>
+>>> Thanks for the reply Michael,
+>>>
+>>> I had the issue happen again yesterday and ran `sudo
+>>> libinput-debug-events`, then changed back to i3, run a bunch of shortcuts
+>>> and pressed a bunch of keys (all of which did nothing) then changed back to
+>>> the tty only to see that it was registering those keys being pressed.
+>>>
+>>> I'll try running `setxkbmap` and `xev` from a TTY next time the issue
+>>> occurs to see if it fixes it / gives me any more information.
+>>>
+>>> Also another small thing I noticed. To get out of the situation I click
+>>> the workspaces, but the keyboard only works if I click a different
+>>> workspace the the one I am currently in, it doesn't do anything (keyboard
+>>> still won't register shortcuts) if I click the current workspace.
+>>>
+>>> modified my i3config to that (i3lock then systemctl suspend), I think it
+>>> was that at some point and the issue still occurred, but I'll try it out
+>>> let you know if the issue happens again.
+>>>
+>>> Cheers,
+>>> Ben Kaiser
+>>>
+>>> On Mon, 2 Nov 2015 at 19:00 Michael Stapelberg <michael at i3wm.org> wrote:
+>>>
+>>>> When this situation happens:
+>>>>
+>>>> 1. Does running xev(1) still show keyboard events?
+>>>>
+>>>> 2. Does using setxkbmap to set your layout make the problem go away?
+>>>> That should force i3 to re-grab all keys.
+>>>>
+>>>> On Fri, Oct 30, 2015 at 12:38 PM, Benjamin Kaiser <
+>>>> benjaminjkaiser at gmail.com> wrote:
+>>>>
+>>>>> Hello,
+>>>>>
+>>>>> I've got a really weird issue that's been bothering me for perhaps the
+>>>>> last 6 months (before then it worked fine, perhaps could have been around
+>>>>> when I switched to using my keyboard to suspend). Sometimes when I resume
+>>>>> from suspend (I have i3lock launching at the same time as when I suspend) I
+>>>>> can unlock my computer, but then no more keyboard events work. The keyboard
+>>>>> remains active (lights on) and I can switch to a TTY, but none of the i3
+>>>>> events fire. The only way I can fix it is to use the mouse (which is still
+>>>>> working) to click on a workspace in the statusbar and then the keyboard
+>>>>> responds again.
+>>>>>
+>>>>>  As mentioned above, it only happens sometimes, and as a fellow dev it
+>>>>> really annoys me to no end when something is unreproducible. Things I have
+>>>>> tried to reproduce are just suspending, then detaching my keyboard and
+>>>>> attaching it again before resuming from suspend, but that doesn't trigger
+>>>>> the issue. Just about the only common thing I can find is time (after being
+>>>>> suspended for a long time, 12hours+, it seems to happen more frequently).
+>>>>>
+>>>>> One idea I've had is that because I use a keyboard shortcut to suspend
+>>>>> (`bindsym --release $mod+Control+Shift+s exec "systemctl suspend; i3lock"`
+>>>>> in my config, the --
+>>>>>
+>>>>
+>>>> nit: you should i3lock first, then suspend. That way, your screen is
+>>>> guaranteed to be locked in a race-free way when you resume. “i3lock &&
+>>>> systemctl” suspend should work.
+>>>>
+>>>>
+>>>>> release was me weeks ago trying to rectify the issue, but it still
+>>>>> persisted) i3wm is somehow holding onto the keyboard before flushing, but
+>>>>> then post-suspend, i3lock takes the keyboards focus, i3wm holds onto an old
+>>>>> un-flushed pointer to the keyboard (not sure if that is how that works) and
+>>>>> doesn't refresh it upon i3lock giving up focus.
+>>>>> From searching around in the i3 source code, seeing the line in
+>>>>> main.c:main() with the comment annotation
+>>>>>     /* Grab the keyboard to get all input */
+>>>>>     xcb_flush(conn);
+>>>>> And that function also occuring in click.c:route_click() (i.e. when I
+>>>>> click the workspaces in the status bar)
+>>>>>     xcb_flush(conn);
+>>>>> Maybe this is what is allowing the keyboard to work again. Is there
+>>>>> some way this could be run upon i3lock giving up focus / i3wm resuming
+>>>>> focus?
+>>>>>
+>>>>> Any help in solving this would be much appreciated!
+>>>>>
+>>>>> Here is some information about my system:
+>>>>> Mouse: Razer Naga, (one with 12 buttons on side)
+>>>>> Keyboard: ducky shine 3 with mini usb cable for connection (issue has
+>>>>> occurred on my laptops internal keyboard also though)
+>>>>> Distro: Arch Linux
+>>>>> i3 Version: 4.11
+>>>>> Kernel version: 4.2.3-1-ARCH
+>>>>>
+>>>>> Cheers,
+>>>>> Ben Kaiser
+>>>>>
+>>>>
+>>>>
+>>>>
+>>>> --
+>>>> Best regards,
+>>>> Michael
+>>>>
+>>>
+>
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151111/0d67bd59/attachment.html>
+
+From michael at i3wm.org  Wed Nov 11 08:45:45 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 11 Nov 2015 08:45:45 +0100
+Subject: [i3] Weird keybinding issue after suspend
+In-Reply-To: <CAKV6X6x0NDoiciuwbExXrvG-5u_NDBQj3onbiZYrEGTgKbi7zA@mail.gmail.com>
+References: <CAKV6X6wU04fFqnn=mQ_7V1PZJ9j0Lj60W0XT=pSKoQV_ym8DNA@mail.gmail.com>
+ <CANnVG6nNoTxEQQr9wJwR+O0jAfySb6Un7OoiLxajKWv2L+68PQ@mail.gmail.com>
+ <CAKV6X6zBc=Ef+jdTYKizS_LcR2pJGv9AAqpwuARN2yWbGkB07A@mail.gmail.com>
+ <CAKV6X6xpDbHY1gY3Rod3sjkT2jDwnvoHt23jxxA4foVQ29j6SQ@mail.gmail.com>
+ <CANnVG6mkD+vRaa19CkkXik-qF1Szs610O5gYCUgB0mWGE3gOMg@mail.gmail.com>
+ <CAKV6X6x0NDoiciuwbExXrvG-5u_NDBQj3onbiZYrEGTgKbi7zA@mail.gmail.com>
+Message-ID: <CANnVG6m32UqZshJ1jTJVTZD1-dD+A-Oc3RqROQsaAb98Qp3A2w@mail.gmail.com>
+
+If you want to be 100% sure, run `DISPLAY=:1 setxkbmap us; DISPLAY=:1
+setxkbmap de; DISPLAY=:1 setxkbmap us`. If afterwards it still doesn’t
+work, chances are very high that it is NOT an i3 bug.
+
+See xinput(1) for your input devices.
+
+On Wed, Nov 11, 2015 at 2:55 AM, Benjamin Kaiser <benjaminjkaiser at gmail.com>
+wrote:
+
+> Okay I tried with `DISPLAY=:1 setxkbmap us` (wasn't 100% if us was what I
+> wanted, it didn't print an error when I ran it) and then changed back to
+> TTY2 (where i3 was loaded) and the keyboard was still unresponsive.
+>
+> And yes I meant DISPLAY, that's what I typed, I just copied it out wrong
+> in the email.
+>
+> What commands can I run to list all input devices? Maybe that might help
+> investigate things.
+> Do you have any other ideas what could be causing it?
+>
+> Thanks again for your help!
+>
+> On Mon, 9 Nov 2015 at 03:48 Michael Stapelberg <michael at i3wm.org> wrote:
+>
+>> On Sun, Nov 8, 2015 at 6:01 AM, Benjamin Kaiser <
+>> benjaminjkaiser at gmail.com> wrote:
+>>
+>>> So the issue popped up again, these were the steps I did to debug it:
+>>>
+>>> - jump to TTY3
+>>> - run: `DISAPLY=:1 setxkbmap | tee /tmp/setxkbmap.out` (not sure if I
+>>> should have been passing any arguments specifically)
+>>>
+>>
+>> I meant using e.g. “setxkbmap de” to set the keyboard layout. Also, I
+>> think you meant DISPLAY.
+>>
+>>
+>>> - observe there was no output
+>>> - jump back to TTY2, keyboard/keybindings still unresponsive in i3
+>>> - jump back to TTY2
+>>> - run `DISAPLY=:1 xev | tee /tmp/xev.out` (output starts spewing out,
+>>> and also to the file)
+>>> - jump back to TTY2, keyboard is now responsive to i3wm bindings
+>>> - jump back to TTY3 and kill xev
+>>>
+>>> Output in `/tmp/xev.out`: http://p.nnev.de/7524
+>>>
+>>> Hope this helps with tracking down what could be causing this, as I
+>>> still don't have much of a clue how to fix it.
+>>>
+>>> Cheers,
+>>> Ben Kaiser
+>>>
+>>> On Mon, 2 Nov 2015 at 20:54 Benjamin Kaiser <benjaminjkaiser at gmail.com>
+>>> wrote:
+>>>
+>>>> Thanks for the reply Michael,
+>>>>
+>>>> I had the issue happen again yesterday and ran `sudo
+>>>> libinput-debug-events`, then changed back to i3, run a bunch of shortcuts
+>>>> and pressed a bunch of keys (all of which did nothing) then changed back to
+>>>> the tty only to see that it was registering those keys being pressed.
+>>>>
+>>>> I'll try running `setxkbmap` and `xev` from a TTY next time the issue
+>>>> occurs to see if it fixes it / gives me any more information.
+>>>>
+>>>> Also another small thing I noticed. To get out of the situation I click
+>>>> the workspaces, but the keyboard only works if I click a different
+>>>> workspace the the one I am currently in, it doesn't do anything (keyboard
+>>>> still won't register shortcuts) if I click the current workspace.
+>>>>
+>>>> modified my i3config to that (i3lock then systemctl suspend), I think
+>>>> it was that at some point and the issue still occurred, but I'll try it out
+>>>> let you know if the issue happens again.
+>>>>
+>>>> Cheers,
+>>>> Ben Kaiser
+>>>>
+>>>> On Mon, 2 Nov 2015 at 19:00 Michael Stapelberg <michael at i3wm.org>
+>>>> wrote:
+>>>>
+>>>>> When this situation happens:
+>>>>>
+>>>>> 1. Does running xev(1) still show keyboard events?
+>>>>>
+>>>>> 2. Does using setxkbmap to set your layout make the problem go away?
+>>>>> That should force i3 to re-grab all keys.
+>>>>>
+>>>>> On Fri, Oct 30, 2015 at 12:38 PM, Benjamin Kaiser <
+>>>>> benjaminjkaiser at gmail.com> wrote:
+>>>>>
+>>>>>> Hello,
+>>>>>>
+>>>>>> I've got a really weird issue that's been bothering me for perhaps
+>>>>>> the last 6 months (before then it worked fine, perhaps could have been
+>>>>>> around when I switched to using my keyboard to suspend). Sometimes when I
+>>>>>> resume from suspend (I have i3lock launching at the same time as when I
+>>>>>> suspend) I can unlock my computer, but then no more keyboard events work.
+>>>>>> The keyboard remains active (lights on) and I can switch to a TTY, but none
+>>>>>> of the i3 events fire. The only way I can fix it is to use the mouse (which
+>>>>>> is still working) to click on a workspace in the statusbar and then the
+>>>>>> keyboard responds again.
+>>>>>>
+>>>>>>  As mentioned above, it only happens sometimes, and as a fellow dev
+>>>>>> it really annoys me to no end when something is unreproducible. Things I
+>>>>>> have tried to reproduce are just suspending, then detaching my keyboard and
+>>>>>> attaching it again before resuming from suspend, but that doesn't trigger
+>>>>>> the issue. Just about the only common thing I can find is time (after being
+>>>>>> suspended for a long time, 12hours+, it seems to happen more frequently).
+>>>>>>
+>>>>>> One idea I've had is that because I use a keyboard shortcut to
+>>>>>> suspend (`bindsym --release $mod+Control+Shift+s exec "systemctl suspend;
+>>>>>> i3lock"` in my config, the --
+>>>>>>
+>>>>>
+>>>>> nit: you should i3lock first, then suspend. That way, your screen is
+>>>>> guaranteed to be locked in a race-free way when you resume. “i3lock &&
+>>>>> systemctl” suspend should work.
+>>>>>
+>>>>>
+>>>>>> release was me weeks ago trying to rectify the issue, but it still
+>>>>>> persisted) i3wm is somehow holding onto the keyboard before flushing, but
+>>>>>> then post-suspend, i3lock takes the keyboards focus, i3wm holds onto an old
+>>>>>> un-flushed pointer to the keyboard (not sure if that is how that works) and
+>>>>>> doesn't refresh it upon i3lock giving up focus.
+>>>>>> From searching around in the i3 source code, seeing the line in
+>>>>>> main.c:main() with the comment annotation
+>>>>>>     /* Grab the keyboard to get all input */
+>>>>>>     xcb_flush(conn);
+>>>>>> And that function also occuring in click.c:route_click() (i.e. when I
+>>>>>> click the workspaces in the status bar)
+>>>>>>     xcb_flush(conn);
+>>>>>> Maybe this is what is allowing the keyboard to work again. Is there
+>>>>>> some way this could be run upon i3lock giving up focus / i3wm resuming
+>>>>>> focus?
+>>>>>>
+>>>>>> Any help in solving this would be much appreciated!
+>>>>>>
+>>>>>> Here is some information about my system:
+>>>>>> Mouse: Razer Naga, (one with 12 buttons on side)
+>>>>>> Keyboard: ducky shine 3 with mini usb cable for connection (issue has
+>>>>>> occurred on my laptops internal keyboard also though)
+>>>>>> Distro: Arch Linux
+>>>>>> i3 Version: 4.11
+>>>>>> Kernel version: 4.2.3-1-ARCH
+>>>>>>
+>>>>>> Cheers,
+>>>>>> Ben Kaiser
+>>>>>>
+>>>>>
+>>>>>
+>>>>>
+>>>>> --
+>>>>> Best regards,
+>>>>> Michael
+>>>>>
+>>>>
+>>
+>>
+>> --
+>> Best regards,
+>> Michael
+>>
+>
+
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151111/5ab1b7f1/attachment-0001.html>
+
+From g.ritter at herts.ac.uk  Fri Nov 13 14:33:29 2015
+From: g.ritter at herts.ac.uk (Georg Ritter)
+Date: Fri, 13 Nov 2015 13:33:29 +0000
+Subject: [i3] menu bar missing, qt5 application linux, known issue?
+Message-ID: <5645E6A9.8050801@herts.ac.uk>
+
+Hi everybody,
+
+I was wondering, before investigating further, if the following is a
+known issue:
+
+Some applications built using qt5 do not initialize the menu bar at the
+top of the window (the one with menu entries "File", "Edit", etc.) when
+they are opened in i3 (they do in other wm-s). Everything else such as
+docking tools, app-child windows, etc. show up correctly.
+
+This is i3-wm version 4.7.2-1 on Ubuntu 14.04.3 LTS.
+
+It is unclear to me if this is a qt5 or i3 problem, so I ask here first,
+as is seems likely somebody has seen this before.
+
+	Georg
+
+From mattator at gmail.com  Fri Nov 13 22:21:45 2015
+From: mattator at gmail.com (Matt)
+Date: Fri, 13 Nov 2015 22:21:45 +0100
+Subject: [i3] menu bar missing, qt5 application linux, known issue?
+In-Reply-To: <5645E6A9.8050801@herts.ac.uk>
+References: <5645E6A9.8050801@herts.ac.uk>
+Message-ID: <CADHp1Nw654=39-0aBamk4ENzCRj=HJ1UzE3fhgDFTudw6XDwJA@mail.gmail.com>
+
+Hi,
+
+I had a similar problem with zeal. See teh warning at
+https://zealdocs.org/download.html:
+"Attention non-Unity users! Due to a bug in appmenu-qt5 package Zeal
+main menu might be missing on desktop environments other than Unity. A
+simple solution is to remove appmenu-qt5 package from your system. "
+Hope that helps
+
+2015-11-13 14:33 GMT+01:00 Georg Ritter <g.ritter at herts.ac.uk>:
+> Hi everybody,
+>
+> I was wondering, before investigating further, if the following is a
+> known issue:
+>
+> Some applications built using qt5 do not initialize the menu bar at the
+> top of the window (the one with menu entries "File", "Edit", etc.) when
+> they are opened in i3 (they do in other wm-s). Everything else such as
+> docking tools, app-child windows, etc. show up correctly.
+>
+> This is i3-wm version 4.7.2-1 on Ubuntu 14.04.3 LTS.
+>
+> It is unclear to me if this is a qt5 or i3 problem, so I ask here first,
+> as is seems likely somebody has seen this before.
+>
+>         Georg
+
+From garbytrash at gmail.com  Sun Nov 15 09:47:47 2015
+From: garbytrash at gmail.com (Zenny)
+Date: Sun, 15 Nov 2015 09:47:47 +0100
+Subject: [i3] full screencapture with xwd not working only in i3
+Message-ID: <CACuV5sA4Q9AvNOAomMkegHRRo6BsxHkXzOcWSNUTOxu-2pAdVg@mail.gmail.com>
+
+Hi,
+
+I am having problem to take screenshot with xwd*** only in a full
+screenshot mode (but selective screenshot works). This only happens
+with i3, but not with other window managers. Please find the log
+below, fyi.
+
+
+***PS: I am aware of other tools like scrot, maim and what not, but I
+need this specific xwd to capture a virtual screen running in a
+frambuffer with xvfb which others do not support, if you have any
+tools that can screencapture a virtual x server, let me know.
+Apprexciate that.
+
+
+USER at MACHINE:~/Downloads/xwd$ xwd -root -out i3screenshot_xwd.xwd
+X Error of failed request:  BadColor (invalid Colormap parameter)
+  Major opcode of failed request:  91 (X_QueryColors)
+  Resource id in failed request:  0x0
+  Serial number of failed request:  166
+  Current serial number in output stream:  166
+USER at MACHINE:~/Downloads/xwd$ xwd > i3screenshot_xwd_frame.xwd
+USER at MACHINE:~/Downloads/xwd$ ls -la i3screenshot*.xwd
+-rw-rw-r-- 1 USER USER 3995469 Nov 15 08:33 i3screenshot_xwd_frame.xwd
+-rw-rw-r-- 1 USER USER       0 Nov 15 08:33 i3screenshot_xwd.xwd
+
+Any inputs appreciated!
+
+Cheers.
+/z
+
+From admin at airblader.de  Sun Nov 15 13:04:41 2015
+From: admin at airblader.de (=?UTF-8?Q?Ingo_B=c3=bcrk?=)
+Date: Sun, 15 Nov 2015 13:04:41 +0100
+Subject: [i3] full screencapture with xwd not working only in i3
+In-Reply-To: <CACuV5sA4Q9AvNOAomMkegHRRo6BsxHkXzOcWSNUTOxu-2pAdVg@mail.gmail.com>
+References: <CACuV5sA4Q9AvNOAomMkegHRRo6BsxHkXzOcWSNUTOxu-2pAdVg@mail.gmail.com>
+Message-ID: <564874D9.8050706@airblader.de>
+
+Hi,
+
+the command works fine for me. What version if i3 are you running? Is
+your Xorg up to date?
+Also, judging from the xwd source code, maybe you can try adding
+"-icmap" to the arguments.
+
+
+Ingo
+
+On 11/15/2015 09:47 AM, Zenny wrote:
+> Hi,
+>
+> I am having problem to take screenshot with xwd*** only in a full
+> screenshot mode (but selective screenshot works). This only happens
+> with i3, but not with other window managers. Please find the log
+> below, fyi.
+>
+>
+> ***PS: I am aware of other tools like scrot, maim and what not, but I
+> need this specific xwd to capture a virtual screen running in a
+> frambuffer with xvfb which others do not support, if you have any
+> tools that can screencapture a virtual x server, let me know.
+> Apprexciate that.
+>
+>
+> USER at MACHINE:~/Downloads/xwd$ xwd -root -out i3screenshot_xwd.xwd
+> X Error of failed request:  BadColor (invalid Colormap parameter)
+>   Major opcode of failed request:  91 (X_QueryColors)
+>   Resource id in failed request:  0x0
+>   Serial number of failed request:  166
+>   Current serial number in output stream:  166
+> USER at MACHINE:~/Downloads/xwd$ xwd > i3screenshot_xwd_frame.xwd
+> USER at MACHINE:~/Downloads/xwd$ ls -la i3screenshot*.xwd
+> -rw-rw-r-- 1 USER USER 3995469 Nov 15 08:33 i3screenshot_xwd_frame.xwd
+> -rw-rw-r-- 1 USER USER       0 Nov 15 08:33 i3screenshot_xwd.xwd
+>
+> Any inputs appreciated!
+>
+> Cheers.
+> /z
+
+
+From garbytrash at gmail.com  Sun Nov 15 14:11:18 2015
+From: garbytrash at gmail.com (Zenny)
+Date: Sun, 15 Nov 2015 14:11:18 +0100
+Subject: [i3] full screencapture with xwd not working only in i3
+In-Reply-To: <564874D9.8050706@airblader.de>
+References: <CACuV5sA4Q9AvNOAomMkegHRRo6BsxHkXzOcWSNUTOxu-2pAdVg@mail.gmail.com>
+ <564874D9.8050706@airblader.de>
+Message-ID: <CACuV5sB3MJ9ioUK5Yv_id=HurNswrxvw7-nfLX75Qfa2TSM5PA@mail.gmail.com>
+
+On 11/15/15, Ingo Bürk <admin at airblader.de> wrote:
+> Hi,
+>
+> the command works fine for me. What version if i3 are you running?
+ii  i3
+1:201510302301+git36-minos~ubuntu14.04.1                    amd64
+  metapackage (i3 window manager, screen locker, menu, statusbar)
+ii  i3-wm
+1:201510302301+git36-minos~ubuntu14.04.1                    amd64
+  improved dynamic tiling window manager
+ii  i3lock
+1:201502121131+git3-minos~ubuntu14.04.1                     amd64
+  improved screen locker
+ii  i3status                                    2.9-2~~trusty1
+                                     amd64        Generates a status
+line for dzen2, xmobar or i3bar
+
+> Is
+> your Xorg up to date?
+
+For Ubuntu 14.04, yes!
+
+ii  xserver-xorg                                1:7.7+1ubuntu8.1
+                                     amd64        X.Org X server
+
+> Also, judging from the xwd source code, maybe you can try adding
+> "-icmap" to the arguments.
+
+I shall try with that flag. however it works fine with other WMs except i3.
+>
+>
+> Ingo
+>
+> On 11/15/2015 09:47 AM, Zenny wrote:
+>> Hi,
+>>
+>> I am having problem to take screenshot with xwd*** only in a full
+>> screenshot mode (but selective screenshot works). This only happens
+>> with i3, but not with other window managers. Please find the log
+>> below, fyi.
+>>
+>>
+>> ***PS: I am aware of other tools like scrot, maim and what not, but I
+>> need this specific xwd to capture a virtual screen running in a
+>> frambuffer with xvfb which others do not support, if you have any
+>> tools that can screencapture a virtual x server, let me know.
+>> Apprexciate that.
+>>
+>>
+>> USER at MACHINE:~/Downloads/xwd$ xwd -root -out i3screenshot_xwd.xwd
+>> X Error of failed request:  BadColor (invalid Colormap parameter)
+>>   Major opcode of failed request:  91 (X_QueryColors)
+>>   Resource id in failed request:  0x0
+>>   Serial number of failed request:  166
+>>   Current serial number in output stream:  166
+>> USER at MACHINE:~/Downloads/xwd$ xwd > i3screenshot_xwd_frame.xwd
+>> USER at MACHINE:~/Downloads/xwd$ ls -la i3screenshot*.xwd
+>> -rw-rw-r-- 1 USER USER 3995469 Nov 15 08:33 i3screenshot_xwd_frame.xwd
+>> -rw-rw-r-- 1 USER USER       0 Nov 15 08:33 i3screenshot_xwd.xwd
+>>
+>> Any inputs appreciated!
+>>
+>> Cheers.
+>> /z
+>
+>
+
+From g.ritter at herts.ac.uk  Mon Nov 16 12:19:12 2015
+From: g.ritter at herts.ac.uk (Georg Ritter)
+Date: Mon, 16 Nov 2015 11:19:12 +0000
+Subject: [i3] menu bar missing, qt5 application linux,
+	known issue? SOLVED
+In-Reply-To: <CADHp1Nw654=39-0aBamk4ENzCRj=HJ1UzE3fhgDFTudw6XDwJA@mail.gmail.com>
+References: <5645E6A9.8050801@herts.ac.uk>
+ <CADHp1Nw654=39-0aBamk4ENzCRj=HJ1UzE3fhgDFTudw6XDwJA@mail.gmail.com>
+Message-ID: <5649BBB0.40608@herts.ac.uk>
+
+Dear Matt,
+
+> I had a similar problem with zeal. See teh warning at
+> https://zealdocs.org/download.html:
+> "Attention non-Unity users! Due to a bug in appmenu-qt5 package Zeal
+> main menu might be missing on desktop environments other than Unity. A
+> simple solution is to remove appmenu-qt5 package from your system. "
+> Hope that helps
+
+indeed, removing the package:
+
+appmenu-qt5 (0.3.0+14.04.20140415-0ubuntu1)
+
+fixes the problem (on Ubuntu 14.04.3 LTS). Great!
+
+	Georg
+
+PS: simple test case which reproduces the problem:
+http://doc.qt.io/qt-5/qtwidgets-mainwindows-application-example.html
+
+
+> 
+> 2015-11-13 14:33 GMT+01:00 Georg Ritter <g.ritter at herts.ac.uk>:
+>> Hi everybody,
+>>
+>> I was wondering, before investigating further, if the following is a
+>> known issue:
+>>
+>> Some applications built using qt5 do not initialize the menu bar at the
+>> top of the window (the one with menu entries "File", "Edit", etc.) when
+>> they are opened in i3 (they do in other wm-s). Everything else such as
+>> docking tools, app-child windows, etc. show up correctly.
+>>
+>> This is i3-wm version 4.7.2-1 on Ubuntu 14.04.3 LTS.
+>>
+>> It is unclear to me if this is a qt5 or i3 problem, so I ask here first,
+>> as is seems likely somebody has seen this before.
+>>
+>>         Georg
+
+From michael at i3wm.org  Fri Nov 20 09:37:05 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 20 Nov 2015 09:37:05 +0100
+Subject: [i3] [meta] Migrating mailing lists to freelists.org
+Message-ID: <CANnVG6kV9eBoyHxf_h4XEXA7YCPtomhE=B3vJcg3cE_bO5Cr=w@mail.gmail.com>
+
+Hey,
+
+For the last 6 years, I have hosted the i3-announce and i3-discuss mailing
+lists myself. Now, I’m looking to retire the server which hosts these lists
+without a replacement — there’s nothing exciting about hosting a mailman
+instance, it’s just work.
+
+Hence, I’ve decided to migrate the i3-announce and i3-discuss mailing lists
+to freelists.org, who have agreed to host these lists (thanks!).
+
+All subscribers and the archives will be migrated, so you do not need to
+re-subscribe. What you might need to change are filters (as the list-id
+will change) and the address to which you will send emails in order to post
+to the lists. The subjects will stay the same.
+
+The i3-announce list is already set up, see
+https://www.freelists.org/list/i3-announce
+The i3-discuss list will follow early next week.
+
+I will let you know once the migration is done via a post on the new lists.
+
+If you have any significant concerns about this, please let me know in a
+private email thread. In case you do not want to be on either of the lists
+anymore, please unsubscribe now.
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151120/2017f8f4/attachment.html>
+

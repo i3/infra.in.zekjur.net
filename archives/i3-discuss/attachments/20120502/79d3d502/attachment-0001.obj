@@ -1,0 +1,137 @@
+From 3b5db20e55f016d24c778a1e9d0bb0f79e4ceaac Mon Sep 17 00:00:00 2001
+From: darkraven <drdarkraven@gmail.com>
+Date: Wed, 2 May 2012 23:30:22 +0800
+Subject: [PATCH 4/5] Queue outward events up while processing command.
+
+	Avoid potential race conditions.
+---
+ include/ipc.h         |    8 ++++++++
+ src/commands_parser.c |    3 +++
+ src/ipc.c             |   38 +++++++++++++++++++++++++++++++++++---
+ 3 files changed, 46 insertions(+), 3 deletions(-)
+
+diff --git a/include/ipc.h b/include/ipc.h
+index 9b59fb0..f7b382d 100644
+--- a/include/ipc.h
++++ b/include/ipc.h
+@@ -32,6 +32,12 @@ typedef struct ipc_client {
+         TAILQ_ENTRY(ipc_client) clients;
+ } ipc_client;
+ 
++typedef struct ipc_queue {
++    char *event, *payload;
++    uint32_t message_type;
++    SIMPLEQ_ENTRY(ipc_queue) items;
++} ipc_queue;
++
+ /*
+  * Callback type for the different message types.
+  *
+@@ -71,6 +77,8 @@ int ipc_create_socket(const char *filename);
+  * and subscribed to this kind of event.
+  *
+  */
++void ipc_unqueue_event();
++void ipc_queue_event();
+ void ipc_send_event(const char *event, uint32_t message_type, const char *payload);
+ 
+ /**
+diff --git a/src/commands_parser.c b/src/commands_parser.c
+index acffde1..24779ac 100644
+--- a/src/commands_parser.c
++++ b/src/commands_parser.c
+@@ -412,6 +412,7 @@ struct CommandResult *parse_command(const char *input) {
+ 
+ void run_command(const char *input, int fd) {
+     x_mask_event_mask(XCB_NONE);
++    ipc_queue_event();
+ 
+     struct CommandResult *cmd_output = parse_command(input);
+     if (cmd_output->needs_tree_render)
+@@ -426,6 +427,8 @@ void run_command(const char *input, int fd) {
+                          (const uint8_t*)cmd_output->json_output);
+     }
+ 
++    ipc_unqueue_event();
++
+     free(cmd_output->json_output);
+ }
+ 
+diff --git a/src/ipc.c b/src/ipc.c
+index df8d233..63e3989 100644
+--- a/src/ipc.c
++++ b/src/ipc.c
+@@ -19,12 +19,14 @@
+ #include <yajl/yajl_version.h>
+ 
+ char *current_socketpath = NULL;
++bool ipc_is_queued = false;
+ 
+ /* Shorter names for all those yajl_gen_* functions */
+ #define y(x, ...) yajl_gen_ ## x (gen, ##__VA_ARGS__)
+ #define ystr(str) yajl_gen_string(gen, (unsigned char*)str, strlen(str))
+ 
+ TAILQ_HEAD(ipc_client_head, ipc_client) all_clients = TAILQ_HEAD_INITIALIZER(all_clients);
++SIMPLEQ_HEAD(ipc_queue_head, ipc_queue) message_queue = SIMPLEQ_HEAD_INITIALIZER(message_queue);
+ 
+ /*
+  * Puts the given socket file descriptor into non-blocking mode or dies if
+@@ -68,13 +70,12 @@ static bool mkdirp(const char *path) {
+ 
+     return result;
+ }
+-
+ /*
+  * Sends the specified event to all IPC clients which are currently connected
+  * and subscribed to this kind of event.
+  *
+  */
+-void ipc_send_event(const char *event, uint32_t message_type, const char *payload) {
++static void ipc_send_event_unqueue(const char *event, uint32_t message_type, const char *payload) {
+     ipc_client *current;
+     TAILQ_FOREACH(current, &all_clients, clients) {
+         /* see if this client is interested in this event */
+@@ -91,8 +92,39 @@ void ipc_send_event(const char *event, uint32_t message_type, const char *payloa
+         ipc_send_message(current->fd, strlen(payload), message_type, (const uint8_t*)payload);
+     }
+ }
++static void ipc_enqueue_event(const char *event, uint32_t message_type, const char *payload) {
++    ipc_queue *new_msg = smalloc(sizeof(ipc_queue));
++    new_msg->event = sstrdup(event);
++    new_msg->message_type = message_type;
++    new_msg->payload = sstrdup(payload);
++    SIMPLEQ_INSERT_TAIL(&message_queue, new_msg, items);
++}
++static void ipc_drain_queue() {
++    ipc_queue *current;
++    while(!SIMPLEQ_EMPTY(&message_queue)){
++        current = SIMPLEQ_FIRST(&message_queue);
++        ipc_send_event_unqueue(current->event, current->message_type, current->payload);
++        free(current->event);
++        free(current->payload);
++        SIMPLEQ_REMOVE_HEAD(&message_queue, items);
++        free(current);
++    }
++}
++void ipc_queue_event() {
++    ipc_is_queued = true;
++}
++void ipc_unqueue_event() {
++    ipc_is_queued = false;
++    ipc_drain_queue();
++}
++void ipc_send_event(const char *event, uint32_t message_type, const char *payload) {
++    if (ipc_is_queued)
++        ipc_enqueue_event(event, message_type, payload);
++    else
++        ipc_send_event_unqueue(event, message_type, payload);
++}
+ 
+-/*
++/*const char *event, uint32_t message_type, const char *payload
+  * Calls shutdown() on each socket and closes it. This function to be called
+  * when exiting or restarting only!
+  *
+-- 
+1.7.10
+

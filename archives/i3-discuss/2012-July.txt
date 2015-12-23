@@ -1,0 +1,2749 @@
+From drdarkraven at gmail.com  Sun Jul  1 09:28:51 2012
+From: drdarkraven at gmail.com (DR)
+Date: Sun, 1 Jul 2012 15:28:51 +0800
+Subject: [i3] [PATCH] Block outward events while processing commands.
+In-Reply-To: <20120630170526.16509.25764@midna.zekjur.net>
+References: <CAMJW5=3NGE=beZ6wzHhk0_3Xm6CX0vCAr-r3VzKZuUYrHzy_Uw@mail.gmail.com>
+ <20120624125327.1909.67106@midna.zekjur.net>
+ <CAMJW5=1aYhR5W0xVJF_iErBR0nHdLMxQriRonjbpHDiv-5qRLQ@mail.gmail.com>
+ <CANVYNa8YvTAMTHdG+D_Lt1S+wN1YPGF6EafakrEpSmGCPM7_og@mail.gmail.com>
+ <CAMJW5=1DPhJX3wsZ9uDNA1s8iVCjLV597L+5YfnXChhArh-5kQ@mail.gmail.com>
+ <20120629095346.16084.15202@midna.zekjur.net>
+ <20120630110032.2259.38429@midna.zekjur.net>
+ <CAMJW5=0mS3AmuOn7mXZ8qKG=pxrYY8SvgRT8fy0DGwac73Vbtg@mail.gmail.com>
+ <20120630170526.16509.25764@midna.zekjur.net>
+Message-ID: <CAMJW5=3qjfXVY7RjyTCg0pdkva04sVqm2fnc2n+sDg0tq8f0JQ@mail.gmail.com>
+
+On Sun, Jul 1, 2012 at 1:05 AM, Michael Stapelberg <michael at i3wm.org> wrote:
+
+> Hi,
+>
+> Quoting DR (2012-06-30 16:30:49)
+> > This should solve the problem, but wouldn't my solution make things
+> simpler?
+> I don?t think so. What I was suggesting is already working and the same
+> technique as used in the testcases, so I?d really prefer that a lot in
+> comparison to touching quite some amount of code.
+>
+Alright, I'll do as you say.
+
+So forget this patch.
+
+>
+> > PS. I have had a little thought about the situation you suggest where X
+> > representation is not changed after tree_render(). Wouldn't the unmap
+> command
+> > sent by i3bar queued after those sent by i3 in Xorg buffer? If so, it
+> won't be
+> > a problem.
+> You cannot make this assumption because of how i3 and i3bar might get
+> scheduled on your CPU.
+>
+But can you explain this a little further? All the workspaces events is
+sent after the render commands have been sent to Xorg. So what schedule
+would make i3bar's unmap command arrive before i3's render commands?
+
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120701/af51032e/attachment.html>
+
+From michael at i3wm.org  Sun Jul  1 12:03:17 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 01 Jul 2012 12:03:17 +0200
+Subject: [i3] [PATCH] Block outward events while processing commands.
+In-Reply-To: <CAMJW5=3qjfXVY7RjyTCg0pdkva04sVqm2fnc2n+sDg0tq8f0JQ@mail.gmail.com>
+References: <CAMJW5=3NGE=beZ6wzHhk0_3Xm6CX0vCAr-r3VzKZuUYrHzy_Uw@mail.gmail.com>
+ <20120624125327.1909.67106@midna.zekjur.net>
+ <CAMJW5=1aYhR5W0xVJF_iErBR0nHdLMxQriRonjbpHDiv-5qRLQ@mail.gmail.com>
+ <CANVYNa8YvTAMTHdG+D_Lt1S+wN1YPGF6EafakrEpSmGCPM7_og@mail.gmail.com>
+ <CAMJW5=1DPhJX3wsZ9uDNA1s8iVCjLV597L+5YfnXChhArh-5kQ@mail.gmail.com>
+ <20120629095346.16084.15202@midna.zekjur.net>
+ <20120630110032.2259.38429@midna.zekjur.net>
+ <CAMJW5=0mS3AmuOn7mXZ8qKG=pxrYY8SvgRT8fy0DGwac73Vbtg@mail.gmail.com>
+ <20120630170526.16509.25764@midna.zekjur.net>
+ <CAMJW5=3qjfXVY7RjyTCg0pdkva04sVqm2fnc2n+sDg0tq8f0JQ@mail.gmail.com>
+Message-ID: <20120701100317.6532.72489@midna.zekjur.net>
+
+Hi,
+
+Quoting DR (2012-07-01 09:28:51)
+>     > PS. I have had a little thought about the situation you suggest where X
+>     > representation is not changed after tree_render(). Wouldn't the unmap
+>     command
+>     > sent by i3bar queued after those sent by i3 in Xorg buffer? If so, it
+>     won't be
+>     > a problem.
+>     You cannot make this assumption because of how i3 and i3bar might get
+>     scheduled on your CPU.
+> 
+> But can you explain this a little further? All the workspaces events is sent
+> after the render commands have been sent to Xorg. So what schedule would make
+> i3bar's unmap command arrive before i3's render commands?
+Actually, ipc_send_event("workspace", ?) is called in _workspace_show in
+src/workspace.c, which is called before tree_render() is called (see
+src/commands.c:cmd_workspace for example).
+
+So, i3bar can get the IPC event before i3 even sends the commands to
+Xorg and thus it can send an unmap.
+
+Best regards,
+Michael
+
+From drdarkraven at gmail.com  Sun Jul  1 12:07:07 2012
+From: drdarkraven at gmail.com (Raven)
+Date: Sun, 01 Jul 2012 18:07:07 +0800
+Subject: [i3] [PATCH] Block outward events while processing commands.
+In-Reply-To: <20120701100317.6532.72489@midna.zekjur.net>
+References: <CAMJW5=3NGE=beZ6wzHhk0_3Xm6CX0vCAr-r3VzKZuUYrHzy_Uw@mail.gmail.com>
+ <20120624125327.1909.67106@midna.zekjur.net>
+ <CAMJW5=1aYhR5W0xVJF_iErBR0nHdLMxQriRonjbpHDiv-5qRLQ@mail.gmail.com>
+ <CANVYNa8YvTAMTHdG+D_Lt1S+wN1YPGF6EafakrEpSmGCPM7_og@mail.gmail.com>
+ <CAMJW5=1DPhJX3wsZ9uDNA1s8iVCjLV597L+5YfnXChhArh-5kQ@mail.gmail.com>
+ <20120629095346.16084.15202@midna.zekjur.net>
+ <20120630110032.2259.38429@midna.zekjur.net>
+ <CAMJW5=0mS3AmuOn7mXZ8qKG=pxrYY8SvgRT8fy0DGwac73Vbtg@mail.gmail.com>
+ <20120630170526.16509.25764@midna.zekjur.net>
+ <CAMJW5=3qjfXVY7RjyTCg0pdkva04sVqm2fnc2n+sDg0tq8f0JQ@mail.gmail.com>
+ <20120701100317.6532.72489@midna.zekjur.net>
+Message-ID: <op.wgrid5xv5hsky2@sraven>
+
+On Sun, 01 Jul 2012 18:03:17 +0800, Michael Stapelberg <michael at i3wm.org>  
+wrote:
+
+> Hi,
+>
+> Quoting DR (2012-07-01 09:28:51)
+>>     > PS. I have had a little thought about the situation you suggest  
+>> where X
+>>     > representation is not changed after tree_render(). Wouldn't the  
+>> unmap
+>>     command
+>>     > sent by i3bar queued after those sent by i3 in Xorg buffer? If  
+>> so, it
+>>     won't be
+>>     > a problem.
+>>     You cannot make this assumption because of how i3 and i3bar might  
+>> get
+>>     scheduled on your CPU.
+>>
+>> But can you explain this a little further? All the workspaces events is  
+>> sent
+>> after the render commands have been sent to Xorg. So what schedule  
+>> would make
+>> i3bar's unmap command arrive before i3's render commands?
+> Actually, ipc_send_event("workspace", ?) is called in _workspace_show in
+> src/workspace.c, which is called before tree_render() is called (see
+> src/commands.c:cmd_workspace for example).
+>
+> So, i3bar can get the IPC event before i3 even sends the commands to
+> Xorg and thus it can send an unmap.
+That's right, and I'm aware of that. And that's why I made this patch,  
+which block those events until tree_render() has been actually called.
+
+>
+> Best regards,
+> Michael
+
+
+-- 
+Using Opera's revolutionary email client: http://www.opera.com/mail/
+
+From michael at i3wm.org  Sun Jul  1 12:51:56 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 01 Jul 2012 12:51:56 +0200
+Subject: [i3] [PATCH] Block outward events while processing commands.
+In-Reply-To: <op.wgrid5xv5hsky2@sraven>
+References: <CAMJW5=3NGE=beZ6wzHhk0_3Xm6CX0vCAr-r3VzKZuUYrHzy_Uw@mail.gmail.com>
+ <CANVYNa8YvTAMTHdG+D_Lt1S+wN1YPGF6EafakrEpSmGCPM7_og@mail.gmail.com>
+ <CAMJW5=1DPhJX3wsZ9uDNA1s8iVCjLV597L+5YfnXChhArh-5kQ@mail.gmail.com>
+ <20120629095346.16084.15202@midna.zekjur.net>
+ <20120630110032.2259.38429@midna.zekjur.net>
+ <CAMJW5=0mS3AmuOn7mXZ8qKG=pxrYY8SvgRT8fy0DGwac73Vbtg@mail.gmail.com>
+ <20120630170526.16509.25764@midna.zekjur.net>
+ <CAMJW5=3qjfXVY7RjyTCg0pdkva04sVqm2fnc2n+sDg0tq8f0JQ@mail.gmail.com>
+ <20120701100317.6532.72489@midna.zekjur.net> <op.wgrid5xv5hsky2@sraven>
+Message-ID: <20120701105156.9210.74325@midna.zekjur.net>
+
+Hey,
+
+Quoting Raven (2012-07-01 12:07:07)
+> > So, i3bar can get the IPC event before i3 even sends the commands to
+> > Xorg and thus it can send an unmap.
+> That's right, and I'm aware of that. And that's why I made this patch,  
+> which block those events until tree_render() has been actually called.
+Alright. I was talking about the state before your patch, you were
+talking about after your patch :).
+
+Anyway, we already agreed on the solution we want to pursue, so let?s
+end this discussion (unless you have further questions).
+
+Best regards,
+Michael
+
+From bruno.braga at gmail.com  Tue Jul  3 12:20:44 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Tue, 3 Jul 2012 20:20:44 +1000
+Subject: [i3] Tray Icons Disappearing on i3bar
+In-Reply-To: <20120629092641.16084.67985@midna.zekjur.net>
+References: <CAAuVr72wKz-_WGXYisGFNt1=_q6WpxeC_vcCz8q-RLgsQU+s1A@mail.gmail.com>
+ <20120627225339.8174.82192@oskar.garbas.si>
+ <CABUeae-Xzag+JvOvLaSHCwjFVSR8pbwDddFT0sTHBT44-J+p-g@mail.gmail.com>
+ <CANVYNa_k9F35zEFuny7uV+=CmcR1deggcOvzPR2OL-y=tjP-1Q@mail.gmail.com>
+ <20120629092641.16084.67985@midna.zekjur.net>
+Message-ID: <CAAuVr704yddK+F4HXXMg8W0WD8kLf+D_CAsXfVqC5m_doOXB=A@mail.gmail.com>
+
+FYI.
+
+I have created the ticket for this issue:
+http://bugs.i3wm.org/report/ticket/745
+
+Regards,
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Fri, Jun 29, 2012 at 7:26 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Fernando,
+>
+> Quoting Fernando Lemos (2012-06-29 03:37:13)
+> > When i3 is restarted, so is i3bar. Looks like when i3bar quits, its
+> > window is destroyed and the embedded windows receive a BadWindow error
+> > [1]. Seems to be a design issue in XEmbed itself:
+> They shouldn?t, though. Have a look at the code. When i3bar receives an
+> EOF (or does it not receive an EOF in that case? maybe we should make it
+> restart-aware) it first properly kills all embedded tray icons.
+>
+> > What happens here, I guess, is that some clients may try to create the
+> > tray icon again, while others may not. Or maybe they do, but i3bar
+> > wasn't up by the time they retry (I'm guessing here, I really didn't
+> > read XEmbed).
+> In case they don?t retry, they are violating the spec. Also, the
+> embedder can be down for an arbitrary amount of time. The tray
+> application is supposed to deal with that. And at least nm-applet does
+> (so do all GTK-based ones probably). Note however that when the embedder
+> does not properly kill the tray clients, they may not retry at all. So
+> this is probably what?s happening here (as you described above).
+>
+> > XEmbed also says that "the protocol ends" when the embedded window is
+> > reparented to the root window [2]. So I don't know much about X, but
+> > maybe reparenting the embedded windows to the root window before
+> > terminating would be a solution? I'm not sure how the clients are
+> > supposed to react, though.
+> As I said, we should be doing that :).
+>
+> > What puzzles me is that you guys say it also happens when returning
+> > from suspend... I have no idea why that is, I always thought suspend
+> > was (mostly) transparent to applications?
+> Yes, it definitely should be transparent to applications. My guess is
+> that for some reason, a monitor reconfiguration event is sent and i3
+> restarts i3bar because of that. However, that?s a different code path
+> than the i3 restart, so it?s quite a mystery to me currently.
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120703/261100dc/attachment.html>
+
+From drdarkraven at gmail.com  Sat Jul  7 17:45:52 2012
+From: drdarkraven at gmail.com (DR)
+Date: Sat, 7 Jul 2012 23:45:52 +0800
+Subject: [i3] [PATCH] Improved i3bar hide mode behavior (In my point of
+	view)
+In-Reply-To: <CANVYNa9Kbr_aDYTpN+4Qi6xsJKDFsQ34+3ZdpwK4MAqAOzETZg@mail.gmail.com>
+References: <CAMJW5=0hC+1YhuPyY8=eQtAKuM0VwzPgiGRDAwJs2aXzF_YcKw@mail.gmail.com>
+ <CAMJW5=2u8xves-DYAJk-xy4aM64eRhfoY5bPufh52OmYbgYomw@mail.gmail.com>
+ <CANVYNa9Kbr_aDYTpN+4Qi6xsJKDFsQ34+3ZdpwK4MAqAOzETZg@mail.gmail.com>
+Message-ID: <CAMJW5=1n6_DF7A_J4rQ3HfD4Un1Vgn8y3JxqktOQmgNe6PvqQQ@mail.gmail.com>
+
+Hi,
+
+Since I failed to convince Michael to accept my newer patch, I decide to
+drop those more "advanced" patch, and try to push this simple patch into i3.
+
+On Fri, Feb 24, 2012 at 8:13 AM, Fernando Lemos <fernandotcl at i3wm.org>wrote:
+
+> Hi,
+>
+> On Wed, Feb 22, 2012 at 7:15 AM, DR <drdarkraven at gmail.com> wrote:
+> > On Wed, Feb 22, 2012 at 2:21 PM, DR <drdarkraven at gmail.com> wrote:
+> >> When a workspace marked 'urgent', i3bar unhide itself. if I want to
+> >> hide it again, I must press the modifier.
+> >> This sometimes annoys me.
+> >>
+> >> In this patch I change the above behavior to this: If a urgent
+> >> workspace occurs, i3bar will unhide itself; and when you navigates
+> >> away from the last urgent workspace and there is no more urgent
+> >> workspace, i3bar will hide itself again.
+>
+> This sounds interesting, but have you discussed it with Michael first?
+> I'd recommend always pinging Michael first to see if what you intend
+> to do is in line with the project goals and things like that. Unless,
+> of course, you don't care about getting your patches merged.
+>
+> Anyways, some comments below.
+>
+> > Oops... I messed it up.
+> > Here is the patch fix build, and improve the behavior a little bit more:
+> > When the urgent workspace is currently focused, i3bar will hide as
+> > soon as the urgent mark has gone.
+>
+> Please merge both patches in a single one to make it easier to review
+> (unless they do separate things, of course).
+>
+> I noticed you used "if (" and "if(", please stick with "if (" as
+> that's what the rest of xcb.c uses.
+>
+> You declare and read bar_hidden, but you never seem to write to it. Am
+> I missing something? Also, I'd rather have the code that calls
+> hide/unhide_bar simply not call those functions rather than do the
+> checking inside the functions, but that's subjective, I guess.
+>
+> The indentation level on the call to hide_bars() in the last chunk of
+> the second patch is wrong. Are you sure you don't want that enclosed
+> by brackets, as part of the "else" branch?
+>
+Above problem are solved.
+
+>
+> You're doing all the logic in the drawing code. Perhaps it would be
+> better to detect that stuff directly in the ipc.c, when you receive
+> the workspace info from i3, after the call to parse_workspaces_json.
+>
+I think it's fine. The original hide/unhide logical is done in draw_bar as
+well, I just follow it. And I think the logical is simple enough to be
+included in drawing code.
+
+
+>
+> Regards,
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120707/e6bb5bbd/attachment.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Automatically-hide-i3bar-when-it-s-unneeded.patch
+Type: application/octet-stream
+Size: 2543 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120707/e6bb5bbd/attachment.obj>
+
+From michael at i3wm.org  Sat Jul  7 22:31:57 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 07 Jul 2012 22:31:57 +0200
+Subject: [i3] [PATCH] Improved i3bar hide mode behavior (In my point of
+	view)
+In-Reply-To: <CAMJW5=1n6_DF7A_J4rQ3HfD4Un1Vgn8y3JxqktOQmgNe6PvqQQ@mail.gmail.com>
+References: <CAMJW5=0hC+1YhuPyY8=eQtAKuM0VwzPgiGRDAwJs2aXzF_YcKw@mail.gmail.com>
+ <CAMJW5=2u8xves-DYAJk-xy4aM64eRhfoY5bPufh52OmYbgYomw@mail.gmail.com>
+ <CANVYNa9Kbr_aDYTpN+4Qi6xsJKDFsQ34+3ZdpwK4MAqAOzETZg@mail.gmail.com>
+ <CAMJW5=1n6_DF7A_J4rQ3HfD4Un1Vgn8y3JxqktOQmgNe6PvqQQ@mail.gmail.com>
+Message-ID: <20120707203157.22466.72213@midna.zekjur.net>
+
+Hi DR,
+
+Quoting DR (2012-07-07 17:45:52)
+> Since I failed to convince Michael to accept my newer patch, I decide to drop
+> those more "advanced"?patch, and try to push this simple patch into i3.
+Thanks for updating your patch. Here are my comments:
+
+1) You are not using FREE(last_urgent_ws);, but free(last_urgent_ws) in
+   line 1489, which is unsafe (it is not guaranteed that last_urgent_ws
+   is != NULL).
+
+2) You are using strdup() instead of sstrdup() in line 1490, so you
+   don?t handle -EMEMORY.
+
+3) Instead of using if (last_urgent_ws) free(last_urgent_ws); you should
+   use FREE(last_urgent_ws) in line 1526.
+
+4) Your patch doesn?t actually work when the user is not navigating away
+   from the workspace using the keyboard, but when he is focusing the
+   urgent window with the mouse. i3bar will properly update the urgency
+   indicator for that workspace, but it won?t hide.
+
+   I?d suggest to save a flag which is set to true when i3bar calls
+   unhide_bars() due to an urgent workspace. Then, check if that flag is
+   set, but no more urgent workspaces are found (!has_urgent &&
+   !mod_pressed && hidden_due_to_urgency) and call hide_bars().
+
+Best regards,
+Michael
+
+From tooker at gmail.com  Sun Jul  8 06:11:21 2012
+From: tooker at gmail.com (Justin Mayfield)
+Date: Sat, 7 Jul 2012 22:11:21 -0600
+Subject: [i3] working around gnome3 centric apps
+Message-ID: <CAHxQA0FKQs+o5rrY9A=MA7XMz+NPoL2hNg67uQz74micwrabhQ@mail.gmail.com>
+
+First off,  Great WM.   I had been sitting on an outdated FC14 distro for a
+long time for fear of gnome3's wrath and finally freed myself of my gnome
+handcuffs (or so I thought) by switching to i3.  Today I upgraded to FC17
+and have noticed that some apps (Rhythmbox in particular) are highly
+integrated into the gnome3 cult;  Namely support for closing the apps to
+the tray has been obsoleted.
+
+How are people generally dealing with apps like this that have gone off the
+gnome3 deep end?  I hate gnome3 if you couldn't tell.
+
+Justin
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120707/a7213df7/attachment.html>
+
+From michael at i3wm.org  Sun Jul  8 09:44:47 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 08 Jul 2012 09:44:47 +0200
+Subject: [i3] working around gnome3 centric apps
+In-Reply-To: <CAHxQA0FKQs+o5rrY9A=MA7XMz+NPoL2hNg67uQz74micwrabhQ@mail.gmail.com>
+References: <CAHxQA0FKQs+o5rrY9A=MA7XMz+NPoL2hNg67uQz74micwrabhQ@mail.gmail.com>
+Message-ID: <20120708074447.27291.37955@midna.zekjur.net>
+
+Hi Justin,
+
+Quoting Justin Mayfield (2012-07-08 06:11:21)
+> [...]
+> Namely support for closing the apps to the tray has been
+> obsoleted.?
+I think you are looking for http://alltray.trausch.us/
+
+Best regards,
+Michael
+
+From informationen at gmx.de  Sun Jul  8 12:16:03 2012
+From: informationen at gmx.de (informationen)
+Date: Sun, 8 Jul 2012 12:16:03 +0200
+Subject: [i3] i3 on Linux Mint Debian LXDE
+Message-ID: <20120708101603.GB1859@sirch>
+
+Hi,
+
+i am trying to install i3 version 4.2 on Linux Mint.
+I followed the instructions on the home page for the installation on a
+debian system.
+
+But when trying to install i3, i get the following dependencie
+problems with aptitude:
+Some dependencies of i3-wm are not satisfied:                           
+                                                                         
+* i3-wm depends on libxcb-icccm4 (>= 0.3.9) [UNAVAILABLE]             
+* i3-wm depends on libxcb-keysyms1 [universe] (>= 0.3.9) [UNAVAILABLE]
+* i3-wm depends on libyajl2 (>= 2.0.4) [UNAVAILABLE]                  
+  
+How can i resolve these problems (without running in some kind of dependency
+hell)?
+
+Kind regards
+Chris
+
+From fernandotcl at i3wm.org  Sun Jul  8 19:50:54 2012
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Sun, 8 Jul 2012 14:50:54 -0300
+Subject: [i3] i3 on Linux Mint Debian LXDE
+In-Reply-To: <20120708101603.GB1859@sirch>
+References: <20120708101603.GB1859@sirch>
+Message-ID: <CANVYNa8wsXXbARx_5yYDqQV8067j_7xp=TXtgd3KPyUxN+6K-Q@mail.gmail.com>
+
+Hi,
+
+On Sun, Jul 8, 2012 at 7:16 AM, informationen <informationen at gmx.de> wrote:
+> i am trying to install i3 version 4.2 on Linux Mint.
+> I followed the instructions on the home page for the installation on a
+> debian system.
+
+Unless you're running the Debian-based Linux Mint, you might want to
+give the Ubuntu repositories a shot instead:
+
+http://i3wm.org/docs/repositories.html
+
+Regards,
+
+From brian at polibyte.com  Sun Jul  8 20:00:57 2012
+From: brian at polibyte.com (Brian Pitts)
+Date: Sun, 08 Jul 2012 14:00:57 -0400
+Subject: [i3] i3 tree visualization program
+Message-ID: <4FF9CAD9.1050304@polibyte.com>
+
+Hi,
+
+I wanted to share with the group a program I wrote for visualizing the 
+i3 tree structure. Here's an example of what it produces:
+
+|$  i3tree
+Workspace 1 (horizontal)
+         Window foo at bar: ~
+         Split (vertical)
+                 Window foo at bar: ~
+                 Window foo at bar: ~
+Workspace 2 (vertical)
+         Window foo at bar: ~
+         Window foo at bar: ~|
+
+
+https://github.com/sciurus/i3tree
+
+I hope you find it useful. Pull requests with improvements are welcome.
+
+All the best,
+Brian
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120708/4b255bb3/attachment.html>
+
+From mde at micahelliott.com  Sun Jul  8 20:52:37 2012
+From: mde at micahelliott.com (Micah Elliott)
+Date: Sun, 8 Jul 2012 11:52:37 -0700
+Subject: [i3] i3 tree visualization program
+In-Reply-To: <4FF9CAD9.1050304@polibyte.com>
+References: <4FF9CAD9.1050304@polibyte.com>
+Message-ID: <CAELbujoSrOrj+VdKZJvTQgRM4XjxAKQ8N1_eCB1Tt8FyJ9vBWw@mail.gmail.com>
+
+On Sun, Jul 8, 2012 at 11:00 AM, Brian Pitts <brian at polibyte.com> wrote:
+> I wanted to share with the group a program I wrote for visualizing the
+> i3 tree structure.
+
+Neat. FYI, for anyone running Arch, the AUR dependency I needed to
+install was "aur/perl-anyevent-i3".
+
+--
+twitter:@MicahElliott  |  email:mde at MicahElliott.com  |  http://membean.com
+Remember your words with Membean!
+
+From badboy at archlinux.us  Sun Jul  8 21:10:57 2012
+From: badboy at archlinux.us (Jan-Erik Rediger)
+Date: Sun, 8 Jul 2012 21:10:57 +0200
+Subject: [i3] i3 tree visualization program
+In-Reply-To: <CAELbujoSrOrj+VdKZJvTQgRM4XjxAKQ8N1_eCB1Tt8FyJ9vBWw@mail.gmail.com>
+References: <4FF9CAD9.1050304@polibyte.com>
+ <CAELbujoSrOrj+VdKZJvTQgRM4XjxAKQ8N1_eCB1Tt8FyJ9vBWw@mail.gmail.com>
+Message-ID: <20120708191057.GA14215@brain>
+
+On Sun, Jul 08, 2012 at 11:52:37AM -0700, Micah Elliott wrote:
+> On Sun, Jul 8, 2012 at 11:00 AM, Brian Pitts <brian at polibyte.com> wrote:
+> > I wanted to share with the group a program I wrote for visualizing the
+> > i3 tree structure.
+> 
+> Neat. FYI, for anyone running Arch, the AUR dependency I needed to
+> install was "aur/perl-anyevent-i3".
+
+And community/perl-x11-protocol is also needed.
+
+From aecepoglu at gmail.com  Mon Jul  9 12:02:40 2012
+From: aecepoglu at gmail.com (=?UTF-8?B?QWhtZXQgRW1yZSDDh2Vwb8SfbHU=?=)
+Date: Mon, 9 Jul 2012 13:02:40 +0300
+Subject: [i3] Gesture recognizer dev approach
+Message-ID: <CALOS=hfER27DGep5GWv9x60C3eJT-wChhBG1bxk9S31ahahafQ@mail.gmail.com>
+
+Hey guys,
+I am going to start writing a gesture recognizer for utilizing pointer
+devices (singe/multi touch) on linux as a front end to window managers. I
+wanted to hear your opinions on it before actually starting the development.
+
+I'm thinking of a layered structure like this
+__gesture recognizer
+__gesture recognizer interface for window manager
+__window-manager
+So, simply, a gesture recognizer is gonna be an app that prints an
+identifier when a gesture is recognized
+The middle layer is going to read those identifiers, and send commands to
+the window manager
+And the window manager is... the window manager.
+
+I'd like the user to be able to change to a different gesture recognizer
+without having to do too much tweaking. I'd like it to be usable on all the
+window managers.
+
+There are obvious issues though
+Say "gr1","gr2","gr*" are gesture recognizers. They print an identifier
+like "close-win","switch-next-workspace" etc.
+"i3wm-gr-interface", "blackbox-gr-interface" etc are various middle layer
+applications
+"i3wm", "blackbox" etc are the window managers
+
+consider the middle layer:
+* i3wm-gr-interface will likely be implementing i3wm-ipc-protocol.
+* blackbox-gr-interface however will implement xlib
+And sadly, there are not many window managers like i3 that's easy to
+communicate with. For example when I need to list available workspaces in a
+window manager other than i3, I will have to implement workspaces myself,
+because there is no means of learning about them from blackbox. When this
+is the case, it's better to embed the gesture recognizer within the window
+manager.
+
+Should I just stick with writing a gesture recognizer for i3wm only? This
+way, the top and the middle layers can be put together. This will be my
+route of choice, unless I learn about a way window managers can be
+communicated with.
+
+I don't plan on creating an online repo for my code until it has a working
+demo, unless people would like me to. I plan to develop using C, and finish
+it in a month's time, if things go as I'd like them to.
+
+That's all, cheers.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120709/8e34edfa/attachment.html>
+
+From michael at i3wm.org  Mon Jul  9 15:21:49 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 09 Jul 2012 15:21:49 +0200
+Subject: [i3] i3 tree visualization program
+In-Reply-To: <4FF9CAD9.1050304@polibyte.com>
+References: <4FF9CAD9.1050304@polibyte.com>
+Message-ID: <20120709132149.31441.55302@midna.zekjur.net>
+
+Hi Brian,
+
+Quoting Brian Pitts (2012-07-08 20:00:57)
+> I wanted to share with the group a program I wrote for visualizing the i3 tree
+> structure. Here's an example of what it produces:
+> [...]
+> I hope you find it useful. Pull requests with improvements are welcome.
+Sweet. It doesn?t properly display scratchpad windows, though (while
+it does list the __i3_scratch pseudo workspace).
+
+Best regards,
+Michael
+
+From michael at i3wm.org  Mon Jul  9 16:09:17 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 09 Jul 2012 16:09:17 +0200
+Subject: [i3] i3 tree visualization program
+In-Reply-To: <20120708191057.GA14215@brain>
+References: <4FF9CAD9.1050304@polibyte.com>
+ <CAELbujoSrOrj+VdKZJvTQgRM4XjxAKQ8N1_eCB1Tt8FyJ9vBWw@mail.gmail.com>
+ <20120708191057.GA14215@brain>
+Message-ID: <20120709140917.4169.86180@midna.zekjur.net>
+
+Hi,
+
+Quoting Jan-Erik Rediger (2012-07-08 21:10:57)
+> And community/perl-x11-protocol is also needed.
+In case you want to get rid of the X11::Protocol dependency, you could
+upgrade to AnyEvent::I3 0.10 (which I just released). It figures out the
+socket path automatically (just like the script does with X11::Protocol,
+but AnyEvent::I3 just calls i3 --get-socketpath instead).
+
+Best regards,
+Michael
+
+From fernandotcl at i3wm.org  Mon Jul  9 21:03:49 2012
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Mon, 9 Jul 2012 16:03:49 -0300
+Subject: [i3] Gesture recognizer dev approach
+In-Reply-To: <CALOS=hfER27DGep5GWv9x60C3eJT-wChhBG1bxk9S31ahahafQ@mail.gmail.com>
+References: <CALOS=hfER27DGep5GWv9x60C3eJT-wChhBG1bxk9S31ahahafQ@mail.gmail.com>
+Message-ID: <CANVYNa9H_FTE-38xqVZ+zAHF3TPWWHAaS=UfnbekS3_XRTnVVQ@mail.gmail.com>
+
+Hi,
+
+On Mon, Jul 9, 2012 at 7:02 AM, Ahmet Emre ?epo?lu <aecepoglu at gmail.com> wrote:
+> There are obvious issues though
+...
+> And sadly, there are not many window managers like i3 that's easy to
+> communicate with. For example when I need to list available workspaces in a
+> window manager other than i3, I will have to implement workspaces myself,
+> because there is no means of learning about them from blackbox. When this is
+> the case, it's better to embed the gesture recognizer within the window
+> manager.
+
+Most window managers implement enough of the EWMH spec to support
+pagers. You can use that to get information about the workspaces as
+well as request that the window manager switches to a different
+workspace.
+
+Regards,
+
+From aecepoglu at gmail.com  Mon Jul  9 22:13:30 2012
+From: aecepoglu at gmail.com (aecepoglu at gmail.com)
+Date: Mon, 9 Jul 2012 23:13:30 +0300
+Subject: [i3] Gesture recognizer dev approach
+In-Reply-To: <CANVYNa9H_FTE-38xqVZ+zAHF3TPWWHAaS=UfnbekS3_XRTnVVQ@mail.gmail.com>
+References: <CALOS=hfER27DGep5GWv9x60C3eJT-wChhBG1bxk9S31ahahafQ@mail.gmail.com>
+ <CANVYNa9H_FTE-38xqVZ+zAHF3TPWWHAaS=UfnbekS3_XRTnVVQ@mail.gmail.com>
+Message-ID: <20120709201330.GA10658@asusgr>
+
+I knew about ICCCM but not this. I'll check this one out.
+If it's good enough, I think I'll go for the two layered approach, it will be easier.
+
+On Mon, Jul 09, 2012 at 04:03:49PM -0300, Fernando Lemos wrote:
+> Hi,
+> 
+> Most window managers implement enough of the EWMH spec to support
+> pagers. You can use that to get information about the workspaces as
+> well as request that the window manager switches to a different
+> workspace.
+> 
+> Regards,
+
+From bruno.braga at gmail.com  Wed Jul 11 05:29:11 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Wed, 11 Jul 2012 13:29:11 +1000
+Subject: [i3] Compiling from Source
+Message-ID: <CAAuVr72bux9X8tjJ3+Bu1hoT5E1Jd--j=xaL6b-fp_rugbq0YQ@mail.gmail.com>
+
+Sorry if this topic has been discussed here already (did not find it).
+I am interest in knowing a bit more about compiling i3wm from source, and
+running my own version... but I am having some small problems to do it, and
+I was hoping someone could point me in the right direction.
+
+For instance, cloning the source from git:
+
+$ git clone git://code.i3wm.org/i3
+$ cd i3
+$ make
+In file included from src/auto_detect_format.c:15:0:
+include/i3status.h:7:21: fatal error: confuse.h: No such file or directory
+compilation terminated.
+make: *** [src/auto_detect_format.o] Error 1
+
+Any ideas of what could be the problem? I checked the dependencies, but I
+am not sure which one could it be.
+I am running it on Ubuntu 12.04 64-bit by the way.
+
+Any help is appreciated!
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120711/fbd0c043/attachment.html>
+
+From kemurphy.cmu at gmail.com  Wed Jul 11 06:02:06 2012
+From: kemurphy.cmu at gmail.com (Kevin Murphy)
+Date: Tue, 10 Jul 2012 21:02:06 -0700
+Subject: [i3]  Compiling from Source
+In-Reply-To: <CAMO0NGa19Gef3XkdU+33kj02LSYOfRqjMxVw6NHD1csPL-CJ4w@mail.gmail.com>
+References: <CAAuVr72bux9X8tjJ3+Bu1hoT5E1Jd--j=xaL6b-fp_rugbq0YQ@mail.gmail.com>
+ <CAMO0NGa19Gef3XkdU+33kj02LSYOfRqjMxVw6NHD1csPL-CJ4w@mail.gmail.com>
+Message-ID: <CAMO0NGYjF9SMsOJrN6pJSpLPhckO0mFKMqujYzkCOFovX+tf5w@mail.gmail.com>
+
+Perhaps libconfuse-dev is what you need? ;)
+
+Remember, you'll likely need the "-dev" versions of all of i3's
+dependencies to compile it from source.
+
+-Kevin
+
+On Tue, Jul 10, 2012 at 8:29 PM, BRAGA, Bruno <bruno.braga at gmail.com> wrote:
+
+> Sorry if this topic has been discussed here already (did not find it).
+> I am interest in knowing a bit more about compiling i3wm from source, and
+> running my own version... but I am having some small problems to do it, and
+> I was hoping someone could point me in the right direction.
+>
+> For instance, cloning the source from git:
+>
+> $ git clone git://code.i3wm.org/i3
+> $ cd i3
+> $ make
+> In file included from src/auto_detect_format.c:15:0:
+> include/i3status.h:7:21: fatal error: confuse.h: No such file or directory
+> compilation terminated.
+> make: *** [src/auto_detect_format.o] Error 1
+>
+> Any ideas of what could be the problem? I checked the dependencies, but I
+> am not sure which one could it be.
+> I am running it on Ubuntu 12.04 64-bit by the way.
+>
+> Any help is appreciated!
+>
+> --
+> *Braga, Bruno*
+> www.brunobraga.net
+> bruno.braga at gmail.com
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120710/3ee3d799/attachment.html>
+
+From tobisgd at yahoo.de  Wed Jul 11 06:07:00 2012
+From: tobisgd at yahoo.de (Tobias Eichmann)
+Date: Wed, 11 Jul 2012 06:07:00 +0200
+Subject: [i3] Compiling from Source
+In-Reply-To: <CAAuVr72bux9X8tjJ3+Bu1hoT5E1Jd--j=xaL6b-fp_rugbq0YQ@mail.gmail.com>
+References: <CAAuVr72bux9X8tjJ3+Bu1hoT5E1Jd--j=xaL6b-fp_rugbq0YQ@mail.gmail.com>
+Message-ID: <20120711060700.4339d253@dragon.punkerhaus>
+
+On Wed, 11 Jul 2012 13:29:11 +1000
+"BRAGA, Bruno" <bruno.braga at gmail.com> wrote:
+
+> Sorry if this topic has been discussed here already (did not find it).
+> I am interest in knowing a bit more about compiling i3wm from source,
+> and running my own version... but I am having some small problems to
+> do it, and I was hoping someone could point me in the right direction.
+> 
+> For instance, cloning the source from git:
+> 
+> $ git clone git://code.i3wm.org/i3
+> $ cd i3
+> $ make
+> In file included from src/auto_detect_format.c:15:0:
+> include/i3status.h:7:21: fatal error: confuse.h: No such file or
+> directory compilation terminated.
+> make: *** [src/auto_detect_format.o] Error 1
+> 
+> Any ideas of what could be the problem? I checked the dependencies,
+> but I am not sure which one could it be.
+> I am running it on Ubuntu 12.04 64-bit by the way.
+> 
+> Any help is appreciated!
+> 
+> --
+> *Braga, Bruno*
+> www.brunobraga.net
+> bruno.braga at gmail.com
+
+On Debian confuse.h is part of the libconfuse-dev package, I would
+assume that is the same on Ubuntu. Do you have that package installed?
+
+From vadim.atlygin at gmail.com  Wed Jul 11 06:16:44 2012
+From: vadim.atlygin at gmail.com (Vadim Atlygin)
+Date: Wed, 11 Jul 2012 14:16:44 +1000
+Subject: [i3] Compiling from Source
+In-Reply-To: <CAAuVr72bux9X8tjJ3+Bu1hoT5E1Jd--j=xaL6b-fp_rugbq0YQ@mail.gmail.com>
+References: <CAAuVr72bux9X8tjJ3+Bu1hoT5E1Jd--j=xaL6b-fp_rugbq0YQ@mail.gmail.com>
+Message-ID: <CAJ9rA25FhHd4bWsar2=ucbs-1DWjYt6xNmOYF9tETbfvV99bLA@mail.gmail.com>
+
+Before compiling, run "sudo apt-get build-dep i3-wm". This will install all
+the libraries i3 depends on.
+
+On Wed, Jul 11, 2012 at 1:29 PM, BRAGA, Bruno <bruno.braga at gmail.com> wrote:
+
+> Sorry if this topic has been discussed here already (did not find it).
+> I am interest in knowing a bit more about compiling i3wm from source, and
+> running my own version... but I am having some small problems to do it, and
+> I was hoping someone could point me in the right direction.
+>
+> For instance, cloning the source from git:
+>
+> $ git clone git://code.i3wm.org/i3
+> $ cd i3
+> $ make
+> In file included from src/auto_detect_format.c:15:0:
+> include/i3status.h:7:21: fatal error: confuse.h: No such file or directory
+> compilation terminated.
+> make: *** [src/auto_detect_format.o] Error 1
+>
+> Any ideas of what could be the problem? I checked the dependencies, but I
+> am not sure which one could it be.
+> I am running it on Ubuntu 12.04 64-bit by the way.
+>
+> Any help is appreciated!
+>
+> --
+> *Braga, Bruno*
+> www.brunobraga.net
+> bruno.braga at gmail.com
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120711/5cdb7a4f/attachment.html>
+
+From michael at i3wm.org  Wed Jul 11 08:12:13 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 11 Jul 2012 08:12:13 +0200
+Subject: [i3] Compiling from Source
+In-Reply-To: <CAAuVr72bux9X8tjJ3+Bu1hoT5E1Jd--j=xaL6b-fp_rugbq0YQ@mail.gmail.com>
+References: <CAAuVr72bux9X8tjJ3+Bu1hoT5E1Jd--j=xaL6b-fp_rugbq0YQ@mail.gmail.com>
+Message-ID: <20120711061213.28634.46737@midna.zekjur.net>
+
+Hi Bruno,
+
+Quoting BRAGA, Bruno (2012-07-11 05:29:11)
+> For instance, cloning the source from git:
+> 
+> $ git clone git://code.i3wm.org/i3
+> $ cd i3
+> $ make
+> In file included from src/auto_detect_format.c:15:0:
+> include/i3status.h:7:21: fatal error: confuse.h: No such file or directory
+> compilation terminated.
+> make: *** [src/auto_detect_format.o] Error 1
+This output is fake. You are compiling i3status, but you?re telling us
+you compile i3.
+
+> I am running it on Ubuntu 12.04 64-bit by the way.
+Use our auto-builder repository, see
+http://i3wm.org/docs/repositories.html
+
+Best regards,
+Michael
+
+From bruno.braga at gmail.com  Wed Jul 11 08:39:36 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Wed, 11 Jul 2012 16:39:36 +1000
+Subject: [i3] Compiling from Source
+In-Reply-To: <20120711061213.28634.46737@midna.zekjur.net>
+References: <CAAuVr72bux9X8tjJ3+Bu1hoT5E1Jd--j=xaL6b-fp_rugbq0YQ@mail.gmail.com>
+ <20120711061213.28634.46737@midna.zekjur.net>
+Message-ID: <CAAuVr70JuwXNk0dxnSZiHE0ak0s5ThkkLd6c4e5e-U-+OK-wkg@mail.gmail.com>
+
+Thanks guys.... It is a bit painful to go through all dependencies (and
+package naming conventions)... now I got stuck in the :
+
+$ make
+[libi3] CC fake_configure_notify.c
+In file included from fake_configure_notify.c:14:0:
+../include/libi3.h:19:29: fatal error: xcb/xcb_keysyms.h: No such file or
+directory
+compilation terminated.
+make[1]: *** [fake_configure_notify.o] Error 1
+make: *** [libi3/libi3.a] Error 2
+
+But installing all I could think of (xcb-proto libxcb1 libxcb1-dev
+libxcb-util0 libxcb-util0-dev), and still nothing...
+
+The autobuilder option seems interesting, but apt-get says I am already in
+the latest version... should I use a --resintall flag?
+
+Anyways, I guess I'd better get it compilable locally, because I want to do
+some changes in the code myself, and test it properly.
+
+
+Thanks.
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Wed, Jul 11, 2012 at 4:12 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Bruno,
+>
+> Quoting BRAGA, Bruno (2012-07-11 05:29:11)
+> > For instance, cloning the source from git:
+> >
+> > $ git clone git://code.i3wm.org/i3
+> > $ cd i3
+> > $ make
+> > In file included from src/auto_detect_format.c:15:0:
+> > include/i3status.h:7:21: fatal error: confuse.h: No such file or
+> directory
+> > compilation terminated.
+> > make: *** [src/auto_detect_format.o] Error 1
+> This output is fake. You are compiling i3status, but you?re telling us
+> you compile i3.
+>
+> > I am running it on Ubuntu 12.04 64-bit by the way.
+> Use our auto-builder repository, see
+> http://i3wm.org/docs/repositories.html
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120711/fb163879/attachment.html>
+
+From ew.ng7125 at nassur.net  Wed Jul 11 08:52:13 2012
+From: ew.ng7125 at nassur.net (e.waelde)
+Date: Wed, 11 Jul 2012 08:52:13 +0200
+Subject: [i3] Compiling from Source
+In-Reply-To: <CAAuVr70JuwXNk0dxnSZiHE0ak0s5ThkkLd6c4e5e-U-+OK-wkg@mail.gmail.com>
+References: <CAAuVr72bux9X8tjJ3+Bu1hoT5E1Jd--j=xaL6b-fp_rugbq0YQ@mail.gmail.com>
+ <20120711061213.28634.46737@midna.zekjur.net>
+ <CAAuVr70JuwXNk0dxnSZiHE0ak0s5ThkkLd6c4e5e-U-+OK-wkg@mail.gmail.com>
+Message-ID: <4FFD229D.80204@nassur.net>
+
+Hi,
+
+On 07/11/2012 08:39 AM, BRAGA, Bruno wrote:
+> Thanks guys.... It is a bit painful to go through all dependencies (and
+> package naming conventions)... now I got stuck in the :
+>
+> $ make
+> [libi3] CC fake_configure_notify.c
+> In file included from fake_configure_notify.c:14:0:
+> ../include/libi3.h:19:29: fatal error: xcb/xcb_keysyms.h: No such file or
+> directory
+> compilation terminated.
+> make[1]: *** [fake_configure_notify.o] Error 1
+> make: *** [libi3/libi3.a] Error 2
+>
+> But installing all I could think of (xcb-proto libxcb1 libxcb1-dev
+> libxcb-util0 libxcb-util0-dev), and still nothing...
+
+Looking at packages.debian.org and searching for "file in 
+package" will give
+
+   libxcb-keysyms1-dev
+
+for stable. I always resort to this webpage, if apt-cache search 
+does not help me.
+
+HTH,
+Erich
+
+From bruno.braga at gmail.com  Wed Jul 11 11:36:04 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Wed, 11 Jul 2012 19:36:04 +1000
+Subject: [i3] Compiling from Source
+In-Reply-To: <4FFD229D.80204@nassur.net>
+References: <CAAuVr72bux9X8tjJ3+Bu1hoT5E1Jd--j=xaL6b-fp_rugbq0YQ@mail.gmail.com>
+ <20120711061213.28634.46737@midna.zekjur.net>
+ <CAAuVr70JuwXNk0dxnSZiHE0ak0s5ThkkLd6c4e5e-U-+OK-wkg@mail.gmail.com>
+ <4FFD229D.80204@nassur.net>
+Message-ID: <CAAuVr72ponzCCiJQoUfrJimTsx7=bRqBg_zJ2gO3q2Qr9bx+2Q@mail.gmail.com>
+
+You are a saviour! I can't believe I survived that long without such tool!
+Worked awesomely! Cheers for that!
+
+For reference, these are the packages I had to install to compile i3wm in
+Ubuntu 12.04:
+
+ libconfuse-dev pkg-config xcb-proto libxcb1-dev libxcb-util0-dev
+libxcb-keysyms1-dev bison libxcb-icccm4-dev libyajl-dev
+libstartup-notification0-dev libxcb-randr0-dev libev-dev flex
+libxcursor-dev  libxcb-xinerama0-dev
+ asciidoc (requires 800MB of additional packages, so I decided not to
+install it)
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Wed, Jul 11, 2012 at 4:52 PM, e.waelde <ew.ng7125 at nassur.net> wrote:
+
+> Hi,
+>
+>
+> On 07/11/2012 08:39 AM, BRAGA, Bruno wrote:
+>
+>> Thanks guys.... It is a bit painful to go through all dependencies (and
+>> package naming conventions)... now I got stuck in the :
+>>
+>> $ make
+>> [libi3] CC fake_configure_notify.c
+>> In file included from fake_configure_notify.c:14:0:
+>> ../include/libi3.h:19:29: fatal error: xcb/xcb_keysyms.h: No such file or
+>> directory
+>> compilation terminated.
+>> make[1]: *** [fake_configure_notify.o] Error 1
+>> make: *** [libi3/libi3.a] Error 2
+>>
+>> But installing all I could think of (xcb-proto libxcb1 libxcb1-dev
+>> libxcb-util0 libxcb-util0-dev), and still nothing...
+>>
+>
+> Looking at packages.debian.org and searching for "file in package" will
+> give
+>
+>   libxcb-keysyms1-dev
+>
+> for stable. I always resort to this webpage, if apt-cache search does not
+> help me.
+>
+> HTH,
+> Erich
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120711/4c3da2c3/attachment.html>
+
+From mateusz at loskot.net  Wed Jul 11 11:42:19 2012
+From: mateusz at loskot.net (Mateusz Loskot)
+Date: Wed, 11 Jul 2012 10:42:19 +0100
+Subject: [i3] Compiling from Source
+In-Reply-To: <CAAuVr72ponzCCiJQoUfrJimTsx7=bRqBg_zJ2gO3q2Qr9bx+2Q@mail.gmail.com>
+References: <CAAuVr72bux9X8tjJ3+Bu1hoT5E1Jd--j=xaL6b-fp_rugbq0YQ@mail.gmail.com>
+ <20120711061213.28634.46737@midna.zekjur.net>
+ <CAAuVr70JuwXNk0dxnSZiHE0ak0s5ThkkLd6c4e5e-U-+OK-wkg@mail.gmail.com>
+ <4FFD229D.80204@nassur.net>
+ <CAAuVr72ponzCCiJQoUfrJimTsx7=bRqBg_zJ2gO3q2Qr9bx+2Q@mail.gmail.com>
+Message-ID: <CABUeae_SNfbZW-bUpDqU_8ERPPD2h72tp6sFsEx936N6s+MKDQ@mail.gmail.com>
+
+On 11 July 2012 10:36, BRAGA, Bruno <bruno.braga at gmail.com> wrote:
+> You are a saviour! I can't believe I survived that long without such tool!
+> Worked awesomely! Cheers for that!
+
+FYI, check Michael's answer to my question:
+http://faq.i3wm.org/question/68/how-to-build-and-install-i3-from-sources/
+
+Best regards,
+-- 
+Mateusz Loskot, http://mateusz.loskot.net
+
+From bruno.braga at gmail.com  Wed Jul 11 11:57:40 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Wed, 11 Jul 2012 19:57:40 +1000
+Subject: [i3] Compiling from Source
+In-Reply-To: <CABUeae_SNfbZW-bUpDqU_8ERPPD2h72tp6sFsEx936N6s+MKDQ@mail.gmail.com>
+References: <CAAuVr72bux9X8tjJ3+Bu1hoT5E1Jd--j=xaL6b-fp_rugbq0YQ@mail.gmail.com>
+ <20120711061213.28634.46737@midna.zekjur.net>
+ <CAAuVr70JuwXNk0dxnSZiHE0ak0s5ThkkLd6c4e5e-U-+OK-wkg@mail.gmail.com>
+ <4FFD229D.80204@nassur.net>
+ <CAAuVr72ponzCCiJQoUfrJimTsx7=bRqBg_zJ2gO3q2Qr9bx+2Q@mail.gmail.com>
+ <CABUeae_SNfbZW-bUpDqU_8ERPPD2h72tp6sFsEx936N6s+MKDQ@mail.gmail.com>
+Message-ID: <CAAuVr71mKN36phs9fbwEpCkmo93QdvsOZWk9e8KThQMKW91BRw@mail.gmail.com>
+
+For reference,
+
+The i3status required more packages: libasound2-dev  libiw-dev asciidoc
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Wed, Jul 11, 2012 at 7:42 PM, Mateusz Loskot <mateusz at loskot.net> wrote:
+
+> On 11 July 2012 10:36, BRAGA, Bruno <bruno.braga at gmail.com> wrote:
+> > You are a saviour! I can't believe I survived that long without such
+> tool!
+> > Worked awesomely! Cheers for that!
+>
+> FYI, check Michael's answer to my question:
+> http://faq.i3wm.org/question/68/how-to-build-and-install-i3-from-sources/
+>
+> Best regards,
+> --
+> Mateusz Loskot, http://mateusz.loskot.net
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120711/4aaa2912/attachment.html>
+
+From bruno.braga at gmail.com  Wed Jul 11 12:01:29 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Wed, 11 Jul 2012 20:01:29 +1000
+Subject: [i3] Compiling from Source
+In-Reply-To: <CAAuVr71mKN36phs9fbwEpCkmo93QdvsOZWk9e8KThQMKW91BRw@mail.gmail.com>
+References: <CAAuVr72bux9X8tjJ3+Bu1hoT5E1Jd--j=xaL6b-fp_rugbq0YQ@mail.gmail.com>
+ <20120711061213.28634.46737@midna.zekjur.net>
+ <CAAuVr70JuwXNk0dxnSZiHE0ak0s5ThkkLd6c4e5e-U-+OK-wkg@mail.gmail.com>
+ <4FFD229D.80204@nassur.net>
+ <CAAuVr72ponzCCiJQoUfrJimTsx7=bRqBg_zJ2gO3q2Qr9bx+2Q@mail.gmail.com>
+ <CABUeae_SNfbZW-bUpDqU_8ERPPD2h72tp6sFsEx936N6s+MKDQ@mail.gmail.com>
+ <CAAuVr71mKN36phs9fbwEpCkmo93QdvsOZWk9e8KThQMKW91BRw@mail.gmail.com>
+Message-ID: <CAAuVr72i-KieMDKuHyVRs55HrcZF0acE7Y36Bz5x0uUjWMgB4w@mail.gmail.com>
+
+What is the best way to "debug" (meaning, verify) your changes?
+
+For i3status, for instance, what I am doing now is: change code, compile,
+install, logout, login, verify...
+Is there a better (on the fly) way to do this?
+
+I tried also to kill/start i3status, but i3bar stops refreshing.
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120711/99c08eb2/attachment.html>
+
+From mateusz at loskot.net  Wed Jul 11 12:17:19 2012
+From: mateusz at loskot.net (Mateusz Loskot)
+Date: Wed, 11 Jul 2012 11:17:19 +0100
+Subject: [i3] Compiling from Source
+In-Reply-To: <CAAuVr72i-KieMDKuHyVRs55HrcZF0acE7Y36Bz5x0uUjWMgB4w@mail.gmail.com>
+References: <CAAuVr72bux9X8tjJ3+Bu1hoT5E1Jd--j=xaL6b-fp_rugbq0YQ@mail.gmail.com>
+ <20120711061213.28634.46737@midna.zekjur.net>
+ <CAAuVr70JuwXNk0dxnSZiHE0ak0s5ThkkLd6c4e5e-U-+OK-wkg@mail.gmail.com>
+ <4FFD229D.80204@nassur.net>
+ <CAAuVr72ponzCCiJQoUfrJimTsx7=bRqBg_zJ2gO3q2Qr9bx+2Q@mail.gmail.com>
+ <CABUeae_SNfbZW-bUpDqU_8ERPPD2h72tp6sFsEx936N6s+MKDQ@mail.gmail.com>
+ <CAAuVr71mKN36phs9fbwEpCkmo93QdvsOZWk9e8KThQMKW91BRw@mail.gmail.com>
+ <CAAuVr72i-KieMDKuHyVRs55HrcZF0acE7Y36Bz5x0uUjWMgB4w@mail.gmail.com>
+Message-ID: <CABUeae_=Cvd_D_H9KzxhB9TpAC08s_sv2jhbDhMhtCq2n=-Hew@mail.gmail.com>
+
+On 11 July 2012 11:01, BRAGA, Bruno <bruno.braga at gmail.com> wrote:
+> For i3status, for instance, what I am doing now is: change code, compile,
+> install, logout, login, verify...
+> Is there a better (on the fly) way to do this?
+
+http://i3wm.org/docs/userguide.html#_restarting_i3_inplace
+
+Best regards,
+-- 
+Mateusz Loskot, http://mateusz.loskot.net
+
+From bruno.braga at gmail.com  Wed Jul 11 13:16:31 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Wed, 11 Jul 2012 21:16:31 +1000
+Subject: [i3] Compiling from Source
+In-Reply-To: <CABUeae_=Cvd_D_H9KzxhB9TpAC08s_sv2jhbDhMhtCq2n=-Hew@mail.gmail.com>
+References: <CAAuVr72bux9X8tjJ3+Bu1hoT5E1Jd--j=xaL6b-fp_rugbq0YQ@mail.gmail.com>
+ <20120711061213.28634.46737@midna.zekjur.net>
+ <CAAuVr70JuwXNk0dxnSZiHE0ak0s5ThkkLd6c4e5e-U-+OK-wkg@mail.gmail.com>
+ <4FFD229D.80204@nassur.net>
+ <CAAuVr72ponzCCiJQoUfrJimTsx7=bRqBg_zJ2gO3q2Qr9bx+2Q@mail.gmail.com>
+ <CABUeae_SNfbZW-bUpDqU_8ERPPD2h72tp6sFsEx936N6s+MKDQ@mail.gmail.com>
+ <CAAuVr71mKN36phs9fbwEpCkmo93QdvsOZWk9e8KThQMKW91BRw@mail.gmail.com>
+ <CAAuVr72i-KieMDKuHyVRs55HrcZF0acE7Y36Bz5x0uUjWMgB4w@mail.gmail.com>
+ <CABUeae_=Cvd_D_H9KzxhB9TpAC08s_sv2jhbDhMhtCq2n=-Hew@mail.gmail.com>
+Message-ID: <CAAuVr70FNMRsE6ueOniR-u6PnE=jNzWkcWDYpGcmgz6ZyWSVdQ@mail.gmail.com>
+
+Awesome. I thought that would only "reload" the configuration... it does
+restart i3 stuff! Neat!
+
+Thanks!
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Wed, Jul 11, 2012 at 8:17 PM, Mateusz Loskot <mateusz at loskot.net> wrote:
+
+> On 11 July 2012 11:01, BRAGA, Bruno <bruno.braga at gmail.com> wrote:
+> > For i3status, for instance, what I am doing now is: change code, compile,
+> > install, logout, login, verify...
+> > Is there a better (on the fly) way to do this?
+>
+> http://i3wm.org/docs/userguide.html#_restarting_i3_inplace
+>
+> Best regards,
+> --
+> Mateusz Loskot, http://mateusz.loskot.net
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120711/7a202d5c/attachment.html>
+
+From tobisgd at yahoo.de  Wed Jul 11 18:24:37 2012
+From: tobisgd at yahoo.de (Tobias Eichmann)
+Date: Wed, 11 Jul 2012 18:24:37 +0200
+Subject: [i3] Compiling from Source
+In-Reply-To: <4FFD229D.80204@nassur.net>
+References: <CAAuVr72bux9X8tjJ3+Bu1hoT5E1Jd--j=xaL6b-fp_rugbq0YQ@mail.gmail.com>
+ <20120711061213.28634.46737@midna.zekjur.net>
+ <CAAuVr70JuwXNk0dxnSZiHE0ak0s5ThkkLd6c4e5e-U-+OK-wkg@mail.gmail.com>
+ <4FFD229D.80204@nassur.net>
+Message-ID: <20120711182437.42de133c@demon.punkerhaus>
+
+On Wed, 11 Jul 2012 08:52:13 +0200
+"e.waelde" <ew.ng7125 at nassur.net> wrote:
+
+> Hi,
+> 
+> On 07/11/2012 08:39 AM, BRAGA, Bruno wrote:
+> > Thanks guys.... It is a bit painful to go through all dependencies
+> > (and package naming conventions)... now I got stuck in the :
+> >
+> > $ make
+> > [libi3] CC fake_configure_notify.c
+> > In file included from fake_configure_notify.c:14:0:
+> > ../include/libi3.h:19:29: fatal error: xcb/xcb_keysyms.h: No such
+> > file or directory
+> > compilation terminated.
+> > make[1]: *** [fake_configure_notify.o] Error 1
+> > make: *** [libi3/libi3.a] Error 2
+> >
+> > But installing all I could think of (xcb-proto libxcb1 libxcb1-dev
+> > libxcb-util0 libxcb-util0-dev), and still nothing...
+> 
+> Looking at packages.debian.org and searching for "file in 
+> package" will give
+> 
+>    libxcb-keysyms1-dev
+> 
+> for stable. I always resort to this webpage, if apt-cache search 
+> does not help me.
+> 
+> HTH,
+> Erich
+
+Alternatively you can install apt-file, which does the same job.
+
+From bruno.braga at gmail.com  Thu Jul 12 03:09:24 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Thu, 12 Jul 2012 11:09:24 +1000
+Subject: [i3] Compiling from Source
+In-Reply-To: <20120711182437.42de133c@demon.punkerhaus>
+References: <CAAuVr72bux9X8tjJ3+Bu1hoT5E1Jd--j=xaL6b-fp_rugbq0YQ@mail.gmail.com>
+ <20120711061213.28634.46737@midna.zekjur.net>
+ <CAAuVr70JuwXNk0dxnSZiHE0ak0s5ThkkLd6c4e5e-U-+OK-wkg@mail.gmail.com>
+ <4FFD229D.80204@nassur.net> <20120711182437.42de133c@demon.punkerhaus>
+Message-ID: <CAAuVr70JcTHw0LhXZhJenqoyDU_ZdXE_zh65JVj2A9vGa5LnxQ@mail.gmail.com>
+
+Even better! Thanks!
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Thu, Jul 12, 2012 at 2:24 AM, Tobias Eichmann <tobisgd at yahoo.de> wrote:
+
+> On Wed, 11 Jul 2012 08:52:13 +0200
+> "e.waelde" <ew.ng7125 at nassur.net> wrote:
+>
+> > Hi,
+> >
+> > On 07/11/2012 08:39 AM, BRAGA, Bruno wrote:
+> > > Thanks guys.... It is a bit painful to go through all dependencies
+> > > (and package naming conventions)... now I got stuck in the :
+> > >
+> > > $ make
+> > > [libi3] CC fake_configure_notify.c
+> > > In file included from fake_configure_notify.c:14:0:
+> > > ../include/libi3.h:19:29: fatal error: xcb/xcb_keysyms.h: No such
+> > > file or directory
+> > > compilation terminated.
+> > > make[1]: *** [fake_configure_notify.o] Error 1
+> > > make: *** [libi3/libi3.a] Error 2
+> > >
+> > > But installing all I could think of (xcb-proto libxcb1 libxcb1-dev
+> > > libxcb-util0 libxcb-util0-dev), and still nothing...
+> >
+> > Looking at packages.debian.org and searching for "file in
+> > package" will give
+> >
+> >    libxcb-keysyms1-dev
+> >
+> > for stable. I always resort to this webpage, if apt-cache search
+> > does not help me.
+> >
+> > HTH,
+> > Erich
+>
+> Alternatively you can install apt-file, which does the same job.
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120712/1ff32f0b/attachment.html>
+
+From drdarkraven at gmail.com  Fri Jul 13 16:22:01 2012
+From: drdarkraven at gmail.com (DR)
+Date: Fri, 13 Jul 2012 22:22:01 +0800
+Subject: [i3] [PATCH] Improved i3bar hide mode behavior (In my point of
+	view)
+In-Reply-To: <20120707203157.22466.72213@midna.zekjur.net>
+References: <CAMJW5=0hC+1YhuPyY8=eQtAKuM0VwzPgiGRDAwJs2aXzF_YcKw@mail.gmail.com>
+ <CAMJW5=2u8xves-DYAJk-xy4aM64eRhfoY5bPufh52OmYbgYomw@mail.gmail.com>
+ <CANVYNa9Kbr_aDYTpN+4Qi6xsJKDFsQ34+3ZdpwK4MAqAOzETZg@mail.gmail.com>
+ <CAMJW5=1n6_DF7A_J4rQ3HfD4Un1Vgn8y3JxqktOQmgNe6PvqQQ@mail.gmail.com>
+ <20120707203157.22466.72213@midna.zekjur.net>
+Message-ID: <CAMJW5=3JXKVPBT6nGct-01jCWGgo8vnvmrR-ZO9f6_rr37Bb+g@mail.gmail.com>
+
+On Sun, Jul 8, 2012 at 4:31 AM, Michael Stapelberg <michael at i3wm.org> wrote:
+
+> Hi DR,
+>
+> Quoting DR (2012-07-07 17:45:52)
+> > Since I failed to convince Michael to accept my newer patch, I decide to
+> drop
+> > those more "advanced" patch, and try to push this simple patch into i3.
+> Thanks for updating your patch. Here are my comments:
+>
+> 1) You are not using FREE(last_urgent_ws);, but free(last_urgent_ws) in
+>    line 1489, which is unsafe (it is not guaranteed that last_urgent_ws
+>    is != NULL).
+>
+> 2) You are using strdup() instead of sstrdup() in line 1490, so you
+>    don?t handle -EMEMORY.
+>
+> 3) Instead of using if (last_urgent_ws) free(last_urgent_ws); you should
+>    use FREE(last_urgent_ws) in line 1526.
+>
+> 4) Your patch doesn?t actually work when the user is not navigating away
+>    from the workspace using the keyboard, but when he is focusing the
+>    urgent window with the mouse. i3bar will properly update the urgency
+>    indicator for that workspace, but it won?t hide.
+>
+This behavior is intended, so user can easily (using only his mouse)
+navigate back to previous workspace before the urgency happen.
+
+>
+>    I?d suggest to save a flag which is set to true when i3bar calls
+>    unhide_bars() due to an urgent workspace. Then, check if that flag is
+>    set, but no more urgent workspaces are found (!has_urgent &&
+>    !mod_pressed && hidden_due_to_urgency) and call hide_bars().
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120713/1be91949/attachment.html>
+
+From mateusz at loskot.net  Fri Jul 13 20:06:58 2012
+From: mateusz at loskot.net (Mateusz Loskot)
+Date: Fri, 13 Jul 2012 19:06:58 +0100
+Subject: [i3] [PATCH] Improved i3bar hide mode behavior (In my point of
+	view)
+In-Reply-To: <CAMJW5=3JXKVPBT6nGct-01jCWGgo8vnvmrR-ZO9f6_rr37Bb+g@mail.gmail.com>
+References: <CAMJW5=0hC+1YhuPyY8=eQtAKuM0VwzPgiGRDAwJs2aXzF_YcKw@mail.gmail.com>
+ <CAMJW5=2u8xves-DYAJk-xy4aM64eRhfoY5bPufh52OmYbgYomw@mail.gmail.com>
+ <CANVYNa9Kbr_aDYTpN+4Qi6xsJKDFsQ34+3ZdpwK4MAqAOzETZg@mail.gmail.com>
+ <CAMJW5=1n6_DF7A_J4rQ3HfD4Un1Vgn8y3JxqktOQmgNe6PvqQQ@mail.gmail.com>
+ <20120707203157.22466.72213@midna.zekjur.net>
+ <CAMJW5=3JXKVPBT6nGct-01jCWGgo8vnvmrR-ZO9f6_rr37Bb+g@mail.gmail.com>
+Message-ID: <CABUeae_bLGGH9YoNDDMxERQXdfZmQFZVHp7nQdNo1n0g-95jeg@mail.gmail.com>
+
+On Sun, Jul 8, 2012 at 4:31 AM, Michael Stapelberg <michael at i3wm.org> wrote:
+>
+> 1) You are not using FREE(last_urgent_ws);, but free(last_urgent_ws) in
+>    line 1489, which is unsafe (it is not guaranteed that last_urgent_ws
+>    is != NULL).
+
+There is no such guarantee needed for free() as per the C99 Standard:
+
+7.20.3.2 The free function
+2 The free function causes the space pointed to by ptr to be
+deallocated, that is, made
+available for further allocation. If ptr is a null pointer, no action occurs.
+
+Best regards,
+-- 
+Mateusz Loskot, http://mateusz.loskot.net
+
+From gdkags at gmail.com  Tue Jul 17 20:53:07 2012
+From: gdkags at gmail.com (David Schmid)
+Date: Tue, 17 Jul 2012 20:53:07 +0200
+Subject: [i3] focus issue
+Message-ID: <5005B493.6010703@gmail.com>
+
+Hi guys!
+
+I've read through the archive and did not find anything regarding my 
+problems so here I go recreating my problems:
+
+I open two terminal windows (mod+enter, twice), then move the mouse back 
+and forth between them, focus follows.
+Then, I mark some lines in one of the terminals, move my pointer back to 
+the other terminal, focus does not follow there.
+Clicking the terminal does not cause the focus to follow. When I use the 
+keyboard to switch the focus it works, but then moving my pointer back 
+to the first terminal the focus will not follow again.
+
+This is the most simple example, there are more, much more annoying 
+implications this bug (if this is one) brings with it. For example:
+
+Using thunderbird, pressing ctrl+m will spawn the new mail window, but 
+the focus is screwed up again like in the example before.
+If a dialog pops up (focused) and I click something on it my click goes 
+right through the dialog into the container behind it.
+
+There are much more issues, if you need more, I will send more.
+
+The only thing helping to regain the ability to focus normally is to 
+switch to another workspace and back. But toggling workspaces after 
+every click is quite cumbersome, so, what do I do?
+
+I'm using "i3-wm 4.2-2" on a x86_64 archlinux standard kernel and tried 
+the forums there already one year ago, but nobody could help.
+
+Can you?
+
+Best regards,
+David
+-------------- next part --------------
+# This file has been auto-generated by i3-config-wizard(1).
+# It will not be overwritten, so edit it as you like.
+#
+# Should you change your keyboard layout somewhen, delete
+# this file and re-run i3-config-wizard(1).
+#
+
+# i3 config file (v4)
+#
+# Please see http://i3wm.org/docs/userguide.html for a complete reference!
+
+set $mod Mod4
+
+# font for window titles. ISO 10646 = Unicode
+font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# start a terminal
+bindsym $mod+Return exec i3-sensible-terminal
+
+# kill focused window
+bindsym $mod+Shift+Q kill
+
+# start dmenu (a program launcher)
+bindsym $mod+d exec dmenu_run
+
+# change focus
+bindsym $mod+j focus left
+bindsym $mod+k focus down
+bindsym $mod+l focus up
+bindsym $mod+semicolon focus right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# move focused window
+bindsym $mod+Shift+J move left
+bindsym $mod+Shift+K move down
+bindsym $mod+Shift+L move up
+bindsym $mod+Shift+colon move right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+
+# split in horizontal orientation
+bindsym $mod+h split h
+
+# split in vertical orientation
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen
+
+# change container layout (stacked, tabbed, default)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout default
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# focus the child container
+#bindcode $mod+d focus child
+
+# switch to workspace
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+# move focused container to workspace
+bindsym $mod+Shift+exclam move workspace 1
+bindsym $mod+Shift+at move workspace 2
+bindsym $mod+Shift+numbersign move workspace 3
+bindsym $mod+Shift+dollar move workspace 4
+bindsym $mod+Shift+percent move workspace 5
+bindsym $mod+Shift+asciicircum move workspace 6
+bindsym $mod+Shift+ampersand move workspace 7
+bindsym $mod+Shift+asterisk move workspace 8
+bindsym $mod+Shift+parenleft move workspace 9
+bindsym $mod+Shift+parenright move workspace 10
+
+# reload the configuration file
+bindsym $mod+Shift+C reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+R restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+E exit
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # They resize the border in the direction you pressed, e.g.
+        # when pressing left, the window is resized so that it has
+        # more space on its left
+
+bindsym j resize shrink left 10 px or 10 ppt
+bindsym Shift+J resize grow   left 10 px or 10 ppt
+
+bindsym k resize shrink down 10 px or 10 ppt
+bindsym Shift+K resize grow   down 10 px or 10 ppt
+
+bindsym l resize shrink up 10 px or 10 ppt
+bindsym Shift+L resize grow   up 10 px or 10 ppt
+
+bindsym semicolon resize shrink right 10 px or 10 ppt
+bindsym Shift+colon resize grow   right 10 px or 10 ppt
+
+        # same bindings, but for the arrow keys
+bindsym Left resize shrink left 10 px or 10 ppt
+bindsym Shift+Left resize grow   left 10 px or 10 ppt
+
+bindsym Down resize shrink down 10 px or 10 ppt
+bindsym Shift+Down resize grow   down 10 px or 10 ppt
+
+bindsym Up resize shrink up 10 px or 10 ppt
+bindsym Shift+Up resize grow   up 10 px or 10 ppt
+
+bindsym Right resize shrink right 10 px or 10 ppt
+bindsym Shift+Right resize grow   right 10 px or 10 ppt
+
+        # back to normal: Enter or Escape
+bindsym Return mode "default"
+bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+	status_command i3status
+}
+
+assign [class="^Firefox$"] 3
+assign [class="^Thunderbird$"] 2
+
+exec firefox
+exec thunderbird
+
+
+From mogeiwang at gmail.com  Wed Jul 18 16:43:05 2012
+From: mogeiwang at gmail.com (Mogei Wang)
+Date: Wed, 18 Jul 2012 22:43:05 +0800
+Subject: [i3] i3-discuss Digest, Vol 27, Issue 11
+In-Reply-To: <mailman.3.1342605608.14764.i3-discuss@i3.zekjur.net>
+References: <mailman.3.1342605608.14764.i3-discuss@i3.zekjur.net>
+Message-ID: <CANehw_m5dskFWyfGLZJc66QLxR1Ln-JKXj+raCh7_+7dPqq4Ng@mail.gmail.com>
+
+Hello every one,
+I am writing to ask that, is it possible to set / reset the
+orientation of workspaces without restart i3wm?
+
+E.g., bind it to a key:
+
+bindsym $mod+t orientation vertical
+bindsym $mod+Shift+T orientation horizontal
+
+Thanks.
+
+Yours, M.W.
+
+From michael at i3wm.org  Wed Jul 18 19:18:03 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 18 Jul 2012 19:18:03 +0200
+Subject: [i3] i3-discuss Digest, Vol 27, Issue 11
+In-Reply-To: <CANehw_m5dskFWyfGLZJc66QLxR1Ln-JKXj+raCh7_+7dPqq4Ng@mail.gmail.com>
+References: <mailman.3.1342605608.14764.i3-discuss@i3.zekjur.net>
+ <CANehw_m5dskFWyfGLZJc66QLxR1Ln-JKXj+raCh7_+7dPqq4Ng@mail.gmail.com>
+Message-ID: <20120718171802.23970.26446@midna.zekjur.net>
+
+Hello,
+
+Quoting Mogei Wang (2012-07-18 16:43:05)
+> I am writing to ask that, is it possible to set / reset the
+> orientation of workspaces without restart i3wm?
+Yes, simply use the 'split v' and 'split h' commands on the workspace
+level. The 'focus parent' command might come in helpful for that (it
+goes up one level in the tree), see [1].
+
+Best regards,
+Michael
+
+[1] http://i3wm.org/docs/userguide.html#_focus_parent
+
+From e.zagorodniy at gmail.com  Wed Jul 18 21:07:30 2012
+From: e.zagorodniy at gmail.com (Eugen Zagorodniy)
+Date: Wed, 18 Jul 2012 22:07:30 +0300
+Subject: [i3] gVim with Terminus and slow rendering
+In-Reply-To: <CAHBOCVAHe7JmADUC0p=V1CRG6-ROZVtz4vnVWkLvUCBPM4OrtQ@mail.gmail.com>
+Message-ID: <20120718220730.568d1791@reoc.zag.pp.ua>
+
+I hit the same problem and found three ways to solve it:
+
+1. Downgrade to xf86-video-intel-2.18.0-3. There is no need to
+downgrade kernel; all you need is rebuild the package (i.e. via ABS) to
+link it against new versions of libraries. Note that occasionaly you'll
+have to rebuild it again after system upgrades.
+
+2. Downgrade to cairo-1.10.2-3 (possibly newer version prior to
+1.12.2-2 will do). I tried it after reading comments to bug
+https://bugs.freedesktop.org/show_bug.cgi?id=48395 and it also solved
+the problem (without downgrading xf86-video-intel).
+
+3. Replace xf86-video-intel-uxa with xf86-video-intel-sna. This may not
+work for every platform, but this solution seems to be the most
+convenient since it doesn't require keeping outdated packages in the
+system.
+
+Hope it hepls.
+
+From fernandotcl at i3wm.org  Sat Jul 21 04:06:55 2012
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Fri, 20 Jul 2012 23:06:55 -0300
+Subject: [i3] focus issue
+In-Reply-To: <5005B493.6010703@gmail.com>
+References: <5005B493.6010703@gmail.com>
+Message-ID: <CANVYNa9nuL6dCRONrBjr8-gsPwoHXNyYG2xOEsTBD4OxOOvwYw@mail.gmail.com>
+
+Hi,
+
+On Tue, Jul 17, 2012 at 3:53 PM, David Schmid <gdkags at gmail.com> wrote:
+> Hi guys!
+>
+> I've read through the archive and did not find anything regarding my
+> problems so here I go recreating my problems:
+[snip]
+
+Those shouldn't happen. If you're still being able to reproduce this,
+please take a look at the bug tracker to see if they haven't been
+reported yet, and if not, please report them.
+
+Also please check the debugging guide:
+
+http://i3wm.org/docs/debugging.html
+
+Thanks,
+
+From layus.on at gmail.com  Sun Jul 22 02:42:48 2012
+From: layus.on at gmail.com (Layus)
+Date: Sun, 22 Jul 2012 02:42:48 +0200
+Subject: [i3] i3 tree visualization program
+In-Reply-To: <20120709132149.31441.55302@midna.zekjur.net>
+References: <4FF9CAD9.1050304@polibyte.com>
+ <20120709132149.31441.55302@midna.zekjur.net>
+Message-ID: <500B4C88.90506@gmail.com>
+
+Hi,
+
+On 09/07/12 15:21, Michael Stapelberg wrote:
+> Hi Brian,
+>
+> Quoting Brian Pitts (2012-07-08 20:00:57)
+>> I wanted to share with the group a program I wrote for visualizing the i3 tree
+>> structure. Here's an example of what it produces:
+>> [...]
+>> I hope you find it useful. Pull requests with improvements are welcome.
+> Sweet. It doesn?t properly display scratchpad windows, though (while
+> it does list the __i3_scratch pseudo workspace).
+>
+> Best regards,
+> Michael
+I wanted to drop a small change I made,
+as the "layout" field seems as necessary as the "orientation" one.
+
+For example an horizontal container can have either a tabbed or default 
+layout.
+Conversely, a default layout can be oriented vertically or horizontally.
+
+Here is an example with my "usual" desktop,
+using obvious modifications to your script.
+
+Workspace __i3_scratch (default - none)
+Workspace 1 (default - horizontal)
+     Split (tabbed - horizontal)
+         Split (stacked - vertical)
+             Window i3: i3-msg(1) - Mozilla Firefox
+         Split (stacked - vertical)
+             Window Inbox - layus.on at gmail.com - Mozilla Thunderbird
+             Window Write: Re: [i3] i3 tree visualization program - 
+Unicode (UTF-8)
+Workspace 2 (default - vertical)
+     Window rxvt-256color
+     Window Terminal
+
+I think that the orientation can even be omitted as it is superseded by 
+the layout in most cases,
+except the one cited above, with the default layout.
+
+Am I right if I say that the default layout is the only one to be 
+influenced by the orientation ?
+
+Best regards,
+Layus.
+
+PS : Using a "complicated" layout as in workspace 1 often causes i3 to 
+crash when moving windows around.
+I'm going to fill some bug report, or investigate this furthermore in 
+the following days.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120722/5689430c/attachment.html>
+
+From michael at i3wm.org  Sun Jul 22 12:41:02 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 22 Jul 2012 12:41:02 +0200
+Subject: [i3] Ordering t-shirts, who wants some?
+Message-ID: <20120722104102.19229.13636@midna.zekjur.net>
+
+Hi,
+
+I will be ordering i3 t-shirts soon. If you want one, too, just send me
+an email containing your t-shirt size and full address. Payment is
+upfront via paypal or bank transfer, the price for a t-shirt is 15 ? +
+shipping. The deadline for email orders is 2012-07-25 (in 3 days). I
+will order the shirts shortly afterwards (so expect 2 to 3 weeks from
+now until you get them).
+
+The shirt will look like the one in this picture:
+http://twitpic.com/36lomv (but the URL will be i3wm.org)
+
+Best regards,
+Michael
+
+From mateusz at loskot.net  Sun Jul 22 13:15:53 2012
+From: mateusz at loskot.net (Mateusz Loskot)
+Date: Sun, 22 Jul 2012 12:15:53 +0100
+Subject: [i3] Ordering t-shirts, who wants some?
+In-Reply-To: <20120722104102.19229.13636@midna.zekjur.net>
+References: <20120722104102.19229.13636@midna.zekjur.net>
+Message-ID: <CABUeae9FYec-txEmqarS8t2EKVRFAuL_U+3qOYYmKeTijD_CLA@mail.gmail.com>
+
+On 22 July 2012 11:41, Michael Stapelberg <michael at i3wm.org> wrote:
+>
+> I will be ordering i3 t-shirts soon.
+
+Nice!
+
+> If you want one, too, just send me
+> an email containing your t-shirt size and full address.
+
+Any chance for size table?
+I have strange experiences with sizes ordered form US,
+where L fits like XL.
+
+> Payment is upfront via paypal or bank transfer, the price
+> for a t-shirt is 15 ? + shipping.
+
+Any idea what is shipping cost to London, UK?
+I could also get it shipped to Dortmund in Germany, then collect it myself.
+
+Cheers,
+-- 
+Mateusz Loskot, http://mateusz.loskot.net
+
+From michael at i3wm.org  Sun Jul 22 15:38:04 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 22 Jul 2012 15:38:04 +0200
+Subject: [i3] Ordering t-shirts, who wants some?
+In-Reply-To: <CABUeae9FYec-txEmqarS8t2EKVRFAuL_U+3qOYYmKeTijD_CLA@mail.gmail.com>
+References: <20120722104102.19229.13636@midna.zekjur.net>
+ <CABUeae9FYec-txEmqarS8t2EKVRFAuL_U+3qOYYmKeTijD_CLA@mail.gmail.com>
+Message-ID: <20120722133804.31365.46346@midna.zekjur.net>
+
+Hi Mateusz,
+
+Quoting Mateusz Loskot (2012-07-22 13:15:53)
+> Any chance for size table?
+> I have strange experiences with sizes ordered form US,
+> where L fits like XL.
+The shirts will be "Hanes Top T" a size table can be found on this
+(german) page:
+http://www.activisten.de/catalog/tex_info.php?tex_item=TST
+
+My attempt at a translation for those who don?t understand german:
+
+--------------------------------------
+Size | Shoulder width | Total length |
+--------------------------------------
+ S   |     ~ 44 cm    |   ~ 66 cm    |
+ M   |     ~ 50 cm    |   ~ 67 cm    |
+ L   |     ~ 55 cm    |   ~ 72 cm    |
+ XL  |     ~ 60 cm    |   ~ 73 cm    |
+ XXL |     ~ 66 cm    |   ~ 77 cm    |
+--------------------------------------
+
+> Any idea what is shipping cost to London, UK?
+> I could also get it shipped to Dortmund in Germany, then collect it myself.
+Shipping within Germany is 4 EUR, to the UK it?s 6 EUR.
+
+Best regards,
+Michael
+
+From michael at i3wm.org  Sun Jul 22 17:53:35 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 22 Jul 2012 17:53:35 +0200
+Subject: [i3] i3 tree visualization program
+In-Reply-To: <500B4C88.90506@gmail.com>
+References: <4FF9CAD9.1050304@polibyte.com>
+ <20120709132149.31441.55302@midna.zekjur.net> <500B4C88.90506@gmail.com>
+Message-ID: <20120722155335.3116.97877@midna.zekjur.net>
+
+Hi Layus,
+
+Quoting Layus (2012-07-22 02:42:48)
+> Am I right if I say that the default layout is the only one to be influenced by
+> the orientation ??
+Yes, but see ticket http://bugs.i3wm.org/query/ticket/464
+
+> PS : Using a "complicated" layout as in workspace 1 often causes i3 to crash
+> when moving windows around.
+> I'm going to fill some bug report, or investigate this furthermore in the
+> following days.
+Yes please. I have heard this from a different person already, but
+nobody ever filed a bugreport about it :-/ (and it doesn?t crash for
+me).
+
+Best regards,
+Michael
+
+From mhcerri at gmail.com  Mon Jul 23 16:06:14 2012
+From: mhcerri at gmail.com (Marcelo Cerri)
+Date: Mon, 23 Jul 2012 11:06:14 -0300
+Subject: [i3] Ordering t-shirts, who wants some?
+In-Reply-To: <20120722133804.31365.46346@midna.zekjur.net>
+References: <20120722104102.19229.13636@midna.zekjur.net>
+ <CABUeae9FYec-txEmqarS8t2EKVRFAuL_U+3qOYYmKeTijD_CLA@mail.gmail.com>
+ <20120722133804.31365.46346@midna.zekjur.net>
+Message-ID: <CACg2Y9v7KdqguoLrauaPqfb29nsuQd-jWQgQjoCsqtzoS5HOOA@mail.gmail.com>
+
+Hi Michael,
+
+Any idea if it's possible to ship to Brazil and how much it would cost?
+
+Regards,
+Marcelo
+
+On Sun, Jul 22, 2012 at 10:38 AM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Mateusz,
+>
+> Quoting Mateusz Loskot (2012-07-22 13:15:53)
+> > Any chance for size table?
+> > I have strange experiences with sizes ordered form US,
+> > where L fits like XL.
+> The shirts will be "Hanes Top T" a size table can be found on this
+> (german) page:
+> http://www.activisten.de/catalog/tex_info.php?tex_item=TST
+>
+> My attempt at a translation for those who don?t understand german:
+>
+> --------------------------------------
+> Size | Shoulder width | Total length |
+> --------------------------------------
+>  S   |     ~ 44 cm    |   ~ 66 cm    |
+>  M   |     ~ 50 cm    |   ~ 67 cm    |
+>  L   |     ~ 55 cm    |   ~ 72 cm    |
+>  XL  |     ~ 60 cm    |   ~ 73 cm    |
+>  XXL |     ~ 66 cm    |   ~ 77 cm    |
+> --------------------------------------
+>
+> > Any idea what is shipping cost to London, UK?
+> > I could also get it shipped to Dortmund in Germany, then collect it
+> myself.
+> Shipping within Germany is 4 EUR, to the UK it?s 6 EUR.
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120723/c788da7d/attachment.html>
+
+From michael at i3wm.org  Mon Jul 23 16:35:52 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 23 Jul 2012 16:35:52 +0200
+Subject: [i3] Ordering t-shirts, who wants some?
+In-Reply-To: <CACg2Y9v7KdqguoLrauaPqfb29nsuQd-jWQgQjoCsqtzoS5HOOA@mail.gmail.com>
+References: <20120722104102.19229.13636@midna.zekjur.net>
+ <CABUeae9FYec-txEmqarS8t2EKVRFAuL_U+3qOYYmKeTijD_CLA@mail.gmail.com>
+ <20120722133804.31365.46346@midna.zekjur.net>
+ <CACg2Y9v7KdqguoLrauaPqfb29nsuQd-jWQgQjoCsqtzoS5HOOA@mail.gmail.com>
+Message-ID: <20120723143552.10997.6275@midna.zekjur.net>
+
+Hi Marcelo,
+
+Quoting Marcelo Cerri (2012-07-23 16:06:14)
+> Any idea if it's possible to ship to Brazil and how much it would cost?
+Yes, it?s possible, it costs 6 EUR.
+
+Best regards,
+Michael
+
+From bruno.braga at gmail.com  Mon Jul 23 16:58:05 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Tue, 24 Jul 2012 00:58:05 +1000
+Subject: [i3] Ordering t-shirts, who wants some?
+In-Reply-To: <20120723143552.10997.6275@midna.zekjur.net>
+References: <20120722104102.19229.13636@midna.zekjur.net>
+ <CABUeae9FYec-txEmqarS8t2EKVRFAuL_U+3qOYYmKeTijD_CLA@mail.gmail.com>
+ <20120722133804.31365.46346@midna.zekjur.net>
+ <CACg2Y9v7KdqguoLrauaPqfb29nsuQd-jWQgQjoCsqtzoS5HOOA@mail.gmail.com>
+ <20120723143552.10997.6275@midna.zekjur.net>
+Message-ID: <CAAuVr70icVZeyy6oTjOGQPWLs7zcdbyw+14bPcUKuHpW9QSkJQ@mail.gmail.com>
+
+Hi Michael,
+
+2 T-shirts L-size for Australia!
+How do we order/pay?
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Tue, Jul 24, 2012 at 12:35 AM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Marcelo,
+>
+> Quoting Marcelo Cerri (2012-07-23 16:06:14)
+> > Any idea if it's possible to ship to Brazil and how much it would cost?
+> Yes, it?s possible, it costs 6 EUR.
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120724/443e4b18/attachment.html>
+
+From michael at i3wm.org  Mon Jul 23 17:24:10 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 23 Jul 2012 17:24:10 +0200
+Subject: [i3] Ordering t-shirts, who wants some?
+In-Reply-To: <CAAuVr70icVZeyy6oTjOGQPWLs7zcdbyw+14bPcUKuHpW9QSkJQ@mail.gmail.com>
+References: <20120722104102.19229.13636@midna.zekjur.net>
+ <CABUeae9FYec-txEmqarS8t2EKVRFAuL_U+3qOYYmKeTijD_CLA@mail.gmail.com>
+ <20120722133804.31365.46346@midna.zekjur.net>
+ <CACg2Y9v7KdqguoLrauaPqfb29nsuQd-jWQgQjoCsqtzoS5HOOA@mail.gmail.com>
+ <20120723143552.10997.6275@midna.zekjur.net>
+ <CAAuVr70icVZeyy6oTjOGQPWLs7zcdbyw+14bPcUKuHpW9QSkJQ@mail.gmail.com>
+Message-ID: <20120723152410.11482.73292@midna.zekjur.net>
+
+Hi Bruno,
+
+Quoting BRAGA, Bruno (2012-07-23 16:58:05)
+> 2 T-shirts L-size for Australia!
+> How do we order/pay?
+Just send me an email asking for the payment details (please tell me
+whether you want to pay via bank transfer or via paypal) and I?ll send
+them to you.
+
+Best regards,
+Michael
+
+From bruno.braga at gmail.com  Mon Jul 23 16:54:37 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Tue, 24 Jul 2012 00:54:37 +1000
+Subject: [i3] i3status with battery at 100+
+Message-ID: <CAAuVr72FRTG8peBzHN-vtjew0_kMbJX_=Vf7e8=FZu+_w0eUSQ@mail.gmail.com>
+
+Hi,
+
+It is really a small thing, but decided to write about it anyway...
+
+I know it is not a i3 bug, because the proc/acpi is returning this
+wrongfully. I wonder if it is worth trying to improve this or better just
+leave it... I was thinking about working on it, if you guys reckon it is
+worth the trouble:
+
+1) never allow battery value to surpass 100% (this happens specially while
+using last full capacity) - this is not a bug, but it makes no sense to
+display as such
+2) the state shows charged but i3status displays BAT, as in discharging (I
+believe this is a bug)
+3) when the charging is close to 100%, the battery goes red (I believe this
+happens because of the remaining time to become full - and looks like a bug
+as well)
+
+What do you guys think?
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120724/670a1685/attachment-0001.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 20120723_001.jpeg
+Type: image/jpeg
+Size: 73885 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120724/670a1685/attachment-0003.jpeg>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 20120723_002.jpeg
+Type: image/jpeg
+Size: 75472 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120724/670a1685/attachment-0004.jpeg>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 20120724_001.jpeg
+Type: image/jpeg
+Size: 73905 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120724/670a1685/attachment-0005.jpeg>
+
+From michael at i3wm.org  Mon Jul 23 20:58:14 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 23 Jul 2012 20:58:14 +0200
+Subject: [i3] i3status with battery at 100+
+In-Reply-To: <CAAuVr72FRTG8peBzHN-vtjew0_kMbJX_=Vf7e8=FZu+_w0eUSQ@mail.gmail.com>
+References: <CAAuVr72FRTG8peBzHN-vtjew0_kMbJX_=Vf7e8=FZu+_w0eUSQ@mail.gmail.com>
+Message-ID: <20120723185814.12580.95396@midna.zekjur.net>
+
+Hi Bruno,
+
+Quoting BRAGA, Bruno (2012-07-23 16:54:37)
+> It is really a small thing, but decided to write about it anyway...?
+> I know it is not a i3 bug, because the proc/acpi is returning this wrongfully.
+Rule of thumb: Please always describe what you are seeing. From your
+screenshots, I think you are talking about your battery having a charge
+status of more than 100%. While this might seem odd at first you have to
+understand that the design capacity is only a value which the
+manufacturer of the battery sets. It is perfectly normal that batteries
+achieve more than that in their first few discharge cycles. Just as it?s
+normal that the battery won?t achieve the full design capacity after
+some discharge cycles :).
+
+> 1) never allow battery value to surpass 100% (this happens specially while
+> using last full capacity) - this is not a bug, but it makes no sense to display
+> as such
+It does make sense to display it. The information that your battery is
+fuller than normal is important, too.
+
+> 2) the state shows charged but i3status displays BAT, as in discharging (I
+> believe this is a bug)
+Does this happen all the time? If so, can you check if your battery
+uevent file contains the POWER_SUPPLY_STATUS key and which value it has
+please?
+
+> 3) when the charging is close to 100%, the battery goes red (I believe this
+> happens because of the remaining time to become full - and looks like a bug as
+> well)
+This is weird. The remaining time is only checked when the state is
+'discharging'. But it displays CHR (charging) in your screenshot. Fixes
+welcome.
+
+Best regards,
+Michael
+
+From fuzz at fuzz.dk  Tue Jul 24 14:07:34 2012
+From: fuzz at fuzz.dk (Anders Bo Rasmussen)
+Date: Tue, 24 Jul 2012 14:07:34 +0200
+Subject: [i3] Get list of workspaces
+Message-ID: <CALzASJnB8RcX7LUZ7t4i-aOcBkVizhfUPwtvXz8HTA9fSyU-dQ@mail.gmail.com>
+
+Hi.
+
+I'm currently switching from wmii to i3. It seems to work well so far,
+but just have to make the last things work before I can use i3 all the
+time.
+
+I'm trying to get mod+t and mod+shift+t to work like in wmii. That
+will say that mod+t should shift to a workspace selected by dmenu and
+mod+shift+t should move the current window to a workspace selected by
+dmenu. My solution so far is:
+
+#switch to dmenu-selected-tag
+bindsym Mod3+t exec bash -c 'cat /dev/null | dmenu | xargs -i i3-msg
+workspace {}'
+
+#move window to dmenu-selected-tag
+bindsym Mod3+Shift+t exec bash -c 'cat /dev/null | dmenu | xargs -i
+i3-msg move container to workspace {}'
+
+
+That works well. The only problem is that dmenu doesn't get any list
+of currently available workspaces. Is there a way I can get this list?
+
+From michael at i3wm.org  Tue Jul 24 14:20:10 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 24 Jul 2012 14:20:10 +0200
+Subject: [i3] Get list of workspaces
+In-Reply-To: <CALzASJnB8RcX7LUZ7t4i-aOcBkVizhfUPwtvXz8HTA9fSyU-dQ@mail.gmail.com>
+References: <CALzASJnB8RcX7LUZ7t4i-aOcBkVizhfUPwtvXz8HTA9fSyU-dQ@mail.gmail.com>
+Message-ID: <20120724122010.19945.65864@midna.zekjur.net>
+
+Hi Anders,
+
+Quoting Anders Bo Rasmussen (2012-07-24 14:07:34)
+> of currently available workspaces. Is there a way I can get this list?
+i3-msg -t get_workspaces
+
+And PLEASE don?t use shell to parse this. It?s SO easy to do it in any
+scripting language (Perl, Python, Ruby, ?).
+
+See also http://i3wm.org/docs/ipc.html
+
+Best regards,
+Michael
+
+From fuzz at fuzz.dk  Wed Jul 25 13:31:36 2012
+From: fuzz at fuzz.dk (Anders Bo Rasmussen)
+Date: Wed, 25 Jul 2012 13:31:36 +0200
+Subject: [i3] Get list of workspaces
+In-Reply-To: <20120724122010.19945.65864@midna.zekjur.net>
+References: <CALzASJnB8RcX7LUZ7t4i-aOcBkVizhfUPwtvXz8HTA9fSyU-dQ@mail.gmail.com>
+ <20120724122010.19945.65864@midna.zekjur.net>
+Message-ID: <CALzASJku3aj1-WUoZfjaPEK14HA6NGTcuCTM9zK5LMLg=g9+vw@mail.gmail.com>
+
+Thanks. It works well using JSON::PP in perl.
+
+My next small project to migrate is to make alt-<letter> jump to the
+last selected workspace beginning with <letter> and the next workspace
+beginning with letter if already on that workspace. The mechanism
+therefore has to know both about workspace changes as well as key
+presses. To not get too many perl modules to install all the places I
+need to run i3, I think it looks like the easiest way is to have one
+script monitoring workspace changes with AnyEvent::I3 and save the
+changes to a file in /tmp and another script that is referenced in a
+bind in .i3/config that receives the letter, reads the file in /tmp
+and then select the right workspace with i3-msg. This way perl
+shouldn't need to know about X.
+
+Is there a more easy way to do this?
+
+
+On Tue, Jul 24, 2012 at 2:20 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+> Hi Anders,
+>
+> Quoting Anders Bo Rasmussen (2012-07-24 14:07:34)
+>> of currently available workspaces. Is there a way I can get this list?
+> i3-msg -t get_workspaces
+>
+> And PLEASE don?t use shell to parse this. It?s SO easy to do it in any
+> scripting language (Perl, Python, Ruby, ?).
+>
+> See also http://i3wm.org/docs/ipc.html
+>
+> Best regards,
+> Michael
+
+From michael at i3wm.org  Wed Jul 25 15:40:24 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 25 Jul 2012 15:40:24 +0200
+Subject: [i3] Get list of workspaces
+In-Reply-To: <CALzASJku3aj1-WUoZfjaPEK14HA6NGTcuCTM9zK5LMLg=g9+vw@mail.gmail.com>
+References: <CALzASJnB8RcX7LUZ7t4i-aOcBkVizhfUPwtvXz8HTA9fSyU-dQ@mail.gmail.com>
+ <20120724122010.19945.65864@midna.zekjur.net>
+ <CALzASJku3aj1-WUoZfjaPEK14HA6NGTcuCTM9zK5LMLg=g9+vw@mail.gmail.com>
+Message-ID: <20120725134024.26268.96391@midna.zekjur.net>
+
+Hi Anders,
+
+Quoting Anders Bo Rasmussen (2012-07-25 13:31:36)
+> My next small project to migrate is to make alt-<letter> jump to the
+> last selected workspace beginning with <letter> and the next workspace
+> beginning with letter if already on that workspace. The mechanism
+> therefore has to know both about workspace changes as well as key
+> presses. To not get too many perl modules to install all the places I
+> need to run i3, I think it looks like the easiest way is to have one
+> script monitoring workspace changes with AnyEvent::I3 and save the
+> changes to a file in /tmp and another script that is referenced in a
+> bind in .i3/config that receives the letter, reads the file in /tmp
+> and then select the right workspace with i3-msg. This way perl
+> shouldn't need to know about X.
+Instead of using i3-msg at all, you can do everything using
+AnyEvent::I3.
+
+> Is there a more easy way to do this?
+No, it?s the same way I would do it right now.
+
+Best regards,
+Michael
+
+From michael at i3wm.org  Thu Jul 26 13:08:31 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 26 Jul 2012 13:08:31 +0200
+Subject: [i3] Help: Code Review Software
+Message-ID: <20120726110831.12156.48627@midna.zekjur.net>
+
+Hi,
+
+in the past, we have briefly discussed using Code Review Software such
+as Gerrit, Review Board and others for i3. Back then, we came to the
+conclusion that none of the available tools is easy and compelling
+enough to be used as-is and that the effort of starting something is too
+high to be justified (see below).
+
+I have serious doubts about the effort not being justified anymore. Code
+Reviews as we do them currently (in a mixture of comments via IRC, trac
+or our mailing list) pose a high cognitive load for me and a frustrating
+experience for (potential) contributors.
+
+Quite a while ago, I wrote about the features and non-features which I?d
+like to see in an ideal code review system:
+http://www.featurequest.org/FRQ$CodeReview
+
+Now my question is: Who of you would actively (!) help developing such a
+system?
+
+Best regards,
+Michael
+
+PS: In case anyone wonders why we don?t like existing software:
+? It?s often complex to use. The situation usually is that you have a
+  patch and you want to get comments on it. Most existing tools require
+  you to sign up first and then fill in a lot of fields. For reviewers,
+  getting to the actual side-by-side diff takes far too many clicks (it
+  should be precisely 1).
+? Most don?t allow anonymous submissions, but we really need that (as we
+  do in our bugtracker).
+? Some don?t even accept the git format-patch output (Rietveld for
+  example).
+? Some require you to give up control over your git repository (Gerrit).
+
+From michael at i3wm.org  Thu Jul 26 13:12:23 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 26 Jul 2012 13:12:23 +0200
+Subject: [i3] [PATCH] Improved i3bar hide mode behavior (In my point of
+	view)
+In-Reply-To: <CAMJW5=3JXKVPBT6nGct-01jCWGgo8vnvmrR-ZO9f6_rr37Bb+g@mail.gmail.com>
+References: <CAMJW5=0hC+1YhuPyY8=eQtAKuM0VwzPgiGRDAwJs2aXzF_YcKw@mail.gmail.com>
+ <CAMJW5=2u8xves-DYAJk-xy4aM64eRhfoY5bPufh52OmYbgYomw@mail.gmail.com>
+ <CANVYNa9Kbr_aDYTpN+4Qi6xsJKDFsQ34+3ZdpwK4MAqAOzETZg@mail.gmail.com>
+ <CAMJW5=1n6_DF7A_J4rQ3HfD4Un1Vgn8y3JxqktOQmgNe6PvqQQ@mail.gmail.com>
+ <20120707203157.22466.72213@midna.zekjur.net>
+ <CAMJW5=3JXKVPBT6nGct-01jCWGgo8vnvmrR-ZO9f6_rr37Bb+g@mail.gmail.com>
+Message-ID: <20120726111223.12156.13597@midna.zekjur.net>
+
+Hi DR,
+
+Quoting DR (2012-07-13 16:22:01)
+> This behavior is intended, so user can easily (using only his mouse) navigate
+> back to previous workspace before the urgency happen.
+OK, I get the rationale behind this. What about my other points?
+
+Best regards,
+Michael
+
+From michael at i3wm.org  Thu Jul 26 13:14:11 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 26 Jul 2012 13:14:11 +0200
+Subject: [i3] [PATCH] Improved i3bar hide mode behavior (In my point of
+	view)
+In-Reply-To: <CABUeae_bLGGH9YoNDDMxERQXdfZmQFZVHp7nQdNo1n0g-95jeg@mail.gmail.com>
+References: <CAMJW5=0hC+1YhuPyY8=eQtAKuM0VwzPgiGRDAwJs2aXzF_YcKw@mail.gmail.com>
+ <CAMJW5=2u8xves-DYAJk-xy4aM64eRhfoY5bPufh52OmYbgYomw@mail.gmail.com>
+ <CANVYNa9Kbr_aDYTpN+4Qi6xsJKDFsQ34+3ZdpwK4MAqAOzETZg@mail.gmail.com>
+ <CAMJW5=1n6_DF7A_J4rQ3HfD4Un1Vgn8y3JxqktOQmgNe6PvqQQ@mail.gmail.com>
+ <20120707203157.22466.72213@midna.zekjur.net>
+ <CAMJW5=3JXKVPBT6nGct-01jCWGgo8vnvmrR-ZO9f6_rr37Bb+g@mail.gmail.com>
+ <CABUeae_bLGGH9YoNDDMxERQXdfZmQFZVHp7nQdNo1n0g-95jeg@mail.gmail.com>
+Message-ID: <20120726111411.12156.90841@midna.zekjur.net>
+
+Hi Mateusz,
+
+Quoting Mateusz Loskot (2012-07-13 20:06:58)
+> > 1) You are not using FREE(last_urgent_ws);, but free(last_urgent_ws) in
+> >    line 1489, which is unsafe (it is not guaranteed that last_urgent_ws
+> >    is != NULL).
+> 
+> There is no such guarantee needed for free() as per the C99 Standard:
+> 
+> 7.20.3.2 The free function
+> 2 The free function causes the space pointed to by ptr to be
+> deallocated, that is, made
+> available for further allocation. If ptr is a null pointer, no action occurs.
+I think you misunderstood me. What FREE does is it sets the pointer to
+NULL after calling free(). Therefore, the following code works fine:
+
+    FREE(last_urgent_ws);
+    // ?things happen here, and much later:
+    FREE(last_urgent_ws);
+
+While the following is not:
+
+    free(last_urgent_ws);
+    // ?things happen here, and much later:
+    free(last_urgent_ws); // points to an old memory location
+
+Best regards,
+Michael
+
+From mateusz at loskot.net  Thu Jul 26 13:26:37 2012
+From: mateusz at loskot.net (Mateusz Loskot)
+Date: Thu, 26 Jul 2012 12:26:37 +0100
+Subject: [i3] [PATCH] Improved i3bar hide mode behavior (In my point of
+	view)
+In-Reply-To: <20120726111411.12156.90841@midna.zekjur.net>
+References: <CAMJW5=0hC+1YhuPyY8=eQtAKuM0VwzPgiGRDAwJs2aXzF_YcKw@mail.gmail.com>
+ <CAMJW5=2u8xves-DYAJk-xy4aM64eRhfoY5bPufh52OmYbgYomw@mail.gmail.com>
+ <CANVYNa9Kbr_aDYTpN+4Qi6xsJKDFsQ34+3ZdpwK4MAqAOzETZg@mail.gmail.com>
+ <CAMJW5=1n6_DF7A_J4rQ3HfD4Un1Vgn8y3JxqktOQmgNe6PvqQQ@mail.gmail.com>
+ <20120707203157.22466.72213@midna.zekjur.net>
+ <CAMJW5=3JXKVPBT6nGct-01jCWGgo8vnvmrR-ZO9f6_rr37Bb+g@mail.gmail.com>
+ <CABUeae_bLGGH9YoNDDMxERQXdfZmQFZVHp7nQdNo1n0g-95jeg@mail.gmail.com>
+ <20120726111411.12156.90841@midna.zekjur.net>
+Message-ID: <CABUeae8iCP=w8eSLLwmOJVeKqM4SJcqoy29sOcdr1THngqpGvA@mail.gmail.com>
+
+On 26 July 2012 12:14, Michael Stapelberg <michael at i3wm.org> wrote:
+> Quoting Mateusz Loskot (2012-07-13 20:06:58)
+>> > 1) You are not using FREE(last_urgent_ws);, but free(last_urgent_ws) in
+>> >    line 1489, which is unsafe (it is not guaranteed that last_urgent_ws
+>> >    is != NULL).
+>>
+>> There is no such guarantee needed for free() as per the C99 Standard:
+>>
+>> 7.20.3.2 The free function
+>> 2 The free function causes the space pointed to by ptr to be
+>> deallocated, that is, made
+>> available for further allocation. If ptr is a null pointer, no action occurs.
+> I think you misunderstood me. What FREE does is it sets the pointer to
+> NULL after calling free(). Therefore, the following code works fine:
+>
+>     FREE(last_urgent_ws);
+>     // ?things happen here, and much later:
+>     FREE(last_urgent_ws);
+>
+> While the following is not:
+>
+>     free(last_urgent_ws);
+>     // ?things happen here, and much later:
+>     free(last_urgent_ws); // points to an old memory location
+
+Michael,
+
+Yes, it looks I confused things.
+You're perfectly right here.
+
+Best regards,
+-- 
+Mateusz Loskot, http://mateusz.loskot.net
+
+From badboy at archlinux.us  Thu Jul 26 13:36:24 2012
+From: badboy at archlinux.us (Jan-Erik Rediger)
+Date: Thu, 26 Jul 2012 13:36:24 +0200
+Subject: [i3] Help: Code Review Software
+In-Reply-To: <20120726110831.12156.48627@midna.zekjur.net>
+References: <20120726110831.12156.48627@midna.zekjur.net>
+Message-ID: <20120726113624.GA835@brain>
+
+On Thu, Jul 26, 2012 at 01:08:31PM +0200, Michael Stapelberg wrote:
+> Hi,
+> 
+> in the past, we have briefly discussed using Code Review Software such
+> as Gerrit, Review Board and others for i3. Back then, we came to the
+> conclusion that none of the available tools is easy and compelling
+> enough to be used as-is and that the effort of starting something is too
+> high to be justified (see below).
+> 
+> I have serious doubts about the effort not being justified anymore. Code
+> Reviews as we do them currently (in a mixture of comments via IRC, trac
+> or our mailing list) pose a high cognitive load for me and a frustrating
+> experience for (potential) contributors.
+> 
+> Quite a while ago, I wrote about the features and non-features which I?d
+> like to see in an ideal code review system:
+> http://www.featurequest.org/FRQ$CodeReview
+> 
+> Now my question is: Who of you would actively (!) help developing such a
+> system?
+> 
+> Best regards,
+> Michael
+> 
+> PS: In case anyone wonders why we don?t like existing software:
+> ? It?s often complex to use. The situation usually is that you have a
+>   patch and you want to get comments on it. Most existing tools require
+>   you to sign up first and then fill in a lot of fields. For reviewers,
+>   getting to the actual side-by-side diff takes far too many clicks (it
+>   should be precisely 1).
+> ? Most don?t allow anonymous submissions, but we really need that (as we
+>   do in our bugtracker).
+> ? Some don?t even accept the git format-patch output (Rietveld for
+>   example).
+> ? Some require you to give up control over your git repository (Gerrit).
+
+Several weeks ago I came across barkeep (via thechangelog.com):
+http://getbarkeep.org/
+
+While it looks like a non-trivial setup, it may have some of the other
+functionality you mentioned.
+
+Jan-Erik
+
+From michael at i3wm.org  Thu Jul 26 13:53:30 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 26 Jul 2012 13:53:30 +0200
+Subject: [i3] Help: Code Review Software
+In-Reply-To: <20120726113624.GA835@brain>
+References: <20120726110831.12156.48627@midna.zekjur.net>
+ <20120726113624.GA835@brain>
+Message-ID: <20120726115330.14231.83691@midna.zekjur.net>
+
+Hi Jan-Erik,
+
+Quoting Jan-Erik Rediger (2012-07-26 13:36:24)
+> Several weeks ago I came across barkeep (via thechangelog.com):
+> http://getbarkeep.org/
+> 
+> While it looks like a non-trivial setup, it may have some of the other
+> functionality you mentioned.
+This looks pretty awesome, thanks for the link! I think with a bit of
+custom script magic I can implement our workflow using barkeep. I?ll let
+you know how it goes.
+
+Best regards,
+Michael
+
+From mateusz at loskot.net  Thu Jul 26 14:23:36 2012
+From: mateusz at loskot.net (Mateusz Loskot)
+Date: Thu, 26 Jul 2012 13:23:36 +0100
+Subject: [i3] Help: Code Review Software
+In-Reply-To: <20120726110831.12156.48627@midna.zekjur.net>
+References: <20120726110831.12156.48627@midna.zekjur.net>
+Message-ID: <CABUeae8qVM+V6ZA_Ld=FObVY8YrPqRNzykRPmFPkTJjyrK1Hdg@mail.gmail.com>
+
+On 26 July 2012 12:08, Michael Stapelberg <michael at i3wm.org> wrote:
+>
+> in the past, we have briefly discussed using Code Review Software such
+> as Gerrit, Review Board and others for i3. Back then, we came to the
+> conclusion that none of the available tools is easy and compelling
+> enough to be used as-is and that the effort of starting something is too
+> high to be justified (see below).
+
+I find code review workflow proposed by GitHub very easy and compelling:
+
+https://github.com/features/projects/codereview
+
+Plus, there are some nice extensions:
+
+http://blog.supermatter.com/post/875844569/how-we-use-github-for-code-reviews
+http://reviewth.is/
+
+If GitHub is not kosher, GitLab offers very similar workflow http://gitlabhq.com
+
+Best regards,
+-- 
+Mateusz Loskot, http://mateusz.loskot.net
+
+From ablepharus at googlemail.com  Thu Jul 26 14:25:55 2012
+From: ablepharus at googlemail.com (ablepharus)
+Date: Thu, 26 Jul 2012 14:25:55 +0200
+Subject: [i3] Help: Code Review Software
+In-Reply-To: <20120726110831.12156.48627@midna.zekjur.net>
+References: <20120726110831.12156.48627@midna.zekjur.net>
+Message-ID: <50113753.7040200@googlemail.com>
+
+Hi,
+
+I would really like to write the desired Software and I would use django
+for it. I would be ready for doing this alone, but of course I'd be
+happy about some help. I have planned on writing such a service anyway,
+without a target. I agree with the mentioned needs and restrictions.
+
+Best regards,
+
+Max A. Busse
+
+From drdarkraven at gmail.com  Thu Jul 26 20:59:11 2012
+From: drdarkraven at gmail.com (DR)
+Date: Fri, 27 Jul 2012 02:59:11 +0800
+Subject: [i3] [PATCH] Improved i3bar hide mode behavior (In my point of
+ view)
+In-Reply-To: <20120726111223.12156.13597@midna.zekjur.net>
+References: <CAMJW5=0hC+1YhuPyY8=eQtAKuM0VwzPgiGRDAwJs2aXzF_YcKw@mail.gmail.com>
+ <CAMJW5=2u8xves-DYAJk-xy4aM64eRhfoY5bPufh52OmYbgYomw@mail.gmail.com>
+ <CANVYNa9Kbr_aDYTpN+4Qi6xsJKDFsQ34+3ZdpwK4MAqAOzETZg@mail.gmail.com>
+ <CAMJW5=1n6_DF7A_J4rQ3HfD4Un1Vgn8y3JxqktOQmgNe6PvqQQ@mail.gmail.com>
+ <20120707203157.22466.72213@midna.zekjur.net>
+ <CAMJW5=3JXKVPBT6nGct-01jCWGgo8vnvmrR-ZO9f6_rr37Bb+g@mail.gmail.com>
+ <20120726111223.12156.13597@midna.zekjur.net>
+Message-ID: <op.wh2hoxy5h7z1jl@sraven>
+
+Hi,
+
+On Thu, 26 Jul 2012 19:12:23 +0800, Michael Stapelberg <michael at i3wm.org>  
+wrote:
+
+> Hi DR,
+>
+> Quoting DR (2012-07-13 16:22:01)
+>> This behavior is intended, so user can easily (using only his mouse)  
+>> navigate
+>> back to previous workspace before the urgency happen.
+> OK, I get the rationale behind this. What about my other points?
+Corrected patch attached.
+
+>
+> Best regards,
+> Michael
+
+
+-- 
+Using Opera's revolutionary email client: http://www.opera.com/mail/
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Automatically-hide-i3bar-when-it-s-unneeded.patch
+Type: application/octet-stream
+Size: 2401 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120727/25baf635/attachment-0001.obj>
+
+From michael at i3wm.org  Mon Jul 30 20:19:22 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 30 Jul 2012 20:19:22 +0200
+Subject: [i3] Help: Code Review Software
+In-Reply-To: <50113753.7040200@googlemail.com>
+References: <20120726110831.12156.48627@midna.zekjur.net>
+ <50113753.7040200@googlemail.com>
+Message-ID: <20120730181922.15855.16172@midna.zekjur.net>
+
+Hi,
+
+Quoting ablepharus (2012-07-26 14:25:55)
+> I would really like to write the desired Software and I would use django
+> for it. I would be ready for doing this alone, but of course I'd be
+> happy about some help. I have planned on writing such a service anyway,
+> without a target. I agree with the mentioned needs and restrictions.
+That?s nice to hear. I?d be happy to betatest anything you come up with.
+
+By the way, I evaluated barkeep briefly. Here are my observations:
+
+ ? Deployment is horrible, as with most ruby projects :-/
+ ? Documentation is really sparse, and the existing documentation
+   contained two errors (I opened an issue for one and fixed the other
+   one right away).
+ ? The only distinction is between admin/normal users, that is, you
+   cannot specify who?s able to comment or approve commits (not that
+   approving has any effect, but?).
+ ? Authentification is possible only via OAuth with a horrible user
+   experience. You are directly redirected to the configured OAuth
+   provider (e.g. google) without any message. This is the biggest
+   problem for my intended use. We really need to be able to create user
+   accounts automatically to hand them out after somebody uploads a
+   patch.
+ ? barkeep only supports a post-commit workflow. This means I?d have to
+   build a site (and/or script) to upload patches and then have them be
+   committed to a new branch automatically. No big deal, but see the
+   points above ? after all, it?s not really worth it I think.
+
+I have to stress that barkeep really does it right in the user
+interface. A list of commits, a nice diff and comments is really all I
+want to have. I just think adjusting it is not that easy for now.
+
+Best regards,
+Michael
+
+From fuzz at fuzz.dk  Tue Jul 31 16:19:59 2012
+From: fuzz at fuzz.dk (Anders Bo Rasmussen)
+Date: Tue, 31 Jul 2012 16:19:59 +0200
+Subject: [i3] Get list of workspaces
+In-Reply-To: <20120725134024.26268.96391@midna.zekjur.net>
+References: <CALzASJnB8RcX7LUZ7t4i-aOcBkVizhfUPwtvXz8HTA9fSyU-dQ@mail.gmail.com>
+ <20120724122010.19945.65864@midna.zekjur.net>
+ <CALzASJku3aj1-WUoZfjaPEK14HA6NGTcuCTM9zK5LMLg=g9+vw@mail.gmail.com>
+ <20120725134024.26268.96391@midna.zekjur.net>
+Message-ID: <CALzASJnCWd=iDq+6=TOOqDUpsfF=JcOMs8Dc5RBL=-oVWA=cDA@mail.gmail.com>
+
+On Wed, Jul 25, 2012 at 3:40 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+>> Is there a more easy way to do this?
+> No, it?s the same way I would do it right now.
+
+Hi. I've figured out to get the current workspace with AnyEvent::I3.
+I've also figured out to get a call back when the workspace changes.
+But when I combine it I get an error, as it seems like I can't call
+get_tree() while I'm in a call back. I've made a small script to show
+the problem:
+
+#!/usr/bin/perl
+
+use warnings;
+use strict;
+use AnyEvent::I3;
+
+my $i3=i3();
+$i3->connect();
+if ($i3->connect->recv) {
+  print "Connected to i3\n";
+}
+my %callbacks = (
+  workspace => sub { i3->get_tree->recv}
+);
+
+while ($i3->subscribe(\%callbacks)->recv) {};
+
+
+Which give the following output (second line first when I switch workspace):
+
+Connected to i3
+AnyEvent::CondVar: recursive blocking wait attempted at
+/home/fuzz/perl5/lib/perl5/AnyEvent/I3.pm line 339
+
+Am I doing something wrong?
+
+/Anders
+
+From michael at i3wm.org  Tue Jul 31 19:31:12 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 31 Jul 2012 19:31:12 +0200
+Subject: [i3] Get list of workspaces
+In-Reply-To: <CALzASJnCWd=iDq+6=TOOqDUpsfF=JcOMs8Dc5RBL=-oVWA=cDA@mail.gmail.com>
+References: <CALzASJnB8RcX7LUZ7t4i-aOcBkVizhfUPwtvXz8HTA9fSyU-dQ@mail.gmail.com>
+ <20120724122010.19945.65864@midna.zekjur.net>
+ <CALzASJku3aj1-WUoZfjaPEK14HA6NGTcuCTM9zK5LMLg=g9+vw@mail.gmail.com>
+ <20120725134024.26268.96391@midna.zekjur.net>
+ <CALzASJnCWd=iDq+6=TOOqDUpsfF=JcOMs8Dc5RBL=-oVWA=cDA@mail.gmail.com>
+Message-ID: <20120731173112.17174.70366@midna.zekjur.net>
+
+Hi Anders,
+
+Quoting Anders Bo Rasmussen (2012-07-31 16:19:59)
+> $i3->connect();
+> if ($i3->connect->recv) {
+There?s no need to call ->connect twice. Kill the first line.
+
+> while ($i3->subscribe(\%callbacks)->recv) {};
+Ugh, this is very wrong. You should only subscribe once, not in a loop.
+Also, as you have noticed, you cannot call ->recv "twice". Instead, use:
+
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use AnyEvent::I3;
+use EV;
+use Data::Dumper;
+
+my $i3 = i3();
+$i3->connect->recv;
+my %callbacks = (
+        workspace => sub {
+                my $tree = i3->get_tree->recv;
+                print "tree = " . Dumper($tree) . "\n";
+        }
+);
+$i3->subscribe(\%callbacks)->recv;
+EV::loop;
+
+(I have noticed a few strange things while hacking up this example, so there
+might be a new release of AnyEvent::I3 soon ;-)).
+
+Best regards,
+Michael
+
+From fuzz at fuzz.dk  Tue Jul 31 21:32:50 2012
+From: fuzz at fuzz.dk (Anders Bo Rasmussen)
+Date: Tue, 31 Jul 2012 21:32:50 +0200
+Subject: [i3] Get list of workspaces
+In-Reply-To: <20120731173112.17174.70366@midna.zekjur.net>
+References: <CALzASJnB8RcX7LUZ7t4i-aOcBkVizhfUPwtvXz8HTA9fSyU-dQ@mail.gmail.com>
+ <20120724122010.19945.65864@midna.zekjur.net>
+ <CALzASJku3aj1-WUoZfjaPEK14HA6NGTcuCTM9zK5LMLg=g9+vw@mail.gmail.com>
+ <20120725134024.26268.96391@midna.zekjur.net>
+ <CALzASJnCWd=iDq+6=TOOqDUpsfF=JcOMs8Dc5RBL=-oVWA=cDA@mail.gmail.com>
+ <20120731173112.17174.70366@midna.zekjur.net>
+Message-ID: <CALzASJ=zuz+XeXca6gppQP_sg3TkLvQcn3XpufOXtYFuhU+hZA@mail.gmail.com>
+
+On Tue, Jul 31, 2012 at 7:31 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+> $i3->subscribe(\%callbacks)->recv;
+> EV::loop;
+
+Hi Michael. Thanks. That made it work.
+
+> (I have noticed a few strange things while hacking up this example, so there
+> might be a new release of AnyEvent::I3 soon ;-)).
+
+If you update it I think it would be good with the call to EV::loop in
+the example for subscribe().
+

@@ -1,0 +1,1945 @@
+From michael at i3wm.org  Sat Mar  1 10:25:16 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 01 Mar 2014 10:25:16 +0100
+Subject: [i3] [i3status] Support min_width and align options in module
+	definition
+In-Reply-To: <5310D837.10508@hunsicker.de>
+References: <5310D837.10508@hunsicker.de>
+Message-ID: <x6zjlafeyr.fsf@midna.zekjur.net>
+
+Hi Marco,
+
+Marco Hunsicker <i3 at hunsicker.de> writes:
+> when using the i3bar output format, I would find it convenient if I 
+> could set "min_width" and "align" right in a module definition.
+>
+> disk "/" {
+>      format = "%avail"
+>      min_width = 80
+>      align = "left"
+> }
+>
+> Would this be something worthwhile to add? Thanks.
+I think so, if you can do it in a sane patch. Also note that min_width
+supports not only integers, but also text.
+
+-- 
+Best regards,
+Michael
+
+From i3 at hunsicker.de  Sat Mar  1 10:48:34 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Sat, 01 Mar 2014 10:48:34 +0100
+Subject: [i3] [i3status] Support min_width and align options in module
+ definition
+In-Reply-To: <x6zjlafeyr.fsf@midna.zekjur.net>
+References: <5310D837.10508@hunsicker.de> <x6zjlafeyr.fsf@midna.zekjur.net>
+Message-ID: <5311ACF2.9010305@hunsicker.de>
+
+Hello Michael,
+
+>> when using the i3bar output format, I would find it convenient if I
+>> could set "min_width" and "align" right in a module definition.
+>>
+>> Would this be something worthwhile to add?
+
+> I think so, if you can do it in a sane patch.
+
+Thanks to the macro capabilities, this should be another small patch.
+
+
+> Also note that min_width supports not only integers, but also text.
+
+Oh, I did not know that. What string values are to be supported? Is safe 
+to parse them as integers? Thanks.
+
+Cheers,
+   Marco
+
+
+
+From michael at i3wm.org  Sat Mar  1 11:55:59 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 01 Mar 2014 11:55:59 +0100
+Subject: [i3] [i3status] Support min_width and align options in module
+	definition
+In-Reply-To: <5311ACF2.9010305@hunsicker.de>
+References: <5310D837.10508@hunsicker.de> <x6zjlafeyr.fsf@midna.zekjur.net>
+ <5311ACF2.9010305@hunsicker.de>
+Message-ID: <x6txbifark.fsf@midna.zekjur.net>
+
+Hi Marco,
+
+Marco Hunsicker <i3 at hunsicker.de> writes:
+>> Also note that min_width supports not only integers, but also text.
+>
+> Oh, I did not know that. What string values are to be supported? Is safe 
+> to parse them as integers? Thanks.
+It?s explained in the docs:
+http://i3wm.org/docs/i3bar-protocol.html
+
+-- 
+Best regards,
+Michael
+
+From vivien.didelot at gmail.com  Sun Mar  2 05:04:48 2014
+From: vivien.didelot at gmail.com (Vivien Didelot)
+Date: Sat, 1 Mar 2014 23:04:48 -0500
+Subject: [i3] i3blocks
+Message-ID: <CAJ2J69gytBhNhPhYvpLbS8chqC=g6JSp7COzE-AcbHe_vb6KTw@mail.gmail.com>
+
+Hi all,
+
+I'd like to introduce you the first release of a new i3bar status line:
+i3blocks.
+
+The main idea behind this project is to respect the i3bar protocol [1] as
+well as providing the simplest interface for the user. This means that each
+block is the ouput of a shell command line.
+It supports click events, signals and different time intervals, through a
+simple config file.
+
+I hope that everything is detailed on the project page:
+
+https://github.com/vivien/i3blocks
+
+Please let me know if you have any comment or question!
+
+Cheers,
+Vivien
+
+[1] http://i3wm.org/docs/i3bar-protocol.html
+
+--
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140301/165910dd/attachment.html>
+
+From i3 at hunsicker.de  Sun Mar  2 23:06:41 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Sun, 02 Mar 2014 23:06:41 +0100
+Subject: [i3] i3blocks
+In-Reply-To: <CAJ2J69gytBhNhPhYvpLbS8chqC=g6JSp7COzE-AcbHe_vb6KTw@mail.gmail.com>
+References: <CAJ2J69gytBhNhPhYvpLbS8chqC=g6JSp7COzE-AcbHe_vb6KTw@mail.gmail.com>
+Message-ID: <5313AB71.3030909@hunsicker.de>
+
+Hello Vivien,
+
+> The main idea behind this project is to respect the i3bar protocol [1] as
+> well as providing the simplest interface for the user. This means that each
+> block is the ouput of a shell command line.
+> It supports click events, signals and different time intervals, through a
+> simple config file.
+
+Nice project!
+
+@Michael: as you tout i3status as being sensitive regarding resource 
+usage, what about adding a caching mechanism to i3status to support 
+distinct update time intervals for the different blocks as well?
+
+Cheers,
+   Marco
+
+From yshuiv7 at gmail.com  Mon Mar  3 07:12:11 2014
+From: yshuiv7 at gmail.com (Yuxuan Shui)
+Date: Mon, 3 Mar 2014 14:12:11 +0800
+Subject: [i3] Layout saving/restoring (PREVIEW)
+In-Reply-To: <x6y53lbz0h.fsf@midna.zekjur.net>
+References: <x6y53lbz0h.fsf@midna.zekjur.net>
+Message-ID: <CAMJW5=1AHV0+nTE1A+zR1xb6F2yTL+XFdsNs8-=Tqvdow3Seiw@mail.gmail.com>
+
+Hi,
+
+On Mon, Dec 16, 2013 at 5:11 AM, Michael Stapelberg <michael at i3wm.org> wrote:
+> Hi,
+>
+> I have been working on layout/session saving/restoring this
+> weekend. The title is a mouthful, but what it?s about is saving parts of
+> your layout (say, an entire workspace) to a JSON file and later loading
+> that into i3.
+>
+> This is useful for multiple things:
+>
+> 1) Restoring a certain layout when starting up your x session.
+>    People used to do this with shell scripts and hacks such as
+>    i3-exec-wait until now.
+>
+> 2) Defining a more elaborate default layout for certain workspaces. As
+>    an example, on my big screen I like to have three columns of stacked
+>    containers with terminals in them, where the middle one is larger
+>    than the left and right ones.
+>
+> I uploaded a video to demonstrate how it looks:
+> http://youtu.be/CaDOfwxXc9g
+>
+> To save a layout, there is i3-save-tree(1), which requires the Perl
+> modules AnyEvent::I3? and JSON::XS?. i3-save-tree --workspace=1 prints
+> workspace 1?s layout to stdout. You are expected to edit that layout
+> file briefly, especially the ?swallows? sections of each container. The
+> criteria should be familiar to you, e.g. from for_window.
+>
+> Once you have done that, you can use the append_layout command to load a
+> layout file.
+>
+> As for the code, I just pushed the branch ?session-saving?, which you
+> can build and use right now. It?s stable enough that I?m using it on my
+> main machine. But, since this is a very new feature, be prepared to
+> encounter some stability issues (e.g. layout files that could crash
+> i3). You have been warned! :)
+>
+> Also note that I reserve the right to break this feature in any way that
+> I deem necessary, and you have no right to complain about layout file or
+> new command breakage :).
+>
+> As for the release plan: I intend to release i3 4.7 soonish (maybe in a
+> week or so). After that is done, I?ll merge the session-saving branch
+> into the ?next? branch, i.e. the earliest i3 release that can possibly
+> have this feature will be 4.8.
+>
+> ? http://michael.stapelberg.de/cpan/#AnyEvent::I3
+> ? http://michael.stapelberg.de/cpan/#JSON::XS
+
+This is great.
+
+It will be better if i3 could automatically start all the programs for
+me. I think it's possible for programs that support startup
+notification.
+
+Could this feature be added, or is it too much to integrate into i3?
+
+>
+> --
+> Best regards,
+> Michael
+
+Regards
+Yuxuan Shui
+
+From yshuiv7 at gmail.com  Mon Mar  3 07:30:33 2014
+From: yshuiv7 at gmail.com (Yuxuan Shui)
+Date: Mon, 3 Mar 2014 14:30:33 +0800
+Subject: [i3] Layout saving/restoring (PREVIEW)
+In-Reply-To: <CAMJW5=1AHV0+nTE1A+zR1xb6F2yTL+XFdsNs8-=Tqvdow3Seiw@mail.gmail.com>
+References: <x6y53lbz0h.fsf@midna.zekjur.net>
+ <CAMJW5=1AHV0+nTE1A+zR1xb6F2yTL+XFdsNs8-=Tqvdow3Seiw@mail.gmail.com>
+Message-ID: <CAMJW5=2U00Q9WpHM82EFf6pijocipa1A2yFk1W-p+aPQN1EdHQ@mail.gmail.com>
+
+On Mon, Mar 3, 2014 at 2:12 PM, Yuxuan Shui <yshuiv7 at gmail.com> wrote:
+> Hi,
+>
+> On Mon, Dec 16, 2013 at 5:11 AM, Michael Stapelberg <michael at i3wm.org> wrote:
+>> Hi,
+>>
+>> I have been working on layout/session saving/restoring this
+>> weekend. The title is a mouthful, but what it?s about is saving parts of
+>> your layout (say, an entire workspace) to a JSON file and later loading
+>> that into i3.
+>>
+>> This is useful for multiple things:
+>>
+>> 1) Restoring a certain layout when starting up your x session.
+>>    People used to do this with shell scripts and hacks such as
+>>    i3-exec-wait until now.
+>>
+>> 2) Defining a more elaborate default layout for certain workspaces. As
+>>    an example, on my big screen I like to have three columns of stacked
+>>    containers with terminals in them, where the middle one is larger
+>>    than the left and right ones.
+>>
+>> I uploaded a video to demonstrate how it looks:
+>> http://youtu.be/CaDOfwxXc9g
+>>
+>> To save a layout, there is i3-save-tree(1), which requires the Perl
+>> modules AnyEvent::I3? and JSON::XS?. i3-save-tree --workspace=1 prints
+>> workspace 1?s layout to stdout. You are expected to edit that layout
+>> file briefly, especially the ?swallows? sections of each container. The
+>> criteria should be familiar to you, e.g. from for_window.
+>>
+>> Once you have done that, you can use the append_layout command to load a
+>> layout file.
+>>
+>> As for the code, I just pushed the branch ?session-saving?, which you
+>> can build and use right now. It?s stable enough that I?m using it on my
+>> main machine. But, since this is a very new feature, be prepared to
+>> encounter some stability issues (e.g. layout files that could crash
+>> i3). You have been warned! :)
+>>
+>> Also note that I reserve the right to break this feature in any way that
+>> I deem necessary, and you have no right to complain about layout file or
+>> new command breakage :).
+>>
+>> As for the release plan: I intend to release i3 4.7 soonish (maybe in a
+>> week or so). After that is done, I?ll merge the session-saving branch
+>> into the ?next? branch, i.e. the earliest i3 release that can possibly
+>> have this feature will be 4.8.
+>>
+>> ? http://michael.stapelberg.de/cpan/#AnyEvent::I3
+>> ? http://michael.stapelberg.de/cpan/#JSON::XS
+>
+> This is great.
+>
+> It will be better if i3 could automatically start all the programs for
+> me. I think it's possible for programs that support startup
+> notification.
+I got it wrong here. Startup notification is not needed, we could use
+_NET_WM_PID.
+
+>
+> Could this feature be added, or is it too much to integrate into i3?
+>
+>>
+>> --
+>> Best regards,
+>> Michael
+>
+> Regards
+> Yuxuan Shui
+
+From michael at i3wm.org  Mon Mar  3 09:58:14 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 03 Mar 2014 09:58:14 +0100
+Subject: [i3] i3blocks
+In-Reply-To: <5313AB71.3030909@hunsicker.de>
+References: <CAJ2J69gytBhNhPhYvpLbS8chqC=g6JSp7COzE-AcbHe_vb6KTw@mail.gmail.com>
+ <5313AB71.3030909@hunsicker.de>
+Message-ID: <x61tyjpsk9.fsf@midna.zekjur.net>
+
+Hi Marco,
+
+Marco Hunsicker <i3 at hunsicker.de> writes:
+> @Michael: as you tout i3status as being sensitive regarding resource 
+> usage, what about adding a caching mechanism to i3status to support 
+> distinct update time intervals for the different blocks as well?
+It?s a bit rude to hijack this thread, so let?s keep it brief: instead
+of caching, I?d rather see event-based updates, but that requires a huge
+refactoring with very very little gain, so I?m not going to do it (and
+probably not going to accept patches for it either). I think SardemFF7?s
+j4status has an architecture that is event-based, but I have never used
+it.
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Mon Mar  3 10:20:00 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 03 Mar 2014 10:20:00 +0100
+Subject: [i3] Bind Alt+Shift in i3wm
+In-Reply-To: <53144859.60301@ondrejsika.com>
+References: <53144859.60301@ondrejsika.com>
+Message-ID: <x6vbvvoczj.fsf@midna.zekjur.net>
+
+Hi Ondrej,
+
+Ondrej Sika <ondrej at ondrejsika.com> writes:
+> is it possible bind only Alt+Shift in i3wm for language switch like
+> Windows?
+http://bugs.i3wm.org/report/ticket/386
+
+-- 
+Best regards,
+Michael
+
+From berenger.morel at neutralite.org  Mon Mar  3 11:14:55 2014
+From: berenger.morel at neutralite.org (berenger.morel at neutralite.org)
+Date: Mon, 03 Mar 2014 11:14:55 +0100
+Subject: [i3] trying to build default layout at start
+Message-ID: <ffb674a90a7a8df1db6f82ccc2f53368@neutralite.org>
+
+Hello.
+
+Since I always have the same layout ( basically, a horizontal layout 
+with 1 vertical layout containing --at start-- 1 terminal on a side, and 
+on the other one, 2 other terminals in a vertical layout: debugging and 
+editing of unit testing for 2nd vertical layout, source code edition on 
+first one ) on workspace 1, and start it every-time, I tried to do bind 
+that script:
+
+#!/bin/sh
+x-terminal-emulator &
+x-terminal-emulator &
+i3-msg 'split v' &
+x-terminal-emulator &
+
+to a key, but it does not work. Started from a terminal, all windows 
+appear, but only in a vertical layout, and the script writes 
+"[{"success":true}]". Since it is a problem of speed, I can do a small 
+workaround.
+
+But, binded to a key, nothing appears.
+
+So I tried another approach, which is to do that work only at i3's 
+start-up. Here are the lines I added:
+
+exect x-terminal-emulator
+exect x-terminal-emulator
+exec --no-startup-id i3-msg 'split v'
+exect x-terminal-emulator
+
+Again, no terminal is spawned. Right after those lines, I had a section 
+like this:
+
+assign [class="XOsview" ] 10
+exec xosview
+
+assign [class="Claws-mail" ] 10
+exec claws-mail
+
+exec --no-startup-id i3-msg 'workspace 10'
+exec --no-startup-id i3-msg 'workspace 1'
+
+Which basically starts both xosview and claws on the 10th workspace, 
+plus move each screen's starting workspace to 1 ( primary screen ) and 
+10 ( second one ).
+It worked fine, even with the added lines.
+Now, I thought that the assignations are not useful if correct 
+workspaces are selected before starting things. So I replaced those 
+lines with:
+
+exec --no-startup-id i3-msg 'workspace 10'
+exec xosview
+exec claws-mail
+exec --no-startup-id i3-msg 'workspace 1'
+
+which I thought would be ok, but the results are really strange:
+xosview is started on workspace 1, claws on workspace 7 ( see note 
+below ), and shown workspaces are correct with 1 and 10. If it would 
+only be speed, I suppose that both applications would be on workspace 1, 
+or one on workspace 10, or both on workspace 10 ( which is the desired 
+behavior, finally ), but one is spawn on workspace 7.
+I suppose that when i3 receives the command to switch to workspace 10 
+which is on the secondary screen, it starts by switching to second 
+screen, with the lowest possible workspace selected ( 7 in my case ), 
+then switch to desired workspace.
+Am I wrong? If I am, how could I work around that problem?
+
+Thanks in advance for any advice, opinion, or pointer you could give me 
+to fix and/or understand that problem.
+
+
+NOTES:
+Note 1:
+Each screen have some affected workspaces 1-4 are for primary screen, 
+5-6 are not affected, 7-10 are affected to secondary screen:
+
+workspace 1 output $prim_screen
+workspace 2 output $prim_screen
+workspace 3 output $prim_screen
+workspace 4 output $prim_screen
+
+workspace 7 output $sec_screen
+workspace 8 output $sec_screen
+workspace 9 output $sec_screen
+workspace 10 output $sec_screen
+
+Note 2:
+Using Debian (amd64) stable on some computers with some testing 
+packages including i3. Unstable on another one.
+x-terminal-emulator is used in my commands, and default terminal 
+emulator on my computer is lxterminal.
+
+PS:
+I already noticed some bugs probably related to slowness of something. 
+Often, at startup, I summon some terminals, switch to another workspace, 
+try to summon things, and they are summoned on workspace 1, even if I 
+started them when other workspace was shown.
+Boring, but not critical, and I never had the will to fix it. Now, this 
+layout problem is annoying enough for me to make me interesting in 
+understanding why it does not work.
+
+
+From berenger.morel at neutralite.org  Mon Mar  3 11:21:02 2014
+From: berenger.morel at neutralite.org (berenger.morel at neutralite.org)
+Date: Mon, 03 Mar 2014 11:21:02 +0100
+Subject: [i3] trying to build default layout at start
+In-Reply-To: <ffb674a90a7a8df1db6f82ccc2f53368@neutralite.org>
+References: <ffb674a90a7a8df1db6f82ccc2f53368@neutralite.org>
+Message-ID: <43f30a838263880a839badf2c379d566@neutralite.org>
+
+Le 03.03.2014 11:14, berenger.morel at neutralite.org a ?crit?:
+> <snip>
+> So I tried another approach, which is to do that work only at i3's
+> start-up. Here are the lines I added:
+>
+> exect x-terminal-emulator
+> exect x-terminal-emulator
+> exec --no-startup-id i3-msg 'split v'
+> exect x-terminal-emulator
+>
+> Again, no terminal is spawned. Right after those lines, I had a
+> section like this:
+
+Erm... ok, on that part, the problem was a typo... I apologizes.
+Lack of reading after writing, and copy/paste are always wrong when 
+doing things...
+
+So, fixing this made the terminals appear, but all on workspace 7, in a 
+single horizontal layout. This is still wrong, but at least they 
+appear...
+
+
+
+From berenger.morel at neutralite.org  Mon Mar  3 11:50:39 2014
+From: berenger.morel at neutralite.org (berenger.morel at neutralite.org)
+Date: Mon, 03 Mar 2014 11:50:39 +0100
+Subject: [i3] trying to build default layout at start
+In-Reply-To: <43f30a838263880a839badf2c379d566@neutralite.org>
+References: <ffb674a90a7a8df1db6f82ccc2f53368@neutralite.org>
+ <43f30a838263880a839badf2c379d566@neutralite.org>
+Message-ID: <b9a251d9c17336e170292e64c023551a@neutralite.org>
+
+Le 03.03.2014 11:14, berenger.morel at neutralite.org a ?crit?:
+> Hello.
+>
+> Since I always have the same layout ( basically, a horizontal layout
+> with 1 vertical layout containing --at start-- 1 terminal on a side,
+> and on the other one, 2 other terminals in a vertical layout:
+> debugging and editing of unit testing for 2nd vertical layout, source
+> code edition on first one ) on workspace 1, and start it every-time, 
+> I
+> tried to do bind that script:
+>
+> #!/bin/sh
+> x-terminal-emulator &
+> x-terminal-emulator &
+> i3-msg 'split v' &
+> x-terminal-emulator &
+>
+> to a key, but it does not work. Started from a terminal, all windows
+> appear, but only in a vertical layout, and the script writes
+> "[{"success":true}]". Since it is a problem of speed, I can do a 
+> small
+> workaround.
+>
+> But, binded to a key, nothing appears.
+
+OK, I am not in a good day when it comes to thinking, I guess.
+
+The folder where my personal scripts relies was not in the $PATH, 
+because I had modified it into ~/.profile instead of ~/.bash_profile.
+So I have added some sleep instructions after every i3-msg commands, 
+and can summon a ( very ) basic layout:
+
+#!/bin/sh
+delay=0.03s
+i3-msg 'split h'
+sleep $delay
+x-terminal-emulator &
+x-terminal-emulator &
+sleep $delay
+i3-msg 'split v'
+x-terminal-emulator &
+
+So, my errors were simple pebcak. Sorry for the noise.
+It still does not explains the behavior of sending things on workspace 
+7 in previous configurations, however. And it does not solve the ( only 
+) boring problem of i3 being sometimes slower than I.
+
+From michael at i3wm.org  Mon Mar  3 14:12:50 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 03 Mar 2014 14:12:50 +0100
+Subject: [i3] trying to build default layout at start
+In-Reply-To: <b9a251d9c17336e170292e64c023551a@neutralite.org>
+References: <ffb674a90a7a8df1db6f82ccc2f53368@neutralite.org>
+ <43f30a838263880a839badf2c379d566@neutralite.org>
+ <b9a251d9c17336e170292e64c023551a@neutralite.org>
+Message-ID: <x68usr77e5.fsf@midna.zekjur.net>
+
+Hi,
+
+Instead of using sleep commands, why not try the new layout restore
+functionality we have in our git version? See
+http://thread.gmane.org/gmane.comp.window-managers.i3.general/1194
+
+-- 
+Best regards,
+Michael
+
+From freestyler7 at gmail.com  Mon Mar  3 14:39:04 2014
+From: freestyler7 at gmail.com (Bill kolokithas)
+Date: Mon, 3 Mar 2014 15:39:04 +0200
+Subject: [i3] Bind Alt+Shift in i3wm
+In-Reply-To: <x6vbvvoczj.fsf@midna.zekjur.net>
+References: <53144859.60301@ondrejsika.com> <x6vbvvoczj.fsf@midna.zekjur.net>
+Message-ID: <CAA+gWizmjpZW2MbkT_BgXJxHrM_Tu0RZ8fXhPb123ioXRo76=g@mail.gmail.com>
+
+On Mon, Mar 3, 2014 at 11:20 AM, Michael Stapelberg <michael at i3wm.org> wrote:
+> Hi Ondrej,
+>
+> Ondrej Sika <ondrej at ondrejsika.com> writes:
+>> is it possible bind only Alt+Shift in i3wm for language switch like
+>> Windows?
+> http://bugs.i3wm.org/report/ticket/386
+>
+> --
+> Best regards,
+> Michael
+
+You can run the following command to register the binding. (change
+layout as appropriate)
+setxkbmap -layout us,gr -option grp:alt_shift_toggle
+You can put this line in your ~/.xprofile which most display managers
+will source when they start.
+If you start with xinit (startx), you can simply put
+source ~/.xprofile
+
+before the "exec i3" line
+
+From berenger.morel at neutralite.org  Mon Mar  3 15:55:09 2014
+From: berenger.morel at neutralite.org (berenger.morel at neutralite.org)
+Date: Mon, 03 Mar 2014 15:55:09 +0100
+Subject: [i3] trying to build default layout at start
+In-Reply-To: <x68usr77e5.fsf@midna.zekjur.net>
+References: <ffb674a90a7a8df1db6f82ccc2f53368@neutralite.org>
+ <43f30a838263880a839badf2c379d566@neutralite.org>
+ <b9a251d9c17336e170292e64c023551a@neutralite.org>
+ <x68usr77e5.fsf@midna.zekjur.net>
+Message-ID: <6d3f9495925004d023cb1d5e1a584059@neutralite.org>
+
+Le 03.03.2014 14:12, Michael Stapelberg a ?crit?:
+> Hi,
+>
+> Instead of using sleep commands, why not try the new layout restore
+> functionality we have in our git version? See
+> http://thread.gmane.org/gmane.comp.window-managers.i3.general/1194
+
+Because I am currently using the deb package, and so was not aware of 
+features added after :)
+
+This will be a great feature, thanks a lot ! ( and so, maybe I'll use a 
+compiled version )
+This wm is really becoming awesome... I mean, the word, not the wm ;)
+
+From vivien.didelot at gmail.com  Mon Mar  3 16:02:14 2014
+From: vivien.didelot at gmail.com (Vivien Didelot)
+Date: Mon, 3 Mar 2014 10:02:14 -0500
+Subject: [i3] i3blocks
+In-Reply-To: <x61tyjpsk9.fsf@midna.zekjur.net>
+References: <CAJ2J69gytBhNhPhYvpLbS8chqC=g6JSp7COzE-AcbHe_vb6KTw@mail.gmail.com>
+ <5313AB71.3030909@hunsicker.de> <x61tyjpsk9.fsf@midna.zekjur.net>
+Message-ID: <CAJ2J69iNVtBzU-xSwg4K+3UD1ZUv5YCUf10TbPv4BUpoigKT=w@mail.gmail.com>
+
+btw, i3blocks does handle events.
+If you set for instance signal=10 to a block, it will be updated when
+i3blocks receives a SIGUSR1 (you can take a look at the default "volume"
+block, and try "amixer -q set Master 2dB+ unmute && killall -USR1
+i3blocks").
+Also, if your script does not check the BLOCK_BUTTON env variable, clicking
+on the block will result in re-updating it (it's particulary useful for the
+network block, when connecting to a SSID or (un)plugging ethernet and want
+to have the IP update right away).
+
+Cheers,
+Vivien
+
+
+On Mon, Mar 3, 2014 at 3:58 AM, Michael Stapelberg <michael at i3wm.org> wrote:
+
+> Hi Marco,
+>
+> Marco Hunsicker <i3 at hunsicker.de> writes:
+> > @Michael: as you tout i3status as being sensitive regarding resource
+> > usage, what about adding a caching mechanism to i3status to support
+> > distinct update time intervals for the different blocks as well?
+> It's a bit rude to hijack this thread, so let's keep it brief: instead
+> of caching, I'd rather see event-based updates, but that requires a huge
+> refactoring with very very little gain, so I'm not going to do it (and
+> probably not going to accept patches for it either). I think SardemFF7's
+> j4status has an architecture that is event-based, but I have never used
+> it.
+>
+> --
+> Best regards,
+> Michael
+>
+
+
+
+--
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140303/e44967d1/attachment.html>
+
+From michael at i3wm.org  Tue Mar  4 15:39:48 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 04 Mar 2014 15:39:48 +0100
+Subject: [i3] i3 related questions
+In-Reply-To: <CACtHe2GMrQvqJwEuzM08fF0fziByP+dtFUaZPfGAU=2yVEXKew@mail.gmail.com>
+References: <CACtHe2GMrQvqJwEuzM08fF0fziByP+dtFUaZPfGAU=2yVEXKew@mail.gmail.com>
+Message-ID: <x6r46it4cr.fsf@midna.zekjur.net>
+
+Hi dharmin,
+
+Please direct questions like this to i3-discuss@ (cc'ed), not me
+personally.
+
+dharmin thakkar <dharmin85 at gmail.com> writes:
+> Here I am writing regards to how to setup i3 tiling window manager on my
+> OS. Since I saw this i3 in my tutor's laptop when he was teaching, I have
+> been trying for last few months on how to install this on my OS.
+> But, there is no article or information available on internet as far as my
+> searched went through about how to install i3 on various types of OS and
+> what are the software requirements of the terminal
+>
+> Anyway,
+> I have MacBook pro retina display one has OS 10.9
+> So could you please help me here with my questions.??
+> All I want to know in nutshell is if I have OSX 10.9 then what softwares or
+> other OS do I need to run i3??
+i3 only works on Linux. I recommend asking your tutor, as in-person help
+is very valuable and works much better than trying to help other people
+over the internet.
+
+Once you have Linux running on your machine and are somewhat accustomed
+to it, feel free to install i3 and try to get it running.
+
+Note that i3 is _NOT_ recommended for people who are just getting
+started with Linux. Our target audience is power users and programmers
+specifically.
+
+-- 
+Best regards,
+Michael
+
+From rodperson at rodperson.com  Tue Mar  4 15:52:46 2014
+From: rodperson at rodperson.com (Rod Person)
+Date: Tue, 04 Mar 2014 09:52:46 -0500
+Subject: [i3] i3 related questions
+In-Reply-To: <x6r46it4cr.fsf@midna.zekjur.net>
+References: <CACtHe2GMrQvqJwEuzM08fF0fziByP+dtFUaZPfGAU=2yVEXKew@mail.gmail.com>
+ <x6r46it4cr.fsf@midna.zekjur.net>
+Message-ID: <5315E8BE.7050708@rodperson.com>
+
+On 03/04/2014 9:39 AM, Michael Stapelberg wrote:
+> Hi dharmin,
+>
+> Please direct questions like this to i3-discuss@ (cc'ed), not me
+> personally.
+>
+> dharmin thakkar<dharmin85 at gmail.com>  writes:
+>    
+>> Here I am writing regards to how to setup i3 tiling window manager on my
+>> OS. Since I saw this i3 in my tutor's laptop when he was teaching, I have
+>> been trying for last few months on how to install this on my OS.
+>> But, there is no article or information available on internet as far as my
+>> searched went through about how to install i3 on various types of OS and
+>> what are the software requirements of the terminal
+>>
+>> Anyway,
+>> I have MacBook pro retina display one has OS 10.9
+>> So could you please help me here with my questions.??
+>> All I want to know in nutshell is if I have OSX 10.9 then what softwares or
+>> other OS do I need to run i3??
+>>      
+> i3 only works on Linux.
+Hey!  It works on FreeBSD and OpenBSD also! :)
+
+-- 
+Rod
+
+So little pains do the vulgar take in the investigation of truth, accepting readily the first story that comes to hand.
+   -Thucydides
+       History of The Peloponnesian War, 432BC
+
+
+From karulont at gmail.com  Tue Mar  4 20:21:20 2014
+From: karulont at gmail.com (Karl Tarbe)
+Date: Tue, 04 Mar 2014 21:21:20 +0200
+Subject: [i3] [i3lock] blur effect
+Message-ID: <531627B0.2060204@gmail.com>
+
+Hello,
+
+I am a new i3 user and I used a wrapper for i3lock.
+
+https://github.com/ashinkarov/i3-extras/blob/master/i3lock-wrapper
+
+This wrapper script takes a screenshot of the desktop before starting 
+i3lock.
+Then it blurs it and uses that blurred screenshot as the background for 
+i3lock.
+
+I was a little bored and little unsatisfied with the script.
+So I wanted to make it better.
+
+
+As a result of learning and hacking, I can now present to you a i3lock fork.
+
+https://github.com/karulont/i3lock-blur/tree/fuzzy
+
+It uses COMPOSITE extension to get the windows current state.
+It uses DAMAGE extension to know when to redraw.
+It uses OpenGL to blur the image.
+
+Currently there is a lack of error checking, but I am still working on it.
+
+But interested parties can get the fuzzy branch, build it using make.
+And test the new blurred background feature by using cmdline switch '-f' 
+(f for fuzzy).
+
+Example: cd directory
+                  make
+                  ./i3lock -f
+
+--
+Best wishes,
+Karl
+
+From mail at merovius.de  Tue Mar  4 20:34:17 2014
+From: mail at merovius.de (Axel Wagner)
+Date: Tue, 04 Mar 2014 20:34:17 +0100
+Subject: [i3] [i3lock] blur effect
+In-Reply-To: <531627B0.2060204@gmail.com>
+References: <531627B0.2060204@gmail.com>
+Message-ID: <87siqxwyfa.fsf@rincewind.i-did-not-set--mail-host-address--so-tickle-me>
+
+Hi Karl,
+
+nice idea, but I don't really understand why you not just draw on
+i3lock's window? That way you don't have to maintain a fork, we keep the
+number of forks to a minimum (so? 0 hopefully ^^) and still everyone
+gets to implement their favourite thingy as a wrapper. You can use
+"xwininfo -name i3lock" or something similar to get the window id of
+i3lock.
+
+Just a thought.
+
+Best,
+
+Axel
+
+From karulont at gmail.com  Tue Mar  4 21:02:56 2014
+From: karulont at gmail.com (Karl Tarbe)
+Date: Tue, 04 Mar 2014 22:02:56 +0200
+Subject: [i3] [i3lock] blur effect
+In-Reply-To: <87siqxwyfa.fsf@rincewind.i-did-not-set--mail-host-address--so-tickle-me>
+References: <531627B0.2060204@gmail.com>
+ <87siqxwyfa.fsf@rincewind.i-did-not-set--mail-host-address--so-tickle-me>
+Message-ID: <53163170.1080607@gmail.com>
+
+On 03/04/2014 09:34 PM, Axel Wagner wrote:
+> nice idea, but I don't really understand why you not just draw on
+> i3lock's window? That way you don't have to maintain a fork, we keep the
+> number of forks to a minimum (so? 0 hopefully ^^) and still everyone
+> gets to implement their favourite thingy as a wrapper. You can use
+> "xwininfo -name i3lock" or something similar to get the window id of
+> i3lock.
+At first I didn't even knew what I was doing.
+Now I could write my own program, which paints on the i3lock's window. 
+But then there would be  a race condition between i3lock drawing and my 
+wrapper drawing. And I wouldn't get a good result.
+
+I understand that forks are kind of unwanted. I created this just out of 
+boredom. If the guys here think that this feature might be added 
+upstream, I would be very happy about it. But currently this is not yet 
+ready to be used by the "masses".
+
+Best regards,
+Karl
+
+From michael at i3wm.org  Tue Mar  4 23:08:49 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 04 Mar 2014 23:08:49 +0100
+Subject: [i3] i3 related questions
+In-Reply-To: <5315E8BE.7050708@rodperson.com>
+References: <CACtHe2GMrQvqJwEuzM08fF0fziByP+dtFUaZPfGAU=2yVEXKew@mail.gmail.com>
+ <x6r46it4cr.fsf@midna.zekjur.net> <5315E8BE.7050708@rodperson.com>
+Message-ID: <x6ppm1sjke.fsf@midna.zekjur.net>
+
+Hi Rod,
+
+Rod Person <rodperson at rodperson.com> writes:
+>> i3 only works on Linux.
+> Hey!  It works on FreeBSD and OpenBSD also! :)
+Good point, that was somewhat carelessly expressed. It also works on
+NetBSD, and most likely other operating systems. Essentially anywhere
+you can run X11 and all the i3 dependencies.
+
+That said, it sure works best on Linux. And it?s particularly hard to
+use it on OS X due to Aqua vs. X11.app :).
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Tue Mar  4 23:59:14 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 04 Mar 2014 23:59:14 +0100
+Subject: [i3] Layout saving/restoring (PREVIEW)
+In-Reply-To: <CAMJW5=1AHV0+nTE1A+zR1xb6F2yTL+XFdsNs8-=Tqvdow3Seiw@mail.gmail.com>
+References: <x6y53lbz0h.fsf@midna.zekjur.net>
+ <CAMJW5=1AHV0+nTE1A+zR1xb6F2yTL+XFdsNs8-=Tqvdow3Seiw@mail.gmail.com>
+Message-ID: <x6fvmxsh8d.fsf@midna.zekjur.net>
+
+Hi Yuxuan,
+
+Yuxuan Shui <yshuiv7 at gmail.com> writes:
+> It will be better if i3 could automatically start all the programs for
+> me. I think it's possible for programs that support startup
+> notification.
+>
+> Could this feature be added, or is it too much to integrate into i3?
+I?m not sure how this would work. Are you suggesting that all programs
+which were opened should be started again?
+
+This is a bit tricky. Theoretically, there is the WM_COMMAND hint in
+which programs can store a command line with which they can be started
+again.
+
+However, the hint is rarely set, and when it?s set, it?s typically not
+accurate.
+
+Therefore, I currently think adding some code to use this will not be
+very successful, and letting users add a bunch of ?exec? lines in their
+i3 config files (or session restore scripts) is acceptable.
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Wed Mar  5 08:40:32 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 05 Mar 2014 08:40:32 +0100
+Subject: [i3] i3 related questions
+In-Reply-To: <CACtHe2HXW6rNVbxFwxiPaoGJ4amSJpHYmnMQepZHwKaOyPUjgg@mail.gmail.com>
+References: <CACtHe2GMrQvqJwEuzM08fF0fziByP+dtFUaZPfGAU=2yVEXKew@mail.gmail.com>
+ <x6r46it4cr.fsf@midna.zekjur.net> <5315E8BE.7050708@rodperson.com>
+ <x6ppm1sjke.fsf@midna.zekjur.net>
+ <CACtHe2HXW6rNVbxFwxiPaoGJ4amSJpHYmnMQepZHwKaOyPUjgg@mail.gmail.com>
+Message-ID: <x6d2i1rt3j.fsf@midna.zekjur.net>
+
+Hi dharmin,
+
+dharmin thakkar <dharmin85 at gmail.com> writes:
+
+> So, As far as concern of choosing OS to run i3, I read many reviews of
+> various platforms of Linux.. As I said earlier, I am novice to Linux and
+> may be I think it would be important to choose the right OS. I saw my
+> educator was using Arch Linux and as Rod suggested freeBSD and other OS, my
+> question is which OS is better to choose?? Also in case if I choose for
+> instance freeBSD then is it easy to change on different OS like Ubuntu or
+> arch Linux in the future or will I have to learn from the scratch again
+> that time?? Sorry to ask many questions here but this will help me starting
+> my career in Linux...However, end of the day, my intention is to run i3 in
+> the future regardles which OS I choose...
+> Thank  you..
+Which OS to chose is a very personal and often heated debate. I?d ask
+people to kindly not reply to this to avoid flamewars.
+
+Dharmin, please ask whoever will help you in real life. As I mentioned,
+this is not a good thing to talk about online.
+
+-- 
+Best regards,
+Michael
+
+From yshuiv7 at gmail.com  Wed Mar  5 12:22:17 2014
+From: yshuiv7 at gmail.com (Yuxuan Shui)
+Date: Wed, 5 Mar 2014 19:22:17 +0800
+Subject: [i3] Layout saving/restoring (PREVIEW)
+In-Reply-To: <x6fvmxsh8d.fsf@midna.zekjur.net>
+References: <x6y53lbz0h.fsf@midna.zekjur.net>
+ <CAMJW5=1AHV0+nTE1A+zR1xb6F2yTL+XFdsNs8-=Tqvdow3Seiw@mail.gmail.com>
+ <x6fvmxsh8d.fsf@midna.zekjur.net>
+Message-ID: <CAMJW5=3jkOWHZn1WATHbOyOHStBnW41ekVmjTefi=qXw7rgFmg@mail.gmail.com>
+
+Hi,
+
+On Wed, Mar 5, 2014 at 6:59 AM, Michael Stapelberg <michael at i3wm.org> wrote:
+
+> Hi Yuxuan,
+>
+> Yuxuan Shui <yshuiv7 at gmail.com> writes:
+> > It will be better if i3 could automatically start all the programs for
+> > me. I think it's possible for programs that support startup
+> > notification.
+> >
+> > Could this feature be added, or is it too much to integrate into i3?
+> I?m not sure how this would work. Are you suggesting that all programs
+> which were opened should be started again?
+>
+
+Yes.
+
+
+>
+> This is a bit tricky. Theoretically, there is the WM_COMMAND hint in
+> which programs can store a command line with which they can be started
+> again.
+>
+> However, the hint is rarely set, and when it?s set, it?s typically not
+> accurate.
+>
+
+I think there're other ways. For example, there's _NET_WM_PID which can be
+used to find correspond command line. If the application is started via
+i3's exec and supports start notification, _NET_STARTUP_ID can be used.
+
+
+> Therefore, I currently think adding some code to use this will not be
+> very successful, and letting users add a bunch of ?exec? lines in their
+> i3 config files (or session restore scripts) is acceptable.
+>
+
+Maybe. When I get some time, I will do some experiments to see if it will
+work or not.
+
+
+>
+> --
+> Best regards,
+> Michael
+>
+
+Regards,
+Yuxuan Shui
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140305/9ff38d50/attachment.html>
+
+From sergey at vlasov.me  Wed Mar  5 14:08:15 2014
+From: sergey at vlasov.me (Sergey Vlasov)
+Date: Wed, 5 Mar 2014 13:08:15 +0000 (UTC)
+Subject: [i3] ideas on layout using mouse
+References: <CAF8zdKsFhmWcbDEmCfdt-pM2R536mYU22Ed8CYOKE_R2b_=OfA@mail.gmail.com>
+ <x6ha8fvrq1.fsf@midna.zekjur.net>
+Message-ID: <loom.20140305T135012-235@post.gmane.org>
+
+Michael Stapelberg <michael <at> i3wm.org> writes:
+
+> 
+> Hi tom,
+> 
+> Thomas Kim <tom <at> tksfz.org> writes:
+> > I'd love to see the ability to layout windows by dragging them, similar to
+> > the way Eclipse (the IDE) does it:
+> > - You can drag a window into any container.
+> > - Dragging towards the left or right of the container causes it to split
+> > horizontally and place the window to the left or right.
+> > - Dragging towards the top or bottom of the container causes it to split
+> > vertically and place the window above or below.
+> > - Dragging towards the middle of an untabbed container creates a tabbed
+> > layout and places the window in a new tab.
+> > - Dragging to the tab bar of a tabbed container places the window in a new
+> > tab.
+> >
+> > I realize i3 isn't meant to be mouse-oriented, but this would make window
+> > re-organization more efficient for me. It takes too many operations to
+> > reorganize window layout since containers must be split *first* before a
+> > window can be moved into it.  Using mouse-dragging, this becomes a one-step
+> > operation.
+> I?m not convinced that this is a good idea. Specifically, my suspicion
+> is that once a feature like this is implemented, it won?t suit enough
+> users and people will want to customize the behavior in detail (leading
+> to lots of complexity, code paths and option explosion). Also, I suspect
+> it?ll require quite a bit of new code.
+> 
+> That said, I reserve the right to change my mind after seeing a well
+> done patch and demonstration of how awesome such a feature is.
+> 
+
+I personally would *REALLY* like to see this kind of drag'n'drop
+functionality in i3. I haven't used Eclipse for ages, but dockabe widget in
+Qt 4.x are quite good too. For example try do move docked widget around in
+Qt Designer, except in Designer it's limited to always leave empty area in
+the center.
+
+>From what I remember Visual Studio has the best implementation. Whenever you
+start dragging a window, you see this kind of popup
+http://i.msdn.microsoft.com/dynimg/IC570696.png, so you just drag to the
+icon. It's very easy to achieve any kind of layout with just a mouse. You
+can do even more, organize tabs, make window floatable and vice versa. I
+couldn't find any video on youtube to show how it works, maybe I will record
+one.
+
+> I?m not convinced that this is a good idea. Specifically, my suspicion
+> is that once a feature like this is implemented, it won?t suit enough
+> users and people will want to customize the behavior in detail
+
+If the implementation is good, there is nothing to customize. It would just
+work.
+
+
+From berenger.morel at neutralite.org  Fri Mar  7 14:51:11 2014
+From: berenger.morel at neutralite.org (berenger.morel at neutralite.org)
+Date: Fri, 07 Mar 2014 14:51:11 +0100
+Subject: [i3] =?utf-8?q?KP=5FReturn_does_not_work?=
+Message-ID: <19399c9ec671170d0e22003ece66c1df@neutralite.org>
+
+Hello.
+
+I tried to bind the keypad's enter key ( KP_Enter ) to the same command 
+as the normal Return key, but it seems to only work with the number ( 
+0xff8d ), not with the name.
+Any idea why?
+
+From i3 at hunsicker.de  Tue Mar 11 11:44:05 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Tue, 11 Mar 2014 11:44:05 +0100
+Subject: [i3] [i3status] Update interval alignment glitch
+Message-ID: <531EE8F5.40008@hunsicker.de>
+
+Howdy,
+
+i3status uses the following code to determine how much time it should 
+wait until the output is generated again:
+
+/* To provide updates on every full second (as good as possible)
+  * we don?t use sleep(interval) but we sleep until the next
+  * second (with microsecond precision) plus (interval-1)
+  * seconds. We also align to 60 seconds modulo interval such
+  * that we start with :00 on every new minute. */
+struct timeval current_timeval;
+gettimeofday(&current_timeval, NULL);
+struct timespec ts = {interval - 1 - current_timeval.tv_sec % interval,
+      (10e5 - current_timeval.tv_usec) * 1000};
+
+
+This works fine if nanosleep() is not interrupted. But when interrupted 
+(to force an update by sending the USR1 signal), the alignment most 
+often means that the next invocation does not happen after 'interval' 
+seconds, but earlier (I'm using a 5 sec interval time)!
+
+Would it not be more important to enforce that updates happen (roughly) 
+every 'interval' seconds? Is it really that important to update at the 
+start of a new minute anyway?
+
+I would propose that the code is at least changed that the alignment 
+only happens once per minute in order to maximize correctness towards 
+the interval time instead of the minute alignment.
+
+Does that sound reasonable? Thanks.
+
+Cheers,
+   Marco
+
+From michael at i3wm.org  Tue Mar 11 18:28:45 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 11 Mar 2014 18:28:45 +0100
+Subject: [i3] [i3status] Update interval alignment glitch
+In-Reply-To: <531EE8F5.40008@hunsicker.de>
+References: <531EE8F5.40008@hunsicker.de>
+Message-ID: <x64n34prua.fsf@midna.zekjur.net>
+
+Hi Marco,
+
+Marco Hunsicker <i3 at hunsicker.de> writes:
+> Would it not be more important to enforce that updates happen (roughly) 
+> every 'interval' seconds? Is it really that important to update at the 
+> start of a new minute anyway?
+I don?t understand why you are asking which behavior is more
+important. Can?t we fix this problem properly and have both?
+
+-- 
+Best regards,
+Michael
+
+From i3 at hunsicker.de  Tue Mar 11 19:12:04 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Tue, 11 Mar 2014 19:12:04 +0100
+Subject: [i3] [i3status] Update interval alignment glitch
+In-Reply-To: <x64n34prua.fsf@midna.zekjur.net>
+References: <531EE8F5.40008@hunsicker.de> <x64n34prua.fsf@midna.zekjur.net>
+Message-ID: <531F51F4.20202@hunsicker.de>
+
+Hello Michael,
+
+thanks again for your quick response.
+
+>> Would it not be more important to enforce that updates happen (roughly)
+>> every 'interval' seconds? Is it really that important to update at the
+>> start of a new minute anyway?
+
+> I don?t understand why you are asking which behavior is more
+> important. Can?t we fix this problem properly and have both?
+
+Well, sometimes there is behavior for no good reason and if I touch the 
+code anyway, I might as well get rid of the alignment.
+
+But if it should stay there, fine with me. I will forward a patch for 
+review. Thanks.
+
+Cheers,
+   Marco
+
+From gereon.kremer at rwth-aachen.de  Tue Mar 11 20:00:00 2014
+From: gereon.kremer at rwth-aachen.de (Gereon Kremer)
+Date: Tue, 11 Mar 2014 20:00:00 +0100
+Subject: [i3] [i3status] Update interval alignment glitch
+In-Reply-To: <531F51F4.20202@hunsicker.de>
+References: <531EE8F5.40008@hunsicker.de> <x64n34prua.fsf@midna.zekjur.net>
+ <531F51F4.20202@hunsicker.de>
+Message-ID: <531F5D30.10404@rwth-aachen.de>
+
+Hi Marco,
+
+As I'm the one who added this alignment in the first place [1], I
+somewhat feel obligated to answer here :-)
+At that time, I did not think about nanosleep() being interupted.
+
+Can you describe under which circumstances i3status receives an USR1?
+I've never noticed such a behavior...
+
+What would be your preferred solution here? As for me, we must decide on
+what we consider more important (the implementation is easy in either
+case): The overall number of refreshs? Have nice numbers?
+
+Possible solutions:
+1) We could suppress or defer the signal and continue sleeping until the
+proper number of seconds have passed. Not what I'd like to do...
+2) We could refresh and start with the intervals from there. This
+however means that we drop the alignment. This basically amounts to the
+code before I changed it.
+3) We could refresh, start with the intervals from there and realign
+every minute or so. In this case, we have another shorter interval right
+before a new minute starts and "ugly" numbers in between.
+4) We could refresh and return to the alignment directly afterwards.
+That is what happens right now.
+
+As I don't care about an additional refresh once in a while, I'd go for
+the nice numbers... What are your opinions?
+
+Cheers,
+Gereon
+
+[1]
+http://code.stapelberg.de/git/i3status/commit/?id=11757b8105ebebba40c3a94c5d6c5431cc58b3d1
+
+On 03/11/2014 07:12 PM, Marco Hunsicker wrote:
+> Hello Michael,
+> 
+> thanks again for your quick response.
+> 
+>>> Would it not be more important to enforce that updates happen (roughly)
+>>> every 'interval' seconds? Is it really that important to update at the
+>>> start of a new minute anyway?
+> 
+>> I don?t understand why you are asking which behavior is more
+>> important. Can?t we fix this problem properly and have both?
+> 
+> Well, sometimes there is behavior for no good reason and if I touch the
+> code anyway, I might as well get rid of the alignment.
+> 
+> But if it should stay there, fine with me. I will forward a patch for
+> review. Thanks.
+> 
+> Cheers,
+>   Marco
+
+-- 
+Email: gereon.kremer at rwth-aachen.de
+Mobil: 01520 / 9844454
+Adalbertsteinweg 1b, 52070 Aachen
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0x78359F29.asc
+Type: application/pgp-keys
+Size: 5375 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140311/bb6615d9/attachment.key>
+
+From i3 at hunsicker.de  Tue Mar 11 20:23:47 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Tue, 11 Mar 2014 20:23:47 +0100
+Subject: [i3] [i3status] Update interval alignment glitch
+In-Reply-To: <531F5D30.10404@rwth-aachen.de>
+References: <531EE8F5.40008@hunsicker.de> <x64n34prua.fsf@midna.zekjur.net>
+ <531F51F4.20202@hunsicker.de> <531F5D30.10404@rwth-aachen.de>
+Message-ID: <531F62C3.6090809@hunsicker.de>
+
+Hello Gereon,
+
+thanks for stepping in.
+
+> As I'm the one who added this alignment in the first place [1], I
+> somewhat feel obligated to answer here :-)
+> At that time, I did not think about nanosleep() being interupted.
+
+I haven't checked the timeline, but that feature probably has been added 
+later and nobody noticed the consequences.
+
+
+> Can you describe under which circumstances i3status receives an USR1?
+> I've never noticed such a behavior...
+
+The signal has been added to be able to force a refresh of the output 
+from the outside. The most common example is to refresh the status if 
+the system volume has been changed (commonly done right in the i3 config).
+
+
+> What would be your preferred solution here? As for me, we must decide on
+> what we consider more important (the implementation is easy in either
+> case): The overall number of refreshs? Have nice numbers?
+
+It's really a minor issue, but I think the given interval time should 
+matter. And yes, the number of refreshes increases if the alignment is 
+performed on each update. Personally, I don't see a need for alignment 
+at all, but it's no problem to support both, so this seems the way to go.
+
+
+> Possible solutions:
+> 1) We could suppress or defer the signal and continue sleeping until the
+> proper number of seconds have passed. Not what I'd like to do...
+> 2) We could refresh and start with the intervals from there. This
+> however means that we drop the alignment. This basically amounts to the
+> code before I changed it.
+> 3) We could refresh, start with the intervals from there and realign
+> every minute or so. In this case, we have another shorter interval right
+> before a new minute starts and "ugly" numbers in between.
+> 4) We could refresh and return to the alignment directly afterwards.
+> That is what happens right now.
+
+It can happen quite often. I for one force an update on every window 
+focus change.
+
+
+> As I don't care about an additional refresh once in a while, I'd go for
+> the nice numbers... What are your opinions?
+
+I'm about to submit a patch that will ensure that the minute alignment 
+will be performed only once per minute. This ensures the given interval 
+is obeyed as much as possible, but still perform the alignment. The best 
+of both worlds :)
+
+Cheers,
+   Marco
+
+From i3 at hunsicker.de  Tue Mar 11 22:05:41 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Tue, 11 Mar 2014 22:05:41 +0100
+Subject: [i3] [i3status] Update interval alignment glitch
+In-Reply-To: <531F5D30.10404@rwth-aachen.de>
+References: <531EE8F5.40008@hunsicker.de> <x64n34prua.fsf@midna.zekjur.net>
+ <531F51F4.20202@hunsicker.de> <531F5D30.10404@rwth-aachen.de>
+Message-ID: <531F7AA5.9080506@hunsicker.de>
+
+Hello Gereon,
+
+> 1) We could suppress or defer the signal and continue sleeping until the
+> proper number of seconds have passed. Not what I'd like to do...
+> 2) We could refresh and start with the intervals from there. This
+> however means that we drop the alignment. This basically amounts to the
+> code before I changed it.
+
+The whole point of the signal is to force a refresh immediately, so 
+that's not really an option.
+
+> 3) We could refresh, start with the intervals from there and realign
+> every minute or so. In this case, we have another shorter interval right
+> before a new minute starts and "ugly" numbers in between.
+
+That's what my patch does. What do you mean by "ugly numbers"? I get the 
+feeling that I totally miss the point ;)
+
+Cheers,
+   Marco
+
+
+
+From i3 at hunsicker.de  Wed Mar 12 21:56:27 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Wed, 12 Mar 2014 21:56:27 +0100
+Subject: [i3] [i3status] Update interval alignment glitch
+In-Reply-To: <531F5D30.10404@rwth-aachen.de>
+References: <531EE8F5.40008@hunsicker.de> <x64n34prua.fsf@midna.zekjur.net>
+ <531F51F4.20202@hunsicker.de> <531F5D30.10404@rwth-aachen.de>
+Message-ID: <5320C9FB.2090509@hunsicker.de>
+
+Hello Gereon,
+
+> As I don't care about an additional refresh once in a while, I'd go for
+> the nice numbers... What are your opinions?
+
+The alignment is there purely for aesthetic reasons, right? That the 
+clock displays the seconds in a predictable way?
+
+I don't display seconds in my clock and therefore the alignment makes no 
+sense for me at all.
+
+So what about a patch that inspects the time definitions to see if 
+seconds are involved and only performs the alignment if that is the 
+case? Does that sound like a viable strategy? Thanks.
+
+Cheers,
+   Marco
+
+
+From taras.koroliuk at globallogic.com  Thu Mar 13 11:08:37 2014
+From: taras.koroliuk at globallogic.com (Taras Koroliuk)
+Date: Thu, 13 Mar 2014 12:08:37 +0200
+Subject: [i3] [new feature proposition] Add an "toggle mode" for key binding.
+Message-ID: <CAOLBW9p1=dEaYj3Toq6yP7m377E+crByrZsbu27S24Dwb7s0hA@mail.gmail.com>
+
+Hello.
+There are very handy back-and-forth switching ability among workspace in i3.
+
+I would like to propose you an idea of "toggle mode" for a key binding.
+
+Suppose I want to switch among two actions by pressing one keybiniding.
+
+For example I want to switch between two border styles (normal and 1pixel)
+for window by pressing one key combination.
+
+Proposal syntax for new addition:
+
+           bindsym $mod+t border normal | border 1pixel
+
+What do you think about this?
+
+-- 
+Taras Koroliuk | Software developer
+GlobalLogic
+M +380959142355  S taraskoroljuk <http://www.globallogic.com/>
+<http://www.globallogic.com/><http://www.globallogic.com/email_disclaimer.txt>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140313/fe97c8e3/attachment.html>
+
+From michael at i3wm.org  Fri Mar 14 14:12:57 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 14 Mar 2014 14:12:57 +0100
+Subject: [i3] [new feature proposition] Add an "toggle mode" for key
+	binding.
+In-Reply-To: <CAOLBW9p1=dEaYj3Toq6yP7m377E+crByrZsbu27S24Dwb7s0hA@mail.gmail.com>
+References: <CAOLBW9p1=dEaYj3Toq6yP7m377E+crByrZsbu27S24Dwb7s0hA@mail.gmail.com>
+Message-ID: <x61ty46i06.fsf@midna.zekjur.net>
+
+Hi Taras,
+
+Taras Koroliuk <taras.koroliuk at globallogic.com> writes:
+> For example I want to switch between two border styles (normal and 1pixel)
+> for window by pressing one key combination.
+>
+> Proposal syntax for new addition:
+>
+>            bindsym $mod+t border normal | border 1pixel
+>
+> What do you think about this?
+There already is the ?border toggle? command.
+
+I don?t think there is much value in having a generic toggle command as
+you propose. The commands for which toggling makes sense already have
+toggling implemented.
+
+In case you need a more advanced toggle logic, you can always use the
+IPC interface:
+http://build.i3wm.org/docs/ipc.html
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Fri Mar 14 14:21:41 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 14 Mar 2014 14:21:41 +0100
+Subject: [i3] [i3status] Update interval alignment glitch
+In-Reply-To: <5320C9FB.2090509@hunsicker.de>
+References: <531EE8F5.40008@hunsicker.de> <x64n34prua.fsf@midna.zekjur.net>
+ <531F51F4.20202@hunsicker.de> <531F5D30.10404@rwth-aachen.de>
+ <5320C9FB.2090509@hunsicker.de>
+Message-ID: <x6y50c5316.fsf@midna.zekjur.net>
+
+Hi Marco,
+
+Marco Hunsicker <i3 at hunsicker.de> writes:
+>> As I don't care about an additional refresh once in a while, I'd go for
+>> the nice numbers... What are your opinions?
+>
+> The alignment is there purely for aesthetic reasons, right? That the 
+> clock displays the seconds in a predictable way?
+>
+> I don't display seconds in my clock and therefore the alignment makes no 
+> sense for me at all.
+>
+> So what about a patch that inspects the time definitions to see if 
+> seconds are involved and only performs the alignment if that is the 
+> case? Does that sound like a viable strategy? Thanks.
+Unless I misunderstand what you?re trying to say, that sounds like a
+horrible hack, not a viable strategy :).
+
+I think strategy 3, i.e. refreshing upon SIGUSR1, starting with the
+intervals from there and still aligning to minutes, sounds like the best
+option.
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Fri Mar 14 14:23:15 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 14 Mar 2014 14:23:15 +0100
+Subject: [i3] KP_Return does not work
+In-Reply-To: <19399c9ec671170d0e22003ece66c1df@neutralite.org>
+References: <19399c9ec671170d0e22003ece66c1df@neutralite.org>
+Message-ID: <x6vbvg52yk.fsf@midna.zekjur.net>
+
+Hi berenger,
+
+berenger.morel at neutralite.org writes:
+> I tried to bind the keypad's enter key ( KP_Enter ) to the same command 
+> as the normal Return key, but it seems to only work with the number ( 
+> 0xff8d ), not with the name.
+> Any idea why?
+Without a full debug log level logfile, it?s hard to tell. Can you
+please open a bugreport at http://bugs.i3wm.org/?
+
+-- 
+Best regards,
+Michael
+
+From i3 at hunsicker.de  Fri Mar 14 16:29:13 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Fri, 14 Mar 2014 16:29:13 +0100
+Subject: [i3] [i3status] Update interval alignment glitch
+In-Reply-To: <x6y50c5316.fsf@midna.zekjur.net>
+References: <531EE8F5.40008@hunsicker.de> <x64n34prua.fsf@midna.zekjur.net>
+ <531F51F4.20202@hunsicker.de> <531F5D30.10404@rwth-aachen.de>
+ <5320C9FB.2090509@hunsicker.de> <x6y50c5316.fsf@midna.zekjur.net>
+Message-ID: <53232049.50707@hunsicker.de>
+
+Hello Michael,
+>> So what about a patch that inspects the time definitions to see if
+>> seconds are involved and only performs the alignment if that is the
+>> case?
+
+> Unless I misunderstand what you?re trying to say, that sounds like a
+> horrible hack, not a viable strategy :)
+
+Well, it's certainly not the cleanest approach, but as the patterns are 
+clearly documented and probably won't change over time, it does not 
+sound horrible to me. But you decide ;)
+
+
+> I think strategy 3, i.e. refreshing upon SIGUSR1, starting with the
+> intervals from there and still aligning to minutes, sounds like the best
+> option.
+
+But it's only a compromise if I understand the intention of the minute 
+aligning correctly.
+
+What about a general option to control the behavior of the loop? 
+Essentially one extra line of code compared to option 3.
+
+Cheers,
+   Marco
+
+
+From michael at i3wm.org  Sat Mar 15 19:12:14 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 15 Mar 2014 19:12:14 +0100
+Subject: [i3] [i3status] Update interval alignment glitch
+In-Reply-To: <53232049.50707@hunsicker.de>
+References: <531EE8F5.40008@hunsicker.de> <x64n34prua.fsf@midna.zekjur.net>
+ <531F51F4.20202@hunsicker.de> <531F5D30.10404@rwth-aachen.de>
+ <5320C9FB.2090509@hunsicker.de> <x6y50c5316.fsf@midna.zekjur.net>
+ <53232049.50707@hunsicker.de>
+Message-ID: <x6pplnnxfl.fsf@midna.zekjur.net>
+
+Hi Marco,
+
+Marco Hunsicker <i3 at hunsicker.de> writes:
+>> I think strategy 3, i.e. refreshing upon SIGUSR1, starting with the
+>> intervals from there and still aligning to minutes, sounds like the best
+>> option.
+>
+> But it's only a compromise if I understand the intention of the minute 
+> aligning correctly.
+Why is it a compromise? What is the intention behind the minute
+aligning? I thought it?s to have an update at the beginning of every
+minute, just as we align on full seconds. This will still be true with
+the proposed change. And in case people who use minute alignment don?t
+want to have updates during the minute, they should just not send
+SIGUSR1 to i3status, right?
+
+-- 
+Best regards,
+Michael
+
+From i3 at hunsicker.de  Sat Mar 15 19:49:16 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Sat, 15 Mar 2014 19:49:16 +0100
+Subject: [i3] [i3status] Update interval alignment glitch
+In-Reply-To: <x6pplnnxfl.fsf@midna.zekjur.net>
+References: <531EE8F5.40008@hunsicker.de> <x64n34prua.fsf@midna.zekjur.net>
+ <531F51F4.20202@hunsicker.de> <531F5D30.10404@rwth-aachen.de>
+ <5320C9FB.2090509@hunsicker.de> <x6y50c5316.fsf@midna.zekjur.net>
+ <53232049.50707@hunsicker.de> <x6pplnnxfl.fsf@midna.zekjur.net>
+Message-ID: <5324A0AC.4060908@hunsicker.de>
+
+Hello Michael,
+
+>> But it's only a compromise if I understand the intention of the minute
+>> aligning correctly.
+
+> Why is it a compromise? What is the intention behind the minute
+> aligning?
+
+I'm not sure as no one really explained it. From Gereon's comment 
+regarding "ugly numbers" my guess is that the alignment should make sure 
+that the refreshes happen in a deterministic way in order to display the 
+time information in a consistent manner.
+
+05s -> 10s-> 15s -> 20s. You never see 01s 02s 03s 11s etc.
+
+Therefore his preference to perform the alignment always, not only upon 
+a new minute.
+
+
+> I thought it?s to have an update at the beginning of every
+> minute, just as we align on full seconds.
+
+My thinking initially, hence my patch. But now I'm not sure anymore.
+
+
+> This will still be true with
+> the proposed change. And in case people who use minute alignment don?t
+> want to have updates during the minute, they should just not send
+> SIGUSR1 to i3status, right?
+
+A bit prohibitive to my liking as the signal is very useful and I would 
+rather find a solution that works for all use cases. But then I don't 
+know how many users find the alignment essential. I don't include 
+seconds with my clock. I could do without any alignment at all, 
+therefore my idea to inspect the time information.
+
+Personally, I'm fine with the patch. But in order to cater for all 
+needs, I would find a new configuration option worth thinking about. 
+This would enable all parties to choose the policy which makes most 
+sense to them. The new default could be to align only once, but users 
+would be able to disable alignment or enforce it always.
+
+Cheers,
+   Marco
+
+
+From michael at i3wm.org  Sat Mar 15 20:07:43 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 15 Mar 2014 20:07:43 +0100
+Subject: [i3] [i3status] Update interval alignment glitch
+In-Reply-To: <5324A0AC.4060908@hunsicker.de>
+References: <531EE8F5.40008@hunsicker.de> <x64n34prua.fsf@midna.zekjur.net>
+ <531F51F4.20202@hunsicker.de> <531F5D30.10404@rwth-aachen.de>
+ <5320C9FB.2090509@hunsicker.de> <x6y50c5316.fsf@midna.zekjur.net>
+ <53232049.50707@hunsicker.de> <x6pplnnxfl.fsf@midna.zekjur.net>
+ <5324A0AC.4060908@hunsicker.de>
+Message-ID: <x6k3bvnuv4.fsf@midna.zekjur.net>
+
+Hi Marco,
+
+Marco Hunsicker <i3 at hunsicker.de> writes:
+> I'm not sure as no one really explained it. From Gereon's comment 
+> regarding "ugly numbers" my guess is that the alignment should make sure 
+> that the refreshes happen in a deterministic way in order to display the 
+> time information in a consistent manner.
+>
+> 05s -> 10s-> 15s -> 20s. You never see 01s 02s 03s 11s etc.
+I see.
+
+>> This will still be true with
+>> the proposed change. And in case people who use minute alignment don?t
+>> want to have updates during the minute, they should just not send
+>> SIGUSR1 to i3status, right?
+>
+> A bit prohibitive to my liking as the signal is very useful and I would 
+> rather find a solution that works for all use cases. But then I don't 
+I?m not sure why you say that.
+
+No matter what you align on (e.g. 05, 10, 15, as you described), the
+signal will always _force_ an update right now. If you don?t want that,
+don?t send the signal. The next update after the signal should happen at
+the regular interval, i.e. as if the signal was not sent.
+
+> Personally, I'm fine with the patch. But in order to cater for all 
+> needs, I would find a new configuration option worth thinking about. 
+> This would enable all parties to choose the policy which makes most 
+> sense to them. The new default could be to align only once, but users 
+> would be able to disable alignment or enforce it always.
+I don?t think adding a configuration option for this subtlety is worth
+it.
+
+-- 
+Best regards,
+Michael
+
+From i3 at hunsicker.de  Sat Mar 15 20:26:17 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Sat, 15 Mar 2014 20:26:17 +0100
+Subject: [i3] [i3status] Update interval alignment glitch
+In-Reply-To: <x6k3bvnuv4.fsf@midna.zekjur.net>
+References: <531EE8F5.40008@hunsicker.de> <x64n34prua.fsf@midna.zekjur.net>
+ <531F51F4.20202@hunsicker.de> <531F5D30.10404@rwth-aachen.de>
+ <5320C9FB.2090509@hunsicker.de> <x6y50c5316.fsf@midna.zekjur.net>
+ <53232049.50707@hunsicker.de> <x6pplnnxfl.fsf@midna.zekjur.net>
+ <5324A0AC.4060908@hunsicker.de> <x6k3bvnuv4.fsf@midna.zekjur.net>
+Message-ID: <5324A959.5020205@hunsicker.de>
+
+Hello Michael,
+
+>> A bit prohibitive to my liking as the signal is very useful and I would
+>> rather find a solution that works for all use cases. But then I don't
+
+> I?m not sure why you say that.
+
+I was probably too fixated on my needs. You're right with your 
+conclusion that someone who prefers the alignment might just want to 
+wait a little while for the next automatic refresh.
+
+But there is still the (small) problem of misalignment after startup.
+
+
+> I don?t think adding a configuration option for this subtlety is worth
+> it.
+
+If you're fine with the provided patch, I certainly am. It's a pity that 
+Gereon did not comment any further.
+
+Cheers,
+   Marco
+
+From michael at i3wm.org  Mon Mar 17 18:07:33 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 17 Mar 2014 18:07:33 +0100
+Subject: [i3] trying to get tests working on gentoo
+In-Reply-To: <5326E437.1000407@gentoo.org>
+References: <5326E437.1000407@gentoo.org>
+Message-ID: <x6zjkon48a.fsf@midna.zekjur.net>
+
+Hi,
+
+hasufell <hasufell at gentoo.org> writes:
+> I'm currently trying to get the i3 testsuite working on gentoo
+> (inside the package manager environment), but have a hard time
+> since we have a sandbox that disallows writing to the live
+> filesystem. Sure, there are ways around it, but here are a
+> few points that would help me if they can be improved on the
+> upstream side:
+>
+> * Xdummy seems to segfault with optimization level higher than -O0
+> * export XDUMMY_TMPDIR=foo does not seem to have any effect on the "Xorg.<user>.bin" location... it still expects it in /tmp
+> * Xdummy always wants to write to /var/log ...which is pretty unfortunate
+> * "./complete-run.pl || <dosomething>" does not have any effect... I have to grep the resulting log file in order to know if a test failed
+>
+> Another problem is that we need to copy the Xorg binary over.
+> I guess there is no way around it, is there?
+Sorry, I?m not of much help here. I copied Xdummy from somewhere and
+don?t have any insights on its implementation, I only know how it works
+on a very high level.
+
+Please keep the CC to i3-discuss, this may be useful to other people,
+too.
+
+-- 
+Best regards,
+Michael
+
+From alexander at plaimi.net  Tue Mar 18 10:52:20 2014
+From: alexander at plaimi.net (Alexander Berntsen)
+Date: Tue, 18 Mar 2014 10:52:20 +0100
+Subject: [i3] Tooltips etc. showing up on the wrong monitor
+Message-ID: <53281754.4040807@plaimi.net>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Lately I've been having this problem where tooltips and similar popups
+showing on the leftmost monitor, if I try to bring them up slightly to
+the left on the rightmost monitor. Example screenshots may be found at
+[0] and [1].
+
+This is profoundly annoying. Anyone care to have a guess as to what's
+causing it? I'm running i3-4.6, and my layout was set with:
+xrandr --output VIRTUAL1 --off --output eDP1 --mode 2560x1600 --pos
+0x0 --rotate normal --output DP1 --off --output HDMI2 --off --output
+HDMI1 --off --output DP2 --mode 2560x1440 --pos 2560x0 --rotate normal
+
+Though it does seem to happen with any two-monitor layout. I can
+counteract it by putting *a lot* of empty space between the left and
+right monitor, so e.g. putting the right one at pos 5000x0 will force
+the tooltips etc. to show up on the right monitor, however this is
+undesirable for obvious reasons.
+
+
+[0]
+<https://secure.plaimi.net/~alexander/tmp/2014-03-18-104845_5120x1600_scrot.png>.
+[1]
+<https://secure.plaimi.net/~alexander/tmp/2014-03-18-104847_5120x1600_scrot.png>.
+
+- -- 
+Alexander
+alexander at plaimi.net
+https://secure.plaimi.net/~alexander
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+
+iF4EAREIAAYFAlMoF1QACgkQRtClrXBQc7V3ngEAoyxM3g4NspXZbUEH4SLUUjI+
+KWBOy2LSy1cwmw3qEjwA+QHnAX6o+OPsqH5jxEOizbrzgZbl49iBSb/cdWND7uQN
+=kRWA
+-----END PGP SIGNATURE-----
+
+From michael at i3wm.org  Tue Mar 18 19:06:54 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 18 Mar 2014 19:06:54 +0100
+Subject: [i3] Tooltips etc. showing up on the wrong monitor
+In-Reply-To: <53281754.4040807@plaimi.net>
+References: <53281754.4040807@plaimi.net>
+Message-ID: <x6r45zmldt.fsf@midna.zekjur.net>
+
+Hi Alexander,
+
+Alexander Berntsen <alexander at plaimi.net> writes:
+>
+> [0]
+> <https://secure.plaimi.net/~alexander/tmp/2014-03-18-104845_5120x1600_scrot.png>.
+> [1]
+> <https://secure.plaimi.net/~alexander/tmp/2014-03-18-104847_5120x1600_scrot.png>.
+The tooltip/popup you are showing in those screenshots are not managed
+windows, so i3 has nothing to do with them. You?ll need to look at the
+application in question and/or the toolkit that app uses to figure out
+what?s going on.
+
+-- 
+Best regards,
+Michael
+
+From alexander at plaimi.net  Wed Mar 19 09:02:22 2014
+From: alexander at plaimi.net (Alexander Berntsen)
+Date: Wed, 19 Mar 2014 09:02:22 +0100
+Subject: [i3] Tooltips etc. showing up on the wrong monitor
+In-Reply-To: <x6r45zmldt.fsf@midna.zekjur.net>
+References: <53281754.4040807@plaimi.net> <x6r45zmldt.fsf@midna.zekjur.net>
+Message-ID: <53294F0E.80604@plaimi.net>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+On 18/03/14 19:06, Michael Stapelberg wrote:
+> The tooltip/popup you are showing in those screenshots are not 
+> managed windows, so i3 has nothing to do with them. You?ll need to
+>  look at the application in question and/or the toolkit that app
+> uses to figure out what?s going on.
+Right, just checked, and it does indeed *not* happen with QT, it
+happens *only* with GTK. So I'll have to look at that. If someone
+happens to know anything about it, please let me know.
+
+- -- 
+Alexander
+alexander at plaimi.net
+https://secure.plaimi.net/~alexander
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+
+iF4EAREIAAYFAlMpTw4ACgkQRtClrXBQc7WJFQD7B7ImPNcPxBEsU+Crr4mat4ZB
+fRmsOyxWTxJfUiD4pPwA/ir355JXgkKtvyXRx3uDlRY2Mc8/GoOYCKZu6EGGjIUE
+=8tk4
+-----END PGP SIGNATURE-----
+
+From gereon.kremer at rwth-aachen.de  Mon Mar 24 18:21:02 2014
+From: gereon.kremer at rwth-aachen.de (Gereon Kremer)
+Date: Mon, 24 Mar 2014 18:21:02 +0100
+Subject: [i3] [i3status] Update interval alignment glitch
+In-Reply-To: <5324A959.5020205@hunsicker.de>
+References: <531EE8F5.40008@hunsicker.de> <x64n34prua.fsf@midna.zekjur.net>
+ <531F51F4.20202@hunsicker.de> <531F5D30.10404@rwth-aachen.de>
+ <5320C9FB.2090509@hunsicker.de> <x6y50c5316.fsf@midna.zekjur.net>
+ <53232049.50707@hunsicker.de> <x6pplnnxfl.fsf@midna.zekjur.net>
+ <5324A0AC.4060908@hunsicker.de> <x6k3bvnuv4.fsf@midna.zekjur.net>
+ <5324A959.5020205@hunsicker.de>
+Message-ID: <5330697E.408@rwth-aachen.de>
+
+Hi,
+
+Marco Hunsicker wrote:
+> It's a pity that Gereon did not comment any further.
+Sorry for that, but I have been on vacation for the last 12 days or
+so... :-)
+
+Marco Hunsicker wrote:
+> The alignment is there purely for aesthetic reasons, right? That the
+> clock displays the seconds in a predictable way? 
+Yes, just as you describe a few mails later: 00 -> 05 -> 10 -> ...
+
+Anyhow, I don't have a strong opinion about this. I just consider
+refreshs that are due to a USR1 "exceptional" and deem the default case
+to be more important.
+Ultimately, both problems are only aesthetical: ugly numbers vs.
+refreshs earlier than <interval>
+seconds...<http://dict.leo.org/ende/index_de.html#/search=aesthetical&searchLoc=0&resultOrder=basic&multiwordShowSingle=on>
+
+Cheers,
+Gereon
+
+From karulont at gmail.com  Mon Mar 24 19:10:55 2014
+From: karulont at gmail.com (Karl Tarbe)
+Date: Mon, 24 Mar 2014 20:10:55 +0200
+Subject: [i3] [i3lock] blur effect
+In-Reply-To: <531627B0.2060204@gmail.com>
+References: <531627B0.2060204@gmail.com>
+Message-ID: <5330752F.2090209@gmail.com>
+
+Hello,
+
+Now I have had time to test and develop more. Initial bugs are fixed.
+
+The repo address is https://github.com/karulont/i3lock-blur/
+
+I also made a release 
+https://github.com/karulont/i3lock-blur/releases/tag/2.5.1
+
+For archlinux users as myself I also made an AUR package called i3lock-blur.
+
+Now i3lock-blur is easier for you to test and see if you like it.
+
+
+--
+Best wishes,
+Karl
+
+From i3 at hunsicker.de  Wed Mar 26 09:50:32 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Wed, 26 Mar 2014 09:50:32 +0100
+Subject: [i3] [i3status] Update interval alignment glitch
+In-Reply-To: <5330697E.408@rwth-aachen.de>
+References: <531EE8F5.40008@hunsicker.de> <x64n34prua.fsf@midna.zekjur.net>
+ <531F51F4.20202@hunsicker.de> <531F5D30.10404@rwth-aachen.de>
+ <5320C9FB.2090509@hunsicker.de> <x6y50c5316.fsf@midna.zekjur.net>
+ <53232049.50707@hunsicker.de> <x6pplnnxfl.fsf@midna.zekjur.net>
+ <5324A0AC.4060908@hunsicker.de> <x6k3bvnuv4.fsf@midna.zekjur.net>
+ <5324A959.5020205@hunsicker.de> <5330697E.408@rwth-aachen.de>
+Message-ID: <533294D8.3000705@hunsicker.de>
+
+Hello Gereon,
+
+thanks for the follow-up.
+
+ >> The alignment is there purely for aesthetic reasons, right? That the
+ >> clock displays the seconds in a predictable way?
+
+ > Yes, just as you describe a few mails later: 00 -> 05 -> 10 -> ...
+
+Your code comment got me in the wrong direction until it dawned on me 
+what the purpose of the alignment probably was. That's when I suggested 
+alternative approaches to cater for both needs, but Michael did not like 
+any of them.
+
+
+ > Anyhow, I don't have a strong opinion about this. I just consider
+ > refreshs that are due to a USR1 "exceptional" and deem the default
+ > case to be more important.
+
+They are exceptional with a vanilla install. They can be quite frequent 
+with a customized configuration and I would have found it favorable if 
+i3status would be flexible enough to adapt.
+
+
+ > Ultimately, both problems are only aesthetical: ugly numbers vs.
+ > refreshs earlier than <interval>  seconds...
+
+For me it's not a matter of aesthetics, but efficiency as my config 
+causes USR1 signals quite frequently and the additional refreshes add up 
+over time. But it's easy enough to patch and I can live with a custom fork.
+
+Cheers,
+   Marco
+

@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] window assigned workspace and high cpu usage
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20window%20assigned%20workspace%20and%20high%20cpu%20usage&In-Reply-To=%3C01ba2456-3e1f-47e8-a9a6-d00c375c45ab%40email.android.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002082.html">
+   <LINK REL="Next"  HREF="002081.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] window assigned workspace and high cpu usage</H1>
+    <B>antonio.corbi at ua.es</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20window%20assigned%20workspace%20and%20high%20cpu%20usage&In-Reply-To=%3C01ba2456-3e1f-47e8-a9a6-d00c375c45ab%40email.android.com%3E"
+       TITLE="[i3] window assigned workspace and high cpu usage">antonio.corbi at ua.es
+       </A><BR>
+    <I>Mon Apr 27 21:25:18 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002082.html">[i3] window assigned workspace and high cpu usage
+</A></li>
+        <LI>Next message: <A HREF="002081.html">[i3] window assigned workspace and high cpu usage
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2083">[ date ]</a>
+              <a href="thread.html#2083">[ thread ]</a>
+              <a href="subject.html#2083">[ subject ]</a>
+              <a href="author.html#2083">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>As soon as I arrive home I'll try Michael's suggestion and see what happens.
+
+I start i3 from my custom .xsession. I'll post it later as now I'm not on the computer.
+
+Thanks for your help
+Antonio
+
+El 27/4/2015 20:53, Simon Nagl &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">simonnagl at aim.com</A>&gt; escribió:
+&gt;<i>
+</I>&gt;<i> I cannot reproduce this as well. 
+</I>&gt;<i>
+</I>&gt;<i> # i3 version 4.10.2 (2015-04-16, branch &quot;4.10.2&quot;) ... 
+</I>&gt;<i> # Chromium 42.0.2311.90 
+</I>&gt;<i> # xorg-server 1.17.1-5 
+</I>&gt;<i>
+</I>&gt;<i> I used the config Antonio Corbi posted: 
+</I>&gt;<i>
+</I>&gt;<i> bindsym $mod+Shift+m  exec &quot;chromium&quot; 
+</I>&gt;<i> assign [class=&quot;Chromium&quot;] 2 
+</I>&gt;<i>
+</I>&gt;<i> Chromium opens with normal CPU usage and the workspace changes to the 
+</I>&gt;<i> right color. After finished starting up CPU usage of chromium is as low 
+</I>&gt;<i> as starting it &quot;normal&quot;. 
+</I>&gt;<i>
+</I>&gt;<i> Do you use i3 inside of a desktop enviroment? 
+</I>&gt;<i> Maby that could help to repoduce it and locate the error? 
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Simon 
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On 27.04.2015 19:52, Ingo Bürk wrote: 
+</I>&gt;<i> &gt; I can't reproduce the CPU load with Google Chrome. 
+</I>&gt;<i> &gt; However, it seems that if I wait a little before switching to the 
+</I>&gt;<i> &gt; workspace, AdBlock dies. Makes me wonder if this is at all related. 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Do you have a log file? 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Ingo 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; On 04/27/2015 07:48 PM, Antonio-M. Corbi Bellot wrote: 
+</I>&gt;<i> &gt;&gt; Hi all, 
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; I am currently using i3 version 4.10.2. 
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; Since a few months I've been observing a strange behaviour in i3 when I 
+</I>&gt;<i> &gt;&gt; assign a window from emacs or chromium to a specific workspace. The 
+</I>&gt;<i> &gt;&gt; behaviour I'm describing here was also the same with i3 4.[7,8,9].x. 
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; For example, I assign emacs to this key combination: 
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; bindsym $mod+Shift+m  exec &quot;emacs&quot; 
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; And the workspace assignment is this: 
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; assign [class=&quot;Emacs&quot;] 2 
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; Assuming I'm working in workspace 1, when I press $mod+Shift+m (I don't 
+</I>&gt;<i> &gt;&gt; change to ws 2 for the moment), emacs starts in workspace 2 but I see 
+</I>&gt;<i> &gt;&gt; an increment in cpu usage being the main culprits emacs (approx. 60% 
+</I>&gt;<i> &gt;&gt; cpu usage) and xorg (approx. 90% cpu usage). And this cpu usage is 
+</I>&gt;<i> &gt;&gt; sustained...it doesn't slow down until I change to workspace 2 ($mod+2) 
+</I>&gt;<i> &gt;&gt; and then I observe that emacs hasn't finished starting and in the very 
+</I>&gt;<i> &gt;&gt; moment I've changed to workspace 2 it is like it resumes execution and 
+</I>&gt;<i> &gt;&gt; it finishes starting normally. It is then that cpu usage from xorg and 
+</I>&gt;<i> &gt;&gt; emacs slow down to their normal values. 
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; I've also observed this behaviour with chromium, no other applications 
+</I>&gt;<i> &gt;&gt; suffer from this 'strange' behaviour, i.e I use claws-mail in workspace 
+</I>&gt;<i> &gt;&gt; 4 and it opens there without a glitch. Also I use glade (3.18.1) in 
+</I>&gt;<i> &gt;&gt; this way, assigned to workspace 2, and it starts nicely. 
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; I'm not sure if it is an emacs/chromium bug or an i3 bug or even a xorg 
+</I>&gt;<i> &gt;&gt; bug, but I've observed it only with i3 and these applications. 
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; Has anyone observed this? 
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; Antonio Corbi. 
+</I>&gt;<i> &gt; 
+</I>&gt;<i>
+</I>&gt;<i> -- 
+</I>&gt;<i> Simon Nagl 
+</I>&gt;<i> ________________________________________ 
+</I>&gt;<i> Zieglerstraße 12 
+</I>&gt;<i> 86666 Burgheim 
+</I>&gt;<i>
+</I>&gt;<i> mailto:<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">simonnagl at aim.com</A> 
+</I>&gt;<i> Tel: 0179 403 87 61 
+</I>&gt;<i>
+</I>&gt;<i> OpenPG: A7C87E3D 
+</I></PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002082.html">[i3] window assigned workspace and high cpu usage
+</A></li>
+	<LI>Next message: <A HREF="002081.html">[i3] window assigned workspace and high cpu usage
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2083">[ date ]</a>
+              <a href="thread.html#2083">[ thread ]</a>
+              <a href="subject.html#2083">[ subject ]</a>
+              <a href="author.html#2083">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

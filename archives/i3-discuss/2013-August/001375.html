@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Using variables in variable definition?
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Using%20variables%20in%20variable%20definition%3F&In-Reply-To=%3CCAGb_FfYU0do24qS-CAQ1_4bUQ%2BtEUUpzgDButJU8GuNzgneCcA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001374.html">
+   <LINK REL="Next"  HREF="001376.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Using variables in variable definition?</H1>
+    <B>Sylvain Benner</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Using%20variables%20in%20variable%20definition%3F&In-Reply-To=%3CCAGb_FfYU0do24qS-CAQ1_4bUQ%2BtEUUpzgDButJU8GuNzgneCcA%40mail.gmail.com%3E"
+       TITLE="[i3] Using variables in variable definition?">sylvain.benner at gmail.com
+       </A><BR>
+    <I>Fri Aug  2 02:41:36 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001374.html">[i3] Using variables in variable definition?
+</A></li>
+        <LI>Next message: <A HREF="001376.html">[i3] Using variables in variable definition?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1375">[ date ]</a>
+              <a href="thread.html#1375">[ thread ]</a>
+              <a href="subject.html#1375">[ subject ]</a>
+              <a href="author.html#1375">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i>From the documentation:
+</I>
+&quot;Variables are directly replaced in the file when parsing. There is no
+fancy handling and there are absolutely no plans to change this.&quot;
+
+So variables behavior in i3 are more like macros, there is no type behind
+and it is good like this.
+If you set $var &quot;value&quot; then any subsequent $var will be replace by &quot;value&quot;
+with the double quotes.
+This is a good choice to keep it simple but I think that the lack of
+recursive evaluation is counter intuitive and fail somehow to provide all
+the potential of the KISS approach.
+
+Anyway I guess I could try to make a patch for this, it should be trivial.
+Michael ?
+
+Cheers,
+syl20bnr
+
+
+On Thu, Aug 1, 2013 at 7:26 PM, &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">public at enkore.de</A>&gt; wrote:
+
+&gt;<i> -----BEGIN PGP SIGNED MESSAGE-----
+</I>&gt;<i> Hash: SHA1
+</I>&gt;<i>
+</I>&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> the following doesn't work (it doesn't raise a config error, either):
+</I>&gt;<i>
+</I>&gt;<i> set $mod Mod4
+</I>&gt;<i> set $audiomod $mod+Ctrl
+</I>&gt;<i> bindsym $audiomod+j exec mpc ...
+</I>&gt;<i>
+</I>&gt;<i> But the following does:
+</I>&gt;<i>
+</I>&gt;<i> bindsym $mod+Ctrl+j exec mpc...
+</I>&gt;<i>
+</I>&gt;<i> Is the former method just not supported (then it should raise a config
+</I>&gt;<i> error instead of failing silently) or is there a wrong anywhere else?
+</I>&gt;<i>
+</I>&gt;<i> [mabe]
+</I>&gt;<i> -----BEGIN PGP SIGNATURE-----
+</I>&gt;<i> Version: GnuPG v2.0.20 (GNU/Linux)
+</I>&gt;<i>
+</I>&gt;<i> iQEcBAEBAgAGBQJR+u6MAAoJEJuEULkdE2LBexIH/RYycfY1nZpgUe5xBY9lPzla
+</I>&gt;<i> VXT8Rmv5YQaJriBsH8P68SSeud/5f7gWWUEsw+i0ZnAR/0sU3tOqDbqNG8ktuf5K
+</I>&gt;<i> 9A7c5vNx9tUpmMyXJq8SGm9Hql0H3J+TS9kdKRQ67QhYqA3DF1vEj7vsP4MmaF5c
+</I>&gt;<i> so7ZQJgGyU7vsO70hUeBwkz+4saD/l9e4OzKE9Ard9AgmWv/c/oq5hFBy3OEPtlF
+</I>&gt;<i> yGIlAMoIoHi/Niey40u9shOs2B3Iiibj3Ao6a4iYSAmUphMiKhF6F4cH7/pPIoqn
+</I>&gt;<i> hecv4q8Zd6SPFhKsOlCHr3goA3U2ctL0DxHDlNz3BWkFadXieBMxN2gwa+RpqZo=
+</I>&gt;<i> =GZL9
+</I>&gt;<i> -----END PGP SIGNATURE-----
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130801/c70d0144/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130801/c70d0144/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001374.html">[i3] Using variables in variable definition?
+</A></li>
+	<LI>Next message: <A HREF="001376.html">[i3] Using variables in variable definition?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1375">[ date ]</a>
+              <a href="thread.html#1375">[ thread ]</a>
+              <a href="subject.html#1375">[ subject ]</a>
+              <a href="author.html#1375">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] Block outward events while processing commands.
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Block%20outward%20events%20while%20processing%20commands.&In-Reply-To=%3CCAMJW5%3D1fPf0GNqbgQwFNi6PoTGqRgurj9Wtx0iwseAiYkCeqFA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000736.html">
+   <LINK REL="Next"  HREF="000740.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] Block outward events while processing commands.</H1>
+    <B>DR</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Block%20outward%20events%20while%20processing%20commands.&In-Reply-To=%3CCAMJW5%3D1fPf0GNqbgQwFNi6PoTGqRgurj9Wtx0iwseAiYkCeqFA%40mail.gmail.com%3E"
+       TITLE="[i3] [PATCH] Block outward events while processing commands.">drdarkraven at gmail.com
+       </A><BR>
+    <I>Fri Jun 22 15:30:58 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000736.html">[i3] [PATCH] Block outward events while processing commands.
+</A></li>
+        <LI>Next message: <A HREF="000740.html">[i3] [PATCH] Block outward events while processing commands.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#737">[ date ]</a>
+              <a href="thread.html#737">[ thread ]</a>
+              <a href="subject.html#737">[ subject ]</a>
+              <a href="author.html#737">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Forgot to attach the patch...
+
+On Fri, Jun 22, 2012 at 9:14 PM, DR &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">drdarkraven at gmail.com</A>&gt; wrote:
+
+&gt;<i> (Eventually I've got some time to rework patches I sent previously. I
+</I>&gt;<i> divide them into mutually unrelated parts, and will send them in different
+</I>&gt;<i> threads, according to Fernando's suggestion. So this is the first one).
+</I>&gt;<i>
+</I>&gt;<i> Currently i3 sends event with quite bad timing. For example, the
+</I>&gt;<i> workspaces event 'focus' is sent before the tree_render() is called (in
+</I>&gt;<i> other words, the focus has not been actually changed, only the internal
+</I>&gt;<i> states of i3wm is changed). Although the differences is just fractions of a
+</I>&gt;<i> second, it may confuse some applications which rely heavily on the correct
+</I>&gt;<i> timing (for example, i3bar with my upcoming patches).
+</I>&gt;<i>
+</I>&gt;<i> So I add facilities to queue outward events up until the tree_render is
+</I>&gt;<i> done.
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120622/16d7fbe3/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120622/16d7fbe3/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Block-outward-events-while-processing-commands.patch
+Type: application/octet-stream
+Size: 6086 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120622/16d7fbe3/attachment.obj">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120622/16d7fbe3/attachment.obj</A>&gt;
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000736.html">[i3] [PATCH] Block outward events while processing commands.
+</A></li>
+	<LI>Next message: <A HREF="000740.html">[i3] [PATCH] Block outward events while processing commands.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#737">[ date ]</a>
+              <a href="thread.html#737">[ thread ]</a>
+              <a href="subject.html#737">[ subject ]</a>
+              <a href="author.html#737">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

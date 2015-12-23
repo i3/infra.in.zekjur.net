@@ -1,0 +1,1440 @@
+From veljko3 at gmail.com  Sun Aug  3 11:11:12 2014
+From: veljko3 at gmail.com (Veljko)
+Date: Sun, 3 Aug 2014 11:11:12 +0200
+Subject: [i3] Backported version [Was: Re:  i3 wm problem.]
+In-Reply-To: <x6zjfplgoo.fsf@midna.zekjur.net>
+References: <CAD9s4Uk-eQq9u+_N-yUL40LB+oY+46D38Q_0VJVuGw6eETgR2A@mail.gmail.com>
+ <x6silkk4qx.fsf@midna.zekjur.net>
+ <20140729090139.GA8319@angelina.example.com>
+ <x6zjfplgoo.fsf@midna.zekjur.net>
+Message-ID: <20140803091112.GA6646@angelina.example.com>
+
+
+On 2014-Jul-31 16:57, Michael Stapelberg wrote:
+> I just uploaded 4.8 to wheezy-backports. It should be available within a
+> couple of hours.
+
+Thanks, Michael!
+
+Regards,
+Veljko 
+
+From chris at 0chris.com  Mon Aug  4 10:51:19 2014
+From: chris at 0chris.com (Christian Stefanescu)
+Date: Mon, 04 Aug 2014 10:51:19 +0200
+Subject: [i3] Meta key writes ~ to terminal
+Message-ID: <53DF4987.9080903@0chris.com>
+
+Hi,
+
+I'm new to i3wm and I like it very much so far, it's been quite a
+user-friendly experience.
+
+One problem I have is that when I press my Meta key (Mod4/Windows key if
+it matters) to do any action while focussed on a terminal window, I get
+'~' characters in the terminal. It doesn't matter which terminal it is,
+I tried xterm, gnome-terminal, urxvt.
+
+I'd appreciate any help on this!
+
+Cheers,
+Chris
+
+From karkhaz at gmail.com  Mon Aug  4 11:12:16 2014
+From: karkhaz at gmail.com (Kareem Khazem)
+Date: Mon, 04 Aug 2014 10:12:16 +0100
+Subject: [i3] Meta key writes ~ to terminal
+In-Reply-To: <53DF4987.9080903@0chris.com>
+References: <53DF4987.9080903@0chris.com>
+Message-ID: <f0b44eca-08a5-4291-a188-30ec6904c176@email.android.com>
+
+Try running 'xev' and hit your Meta key. xev should report the key code that X is seeing, so report back on what xev says.
+
+On 4 August 2014 09:51:19 GMT+01:00, Christian Stefanescu <chris at 0chris.com> wrote:
+>One problem I have is that when I press my Meta key (Mod4/Windows key
+>if
+>it matters) to do any action while focussed on a terminal window, I get
+>'~' characters in the terminal. It doesn't matter which terminal it is,
+>I tried xterm, gnome-terminal, urxvt.
+
+
+From chris at 0chris.com  Mon Aug  4 11:16:34 2014
+From: chris at 0chris.com (Christian Stefanescu)
+Date: Mon, 04 Aug 2014 11:16:34 +0200
+Subject: [i3] Meta key writes ~ to terminal
+In-Reply-To: <f0b44eca-08a5-4291-a188-30ec6904c176@email.android.com>
+References: <53DF4987.9080903@0chris.com>
+ <f0b44eca-08a5-4291-a188-30ec6904c176@email.android.com>
+Message-ID: <53DF4F72.9090601@0chris.com>
+
+Here's the event from xev:
+
+KeyPress event, serial 32, synthetic NO, window 0x1200001,
+    root 0x94, subw 0x1200002, time 12991273, (48,22), root:(735,42),
+    state 0x0, keycode 133 (keysym 0xffcb, F14), same_screen YES,
+    XLookupString gives 0 bytes:
+    XmbLookupString gives 0 bytes:
+    XFilterEvent returns: False
+
+KeyRelease event, serial 32, synthetic NO, window 0x1200001,
+    root 0x94, subw 0x1200002, time 12991392, (48,22), root:(735,42),
+    state 0x40, keycode 133 (keysym 0xffcb, F14), same_screen YES,
+    XLookupString gives 0 bytes:
+    XFilterEvent returns: False
+
+
+On 08/04/2014 11:12 AM, Kareem Khazem wrote:
+> Try running 'xev' and hit your Meta key. xev should report the key code that X is seeing, so report back on what xev says.
+> 
+> On 4 August 2014 09:51:19 GMT+01:00, Christian Stefanescu <chris at 0chris.com> wrote:
+>> One problem I have is that when I press my Meta key (Mod4/Windows key
+>> if
+>> it matters) to do any action while focussed on a terminal window, I get
+>> '~' characters in the terminal. It doesn't matter which terminal it is,
+>> I tried xterm, gnome-terminal, urxvt.
+> 
+
+From karkhaz at gmail.com  Mon Aug  4 16:48:12 2014
+From: karkhaz at gmail.com (Kareem)
+Date: Mon, 4 Aug 2014 15:48:12 +0100
+Subject: [i3] Meta key writes ~ to terminal
+In-Reply-To: <53DF4F72.9090601@0chris.com>
+References: <53DF4987.9080903@0chris.com>
+ <f0b44eca-08a5-4291-a188-30ec6904c176@email.android.com>
+ <53DF4F72.9090601@0chris.com>
+Message-ID: <20140804144812.GA22083@katrina>
+
+So that's a problem with X rather than i3; X thinks that you're
+pressing F14. My output is:
+
+KeyPress event, serial 32, synthetic NO, window 0x3400001,
+    root 0x2d1, subw 0x801a76, time 135649440, (60,739), root:(2303,1783),
+    state 0x0, keycode 64 (keysym 0xffe9, Alt_L), same_screen YES,
+    XLookupString gives 0 bytes: 
+    XmbLookupString gives 0 bytes: 
+    XFilterEvent returns: False
+
+(note it says Alt_L).
+
+I can't help with this, since I don't know much about X, so maybe try
+asking somewhere with people knowledgeable about X.
+
+-- 
+Kareem
+
+On 2014-08-04 1116, Christian Stefanescu wrote:
+> Here's the event from xev:
+> 
+> KeyPress event, serial 32, synthetic NO, window 0x1200001,
+>     root 0x94, subw 0x1200002, time 12991273, (48,22), root:(735,42),
+>     state 0x0, keycode 133 (keysym 0xffcb, F14), same_screen YES,
+>     XLookupString gives 0 bytes:
+>     XmbLookupString gives 0 bytes:
+>     XFilterEvent returns: False
+> 
+> KeyRelease event, serial 32, synthetic NO, window 0x1200001,
+>     root 0x94, subw 0x1200002, time 12991392, (48,22), root:(735,42),
+>     state 0x40, keycode 133 (keysym 0xffcb, F14), same_screen YES,
+>     XLookupString gives 0 bytes:
+>     XFilterEvent returns: False
+> 
+> 
+> On 08/04/2014 11:12 AM, Kareem Khazem wrote:
+> > Try running 'xev' and hit your Meta key. xev should report the key code that X is seeing, so report back on what xev says.
+> > 
+> > On 4 August 2014 09:51:19 GMT+01:00, Christian Stefanescu <chris at 0chris.com> wrote:
+> >> One problem I have is that when I press my Meta key (Mod4/Windows key
+> >> if
+> >> it matters) to do any action while focussed on a terminal window, I get
+> >> '~' characters in the terminal. It doesn't matter which terminal it is,
+> >> I tried xterm, gnome-terminal, urxvt.
+> > 
+
+-- 
+Kareem
+
+From chris at 0chris.com  Mon Aug  4 17:27:17 2014
+From: chris at 0chris.com (Christian Stefanescu)
+Date: Mon, 04 Aug 2014 17:27:17 +0200
+Subject: [i3] Meta key writes ~ to terminal
+In-Reply-To: <20140804144812.GA22083@katrina>
+References: <53DF4987.9080903@0chris.com>
+ <f0b44eca-08a5-4291-a188-30ec6904c176@email.android.com>
+ <53DF4F72.9090601@0chris.com> <20140804144812.GA22083@katrina>
+Message-ID: <53DFA655.90207@0chris.com>
+
+Oh, I know what it is. I had an entry in my ~/.xmodmap from a while ago,
+where I mapped my Windows key to F14 so I can bind it to an action.
+Forgot about that!
+
+Thank you very much, Kareem!
+
+On 08/04/2014 04:48 PM, Kareem wrote:
+> So that's a problem with X rather than i3; X thinks that you're
+> pressing F14. My output is:
+> 
+> KeyPress event, serial 32, synthetic NO, window 0x3400001,
+>     root 0x2d1, subw 0x801a76, time 135649440, (60,739), root:(2303,1783),
+>     state 0x0, keycode 64 (keysym 0xffe9, Alt_L), same_screen YES,
+>     XLookupString gives 0 bytes: 
+>     XmbLookupString gives 0 bytes: 
+>     XFilterEvent returns: False
+> 
+> (note it says Alt_L).
+> 
+> I can't help with this, since I don't know much about X, so maybe try
+> asking somewhere with people knowledgeable about X.
+> 
+
+From joepvandelft at xs4all.nl  Mon Aug  4 21:01:30 2014
+From: joepvandelft at xs4all.nl (Joep van Delft)
+Date: Mon, 4 Aug 2014 21:01:30 +0200
+Subject: [i3] Meta key writes ~ to terminal
+In-Reply-To: <53DFA655.90207@0chris.com>
+References: <53DF4987.9080903@0chris.com>
+ <f0b44eca-08a5-4291-a188-30ec6904c176@email.android.com>
+ <53DF4F72.9090601@0chris.com> <20140804144812.GA22083@katrina>
+ <53DFA655.90207@0chris.com>
+Message-ID: <20140804210130.6261a840@xs4all.nl>
+
+On Mon, 04 Aug 2014 17:27:17 +0200
+Christian Stefanescu <chris at 0chris.com> wrote:
+>
+> On 08/04/2014 04:48 PM, Kareem wrote:
+> > So that's a problem with X rather than i3; X thinks that you're
+> > pressing F14. My output is:
+> > 
+> > KeyPress event, serial 32, synthetic NO, window 0x3400001,
+> >     root 0x2d1, subw 0x801a76, time 135649440, (60,739),
+> > root:(2303,1783), state 0x0, keycode 64 (keysym 0xffe9, Alt_L),
+> > same_screen YES, XLookupString gives 0 bytes: 
+> >     XmbLookupString gives 0 bytes: 
+> >     XFilterEvent returns: False
+> > 
+> > (note it says Alt_L).
+
+As an irrelevant aside: I dropped the following in my shell's config: 
+
+  xevkeys () {
+      xev | awk -F '[ (),]+' '/keysym/{print $8}'
+  }
+
+When you are just interested in the friendly name of a key: this
+outputs only what you really want to know. 
+
+Cheers, 
+
+
+    joepd
+
+
+From carlosjosepita at gmail.com  Tue Aug 19 05:38:56 2014
+From: carlosjosepita at gmail.com (Carlos Pita)
+Date: Tue, 19 Aug 2014 00:38:56 -0300
+Subject: [i3] Dynamically create placeholder
+Message-ID: <CAELgYhdAAVXkab0MkXckAf+8qYuUWhkziP-j0ug6c7oEzUYkpQ@mail.gmail.com>
+
+Hi all, now that there is saving and restoring of layouts, is it possible
+to "launch" a placeholder window? I mean, in order to build layouts with
+empty areas in a natural way, as sometimes having an app maximized is not
+what I want (say, a pdf reader in a very big screen). Some manual tilers
+like ratpoison and stumpwm have the ability to show empty leaves of the
+split tree, but i3 requires a window to be there, always. But now there are
+placeholders which are almost nothing, so can I create these no-windows the
+same way as other windows? (that is, without saving, editing and restoring
+a layout). It would be an interesting possibility to manipulate empty space
+as if it were a window (indeed, mostly implemented, except for the creation
+part, I think).
+
+Cheers
+--
+Carlos
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140819/20618065/attachment.html>
+
+From michael at i3wm.org  Tue Aug 19 09:43:24 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 19 Aug 2014 09:43:24 +0200
+Subject: [i3] Dynamically create placeholder
+In-Reply-To: <CAELgYhdAAVXkab0MkXckAf+8qYuUWhkziP-j0ug6c7oEzUYkpQ@mail.gmail.com>
+References: <CAELgYhdAAVXkab0MkXckAf+8qYuUWhkziP-j0ug6c7oEzUYkpQ@mail.gmail.com>
+Message-ID: <x6d2bw2acj.fsf@midna.zekjur.net>
+
+Hi Carlos,
+
+Carlos Pita <carlosjosepita at gmail.com> writes:
+> Hi all, now that there is saving and restoring of layouts, is it possible
+> to "launch" a placeholder window? I mean, in order to build layouts with
+> empty areas in a natural way, as sometimes having an app maximized is not
+> what I want (say, a pdf reader in a very big screen). Some manual tilers
+> like ratpoison and stumpwm have the ability to show empty leaves of the
+> split tree, but i3 requires a window to be there, always. But now there are
+> placeholders which are almost nothing, so can I create these no-windows the
+> same way as other windows? (that is, without saving, editing and restoring
+> a layout). It would be an interesting possibility to manipulate empty space
+> as if it were a window (indeed, mostly implemented, except for the creation
+> part, I think).
+Save a layout, edit it to contain a single placeholder window, restore it?
+
+-- 
+Best regards,
+Michael
+
+From bigby.james at crepcran.com  Tue Aug 19 15:43:04 2014
+From: bigby.james at crepcran.com (Bigby James)
+Date: Tue, 19 Aug 2014 08:43:04 -0500
+Subject: [i3] Dynamically create placeholder
+In-Reply-To: <x6d2bw2acj.fsf@midna.zekjur.net>
+References: <CAELgYhdAAVXkab0MkXckAf+8qYuUWhkziP-j0ug6c7oEzUYkpQ@mail.gmail.com>
+ <x6d2bw2acj.fsf@midna.zekjur.net>
+Message-ID: <20140819134304.GA11504@zoho.com>
+
+On 08/19, Michael Stapelberg wrote:
+> Hi Carlos,
+> 
+> Carlos Pita <carlosjosepita at gmail.com> writes:
+> >  Some manual tilers like ratpoison and stumpwm have the ability to show
+> >  empty leaves of the split tree, but i3 requires a window to be there,
+> >  always. 
+
+This isn't an "ability," but rather stems from the different manner in which
+other manual tilers handle windows compared to i3. i3 places windows in
+containers; the layout of each of those containers can be dynamically
+manipulated independent of other containers, containers can be moved and
+resized, windows can be moved into and out of those containers and multiple
+containers can be nested together. However, all containers on a workspace will
+always expand so that they fill the entire screen without overlapping.
+
+Other manual tilers don't use containers, but rather carve up the screen into
+distinct frames and then place single windows within those frames. Frames cannot
+be nested, nor (based on my experience with herbstluftwm and bspwm) can they be
+moved independently---windows can only be moved in and out.  herbsluftwm is a
+bit of an exception, as it allows for multiple windows in a frame, but still
+limits the size and position of each frame and therefore the windows that can be
+placed in it.
+
+> Save a layout, edit it to contain a single placeholder window, restore it?
+
+This is the only thing I can think of.
+
+-- 
+"A common mistake that people make when trying to design something completely
+foolproof is to underestimate the ingenuity of complete fools." - Douglas Adams
+
+
+From carlosjosepita at gmail.com  Tue Aug 19 16:30:39 2014
+From: carlosjosepita at gmail.com (Carlos Pita)
+Date: Tue, 19 Aug 2014 11:30:39 -0300
+Subject: [i3] Dynamically create placeholder
+In-Reply-To: <20140819134304.GA11504@zoho.com>
+References: <CAELgYhdAAVXkab0MkXckAf+8qYuUWhkziP-j0ug6c7oEzUYkpQ@mail.gmail.com>
+ <x6d2bw2acj.fsf@midna.zekjur.net> <20140819134304.GA11504@zoho.com>
+Message-ID: <CAELgYhddD9iYFwsqKSsn2BEwc8m_G8N6R=yf-=NfPCAqXvt5hA@mail.gmail.com>
+
+Hi guys,
+
+>>> (that is, without saving, editing and restoring a layout)
+
+>> Save a layout, edit it to contain a single placeholder window, restore it?
+
+> This is the only thing I can think of.
+
+I expected that answer, that's why I made the previous clarification.
+Still I expected it, because that was just a trifling fancy of mine
+and the answer was so blatantly obvious that it needed to be stated
+plain and clear, at least once. That said, to start a philosophical
+discussion about the paradigms of different tilers is far for my will.
+I was just pointing out that a number of possibilities that until now
+were in the exclusive domain of more static manual tilers (including
+emacs and vim) become possible in i3 because of its new ability to
+manipulate placeholders as if they were just normal clients. I thought
+that, perhaps, there was an undocumented trick to create placeholders
+on the fly, kinda "exec nothing", which would be akin to splitting in,
+say, ratpoison. It's clear that I can get the same "saving, editing
+and restoring a layout" but I was emphasizing the dynamic side of the
+idea. For example, I could want to create two placeholders in order to
+horizontally center my pdf reader in a wide screen. It's pretty easy
+to do that in i3 by opening two dummy terminals at each side of the
+reader, without resorting to any predefined layout. Those dummy
+terminals are just acting as placeholders. You see how whimsical I am.
+
+Cheers
+--
+Carlos
+
+From old4 at o2.pl  Tue Aug 19 19:41:46 2014
+From: old4 at o2.pl (Mateusz Poszwa)
+Date: Tue, 19 Aug 2014 19:41:46 +0200
+Subject: [i3] Dynamically create placeholder
+In-Reply-To: <CAELgYhddD9iYFwsqKSsn2BEwc8m_G8N6R=yf-=NfPCAqXvt5hA@mail.gmail.com>
+References: <CAELgYhdAAVXkab0MkXckAf+8qYuUWhkziP-j0ug6c7oEzUYkpQ@mail.gmail.com>
+ <x6d2bw2acj.fsf@midna.zekjur.net> <20140819134304.GA11504@zoho.com>
+ <CAELgYhddD9iYFwsqKSsn2BEwc8m_G8N6R=yf-=NfPCAqXvt5hA@mail.gmail.com>
+Message-ID: <20140819174146.GA430@Blickensderfer>
+
+On Tue, Aug 19, 2014 at 11:30:39AM -0300, Carlos Pita wrote:
+> Hi guys,
+> 
+> >>> (that is, without saving, editing and restoring a layout)
+> 
+> >> Save a layout, edit it to contain a single placeholder window, restore it?
+> 
+> > This is the only thing I can think of.
+> 
+> I expected that answer, that's why I made the previous clarification.
+> Still I expected it, because that was just a trifling fancy of mine
+> and the answer was so blatantly obvious that it needed to be stated
+> plain and clear, at least once. That said, to start a philosophical
+> discussion about the paradigms of different tilers is far for my will.
+> I was just pointing out that a number of possibilities that until now
+> were in the exclusive domain of more static manual tilers (including
+> emacs and vim) become possible in i3 because of its new ability to
+> manipulate placeholders as if they were just normal clients. I thought
+> that, perhaps, there was an undocumented trick to create placeholders
+> on the fly, kinda "exec nothing", which would be akin to splitting in,
+> say, ratpoison. It's clear that I can get the same "saving, editing
+> and restoring a layout" but I was emphasizing the dynamic side of the
+> idea. For example, I could want to create two placeholders in order to
+> horizontally center my pdf reader in a wide screen. It's pretty easy
+> to do that in i3 by opening two dummy terminals at each side of the
+> reader, without resorting to any predefined layout. Those dummy
+> terminals are just acting as placeholders. You see how whimsical I am.
+
+I think the „open” command is what you're looking for.
+I wonder why is it not documented…
+
+-- 
+Mateusz Poszwa
+
+From bigby.james at crepcran.com  Tue Aug 19 20:02:34 2014
+From: bigby.james at crepcran.com (Bigby James)
+Date: Tue, 19 Aug 2014 13:02:34 -0500
+Subject: [i3] Dynamically create placeholder
+In-Reply-To: <CAELgYhddD9iYFwsqKSsn2BEwc8m_G8N6R=yf-=NfPCAqXvt5hA@mail.gmail.com>
+References: <CAELgYhdAAVXkab0MkXckAf+8qYuUWhkziP-j0ug6c7oEzUYkpQ@mail.gmail.com>
+ <x6d2bw2acj.fsf@midna.zekjur.net> <20140819134304.GA11504@zoho.com>
+ <CAELgYhddD9iYFwsqKSsn2BEwc8m_G8N6R=yf-=NfPCAqXvt5hA@mail.gmail.com>
+Message-ID: <20140819180234.GB11504@zoho.com>
+
+On 08/19, Carlos Pita wrote:
+> Hi guys,
+> 
+> For example, I could want to create two placeholders in order to
+> horizontally center my pdf reader in a wide screen. It's pretty easy
+> to do that in i3 by opening two dummy terminals at each side of the
+> reader, without resorting to any predefined layout. 
+
+Center the content in the reader window. If your PDF reader can't do that,
+install one of the many that can. If your concern is mouse mileage, learn to use
+hotkeys.
+
+-- 
+"A common mistake that people make when trying to design something completely
+foolproof is to underestimate the ingenuity of complete fools." - Douglas Adams
+
+
+From carlosjosepita at gmail.com  Tue Aug 19 20:33:35 2014
+From: carlosjosepita at gmail.com (Carlos Pita)
+Date: Tue, 19 Aug 2014 15:33:35 -0300
+Subject: [i3] Dynamically create placeholder
+In-Reply-To: <20140819180234.GB11504@zoho.com> (Bigby James's message of "Tue, 
+ 19 Aug 2014 13:02:34 -0500")
+References: <CAELgYhdAAVXkab0MkXckAf+8qYuUWhkziP-j0ug6c7oEzUYkpQ@mail.gmail.com>
+ <x6d2bw2acj.fsf@midna.zekjur.net> <20140819134304.GA11504@zoho.com>
+ <CAELgYhddD9iYFwsqKSsn2BEwc8m_G8N6R=yf-=NfPCAqXvt5hA@mail.gmail.com>
+ <20140819180234.GB11504@zoho.com>
+Message-ID: <844mx8mirk.fsf@gmail.com>
+
+Mateusz Poszwa <old4 at o2.pl> writes:
+>
+> I think the „open” command is what you're looking for.
+> I wonder why is it not documented…
+
+Thank you very much, Mateusz, I didn't know about it.
+
+Bigby James <bigby.james at crepcran.com> writes:
+>
+> Center the content in the reader window. If your PDF reader can't do that,
+> install one of the many that can. If your concern is mouse mileage, learn to use
+> hotkeys.
+
+I can figure out that by myself, the pdf reader was a simple example
+that has become a straw man by now, and I can't see how this is related
+to mouse vs. hotkeys, but thank you anyway, Bigby.
+
+Cheers,
+Carlos.
+
+From mariusz.libera at gmail.com  Tue Aug 19 22:18:28 2014
+From: mariusz.libera at gmail.com (Mariusz Libera)
+Date: Tue, 19 Aug 2014 22:18:28 +0200
+Subject: [i3] Dynamically create placeholder
+In-Reply-To: <844mx8mirk.fsf@gmail.com>
+References: <CAELgYhdAAVXkab0MkXckAf+8qYuUWhkziP-j0ug6c7oEzUYkpQ@mail.gmail.com>
+ <x6d2bw2acj.fsf@midna.zekjur.net> <20140819134304.GA11504@zoho.com>
+ <CAELgYhddD9iYFwsqKSsn2BEwc8m_G8N6R=yf-=NfPCAqXvt5hA@mail.gmail.com>
+ <20140819180234.GB11504@zoho.com> <844mx8mirk.fsf@gmail.com>
+Message-ID: <CACLQ8MvOyUbeaOnjp+oSvJ_se046RCAAQiQSd4UoXejjDhv_QQ@mail.gmail.com>
+
+How about a compton rule that set opacity of certain window, say a
+terminal instance, to 0? That would work and look pretty nice I think.
+
+On Tue, Aug 19, 2014 at 8:33 PM, Carlos Pita <carlosjosepita at gmail.com> wrote:
+> Mateusz Poszwa <old4 at o2.pl> writes:
+>>
+>> I think the „open” command is what you're looking for.
+>> I wonder why is it not documented…
+>
+> Thank you very much, Mateusz, I didn't know about it.
+>
+> Bigby James <bigby.james at crepcran.com> writes:
+>>
+>> Center the content in the reader window. If your PDF reader can't do that,
+>> install one of the many that can. If your concern is mouse mileage, learn to use
+>> hotkeys.
+>
+> I can figure out that by myself, the pdf reader was a simple example
+> that has become a straw man by now, and I can't see how this is related
+> to mouse vs. hotkeys, but thank you anyway, Bigby.
+>
+> Cheers,
+> Carlos.
+
+From michael at i3wm.org  Tue Aug 19 22:39:36 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 19 Aug 2014 22:39:36 +0200
+Subject: [i3] Dynamically create placeholder
+In-Reply-To: <20140819174146.GA430@Blickensderfer>
+References: <CAELgYhdAAVXkab0MkXckAf+8qYuUWhkziP-j0ug6c7oEzUYkpQ@mail.gmail.com>
+ <x6d2bw2acj.fsf@midna.zekjur.net> <20140819134304.GA11504@zoho.com>
+ <CAELgYhddD9iYFwsqKSsn2BEwc8m_G8N6R=yf-=NfPCAqXvt5hA@mail.gmail.com>
+ <20140819174146.GA430@Blickensderfer>
+Message-ID: <x6a9701aev.fsf@midna.zekjur.net>
+
+Hi Mateusz,
+
+Mateusz Poszwa <old4 at o2.pl> writes:
+> I think the „open” command is what you're looking for.
+> I wonder why is it not documented…
+It’s not documented because it’s not intended for end users. There are
+most likely rendering glitches when using it. Its only use case is for
+the test suite.
+
+Using terminal windows as placeholders is the recommended way. I don’t
+think we should add something more tailored to your needs to
+i3. Why do you not just bind loading a placeholder-layout to a key and
+be done with it?
+
+-- 
+Best regards,
+Michael
+
+From seth.pollen at gmail.com  Wed Aug 20 02:16:52 2014
+From: seth.pollen at gmail.com (Seth Pollen)
+Date: Tue, 19 Aug 2014 19:16:52 -0500
+Subject: [i3] Dynamically create placeholder
+In-Reply-To: <x6a9701aev.fsf@midna.zekjur.net>
+References: <CAELgYhdAAVXkab0MkXckAf+8qYuUWhkziP-j0ug6c7oEzUYkpQ@mail.gmail.com>
+ <x6d2bw2acj.fsf@midna.zekjur.net> <20140819134304.GA11504@zoho.com>
+ <CAELgYhddD9iYFwsqKSsn2BEwc8m_G8N6R=yf-=NfPCAqXvt5hA@mail.gmail.com>
+ <20140819174146.GA430@Blickensderfer>
+ <x6a9701aev.fsf@midna.zekjur.net>
+Message-ID: <CAMkxqrDjXzo8dHbtBL_x67gvSpp5kW=cmaaGKXb0tnHtf-JPHQ@mail.gmail.com>
+
+​There are lots of ways to get inert windows on the screen. Seems to me
+like xeyes is the best choice :)​
+
+
+On Tue, Aug 19, 2014 at 3:39 PM, Michael Stapelberg <michael at i3wm.org>
+wrote:
+
+> Hi Mateusz,
+>
+> Mateusz Poszwa <old4 at o2.pl> writes:
+> > I think the „open” command is what you're looking for.
+> > I wonder why is it not documented…
+> It’s not documented because it’s not intended for end users. There are
+> most likely rendering glitches when using it. Its only use case is for
+> the test suite.
+>
+> Using terminal windows as placeholders is the recommended way. I don’t
+> think we should add something more tailored to your needs to
+> i3. Why do you not just bind loading a placeholder-layout to a key and
+> be done with it?
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140819/1e3e5adf/attachment.html>
+
+From Dave.Sargrad at saabsensis.com  Wed Aug 27 16:49:52 2014
+From: Dave.Sargrad at saabsensis.com (Sargrad, Dave)
+Date: Wed, 27 Aug 2014 14:49:52 +0000
+Subject: [i3] i3-msg over putty
+Message-ID: <85EA6F68AC24DA48B220EBEA7A8C08B81B504226@corpmail01.corp.sensis.com>
+
+I am looking to create a remote management of an i3 workspace. Ultimately this will connect to a service running on the i3 machine and that service will respond to my workflow management commands.
+
+Right now as I learn how to manage/configure i3 I am putty'd in to a ubuntu machine running i3. I'd like to use i3-msg to experiment with commands to i3. However when I run i3-msg it does not know how to connect properly:
+
+
+ubuntu at sensis-8930:~$ i3-msg -t get_tree
+i3-msg: Could not connect to i3: No such file or directory
+
+Furthermore i3 does not know how to return a socket path:
+
+ubuntu at machine-8930:~$ i3 --get-socketpath
+ubuntu at machine-8930:~$
+
+These commands work fine, of course, when I run them in a terminal window locally.
+
+How can I use i3-msg over putty/ssh to experiment with i3? Is this not possible?
+
+
+
+
+This message is intended only for the addressee and may contain information that is company confidential or privileged. Any technical data in this message may be exported only in accordance with the U.S. International Traffic in Arms Regulations (22 CFR Parts 120-130) or the Export Administration Regulations (15 CFR Parts 730-774). Unauthorized use is strictly prohibited and may be unlawful. If you are not the intended recipient, or the person responsible for delivering to the intended recipient, you should not read, copy, disclose or otherwise use this message. If you have received this email in error, please delete it, and advise the sender immediately.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140827/470e4378/attachment.html>
+
+From public at enkore.de  Wed Aug 27 17:19:32 2014
+From: public at enkore.de (Marian Beermann)
+Date: Wed, 27 Aug 2014 17:19:32 +0200
+Subject: [i3] i3-msg over putty
+In-Reply-To: <85EA6F68AC24DA48B220EBEA7A8C08B81B504226@corpmail01.corp.sensis.com>
+References: <85EA6F68AC24DA48B220EBEA7A8C08B81B504226@corpmail01.corp.sensis.com>
+Message-ID: <53FDF704.8030904@enkore.de>
+
+You probably need to set DISPLAY correctly.
+
+I.e.
+
+export I3SOCK=$(DISPLAY=:0 i3 --get-socketpath)
+
+On 27.08.2014 16:49, Sargrad, Dave wrote:
+> I am looking to create a remote management of an i3 workspace.
+> Ultimately this will connect to a service running on the i3 machine and
+> that service will respond to my workflow management commands.
+> 
+>  
+> 
+> Right now as I learn how to manage/configure i3 I am putty’d in to a
+> ubuntu machine running i3. I’d like to use i3-msg to experiment with
+> commands to i3. However when I run i3-msg it does not know how to
+> connect properly:
+> 
+>  
+> 
+>  
+> 
+> ubuntu at sensis-8930:~$ i3-msg -t get_tree
+> 
+> i3-msg: Could not connect to i3: No such file or directory
+> 
+>  
+> 
+> Furthermore i3 does not know how to return a socket path:
+> 
+>  
+> 
+> ubuntu at machine-8930:~$ i3 --get-socketpath
+> 
+> ubuntu at machine-8930:~$
+> 
+>  
+> 
+> These commands work fine, of course, when I run them in a terminal
+> window locally.
+> 
+>  
+> 
+> How can I use i3-msg over putty/ssh to experiment with i3? Is this not
+> possible?
+> 
+>  
+> 
+>  
+> 
+>  
+> 
+> 
+> /This message is intended only for the addressee and may contain
+> information that is company confidential or privileged. Any technical
+> data in this message may be exported only in accordance with the U.S.
+> International Traffic in Arms Regulations (22 CFR Parts 120-130) or the
+> Export Administration Regulations (15 CFR Parts 730-774). Unauthorized
+> use is strictly prohibited and may be unlawful. If you are not the
+> intended recipient, or the person responsible for delivering to the
+> intended recipient, you should not read, copy, disclose or otherwise use
+> this message. If you have received this email in error, please delete
+> it, and advise the sender immediately. /
+
+
+From lists at mehrzweckraum.com  Wed Aug 27 22:52:22 2014
+From: lists at mehrzweckraum.com (grubernd)
+Date: Wed, 27 Aug 2014 22:52:22 +0200
+Subject: [i3] i3 colors on minimal x11
+In-Reply-To: <85EA6F68AC24DA48B220EBEA7A8C08B81B504226@corpmail01.corp.sensis.com>
+References: <85EA6F68AC24DA48B220EBEA7A8C08B81B504226@corpmail01.corp.sensis.com>
+Message-ID: <53FE4506.70400@mehrzweckraum.com>
+
+hi..
+
+finally getting more playtime with i3. it behaves marvellously fast on a 
+RaspberryPi with Arch Linux underneath. i try to build a very minimal 
+system there, so i3 runs directly from .xinitrc and my .Xresources just 
+contains two settings for xterm (locale and a font).
+
+what i currently dont understand is that i3 doesnt use the RGB-values in 
+the bar{colors{}} section but seems to pick colors from a 8 or 16 color 
+palette.
+
+e.g. using:
+background #333333
+draws the statusbar in a medium blue.
+
+background #444444
+draws the statusbar in a green.
+
+other applications have no problems displaying full RGB content, so it 
+is not the driver/display.
+
+any hints where to dig deeper are highly appreciated as i couldnt yet 
+find an answer in the userguide or the arch wiki.
+
+cheers,
+grubernd
+
+From michael at i3wm.org  Thu Aug 28 09:36:35 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 28 Aug 2014 09:36:35 +0200
+Subject: [i3] i3 colors on minimal x11
+In-Reply-To: <53FE4506.70400@mehrzweckraum.com>
+References: <85EA6F68AC24DA48B220EBEA7A8C08B81B504226@corpmail01.corp.sensis.com>
+ <53FE4506.70400@mehrzweckraum.com>
+Message-ID: <x6a96pxdz0.fsf@midna.zekjur.net>
+
+Hi grubernd,
+
+grubernd <lists at mehrzweckraum.com> writes:
+> finally getting more playtime with i3. it behaves marvellously fast on a 
+> RaspberryPi with Arch Linux underneath. i try to build a very minimal 
+> system there, so i3 runs directly from .xinitrc and my .Xresources just 
+> contains two settings for xterm (locale and a font).
+I’ve noticed this on a Raspberry Pi as well. i3 only supports truecolor,
+so I suspect the graphics driver on the Raspberry Pi that you are using
+does not support truecolor.
+
+See also http://bugs.i3wm.org/report/ticket/434
+
+-- 
+Best regards,
+Michael
+
+From Dave.Sargrad at saabsensis.com  Thu Aug 28 14:28:27 2014
+From: Dave.Sargrad at saabsensis.com (Sargrad, Dave)
+Date: Thu, 28 Aug 2014 12:28:27 +0000
+Subject: [i3] Regarding i3-msg over putty
+In-Reply-To: <mailman.3.1409220010.6572.i3-discuss@i3.zekjur.net>
+References: <mailman.3.1409220010.6572.i3-discuss@i3.zekjur.net>
+Message-ID: <85EA6F68AC24DA48B220EBEA7A8C08B81B504378@corpmail01.corp.sensis.com>
+
+I got this answer from a helpful person on IRC. I'll post here for completeness:
+
+DISPLAY=:0.0 i3 --get-socketpath
+
+Adding the prefix DISPLAY=:0.0 solved the problem and permitted executing i3 msgs/commands over putty.
+
+-----Original Message-----
+From: i3-discuss [mailto:i3-discuss-bounces at i3.zekjur.net] On Behalf Of i3-discuss-request at i3.zekjur.net
+Sent: Thursday, August 28, 2014 6:01 AM
+To: i3-discuss at i3.zekjur.net
+Subject: i3-discuss Digest, Vol 52, Issue 7
+
+Send i3-discuss mailing list submissions to
+	i3-discuss at i3.zekjur.net
+
+To subscribe or unsubscribe via the World Wide Web, visit
+	http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss
+or, via email, send a message with subject or body 'help' to
+	i3-discuss-request at i3.zekjur.net
+
+You can reach the person managing the list at
+	i3-discuss-owner at i3.zekjur.net
+
+When replying, please edit your Subject line so it is more specific than "Re: Contents of i3-discuss digest..."
+
+
+Today's Topics:
+
+   1. i3-msg over putty (Sargrad, Dave)
+   2. Re: i3-msg over putty (Marian Beermann)
+   3. i3 colors on minimal x11 (grubernd)
+   4. Re: i3 colors on minimal x11 (Michael Stapelberg)
+
+
+----------------------------------------------------------------------
+
+Message: 1
+Date: Wed, 27 Aug 2014 14:49:52 +0000
+From: "Sargrad, Dave" <Dave.Sargrad at saabsensis.com>
+To: "i3-discuss at i3.zekjur.net" <i3-discuss at i3.zekjur.net>
+Subject: [i3] i3-msg over putty
+Message-ID:
+	<85EA6F68AC24DA48B220EBEA7A8C08B81B504226 at corpmail01.corp.sensis.com>
+Content-Type: text/plain; charset="utf-8"
+
+I am looking to create a remote management of an i3 workspace. Ultimately this will connect to a service running on the i3 machine and that service will respond to my workflow management commands.
+
+Right now as I learn how to manage/configure i3 I am putty'd in to a ubuntu machine running i3. I'd like to use i3-msg to experiment with commands to i3. However when I run i3-msg it does not know how to connect properly:
+
+
+ubuntu at sensis-8930:~$ i3-msg -t get_tree
+i3-msg: Could not connect to i3: No such file or directory
+
+Furthermore i3 does not know how to return a socket path:
+
+ubuntu at machine-8930:~$ i3 --get-socketpath ubuntu at machine-8930:~$
+
+These commands work fine, of course, when I run them in a terminal window locally.
+
+How can I use i3-msg over putty/ssh to experiment with i3? Is this not possible?
+
+
+
+
+This message is intended only for the addressee and may contain information that is company confidential or privileged. Any technical data in this message may be exported only in accordance with the U.S. International Traffic in Arms Regulations (22 CFR Parts 120-130) or the Export Administration Regulations (15 CFR Parts 730-774). Unauthorized use is strictly prohibited and may be unlawful. If you are not the intended recipient, or the person responsible for delivering to the intended recipient, you should not read, copy, disclose or otherwise use this message. If you have received this email in error, please delete it, and advise the sender immediately.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140827/470e4378/attachment-0001.html>
+
+------------------------------
+
+Message: 2
+Date: Wed, 27 Aug 2014 17:19:32 +0200
+From: Marian Beermann <public at enkore.de>
+To: Discussions/Questions about the i3 window manager
+	<i3-discuss at i3.zekjur.net>
+Subject: Re: [i3] i3-msg over putty
+Message-ID: <53FDF704.8030904 at enkore.de>
+Content-Type: text/plain; charset=windows-1252
+
+You probably need to set DISPLAY correctly.
+
+I.e.
+
+export I3SOCK=$(DISPLAY=:0 i3 --get-socketpath)
+
+On 27.08.2014 16:49, Sargrad, Dave wrote:
+> I am looking to create a remote management of an i3 workspace.
+> Ultimately this will connect to a service running on the i3 machine 
+> and that service will respond to my workflow management commands.
+> 
+>  
+> 
+> Right now as I learn how to manage/configure i3 I am putty’d in to a 
+> ubuntu machine running i3. I’d like to use i3-msg to experiment with 
+> commands to i3. However when I run i3-msg it does not know how to 
+> connect properly:
+> 
+>  
+> 
+>  
+> 
+> ubuntu at sensis-8930:~$ i3-msg -t get_tree
+> 
+> i3-msg: Could not connect to i3: No such file or directory
+> 
+>  
+> 
+> Furthermore i3 does not know how to return a socket path:
+> 
+>  
+> 
+> ubuntu at machine-8930:~$ i3 --get-socketpath
+> 
+> ubuntu at machine-8930:~$
+> 
+>  
+> 
+> These commands work fine, of course, when I run them in a terminal 
+> window locally.
+> 
+>  
+> 
+> How can I use i3-msg over putty/ssh to experiment with i3? Is this not 
+> possible?
+> 
+>  
+> 
+>  
+> 
+>  
+> 
+> 
+> /This message is intended only for the addressee and may contain 
+> information that is company confidential or privileged. Any technical 
+> data in this message may be exported only in accordance with the U.S.
+> International Traffic in Arms Regulations (22 CFR Parts 120-130) or 
+> the Export Administration Regulations (15 CFR Parts 730-774). 
+> Unauthorized use is strictly prohibited and may be unlawful. If you 
+> are not the intended recipient, or the person responsible for 
+> delivering to the intended recipient, you should not read, copy, 
+> disclose or otherwise use this message. If you have received this 
+> email in error, please delete it, and advise the sender immediately. /
+
+
+
+------------------------------
+
+Message: 3
+Date: Wed, 27 Aug 2014 22:52:22 +0200
+From: grubernd <lists at mehrzweckraum.com>
+To: Discussions/Questions about the i3 window manager
+	<i3-discuss at i3.zekjur.net>
+Subject: [i3] i3 colors on minimal x11
+Message-ID: <53FE4506.70400 at mehrzweckraum.com>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+
+hi..
+
+finally getting more playtime with i3. it behaves marvellously fast on a RaspberryPi with Arch Linux underneath. i try to build a very minimal system there, so i3 runs directly from .xinitrc and my .Xresources just contains two settings for xterm (locale and a font).
+
+what i currently dont understand is that i3 doesnt use the RGB-values in the bar{colors{}} section but seems to pick colors from a 8 or 16 color palette.
+
+e.g. using:
+background #333333
+draws the statusbar in a medium blue.
+
+background #444444
+draws the statusbar in a green.
+
+other applications have no problems displaying full RGB content, so it is not the driver/display.
+
+any hints where to dig deeper are highly appreciated as i couldnt yet find an answer in the userguide or the arch wiki.
+
+cheers,
+grubernd
+
+
+------------------------------
+
+Message: 4
+Date: Thu, 28 Aug 2014 09:36:35 +0200
+From: Michael Stapelberg <michael at i3wm.org>
+To: grubernd <lists at mehrzweckraum.com>, "Discussions\/Questions about
+	the i3 window manager" <i3-discuss at i3.zekjur.net>
+Subject: Re: [i3] i3 colors on minimal x11
+Message-ID: <x6a96pxdz0.fsf at midna.zekjur.net>
+Content-Type: text/plain; charset=utf-8
+
+Hi grubernd,
+
+grubernd <lists at mehrzweckraum.com> writes:
+> finally getting more playtime with i3. it behaves marvellously fast on 
+> a RaspberryPi with Arch Linux underneath. i try to build a very 
+> minimal system there, so i3 runs directly from .xinitrc and my 
+> .Xresources just contains two settings for xterm (locale and a font).
+I’ve noticed this on a Raspberry Pi as well. i3 only supports truecolor, so I suspect the graphics driver on the Raspberry Pi that you are using does not support truecolor.
+
+See also http://bugs.i3wm.org/report/ticket/434
+
+--
+Best regards,
+Michael
+
+
+------------------------------
+
+Subject: Digest Footer
+
+_______________________________________________
+i3-discuss mailing list
+i3-discuss at i3.zekjur.net
+http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss
+
+
+------------------------------
+
+End of i3-discuss Digest, Vol 52, Issue 7
+*****************************************
+-
+This message is intended only for the addressee and may contain information that is company confidential or privileged.  Any technical data in this message may be exported only in accordance with the U.S. International Traffic in Arms Regulations (22 CFR Parts 120-130) or the Export Administration Regulations (15 CFR Parts 730-774). Unauthorized use is strictly prohibited and may be unlawful. If you are not the intended recipient, or the person responsible for delivering to the intended recipient, you should not read, copy, disclose or otherwise use this message. If you have received this email in error, please delete it, and advise the sender immediately. 
+-          
+
+From public at enkore.de  Thu Aug 28 17:39:16 2014
+From: public at enkore.de (Marian Beermann)
+Date: Thu, 28 Aug 2014 17:39:16 +0200
+Subject: [i3] Regarding i3-msg over putty
+In-Reply-To: <85EA6F68AC24DA48B220EBEA7A8C08B81B504378@corpmail01.corp.sensis.com>
+References: <mailman.3.1409220010.6572.i3-discuss@i3.zekjur.net>
+ <85EA6F68AC24DA48B220EBEA7A8C08B81B504378@corpmail01.corp.sensis.com>
+Message-ID: <53FF4D24.8020404@enkore.de>
+
+You don't seem to read replies to your postings...
+
+On 28.08.2014 14:28, Sargrad, Dave wrote:
+> I got this answer from a helpful person on IRC. I'll post here for completeness:
+> 
+> DISPLAY=:0.0 i3 --get-socketpath
+> 
+> Adding the prefix DISPLAY=:0.0 solved the problem and permitted executing i3 msgs/commands over putty.
+> 
+> Message: 1
+> Date: Wed, 27 Aug 2014 14:49:52 +0000
+> From: "Sargrad, Dave" <Dave.Sargrad at saabsensis.com>
+> To: "i3-discuss at i3.zekjur.net" <i3-discuss at i3.zekjur.net>
+> Subject: [i3] i3-msg over putty
+> Message-ID:
+> 	<85EA6F68AC24DA48B220EBEA7A8C08B81B504226 at corpmail01.corp.sensis.com>
+> Content-Type: text/plain; charset="utf-8"
+> 
+> I am looking to create a remote management of an i3 workspace. Ultimately this will connect to a service running on the i3 machine and that service will respond to my workflow management commands.
+> 
+> Right now as I learn how to manage/configure i3 I am putty'd in to a ubuntu machine running i3. I'd like to use i3-msg to experiment with commands to i3. However when I run i3-msg it does not know how to connect properly:
+> 
+> 
+> ubuntu at sensis-8930:~$ i3-msg -t get_tree
+> i3-msg: Could not connect to i3: No such file or directory
+> 
+> Furthermore i3 does not know how to return a socket path:
+> 
+> ubuntu at machine-8930:~$ i3 --get-socketpath ubuntu at machine-8930:~$
+> 
+> These commands work fine, of course, when I run them in a terminal window locally.
+> 
+> How can I use i3-msg over putty/ssh to experiment with i3? Is this not possible?
+> 
+> 
+> 
+> 
+> This message is intended only for the addressee and may contain information that is company confidential or privileged. Any technical data in this message may be exported only in accordance with the U.S. International Traffic in Arms Regulations (22 CFR Parts 120-130) or the Export Administration Regulations (15 CFR Parts 730-774). Unauthorized use is strictly prohibited and may be unlawful. If you are not the intended recipient, or the person responsible for delivering to the intended recipient, you should not read, copy, disclose or otherwise use this message. If you have received this email in error, please delete it, and advise the sender immediately.
+> -------------- next part --------------
+> An HTML attachment was scrubbed...
+> URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140827/470e4378/attachment-0001.html>
+> 
+> ------------------------------
+> 
+> Message: 2
+> Date: Wed, 27 Aug 2014 17:19:32 +0200
+> From: Marian Beermann <public at enkore.de>
+> To: Discussions/Questions about the i3 window manager
+> 	<i3-discuss at i3.zekjur.net>
+> Subject: Re: [i3] i3-msg over putty
+> Message-ID: <53FDF704.8030904 at enkore.de>
+> Content-Type: text/plain; charset=windows-1252
+> 
+> You probably need to set DISPLAY correctly.
+> 
+> I.e.
+> 
+> export I3SOCK=$(DISPLAY=:0 i3 --get-socketpath)
+
+
+From lists at mehrzweckraum.com  Fri Aug 29 01:33:57 2014
+From: lists at mehrzweckraum.com (grubernd)
+Date: Fri, 29 Aug 2014 01:33:57 +0200
+Subject: [i3] i3 colors on minimal x11
+In-Reply-To: <x6a96pxdz0.fsf@midna.zekjur.net>
+References: <85EA6F68AC24DA48B220EBEA7A8C08B81B504226@corpmail01.corp.sensis.com>
+ <53FE4506.70400@mehrzweckraum.com> <x6a96pxdz0.fsf@midna.zekjur.net>
+Message-ID: <53FFBC65.3050200@mehrzweckraum.com>
+
+hi michael,
+
+On 2014-08-28 09:36, Michael Stapelberg wrote:> I’ve noticed this on a 
+Raspberry Pi as well. i3 only supports truecolor,
+ > so I suspect the graphics driver on the Raspberry Pi that you are using
+ > does not support truecolor.
+ >
+ > See also http://bugs.i3wm.org/report/ticket/434
+ >
+
+thanks for the confirmation.
+my current driver is
+
+ > xf86-video-fbdev
+
+which works very well in all other regards, including displays from 15" 
+to fullHD TVs without any extra work. things like slideshows of RGB 
+images via feh also work correctly.
+
+i'll poke around and see if i can find another driver that works (better).
+
+thanks,
+grubernd
+
+
+From lists at mehrzweckraum.com  Fri Aug 29 02:35:14 2014
+From: lists at mehrzweckraum.com (grubernd)
+Date: Fri, 29 Aug 2014 02:35:14 +0200
+Subject: [i3] i3 colors on minimal x11
+In-Reply-To: <53FFCA2E.40007@mehrzweckraum.com>
+References: <53FFCA2E.40007@mehrzweckraum.com>
+Message-ID: <53FFCAC2.1020506@mehrzweckraum.com>
+
+[resolved]
+
+okay, this was a problem with the Raspberry Pi, i3 was just on the
+receiving end as expected. my i3 on the rpi/arch looks fine now.
+
+fyi, you need the following settings in your /boot/config.txt on the RPi:
+
+framebuffer_depth=24
+framebuffer_swap=1
+
+if pixel-corruptions happen, use this:
+
+framebuffer_depth=32
+framebuffer_ignore_alpha=1
+framebuffer_swap=1
+
+apparently they have hardcoded the directfb channel assignments and were
+doing some funny BGRA business. by setting the swap setting everything
+looks right due to RGBA.
+
+information extracted from these threads:
+https://github.com/raspberrypi/firmware/issues/41
+http://www.raspberrypi.org/forums/viewtopic.php?t=22802&p=214478
+
+cheers,
+grubernd
+
+On 2014-08-29 01:33, grubernd wrote:
+> hi michael,
+>
+> On 2014-08-28 09:36, Michael Stapelberg wrote:> I’ve noticed this on a
+> Raspberry Pi as well. i3 only supports truecolor,
+>  > so I suspect the graphics driver on the Raspberry Pi that you are using
+>  > does not support truecolor.
+>  >
+>  > See also http://bugs.i3wm.org/report/ticket/434
+>  >
+>
+> thanks for the confirmation.
+> my current driver is
+>
+>  > xf86-video-fbdev
+>
+> which works very well in all other regards, including displays from 15"
+> to fullHD TVs without any extra work. things like slideshows of RGB
+> images via feh also work correctly.
+>
+> i'll poke around and see if i can find another driver that works (better).
+>
+> thanks,
+> grubernd
+>
+>
+
+
+
+
+From unmanifestd at gmail.com  Fri Aug 29 08:24:00 2014
+From: unmanifestd at gmail.com (Unmanifest D)
+Date: Thu, 28 Aug 2014 23:24:00 -0700
+Subject: [i3] restarting i3 when running inside Xephyr
+Message-ID: <CAGhWKm8V6ucXqL=xVvwsh5ui5frUg5rtEnnxChiYbv83aKN+AQ@mail.gmail.com>
+
+Hi...I'm using i3 as a WM with Xephyr (as the Xserver). As I resize my main
+Xephyr window, I need to 'restart' i3 so that my applications resize
+themselves correctly. Is that expected or is it something else?
+
+>From the i3 logs, it does appear that i3 is detecting a change in the size
+of the root window - I see a bunch of 'root geometry reply: (0, 0) xxxx X
+yyyy' messages. But my applications, don't automatically resize, until I do
+an i3 restart.
+
+$ i3 -v
+i3 version 4.8-32-g1842dda (2014-07-24, branch "master") © 2009-2014
+Michael Stapelberg and contributors
+
+Thanks
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140828/d8a9044f/attachment.html>
+
+From Dave.Sargrad at saabsensis.com  Fri Aug 29 19:03:39 2014
+From: Dave.Sargrad at saabsensis.com (Sargrad, Dave)
+Date: Fri, 29 Aug 2014 17:03:39 +0000
+Subject: [i3] Cant subscribe to window::focus events
+In-Reply-To: <mailman.3.1409306415.30220.i3-discuss@i3.zekjur.net>
+References: <mailman.3.1409306415.30220.i3-discuss@i3.zekjur.net>
+Message-ID: <85EA6F68AC24DA48B220EBEA7A8C08B81B5056AE@corpmail01.corp.sensis.com>
+
+I am trying to register for a window::focus event, but am not seeing the events come in.
+
+
+
+I can register for window::new and for workspace::focus just fine.
+
+
+
+The code snippet I am using to register is:
+
+
+
+
+
+from gi.repository import i3ipc
+
+
+
+# Create the Connection object that can be used to send commands and subscribe
+
+# to events.
+
+conn = i3ipc.Connection()
+
+
+
+conn.on('window::focus', on_window_focus)
+
+
+
+I did turn on i3 debug and I did notice the following (this occurs when I call conn.on):
+
+08/29/2014 04:53:25 PM - ipc.c:add_subscription:744 - should add subscription to extra 0xef61a0, sub window
+
+08/29/2014 04:53:25 PM - ipc.c:add_subscription:754 - client is now subscribed to:
+
+08/29/2014 04:53:25 PM - ipc.c:add_subscription:756 - event window
+
+08/29/2014 04:53:25 PM - ipc.c:add_subscription:757 - (done)
+
+
+
+
+
+Not sure how to interpret that debug info, but I think its telling me that I need to subscribe for window::focus differently.
+
+
+
+Again, I am able to register for workspace::focus just fine (and receive workspace focus events).
+
+conn.on('workspace::focus', on_workspace_focus)
+
+
+
+
+
+This message is intended only for the addressee and may contain information that is company confidential or privileged. Any technical data in this message may be exported only in accordance with the U.S. International Traffic in Arms Regulations (22 CFR Parts 120-130) or the Export Administration Regulations (15 CFR Parts 730-774). Unauthorized use is strictly prohibited and may be unlawful. If you are not the intended recipient, or the person responsible for delivering to the intended recipient, you should not read, copy, disclose or otherwise use this message. If you have received this email in error, please delete it, and advise the sender immediately.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140829/279bb84f/attachment.html>
+
+From tony at dubstepdish.com  Fri Aug 29 20:29:03 2014
+From: tony at dubstepdish.com (Tony Crisci)
+Date: Fri, 29 Aug 2014 14:29:03 -0400
+Subject: [i3] Cant subscribe to window::focus events
+In-Reply-To: <85EA6F68AC24DA48B220EBEA7A8C08B81B5056AE@corpmail01.corp.sensis.com>
+References: <mailman.3.1409306415.30220.i3-discuss@i3.zekjur.net>
+ <85EA6F68AC24DA48B220EBEA7A8C08B81B5056AE@corpmail01.corp.sensis.com>
+Message-ID: <5400C66F.6040108@dubstepdish.com>
+
+Hi,
+
+You seem to be doing everything right with the library.
+
+The problem is most likely that you are using a version of i3 that does 
+not emit the `focus` events. This feature was added in version 4.8. 
+Check your version with `i3 --version` and make sure it is up to date.
+
+Am 08/29/2014 um 01:03 PM schrieb Sargrad, Dave:
+>
+> I am trying to register for a window::focus event, but am not seeing 
+> the events come in.
+>
+> I can register for window::new and for workspace::focus just fine.
+>
+> The code snippet I am using to register is:
+>
+> *from gi.repository import i3ipc*
+>
+> **
+>
+> *# Create the Connection object that can be used to send commands and 
+> subscribe*
+>
+> *# to events.*
+>
+> *conn = i3ipc.Connection()*
+>
+> **
+>
+> *conn.on('window::focus', on_window_focus)*
+>
+> I did turn on i3 debug and I did notice the following (this occurs 
+> when I call conn.on):
+>
+> 08/29/2014 04:53:25 PM - ipc.c:add_subscription:744 - should add 
+> subscription to extra 0xef61a0, sub window
+>
+> 08/29/2014 04:53:25 PM - ipc.c:add_subscription:754 - client is now 
+> subscribed to:
+>
+> 08/29/2014 04:53:25 PM - ipc.c:add_subscription:756 - event window
+>
+> 08/29/2014 04:53:25 PM - ipc.c:add_subscription:757 - (done)
+>
+> Not sure how to interpret that debug info, but I think its telling me 
+> that I need to subscribe for window::focus differently.
+>
+> Again, I am able to register for workspace::focus just fine (and 
+> receive workspace focus events).
+>
+> *conn.on('workspace::focus', on_workspace_focus)*
+>
+>
+> /This message is intended only for the addressee and may contain 
+> information that is company confidential or privileged. Any technical 
+> data in this message may be exported only in accordance with the U.S. 
+> International Traffic in Arms Regulations (22 CFR Parts 120-130) or 
+> the Export Administration Regulations (15 CFR Parts 730-774). 
+> Unauthorized use is strictly prohibited and may be unlawful. If you 
+> are not the intended recipient, or the person responsible for 
+> delivering to the intended recipient, you should not read, copy, 
+> disclose or otherwise use this message. If you have received this 
+> email in error, please delete it, and advise the sender immediately. / 
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140829/854b9a0a/attachment.html>
+
+From michael at i3wm.org  Sat Aug 30 08:14:21 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 30 Aug 2014 08:14:21 +0200
+Subject: [i3] probleme with i3
+In-Reply-To: <1658664158.16697.1408093235086.JavaMail.root@smile.ci>
+References: <1658664158.16697.1408093235086.JavaMail.root@smile.ci>
+Message-ID: <x61tryy05e.fsf@midna.zekjur.net>
+
+Hi emmanuel,
+
+Please always send emails to the mailing list.
+
+emmanuel kacou <emmanuel.kacou at smile.ci> writes:
+> Hello , i have install i3 on my desktop but when i type the commande i3-input i got this error 
+>
+> using format "%s" 
+> i3-input: Could not connect to i3: No such file or directory 
+>
+> i precise that i have generated config file 
+> how can i resolve it 
+> thank you 
+Which version of i3 is this? Please provide the output of i3 --moreversion
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Sat Aug 30 08:30:23 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 30 Aug 2014 08:30:23 +0200
+Subject: [i3] restarting i3 when running inside Xephyr
+Message-ID: <CANnVG6n6C=qNCY_wdn29t47kcKMPV4_jVyLriyjfJA+uui3orw@mail.gmail.com>
+
+On Fri, Aug 29, 2014 at 8:24 AM, Unmanifest D <unmanifestd at gmail.com> wrote:
+> Hi...I'm using i3 as a WM with Xephyr (as the Xserver). As I resize my main
+> Xephyr window, I need to 'restart' i3 so that my applications resize
+> themselves correctly. Is that expected or is it something else?
+That is expected. i3 uses RandR for all sorts of “the available
+outputs have changed” notifications, and nothing else. I think Xephyr
+does not provide RandR.
+
+Why do you use Xephyr in the first place? AIUI, Xephyr is intended to
+be used by developers to test their applications, not by end users
+running an actual window manager.
+
+>
+> From the i3 logs, it does appear that i3 is detecting a change in the size
+> of the root window - I see a bunch of 'root geometry reply: (0, 0) xxxx X
+> yyyy' messages. But my applications, don't automatically resize, until I do
+> an i3 restart.
+>
+> $ i3 -v
+> i3 version 4.8-32-g1842dda (2014-07-24, branch "master") © 2009-2014 Michael
+> Stapelberg and contributors
+>
+> Thanks
+
+From unmanifestd at gmail.com  Sun Aug 31 03:06:23 2014
+From: unmanifestd at gmail.com (Unmanifest D)
+Date: Sat, 30 Aug 2014 18:06:23 -0700
+Subject: [i3] restarting i3 when running inside Xephyr
+In-Reply-To: <CANnVG6n6C=qNCY_wdn29t47kcKMPV4_jVyLriyjfJA+uui3orw@mail.gmail.com>
+References: <CANnVG6n6C=qNCY_wdn29t47kcKMPV4_jVyLriyjfJA+uui3orw@mail.gmail.com>
+Message-ID: <CAGhWKm86MsKFHyvLgHS6ThF=9XHRRMhXPcehmDsbwVG9dT=Okg@mail.gmail.com>
+
+On Fri, Aug 29, 2014 at 11:30 PM, Michael Stapelberg wrote:
+>
+>
+> Why do you use Xephyr in the first place? AIUI, Xephyr is intended to
+> be used by developers to test their applications, not by end users
+> running an actual window manager.
+
+That's a very valid question. The short answer is, that was not my
+first choice/anything close to a good solution but more of a hack. The
+longer answer follows below.
+
+I am building a new application - let's call it A (an X11 app) that
+needs to use an existing X11 application  (that I can't change) -
+let's call it B. I would launch A and occasionally have to to fire up
+B to do some stuff related to what A does/is doing. Ideally, I would
+like B to be a sub-tab or somehow be 'contained within' A - to avoid
+the two showing up as two disconnected applications on the desktop and
+keep the two within the same 'container'. For lack of better options,
+I decided to make Xephyr my container and use i3 to display A and then
+B and switch back-n-forth etc. I'm open to any suggestions on better
+ways of achieving this.
+
+Thanks.
+
+From guevel.emanuel at gmail.com  Sun Aug 31 11:12:11 2014
+From: guevel.emanuel at gmail.com (Emanuel =?UTF-8?B?R3XDqXZlbA==?=)
+Date: Sun, 31 Aug 2014 11:12:11 +0200
+Subject: [i3] restarting i3 when running inside Xephyr
+In-Reply-To: <CAGhWKm86MsKFHyvLgHS6ThF=9XHRRMhXPcehmDsbwVG9dT=Okg@mail.gmail.com>
+References: <CANnVG6n6C=qNCY_wdn29t47kcKMPV4_jVyLriyjfJA+uui3orw@mail.gmail.com>
+ <CAGhWKm86MsKFHyvLgHS6ThF=9XHRRMhXPcehmDsbwVG9dT=Okg@mail.gmail.com>
+Message-ID: <20140831111211.130d62e0@gmail.com>
+
+Hi,
+
+On Sat, 30 Aug 2014 18:06:23 -0700,
+Unmanifest D <unmanifestd at gmail.com> wrote :
+
+> I am building a new application - let's call it A (an X11 app) that
+> needs to use an existing X11 application  (that I can't change) -
+> let's call it B. I would launch A and occasionally have to to fire up
+> B to do some stuff related to what A does/is doing. Ideally, I would
+> like B to be a sub-tab or somehow be 'contained within' A - to avoid
+> the two showing up as two disconnected applications on the desktop and
+> keep the two within the same 'container'. For lack of better options,
+> I decided to make Xephyr my container and use i3 to display A and then
+> B and switch back-n-forth etc. I'm open to any suggestions on better
+> ways of achieving this.
+
+Can't you embed B into A using Xembed?
+
+Here you have an example of a GTK2 window that can embed other
+apps (yeah, python2 + gtk2, it's outdated a bit, but you could find out
+an equivalent that works with your toolkit):
+http://www.moeraki.com/pygtktutorial/pygtk2tutorial/examples/socket.py
+
+If B does not support the Xembed protocol, you can run it inside Xephyr
+or Xnest (though this last one did not give good results for me).
+
+Proof of concept:
+  $ python2 socket.py
+  Socket ID= 35651617
+  $ Xephyr :1 -parent 35651617
+  $ DISPLAY=:1 xfontsel
+
+Cheers.
+

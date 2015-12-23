@@ -1,0 +1,285 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Regarding i3-msg over putty
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Regarding%20i3-msg%20over%20putty&In-Reply-To=%3C85EA6F68AC24DA48B220EBEA7A8C08B81B504378%40corpmail01.corp.sensis.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001827.html">
+   <LINK REL="Next"  HREF="001825.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Regarding i3-msg over putty</H1>
+    <B>Sargrad, Dave</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Regarding%20i3-msg%20over%20putty&In-Reply-To=%3C85EA6F68AC24DA48B220EBEA7A8C08B81B504378%40corpmail01.corp.sensis.com%3E"
+       TITLE="[i3] Regarding i3-msg over putty">Dave.Sargrad at saabsensis.com
+       </A><BR>
+    <I>Thu Aug 28 14:28:27 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001827.html">[i3] i3 colors on minimal x11
+</A></li>
+        <LI>Next message: <A HREF="001825.html">[i3] Regarding i3-msg over putty
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1824">[ date ]</a>
+              <a href="thread.html#1824">[ thread ]</a>
+              <a href="subject.html#1824">[ subject ]</a>
+              <a href="author.html#1824">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I got this answer from a helpful person on IRC. I'll post here for completeness:
+
+DISPLAY=:0.0 i3 --get-socketpath
+
+Adding the prefix DISPLAY=:0.0 solved the problem and permitted executing i3 msgs/commands over putty.
+
+-----Original Message-----
+From: i3-discuss [mailto:<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss-bounces at i3.zekjur.net</A>] On Behalf Of <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss-request at i3.zekjur.net</A>
+Sent: Thursday, August 28, 2014 6:01 AM
+To: <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>
+Subject: i3-discuss Digest, Vol 52, Issue 7
+
+Send i3-discuss mailing list submissions to
+	<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>
+
+To subscribe or unsubscribe via the World Wide Web, visit
+	<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss</A>
+or, via email, send a message with subject or body 'help' to
+	<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss-request at i3.zekjur.net</A>
+
+You can reach the person managing the list at
+	<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss-owner at i3.zekjur.net</A>
+
+When replying, please edit your Subject line so it is more specific than &quot;Re: Contents of i3-discuss digest...&quot;
+
+
+Today's Topics:
+
+   1. i3-msg over putty (Sargrad, Dave)
+   2. Re: i3-msg over putty (Marian Beermann)
+   3. i3 colors on minimal x11 (grubernd)
+   4. Re: i3 colors on minimal x11 (Michael Stapelberg)
+
+
+----------------------------------------------------------------------
+
+Message: 1
+Date: Wed, 27 Aug 2014 14:49:52 +0000
+From: &quot;Sargrad, Dave&quot; &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">Dave.Sargrad at saabsensis.com</A>&gt;
+To: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>&quot; &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>&gt;
+Subject: [i3] i3-msg over putty
+Message-ID:
+	&lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">85EA6F68AC24DA48B220EBEA7A8C08B81B504226 at corpmail01.corp.sensis.com</A>&gt;
+Content-Type: text/plain; charset=&quot;utf-8&quot;
+
+I am looking to create a remote management of an i3 workspace. Ultimately this will connect to a service running on the i3 machine and that service will respond to my workflow management commands.
+
+Right now as I learn how to manage/configure i3 I am putty'd in to a ubuntu machine running i3. I'd like to use i3-msg to experiment with commands to i3. However when I run i3-msg it does not know how to connect properly:
+
+
+<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at sensis-8930</A>:~$ i3-msg -t get_tree
+i3-msg: Could not connect to i3: No such file or directory
+
+Furthermore i3 does not know how to return a socket path:
+
+<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at machine-8930</A>:~$ i3 --get-socketpath <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at machine-8930</A>:~$
+
+These commands work fine, of course, when I run them in a terminal window locally.
+
+How can I use i3-msg over putty/ssh to experiment with i3? Is this not possible?
+
+
+
+
+This message is intended only for the addressee and may contain information that is company confidential or privileged. Any technical data in this message may be exported only in accordance with the U.S. International Traffic in Arms Regulations (22 CFR Parts 120-130) or the Export Administration Regulations (15 CFR Parts 730-774). Unauthorized use is strictly prohibited and may be unlawful. If you are not the intended recipient, or the person responsible for delivering to the intended recipient, you should not read, copy, disclose or otherwise use this message. If you have received this email in error, please delete it, and advise the sender immediately.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140827/470e4378/attachment-0001.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140827/470e4378/attachment-0001.html</A>&gt;
+
+------------------------------
+
+Message: 2
+Date: Wed, 27 Aug 2014 17:19:32 +0200
+From: Marian Beermann &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">public at enkore.de</A>&gt;
+To: Discussions/Questions about the i3 window manager
+	&lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>&gt;
+Subject: Re: [i3] i3-msg over putty
+Message-ID: &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">53FDF704.8030904 at enkore.de</A>&gt;
+Content-Type: text/plain; charset=windows-1252
+
+You probably need to set DISPLAY correctly.
+
+I.e.
+
+export I3SOCK=$(DISPLAY=:0 i3 --get-socketpath)
+
+On 27.08.2014 16:49, Sargrad, Dave wrote:
+&gt;<i> I am looking to create a remote management of an i3 workspace.
+</I>&gt;<i> Ultimately this will connect to a service running on the i3 machine 
+</I>&gt;<i> and that service will respond to my workflow management commands.
+</I>&gt;<i> 
+</I>&gt;<i>  
+</I>&gt;<i> 
+</I>&gt;<i> Right now as I learn how to manage/configure i3 I am putty’d in to a 
+</I>&gt;<i> ubuntu machine running i3. I’d like to use i3-msg to experiment with 
+</I>&gt;<i> commands to i3. However when I run i3-msg it does not know how to 
+</I>&gt;<i> connect properly:
+</I>&gt;<i> 
+</I>&gt;<i>  
+</I>&gt;<i> 
+</I>&gt;<i>  
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at sensis-8930</A>:~$ i3-msg -t get_tree
+</I>&gt;<i> 
+</I>&gt;<i> i3-msg: Could not connect to i3: No such file or directory
+</I>&gt;<i> 
+</I>&gt;<i>  
+</I>&gt;<i> 
+</I>&gt;<i> Furthermore i3 does not know how to return a socket path:
+</I>&gt;<i> 
+</I>&gt;<i>  
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at machine-8930</A>:~$ i3 --get-socketpath
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at machine-8930</A>:~$
+</I>&gt;<i> 
+</I>&gt;<i>  
+</I>&gt;<i> 
+</I>&gt;<i> These commands work fine, of course, when I run them in a terminal 
+</I>&gt;<i> window locally.
+</I>&gt;<i> 
+</I>&gt;<i>  
+</I>&gt;<i> 
+</I>&gt;<i> How can I use i3-msg over putty/ssh to experiment with i3? Is this not 
+</I>&gt;<i> possible?
+</I>&gt;<i> 
+</I>&gt;<i>  
+</I>&gt;<i> 
+</I>&gt;<i>  
+</I>&gt;<i> 
+</I>&gt;<i>  
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> /This message is intended only for the addressee and may contain 
+</I>&gt;<i> information that is company confidential or privileged. Any technical 
+</I>&gt;<i> data in this message may be exported only in accordance with the U.S.
+</I>&gt;<i> International Traffic in Arms Regulations (22 CFR Parts 120-130) or 
+</I>&gt;<i> the Export Administration Regulations (15 CFR Parts 730-774). 
+</I>&gt;<i> Unauthorized use is strictly prohibited and may be unlawful. If you 
+</I>&gt;<i> are not the intended recipient, or the person responsible for 
+</I>&gt;<i> delivering to the intended recipient, you should not read, copy, 
+</I>&gt;<i> disclose or otherwise use this message. If you have received this 
+</I>&gt;<i> email in error, please delete it, and advise the sender immediately. /
+</I>
+
+
+------------------------------
+
+Message: 3
+Date: Wed, 27 Aug 2014 22:52:22 +0200
+From: grubernd &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">lists at mehrzweckraum.com</A>&gt;
+To: Discussions/Questions about the i3 window manager
+	&lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>&gt;
+Subject: [i3] i3 colors on minimal x11
+Message-ID: &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">53FE4506.70400 at mehrzweckraum.com</A>&gt;
+Content-Type: text/plain; charset=windows-1252; format=flowed
+
+hi..
+
+finally getting more playtime with i3. it behaves marvellously fast on a RaspberryPi with Arch Linux underneath. i try to build a very minimal system there, so i3 runs directly from .xinitrc and my .Xresources just contains two settings for xterm (locale and a font).
+
+what i currently dont understand is that i3 doesnt use the RGB-values in the bar{colors{}} section but seems to pick colors from a 8 or 16 color palette.
+
+e.g. using:
+background #333333
+draws the statusbar in a medium blue.
+
+background #444444
+draws the statusbar in a green.
+
+other applications have no problems displaying full RGB content, so it is not the driver/display.
+
+any hints where to dig deeper are highly appreciated as i couldnt yet find an answer in the userguide or the arch wiki.
+
+cheers,
+grubernd
+
+
+------------------------------
+
+Message: 4
+Date: Thu, 28 Aug 2014 09:36:35 +0200
+From: Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt;
+To: grubernd &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">lists at mehrzweckraum.com</A>&gt;, &quot;Discussions\/Questions about
+	the i3 window manager&quot; &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>&gt;
+Subject: Re: [i3] i3 colors on minimal x11
+Message-ID: &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">x6a96pxdz0.fsf at midna.zekjur.net</A>&gt;
+Content-Type: text/plain; charset=utf-8
+
+Hi grubernd,
+
+grubernd &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">lists at mehrzweckraum.com</A>&gt; writes:
+&gt;<i> finally getting more playtime with i3. it behaves marvellously fast on 
+</I>&gt;<i> a RaspberryPi with Arch Linux underneath. i try to build a very 
+</I>&gt;<i> minimal system there, so i3 runs directly from .xinitrc and my 
+</I>&gt;<i> .Xresources just contains two settings for xterm (locale and a font).
+</I>I’ve noticed this on a Raspberry Pi as well. i3 only supports truecolor, so I suspect the graphics driver on the Raspberry Pi that you are using does not support truecolor.
+
+See also <A HREF="http://bugs.i3wm.org/report/ticket/434">http://bugs.i3wm.org/report/ticket/434</A>
+
+--
+Best regards,
+Michael
+
+
+------------------------------
+
+Subject: Digest Footer
+
+_______________________________________________
+i3-discuss mailing list
+<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>
+<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss</A>
+
+
+------------------------------
+
+End of i3-discuss Digest, Vol 52, Issue 7
+*****************************************
+-
+This message is intended only for the addressee and may contain information that is company confidential or privileged.  Any technical data in this message may be exported only in accordance with the U.S. International Traffic in Arms Regulations (22 CFR Parts 120-130) or the Export Administration Regulations (15 CFR Parts 730-774). Unauthorized use is strictly prohibited and may be unlawful. If you are not the intended recipient, or the person responsible for delivering to the intended recipient, you should not read, copy, disclose or otherwise use this message. If you have received this email in error, please delete it, and advise the sender immediately. 
+-          
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001827.html">[i3] i3 colors on minimal x11
+</A></li>
+	<LI>Next message: <A HREF="001825.html">[i3] Regarding i3-msg over putty
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1824">[ date ]</a>
+              <a href="thread.html#1824">[ thread ]</a>
+              <a href="subject.html#1824">[ subject ]</a>
+              <a href="author.html#1824">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

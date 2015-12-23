@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Killing a window's process
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Killing%20a%20window%27s%20process&In-Reply-To=%3CCAM4Y7zzrLiZ-TLB05-z8RwogLNy-FMSt5_K8Ymo6q9y6qrbHUQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002219.html">
+   <LINK REL="Next"  HREF="002215.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Killing a window's process</H1>
+    <B>Jeff Abrahamson</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Killing%20a%20window%27s%20process&In-Reply-To=%3CCAM4Y7zzrLiZ-TLB05-z8RwogLNy-FMSt5_K8Ymo6q9y6qrbHUQ%40mail.gmail.com%3E"
+       TITLE="[i3] Killing a window's process">jeff at purple.com
+       </A><BR>
+    <I>Fri Oct  2 11:12:43 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002219.html">[i3] Mouse capture problem i3 and OBS
+</A></li>
+        <LI>Next message: <A HREF="002215.html">[i3] Killing a window's process
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2214">[ date ]</a>
+              <a href="thread.html#2214">[ thread ]</a>
+              <a href="subject.html#2214">[ subject ]</a>
+              <a href="author.html#2214">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I have a window whose process is not responding.  No problem, i3 lets me
+kill windows, so I type that key combination.  Usually it works, but this
+time it doesn't.
+
+My work-around is to use wininfo to find the window id of the dead but
+mapped thing, bc to convert to decimal, use &quot;ps aeww | grep&quot; to find the
+process with that window id in its environment, then send it a kill -15
+(does nothing visible) and then a kill -9 (still mapped, but process now
+shows as defunct).
+
+
+So the* problem* (obviously not critical, since I have a work-around) is
+how could I have avoided the wininfo -&gt; ps -&gt; bc -&gt; kill thing.  Looking at
+the code, it looks like i3's kill window is cmd_kill
+&lt;<A HREF="https://github.com/i3/i3/blob/next/src/commands.c#L1298">https://github.com/i3/i3/blob/next/src/commands.c#L1298</A>&gt;() in commands.c.
+(How can that get called with kill_mode_str == &quot;client&quot;?)  The chain is
+then to call tree_close_con
+&lt;<A HREF="https://github.com/i3/i3/blob/next/src/tree.c#L369">https://github.com/i3/i3/blob/next/src/tree.c#L369</A>&gt;() -&gt; tree_close
+&lt;<A HREF="https://github.com/i3/i3/blob/next/src/tree.c#L192">https://github.com/i3/i3/blob/next/src/tree.c#L192</A>&gt;() -&gt; x_window_kill
+&lt;<A HREF="https://github.com/i3/i3/blob/next/src/x.c#L283">https://github.com/i3/i3/blob/next/src/x.c#L283</A>&gt;() -&gt; one_of {
+xcb_destroy_window
+&lt;<A HREF="http://www.x.org/archive/current/doc/man/man3/xcb_destroy_window.3.xhtml">http://www.x.org/archive/current/doc/man/man3/xcb_destroy_window.3.xhtml</A>&gt;(),
+xcb_kill_client
+&lt;<A HREF="http://www.x.org/archive/current/doc/man/man3/xcb_kill_client.3.xhtml">http://www.x.org/archive/current/doc/man/man3/xcb_kill_client.3.xhtml</A>&gt;() }.
+
+I think to answer that I'l have to run i3 with logging so I can see which
+path it's taking at the end.  And wait for an appropriately hung process.
+My initial hypothesis is that the window supports WM_DELETE_WINDOW but,
+since the proc is hung, it never processes it.
+
+
+Anyway, thanks for any insights.  Clearly this is as much about me learning
+as anything else.
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    &lt;-- only when I'm in the UK
+
+*<A HREF="http://www.ml-week.com/fr/*">http://www.ml-week.com/fr/*</A> &lt;<A HREF="http://www.ml-week.com/fr/">http://www.ml-week.com/fr/</A>&gt;*     2-5 novembre
+2015*
+
+<A HREF="http://jeff.purple.com/">http://jeff.purple.com/</A>
+<A HREF="http://blog.purple.com/jeff/">http://blog.purple.com/jeff/</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151002/11817745/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151002/11817745/attachment.html</A>&gt;
+</PRE>
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002219.html">[i3] Mouse capture problem i3 and OBS
+</A></li>
+	<LI>Next message: <A HREF="002215.html">[i3] Killing a window's process
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2214">[ date ]</a>
+              <a href="thread.html#2214">[ thread ]</a>
+              <a href="subject.html#2214">[ subject ]</a>
+              <a href="author.html#2214">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

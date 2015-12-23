@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Problems setting multi monitor
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Problems%20setting%20multi%20monitor&In-Reply-To=%3C572232AF-967D-433B-A57A-FC23349A7D87%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002130.html">
+   <LINK REL="Next"  HREF="002132.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Problems setting multi monitor</H1>
+    <B>Anton Löfgren</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Problems%20setting%20multi%20monitor&In-Reply-To=%3C572232AF-967D-433B-A57A-FC23349A7D87%40gmail.com%3E"
+       TITLE="[i3] Problems setting multi monitor">anton.lofgren at gmail.com
+       </A><BR>
+    <I>Mon Aug 10 18:30:13 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002130.html">[i3] Problems setting multi monitor
+</A></li>
+        <LI>Next message: <A HREF="002132.html">[i3] Problems setting multi monitor
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2131">[ date ]</a>
+              <a href="thread.html#2131">[ thread ]</a>
+              <a href="subject.html#2131">[ subject ]</a>
+              <a href="author.html#2131">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>AFAIK, the shebang must be an absolute path. That is, you'll probably have more luck replacing #!env with #!/usr/bin/env.
+
+How do you call it standalone? I'm assuming by invoking python manually. 
+
+/Anton 
+
+On August 10, 2015 3:48:36 PM CEST, Florian Lindner &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">mailinglists at xgm.de</A>&gt; wrote:
+&gt;<i>Hello,
+</I>&gt;<i>
+</I>&gt;<i>I try to launch an xrandr script to set the multi monitor
+</I>&gt;<i>configuration. The script works when called standalone after i3
+</I>&gt;<i>startup, but not at startup
+</I>&gt;<i>
+</I>&gt;<i>#!env python
+</I>&gt;<i>
+</I>&gt;<i>import functools, subprocess, sys
+</I>&gt;<i>call = functools.partial(subprocess.check_call, shell=True)
+</I>&gt;<i>
+</I>&gt;<i>call(&quot;sleep 3&quot;)
+</I>&gt;<i>
+</I>&gt;<i>if sys.argv[1] == &quot;uni&quot;:
+</I>&gt;<i>    call(&quot;xrandr --output DP2-2 --auto --primary&quot;)
+</I>&gt;<i>    call(&quot;xrandr --output eDP1  --auto --left-of DP2-2&quot;)
+</I>&gt;<i>    call(&quot;xrandr --output HDMI1 --auto --right-of DP2-2&quot;)
+</I>&gt;<i>    
+</I>&gt;<i>
+</I>&gt;<i>The sleep 3 I put just to test, shouldn't be needed.
+</I>&gt;<i>
+</I>&gt;<i>It is launched as my first exec in my i3 config:
+</I>&gt;<i>
+</I>&gt;<i>exec --no-startup-id /home/florian/software/bin/screen_config uni
+</I>&gt;<i>
+</I>&gt;<i>but seems to have no effect at all, configuration is not changed.
+</I>&gt;<i>
+</I>&gt;<i>What can be the problem there?
+</I>&gt;<i>
+</I>&gt;<i>Thanks,
+</I>&gt;<i>Florian
+</I>
+-- 
+Sent from my Android device with K-9 Mail. Please excuse my brevity.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150810/55ce447c/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150810/55ce447c/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002130.html">[i3] Problems setting multi monitor
+</A></li>
+	<LI>Next message: <A HREF="002132.html">[i3] Problems setting multi monitor
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2131">[ date ]</a>
+              <a href="thread.html#2131">[ thread ]</a>
+              <a href="subject.html#2131">[ subject ]</a>
+              <a href="author.html#2131">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

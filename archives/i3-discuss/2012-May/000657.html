@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Gnome-less wm
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Gnome-less%20wm&In-Reply-To=%3CCAELbujpHXv6pWgCgkcmMX8DTktUmiHUFECBM-jL%3Dpz07OaNXfQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000656.html">
+   <LINK REL="Next"  HREF="000661.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Gnome-less wm</H1>
+    <B>Micah Elliott</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Gnome-less%20wm&In-Reply-To=%3CCAELbujpHXv6pWgCgkcmMX8DTktUmiHUFECBM-jL%3Dpz07OaNXfQ%40mail.gmail.com%3E"
+       TITLE="[i3] Gnome-less wm">mde at micahelliott.com
+       </A><BR>
+    <I>Fri May 11 09:22:36 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000656.html">[i3] Gnome-less wm
+</A></li>
+        <LI>Next message: <A HREF="000661.html">[i3] Gnome-less wm
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#657">[ date ]</a>
+              <a href="thread.html#657">[ thread ]</a>
+              <a href="subject.html#657">[ subject ]</a>
+              <a href="author.html#657">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey Bruno -- I'm not a guru, but I'll share my story since I'm just a
+little ways ahead of you. And I've been wanting to pipe up and shower
+Michael et al with gratitude and praise for what so far looks like the
+biggest workflow improvement I've found in years. THANK YOU!!
+
+My suggestions:
+
+* Start by blowing away a toy machine and experiment there. Or I
+suppose you could be careful and just try to set up as a different
+user on your main machine. My i3/GNOME integration attempt didn't go
+well (but maybe it's commonly done). I'm enjoying having left GNOME
+behind now anyway. So i3/X is all that's needed!
+
+* Find someone's dotfiles online who's doing something similar. You
+probably just need .xinitrc and .i3/config, (and maybe .i3status) for
+starters. Mine have the bulk of the config (nm-applet, udiskie, font
+setting) in .i3/config
+(<A HREF="https://github.com/MicahElliott/dotfiles/blob/master/.i3/config">https://github.com/MicahElliott/dotfiles/blob/master/.i3/config</A>) as I
+found some things didn't take by just putting into .xinitrc.
+
+* You can bind keys easily enough with xev, and xmodmap. I used to use
+a crazy xkeycaps (IIRC) generated xmodmap to map keys all over the
+place, but all you need is probably a few lines like in your .xinitrc:
+<A HREF="https://github.com/MicahElliott/dotfiles/blob/master/.xinitrc">https://github.com/MicahElliott/dotfiles/blob/master/.xinitrc</A> . All
+you absolutely need in it is: exec ck-launch-session dbus-launch i3 .
+But I've also manually mapped volume controls and pm-suspend. I also
+call keychain just before firing i3.
+
+* Ease into the User's Guide <A HREF="http://i3wm.org/docs/userguide.html,">http://i3wm.org/docs/userguide.html,</A> the
+one and only doc you really need. So nice. Work to memorize the
+bindings quickly.
+
+* Get familiarized with the non-GNOME tool set:
+<A HREF="https://wiki.archlinux.org/index.php/Common_Applications#Image_Viewers">https://wiki.archlinux.org/index.php/Common_Applications#Image_Viewers</A>
+
+* Use lxappearance to change fonts (and theme if you like)
+
+* Rely on mod+r to quickly change things to your i3 config.
+
+* Decide a multi-monitor solution. i3 &quot;just works&quot; with zero config,
+but it's a little different. GNOME spreads a desktop across all
+monitors, but i3 treats each monitor as separate. I still haven't
+fully adjusted but have mapped even-numbered desktops to my top
+monitor and odds to laptop screen. This way I can hit ctrl-1-2 and
+later ctrl-3-4 to emulate the GNOME way. I'm mixing it up too, but
+still organize windows this way to large extent. I've bound mod+tab to
+quckly bounce from one desktop &quot;back_and_forth&quot; to the next. You can
+use arandr to config monitor settings and then export to a one-line
+xrandr script. I have 3 setups in ~/bin and can quickly change screens
+with ~/bin/xr1 (or xr2 or xr3).
+
+* Consider switching to Arch: rolling releases for bleeding edge of
+anything, easy to make your own packages, lots of light-weight package
+managers to choose from, have more control over what's on your
+machine, extensive and well curated wiki and forums, and seems to be a
+nice i3 cohort there. ArchBang was a decent install experience to get
+graphics, network, etc working OOTB (my head looked like yours after
+doing a vanilla Arch install :). And I stupidly let the installer
+choose my root partition at a small size and later tried to load big
+databases. So I'd recommend making / plenty big or just keeping /home
+on the same partition.
+
+* I couldn't give up my Alt key (not even close!), so mapped mod to
+Win key. (Right-Alt is my tilde/backtick, so esc is more reachable.)
+I'm mostly used to reaching for Win (Mod4) now, but I suppose
+conquering alt/win/ctrl/shift combos for everything is like mastering
+an instrument. I don't use arrow keys for anything (except stupid
+browsers and spreadsheets). And as a vim user I was COMPLETELY
+befuddled by the default jkl; mapping. i3 made it so easy to switch
+these things (how commonly do people change it to vim's hjkl?). And
+since I had to lose mod+h to the vim shift, I mapped mod+g to
+horizontal, which makes some sense being near the vertical v.
+
+* I use gimp often and i3's floating windows are working just fine for
+me. Get used to holding mod and using both mouse keys for quickly
+moving and resizing. Even non-floating windows benefit from
+mod+right-mouse.
+
+Superfluous background....
+
+I'd been using Ubuntu/GNOME for the last ~5 yrs, and using 10.04 LTS
+since its release. I'd done a lot of tweaking to the point that things
+were just getting too brittle (and stale). I figured I'd have to make
+a lot of changes to get going with Unity and now was as good a time as
+ever to simplify and reorganize. I decided to do the big-bang approach
+and change OS and WM all in one go. This has turned into a major time
+sink the last couple weeks but looking like it'll be worth it for
+another 5+ yrs of happiness (quite possibly on this same machine!).
+
+I started with xmonad and got it working pretty well on another Arch
+machine. Didn't even mind Haskell. Then put it on main system and hit
+a Haskell packaging problem, bloated my machine with ghc, got into a
+mess. And, was copying long recipes for xmonad/xmobar configs instead
+of doing simple things that i3 supports. Also had tried awesomewm and
+hit some bugs/surprises.
+
+Thanks to the simplicity and minimalism of i3 (and Arch) I can finally
+keep in my head where almost all my configs are and how to change
+things (well, my vim config is still a bit messy). I'm now on a small
+(and fast!) SSD and still have plenty of space. I can get new packages
+every day and all the tools I'm using are brand new. I love the tiny
+i3status and I've gone with the 1pixel window border that is working
+so nicely (mod+b is mapped to cycle *b*order modes; I like titles on
+some things like browsers). I've finally utilized every pixel, have
+custom tiny fonts on everything, and have reached WM nirvana. I could
+never get to this point of beautiful simplicity with GNOME.
+
+--
+twitter:@MicahElliott&#160; |&#160; email:<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">mde at MicahElliott.com</A>&#160; |&#160; <A HREF="http://membean.com">http://membean.com</A>
+Remember your words with Membean!
+</PRE>
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000656.html">[i3] Gnome-less wm
+</A></li>
+	<LI>Next message: <A HREF="000661.html">[i3] Gnome-less wm
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#657">[ date ]</a>
+              <a href="thread.html#657">[ thread ]</a>
+              <a href="subject.html#657">[ subject ]</a>
+              <a href="author.html#657">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

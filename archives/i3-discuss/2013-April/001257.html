@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3lock hooks
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3lock%20hooks&In-Reply-To=%3C51628725.8040308%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001285.html">
+   <LINK REL="Next"  HREF="001246.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3lock hooks</H1>
+    <B>Layus</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3lock%20hooks&In-Reply-To=%3C51628725.8040308%40gmail.com%3E"
+       TITLE="[i3] i3lock hooks">layus.on at gmail.com
+       </A><BR>
+    <I>Mon Apr  8 11:00:21 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001285.html">[i3] i3lock hooks
+</A></li>
+        <LI>Next message: <A HREF="001246.html">[i3] Natural sizing of windows
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1257">[ date ]</a>
+              <a href="thread.html#1257">[ thread ]</a>
+              <a href="subject.html#1257">[ subject ]</a>
+              <a href="author.html#1257">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Otherwise using systemd seems a good option.
+
+My current setup is :
+
+$ cat .i3/config
+[...]
+bindsym Shift+Pause  exec systemctl hibernate
+[...]
+
+$ cat /etc/systemd/system/lock.service
+[Unit]
+Description=i3lock
+Before=sleep.target
+
+[Service]
+User=layus
+Type=forking
+Environment=DISPLAY=:0
+ExecStart=/usr/bin/i3lock -t -i /etc/i3lock/wall.png
+
+[Install]
+WantedBy=sleep.target
+
+It should be adaptable to run other user scripts after/before i3lock.
+
+-- 
+Guillaume.
+
+Le 08/04/13 07:35, Brian Grossman a &#233;crit :
+&gt;<i> Sidestepping the question a little, how about something like this in 
+</I>&gt;<i> ~/.i3/config:
+</I>&gt;<i>
+</I>&gt;<i>     bindsym $mod+Return exec i3lock -n ; exec ~/bin/bruno-returns
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Brian
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Sun, Apr 7, 2013 at 11:15 PM, Bas Pape &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">baspape at gmail.com</A> 
+</I>&gt;<i> &lt;mailto:<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">baspape at gmail.com</A>&gt;&gt; wrote:
+</I>&gt;<i>
+</I>&gt;<i>     2013/4/8 BRAGA, Bruno &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">bruno.braga at gmail.com</A>
+</I>&gt;<i>     &lt;mailto:<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">bruno.braga at gmail.com</A>&gt;&gt;:
+</I>&gt;<i>     &gt; Would you have a wrapper example for that?
+</I>&gt;<i>     If you so desire I could write one later today.
+</I>&gt;<i>
+</I>&gt;<i>     &gt; If I understood right, the idea would be to wrap i3 with another
+</I>&gt;<i>     &gt; application, running:
+</I>&gt;<i>     &gt; - execute pre-lock commands
+</I>&gt;<i>     &gt; - fork i3lock
+</I>&gt;<i>     &gt; - get pid
+</I>&gt;<i>     &gt; - waitpid until it is finished
+</I>&gt;<i>     &gt; - execute post-lock commands
+</I>&gt;<i>     &gt;
+</I>&gt;<i>     &gt; is that it? Looks good to me!
+</I>&gt;<i>     Yep, that's it. Just now i noticed/realized that there is no waitpid
+</I>&gt;<i>     binary/shell command and waitpid only works for children; so you
+</I>&gt;<i>     probably would be better of backgrounding i3lock in the shell
+</I>&gt;<i>     (combined with i3lock's -n), rather than letting i3lock fork; then you
+</I>&gt;<i>     can just `wait %1`
+</I>&gt;<i>
+</I>&gt;<i>     --
+</I>&gt;<i>     Tucos
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130408/d37c67ca/attachment-0001.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130408/d37c67ca/attachment-0001.html</A>&gt;
+</PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001285.html">[i3] i3lock hooks
+</A></li>
+	<LI>Next message: <A HREF="001246.html">[i3] Natural sizing of windows
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1257">[ date ]</a>
+              <a href="thread.html#1257">[ thread ]</a>
+              <a href="subject.html#1257">[ subject ]</a>
+              <a href="author.html#1257">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

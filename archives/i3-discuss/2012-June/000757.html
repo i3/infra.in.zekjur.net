@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Tray Icons Disappearing on i3bar
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Tray%20Icons%20Disappearing%20on%20i3bar&In-Reply-To=%3CCAAuVr705_mOtZjPQ5HeuZ2KHhg8bxyCh5NTn5jsK%2BCT4DeWEbw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000756.html">
+   <LINK REL="Next"  HREF="000761.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Tray Icons Disappearing on i3bar</H1>
+    <B>BRAGA, Bruno</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Tray%20Icons%20Disappearing%20on%20i3bar&In-Reply-To=%3CCAAuVr705_mOtZjPQ5HeuZ2KHhg8bxyCh5NTn5jsK%2BCT4DeWEbw%40mail.gmail.com%3E"
+       TITLE="[i3] Tray Icons Disappearing on i3bar">bruno.braga at gmail.com
+       </A><BR>
+    <I>Fri Jun 29 03:55:43 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000756.html">[i3] Tray Icons Disappearing on i3bar
+</A></li>
+        <LI>Next message: <A HREF="000761.html">[i3] Tray Icons Disappearing on i3bar
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#757">[ date ]</a>
+              <a href="thread.html#757">[ thread ]</a>
+              <a href="subject.html#757">[ subject ]</a>
+              <a href="author.html#757">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Fernando,
+
+Thanks a lot for the thorough feedback and report.
+
+Yep, it happens after suspend with me every time. I am using Ubuntu, and it
+has its lock screen (sorry, I don't know details of the under-the-covers
+here), so this could maybe triggering a reload of the wm?
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">bruno.braga at gmail.com</A>
+
+
+On Fri, Jun 29, 2012 at 11:37 AM, Fernando Lemos &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">fernandotcl at i3wm.org</A>&gt;wrote:
+
+&gt;<i> On Thu, Jun 28, 2012 at 4:51 PM, Mateusz Loskot &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">mateusz at loskot.net</A>&gt;
+</I>&gt;<i> wrote:
+</I>&gt;<i> &gt;&gt; this also happens for me ... i noticed that this happens always after i
+</I>&gt;<i> return
+</I>&gt;<i> &gt;&gt; from suspend mode. was issue already created?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I think I've been observing similar issue.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I use XChat.
+</I>&gt;<i> &gt; Everytime I restart i3 (SHIFT+mod+R) its icon disappears.
+</I>&gt;<i>
+</I>&gt;<i> When i3 is restarted, so is i3bar. Looks like when i3bar quits, its
+</I>&gt;<i> window is destroyed and the embedded windows receive a BadWindow error
+</I>&gt;<i> [1]. Seems to be a design issue in XEmbed itself:
+</I>&gt;<i>
+</I>&gt;<i> &quot;The protocol, as currently constituted, is not robust against the
+</I>&gt;<i> embedder crashing. This will result in the embedder window being
+</I>&gt;<i> destroyed by the X server, and, as a consequence client's window being
+</I>&gt;<i> unexpectedly destroyed, which will likely cause the client to die with
+</I>&gt;<i> a BadWindow error.&quot;
+</I>&gt;<i>
+</I>&gt;<i> What happens here, I guess, is that some clients may try to create the
+</I>&gt;<i> tray icon again, while others may not. Or maybe they do, but i3bar
+</I>&gt;<i> wasn't up by the time they retry (I'm guessing here, I really didn't
+</I>&gt;<i> read XEmbed).
+</I>&gt;<i>
+</I>&gt;<i> XEmbed also says that &quot;the protocol ends&quot; when the embedded window is
+</I>&gt;<i> reparented to the root window [2]. So I don't know much about X, but
+</I>&gt;<i> maybe reparenting the embedded windows to the root window before
+</I>&gt;<i> terminating would be a solution? I'm not sure how the clients are
+</I>&gt;<i> supposed to react, though.
+</I>&gt;<i>
+</I>&gt;<i> What puzzles me is that you guys say it also happens when returning
+</I>&gt;<i> from suspend... I have no idea why that is, I always thought suspend
+</I>&gt;<i> was (mostly) transparent to applications?
+</I>&gt;<i>
+</I>&gt;<i> [1]:
+</I>&gt;<i> <A HREF="http://standards.freedesktop.org/xembed-spec/xembed-spec-latest.html#id2926011">http://standards.freedesktop.org/xembed-spec/xembed-spec-latest.html#id2926011</A>
+</I>&gt;<i> [2]:
+</I>&gt;<i> <A HREF="http://standards.freedesktop.org/xembed-spec/xembed-spec-latest.html#lifecycle">http://standards.freedesktop.org/xembed-spec/xembed-spec-latest.html#lifecycle</A>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120629/9536ab50/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120629/9536ab50/attachment.html</A>&gt;
+</PRE>
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000756.html">[i3] Tray Icons Disappearing on i3bar
+</A></li>
+	<LI>Next message: <A HREF="000761.html">[i3] Tray Icons Disappearing on i3bar
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#757">[ date ]</a>
+              <a href="thread.html#757">[ thread ]</a>
+              <a href="subject.html#757">[ subject ]</a>
+              <a href="author.html#757">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

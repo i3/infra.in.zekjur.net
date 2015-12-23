@@ -1,0 +1,198 @@
+From a88706dc06183d3effbbf26f4a9a72e3e2e2cf54 Mon Sep 17 00:00:00 2001
+From: darkraven <drdarkraven@gmail.com>
+Date: Sat, 31 Mar 2012 22:20:43 +0800
+Subject: [PATCH 2/3] Introduce run_command()
+
+    Use run_command() instead of parse_command(), which disable all
+    events before parse the command. This can avoid potential race
+    conditions.
+---
+ include/commands_parser.h |    4 ++++
+ src/assignments.c         |    7 +------
+ src/commands_parser.c     |   23 +++++++++++++++++++++++
+ src/con.c                 |    2 +-
+ src/handlers.c            |    9 ++-------
+ src/ipc.c                 |   12 +-----------
+ src/x.c                   |   15 +++++----------
+ 7 files changed, 37 insertions(+), 35 deletions(-)
+
+diff --git a/include/commands_parser.h b/include/commands_parser.h
+index 5a4472d..08d7b71 100644
+--- a/include/commands_parser.h
++++ b/include/commands_parser.h
+@@ -27,6 +27,10 @@ struct CommandResult {
+     bool needs_tree_render;
+ };
+ 
++#ifdef TEST_PARSER
+ struct CommandResult *parse_command(const char *input);
++#else
++void run_command(const char *input, int fd);
++#endif
+ 
+ #endif
+diff --git a/src/assignments.c b/src/assignments.c
+index 09793c3..f68aa12 100644
+--- a/src/assignments.c
++++ b/src/assignments.c
+@@ -43,13 +43,8 @@ void run_assignments(i3Window *window) {
+             DLOG("execute command %s\n", current->dest.command);
+             char *full_command;
+             sasprintf(&full_command, "[id=\"%d\"] %s", window->id, current->dest.command);
+-            struct CommandResult *command_output = parse_command(full_command);
++            run_command(full_command, -1);
+             free(full_command);
+-
+-            if (command_output->needs_tree_render)
+-                needs_tree_render = true;
+-
+-            free(command_output->json_output);
+         }
+ 
+         /* Store that we ran this assignment to not execute it again */
+diff --git a/src/commands_parser.c b/src/commands_parser.c
+index 27a782a..acffde1 100644
+--- a/src/commands_parser.c
++++ b/src/commands_parser.c
+@@ -408,6 +408,29 @@ struct CommandResult *parse_command(const char *input) {
+     return &command_output;
+ }
+ 
++#ifndef TEST_PARSER
++
++void run_command(const char *input, int fd) {
++    x_mask_event_mask(XCB_NONE);
++
++    struct CommandResult *cmd_output = parse_command(input);
++    if (cmd_output->needs_tree_render)
++        tree_render();
++    else
++        x_mask_event_mask(FRAME_EVENT_MASK);
++
++    if (fd >= 0) {
++        /* If no reply was provided, we just use the default success message */
++        ipc_send_message(fd, strlen(cmd_output->json_output),
++                         I3_IPC_REPLY_TYPE_COMMAND,
++                         (const uint8_t*)cmd_output->json_output);
++    }
++
++    free(cmd_output->json_output);
++}
++
++#endif
++
+ /*******************************************************************************
+  * Code for building the stand-alone binary test.commands_parser which is used
+  * by t/187-commands-parser.t.
+diff --git a/src/con.c b/src/con.c
+index 724961f..eea04cd 100644
+--- a/src/con.c
++++ b/src/con.c
+@@ -193,7 +193,7 @@ void con_focus(Con *con) {
+         con_focus(con->parent);
+ 
+     focused = con;
+-    if (con->urgent) {
++    if (con->urgent && con->type != CT_WORKSPACE) {
+         con->urgent = false;
+         workspace_update_urgent_flag(con_get_workspace(con));
+     }
+diff --git a/src/handlers.c b/src/handlers.c
+index 688cf2f..58fd03f 100644
+--- a/src/handlers.c
++++ b/src/handlers.c
+@@ -80,7 +80,7 @@ bool event_is_ignored(const int sequence, const int response_type) {
+ 
+ /*
+  * There was a key press. We compare this key code with our bindings table and pass
+- * the bound action to parse_command().
++ * the bound action to run_command().
+  *
+  */
+ static void handle_key_press(xcb_key_press_event_t *event) {
+@@ -119,12 +119,7 @@ static void handle_key_press(xcb_key_press_event_t *event) {
+         }
+     }
+ 
+-    struct CommandResult *command_output = parse_command(bind->command);
+-
+-    if (command_output->needs_tree_render)
+-        tree_render();
+-
+-    free(command_output->json_output);
++    run_command(bind->command, -1);
+ }
+ 
+ /*
+diff --git a/src/ipc.c b/src/ipc.c
+index 3733034..df8d233 100644
+--- a/src/ipc.c
++++ b/src/ipc.c
+@@ -119,18 +119,8 @@ IPC_HANDLER(command) {
+     char *command = scalloc(message_size + 1);
+     strncpy(command, (const char*)message, message_size);
+     LOG("IPC: received: *%s*\n", command);
+-    struct CommandResult *command_output = parse_command((const char*)command);
++    run_command((const char*)command, fd);
+     free(command);
+-
+-    if (command_output->needs_tree_render)
+-        tree_render();
+-
+-    /* If no reply was provided, we just use the default success message */
+-    ipc_send_message(fd, strlen(command_output->json_output),
+-                     I3_IPC_REPLY_TYPE_COMMAND,
+-                     (const uint8_t*)command_output->json_output);
+-
+-    free(command_output->json_output);
+ }
+ 
+ static void dump_rect(yajl_gen gen, const char *name, Rect r) {
+diff --git a/src/x.c b/src/x.c
+index f2b5325..081cf29 100644
+--- a/src/x.c
++++ b/src/x.c
+@@ -809,6 +809,7 @@ static void x_push_node_unmaps(Con *con) {
+ void x_push_changes(Con *con) {
+     con_state *state;
+     xcb_query_pointer_cookie_t pointercookie;
++    uint32_t values[1];
+ 
+     /* If we need to warp later, we request the pointer position as soon as possible */
+     if (warp_to) {
+@@ -817,11 +818,7 @@ void x_push_changes(Con *con) {
+ 
+     DLOG("-- PUSHING WINDOW STACK --\n");
+     //DLOG("Disabling EnterNotify\n");
+-    uint32_t values[1] = { XCB_NONE };
+-    CIRCLEQ_FOREACH_REVERSE(state, &state_head, state) {
+-        if (state->mapped)
+-            xcb_change_window_attributes(conn, state->id, XCB_CW_EVENT_MASK, values);
+-    }
++    x_mask_event_mask(XCB_NONE);
+     //DLOG("Done, EnterNotify disabled\n");
+     bool order_changed = false;
+     bool stacking_changed = false;
+@@ -888,11 +885,7 @@ void x_push_changes(Con *con) {
+     }
+ 
+     //DLOG("Re-enabling EnterNotify\n");
+-    values[0] = FRAME_EVENT_MASK;
+-    CIRCLEQ_FOREACH_REVERSE(state, &state_head, state) {
+-        if (state->mapped)
+-            xcb_change_window_attributes(conn, state->id, XCB_CW_EVENT_MASK, values);
+-    }
++    x_mask_event_mask(FRAME_EVENT_MASK);
+     //DLOG("Done, EnterNotify re-enabled\n");
+ 
+     x_deco_recurse(con);
+@@ -1047,4 +1040,6 @@ void x_mask_event_mask(uint32_t mask) {
+         if (state->mapped)
+             xcb_change_window_attributes(conn, state->id, XCB_CW_EVENT_MASK, values);
+     }
++
++    xcb_flush(conn);
+ }
+-- 
+1.7.9.5
+

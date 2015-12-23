@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Compiling from Source
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Compiling%20from%20Source&In-Reply-To=%3CCAAuVr70JuwXNk0dxnSZiHE0ak0s5ThkkLd6c4e5e-U-%2BOK-wkg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000789.html">
+   <LINK REL="Next"  HREF="000791.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Compiling from Source</H1>
+    <B>BRAGA, Bruno</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Compiling%20from%20Source&In-Reply-To=%3CCAAuVr70JuwXNk0dxnSZiHE0ak0s5ThkkLd6c4e5e-U-%2BOK-wkg%40mail.gmail.com%3E"
+       TITLE="[i3] Compiling from Source">bruno.braga at gmail.com
+       </A><BR>
+    <I>Wed Jul 11 08:39:36 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000789.html">[i3] Compiling from Source
+</A></li>
+        <LI>Next message: <A HREF="000791.html">[i3] Compiling from Source
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#790">[ date ]</a>
+              <a href="thread.html#790">[ thread ]</a>
+              <a href="subject.html#790">[ subject ]</a>
+              <a href="author.html#790">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thanks guys.... It is a bit painful to go through all dependencies (and
+package naming conventions)... now I got stuck in the :
+
+$ make
+[libi3] CC fake_configure_notify.c
+In file included from fake_configure_notify.c:14:0:
+../include/libi3.h:19:29: fatal error: xcb/xcb_keysyms.h: No such file or
+directory
+compilation terminated.
+make[1]: *** [fake_configure_notify.o] Error 1
+make: *** [libi3/libi3.a] Error 2
+
+But installing all I could think of (xcb-proto libxcb1 libxcb1-dev
+libxcb-util0 libxcb-util0-dev), and still nothing...
+
+The autobuilder option seems interesting, but apt-get says I am already in
+the latest version... should I use a --resintall flag?
+
+Anyways, I guess I'd better get it compilable locally, because I want to do
+some changes in the code myself, and test it properly.
+
+
+Thanks.
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">bruno.braga at gmail.com</A>
+
+
+On Wed, Jul 11, 2012 at 4:12 PM, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt;wrote:
+
+&gt;<i> Hi Bruno,
+</I>&gt;<i>
+</I>&gt;<i> Quoting BRAGA, Bruno (2012-07-11 05:29:11)
+</I>&gt;<i> &gt; For instance, cloning the source from git:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; $ git clone <A HREF="git://code.i3wm.org/i3">git://code.i3wm.org/i3</A>
+</I>&gt;<i> &gt; $ cd i3
+</I>&gt;<i> &gt; $ make
+</I>&gt;<i> &gt; In file included from src/auto_detect_format.c:15:0:
+</I>&gt;<i> &gt; include/i3status.h:7:21: fatal error: confuse.h: No such file or
+</I>&gt;<i> directory
+</I>&gt;<i> &gt; compilation terminated.
+</I>&gt;<i> &gt; make: *** [src/auto_detect_format.o] Error 1
+</I>&gt;<i> This output is fake. You are compiling i3status, but you&#8217;re telling us
+</I>&gt;<i> you compile i3.
+</I>&gt;<i>
+</I>&gt;<i> &gt; I am running it on Ubuntu 12.04 64-bit by the way.
+</I>&gt;<i> Use our auto-builder repository, see
+</I>&gt;<i> <A HREF="http://i3wm.org/docs/repositories.html">http://i3wm.org/docs/repositories.html</A>
+</I>&gt;<i>
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Michael
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120711/fb163879/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120711/fb163879/attachment.html</A>&gt;
+</PRE>
+
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000789.html">[i3] Compiling from Source
+</A></li>
+	<LI>Next message: <A HREF="000791.html">[i3] Compiling from Source
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#790">[ date ]</a>
+              <a href="thread.html#790">[ thread ]</a>
+              <a href="subject.html#790">[ subject ]</a>
+              <a href="author.html#790">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

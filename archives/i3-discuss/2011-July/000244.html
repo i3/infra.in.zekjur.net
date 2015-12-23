@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Change focus in i3-tree
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Change%20focus%20in%20i3-tree&In-Reply-To=%3Cm2zkkds6ey.fsf%40informatik.uni-tuebingen.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000252.html">
+   <LINK REL="Next"  HREF="000245.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Change focus in i3-tree</H1>
+    <B>Marcus Crestani</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Change%20focus%20in%20i3-tree&In-Reply-To=%3Cm2zkkds6ey.fsf%40informatik.uni-tuebingen.de%3E"
+       TITLE="[i3] Change focus in i3-tree">crestani at informatik.uni-tuebingen.de
+       </A><BR>
+    <I>Sun Jul 17 09:38:45 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000252.html">[i3] dzen2 on i3-3.e_bfl1
+</A></li>
+        <LI>Next message: <A HREF="000245.html">[i3] Change focus in i3-tree
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#244">[ date ]</a>
+              <a href="thread.html#244">[ thread ]</a>
+              <a href="subject.html#244">[ subject ]</a>
+              <a href="author.html#244">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I have trouble achieving certain focus change functionality in
+i3-tree-pr4 that I use all the time in i3-v3.
+
+My screen shows something like this:
+
++---------------------+---------------------+
+|<i>=t1=======| t2       | t3       |=t4=======+
+</I>+---------------------+---------------------+
+|<i> $                   | $                   |
+</I>|<i>                     |                     |
+</I>|<i>                     |                     |
+</I>
+Two containers, each tabbed, one on the left hand side with two
+terminal windows (t1 and t2, where t1 is in front, denoted by ===) and
+one on the right hand side with two more terminal windows (t3 and t4,
+where t4 is in front, also denoted by ===).  Focus is on t1.
+
+In i3-v3, I can hit the key that I've configured to `wcl' to move focus
+from t1 to t4 directly, and `wcj' to move focus from t4 to t1 directly.
+
+In i3-tree, the &quot;with container&quot; commands are obsolete, so the `wc*'
+commands do not exist anymore.  How can I achieve the described focus
+change in i3-tree?
+
+In i3-tree, it seems to me that I only can `focus left' and `focus
+right'.  Coming from t1, a `focus right' key brings t2 to front, then
+moves over to t3 and brings it to front, then moves to t4, but t1 is no
+longer visible:
+ 
++---------------------+---------------------+
+|<i> t1       |=t2=======| t3       |=t4=======+
+</I>+---------------------+---------------------+
+|<i> $                   | $                   |
+</I>|<i>                     |                     |
+</I>|<i>                     |                     |
+</I>
+Maybe the right way to think about this focus navigation in i3-tree is
+something like &quot;focus left parent&quot; respectively &quot;focus right parent&quot;?
+Is there a way to bind a key to a sequence of commands, eg. `focus
+parent; focus left'?
+
+What am I missing?
+
+-- 
+Marcus
+</PRE>
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000252.html">[i3] dzen2 on i3-3.e_bfl1
+</A></li>
+	<LI>Next message: <A HREF="000245.html">[i3] Change focus in i3-tree
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#244">[ date ]</a>
+              <a href="thread.html#244">[ thread ]</a>
+              <a href="subject.html#244">[ subject ]</a>
+              <a href="author.html#244">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

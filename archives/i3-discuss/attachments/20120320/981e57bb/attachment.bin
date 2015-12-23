@@ -1,0 +1,76 @@
+diff --git a/i3bar/include/outputs.h b/i3bar/include/outputs.h
+index 6501c31..cb336be 100644
+--- a/i3bar/include/outputs.h
++++ b/i3bar/include/outputs.h
+@@ -40,6 +40,7 @@ i3_output* get_output_by_name(char* name);
+ struct i3_output {
+     char*          name;          /* Name of the output */
+     bool           active;        /* If the output is active */
++    bool           primary;       /* If it is the primary output */ 
+     int            ws;            /* The number of the currently visible ws */
+     rect           rect;          /* The rect (relative to the root-win) */
+ 
+diff --git a/i3bar/src/outputs.c b/i3bar/src/outputs.c
+index 9dc5cab..83a4c24 100644
+--- a/i3bar/src/outputs.c
++++ b/i3bar/src/outputs.c
+@@ -45,15 +45,19 @@ static int outputs_null_cb(void *params_) {
+ static int outputs_boolean_cb(void *params_, int val) {
+     struct outputs_json_params *params = (struct outputs_json_params*) params_;
+ 
+-    if (strcmp(params->cur_key, "active")) {
+-        return 0;
++    if (!strcmp(params->cur_key, "active")) {
++        params->outputs_walk->active = val;
++        FREE(params->cur_key);
++        return 1;
+     }
+ 
+-    params->outputs_walk->active = val;
+-
+-    FREE(params->cur_key);
++    if (!strcmp(params->cur_key, "primary")) {
++        params->outputs_walk->primary = val;
++        FREE(params->cur_key);
++        return 1;
++    }
+ 
+-    return 1;
++    return 0;
+ }
+ 
+ /*
+diff --git a/i3bar/src/xcb.c b/i3bar/src/xcb.c
+index 29ffe1c..3615603 100644
+--- a/i3bar/src/xcb.c
++++ b/i3bar/src/xcb.c
+@@ -452,9 +452,12 @@ static void handle_client_message(xcb_client_message_event_t* event) {
+             SLIST_FOREACH(walk, outputs, slist) {
+                 if (!walk->active)
+                     continue;
+-                if (config.tray_output &&
+-                    strcasecmp(walk->name, config.tray_output) != 0)
+-                    continue;
++                if (config.tray_output) {
++                    if ((strcasecmp(walk->name, config.tray_output) != 0) &&
++                        (strcasecmp("primary", config.tray_output) != 0 || !walk->primary))
++                        continue;
++                }
++
+                 DLOG("using output %s\n", walk->name);
+                 output = walk;
+             }
+diff --git a/src/ipc.c b/src/ipc.c
+index fe1464e..60533da 100644
+--- a/src/ipc.c
++++ b/src/ipc.c
+@@ -408,6 +408,9 @@ IPC_HANDLER(get_outputs) {
+         ystr("active");
+         y(bool, output->active);
+ 
++        ystr("primary");
++        y(bool, output->primary);
++
+         ystr("rect");
+         y(map_open);
+         ystr("x");

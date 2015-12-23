@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Setup layout beforehand
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Setup%20layout%20beforehand&In-Reply-To=%3C20130120162607.64b449e1%40debelianear%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001148.html">
+   <LINK REL="Next"  HREF="001150.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Setup layout beforehand</H1>
+    <B>Mateusz Poszwa</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Setup%20layout%20beforehand&In-Reply-To=%3C20130120162607.64b449e1%40debelianear%3E"
+       TITLE="[i3] Setup layout beforehand">old4 at o2.pl
+       </A><BR>
+    <I>Sun Jan 20 16:26:07 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001148.html">[i3] Setup layout beforehand
+</A></li>
+        <LI>Next message: <A HREF="001150.html">[i3] idea on default layout orientation: complete binary tree model
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1149">[ date ]</a>
+              <a href="thread.html#1149">[ thread ]</a>
+              <a href="subject.html#1149">[ subject ]</a>
+              <a href="author.html#1149">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, 20 Jan 2013 11:52:15 -0300
+Pedro Lacerda &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">kanvuanza at gmail.com</A>&gt; wrote:
+
+&gt;<i> On Sun, Jan 20, 2013 at 10:27 AM, Mateusz Poszwa &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">old4 at o2.pl</A>&gt; wrote:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; On Sun, 20 Jan 2013 01:52:02 -0300
+</I>&gt;<i> &gt; Pedro Lacerda &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">kanvuanza at gmail.com</A>&gt; wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt; I use VMD, a program with multiple windows that must be launched from a
+</I>&gt;<i> &gt; &gt; terminal.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; When it starts two windows are opened instantly giving me no time to
+</I>&gt;<i> &gt; switch
+</I>&gt;<i> &gt; &gt; the layout beforehand. Assuming a new workspace, I want to launch VMD,
+</I>&gt;<i> &gt; hide
+</I>&gt;<i> &gt; &gt; the terminal (put in stack or tabbed mode) and set the remaining windows
+</I>&gt;<i> &gt; in
+</I>&gt;<i> &gt; &gt; horizontal mode.
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Simply put, I need to open an terminal and launch VMD (two windows
+</I>&gt;<i> &gt; &gt; simultaneously). My desired layout is:
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt;       stack
+</I>&gt;<i> &gt; &gt;      /     \
+</I>&gt;<i> &gt; &gt; terminal  h-split
+</I>&gt;<i> &gt; &gt;            /   \
+</I>&gt;<i> &gt; &gt;          VMD1 VMD2
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Hello.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I guess your question is: &#8222;How to get this layout before launching VMD?&#8221;
+</I>&gt;<i> &gt; I think it's not possible (though I may be wrong,
+</I>&gt;<i> &gt; since I don't know if layout saving is implemented),
+</I>&gt;<i> &gt; but I can tell you how to get this layout after launching the program.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; 1. With open terminal, switch to stacked mode (&#8222;layout tabbed&#8221;)
+</I>&gt;<i> &gt; 2. Launch VMD
+</I>&gt;<i> &gt; 3. With one of the VMD's windows focussed, split horizontally (&#8222;splith&#8221;)
+</I>&gt;<i> &gt; 4. Focus the other VMD's window (probably &#8222;focus left&#8221;)
+</I>&gt;<i> &gt; 5. Move the window into the split window (probably &#8222;move right&#8221;)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Putting a for_window with splith command into your config
+</I>&gt;<i> &gt; could help to do this automatically for two windows,
+</I>&gt;<i> &gt; but that's a really ugly workaround.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Before you start to fiddle with your configuration,
+</I>&gt;<i> &gt; can you tell why that program has to be launched from the terminal?
+</I>&gt;<i> &gt; If it doesn't require input and it doesn't output important data,
+</I>&gt;<i> &gt; I don't see the need for it to be launched from the terminal.
+</I>&gt;<i> &gt;
+</I>&gt;<i> 
+</I>&gt;<i> Great, this works.
+</I>&gt;<i> 
+</I>&gt;<i> It has very little use as it has a dedicated Tk console window, but
+</I>&gt;<i> only there
+</I>&gt;<i> some error explanations are showed. Earlier versions didn't require the
+</I>&gt;<i> terminal open, now it simply didn't starts without it.
+</I>&gt;<i> 
+</I>&gt;<i> I tried to disown the program, but it closes?! Do you know how to circumvent
+</I>&gt;<i> this?
+</I>&gt;<i> 
+</I>&gt;<i> Best regards.
+</I>&gt;<i> 
+</I>
+You can use nohup, dtach, probably some multiplexers like tmux, screen&#8230;
+When using nohup you can get the output again with &#8222;tail -f nohup.out&#8221;.
+Refer to the manpages of the commands for information about using them.
+
+Good luck. ;-)
+
+-- 
+Mateusz Poszwa
+</PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001148.html">[i3] Setup layout beforehand
+</A></li>
+	<LI>Next message: <A HREF="001150.html">[i3] idea on default layout orientation: complete binary tree model
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1149">[ date ]</a>
+              <a href="thread.html#1149">[ thread ]</a>
+              <a href="subject.html#1149">[ subject ]</a>
+              <a href="author.html#1149">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

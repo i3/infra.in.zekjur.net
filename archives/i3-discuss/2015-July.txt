@@ -1,0 +1,585 @@
+From jeff at purple.com  Thu Jul  2 11:54:07 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Thu, 2 Jul 2015 11:54:07 +0200
+Subject: [i3] Binding adventures between mappings
+Message-ID: <CAM4Y7zyoY-wv1JqVQ+E8QSM65WLxdRC4OnujgKW35iv=CKUarA@mail.gmail.com>
+
+I said that wrong in the subject, let me try in more than one line:
+
+I have a somewhat modal idea of how to interact with a window manager, so
+my i3 config binds very little at global level, the rest is in modes.  One
+mode I call "focus", because the items in that mode I might want to do
+without leaving the mode, mostly moving between windows.  In mode "i3",
+most of the bindings end with a mode command, often back to "default".
+
+I have this in my $HOME/i3/.config:
+
+set $mod Mod1
+bindsym $mod+Tab mode "i3"
+
+mode "i3" {
+    # Some things I might want to do.
+    # Includes a transition to focus mode.
+
+    # The mode is long, but here's an example:
+    bindsym c  exec urxvt; mode "default"
+}
+
+mode "focus" {
+    # A handful of actions that I want in a separate mode.
+
+    # And then there's a bunch of move/resize bindings, and then:
+
+    # If I forget where I am, do the right thing.
+    bindsym $mod+Tab mode "i3"
+
+    # Get me out of here.
+    bindsym Return     mode "default"
+    bindsym Escape     mode "default"
+    bindsym Control+g  mode "default"
+}
+
+This works great but for two bindings in "focus" mode:
+
+1.  The $mod+Tab binding I would expect to drop me into "i3" mode, but it
+has no effect.
+
+2.  The ESC and C-G bindings exit "focus" mode correctly, but RET has no
+effect.
+
+Any suggestions what I've done wrong?
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only if I'm in the UK
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150702/5fec9e18/attachment.html>
+
+From admin at airblader.de  Thu Jul  2 12:09:02 2015
+From: admin at airblader.de (=?UTF-8?Q?Ingo_B=c3=bcrk?=)
+Date: Thu, 2 Jul 2015 12:09:02 +0200
+Subject: [i3] Binding adventures between mappings
+In-Reply-To: <CAM4Y7zyoY-wv1JqVQ+E8QSM65WLxdRC4OnujgKW35iv=CKUarA@mail.gmail.com>
+References: <CAM4Y7zyoY-wv1JqVQ+E8QSM65WLxdRC4OnujgKW35iv=CKUarA@mail.gmail.com>
+Message-ID: <55950DBE.1000201@airblader.de>
+
+These work for me. I suggest you open an issue on Github and include log
+files.
+Make sure to restart i3, then press the shortcuts and then take the log
+file, that way the file stays relatively small.
+
+
+Ingo
+
+On 07/02/2015 11:54 AM, Jeff Abrahamson wrote:
+> I said that wrong in the subject, let me try in more than one line:
+>
+> I have a somewhat modal idea of how to interact with a window manager, so
+> my i3 config binds very little at global level, the rest is in modes.  One
+> mode I call "focus", because the items in that mode I might want to do
+> without leaving the mode, mostly moving between windows.  In mode "i3",
+> most of the bindings end with a mode command, often back to "default".
+>
+> I have this in my $HOME/i3/.config:
+>
+> set $mod Mod1
+> bindsym $mod+Tab mode "i3"
+>
+> mode "i3" {
+>     # Some things I might want to do.
+>     # Includes a transition to focus mode.
+>
+>     # The mode is long, but here's an example:
+>     bindsym c  exec urxvt; mode "default"
+> }
+>
+> mode "focus" {
+>     # A handful of actions that I want in a separate mode.
+>
+>     # And then there's a bunch of move/resize bindings, and then:
+>
+>     # If I forget where I am, do the right thing.
+>     bindsym $mod+Tab mode "i3"
+>
+>     # Get me out of here.
+>     bindsym Return     mode "default"
+>     bindsym Escape     mode "default"
+>     bindsym Control+g  mode "default"
+> }
+>
+> This works great but for two bindings in "focus" mode:
+>
+> 1.  The $mod+Tab binding I would expect to drop me into "i3" mode, but it
+> has no effect.
+>
+> 2.  The ESC and C-G bindings exit "focus" mode correctly, but RET has no
+> effect.
+>
+> Any suggestions what I've done wrong?
+>
+> Jeff Abrahamson
+> +33 6 24 40 01 57
+> +44 7920 594 255    <-- only if I'm in the UK
+>
+> http://jeff.purple.com/
+> http://blog.purple.com/jeff/
+>
+
+
+From eduncan911 at gmail.com  Sat Jul  4 06:34:08 2015
+From: eduncan911 at gmail.com (Eric Duncan)
+Date: Sat, 4 Jul 2015 00:34:08 -0400
+Subject: [i3] Reloading i3wm and saving layout
+Message-ID: <CACaqnaRoYpTnVb+k9hyV4peye7NWGJ81Ns5qRp46TpqKBJkD3A@mail.gmail.com>
+
+So, been using i3wm for a bit over a year across multiple distros (Debian6,
+7 and Testing; Ubuntu 14.04, 14.10 and 15.04; now Arch).
+
+When pressing MOD+R to reload i3wm, it's always annoyed me that it doesn't
+keep my terminal layouts (usually stacks them on the screen I am on).
+
+Today while monitoring journalctl, I noticed some interesting logs:
+
+Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: 07/04/2015 12:27:30
+AM - ERROR: mkdir(/run/user/1000/i3) failed: File exists
+Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: [libi3]
+libi3/font.c Using Pango font Segoe UI, size 10
+Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: [libi3]
+libi3/font.c X11 root window dictates 96.252632 DPI
+Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: Exiting due to
+signal.
+Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: 07/04/2015 12:27:30
+AM - ERROR: Could not create "/run/user/1000/i3" for storing the restart
+layout, layout will be lost.
+
+It says that this file exists:
+
+/run/user/1000/i3
+
+And indeed this directory does.
+
+Could this be the bane of my annoyances?
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150704/597e73e7/attachment.html>
+
+From michael at i3wm.org  Sat Jul  4 12:19:09 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 4 Jul 2015 12:19:09 +0200
+Subject: [i3] Reloading i3wm and saving layout
+In-Reply-To: <CACaqnaRoYpTnVb+k9hyV4peye7NWGJ81Ns5qRp46TpqKBJkD3A@mail.gmail.com>
+References: <CACaqnaRoYpTnVb+k9hyV4peye7NWGJ81Ns5qRp46TpqKBJkD3A@mail.gmail.com>
+Message-ID: <CANnVG6mRX35=_0QxiMqo5RU7NtWRLQJtsPOdGc3qoeSkuZd_Gw@mail.gmail.com>
+
+Which version of i3 are you using?
+
+On Sat, Jul 4, 2015 at 6:34 AM, Eric Duncan <eduncan911 at gmail.com> wrote:
+
+> So, been using i3wm for a bit over a year across multiple distros
+> (Debian6, 7 and Testing; Ubuntu 14.04, 14.10 and 15.04; now Arch).
+>
+> When pressing MOD+R to reload i3wm, it's always annoyed me that it doesn't
+> keep my terminal layouts (usually stacks them on the screen I am on).
+>
+> Today while monitoring journalctl, I noticed some interesting logs:
+>
+> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: 07/04/2015
+> 12:27:30 AM - ERROR: mkdir(/run/user/1000/i3) failed: File exists
+> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: [libi3]
+> libi3/font.c Using Pango font Segoe UI, size 10
+> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: [libi3]
+> libi3/font.c X11 root window dictates 96.252632 DPI
+> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: Exiting due to
+> signal.
+> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: 07/04/2015
+> 12:27:30 AM - ERROR: Could not create "/run/user/1000/i3" for storing the
+> restart layout, layout will be lost.
+>
+> It says that this file exists:
+>
+> /run/user/1000/i3
+>
+> And indeed this directory does.
+>
+> Could this be the bane of my annoyances?
+>
+>
+>
+
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150704/8690aceb/attachment.html>
+
+From eduncan911 at gmail.com  Sat Jul  4 17:28:19 2015
+From: eduncan911 at gmail.com (Eric Duncan)
+Date: Sat, 4 Jul 2015 11:28:19 -0400
+Subject: [i3] Reloading i3wm and saving layout
+In-Reply-To: <CANnVG6mRX35=_0QxiMqo5RU7NtWRLQJtsPOdGc3qoeSkuZd_Gw@mail.gmail.com>
+References: <CACaqnaRoYpTnVb+k9hyV4peye7NWGJ81Ns5qRp46TpqKBJkD3A@mail.gmail.com>
+ <CANnVG6mRX35=_0QxiMqo5RU7NtWRLQJtsPOdGc3qoeSkuZd_Gw@mail.gmail.com>
+Message-ID: <CACaqnaTYfET1LpVPA14_YokKdh3Xw9RBS9QAMQyZJO1QOdZACw@mail.gmail.com>
+
+i3 version 4.10.2 (2015-04-16, branch "4.10.2")
+
+Though it doesn't matter - been like this ever since I started using i3wm
+on Debian (6, 7, and Testing), Ubuntu (14.04, 14.10, 15.04) and Arch for
+over a year.
+
+Maybe I am missing a configuration parameter...
+
+On Sat, Jul 4, 2015 at 6:19 AM, Michael Stapelberg <michael at i3wm.org> wrote:
+
+> Which version of i3 are you using?
+>
+> On Sat, Jul 4, 2015 at 6:34 AM, Eric Duncan <eduncan911 at gmail.com> wrote:
+>
+>> So, been using i3wm for a bit over a year across multiple distros
+>> (Debian6, 7 and Testing; Ubuntu 14.04, 14.10 and 15.04; now Arch).
+>>
+>> When pressing MOD+R to reload i3wm, it's always annoyed me that it
+>> doesn't keep my terminal layouts (usually stacks them on the screen I am
+>> on).
+>>
+>> Today while monitoring journalctl, I noticed some interesting logs:
+>>
+>> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: 07/04/2015
+>> 12:27:30 AM - ERROR: mkdir(/run/user/1000/i3) failed: File exists
+>> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: [libi3]
+>> libi3/font.c Using Pango font Segoe UI, size 10
+>> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: [libi3]
+>> libi3/font.c X11 root window dictates 96.252632 DPI
+>> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: Exiting due to
+>> signal.
+>> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: 07/04/2015
+>> 12:27:30 AM - ERROR: Could not create "/run/user/1000/i3" for storing the
+>> restart layout, layout will be lost.
+>>
+>> It says that this file exists:
+>>
+>> /run/user/1000/i3
+>>
+>> And indeed this directory does.
+>>
+>> Could this be the bane of my annoyances?
+>>
+>>
+>>
+>
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150704/8bcb3857/attachment.html>
+
+From karol.langner at gmail.com  Sat Jul  4 18:59:48 2015
+From: karol.langner at gmail.com (Karol Langner)
+Date: Sat, 4 Jul 2015 09:59:48 -0700
+Subject: [i3] Reloading i3wm and saving layout
+In-Reply-To: <CACaqnaTYfET1LpVPA14_YokKdh3Xw9RBS9QAMQyZJO1QOdZACw@mail.gmail.com>
+References: <CACaqnaRoYpTnVb+k9hyV4peye7NWGJ81Ns5qRp46TpqKBJkD3A@mail.gmail.com>
+ <CANnVG6mRX35=_0QxiMqo5RU7NtWRLQJtsPOdGc3qoeSkuZd_Gw@mail.gmail.com>
+ <CACaqnaTYfET1LpVPA14_YokKdh3Xw9RBS9QAMQyZJO1QOdZACw@mail.gmail.com>
+Message-ID: <CAGwqgjd3xB1tpS6rCJg9dVOoetyuuK39_xWxgvutd-hFg8izxQ@mail.gmail.com>
+
+Just wanted to mention that I remember having the same thing on Debian
+wheezy, although I did not look at the logs and it went away when I moved
+to Ubuntu 12/14. I also did revamp my config at the same, so it could have
+been related to that.
+
+On Sat, Jul 4, 2015 at 8:28 AM, Eric Duncan <eduncan911 at gmail.com> wrote:
+
+> i3 version 4.10.2 (2015-04-16, branch "4.10.2")
+>
+> Though it doesn't matter - been like this ever since I started using i3wm
+> on Debian (6, 7, and Testing), Ubuntu (14.04, 14.10, 15.04) and Arch for
+> over a year.
+>
+> Maybe I am missing a configuration parameter...
+>
+> On Sat, Jul 4, 2015 at 6:19 AM, Michael Stapelberg <michael at i3wm.org>
+> wrote:
+>
+>> Which version of i3 are you using?
+>>
+>> On Sat, Jul 4, 2015 at 6:34 AM, Eric Duncan <eduncan911 at gmail.com> wrote:
+>>
+>>> So, been using i3wm for a bit over a year across multiple distros
+>>> (Debian6, 7 and Testing; Ubuntu 14.04, 14.10 and 15.04; now Arch).
+>>>
+>>> When pressing MOD+R to reload i3wm, it's always annoyed me that it
+>>> doesn't keep my terminal layouts (usually stacks them on the screen I am
+>>> on).
+>>>
+>>> Today while monitoring journalctl, I noticed some interesting logs:
+>>>
+>>> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: 07/04/2015
+>>> 12:27:30 AM - ERROR: mkdir(/run/user/1000/i3) failed: File exists
+>>> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: [libi3]
+>>> libi3/font.c Using Pango font Segoe UI, size 10
+>>> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: [libi3]
+>>> libi3/font.c X11 root window dictates 96.252632 DPI
+>>> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: Exiting due to
+>>> signal.
+>>> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: 07/04/2015
+>>> 12:27:30 AM - ERROR: Could not create "/run/user/1000/i3" for storing the
+>>> restart layout, layout will be lost.
+>>>
+>>> It says that this file exists:
+>>>
+>>> /run/user/1000/i3
+>>>
+>>> And indeed this directory does.
+>>>
+>>> Could this be the bane of my annoyances?
+>>>
+>>>
+>>>
+>>
+>>
+>> --
+>> Best regards,
+>> Michael
+>>
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150704/b8a84fbf/attachment.html>
+
+From michael at i3wm.org  Sat Jul  4 20:01:10 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 4 Jul 2015 20:01:10 +0200
+Subject: [i3] Reloading i3wm and saving layout
+In-Reply-To: <CAGwqgjd3xB1tpS6rCJg9dVOoetyuuK39_xWxgvutd-hFg8izxQ@mail.gmail.com>
+References: <CACaqnaRoYpTnVb+k9hyV4peye7NWGJ81Ns5qRp46TpqKBJkD3A@mail.gmail.com>
+ <CANnVG6mRX35=_0QxiMqo5RU7NtWRLQJtsPOdGc3qoeSkuZd_Gw@mail.gmail.com>
+ <CACaqnaTYfET1LpVPA14_YokKdh3Xw9RBS9QAMQyZJO1QOdZACw@mail.gmail.com>
+ <CAGwqgjd3xB1tpS6rCJg9dVOoetyuuK39_xWxgvutd-hFg8izxQ@mail.gmail.com>
+Message-ID: <CANnVG6kL3uVcp2UnHkFvW7yLHW-9RZGySxUkT8ANZDeWQSeP5Q@mail.gmail.com>
+
+To me, this sounds like a bug, but I’m not yet sure where precisely it is
+:).
+
+Eric, can you please file an issue at https://github.com/i3/i3? When you
+file it, please include the version of i3 as well as a logfile (as the
+instructions ask you to). In addition, can you please include the output of
+“ls -lR /run” and “mount”?
+
+Thanks.
+
+On Sat, Jul 4, 2015 at 6:59 PM, Karol Langner <karol.langner at gmail.com>
+wrote:
+
+> Just wanted to mention that I remember having the same thing on Debian
+> wheezy, although I did not look at the logs and it went away when I moved
+> to Ubuntu 12/14. I also did revamp my config at the same, so it could have
+> been related to that.
+>
+> On Sat, Jul 4, 2015 at 8:28 AM, Eric Duncan <eduncan911 at gmail.com> wrote:
+>
+>> i3 version 4.10.2 (2015-04-16, branch "4.10.2")
+>>
+>> Though it doesn't matter - been like this ever since I started using i3wm
+>> on Debian (6, 7, and Testing), Ubuntu (14.04, 14.10, 15.04) and Arch for
+>> over a year.
+>>
+>> Maybe I am missing a configuration parameter...
+>>
+>> On Sat, Jul 4, 2015 at 6:19 AM, Michael Stapelberg <michael at i3wm.org>
+>> wrote:
+>>
+>>> Which version of i3 are you using?
+>>>
+>>> On Sat, Jul 4, 2015 at 6:34 AM, Eric Duncan <eduncan911 at gmail.com>
+>>> wrote:
+>>>
+>>>> So, been using i3wm for a bit over a year across multiple distros
+>>>> (Debian6, 7 and Testing; Ubuntu 14.04, 14.10 and 15.04; now Arch).
+>>>>
+>>>> When pressing MOD+R to reload i3wm, it's always annoyed me that it
+>>>> doesn't keep my terminal layouts (usually stacks them on the screen I am
+>>>> on).
+>>>>
+>>>> Today while monitoring journalctl, I noticed some interesting logs:
+>>>>
+>>>> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: 07/04/2015
+>>>> 12:27:30 AM - ERROR: mkdir(/run/user/1000/i3) failed: File exists
+>>>> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: [libi3]
+>>>> libi3/font.c Using Pango font Segoe UI, size 10
+>>>> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: [libi3]
+>>>> libi3/font.c X11 root window dictates 96.252632 DPI
+>>>> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: Exiting due to
+>>>> signal.
+>>>> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: 07/04/2015
+>>>> 12:27:30 AM - ERROR: Could not create "/run/user/1000/i3" for storing the
+>>>> restart layout, layout will be lost.
+>>>>
+>>>> It says that this file exists:
+>>>>
+>>>> /run/user/1000/i3
+>>>>
+>>>> And indeed this directory does.
+>>>>
+>>>> Could this be the bane of my annoyances?
+>>>>
+>>>>
+>>>>
+>>>
+>>>
+>>> --
+>>> Best regards,
+>>> Michael
+>>>
+>>
+>>
+>
+
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150704/7e9d9fdd/attachment-0001.html>
+
+From vivien.didelot at gmail.com  Sun Jul  5 23:31:11 2015
+From: vivien.didelot at gmail.com (Vivien Didelot)
+Date: Sun, 5 Jul 2015 17:31:11 -0400
+Subject: [i3] i3blocks "BATMAN" 1.4 is out!
+Message-ID: <CAJ2J69jFKvVc881uxVdnsvwNM3g6XBOLXQ_x8sdhbwJLN+Zzew@mail.gmail.com>
+
+I'm glad to announce the 1.4 version of the flexible scheduler for i3bar!
+
+This release features new scripts, support for the markup property,
+persistent commands (oneline print from an infinite loop) and more fixes!
+
+Github: https://github.com/vivien/i3blocks/releases/tag/1.4
+Google+: https://plus.google.com/+VivienDidelot/posts/iRakgB79cQW
+
+--
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150705/8d91e980/attachment.html>
+
+From eduncan911 at gmail.com  Fri Jul 24 17:37:14 2015
+From: eduncan911 at gmail.com (Eric Duncan)
+Date: Fri, 24 Jul 2015 11:37:14 -0400
+Subject: [i3] Reloading i3wm and saving layout
+In-Reply-To: <CANnVG6kL3uVcp2UnHkFvW7yLHW-9RZGySxUkT8ANZDeWQSeP5Q@mail.gmail.com>
+References: <CACaqnaRoYpTnVb+k9hyV4peye7NWGJ81Ns5qRp46TpqKBJkD3A@mail.gmail.com>
+ <CANnVG6mRX35=_0QxiMqo5RU7NtWRLQJtsPOdGc3qoeSkuZd_Gw@mail.gmail.com>
+ <CACaqnaTYfET1LpVPA14_YokKdh3Xw9RBS9QAMQyZJO1QOdZACw@mail.gmail.com>
+ <CAGwqgjd3xB1tpS6rCJg9dVOoetyuuK39_xWxgvutd-hFg8izxQ@mail.gmail.com>
+ <CANnVG6kL3uVcp2UnHkFvW7yLHW-9RZGySxUkT8ANZDeWQSeP5Q@mail.gmail.com>
+Message-ID: <CACaqnaQNaPS7q-troctsO+Yc9fNtJKrjr+9jvrJqH=UcCwgZSg@mail.gmail.com>
+
+Finally had time to sit down and do this.
+
+@Michael: I opened an issue on Github:
+
+https://github.com/i3/i3/issues/1810
+
+And I made a comment of what I propose the fix to be: have the mkdir()
+function ignore if the directory already exists.
+
+
+
+On Sat, Jul 4, 2015 at 2:01 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+
+> To me, this sounds like a bug, but I’m not yet sure where precisely it is
+> :).
+>
+> Eric, can you please file an issue at https://github.com/i3/i3? When you
+> file it, please include the version of i3 as well as a logfile (as the
+> instructions ask you to). In addition, can you please include the output of
+> “ls -lR /run” and “mount”?
+>
+> Thanks.
+>
+> On Sat, Jul 4, 2015 at 6:59 PM, Karol Langner <karol.langner at gmail.com>
+> wrote:
+>
+>> Just wanted to mention that I remember having the same thing on Debian
+>> wheezy, although I did not look at the logs and it went away when I moved
+>> to Ubuntu 12/14. I also did revamp my config at the same, so it could have
+>> been related to that.
+>>
+>> On Sat, Jul 4, 2015 at 8:28 AM, Eric Duncan <eduncan911 at gmail.com> wrote:
+>>
+>>> i3 version 4.10.2 (2015-04-16, branch "4.10.2")
+>>>
+>>> Though it doesn't matter - been like this ever since I started using
+>>> i3wm on Debian (6, 7, and Testing), Ubuntu (14.04, 14.10, 15.04) and Arch
+>>> for over a year.
+>>>
+>>> Maybe I am missing a configuration parameter...
+>>>
+>>> On Sat, Jul 4, 2015 at 6:19 AM, Michael Stapelberg <michael at i3wm.org>
+>>> wrote:
+>>>
+>>>> Which version of i3 are you using?
+>>>>
+>>>> On Sat, Jul 4, 2015 at 6:34 AM, Eric Duncan <eduncan911 at gmail.com>
+>>>> wrote:
+>>>>
+>>>>> So, been using i3wm for a bit over a year across multiple distros
+>>>>> (Debian6, 7 and Testing; Ubuntu 14.04, 14.10 and 15.04; now Arch).
+>>>>>
+>>>>> When pressing MOD+R to reload i3wm, it's always annoyed me that it
+>>>>> doesn't keep my terminal layouts (usually stacks them on the screen I am
+>>>>> on).
+>>>>>
+>>>>> Today while monitoring journalctl, I noticed some interesting logs:
+>>>>>
+>>>>> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: 07/04/2015
+>>>>> 12:27:30 AM - ERROR: mkdir(/run/user/1000/i3) failed: File exists
+>>>>> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: [libi3]
+>>>>> libi3/font.c Using Pango font Segoe UI, size 10
+>>>>> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: [libi3]
+>>>>> libi3/font.c X11 root window dictates 96.252632 DPI
+>>>>> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: Exiting due to
+>>>>> signal.
+>>>>> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: 07/04/2015
+>>>>> 12:27:30 AM - ERROR: Could not create "/run/user/1000/i3" for storing the
+>>>>> restart layout, layout will be lost.
+>>>>>
+>>>>> It says that this file exists:
+>>>>>
+>>>>> /run/user/1000/i3
+>>>>>
+>>>>> And indeed this directory does.
+>>>>>
+>>>>> Could this be the bane of my annoyances?
+>>>>>
+>>>>>
+>>>>>
+>>>>
+>>>>
+>>>> --
+>>>> Best regards,
+>>>> Michael
+>>>>
+>>>
+>>>
+>>
+>
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150724/eed90090/attachment.html>
+

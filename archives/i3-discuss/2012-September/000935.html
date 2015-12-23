@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] building 4.3 on RHEL 6
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20building%204.3%20on%20RHEL%206&In-Reply-To=%3C15732.1348107506%40thecus.kiddle.eu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000934.html">
+   <LINK REL="Next"  HREF="000937.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] building 4.3 on RHEL 6</H1>
+    <B>Oliver Kiddle</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20building%204.3%20on%20RHEL%206&In-Reply-To=%3C15732.1348107506%40thecus.kiddle.eu%3E"
+       TITLE="[i3] building 4.3 on RHEL 6">okiddle at yahoo.co.uk
+       </A><BR>
+    <I>Thu Sep 20 04:18:26 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000934.html">[i3] build problem after git archive
+</A></li>
+        <LI>Next message: <A HREF="000937.html">[i3] building 4.3 on RHEL 6
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#935">[ date ]</a>
+              <a href="thread.html#935">[ thread ]</a>
+              <a href="subject.html#935">[ subject ]</a>
+              <a href="author.html#935">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I had a few issues building the latest i3.
+
+It seems cairo has been built without xcb support or at least
+cairo/cairo-xcb.h was not found. I worked around this by disabling pango
+which is easy enough. My Debian system has a cairo-xcb.pc file so it
+should be possible to make that automatic if it is the most appropriate
+workaround.
+
+The next problem was with ev.h not being found when compiling i3-msg,
+i3-nagbar, i3-config-wizard and i3-input. $(LIBEV_CFLAGS) was missing
+from their Makefiles and ev.h is in /usr/include/libev (it presumably
+works by accident on Debian because there it is just /usr/include/ev.h).
+However, it looks to me like these #includes are superfluous and the
+correct fix is simply to remove them as per the patch below.
+
+Finally, the trickiest problem is that yajl_get_bytes_consumed() was
+introduced with yajl 1.0.8 and RHEL 6 includes yajl 1.0.7. The relevant
+call was introduced in commit e53405c2 and it seemed fairly safe to
+apply that whole change in reverse.
+
+Oliver
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-remove-superfluous-ev.h-include-statements.patch
+Type: text/x-diff
+Size: 1523 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120920/57bb8f67/attachment.patch">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120920/57bb8f67/attachment.patch</A>&gt;
+</PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000934.html">[i3] build problem after git archive
+</A></li>
+	<LI>Next message: <A HREF="000937.html">[i3] building 4.3 on RHEL 6
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#935">[ date ]</a>
+              <a href="thread.html#935">[ thread ]</a>
+              <a href="subject.html#935">[ subject ]</a>
+              <a href="author.html#935">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

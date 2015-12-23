@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] advice on quick manipulation of splits
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20advice%20on%20quick%20manipulation%20of%20splits&In-Reply-To=%3C20150304042651.GA1266%40WorkBox.Home%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002005.html">
+   <LINK REL="Next"  HREF="002007.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] advice on quick manipulation of splits</H1>
+    <B>Bigby James</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20advice%20on%20quick%20manipulation%20of%20splits&In-Reply-To=%3C20150304042651.GA1266%40WorkBox.Home%3E"
+       TITLE="[i3] advice on quick manipulation of splits">bigby.james at dimthoughts.com
+       </A><BR>
+    <I>Wed Mar  4 05:26:51 CET 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002005.html">[i3] advice on quick manipulation of splits
+</A></li>
+        <LI>Next message: <A HREF="002007.html">[i3] I3 and emacs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2006">[ date ]</a>
+              <a href="thread.html#2006">[ thread ]</a>
+              <a href="subject.html#2006">[ subject ]</a>
+              <a href="author.html#2006">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 03/03, Eric Abrahamsen wrote:
+&gt;<i> One note, which might be close to a bug report. My interpretation of my
+</I>&gt;<i> last issue (where there was a horizontal split I couldn't get rid of) is
+</I>&gt;<i> this: in horiz/vert split situations, an empty split will disappear --
+</I>&gt;<i> as the video notes, that's how you &quot;get rid of&quot; split levels. What I
+</I>&gt;<i> think I was seeing, though, was that if the layout was in tabbed mode,
+</I>&gt;<i> the empty split didn't actually disappear. It only disappeared when I
+</I>&gt;<i> hit mod-e to change the layout to horiz/vert.
+</I>
+If I'm understanding you correctly (I may not be :P ), what you're seeing isn't
+really an &quot;empty split:&quot; when an existing tab in a container container is split
+into a new layout, a new container is nested within it. That container is the
+child of the tabbed container it rests in, and is the parent of any windows you
+open within it. That nested container remains where it is until you take some
+action that removes it, such as changing the layout of the nested container's
+parent or moving the only open window in the nested container to a different
+container or just plain closing the window. i3 layouts adapt in different ways
+depending on the series of actions the *user* takes on individual windows and
+groups of windows; you'd have to have taken some action to do away with that
+nested container.
+
+My advice for getting a grasp on how i3 works is to use nested containers as
+rarely as possible, at least from the start. This keeps things managable---it
+avoids situations in which you end up with windows nested so deeply in a layout
+that doing anything to one window has effects on all of them. I tend to work
+using two or three top-level containers per workspace, and set those containers'
+internal layouts based on my needs.  For example, as I write this I'm taking a
+break from a research project, and my layout looks like this:
+
+1) One stacked container on the left half of the screen, containing a web browser and
+PDF reader
+
+2) One container on the right half, containing only a Vim session with my notes
+and taking up about 70% vertical space
+
+3) One tabbed container on the right half below the Vim window, containing a
+shell instance, file manager and music player, taking up the remaining ~30% of
+vertical space
+
+Arranged in that way, with six windows spread across three top-level containers,
+I can move, resize or close any one window, and while the parent containers
+would change size with the windows, the container properties would otherwise be
+unchanged. I could acheive the same thing by creating a series of splits, but I
+don't like mucking around with branch after branch in a complex data tree. I simply
+prefer to work at the container level, but I think if you wade into the shallow end
+of basic container management like this you can get a feel for how i3 handles
+windows before heading into the deep end. ;)
+
+-- 
+&quot;A common mistake that people make when trying to design something completely
+foolproof is to underestimate the ingenuity of complete fools.&quot; - Douglas Adams
+
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002005.html">[i3] advice on quick manipulation of splits
+</A></li>
+	<LI>Next message: <A HREF="002007.html">[i3] I3 and emacs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2006">[ date ]</a>
+              <a href="thread.html#2006">[ thread ]</a>
+              <a href="subject.html#2006">[ subject ]</a>
+              <a href="author.html#2006">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,37 @@
+<tt>
+&lt;br&gt;&lt;div&nbsp;class=&quot;gmail_quote&quot;&gt;On&nbsp;Sun,&nbsp;Jul&nbsp;8,&nbsp;2012&nbsp;at&nbsp;4:31&nbsp;AM,&nbsp;Michael&nbsp;Stapelberg&nbsp;&lt;span&nbsp;dir=&quot;ltr&quot;&gt;&lt;&lt;a&nbsp;href=&quot;mailto:michael@i3wm.org&quot;&nbsp;target=&quot;_blank&quot;&gt;michael@i3wm.org&lt;/a&gt;&gt;&lt;/span&gt;&nbsp;wrote:&lt;br&gt;&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;<br>
+<br>
+Hi&nbsp;DR,&lt;br&gt;<br>
+&lt;br&gt;<br>
+Quoting&nbsp;DR&nbsp;(2012-07-07&nbsp;17:45:52)&lt;br&gt;<br>
+&lt;div&nbsp;class=&quot;im&quot;&gt;&gt;&nbsp;Since&nbsp;I&nbsp;failed&nbsp;to&nbsp;convince&nbsp;Michael&nbsp;to&nbsp;accept&nbsp;my&nbsp;newer&nbsp;patch,&nbsp;I&nbsp;decide&nbsp;to&nbsp;drop&lt;br&gt;<br>
+&gt;&nbsp;those&nbsp;more&nbsp;&quot;advanced&quot; patch,&nbsp;and&nbsp;try&nbsp;to&nbsp;push&nbsp;this&nbsp;simple&nbsp;patch&nbsp;into&nbsp;i3.&lt;br&gt;<br>
+&lt;/div&gt;Thanks&nbsp;for&nbsp;updating&nbsp;your&nbsp;patch.&nbsp;Here&nbsp;are&nbsp;my&nbsp;comments:&lt;br&gt;<br>
+&lt;br&gt;<br>
+1)&nbsp;You&nbsp;are&nbsp;not&nbsp;using&nbsp;FREE(last_urgent_ws);,&nbsp;but&nbsp;free(last_urgent_ws)&nbsp;in&lt;br&gt;<br>
+ &nbsp; line&nbsp;1489,&nbsp;which&nbsp;is&nbsp;unsafe&nbsp;(it&nbsp;is&nbsp;not&nbsp;guaranteed&nbsp;that&nbsp;last_urgent_ws&lt;br&gt;<br>
+ &nbsp; is&nbsp;!=&nbsp;NULL).&lt;br&gt;<br>
+&lt;br&gt;<br>
+2)&nbsp;You&nbsp;are&nbsp;using&nbsp;strdup()&nbsp;instead&nbsp;of&nbsp;sstrdup()&nbsp;in&nbsp;line&nbsp;1490,&nbsp;so&nbsp;you&lt;br&gt;<br>
+ &nbsp; don’t&nbsp;handle&nbsp;-EMEMORY.&lt;br&gt;<br>
+&lt;br&gt;<br>
+3)&nbsp;Instead&nbsp;of&nbsp;using&nbsp;if&nbsp;(last_urgent_ws)&nbsp;free(last_urgent_ws);&nbsp;you&nbsp;should&lt;br&gt;<br>
+ &nbsp; use&nbsp;FREE(last_urgent_ws)&nbsp;in&nbsp;line&nbsp;1526.&lt;br&gt;<br>
+&lt;br&gt;<br>
+4)&nbsp;Your&nbsp;patch&nbsp;doesn’t&nbsp;actually&nbsp;work&nbsp;when&nbsp;the&nbsp;user&nbsp;is&nbsp;not&nbsp;navigating&nbsp;away&lt;br&gt;<br>
+ &nbsp; from&nbsp;the&nbsp;workspace&nbsp;using&nbsp;the&nbsp;keyboard,&nbsp;but&nbsp;when&nbsp;he&nbsp;is&nbsp;focusing&nbsp;the&lt;br&gt;<br>
+ &nbsp; urgent&nbsp;window&nbsp;with&nbsp;the&nbsp;mouse.&nbsp;i3bar&nbsp;will&nbsp;properly&nbsp;update&nbsp;the&nbsp;urgency&lt;br&gt;<br>
+ &nbsp; indicator&nbsp;for&nbsp;that&nbsp;workspace,&nbsp;but&nbsp;it&nbsp;won’t&nbsp;hide.&lt;br&gt;&lt;/blockquote&gt;&lt;div&gt;This&nbsp;behavior&nbsp;is&nbsp;intended,&nbsp;so&nbsp;user&nbsp;can&nbsp;easily&nbsp;(using&nbsp;only&nbsp;his&nbsp;mouse)&nbsp;navigate&nbsp;back&nbsp;to&nbsp;previous&nbsp;workspace&nbsp;before&nbsp;the&nbsp;urgency&nbsp;happen.&lt;/div&gt;&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;<br>
+<br>
+<br>
+&lt;br&gt;<br>
+ &nbsp; I’d&nbsp;suggest&nbsp;to&nbsp;save&nbsp;a&nbsp;flag&nbsp;which&nbsp;is&nbsp;set&nbsp;to&nbsp;true&nbsp;when&nbsp;i3bar&nbsp;calls&lt;br&gt;<br>
+ &nbsp; unhide_bars()&nbsp;due&nbsp;to&nbsp;an&nbsp;urgent&nbsp;workspace.&nbsp;Then,&nbsp;check&nbsp;if&nbsp;that&nbsp;flag&nbsp;is&lt;br&gt;<br>
+ &nbsp; set,&nbsp;but&nbsp;no&nbsp;more&nbsp;urgent&nbsp;workspaces&nbsp;are&nbsp;found&nbsp;(!has_urgent&nbsp;&amp;&amp;&lt;br&gt;<br>
+ &nbsp; !mod_pressed&nbsp;&amp;&amp;&nbsp;hidden_due_to_urgency)&nbsp;and&nbsp;call&nbsp;hide_bars().&lt;br&gt;<br>
+&lt;br&gt;<br>
+Best&nbsp;regards,&lt;br&gt;<br>
+Michael&lt;br&gt;<br>
+&lt;/blockquote&gt;&lt;/div&gt;&lt;br&gt;<br>
+
+</tt>

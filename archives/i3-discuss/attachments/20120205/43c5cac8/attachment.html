@@ -1,0 +1,27 @@
+<tt>
+I&#39;m&nbsp;trying&nbsp;to&nbsp;get&nbsp;a&nbsp;certain&nbsp;behavior&nbsp;out&nbsp;of&nbsp;I3.&nbsp;As&nbsp;an&nbsp;example,&nbsp;lets&nbsp;say&nbsp;<br>
+I&#39;d&nbsp;like&nbsp;to&nbsp;have&nbsp;a&nbsp;firefox&nbsp;browser&nbsp;window&nbsp;on&nbsp;workspace&nbsp;3,&nbsp;a&nbsp;chromium&nbsp;<br>
+browser&nbsp;window&nbsp;on&nbsp;workspace&nbsp;9&nbsp;,&nbsp;etc. &nbsp;*&nbsp;However,&nbsp;I&nbsp;do&nbsp;not&nbsp;want&nbsp;to&nbsp;launch<br>
+&nbsp;another&nbsp;firefox&nbsp;again&nbsp;and&nbsp;have&nbsp;it&nbsp;also&nbsp;appear&nbsp;on&nbsp;workspace&nbsp;3&nbsp;*. &nbsp;&lt;br&gt;<br>
+&lt;br&gt;<br>
+For&nbsp;some&nbsp;reason,&nbsp;each&nbsp;firefox&nbsp;has&nbsp;the&nbsp;same&nbsp;WM_CLASS&nbsp;class&nbsp;/&nbsp;instance&nbsp;<br>
+fields&nbsp;on&nbsp;my&nbsp;debian&nbsp;system.&nbsp;Too&nbsp;bad&nbsp;they&nbsp;didn&#39;t&nbsp;append&nbsp;natural&nbsp;numbers&nbsp;<br>
+to&nbsp;each&nbsp;instance:&nbsp;firefox1&nbsp;for&nbsp;the&nbsp;first,&nbsp;firefox2&nbsp;for&nbsp;the&nbsp;second&nbsp;,&nbsp;etc.<br>
+&nbsp;This&nbsp;is&nbsp;not&nbsp;a&nbsp;problem&nbsp;with&nbsp;some&nbsp;of&nbsp;the&nbsp;terminal&nbsp;emulator&#39;s &nbsp;e.g.&nbsp;<br>
+gnome-terminal&nbsp;lets&nbsp;you&nbsp;set&nbsp;the&nbsp;WM_NAME&nbsp;window&nbsp;name,&nbsp;it&nbsp;remains&nbsp;static, <br>
+&nbsp;and&nbsp;we&nbsp;can&nbsp;assign&nbsp;to&nbsp;that.&nbsp;I&nbsp;tried&nbsp;using&nbsp;exec&nbsp;xprop&nbsp;-name&nbsp;.....&nbsp;-set&nbsp;<br>
+name&nbsp;..... &nbsp;to&nbsp;set&nbsp;the&nbsp;window&nbsp;name&nbsp;for&nbsp;the&nbsp;browsers&nbsp;from&nbsp;the&nbsp;config&nbsp;<br>
+file,&nbsp;but&nbsp;i&nbsp;get&nbsp;no&nbsp;such&nbsp;window.&nbsp;I&nbsp;believe&nbsp;this&nbsp;is&nbsp;because&nbsp;the&nbsp;window&nbsp;<br>
+name&nbsp;changes,&nbsp;as&nbsp;mentioned&nbsp;in&nbsp;the&nbsp;user&nbsp;guide.&lt;br&gt;<br>
+&lt;br&gt;<br>
+ I&nbsp;can&nbsp;think&nbsp;of&nbsp;two&nbsp;ways&nbsp;to&nbsp;get&nbsp;my&nbsp;desired&nbsp;behavior&nbsp;to&nbsp;work.&nbsp;One &nbsp;would&nbsp;<br>
+be&nbsp;a&nbsp;on_workspace&nbsp;command&nbsp;which&nbsp;I&nbsp;would&nbsp;add&nbsp;to&nbsp;the&nbsp;config&nbsp;file&nbsp;and&nbsp;its&nbsp;<br>
+signature&nbsp;would&nbsp;be&nbsp;&quot;on_workspace&nbsp;9&nbsp;exec&nbsp;chromium&quot;&nbsp;or&nbsp;something&nbsp;similar,&nbsp;<br>
+with&nbsp;the&nbsp;expected&nbsp;behavior&nbsp;launching&nbsp;a&nbsp;chromium&nbsp;browser&nbsp;on&nbsp;workspace&nbsp;9.&nbsp;<br>
+Another&nbsp;way&nbsp;would&nbsp;be&nbsp;to&nbsp;change&nbsp;the&nbsp;exec&nbsp;command&nbsp;to&nbsp;pass&nbsp;back&nbsp;the&nbsp;window&nbsp;<br>
+id,&nbsp;however&nbsp;I&#39;m&nbsp;not&nbsp;sure&nbsp;this&nbsp;is&nbsp;possible,&nbsp;and&nbsp;it&nbsp;doesn&#39;t&nbsp;seem&nbsp;to&nbsp;go&nbsp;<br>
+with&nbsp;the&nbsp;design&nbsp;plan&nbsp;for&nbsp;i3. &nbsp;Can&nbsp;anybody&nbsp;suggest&nbsp;a&nbsp;way&nbsp;to&nbsp;achieve&nbsp;the&nbsp;<br>
+behavior&nbsp;I&#39;m&nbsp;looking&nbsp;for,&nbsp;or&nbsp;give&nbsp;me&nbsp;a&nbsp;pointer&nbsp;on&nbsp;how&nbsp;to&nbsp;implement&nbsp;the&nbsp;<br>
+feature&nbsp;myself?<br>
+
+</tt>

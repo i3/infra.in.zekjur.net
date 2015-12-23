@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Multidimensional spatial tiling
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Multidimensional%20spatial%20tiling&In-Reply-To=%3C20140731153252.GF15171%40cardamom.adamsinfoserv.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001800.html">
+   <LINK REL="Next"  HREF="001796.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Multidimensional spatial tiling</H1>
+    <B>Russell Adams</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Multidimensional%20spatial%20tiling&In-Reply-To=%3C20140731153252.GF15171%40cardamom.adamsinfoserv.com%3E"
+       TITLE="[i3] Multidimensional spatial tiling">RLAdams at AdamsInfoServ.Com
+       </A><BR>
+    <I>Thu Jul 31 17:32:52 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001800.html">[i3] Multidimensional spatial tiling
+</A></li>
+        <LI>Next message: <A HREF="001796.html">[i3] Lowest empty Workspace
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1802">[ date ]</a>
+              <a href="thread.html#1802">[ thread ]</a>
+              <a href="subject.html#1802">[ subject ]</a>
+              <a href="author.html#1802">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, Jul 31, 2014 at 04:50:13PM +0200, Michael Stapelberg wrote:
+&gt;<i> Hi Russell,
+</I>&gt;<i>
+</I>&gt;<i> Russell Adams &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">RLAdams at AdamsInfoServ.Com</A>&gt; writes:
+</I>&gt;<i> &gt; I've been able to port over my workspace management from Awesome to i3
+</I>&gt;<i> &gt; using IPC, the config is attached.
+</I>&gt;<i> Once you get this stabilized, may I ask you to contribute this
+</I>&gt;<i> configuration to the “user-contributed documentation” section on
+</I>&gt;<i> i3wm.org?
+</I>
+I would encourage it to be shared. Whether I can write some form of
+contribution may vary, time permitting. I'm certainly a strong
+advocate of virtual screen space over tagging.
+
+&gt;<i> &gt; Down to the issue I've found. I'm not sure if I'm outracing the IPC
+</I>&gt;<i> &gt; interface, but frequently IPC commands to make the workspaces change
+</I>&gt;<i> &gt; are failing while returning success. So I'll have a monitor where the
+</I>&gt;<i> &gt; workspace is still a scratch one (ie: by output name) instead of it
+</I>&gt;<i> &gt; changing to the workspace intended. No crashing, and often repeating
+</I>&gt;<i> &gt; the operation will make it work.
+</I>&gt;<i> Sounds like a race condition. The i3 logfile will be helpful, see
+</I>&gt;<i> <A HREF="http://i3wm.org/docs/debugging.html">http://i3wm.org/docs/debugging.html</A>
+</I>
+I will give that a try!
+
+&gt;<i> &gt; Second I've run into an issue where Gkrellm cannot dock on the left or
+</I>&gt;<i> &gt; right side of the screen because left/right docking WM hints haven't
+</I>&gt;<i> &gt; been implemented yet. Is this a pending feature?
+</I>&gt;<i> See <A HREF="http://bugs.i3wm.org/report/ticket/1129">http://bugs.i3wm.org/report/ticket/1129</A>
+</I>
+That's a shame that it seems so difficult. It appears that the docking
+support was hardcoded with only i3bar in mind. I'm trying to use
+Gkrellm again, and unfortunately I may have to revert to awesome if I
+can't. I am very keen to see this supported. Gkrellm and i3bar provide
+completely different functionality and on a tiny laptop I can spare
+space on the left due to the wide screen craze. Every line of vertical
+space is precious. I'd rather do without i3bar.
+
+&gt;<i> &gt; #!/usr/bin/python3
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; import struct
+</I>&gt;<i> &gt; ...
+</I>&gt;<i> &gt;     return json.loads(payload.decode())
+</I>&gt;<i>
+</I>&gt;<i> Ugh, why do you re-implement all the IPC interface code? There’s
+</I>&gt;<i> libraries for that :). I hear <A HREF="https://github.com/acrisci/i3ipc-python">https://github.com/acrisci/i3ipc-python</A> is
+</I>&gt;<i> the most maintained and up to date one.
+</I>
+I spoke with one of the authors of one of the libraries along the way
+too. It's trivial code to create for my use case, and my version of
+Ubuntu didn't meet the prerequisites of the best of the Python i3 IPC
+libraries. I think autotools was out of date. To sum up: I tried to
+use the lib, and wrote a few lines myself instead of upgrading.
+
+Thanks.
+
+------------------------------------------------------------------
+Russell Adams                            <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">RLAdams at AdamsInfoServ.com</A>
+
+PGP Key ID:     0x1160DCB3           <A HREF="http://www.adamsinfoserv.com/">http://www.adamsinfoserv.com/</A>
+
+Fingerprint:    1723 D8CA 4280 1EC9 557F  66E8 1154 E018 1160 DCB3
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001800.html">[i3] Multidimensional spatial tiling
+</A></li>
+	<LI>Next message: <A HREF="001796.html">[i3] Lowest empty Workspace
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1802">[ date ]</a>
+              <a href="thread.html#1802">[ thread ]</a>
+              <a href="subject.html#1802">[ subject ]</a>
+              <a href="author.html#1802">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

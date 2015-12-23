@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3lock hooks
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3lock%20hooks&In-Reply-To=%3C87eheeyhhm.fsf%40stapelberg.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001263.html">
+   <LINK REL="Next"  HREF="001268.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3lock hooks</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3lock%20hooks&In-Reply-To=%3C87eheeyhhm.fsf%40stapelberg.de%3E"
+       TITLE="[i3] i3lock hooks">michael at i3wm.org
+       </A><BR>
+    <I>Sat Apr 13 10:14:45 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001263.html">[i3] i3lock hooks
+</A></li>
+        <LI>Next message: <A HREF="001268.html">[i3] i3lock hooks
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1264">[ date ]</a>
+              <a href="thread.html#1264">[ thread ]</a>
+              <a href="subject.html#1264">[ subject ]</a>
+              <a href="author.html#1264">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Giorgos,
+
+Giorgos Keramidas &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">gkeramidas at gmail.com</A>&gt; writes:
+&gt;<i> After ev_loop() is done, there is no return statement, so if ev_loop
+</I>&gt;<i> happens to return, main() is free to return a random value, e.g. the
+</I>&gt;<i> contents of a register or some random value from the stack.
+</I>ev_loop never returns.
+
+i3lock exits with code 0 from here:
+
+    if (pam_authenticate(pam_handle, 0) == PAM_SUCCESS) {
+        DEBUG(&quot;successfully authenticated\n&quot;);
+        clear_password_memory();
+        exit(0);
+    }
+
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001263.html">[i3] i3lock hooks
+</A></li>
+	<LI>Next message: <A HREF="001268.html">[i3] i3lock hooks
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1264">[ date ]</a>
+              <a href="thread.html#1264">[ thread ]</a>
+              <a href="subject.html#1264">[ subject ]</a>
+              <a href="author.html#1264">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

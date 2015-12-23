@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3 4.1: urxvt loses focus after &quot;gitk&quot; ceases on Debian squeeze
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%204.1%3A%20urxvt%20loses%20focus%20after%20%22gitk%22%20ceases%20on%20Debian%20squeeze&In-Reply-To=%3CCAB%2BhAsXk1GGq%2Bdwoc%2BOebRtjU_sAgsuWTAHdyXA_AhxtQ9rqzg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000608.html">
+   <LINK REL="Next"  HREF="000610.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3 4.1: urxvt loses focus after &quot;gitk&quot; ceases on Debian squeeze</H1>
+    <B>zeroxia</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%204.1%3A%20urxvt%20loses%20focus%20after%20%22gitk%22%20ceases%20on%20Debian%20squeeze&In-Reply-To=%3CCAB%2BhAsXk1GGq%2Bdwoc%2BOebRtjU_sAgsuWTAHdyXA_AhxtQ9rqzg%40mail.gmail.com%3E"
+       TITLE="[i3] i3 4.1: urxvt loses focus after &quot;gitk&quot; ceases on Debian squeeze">zeroxia at gmail.com
+       </A><BR>
+    <I>Thu Apr 12 13:31:29 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000608.html">[i3] Unicode in Window Title
+</A></li>
+        <LI>Next message: <A HREF="000610.html">[i3] i3 4.1: urxvt loses focus after &quot;gitk&quot; ceases on Debian	squeeze
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#609">[ date ]</a>
+              <a href="thread.html#609">[ thread ]</a>
+              <a href="subject.html#609">[ subject ]</a>
+              <a href="author.html#609">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+I'm using Debian squeeze (6.0.4), which is the stable version of
+Debian. The i3 package from the official package repository is very
+old (3.e) and it will not be updated until next Debian major release.
+
+So I cloned the i3 source, and tried to build it. Some of the
+dependent package names listed in the DEPENDS file does not exist in
+the stable repository, after some trial and error attempts to grab
+dependent packages, I built the package &quot;i3-wm_4.1.2-2_i386.deb&quot; from
+the master branch and installed it.
+
+Everything works except that gitk and urxvt do not cooperate well.
+When I'm in the urxvt shell, and fire up gitk, then I close gitk (by
+pressing Ctrl-W), the starting shell window has no focus and won't
+respond to input. And even after I clicked the urxvt window with
+mouse, the keyboard strokes still won't be captured by the terminal,
+but the mouse can select text, by the way.
+
+The only way to make the terminal aware of keyboard input is switching
+to another window or another workspace and then switch back.
+
+I also built the latest urxvt from Debian sid source
+(rxvt-unicode_9.15-1_i386.deb), the gitk version is 1.7.2.5-3 (shown
+from dpkg -l gitk).
+
+This problem has been annoying me for a long time since I started to
+use the latest i3-wm other than the antique one from the stable
+repository. And some other programs used to have the same issue but
+most of them seemed to be gone (and I don't remember them now anyway)
+and now the only case I can confront is &quot;urxvt&quot; and &quot;gitk&quot;.
+
+I use both &quot;mrxvt&quot; and &quot;urxvt&quot; (for either multi-tab support or
+unicode support...), and &quot;mrxvt&quot; does not have such problem with
+&quot;gitk&quot;. Actually any program I used to launch from mrxvt terminal did
+not cause this problem.
+
+-- 
+Regards,
+Xia Zuoling
+<A HREF="http://zeroxia.org/blog/">http://zeroxia.org/blog/</A>
+
+QQ: 153570344
+MSN: <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">zerox at live.com</A>
+The world is beautiful for you.
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000608.html">[i3] Unicode in Window Title
+</A></li>
+	<LI>Next message: <A HREF="000610.html">[i3] i3 4.1: urxvt loses focus after &quot;gitk&quot; ceases on Debian	squeeze
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#609">[ date ]</a>
+              <a href="thread.html#609">[ thread ]</a>
+              <a href="subject.html#609">[ subject ]</a>
+              <a href="author.html#609">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3lock hooks
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3lock%20hooks&In-Reply-To=%3C87r4ilo7hy.fsf%40x200.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001255.html">
+   <LINK REL="Next"  HREF="001259.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3lock hooks</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3lock%20hooks&In-Reply-To=%3C87r4ilo7hy.fsf%40x200.zekjur.net%3E"
+       TITLE="[i3] i3lock hooks">michael at i3wm.org
+       </A><BR>
+    <I>Mon Apr  8 08:34:49 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001255.html">[i3] i3lock hooks
+</A></li>
+        <LI>Next message: <A HREF="001259.html">[i3] i3lock hooks
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1256">[ date ]</a>
+              <a href="thread.html#1256">[ thread ]</a>
+              <a href="subject.html#1256">[ subject ]</a>
+              <a href="author.html#1256">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Brian,
+
+Brian Grossman &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">brian.grossman+i3-discuss at gmail.com</A>&gt; writes:
+&gt;<i> Sidestepping the question a little, how about something like this in
+</I>&gt;<i> ~/.i3/config:
+</I>&gt;<i>
+</I>&gt;<i> bindsym $mod+Return exec i3lock -n ; exec ~/bin/bruno-returns
+</I>Beware, this does not do what you probably think:
+
+The semicolon separates i3 commands, so you tell i3 to start i3lock -n
+and to start ~/bin/bruno-returns immediately afterwards.
+
+Instead, use:
+
+bindsym $mod+x exec --no-startup-id &quot;i3lock -n &amp;&amp; ~/bin/bruno-returns&quot;
+
+(--no-startup-id because i3lock doesn&#8217;t support startup notifications &#8212;
+ it starts up fast enough ;-))
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001255.html">[i3] i3lock hooks
+</A></li>
+	<LI>Next message: <A HREF="001259.html">[i3] i3lock hooks
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1256">[ date ]</a>
+              <a href="thread.html#1256">[ thread ]</a>
+              <a href="subject.html#1256">[ subject ]</a>
+              <a href="author.html#1256">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

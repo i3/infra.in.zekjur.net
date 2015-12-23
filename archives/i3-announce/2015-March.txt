@@ -1,0 +1,235 @@
+From michael at i3wm.org  Sat Mar  7 20:34:54 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 7 Mar 2015 20:34:54 +0100
+Subject: [i3 announcement] i3 v4.9.1 released
+Message-ID: <CANnVG6nYiiQAVEmrOQRbWTHb-=TG7rwC3oZKQTSS7rMOOdPFTA@mail.gmail.com>
+
+Hi,
+
+I just released i3 v4.8. Release notes follow:
+
+
+ ┌──────────────────────────────┐
+ │ Release notes for i3 v4.9.1  │
+ └──────────────────────────────┘
+
+This is i3 v4.9.1. This version is considered stable. All users of i3 are
+strongly encouraged to upgrade.
+
+This is a bugfix release for i3 v4.9.
+
+ ┌────────────────────────────┐
+ │ Bugfixes                   │
+ └────────────────────────────┘
+
+  • i3bar: fix incorrect y-offset for text
+  • fix key bindings on big-endian platforms
+  • fix key bindings using Mode_switch
+  • fix keyboard layout change detection
+  • revert "Handle WM_CHANGE_STATE requests for iconic state" (fixes problems
+    with application windows disappearing, like SDL-based games when switching
+    workspaces)
+  • insert id-based match at HEAD, not TAIL (fixes window swallowing not
+    working when the criteria match the placeholder window)
+  • improve error messages on failing commands
+  • replace ~ in filepath when calling append_layout
+  • properly error out when the layout file cannot be read
+
+ ┌────────────────────────────┐
+ │ Thanks!                    │
+ └────────────────────────────┘
+
+Thanks for testing, bugfixes, discussions and everything I forgot go out to:
+
+  Steven McDonald, Ton van den Heuvel, Ingo Bürk
+
+-- Michael Stapelberg, 2015-03-07
+
+From michael at i3wm.org  Sun Mar 22 19:19:41 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 22 Mar 2015 19:19:41 +0100
+Subject: [i3 announcement] i3status v2.9 released
+Message-ID: <CANnVG6=sBobZhowqLxu00rYpd9fSiNB-JG7WOdiOZwD=teaseg@mail.gmail.com>
+
+I just released i3status v2.9. Here is the changelog:
+
+ • meta: i3status is now on GitHub and uses clang-format
+ • allow customization of the module separator
+ • add “align” and “min_width” options for each module
+ • fix CFLAGS and LDFLAGS for DragonFly and FreeBSD
+ • add contrib/net-speed, a more light-weight reimplementation of
+   contrib/measure-net-speed.bash
+ • battery: add hide_seconds option
+ • battery: fix for systems without POWER_SUPPLY_VOLTAGE_NOW
+ • battery: for %percentage, drop leading 0 for values < 10
+ • battery: add NetBSD support
+ • battery: use absolute values for (dis)charging rates
+ • battery: introduce status_{chr,bat,full}
+ • cpu_temperature: fix displaying multiple sensors
+ • cpu_temperature: fix NetBSD support
+ • cpu_temperature: fix DragonFly support
+ • disk: introduce threshold_type and low_threshold
+ • disk: add format_not_mounted for unmounted paths
+ • ethernet, wireless: support special interface name _first_
+ • run_watch: check all matching pid files until first valid one
+ • volume: fix wrong color tags with xmobar
+ • wireless: support %frequency (2.4 vs. 5 GHz)
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Sun Mar 29 18:22:14 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 29 Mar 2015 18:22:14 +0200
+Subject: [i3 announcement] i3 v4.10 released
+Message-ID: <CANnVG6krRr7n=jj8fd3u7nnhvT8DZJ+nUyPHP3_q7_HPW7WNLA@mail.gmail.com>
+
+Hi,
+
+I just released i3 v4.8. Release notes follow:
+
+
+ ┌──────────────────────────────┐
+ │ Release notes for i3 v4.10   │
+ └──────────────────────────────┘
+
+This is i3 v4.10. This version is considered stable. All users of i3 are
+strongly encouraged to upgrade.
+
+This release contains mostly bugfixes, but we felt it was necessary since there
+are two important changes in behavior: we have reverted the pango markup
+parsing by default (introduced with i3 v4.9) and the change in how the
+“workspace” command behaves (introduced with i3 v4.9). Both of them broke some
+user’s setups, which is not acceptable. In order to help us avoid such mistakes
+in the future, please consider using the i3 git version — it is typically
+stable.
+
+ ┌────────────────────────────┐
+ │ Changes in i3 v4.10        │
+ └────────────────────────────┘
+
+  • i3bar: cut long statuslines from the left
+  • i3bar: add support for the short_text property
+  • i3-sensible-terminal: launch i3-nagbar when no terminal is found
+  • i3-config-wizard: switch modifier on key up/down
+  • docs/layout-saving: added a troubleshooting section
+  • docs: degender all the terms
+  • Revert "Workspace command number selection"
+  • don’t parse blocks as markup by default
+  • Allow escaping backslashes in commands.
+  • switch default font from “DejaVu Sans Mono 8” to “monospace 8”, which is
+    typically a synonym, except for users who prefer a different font.
+  • When renaming a workspace, look for assignments and move the renamed
+    workspace to the appropriate output.
+  • i3-save-tree: make --workspace optional by defaulting to the focused
+    workspace
+  • Allow nop command without argument
+
+ ┌────────────────────────────┐
+ │ Bugfixes                   │
+ └────────────────────────────┘
+
+  • i3bar: buffer the statusline to avoid flickering
+  • i3bar: fix click events for workspace buttons with long statusline
+  • i3bar: set correct initial position when reconfiguring
+  • i3bar: reconfigure strut partial on reload
+  • i3-nagbar: fix sizes/positioning on hi-dpi displays
+  • i3-config-wizard: fix sizes/positioning on hi-dpi displays
+  • i3-input: fix sizes/positioning on hi-dpi displays
+  • Fix scrolling in window decoration with hidden cursor.
+  • workspace rename focus mismatch
+  • Don’t overwrite border width when already set (placeholders).
+  • fix a segfault during config file validation
+  • Restore placeholder windows after restarting.
+  • Don’t focus placeholder windows.
+
+ ┌────────────────────────────┐
+ │ Thanks!                    │
+ └────────────────────────────┘
+
+Thanks for testing, bugfixes, discussions and everything I forgot go out to:
+
+  Chih-Chyuan Hwang, Deiz, Diana Dinosaur, Ingo Bürk, Michael Hofmann,
+  Michael Tipton, Micha Rosenbaum, shdown, Tony Crisci
+
+-- Michael Stapelberg, 2015-03-29
+
+From michael at i3wm.org  Sun Mar 29 19:15:07 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 29 Mar 2015 19:15:07 +0200
+Subject: [i3 announcement] i3 v4.10.1 released
+Message-ID: <CANnVG6kxPviZu4ZAzGg54i5Gxt_sLpBviVYoDd6jxDzeQ6mVLQ@mail.gmail.com>
+
+Hi,
+
+I just released i3 v4.8. Release notes follow:
+
+ ┌──────────────────────────────┐
+ │ Release notes for i3 v4.10.1 │
+ └──────────────────────────────┘
+
+This is i3 v4.10.1. This version is considered stable. All users of i3 are
+strongly encouraged to upgrade.
+
+This release contains mostly bugfixes, but we felt it was necessary since there
+are two important changes in behavior: we have reverted the pango markup
+parsing by default (introduced with i3 v4.9) and the change in how the
+“workspace” command behaves (introduced with i3 v4.9). Both of them broke some
+user’s setups, which is not acceptable. In order to help us avoid such mistakes
+in the future, please consider using the i3 git version — it is typically
+stable.
+
+PS: The v4.10 release did not contain any of the commits we meant to release
+due to a human error in our release automation. Hence the v4.10.1 release.
+
+ ┌────────────────────────────┐
+ │ Changes in i3 v4.10.1      │
+ └────────────────────────────┘
+
+  • i3bar: cut long statuslines from the left
+  • i3bar: add support for the short_text property
+  • i3-sensible-terminal: launch i3-nagbar when no terminal is found
+  • i3-config-wizard: switch modifier on key up/down
+  • docs/layout-saving: added a troubleshooting section
+  • docs: degender all the terms
+  • Revert "Workspace command number selection"
+  • don’t parse blocks as markup by default
+  • Allow escaping backslashes in commands.
+  • switch default font from “DejaVu Sans Mono 8” to “monospace 8”, which is
+    typically a synonym, except for users who prefer a different font.
+  • When renaming a workspace, look for assignments and move the renamed
+    workspace to the appropriate output.
+  • i3-save-tree: make --workspace optional by defaulting to the focused
+    workspace
+  • Allow nop command without argument
+
+ ┌────────────────────────────┐
+ │ Bugfixes                   │
+ └────────────────────────────┘
+
+  • i3bar: buffer the statusline to avoid flickering
+  • i3bar: fix click events for workspace buttons with long statusline
+  • i3bar: set correct initial position when reconfiguring
+  • i3bar: reconfigure strut partial on reload
+  • i3-nagbar: fix sizes/positioning on hi-dpi displays
+  • i3-config-wizard: fix sizes/positioning on hi-dpi displays
+  • i3-input: fix sizes/positioning on hi-dpi displays
+  • Fix scrolling in window decoration with hidden cursor.
+  • workspace rename focus mismatch
+  • Don’t overwrite border width when already set (placeholders).
+  • fix a segfault during config file validation
+  • Restore placeholder windows after restarting.
+  • Don’t focus placeholder windows.
+
+ ┌────────────────────────────┐
+ │ Thanks!                    │
+ └────────────────────────────┘
+
+Thanks for testing, bugfixes, discussions and everything I forgot go out to:
+
+  Chih-Chyuan Hwang, Deiz, Diana Dinosaur, Ingo Bürk, Michael Hofmann,
+  Michael Tipton, Micha Rosenbaum, shdown, Tony Crisci
+
+-- Michael Stapelberg, 2015-03-29
+

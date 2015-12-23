@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Some workspaces not showing when undocked
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Some%20workspaces%20not%20showing%20when%20undocked&In-Reply-To=%3CCANnVG6n%2BgR%3D1eUMq683FAUCM_UnfVvF_2qwC%2BZ%3D48t97yh7nFw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001875.html">
+   <LINK REL="Next"  HREF="001877.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Some workspaces not showing when undocked</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Some%20workspaces%20not%20showing%20when%20undocked&In-Reply-To=%3CCANnVG6n%2BgR%3D1eUMq683FAUCM_UnfVvF_2qwC%2BZ%3D48t97yh7nFw%40mail.gmail.com%3E"
+       TITLE="[i3] Some workspaces not showing when undocked">michael at i3wm.org
+       </A><BR>
+    <I>Sun Sep 28 17:05:20 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001875.html">[i3] Some workspaces not showing when undocked
+</A></li>
+        <LI>Next message: <A HREF="001877.html">[i3] layout file causes i3 to hang
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1876">[ date ]</a>
+              <a href="thread.html#1876">[ thread ]</a>
+              <a href="subject.html#1876">[ subject ]</a>
+              <a href="author.html#1876">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>My guess is that something goes wrong when setting your display
+settings on undock.
+
+I’d start by logging a confirmation line to a file in your
+undock-script so that you know it gets executed.
+
+Also, I’d check the i3 log, see <A HREF="http://i3wm.org/docs/debugging.html,">http://i3wm.org/docs/debugging.html,</A>
+and check whether the randr settings are as you expect them after
+undocking.
+
+Instead of logging out and in again, try changing your settings using xrandr.
+
+On Sun, Sep 28, 2014 at 11:12 AM, Danny Jonstrup Krøger
+&lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">mailinglist at kroeger.dk</A>&gt; wrote:
+&gt;<i> Hi.
+</I>&gt;<i>
+</I>&gt;<i> I'm using a laptop, which is connected to two other screens when docked. I
+</I>&gt;<i> have assigned the workspaces to the following screens:
+</I>&gt;<i> # eDP1 = laptop
+</I>&gt;<i> # DP2 &amp; DP1 = external screens.
+</I>&gt;<i> workspace 1 output DP2
+</I>&gt;<i> workspace 2 output DP2
+</I>&gt;<i> workspace 3 output DP2
+</I>&gt;<i> workspace 4 output DP1
+</I>&gt;<i> workspace 5 output DP1
+</I>&gt;<i> workspace 6 output DP1
+</I>&gt;<i> workspace 7 output eDP1
+</I>&gt;<i>
+</I>&gt;<i> When undocking I run the following randr command to switch off the other
+</I>&gt;<i> screens:
+</I>&gt;<i> $xrandr --output VIRTUAL1 --off --output eDP1 --mode 1920x1080 --pos 0x0
+</I>&gt;<i> --rotate normal --output DP1 --off --output ↪HDMI2 --off --output HDMI1
+</I>&gt;<i> --off --output DP2 --off
+</I>&gt;<i>
+</I>&gt;<i> However I often experience that I'm unable to go to other workspaces than 1
+</I>&gt;<i> &amp; 7 when undocked. Sometimes 2-6 works, but it seems to be working quite
+</I>&gt;<i> randomly. It doesn't help either if I log out and in again.
+</I>&gt;<i>
+</I>&gt;<i> When searching for people having the same issue it seems that i3 should be
+</I>&gt;<i> handling this scenario without issues, so I'm sure there is something I have
+</I>&gt;<i> overlooked.
+</I>&gt;<i>
+</I>&gt;<i> Any ideas on how to get this working properly?
+</I>&gt;<i>
+</I>&gt;<i> Best Regards
+</I>&gt;<i> Danny Jonstrup Krøger
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001875.html">[i3] Some workspaces not showing when undocked
+</A></li>
+	<LI>Next message: <A HREF="001877.html">[i3] layout file causes i3 to hang
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1876">[ date ]</a>
+              <a href="thread.html#1876">[ thread ]</a>
+              <a href="subject.html#1876">[ subject ]</a>
+              <a href="author.html#1876">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

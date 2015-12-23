@@ -1,0 +1,1652 @@
+From crawlingwithsnakes at hush.com  Tue Feb  2 21:53:34 2010
+From: crawlingwithsnakes at hush.com (Sasha)
+Date: Tue, 02 Feb 2010 16:53:34 -0400
+Subject: [i3] Hi people! Looking to hack into i3 a bit.
+Message-ID: <20100202205334.C924511803D@smtp.hushmail.com>
+
+Hi there!
+
+First, thanks for the work you guys have been doing on i3. I have 
+just discovered it in the last few days (using it right now) and 
+have installed it in my Slackware-13 64bit system. I plan to toss 
+KDE and XFCE in favor of i3. I'm tired of the bloat, and tired of 
+my WM getting borked when I work on other things in the system; 
+like I upgraded GTK the other day, and XFCE went berzerk :/
+
+Anyhow, here's a random selection of things on my mind currently; 
+I'll get more detailed/specific as I pin down various things to a 
+useful level of clarity and detail. For the record, I've perused 
+the online docs pretty thoroughly, and here is my official apology 
+in case I write something here that is mentioned elsewhere :-)
+
+0) I didn't BUILD the docs from source -- should I? Is there 
+anything in there that isn't online or in the man page?
+
+1) Should I submit bugs (or whatever) to the TRAC site as an 
+anonymous user? Seems silly. Can people subscribe/join the TRAC 
+site?
+
+2) I haven't noticed a way of doing wallpaper (background images) 
+for i3. Currently, having searched around a fair bit, I'm using 
+`feh` but it doesn't quite do what it should. It's nice, but not 
+ideal for wallpaper. And `xsetroot` doesn't work at all. Currently, 
+if I log into i3 from KDM, I sometimes have the KDM wallpaper as my 
+i3 wallpaper. Blech!
+
+3) Had some weird corruption in the top left corner of my LH 
+monitor (dual monitors) after:
+a) leaving XFCE
+b) started i3
+c) had some clients running on the LH monitor
+d) Switched that monitors container to "stacked" mode
+e) Presto -- there was some sketchy weird remains of what looked 
+like the XFCE taskbar I keep atop the screen.
+
+My take on this is that it was due to uncleared video memory, but 
+still the stacked-ness or something *should* have overwrote that 
+chunk of memory at some point.. After moving some clients around 
+some more, and/or changing to stacked/tabbed/default a few times, 
+the weird stuff was gone. I've yet to reproduce it again.
+
+
+4) Is it going to be possible to move the status bar (at bottom, 
+where the workspaces are labeled) to the TOP of the screen? Or 
+maybe have a keybind to toggle it on or off?
+
+5) Can it be possible to switch to an EMPTY workspace? Like, if I 
+have workspace 1 and 2 on my monitors, I would like to be able to 
+switch to the "3" and "4" workspaces while they are empty, and 
+start filling them up from empty. Perhaps if Xinerama is enabled, 
+this switching action could either go in pairs, or one at a time? 
+Poor description I think, but I have been awake for a long time 
+fiddling with my i3 :-)
+
+Anyhow, I know this is a lot for my first message, but I hope 
+there's something either useful or interesting in it! Sorry I have 
+rambled quite a bit -- next time I write, I'll keep it on one 
+topic!!
+
+Sasha
+GrapefruiTgirl
+
+
+
+From michael+i3 at stapelberg.de  Tue Feb  2 22:12:52 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Tue, 02 Feb 2010 22:12:52 +0100
+Subject: [i3] Hi people! Looking to hack into i3 a bit.
+In-Reply-To: <20100202205334.C924511803D@smtp.hushmail.com>
+References: <20100202205334.C924511803D@smtp.hushmail.com>
+Message-ID: <1265144721-sup-4401@midna.zekjur.net>
+
+Hi Sasha,
+
+First of all: welcome and congratulations for the first post on
+this mailing list ;-).
+
+Excerpts from Sasha's message of Di Feb 02 21:53:34 +0100 2010:
+> 0) I didn't BUILD the docs from source -- should I? Is there 
+> anything in there that isn't online or in the man page?
+If you are using the "next" branch: yes. If you are using a release
+version: No, the documentation is the same as online.
+
+> 1) Should I submit bugs (or whatever) to the TRAC site as an 
+> anonymous user? Seems silly. Can people subscribe/join the TRAC 
+> site?
+You can. The usual way for a bugreport is to be confirmed on IRC
+(because of the quick nature of IRC it is easier to ask questions)
+and then submit them to the bugtracker. I am not sure about the
+subscription you mentioned, but we are not happy with trac at all.
+There will be some work to replace it with something better in
+some weeks.
+
+> 2) I haven't noticed a way of doing wallpaper (background images) 
+> for i3. Currently, having searched around a fair bit, I'm using 
+> `feh` but it doesn't quite do what it should. It's nice, but not 
+> ideal for wallpaper. And `xsetroot` doesn't work at all. Currently, 
+> if I log into i3 from KDM, I sometimes have the KDM wallpaper as my 
+> i3 wallpaper. Blech!
+I use xdm which does not touch my wallpaper. After xdm asks me for
+login/password, I use xsetroot in my .xsession, which works fine for
+me. Other people also use "feh" or "display" (from ImageMagick).
+
+> My take on this is that it was due to uncleared video memory, but 
+> still the stacked-ness or something *should* have overwrote that 
+> chunk of memory at some point.. After moving some clients around 
+> some more, and/or changing to stacked/tabbed/default a few times, 
+> the weird stuff was gone. I've yet to reproduce it again.
+I think this is a known bug (though there seems to be no ticket for
+it). The stack window is not correctly redrawn under some
+circumstances. I have to look into it an a few days?
+
+> 4) Is it going to be possible to move the status bar (at bottom, 
+> where the workspaces are labeled) to the TOP of the screen? Or 
+> maybe have a keybind to toggle it on or off?
+It will be possible to turn it off in the next release, we plan to
+replace it with dzen2 or a similar program.
+
+> 5) Can it be possible to switch to an EMPTY workspace? Like, if I 
+> have workspace 1 and 2 on my monitors, I would like to be able to 
+> switch to the "3" and "4" workspaces while they are empty, and 
+> start filling them up from empty. Perhaps if Xinerama is enabled, 
+> this switching action could either go in pairs, or one at a time? 
+> Poor description I think, but I have been awake for a long time 
+> fiddling with my i3 :-)
+Ehm, sure, just switch to it? For the Xinerama part: it is a design
+decision that workspace switches do *not* happen in pairs for
+xinerama.
+
+Best regards,
+Michael
+
+
+From uli.armbruster at googlemail.com  Thu Feb  4 21:08:56 2010
+From: uli.armbruster at googlemail.com (Uli Armbruster)
+Date: Thu, 4 Feb 2010 21:08:56 +0100
+Subject: [i3] tabbed layout as default?
+Message-ID: <20100204200856.GB25573@Archlinux>
+
+Hi guys
+
+This is a test, if my suscription really worked ... and some questions ;-)
+
+What I use: Archlinux, i686 and i3-git
+
+Is it possible to set tabbed as default layout? I went through the user's guide, but didn't find such an option. I know there are other wm's out there, e.g. ion3 seems to be like that, but I switched from musca to i3 2 days ago and it really works very fine here.
+
+I'm looking forward to the exchange of the bottom bar. I don't really like having it there, it's a waste of space. Is this already possible with the git version?
+
+And last but not least, is it possible to switch to another group other than <Mod?>+Number? What I'd love to have is something like <Mod?>+PageUp/Down to switch to the next window and only use the Numbers to create a group or move a window to it.
+
+Thanks :-)
+
+Greetz
+Army
+
+
+From crawlingwithsnakes at hush.com  Thu Feb  4 21:41:41 2010
+From: crawlingwithsnakes at hush.com (Sasha)
+Date: Thu, 04 Feb 2010 16:41:41 -0400
+Subject: [i3] The SysV-IPC -- cannot create socket
+Message-ID: <20100204204141.75C1F2803F@smtp.hushmail.com>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+- -----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+I am finding it not possible to create/use the IPC socket.
+
+- - ------------------------------------
+root at reactor: file $(which i3)
+/usr/bin/i3: symbolic link to `/usr/bin/i3-GIT'
+root at reactor: file $(which i3-GIT)
+/usr/bin/i3-GIT: ELF 64-bit LSB executable, x86-64, version 1
+(SYSV), dynamically linked (uses shared libs), not stripped
+- - ------------------------------------
+
+IPC is enabled in my kernel (2.6.32.5 x86_64) as follows:
+
+- - -------------------
+root at reactor: cat /usr/src/source/*5/.config | grep IPC
+CONFIG_SYSVIPC=y
+CONFIG_SYSVIPC_SYSCTL=y
+CONFIG_IPC_NS=y
+# CONFIG_MWINCHIPC6 is not set
+CONFIG_SYSVIPC_COMPAT=y
+CONFIG_XFRM_IPCOMP=y
+CONFIG_INET_IPCOMP=y
+# CONFIG_TIPC is not set
+# CONFIG_SND_CMIPCI is not set
+- - -------------------
+
+..but I see in my i3.logfile the following:
+
+02/04/2010 05:42:12 AM - src/mainx.c:main:466 - Could not create
+the IPC socket, IPC disabled
+
+My reading about IPC tells me that on IA64, IPC is either different
+than x86 or not available, but to my understanding, x86_64 != IA64
+so I should be OK; I'm curious about this.
+
+I would like to use i3-msg and/or i3-input from within my config
+file, to tell i3 some things upon startup.
+
+NOTE: I have switched to using the GIT release . So far so good; a
+few glitches, but I haven't nailed them down clearly enough to
+provide a useful report yet.
+
+Sasha
+- -----BEGIN PGP SIGNATURE-----
+Note: This signature can be verified at
+https://www.hushtools.com/verify
+Charset: iso-8859-1
+Version: Hush 3.0
+
+wpwEAQMCAAYFAktrMWcACgkQNSYFEb1mCzJgiQP/eLqyjJzXsAjd+5n8QifKksMqPnXW
+RT5lDDTSaKj4Rj5aO1ETPjshS5MN0jC5+Nha/16tY3DsB7x6iuph1GaIC0NARLo+QkVe
+B1+TCJ4GQU1PJtaE9x6v7mxWEdgih0MGHRK8QScBtlR9GZOZV+HW8c9uMJcqxhAMjang
+kzs3J5s=
+=jDat
+- -----END PGP SIGNATURE-----
+-----BEGIN PGP SIGNATURE-----
+Note: This signature can be verified at https://www.hushtools.com/verify
+Charset: iso-8859-1
+Version: Hush 3.0
+
+wpwEAQMCAAYFAktrM6sACgkQNSYFEb1mCzKTKQQAqR0MjDmu5auWHfld2vD1/9LVMhHw
+pH7S0x2oRXfKdsMGKIu8euZE0WdjlVrxELJubr6ZpOsLgfU3rJaksftdHaWoz8woE0i2
+v/h62AXsq5aB+4DXADqPi5ncHNh+fQRGuUO88vOATXrC/r3OetzPlTm871uh4Jvoey3L
+X/zY1+Y=
+=7Gdc
+-----END PGP SIGNATURE-----
+
+
+
+From michael+i3 at stapelberg.de  Thu Feb  4 21:55:20 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Thu, 04 Feb 2010 21:55:20 +0100
+Subject: [i3] The SysV-IPC -- cannot create socket
+In-Reply-To: <20100204204141.75C1F2803F@smtp.hushmail.com>
+References: <20100204204141.75C1F2803F@smtp.hushmail.com>
+Message-ID: <1265316654-sup-6966@midna.zekjur.net>
+
+Hi Sasha,
+
+Excerpts from Sasha's message of Do Feb 04 21:41:41 +0100 2010:
+> IPC is enabled in my kernel (2.6.32.5 x86_64) as follows:
+I don?t think you need to enable IPC in your kernel, as we don?t
+use System V IPC but unix sockets.
+
+> 02/04/2010 05:42:12 AM - src/mainx.c:main:466 - Could not create
+> the IPC socket, IPC disabled
+Please run i3 using strace -fF -s2048 and nopaste the output.
+
+Best regards,
+Michael
+
+
+From badboy at archlinux.us  Thu Feb  4 21:57:58 2010
+From: badboy at archlinux.us (Jan-Erik Rediger)
+Date: Thu, 4 Feb 2010 21:57:58 +0100
+Subject: [i3] tabbed layout as default?
+In-Reply-To: <20100204200856.GB25573@Archlinux>
+References: <20100204200856.GB25573@Archlinux>
+Message-ID: <20100204205757.GA3329@harmless>
+
+On Thu, Feb 04, 2010 at 09:08:56PM +0100, Uli Armbruster wrote:
+> Hi guys
+> 
+> This is a test, if my suscription really worked ... and some questions ;-)
+worked!
+
+> Is it possible to set tabbed as default layout? I went through the user's guide, but didn't find such an option. I know there are other wm's out there, e.g. ion3 seems to be like that, but I switched from musca to i3 2 days ago and it really works very fine here.
+no, that's not possible for now.
+
+> I'm looking forward to the exchange of the bottom bar. I don't really like having it there, it's a waste of space. Is this already possible with the git version?
+no. it's not implemented yet. Wanna submit a patch? ;)
+ 
+> And last but not least, is it possible to switch to another group other than <Mod?>+Number? What I'd love to have is something like <Mod?>+PageUp/Down to switch to the next window and only use the Numbers to create a group or move a window to it.
+this should be possible.
+There are two commands: nw and pw for next and previous workspace.
+
+So the following should work as your config:
+  bind Mod1+112 nw # 112 is the keycode for pageup (at least for me)
+  bind Mod1+117 pw # 117 is the keycode for pagedown
+You can get the keycode with "xev", just type into a shell and press a
+button.
+Hope this helps.
+> 
+> Thanks :-)
+no problem
+
+> Greetz
+> Army
+Greetings
+badboy_
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 198 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100204/90d77765/attachment.pgp>
+
+From michael+i3 at stapelberg.de  Thu Feb  4 22:58:13 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Thu, 04 Feb 2010 22:58:13 +0100
+Subject: [i3] tabbed layout as default?
+In-Reply-To: <20100204205757.GA3329@harmless>
+References: <20100204200856.GB25573@Archlinux> <20100204205757.GA3329@harmless>
+Message-ID: <1265320499-sup-6249@midna.zekjur.net>
+
+Hi Army,
+
+Excerpts from Jan-Erik Rediger's message of Do Feb 04 21:57:58 +0100 2010:
+> > Is it possible to set tabbed as default layout? I went through the user's
+> > guide, but didn't find such an option. I know there are other wm's out
+> > there, e.g. ion3 seems to be like that, but I switched from musca to i3 2
+> > days ago and it really works very fine here.
+> no, that's not possible for now.
+It is: http://i3.zekjur.net/docs/userguide.html#_layout_mode_for_new_containers
+
+> > I'm looking forward to the exchange of the bottom bar. I don't really like
+> > having it there, it's a waste of space. Is this already possible with the
+> > git version?
+> no. it's not implemented yet. Wanna submit a patch? ;)
+Removing it is rather trivial. It won?t be done in the git version as long
+as there is no working alternative, though.
+
+Best regards,
+Michael
+
+
+From badboy at archlinux.us  Thu Feb  4 23:05:33 2010
+From: badboy at archlinux.us (Jan-Erik Rediger)
+Date: Thu, 4 Feb 2010 23:05:33 +0100
+Subject: [i3] tabbed layout as default?
+In-Reply-To: <1265320499-sup-6249@midna.zekjur.net>
+References: <20100204200856.GB25573@Archlinux> <20100204205757.GA3329@harmless>
+	<1265320499-sup-6249@midna.zekjur.net>
+Message-ID: <20100204220533.GB3329@harmless>
+
+> > > Is it possible to set tabbed as default layout? I went through the user's
+> > > guide, but didn't find such an option. I know there are other wm's out
+> > > there, e.g. ion3 seems to be like that, but I switched from musca to i3 2
+> > > days ago and it really works very fine here.
+> > no, that's not possible for now.
+> It is: http://i3.zekjur.net/docs/userguide.html#_layout_mode_for_new_containers
+oh sorry, never used this function, so I forgot it =D
+
+
+From uli.armbruster at googlemail.com  Thu Feb  4 23:26:53 2010
+From: uli.armbruster at googlemail.com (Uli Armbruster)
+Date: Thu, 4 Feb 2010 23:26:53 +0100
+Subject: [i3] tabbed layout as default?
+In-Reply-To: <1265320499-sup-6249@midna.zekjur.net>
+References: <20100204200856.GB25573@Archlinux> <20100204205757.GA3329@harmless>
+	<1265320499-sup-6249@midna.zekjur.net>
+Message-ID: <20100204222653.GA7525@Archlinux>
+
+* Michael Stapelberg <michael+i3 at stapelberg.de> [04.02.2010 22:58]:
+> Hi Army,
+Hi Michael,
+> It is: http://i3.zekjur.net/docs/userguide.html#_layout_mode_for_new_containers
+Ah damn, I saw this, but i3 didn't want to start with -l, so I wasn't able to test it .. But now I see that's not needed with the git version... :-D VERY cool!!
+Now really only this bottom bar disturbs me ... is it possible to get other things in there? Like the time, date, etc. All I could find is having dzen2 right abote it, can it be ... like included?
+
+By the way, I'd love to commit some patches ... but I cannot really code :-( It's time for me to finally learn C!
+
+
+From atsutane at freethoughts.de  Thu Feb  4 23:34:59 2010
+From: atsutane at freethoughts.de (Thorsten =?ISO-8859-1?B?VPZwcGVy?=)
+Date: Thu, 4 Feb 2010 23:34:59 +0100
+Subject: [i3] tabbed layout as default?
+In-Reply-To: <20100204222653.GA7525@Archlinux>
+References: <20100204200856.GB25573@Archlinux> <20100204205757.GA3329@harmless>
+	<1265320499-sup-6249@midna.zekjur.net>
+	<20100204222653.GA7525@Archlinux>
+Message-ID: <20100204233459.0efedf64@hell>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA224
+
+On Thu, 4 Feb 2010 23:26:53 +0100
+Uli Armbruster <uli.armbruster at googlemail.com> wrote:
+
+> * Michael Stapelberg <michael+i3 at stapelberg.de> [04.02.2010 22:58]:
+> > Hi Army,
+> Hi Michael,
+> > It is:
+> > http://i3.zekjur.net/docs/userguide.html#_layout_mode_for_new_containers
+> Ah damn, I saw this, but i3 didn't want to start with -l, so I wasn't
+> able to test it .. But now I see that's not needed with the git
+> version... :-D VERY cool!! Now really only this bottom bar disturbs
+> me ... is it possible to get other things in there? Like the time,
+> date, etc. All I could find is having dzen2 right abote it, can it
+> be ... like included?
+> 
+> By the way, I'd love to commit some patches ... but I cannot really
+> code :-( It's time for me to finally learn C!
+
+Hello Army,
+nice to have you as a user :-)
+
+You can move dzen2 down there using it's -y option I'd recommend:
+dzen2 -y $RESOLUTION_HEIGHT-16 
+And if that's too much/less playing with the value that is to be
+substracted.
+
+Atsutane
+- -- 
+Jabber: atsutane at freethoughts.de Blog: http://atsutane.freethoughts.de/
+Key: 295AFBF4     FP: 39F8 80E5 0E49 A4D1 1341 E8F9 39E4 F17F 295A FBF4
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+
+iFYEARELAAYFAktrS5MACgkQOeTxfyla+/R6SgDfarX1/6aE9e7hDN7u4tAykM12
+GG80qgxECZdLOgDeNrGP+HitOTAlarR+RedRdVezu72UUhd39dLrng==
+=8w7n
+-----END PGP SIGNATURE-----
+
+From michael+i3 at stapelberg.de  Thu Feb  4 23:39:07 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Thu, 04 Feb 2010 23:39:07 +0100
+Subject: [i3] tabbed layout as default?
+In-Reply-To: <20100204222653.GA7525@Archlinux>
+References: <20100204200856.GB25573@Archlinux> <20100204205757.GA3329@harmless>
+	<1265320499-sup-6249@midna.zekjur.net>
+	<20100204222653.GA7525@Archlinux>
+Message-ID: <1265323066-sup-2724@midna.zekjur.net>
+
+Hi Uli,
+
+Excerpts from Uli Armbruster's message of Do Feb 04 23:26:53 +0100 2010:
+> Now really only this bottom bar disturbs me ... is it possible to get other
+> things in there? Like the time, date, etc. All I could find is having dzen2
+> right abote it, can it be ... like included?
+No, and it is not planned to implement that. dzen2 works quite well for
+displaying a bar, so we do not need to duplicate that functionality. It is
+planned to switch to a completely dzen2-based bar for the next version,
+given that dzen2 is ready for that (there has not been a release for quite
+a long time).
+
+Best regards,
+Michael
+
+
+From crawlingwithsnakes at hush.com  Fri Feb  5 00:13:21 2010
+From: crawlingwithsnakes at hush.com (Sasha)
+Date: Thu, 04 Feb 2010 19:13:21 -0400
+Subject: [i3] The SysV-IPC -- cannot create socket
+Message-ID: <20100204231322.27B5A2803F@smtp.hushmail.com>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+
+
+On Thu, 04 Feb 2010 16:55:20 -0400 Michael Stapelberg
+<michael+i3 at stapelberg.de> wrote:
+>Hi Sasha,
+>
+>Excerpts from Sasha's message of Do Feb 04 21:41:41 +0100 2010:
+>> IPC is enabled in my kernel (2.6.32.5 x86_64) as follows:
+>I don?t think you need to enable IPC in your kernel, as we don?t
+>use System V IPC but unix sockets.
+>
+>> 02/04/2010 05:42:12 AM - src/mainx.c:main:466 - Could not create
+>> the IPC socket, IPC disabled
+>Please run i3 using strace -fF -s2048 and nopaste the output.
+>
+>Best regards,
+>Michael
+
+Hi, thanks Michael
+
+Well, this is not as simple as it would seem :/
+
+Running an straced i3 causes weird stuff to happen once I'm logged
+in, like `su` doesn't work, and my terminals are weird. Running it
+from xinitrc makes all my VT's go dark when I log out, thereby
+needing a reboot to actually get at the logfile.
+
+Anyhow, finally got an strace file here using the above arguments
+to strace, but the file is 7+MB in size. As you can guess, pastebin
+et al will not allow anywhere near such a file, so I ask, have you
+any idea how many of these 47,708 lines you would like to look at?
+I might be able to get around 1500 lines onto pastebin, but I can
+make multiple pastebins as needed.
+
+FYI nopaste doesn't seem to be in business, but if you have a
+working link to a paste site you prefer, please send it along!
+
+Sasha
+-----BEGIN PGP SIGNATURE-----
+Note: This signature can be verified at https://www.hushtools.com/verify
+Charset: iso-8859-1
+Version: Hush 3.0
+
+wpwEAQMCAAYFAktrVzkACgkQNSYFEb1mCzIfQQP/Wty1O0xVClvkpbQqyKTXVMnNOiLw
+/nNv81NdF41J/NTRlYVwbuOCholaFIaLeswC1KN6urSr0lCcHEtlTG8gsZxnp4OqOZN8
+Pdbx6jLO8VpfdaVvPRYkQPd7XZUVvEhM4c3cNxmKu/KudEWwtaPkZbk0jJnyDoiF3aWG
+F+F9B0Y=
+=8Hdy
+-----END PGP SIGNATURE-----
+
+
+
+From michael+i3 at stapelberg.de  Fri Feb  5 00:59:52 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Fri, 05 Feb 2010 00:59:52 +0100
+Subject: [i3] The SysV-IPC -- cannot create socket
+In-Reply-To: <20100204231322.27B5A2803F@smtp.hushmail.com>
+References: <20100204231322.27B5A2803F@smtp.hushmail.com>
+Message-ID: <1265327947-sup-5889@midna.zekjur.net>
+
+Hi Sasha,
+
+Excerpts from Sasha's message of Fr Feb 05 00:13:21 +0100 2010:
+> Anyhow, finally got an strace file here using the above arguments
+> to strace, but the file is 7+MB in size. As you can guess, pastebin
+> et al will not allow anywhere near such a file, so I ask, have you
+> any idea how many of these 47,708 lines you would like to look at?
+> I might be able to get around 1500 lines onto pastebin, but I can
+> make multiple pastebins as needed.
+Please bzip2 the file and send it to me via email.
+
+Best regards,
+Michael
+
+PS: No, the relevant lines are not included in your nopasted version.
+
+
+From michael+i3 at stapelberg.de  Fri Feb  5 13:26:44 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Fri, 05 Feb 2010 13:26:44 +0100
+Subject: [i3] The SysV-IPC -- cannot create socket
+In-Reply-To: <1265327947-sup-5889@midna.zekjur.net>
+References: <20100204231322.27B5A2803F@smtp.hushmail.com>
+	<1265327947-sup-5889@midna.zekjur.net>
+Message-ID: <1265372706-sup-4514@midna.zekjur.net>
+
+Hi,
+
+after examining your strace output, I have the following guesses:
+
+1) Please make sure that ~/.tmp actually exists.
+2) If it does, please try /home/sasha instead of ~. It may be that filenames
+   for the ipc-socket are not globbed yet.
+3) If you use a path other than the default of /tmp/i3-ipc.sock, you need to
+   pass it to i3-msg when calling it (parameter -s).
+
+Best regards,
+Michael
+
+
+From michael+i3 at stapelberg.de  Fri Feb  5 18:54:27 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Fri, 05 Feb 2010 18:54:27 +0100
+Subject: [i3] The SysV-IPC -- cannot create socket
+In-Reply-To: <20100205174118.935992803F@smtp.hushmail.com>
+References: <20100205174118.935992803F@smtp.hushmail.com>
+Message-ID: <1265392268-sup-7754@midna.zekjur.net>
+
+Hi Sasha,
+
+Excerpts from Sasha's message of Fr Feb 05 18:41:18 +0100 2010:
+> Moral of story: do not put i3-msg commands in the config file,
+> because they get executed before the socket is created.
+This is not intended behaviour, but the current state of code. Please
+create a ticket at http://i3.zekjur.net/bugs/ and I will have a look
+at this issue in a few days.
+
+While patches are generally welcome, the immediate patch for this one
+is trivial, but I would rather think some more about a better way for
+the order in which auto-start is executed, ipc-socket is created and
+the processing of events starts. So, if you are not so much into C
+and libev, I would not recommend this one to you as a first patch ;-).
+
+Best regards,
+Michael
+
+
+From uli.armbruster at googlemail.com  Sat Feb  6 12:52:45 2010
+From: uli.armbruster at googlemail.com (Uli Armbruster)
+Date: Sat, 6 Feb 2010 12:52:45 +0100
+Subject: [i3] i3 hangs, when I execute this script => bug?
+Message-ID: <20100206115245.GA4387@Archlinux>
+
+Hi, it's me again, the new mister i3-user ;-)
+
+
+I managed to configure everything the way I want it, am really happy with i3. But there's one little thing that disturbs me and I can't figure out, what's the problem.
+
+I have a tv card and I have to use mplayer to watch tv, because it's the only app which can handle my tv card. So I have a script for watching tv, which looks like this
+
+
+#!/bin/bash
+mplayer tv:// -tv driver=v4l2:norm=PAL:fps=25:width=768:height=576:device=/dev/video0:chanlist=europe-west:alsa=yes:adevice=plughw.1,0:audiorate=32000:forceaudio:immediatemode=0:channels=\
+E7-ARD,\
+E6-ZDF,\
+E5-SWR_BW,\
+SE10-BR,\
+E10-Sat1,\
+SE14-Pro7,\
+E9-RTL,\
+SE7-MTV,\
+SE12-VIVA,\
+SE6-Kabel1,\
+SE5-VOX,\
+E12,DSF,\
+SE4-Tele5,\
+SE9-Phoenix,\
+SE11-SuperRTL,\
+SE13-3sat,\
+SE15-EuroSport,\
+E11-ZDF-Doku,\
+SE16-RTL2,\
+SE17-WDR,\
+SE18-NDR,\
+22-SF_DRS,\
+47-SF2,\
+24-ORF1,\
+23-ORF2,\
+25-RegioTV,\
+26-N24,\
+27-NTV,\
+28-MDR,\
+31-ARTE,\
+34-DMAX,\
+36-Das_Vierte,\
+41-BR_alpha,\
+42-HR,\
+44-CNN,\
+45-Bloomberg,\
+50-AnixeSD,\
+51-RBB\
+-af volnorm -vf pp=lb -vo xv -delay 0.2
+
+(I still have to find a good chanel order ;-) )
+
+It works, when I run it from urxvt, but when I start it with dmenu, i3 completely crashes. But it cannot be a dmenu issue, because it worked in musca (which uses dmenu as well). All I can do is go to tty and hit ^C. Here's an output, which tells me something like "mplayer crashed. that should not happen" (in case it's really relevant, I can provide the complete output).
+
+
+Anyone with an idea?
+
+Regards
+Army
+
+
+From michael+i3 at stapelberg.de  Sat Feb  6 13:00:11 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 06 Feb 2010 13:00:11 +0100
+Subject: [i3] i3 hangs, when I execute this script => bug?
+In-Reply-To: <20100206115245.GA4387@Archlinux>
+References: <20100206115245.GA4387@Archlinux>
+Message-ID: <1265457467-sup-6476@midna.zekjur.net>
+
+Hi Army,
+
+Excerpts from Uli Armbruster's message of Sa Feb 06 12:52:45 +0100 2010:
+> It works, when I run it from urxvt, but when I start it with dmenu, i3
+> completely crashes. But it cannot be a dmenu issue, because it worked in musca
+Interesting. Can you start strace with i3?s pid and flags -f -s2048 before
+starting the script please? (strace -f -s2048 -o /tmp/strace.log $(pgrep i3)
+should work)
+
+Afterwards, compress the result using bzip2 and send it to me. Also, the
+i3 logfile is interesting, please also send it to me. See
+http://i3.zekjur.net/docs/debugging.html for how to enable the logfile.
+
+Best regards,
+Michael
+
+
+From crawlingwithsnakes at hush.com  Sun Feb  7 00:57:36 2010
+From: crawlingwithsnakes at hush.com (Sasha)
+Date: Sat, 06 Feb 2010 19:57:36 -0400
+Subject: [i3] i3 hangs, when I execute this script => bug?
+Message-ID: <20100206235736.4DA4511803D@smtp.hushmail.com>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+
+
+On Sat, 06 Feb 2010 07:52:45 -0400 Uli Armbruster
+<uli.armbruster at googlemail.com> wrote:
+>Hi, it's me again, the new mister i3-user ;-)
+>
+>
+>I managed to configure everything the way I want it, am really
+>happy with i3. But there's one little thing that disturbs me and I
+>can't figure out, what's the problem.
+>
+>I have a tv card and I have to use mplayer to watch tv, because
+>it's the only app which can handle my tv card. So I have a script
+>for watching tv, which looks like this
+>
+>
+>#!/bin/bash
+>mplayer tv:// -tv
+>driver=v4l2:norm=PAL:fps=25:width=768:height=576:device=/dev/video0
+>:chanlist=europe-
+>west:alsa=yes:adevice=plughw.1,0:audiorate=32000:forceaudio:immedia
+>temode=0:channels=\
+>E7-ARD,\
+>E6-ZDF,\
+>E5-SWR_BW,\
+>SE10-BR,\
+>E10-Sat1,\
+>SE14-Pro7,\
+>E9-RTL,\
+>SE7-MTV,\
+>SE12-VIVA,\
+>SE6-Kabel1,\
+>SE5-VOX,\
+>E12,DSF,\
+>SE4-Tele5,\
+>SE9-Phoenix,\
+>SE11-SuperRTL,\
+>SE13-3sat,\
+>SE15-EuroSport,\
+>E11-ZDF-Doku,\
+>SE16-RTL2,\
+>SE17-WDR,\
+>SE18-NDR,\
+>22-SF_DRS,\
+>47-SF2,\
+>24-ORF1,\
+>23-ORF2,\
+>25-RegioTV,\
+>26-N24,\
+>27-NTV,\
+>28-MDR,\
+>31-ARTE,\
+>34-DMAX,\
+>36-Das_Vierte,\
+>41-BR_alpha,\
+>42-HR,\
+>44-CNN,\
+>45-Bloomberg,\
+>50-AnixeSD,\
+>51-RBB\
+>-af volnorm -vf pp=lb -vo xv -delay 0.2
+>
+>(I still have to find a good chanel order ;-) )
+>
+>It works, when I run it from urxvt, but when I start it with
+>dmenu, i3 completely crashes. But it cannot be a dmenu issue,
+>because it worked in musca (which uses dmenu as well). All I can
+>do is go to tty and hit ^C. Here's an output, which tells me
+>something like "mplayer crashed. that should not happen" (in case
+>it's really relevant, I can provide the complete output).
+>
+>
+>Anyone with an idea?
+>
+>Regards
+>Army
+
+This may be obvious, but also obvious enough to overlook:
+
+Are you sure to fork off the dmenu execution from the i3 process,
+as well as fork off the mplayer script from dmesg? I mean, using
+the "&" to fork the process?
+Otherwise, dmenu will remain "attached" to i3, and mplayer will
+remain "attached" to dmenu, causing non-desirable effects :-)
+
+I did have a similar thing happen, and forking off the process I
+had forgotten to, fixed the problem.
+
+Sasha
+-----BEGIN PGP SIGNATURE-----
+Note: This signature can be verified at https://www.hushtools.com/verify
+Charset: iso-8859-1
+Version: Hush 3.0
+
+wpwEAQMCAAYFAktuBJYACgkQNSYFEb1mCzLOQgQAi1QQdHKRMIcMNuIp6uitpDh26g5u
+T69Gp9xN5+GLNdiPX06Bg+60SyuVZlVDCuib7ZdVq4Tklh/H3LPFXZ5rOIuZpJ/j/nrR
+Th952Km4uqiUhEqBNnYlkH/pWka9MKS4TPE1aaqnly8Y91s/SlMNYShzvGYZAwiIqqEW
+zDdjBW4=
+=rE8i
+-----END PGP SIGNATURE-----
+
+
+
+From uli.armbruster at googlemail.com  Sun Feb  7 10:30:24 2010
+From: uli.armbruster at googlemail.com (Uli Armbruster)
+Date: Sun, 7 Feb 2010 10:30:24 +0100
+Subject: [i3] i3 hangs, when I execute this script => bug?
+In-Reply-To: <20100206235736.4DA4511803D@smtp.hushmail.com>
+References: <20100206235736.4DA4511803D@smtp.hushmail.com>
+Message-ID: <783e4a901002070130k2135882dneca568374c94795f@mail.gmail.com>
+
+2010/2/7 Sasha <crawlingwithsnakes at hush.com>:
+> This may be obvious, but also obvious enough to overlook:
+>
+> Are you sure to fork off the dmenu execution from the i3 process,
+> as well as fork off the mplayer script from dmesg? I mean, using
+> the "&" to fork the process?
+> Otherwise, dmenu will remain "attached" to i3, and mplayer will
+> remain "attached" to dmenu, causing non-desirable effects :-)
+>
+> I did have a similar thing happen, and forking off the process I
+> had forgotten to, fixed the problem.
+>
+> Sasha
+
+I already wrote it to Michael in private, I tried it again after a
+reboot and it worked just fine. I think it might depend on the thing,
+that after restarting my X session the X server goes from tty7 to
+tty8. This seems to be a bug in Archlinux. In the last few days I
+often restarted my X session, because of config mistakes in the i3
+config or whatever ;-) But I'll give the forking a try, who knows,
+maybe that's really the key. I'm not at my laptop right now, so it'll
+still take some time till I can test all this and do the debugging etc
+
+Army
+
+
+From scott.benjamin at gmail.com  Thu Feb 11 06:17:57 2010
+From: scott.benjamin at gmail.com (Scott Benjamin)
+Date: Wed, 10 Feb 2010 21:17:57 -0800
+Subject: [i3] lexer config parser,
+	Identifying the line in my config which is 	causing the error.
+Message-ID: <baf45701002102117l78878531w3034d0a8f5eac1aa@mail.gmail.com>
+
+I've been using I3 for about a month now, loving it very much.
+
+One of the things that I've been trying to do is to setup the resize mode so
+that I can resize via the keyboard.
+
+First step was to start i3 with the -l option, that proves a bit troublesome
+as there is some error in my config that the lexer doesn't like.
+
+My question is, is there an easy way to help identify the line that is
+causing the error?  I've tried scanning the output to identify the exact
+line but I'm not seeing it.
+
+
+Regards,
+
+Scott
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100210/1c3d346c/attachment.html>
+
+From michael+i3 at stapelberg.de  Thu Feb 11 09:57:04 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Thu, 11 Feb 2010 09:57:04 +0100
+Subject: [i3] lexer config parser,
+	Identifying the line in my config which is causing the error.
+In-Reply-To: <baf45701002102117l78878531w3034d0a8f5eac1aa@mail.gmail.com>
+References: <baf45701002102117l78878531w3034d0a8f5eac1aa@mail.gmail.com>
+Message-ID: <1265878499-sup-5631@midna.zekjur.net>
+
+Hi Scott,
+
+Excerpts from Scott Benjamin's message of Do Feb 11 06:17:57 +0100 2010:
+> I've been using I3 for about a month now, loving it very much.
+Nice to hear :-).
+
+> My question is, is there an easy way to help identify the line that is
+> causing the error?  I've tried scanning the output to identify the exact
+> line but I'm not seeing it.
+Unfortunately not yet, proper error handling is still on the TODO list. The
+only thing you can do for now is starting i3 with full debug level (-V -d all)
+and check the logfile for the lines which the parser correctly interpreted.
+The lines in your configfile which follow these are the problem. If you have
+some experience with config file parsing / grammars, the debug output should
+give you some hints aswell ;-).
+
+Best regards,
+Michael
+
+PS: If nothing helps, you can come to our IRC channel and/or send me your
+config so we can debug the config together.
+
+
+From scott.benjamin at gmail.com  Fri Feb 12 07:56:29 2010
+From: scott.benjamin at gmail.com (Scott Benjamin)
+Date: Thu, 11 Feb 2010 22:56:29 -0800
+Subject: [i3] lexer config parser,
+	Identifying the line in my config which 	is causing the error.
+In-Reply-To: <1265878499-sup-5631@midna.zekjur.net>
+References: <baf45701002102117l78878531w3034d0a8f5eac1aa@mail.gmail.com>
+	<1265878499-sup-5631@midna.zekjur.net>
+Message-ID: <baf45701002112256r4d3d8c75n829debc846cffc2c@mail.gmail.com>
+
+Thanks for the reply Michael.
+
+I tried to run i3 with the debug level set but it kept complaining about the
+options not being valid. Perhaps I'm overlooking something.
+
+I will probably hop onto the IRC channel and see if I can get some support
+there as well.
+
+Thanks,
+
+Scott
+
+On Thu, Feb 11, 2010 at 12:57 AM, Michael Stapelberg <
+michael+i3 at stapelberg.de <michael%2Bi3 at stapelberg.de>> wrote:
+
+> Hi Scott,
+>
+> Excerpts from Scott Benjamin's message of Do Feb 11 06:17:57 +0100 2010:
+> > I've been using I3 for about a month now, loving it very much.
+> Nice to hear :-).
+>
+> > My question is, is there an easy way to help identify the line that is
+> > causing the error?  I've tried scanning the output to identify the exact
+> > line but I'm not seeing it.
+> Unfortunately not yet, proper error handling is still on the TODO list. The
+> only thing you can do for now is starting i3 with full debug level (-V -d
+> all)
+> and check the logfile for the lines which the parser correctly interpreted.
+> The lines in your configfile which follow these are the problem. If you
+> have
+> some experience with config file parsing / grammars, the debug output
+> should
+> give you some hints aswell ;-).
+>
+> Best regards,
+> Michael
+>
+> PS: If nothing helps, you can come to our IRC channel and/or send me your
+> config so we can debug the config together.
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100211/e31f8047/attachment.html>
+
+From tam at hiddenrock.com  Sat Feb 13 03:55:28 2010
+From: tam at hiddenrock.com (Peter Johnson)
+Date: Fri, 12 Feb 2010 21:55:28 -0500
+Subject: [i3] patch for i3status to report CPU speed
+Message-ID: <20100213025528.GB3294@vingilot.hiddenrock.com>
+
+Hi there --
+
+Attached is a patch to add CPU speed to the list of stuff made available by
+i3status.  I only actively tested it on Linux, but I'm reasonably confident it
+will work on FreeBSD, too.  I chose to put the GHz/MHz formatting inside
+print_cpu_speed_info() because I couldn't think of a good way to put such a
+conditional in the config file (and, honestly, it seems like every user will
+want it to work that way anyway).  Please hack it up if you think of a better
+way!
+
+pete
+
+-------------- next part --------------
+diff -ruN i3status-2.0.orig/i3status.c i3status-2.0/i3status.c
+--- i3status-2.0.orig/i3status.c	2009-10-27 15:33:42.000000000 -0400
++++ i3status-2.0/i3status.c	2010-02-12 21:11:41.027485227 -0500
+@@ -120,6 +120,11 @@
+                 CFG_END()
+         };
+ 
++        cfg_opt_t cpuspeed_opts[] = {
++                CFG_STR("format", "%speed", CFGF_NONE),
++                CFG_END()
++        };
++
+         cfg_opt_t opts[] = {
+                 CFG_STR_LIST("order", "{ipv6,\"run_watch DHCP\",\"wireless wlan0\",\"ethernet eth0\",\"battery 0\",\"cpu_temperature 0\",load,time}", CFGF_NONE),
+                 CFG_SEC("general", general_opts, CFGF_NONE),
+@@ -132,6 +137,7 @@
+                 CFG_SEC("ipv6", ipv6_opts, CFGF_TITLE),
+                 CFG_SEC("time", time_opts, CFGF_NONE),
+                 CFG_SEC("load", load_opts, CFGF_NONE),
++                CFG_SEC("cpu_speed", cpuspeed_opts, CFGF_TITLE | CFGF_MULTI),
+                 CFG_END()
+         };
+ 
+@@ -219,6 +225,8 @@
+ 
+                         CASE_SEC_TITLE("cpu_temperature")
+                                 print_cpu_temperature_info(atoi(title), cfg_getstr(sec, "format"));
++                        CASE_SEC_TITLE("cpu_speed")
++                                print_cpu_speed_info(atoi(title), cfg_getstr(sec, "format"));
+                 }
+                 printf("\n");
+                 fflush(stdout);
+diff -ruN i3status-2.0.orig/i3status.h i3status-2.0/i3status.h
+--- i3status-2.0.orig/i3status.h	2009-10-27 15:33:42.000000000 -0400
++++ i3status-2.0/i3status.h	2010-02-12 21:08:36.440888811 -0500
+@@ -12,10 +12,12 @@
+ #if defined(LINUX)
+ 
+ #define THERMAL_ZONE "/sys/class/thermal/thermal_zone%d/temp"
++#define CPU_SPEED "/sys/devices/system/cpu/cpu%d/cpufreq/scaling_cur_freq"
+ 
+ #elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
+ 
+ #define THERMAL_ZONE "hw.acpi.thermal.tz%d.temperature"
++#define CPU_SPEED "dev.cpu.%d.freq"
+ #define BATT_LIFE "hw.acpi.battery.life"
+ #define BATT_TIME "hw.acpi.battery.time"
+ #define BATT_STATE "hw.acpi.battery.state"
+@@ -66,6 +68,7 @@
+ void print_wireless_info(const char *interface, const char *format_up, const char *format_down);
+ void print_run_watch(const char *title, const char *pidfile, const char *format);
+ void print_cpu_temperature_info(int zone, const char *format);
++void print_cpu_speed_info(int speed, const char *format);
+ void print_eth_info(const char *interface, const char *format_up, const char *format_down);
+ void print_load();
+ bool process_runs(const char *path);
+diff -ruN i3status-2.0.orig/man/i3status.man i3status-2.0/man/i3status.man
+--- i3status-2.0.orig/man/i3status.man	2009-10-27 15:33:42.000000000 -0400
++++ i3status-2.0/man/i3status.man	2010-02-12 21:20:29.843081268 -0500
+@@ -53,6 +53,7 @@
+ order += "ethernet eth0"
+ order += "battery 0"
+ order += "cpu_temperature 0"
++order += "cpu_speed 0"
+ order += "load"
+ order += "time"
+ 
+@@ -90,6 +91,10 @@
+ 	format = "T: %degrees ?C"
+ }
+ 
++cpu_speed 0 {
++    format = "S: %speed"
++}
++
+ disk "/" {
+ 	format = "%free"
+ }
+@@ -177,6 +182,14 @@
+ 
+ *Example format*: +T: %degrees ?C+
+ 
++=== CPU-Speed
++
++Gets the speed of the given CPU.
++
++*Example order*: +cpu_speed 0+
++
++*Example format*: +S: %speed+
++
+ === Load
+ 
+ Gets the system load (number of processes waiting for CPU time in the last
+diff -ruN i3status-2.0.orig/src/print_cpu_speed.c i3status-2.0/src/print_cpu_speed.c
+--- i3status-2.0.orig/src/print_cpu_speed.c	1969-12-31 19:00:00.000000000 -0500
++++ i3status-2.0/src/print_cpu_speed.c	2010-02-12 21:15:40.244183150 -0500
+@@ -0,0 +1,64 @@
++// vim:ts=8:expandtab
++#include <stdlib.h>
++#include <limits.h>
++#include <stdio.h>
++#include <string.h>
++
++#include "i3status.h"
++
++#if defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
++#include <err.h>
++#include <sys/types.h>
++#include <sys/sysctl.h>
++#endif
++
++static char *cpu_speed;
++
++/*
++ * Reads the CPU speed from
++ * "/sys/devices/system/cpu/cpu%d/cpufreq/scaling_cur_speed" (Linux) or
++ * "dev.cpu.%d.freq" (FreeBSD) and prints the speed in MHz or (if >= 1000 MHz)
++ * in GHz.
++ *
++ */
++void print_cpu_speed_info(int cpu_num, const char *format) {
++        const char *walk;
++        static char buf[16];
++
++        asprintf(&cpu_speed, CPU_SPEED, cpu_num);
++
++        for (walk = format; *walk != '\0'; walk++) {
++                if (*walk != '%') {
++                        putchar(*walk);
++                        continue;
++                }
++
++                if (BEGINS_WITH(walk+1, "speed")) {
++#if defined(LINUX)
++                        long int speed_in_khz;
++                        if (!slurp(cpu_speed, buf, sizeof(buf)))
++                                die("Could not open \"%s\"\n", cpu_speed);
++                        speed_in_khz = strtol(buf, NULL, 10);
++                        if (speed_in_khz == LONG_MIN || speed_in_khz == LONG_MAX || speed_in_khz <= 0)
++                                (void)printf("?");
++                        else if (speed_in_khz >= 1000000)
++                                (void)printf("%.2f GHz", ((float) speed_in_khz)/1000000);
++                        else
++                                (void)printf("%ld MHz", (speed_in_khz/1000));
++#elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
++                        int sysctl_rslt;
++                        size_t sysctl_size = sizeof(sysctl_rslt);
++                        if (sysctlbyname(cpu_speed, &sysctl_rslt, &sysctl_size, NULL, 0)) {
++                                (void)printf("No cpu speed information found");
++                                return;
++                        }
++
++                        if (sysctl_rslt >= 1000000)
++                                (void)printf("%.2f GHz", ((float) sysctl_rslt)/1000000);
++                        else
++                                (void)printf("%ld MHz", (sysctl_rslt/1000));
++#endif
++                        walk += strlen("speed");
++                }
++        }
++}
+
+From tam at hiddenrock.com  Sat Feb 13 22:30:23 2010
+From: tam at hiddenrock.com (Peter Johnson)
+Date: Sat, 13 Feb 2010 16:30:23 -0500
+Subject: [i3] i3status patch to colorize ethernet output
+Message-ID: <20100213213022.GC2140@vingilot.hiddenrock.com>
+
+Hi --
+
+Here's a patch to colorize the ethernet output for i3status.  (Why are the
+castings of printf() to void inconsistent?  Which way is preferred?)
+
+pete
+
+-------------- next part --------------
+diff -ruN i3status-2.0.orig/src/print_eth_info.c i3status-2.0/src/print_eth_info.c
+--- i3status-2.0.orig/src/print_eth_info.c	2009-10-27 15:33:42.000000000 -0400
++++ i3status-2.0/src/print_eth_info.c	2010-02-13 16:28:05.689011287 -0500
+@@ -79,8 +79,12 @@
+         const char *ip_address = get_ip_addr(interface);
+ 
+         if (ip_address == NULL) {
++                printf("%s", color("#FF0000"));
+                 printf("%s", format_down);
++                (void)printf("%s", endcolor());
+                 return;
++        } else {
++                printf("%s", color("#00FF00"));
+         }
+ 
+         for (walk = format_up; *walk != '\0'; walk++) {
+@@ -97,4 +101,6 @@
+                         walk += strlen("speed");
+                 }
+         }
++
++        (void)printf("%s", endcolor());
+ }
+
+From tam at hiddenrock.com  Sat Feb 13 22:38:30 2010
+From: tam at hiddenrock.com (Peter Johnson)
+Date: Sat, 13 Feb 2010 16:38:30 -0500
+Subject: [i3] i3status patch for man/Makefile
+Message-ID: <20100213213830.GD2140@vingilot.hiddenrock.com>
+
+Hi again --
+
+Here's a patch to take advantage of make's dependency checking to avoid
+generating i3status.1 every time ``make'' is run.  I've also cleaned up the
+dependency hierarchy a bit; the new version makes things easier for me to
+understand, and I think it will also make future additions simpler.  (What are
+i3status.xml and i3status.html?  Vestiges of old documentation formats?)
+
+pete
+
+
+
+From tam at hiddenrock.com  Sat Feb 13 22:40:42 2010
+From: tam at hiddenrock.com (Peter Johnson)
+Date: Sat, 13 Feb 2010 16:40:42 -0500
+Subject: [i3] i3status patch for man/Makefile
+In-Reply-To: <20100213213830.GD2140@vingilot.hiddenrock.com>
+References: <20100213213830.GD2140@vingilot.hiddenrock.com>
+Message-ID: <20100213214042.GE2140@vingilot.hiddenrock.com>
+
+This time I'll actually attach the patch!
+
+On Sat, Feb 13, 2010 at 04:38:30PM -0500, Peter Johnson wrote:
+> Hi again --
+> 
+> Here's a patch to take advantage of make's dependency checking to avoid
+> generating i3status.1 every time ``make'' is run.  I've also cleaned up the
+> dependency hierarchy a bit; the new version makes things easier for me to
+> understand, and I think it will also make future additions simpler.  (What are
+> i3status.xml and i3status.html?  Vestiges of old documentation formats?)
+> 
+> pete
+> 
+-------------- next part --------------
+diff -ruN i3status-2.0.orig/man/Makefile i3status-2.0/man/Makefile
+--- i3status-2.0.orig/man/Makefile	2009-10-27 15:33:42.000000000 -0400
++++ i3status-2.0/man/Makefile	2010-02-13 16:35:09.452298656 -0500
+@@ -1,4 +1,6 @@
+-all:
++all: i3status.1
++
++i3status.1: asciidoc.conf i3status.man
+ 	a2x -f manpage --asciidoc-opts="-f asciidoc.conf" i3status.man
+ clean:
+ 	rm -f i3status.xml i3status.1 i3status.html
+
+From tam at hiddenrock.com  Sat Feb 13 22:51:17 2010
+From: tam at hiddenrock.com (Peter Johnson)
+Date: Sat, 13 Feb 2010 16:51:17 -0500
+Subject: [i3] i3status patch to avoid shipping generated file
+Message-ID: <20100213215117.GF2140@vingilot.hiddenrock.com>
+
+Hi again --
+
+Here is yet another patch (am I getting annoying yet?) that avoids the
+inclusion of man/i3status.1 in the release tarball; it is generated by
+man/Makefile, and so shouldn't be there.
+
+Well, unless you don't want to expect people downloading the tarball to have
+a2x.  I dunno whether it's reasonable to expect that or not, but if you don't
+want to expect it, then the previous patch to avoid making i3status.1 if it's
+already there is more important.  But I'm not in charge!  Somebody else gets
+to decide!  The benefits of being a grunt... =)
+
+pete
+
+-------------- next part --------------
+diff -ru i3status-2.0.orig/Makefile i3status-2.0/Makefile
+--- i3status-2.0.orig/Makefile	2009-10-27 15:33:42.000000000 -0400
++++ i3status-2.0/Makefile	2010-02-13 16:43:23.078984660 -0500
+@@ -63,6 +63,6 @@
+ 	mkdir i3status-${VERSION}/src
+ 	mkdir i3status-${VERSION}/man
+ 	find src -maxdepth 1 -type f \( -regex ".*\.\(c\|h\)" \) -exec cp '{}' i3status-${VERSION}/src \;
+-	find man -maxdepth 1 -type f \( -regex ".*\.\(1\|man\|conf\)" -or -name "Makefile" \) -exec cp '{}' i3status-${VERSION}/man \;
++	find man -maxdepth 1 -type f \( -regex ".*\.\(man\|conf\)" -or -name "Makefile" \) -exec cp '{}' i3status-${VERSION}/man \;
+ 	tar cjf i3status-${VERSION}.tar.bz2 i3status-${VERSION}
+ 	rm -rf i3status-${VERSION}
+Only in i3status-2.0/: .Makefile.swp
+Only in i3status-2.0/man: i3status.1
+
+From michael+i3 at stapelberg.de  Sun Feb 14 12:51:32 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 14 Feb 2010 12:51:32 +0100
+Subject: [i3] i3status patch to colorize ethernet output
+In-Reply-To: <20100213213022.GC2140@vingilot.hiddenrock.com>
+References: <20100213213022.GC2140@vingilot.hiddenrock.com>
+Message-ID: <1266148170-sup-1348@midna.zekjur.net>
+
+Hi Peter,
+
+Thanks for your patch, I have merged it. By the way, the preferred format
+for patches is the one which "git format-patch origin" spits out because
+it contains the author?s name and commit date.
+
+Excerpts from Peter Johnson's message of Sa Feb 13 22:30:23 +0100 2010:
+> Here's a patch to colorize the ethernet output for i3status.  (Why are the
+> castings of printf() to void inconsistent?  Which way is preferred?)
+The castings were added when I used lint to check the source code, but
+as far as I remember lint stopped working some time ago after some change
+in our source so I did not make sure that every printf has its cast to
+void. The best way would be to keep the casts.
+
+Best regards,
+Michael
+
+
+From michael+i3 at stapelberg.de  Sun Feb 14 12:56:41 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 14 Feb 2010 12:56:41 +0100
+Subject: [i3] i3status patch for man/Makefile
+In-Reply-To: <20100213213830.GD2140@vingilot.hiddenrock.com>
+References: <20100213213830.GD2140@vingilot.hiddenrock.com>
+Message-ID: <1266148503-sup-3830@midna.zekjur.net>
+
+Hi Peter,
+
+I also merged this one.
+
+Excerpts from Peter Johnson's message of Sa Feb 13 22:38:30 +0100 2010:
+> Here's a patch to take advantage of make's dependency checking to avoid
+> generating i3status.1 every time ``make'' is run.  I've also cleaned up the
+> dependency hierarchy a bit; the new version makes things easier for me to
+> understand, and I think it will also make future additions simpler.  (What are
+> i3status.xml and i3status.html?  Vestiges of old documentation formats?)
+No, i3status.xml is the file which is generated by a2x and then converted into
+a manpage. i3status.html is simply a variant of the manpage compiled into HTML
+(asciidoc has multiple backends). This is useful for putting it online, so
+that people can have a quick look ;-).
+
+Best regards,
+Michael
+
+
+From michael+i3 at stapelberg.de  Sun Feb 14 12:58:08 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 14 Feb 2010 12:58:08 +0100
+Subject: [i3] i3status patch to avoid shipping generated file
+In-Reply-To: <20100213215117.GF2140@vingilot.hiddenrock.com>
+References: <20100213215117.GF2140@vingilot.hiddenrock.com>
+Message-ID: <1266148628-sup-3918@midna.zekjur.net>
+
+Hi Peter,
+
+Excerpts from Peter Johnson's message of Sa Feb 13 22:51:17 +0100 2010:
+> Well, unless you don't want to expect people downloading the tarball to have
+> a2x.  I dunno whether it's reasonable to expect that or not, but if you don't
+This is exactly the reason why it is included. We also had this with i3, where
+people who build from source don?t want to install asciidoc and the necessary
+xml packages to generate a manpage by themselves.
+
+Best regards,
+Michael
+
+
+From michael+i3 at stapelberg.de  Sun Feb 14 13:09:45 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 14 Feb 2010 13:09:45 +0100
+Subject: [i3] patch for i3status to report CPU speed
+In-Reply-To: <20100213025528.GB3294@vingilot.hiddenrock.com>
+References: <20100213025528.GB3294@vingilot.hiddenrock.com>
+Message-ID: <1266148881-sup-1501@midna.zekjur.net>
+
+Hi Peter,
+
+Excerpts from Peter Johnson's message of Sa Feb 13 03:55:28 +0100 2010:
+> Attached is a patch to add CPU speed to the list of stuff made available by
+> i3status.  I only actively tested it on Linux, but I'm reasonably confident it
+Thanks for your work.
+
+I don?t exactly know why one would want to know the speed of the CPU. You
+probably already know the maximum speed and the ondemand-scheduler (which is
+what everybody should use) automatically adjusts the speed so that the CPU will
+use as little power as possible.
+
+So, what exactly is the useful information you get out of your current CPU
+speed?
+
+Best regards,
+Michael
+
+
+From tam at hiddenrock.com  Sun Feb 14 18:28:08 2010
+From: tam at hiddenrock.com (Peter Johnson)
+Date: Sun, 14 Feb 2010 12:28:08 -0500
+Subject: [i3] patch for i3status to report CPU speed
+In-Reply-To: <1266148881-sup-1501@midna.zekjur.net>
+References: <20100213025528.GB3294@vingilot.hiddenrock.com>
+	<1266148881-sup-1501@midna.zekjur.net>
+Message-ID: <20100214172808.GC4038@vingilot.hiddenrock.com>
+
+> So, what exactly is the useful information you get out of your current CPU
+> speed?
+
+*shrug*  I dunno.  It indulges my curiosity?  =)
+
+As for whether it belongs in i3status or not, why limit options?
+
+pete
+
+
+
+From tam at hiddenrock.com  Sun Feb 14 18:30:13 2010
+From: tam at hiddenrock.com (Peter Johnson)
+Date: Sun, 14 Feb 2010 12:30:13 -0500
+Subject: [i3] i3status patch to colorize ethernet output
+In-Reply-To: <1266148170-sup-1348@midna.zekjur.net>
+References: <20100213213022.GC2140@vingilot.hiddenrock.com>
+	<1266148170-sup-1348@midna.zekjur.net>
+Message-ID: <20100214173013.GD4038@vingilot.hiddenrock.com>
+
+> By the way, the preferred format for patches is the one which "git
+> format-patch origin" spits out because it contains the author?s name and
+> commit date.
+
+Huh.  I'll look into that.  I'm not a git user (I made my patches against a
+release tarball), so it may take me a bit to get up to speed.
+
+> The best way would be to keep the casts.
+
+Would you like existing printf()s that aren't casted changed so they are?
+Would you like new printf()s to be casted?
+
+pete
+
+
+
+From tam at hiddenrock.com  Sun Feb 14 18:37:11 2010
+From: tam at hiddenrock.com (Peter Johnson)
+Date: Sun, 14 Feb 2010 12:37:11 -0500
+Subject: [i3] i3status patch to avoid shipping generated file
+In-Reply-To: <1266148628-sup-3918@midna.zekjur.net>
+References: <20100213215117.GF2140@vingilot.hiddenrock.com>
+	<1266148628-sup-3918@midna.zekjur.net>
+Message-ID: <20100214173711.GE4038@vingilot.hiddenrock.com>
+
+> > Well, unless you don't want to expect people downloading the tarball to have
+> > a2x.  I dunno whether it's reasonable to expect that or not, but if you don't
+> This is exactly the reason why it is included. We also had this with i3, where
+> people who build from source don?t want to install asciidoc and the necessary
+> xml packages to generate a manpage by themselves.
+
+Cool.  Then I shall have a chat with the Arch package maintainer.  Thanks!
+
+pete
+
+
+
+From michael+i3 at stapelberg.de  Sun Feb 14 19:01:24 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 14 Feb 2010 19:01:24 +0100
+Subject: [i3] patch for i3status to report CPU speed
+In-Reply-To: <20100214172808.GC4038@vingilot.hiddenrock.com>
+References: <20100213025528.GB3294@vingilot.hiddenrock.com>
+	<1266148881-sup-1501@midna.zekjur.net>
+	<20100214172808.GC4038@vingilot.hiddenrock.com>
+Message-ID: <1266170376-sup-6808@midna.zekjur.net>
+
+Hi Peter,
+
+Excerpts from Peter Johnson's message of So Feb 14 18:28:08 +0100 2010:
+> As for whether it belongs in i3status or not, why limit options?
+Because the more i3status supports, the bigger it gets. Bigger software is
+usually harder to maintain, harder to get into, takes up more space on your
+hard disk, and so on?
+
+Also, if the amount of options is kept to a useful amount, this makes it
+easier for users to configure the software (the less you have to care about,
+the better).
+
+Best regards,
+Michael
+
+
+From michael+i3 at stapelberg.de  Sun Feb 14 19:03:16 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 14 Feb 2010 19:03:16 +0100
+Subject: [i3] i3status patch to colorize ethernet output
+In-Reply-To: <20100214173013.GD4038@vingilot.hiddenrock.com>
+References: <20100213213022.GC2140@vingilot.hiddenrock.com>
+	<1266148170-sup-1348@midna.zekjur.net>
+	<20100214173013.GD4038@vingilot.hiddenrock.com>
+Message-ID: <1266170490-sup-4993@midna.zekjur.net>
+
+Hi Peter,
+
+Excerpts from Peter Johnson's message of So Feb 14 18:30:13 +0100 2010:
+> Huh.  I'll look into that.  I'm not a git user (I made my patches against a
+> release tarball), so it may take me a bit to get up to speed.
+I think there are lots of tutorials on the web. To give you a quick example:
+$ git clone git://code.stapelberg.de/i3status
+$ cd i3status
+$ vim src/foo.c
+# Make your changes, test them, and so on?
+$ git commit -a
+$ git format-patch origin
+
+> Would you like existing printf()s that aren't casted changed so they are?
+That?s not necessary. If you touch the code, you can change them.
+
+> Would you like new printf()s to be casted?
+I would prefer that, yes.
+
+Best regards,
+Michael
+
+
+From tam at hiddenrock.com  Sun Feb 14 19:15:08 2010
+From: tam at hiddenrock.com (Peter Johnson)
+Date: Sun, 14 Feb 2010 13:15:08 -0500
+Subject: [i3] patch for i3status to report CPU speed
+In-Reply-To: <1266170376-sup-6808@midna.zekjur.net>
+References: <20100213025528.GB3294@vingilot.hiddenrock.com>
+	<1266148881-sup-1501@midna.zekjur.net>
+	<20100214172808.GC4038@vingilot.hiddenrock.com>
+	<1266170376-sup-6808@midna.zekjur.net>
+Message-ID: <20100214181508.GG4038@vingilot.hiddenrock.com>
+
+> Excerpts from Peter Johnson's message of So Feb 14 18:28:08 +0100 2010:
+> > As for whether it belongs in i3status or not, why limit options?
+> Because the more i3status supports, the bigger it gets. Bigger software is
+> usually harder to maintain, harder to get into, takes up more space on your
+> hard disk, and so on?
+> 
+> Also, if the amount of options is kept to a useful amount, this makes it
+> easier for users to configure the software (the less you have to care about,
+> the better).
+
+I understand your point of view, to an extent.  But what would you say to
+people who find the existing options too broad?  "Sorry, these are the options
+I as the author find interesting, deal with it" ?  Personally, I've turned off
+ipv6 and dhcp and disk because I find them useless.
+
+pete
+
+
+
+From tam at hiddenrock.com  Sun Feb 14 19:16:06 2010
+From: tam at hiddenrock.com (Peter Johnson)
+Date: Sun, 14 Feb 2010 13:16:06 -0500
+Subject: [i3] i3status patch to colorize ethernet output
+In-Reply-To: <1266170490-sup-4993@midna.zekjur.net>
+References: <20100213213022.GC2140@vingilot.hiddenrock.com>
+	<1266148170-sup-1348@midna.zekjur.net>
+	<20100214173013.GD4038@vingilot.hiddenrock.com>
+	<1266170490-sup-4993@midna.zekjur.net>
+Message-ID: <20100214181606.GH4038@vingilot.hiddenrock.com>
+
+Cool, thanks.
+
+On Sun, Feb 14, 2010 at 07:03:16PM +0100, Michael Stapelberg wrote:
+> Hi Peter,
+> 
+> Excerpts from Peter Johnson's message of So Feb 14 18:30:13 +0100 2010:
+> > Huh.  I'll look into that.  I'm not a git user (I made my patches against a
+> > release tarball), so it may take me a bit to get up to speed.
+> I think there are lots of tutorials on the web. To give you a quick example:
+> $ git clone git://code.stapelberg.de/i3status
+> $ cd i3status
+> $ vim src/foo.c
+> # Make your changes, test them, and so on?
+> $ git commit -a
+> $ git format-patch origin
+> 
+> > Would you like existing printf()s that aren't casted changed so they are?
+> That?s not necessary. If you touch the code, you can change them.
+> 
+> > Would you like new printf()s to be casted?
+> I would prefer that, yes.
+> 
+> Best regards,
+> Michael
+
+
+From michael+i3 at stapelberg.de  Sun Feb 14 19:52:55 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 14 Feb 2010 19:52:55 +0100
+Subject: [i3] patch for i3status to report CPU speed
+In-Reply-To: <20100214181508.GG4038@vingilot.hiddenrock.com>
+References: <20100213025528.GB3294@vingilot.hiddenrock.com>
+	<1266148881-sup-1501@midna.zekjur.net>
+	<20100214172808.GC4038@vingilot.hiddenrock.com>
+	<1266170376-sup-6808@midna.zekjur.net>
+	<20100214181508.GG4038@vingilot.hiddenrock.com>
+Message-ID: <1266173271-sup-4892@midna.zekjur.net>
+
+Hi Peter,
+
+Excerpts from Peter Johnson's message of So Feb 14 19:15:08 +0100 2010:
+> I understand your point of view, to an extent.  But what would you say to
+> people who find the existing options too broad?  "Sorry, these are the options
+> I as the author find interesting, deal with it" ?  Personally, I've turned off
+> ipv6 and dhcp and disk because I find them useless.
+If in doubt, yes ;-). However, I think the options are more or less useful to
+everybody (with restrictions):
+
+- IPv6: Many people I know use IPv6 every day and in about one or two years
+  this will be the normal case?
+- Disk space: Who has unlimited disk space? Who has no disk? ;-)
+- Wireless/Battery: Only useful for notebook users, but there are many notebook
+  users?
+- System load: Generally useful if you have a lagging systems.
+- Date: Speaks for itself
+- CPU temperature: While I am not interested in it, some people with rather
+  broken laptops seem to care about their CPU not getting too hot.
+
+However, I cannot see a good reason to care about your current CPU speed which
+is not only curiosity ;-).
+
+Best regards,
+Michael
+
+
+From atsutane at freethoughts.de  Sun Feb 14 20:02:18 2010
+From: atsutane at freethoughts.de (Thorsten =?ISO-8859-1?B?VPZwcGVy?=)
+Date: Sun, 14 Feb 2010 20:02:18 +0100
+Subject: [i3] i3status patch to avoid shipping generated file
+In-Reply-To: <20100214173711.GE4038@vingilot.hiddenrock.com>
+References: <20100213215117.GF2140@vingilot.hiddenrock.com>
+	<1266148628-sup-3918@midna.zekjur.net>
+	<20100214173711.GE4038@vingilot.hiddenrock.com>
+Message-ID: <20100214200218.6db35b2f@hell>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA224
+
+On Sun, 14 Feb 2010 12:37:11 -0500
+Peter Johnson <tam at hiddenrock.com> wrote:
+
+> > > Well, unless you don't want to expect people downloading the
+> > > tarball to have a2x.  I dunno whether it's reasonable to expect
+> > > that or not, but if you don't
+> > This is exactly the reason why it is included. We also had this
+> > with i3, where people who build from source don?t want to install
+> > asciidoc and the necessary xml packages to generate a manpage by
+> > themselves.
+> 
+> Cool.  Then I shall have a chat with the Arch package maintainer.
+> Thanks!
+> 
+> pete
+> 
+You don't have to contact me seperately, I will move i3 and i3status to
+[community] with the next release so the asciidoc makedependency is
+nothing the usual user needs.
+
+However I prefer generating man pages when building packages instead
+of using previously generated.
+
+- -- 
+Jabber: atsutane at freethoughts.de Blog: http://atsutane.freethoughts.de/
+Key: 295AFBF4     FP: 39F8 80E5 0E49 A4D1 1341 E8F9 39E4 F17F 295A FBF4
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.10 (GNU/Linux)
+
+iFYEARELAAYFAkt4SLoACgkQOeTxfyla+/RycADaAqJ+dMwDWAD1Ls/wFjcMKaNe
+14LKAnlpFu6Z9QDdHg9UWxPvzWcZ29fsIbyWMvkIuRFqhKLWOtYQSQ==
+=NkQe
+-----END PGP SIGNATURE-----
+
+From tam at hiddenrock.com  Sun Feb 14 20:26:08 2010
+From: tam at hiddenrock.com (Peter Johnson)
+Date: Sun, 14 Feb 2010 14:26:08 -0500
+Subject: [i3] patch for i3status to report CPU speed
+In-Reply-To: <1266173271-sup-4892@midna.zekjur.net>
+References: <20100213025528.GB3294@vingilot.hiddenrock.com>
+	<1266148881-sup-1501@midna.zekjur.net>
+	<20100214172808.GC4038@vingilot.hiddenrock.com>
+	<1266170376-sup-6808@midna.zekjur.net>
+	<20100214181508.GG4038@vingilot.hiddenrock.com>
+	<1266173271-sup-4892@midna.zekjur.net>
+Message-ID: <20100214192608.GI4038@vingilot.hiddenrock.com>
+
+> However, I cannot see a good reason to care about your current CPU speed which
+> is not only curiosity ;-).
+
+Fair enough.  You're the boss. =)
+
+pete
+
+
+

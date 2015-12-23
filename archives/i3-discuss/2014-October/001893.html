@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Suggestion: Configuration with lua
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Suggestion%3A%20Configuration%20with%20lua&In-Reply-To=%3C5430694A.4070806%40dubstepdish.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001897.html">
+   <LINK REL="Next"  HREF="001896.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Suggestion: Configuration with lua</H1>
+    <B>Tony Crisci</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Suggestion%3A%20Configuration%20with%20lua&In-Reply-To=%3C5430694A.4070806%40dubstepdish.com%3E"
+       TITLE="[i3] Suggestion: Configuration with lua">tony at dubstepdish.com
+       </A><BR>
+    <I>Sat Oct  4 23:40:26 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001897.html">[i3] Suggestion: Configuration with lua
+</A></li>
+        <LI>Next message: <A HREF="001896.html">[i3] Suggestion: Configuration with lua
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1893">[ date ]</a>
+              <a href="thread.html#1893">[ thread ]</a>
+              <a href="subject.html#1893">[ subject ]</a>
+              <a href="author.html#1893">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+As for a configuration file format, there are a lot of complications 
+with using a script, such as requiring people to learn a programming 
+language to configure the window manager as well as the technical 
+complexity and the matter of backwards compatability. For those reasons, 
+I think we are better off where we are for now.
+
+However, i3 is already fully scriptable in Lua with the i3ipc-glib 
+project (<A HREF="https://github.com/acrisci/i3ipc-glib">https://github.com/acrisci/i3ipc-glib</A>).
+
+I even created a wrapper library especially for lua which you can find 
+here: <A HREF="https://github.com/acrisci/i3ipc-lua">https://github.com/acrisci/i3ipc-lua</A>
+
+You are welcome to contribute to either of these projects if you don't 
+find the features you want by contributing code or making feature 
+requests on those projects.
+
+You can do all the things you mentioned with the ipc events.
+
+Check out all the different window events you can subscribe to: 
+<A HREF="http://build.i3wm.org/docs/ipc.html#_window_event">http://build.i3wm.org/docs/ipc.html#_window_event</A>
+
+We even just added a &quot;binding&quot; event in the development version you can 
+use to listen for keypresses that are bound to a command: 
+<A HREF="http://build.i3wm.org/docs/ipc.html#_binding_event">http://build.i3wm.org/docs/ipc.html#_binding_event</A>
+
+I support this library on the mailing list, the official i3 faq, and in 
+the irc channel (nick: TonyC).
+
+On 10/04/2014 05:15 PM, Timo Schmiade wrote:
+&gt;<i> Hi all,
+</I>&gt;<i>
+</I>&gt;<i> first off: Thanks for this wonderful window manager! I've tried many
+</I>&gt;<i> others before and this is the only one that doesn't make me look for
+</I>&gt;<i> other alternatives :)
+</I>&gt;<i>
+</I>&gt;<i> On topic:
+</I>&gt;<i>
+</I>&gt;<i> The only thing I think could be improved in i3 is the config. i3 uses
+</I>&gt;<i> its own configuration file format which is quite restricted. Therefor, I
+</I>&gt;<i> suggest moving to a well-established scripting language that can be
+</I>&gt;<i> embedded into i3's C code - lua comes to mind.
+</I>&gt;<i>
+</I>&gt;<i> The advantages I see:
+</I>&gt;<i>
+</I>&gt;<i> - Profit from lua's development history to have a safe, stable and yet
+</I>&gt;<i>    feature-rich embedded scripting language
+</I>&gt;<i> - Avoid maintenance of own configuration file format (features + bug
+</I>&gt;<i>    fixes)
+</I>&gt;<i> - Open lua for scripting: Allow lua callback functions to modify lua's
+</I>&gt;<i>    behaviour in situations like &quot;New window created&quot; or &quot;Key combination
+</I>&gt;<i>    pressed&quot;
+</I>&gt;<i> - Allow users to script configuration, e.g. use for-loop from 0-9 to
+</I>&gt;<i>    bind keys for switching to workspaces or moving windows to workspaces
+</I>&gt;<i>
+</I>&gt;<i> What I did so far:
+</I>&gt;<i>
+</I>&gt;<i> I created a purely C- and lua-based test application which allows:
+</I>&gt;<i> - Call lua functions from C
+</I>&gt;<i> - Call C functions from lua
+</I>&gt;<i> - Pass C structs to lua script
+</I>&gt;<i> - Modify C structs in lua script
+</I>&gt;<i>
+</I>&gt;<i> What I could do next:
+</I>&gt;<i>
+</I>&gt;<i> - Integrate the functionality into i3's codebase
+</I>&gt;<i> - Create a public git branch (based on i3 'next') to demonstrate and
+</I>&gt;<i>    discuss
+</I>&gt;<i>
+</I>&gt;<i> What I can't do:
+</I>&gt;<i>
+</I>&gt;<i> - Give any guarantees on development time
+</I>&gt;<i>
+</I>&gt;<i> What I need to know:
+</I>&gt;<i>
+</I>&gt;<i> - Is this something the i3 developers would want?
+</I>&gt;<i>
+</I>&gt;<i> Thanks in advance for your time.
+</I>&gt;<i>
+</I>&gt;<i> Kind regards,
+</I>&gt;<i>
+</I>&gt;<i> Timo
+</I>
+</PRE>
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001897.html">[i3] Suggestion: Configuration with lua
+</A></li>
+	<LI>Next message: <A HREF="001896.html">[i3] Suggestion: Configuration with lua
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1893">[ date ]</a>
+              <a href="thread.html#1893">[ thread ]</a>
+              <a href="subject.html#1893">[ subject ]</a>
+              <a href="author.html#1893">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

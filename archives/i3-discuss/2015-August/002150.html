@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] GLFW_FLOATING window
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20GLFW_FLOATING%20window&In-Reply-To=%3CCADbJNDgSd1vqWub-xL0Ty8co8NMvUqS9Bu10hy0N0YsjU3Y%3D_g%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002149.html">
+   <LINK REL="Next"  HREF="002151.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] GLFW_FLOATING window</H1>
+    <B>Kevin J</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20GLFW_FLOATING%20window&In-Reply-To=%3CCADbJNDgSd1vqWub-xL0Ty8co8NMvUqS9Bu10hy0N0YsjU3Y%3D_g%40mail.gmail.com%3E"
+       TITLE="[i3] GLFW_FLOATING window">jkevin1 at umbc.edu
+       </A><BR>
+    <I>Tue Aug 25 17:21:55 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002149.html">[i3] X session ends when last monitor turns off
+</A></li>
+        <LI>Next message: <A HREF="002151.html">[i3] GLFW_FLOATING window
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2150">[ date ]</a>
+              <a href="thread.html#2150">[ thread ]</a>
+              <a href="subject.html#2150">[ subject ]</a>
+              <a href="author.html#2150">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi everyone,
+
+GLFW has a window creation flag to make a window FLOATING, it uses
+_NET_WM_STATE_ABOVE
+to do this in x11_window.c
+&lt;<A HREF="https://github.com/glfw/glfw/blob/b69b4a9f2a66159f670c5802d8105db211bfec3d/src/x11_window.c#L350-L357">https://github.com/glfw/glfw/blob/b69b4a9f2a66159f670c5802d8105db211bfec3d/src/x11_window.c#L350-L357</A>&gt;
+.
+
+I have tried adding to the if statement in manage.c
+&lt;<A HREF="https://github.com/i3/i3/blob/next/src/manage.c#L374-L384">https://github.com/i3/i3/blob/next/src/manage.c#L374-L384</A>&gt; and the
+corresponding xmacro to atoms.xmacro, but it still doesn't open as a
+floating window.  After adding this, GLFW's check in x11_init.c
+&lt;<A HREF="https://github.com/glfw/glfw/blob/afe4aadade132f088a1d88145baed0b384c8d4e0/src/x11_init.c#L438-L439">https://github.com/glfw/glfw/blob/afe4aadade132f088a1d88145baed0b384c8d4e0/src/x11_init.c#L438-L439</A>&gt;
+works,
+it didn't before, so it seems to be registered within i3 correctly, but the
+xcb_reply_contains_atom(state_reply, A__NET_WM_STATE_ABOVE) check still
+fails.  Any idea why this could be happening?
+
+Additionally, if I do get it working, would this be something worthy of
+submitting? or should GLFW be changed to use something other than the
+WM_STATE_ABOVE atom to make floating windows?  ...although none of the
+tests used by i3 seem to be the right fit.
+
+Thanks,
+Kevin
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150825/2acb0374/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150825/2acb0374/attachment.html</A>&gt;
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002149.html">[i3] X session ends when last monitor turns off
+</A></li>
+	<LI>Next message: <A HREF="002151.html">[i3] GLFW_FLOATING window
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2150">[ date ]</a>
+              <a href="thread.html#2150">[ thread ]</a>
+              <a href="subject.html#2150">[ subject ]</a>
+              <a href="author.html#2150">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

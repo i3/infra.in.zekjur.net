@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3 v 4.0 build problems
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%20v%204.0%20build%20problems&In-Reply-To=%3CCAKgsu%3DEHTDavFg9xRkJdW5HoXGM-PCbm72SSOXY4wjKOECiYfg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000258.html">
+   <LINK REL="Next"  HREF="000260.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3 v 4.0 build problems</H1>
+    <B>Marcin Herda</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%20v%204.0%20build%20problems&In-Reply-To=%3CCAKgsu%3DEHTDavFg9xRkJdW5HoXGM-PCbm72SSOXY4wjKOECiYfg%40mail.gmail.com%3E"
+       TITLE="[i3] i3 v 4.0 build problems">mherda at gmail.com
+       </A><BR>
+    <I>Mon Aug  1 21:17:57 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000258.html">[i3] i3 v 4.0 build problems
+</A></li>
+        <LI>Next message: <A HREF="000260.html">[i3] i3 v 4.0 build problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#259">[ date ]</a>
+              <a href="thread.html#259">[ thread ]</a>
+              <a href="subject.html#259">[ subject ]</a>
+              <a href="author.html#259">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Just a correction. Obviously I've got a typo there. It's supposed to
+be CFLAGS instead of FCLAGS. I've corrected it and now I've got the
+following error:
+
+MAKE i3bar
+CC src/ucs2_to_utf8.c
+CC src/outputs.c
+CC src/workspaces.c
+CC src/ipc.c
+src/ipc.c: In function 'reconnect':
+src/ipc.c:57:13: warning: implicit declaration of function 'strerror'
+src/ipc.c:57:13: warning: format '%s' expects type 'char *', but
+argument 5 has type 'int'
+src/ipc.c: In function 'got_data':
+src/ipc.c:152:5: warning: implicit declaration of function 'strlen'
+src/ipc.c:152:27: warning: incompatible implicit declaration of
+built-in function 'strlen'
+src/ipc.c:155:9: warning: format '%s' expects type 'char *', but
+argument 5 has type 'int'
+src/ipc.c:165:13: warning: format '%s' expects type 'char *', but
+argument 5 has type 'int'
+src/ipc.c:179:5: warning: implicit declaration of function 'strncmp'
+src/ipc.c:189:5: warning: implicit declaration of function 'memcpy'
+src/ipc.c:189:5: warning: incompatible implicit declaration of
+built-in function 'memcpy'
+src/ipc.c:210:13: warning: format '%s' expects type 'char *', but
+argument 5 has type 'int'
+src/ipc.c: In function 'i3_send_msg':
+src/ipc.c:241:15: warning: incompatible implicit declaration of
+built-in function 'strlen'
+src/ipc.c:245:25: warning: incompatible implicit declaration of
+built-in function 'strlen'
+src/ipc.c:251:9: warning: format '%s' expects type 'char *', but
+argument 5 has type 'int'
+src/ipc.c:257:5: warning: implicit declaration of function 'strncpy'
+src/ipc.c:257:5: warning: incompatible implicit declaration of
+built-in function 'strncpy'
+src/ipc.c:259:5: warning: incompatible implicit declaration of
+built-in function 'memcpy'
+src/ipc.c:272:13: warning: format '%s' expects type 'char *', but
+argument 5 has type 'int'
+src/ipc.c: In function 'init_connection':
+src/ipc.c:294:9: warning: format '%s' expects type 'char *', but
+argument 5 has type 'int'
+src/ipc.c:299:5: warning: implicit declaration of function 'memset'
+src/ipc.c:299:5: warning: incompatible implicit declaration of
+built-in function 'memset'
+src/ipc.c:301:5: warning: implicit declaration of function 'strcpy'
+src/ipc.c:301:5: warning: incompatible implicit declaration of
+built-in function 'strcpy'
+src/ipc.c:303:9: warning: format '%s' expects type 'char *', but
+argument 6 has type 'int'
+src/ipc.c:310:9: warning: format '%s' expects type 'char *', but
+argument 5 has type 'int'
+CC src/main.c
+CC src/xcb.c
+src/main.c: In function 'expand_path':
+src/main.c:31:5: warning: implicit declaration of function 'strdup'
+src/main.c:31:20: warning: initialization makes pointer from integer
+without a cast
+src/main.c: In function 'read_color':
+src/main.c:55:20: warning: assignment makes pointer from integer without a cast
+src/main.c: In function 'main':
+src/main.c:160:25: warning: assignment makes pointer from integer without a cast
+src/main.c:181:26: warning: assignment makes pointer from integer without a cast
+CC src/child.c
+src/xcb.c: In function 'init_xcb':
+src/xcb.c:574:39: error: 'PATH_MAX' undeclared (first use in this function)
+src/xcb.c:574:39: note: each undeclared identifier is reported only
+once for each function it appears in
+src/xcb.c:584:13: warning: implicit declaration of function 'strndup'
+src/xcb.c:584:18: warning: assignment makes pointer from integer without a cast
+make[1]: *** [src/xcb.o] Error 1
+make[1]: *** Waiting for unfinished jobs....
+src/child.c: In function 'kill_child':
+src/child.c:185:9: warning: implicit declaration of function 'kill'
+make: *** [subdirs] Error 2
+
+
+Has anyone tried it on Slackware?
+
+thank you
+
+regards
+Marcin
+
+
+On 1 August 2011 16:08, Marcin Herda &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">mherda at gmail.com</A>&gt; wrote:
+&gt;<i> On 1 August 2011 13:57, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael+i3 at stapelberg.de</A>&gt; wrote:
+</I>&gt;&gt;<i> Hi Marcin,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Excerpts from Marcin Herda's message of 2011-08-01 14:47:00 +0200:
+</I>&gt;&gt;&gt;<i> MAKE i3bar
+</I>&gt;&gt;&gt;<i> CC src/ucs2_to_utf8.c
+</I>&gt;&gt;&gt;<i> CC src/outputs.c
+</I>&gt;&gt;&gt;<i> src/outputs.c:15:20: fatal error: i3/ipc.h: No such file or directory
+</I>&gt;&gt;&gt;<i> compilation terminated.
+</I>&gt;&gt;&gt;<i> make[1]: *** [src/outputs.o] Error 1
+</I>&gt;&gt;&gt;<i> make: *** [subdirs] Error 2
+</I>&gt;&gt;<i> The problem has been reported on IRC and will be adressed in a new minor
+</I>&gt;&gt;<i> release soon. Until then, you can fix this issue by adding the following line
+</I>&gt;&gt;<i> in i3bar/Makefile before the 'all: i3bar doc' line:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> CFLAGS += -I$(TOPDIR)/../include
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Best regards,
+</I>&gt;&gt;<i> Michael
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Thank you Michael. Unfortunately it hasn't helped. The error hasn't
+</I>&gt;<i> disappeared. I removed the old sources and downloaded the tarball
+</I>&gt;<i> again. The i3-4.0/i3bar/Makefile is as follows:
+</I>&gt;<i> TOPDIR=$(shell pwd)
+</I>&gt;<i>
+</I>&gt;<i> include $(TOPDIR)/common.mk
+</I>&gt;<i>
+</I>&gt;<i> FILES:=$(wildcard src/*.c)
+</I>&gt;<i> FILES:=$(FILES:.c=.o)
+</I>&gt;<i> HEADERS:=$(wildcard include/*.h)
+</I>&gt;<i> FCLAGS+=-l$(TOPDIR)/../include
+</I>&gt;<i> all: i3bar doc
+</I>&gt;<i>
+</I>&gt;<i> When I 'make clean' after the error, I get the following:
+</I>&gt;<i>
+</I>&gt;<i> which: no lcov in
+</I>&gt;<i> (/usr/local/bin:/usr/bin:/bin:/usr/games:/usr/lib64/java/bin:/usr/lib64/java/jre/bin:/usr/lib64/java/bin:/usr/lib64/kde4/libexec:/usr/lib64/qt/bin:/usr/share/texmf/bin:.:/home/xtd8865/bin)
+</I>&gt;<i> CLEAN i3-msg
+</I>&gt;<i> CLEAN i3-input
+</I>&gt;<i> CLEAN i3-nagbar
+</I>&gt;<i> CLEAN i3-config-wizard
+</I>&gt;<i> CLEAN i3bar
+</I>&gt;<i> make[2]: warning: jobserver unavailable: using -j1. &#160;Add `+' to parent
+</I>&gt;<i> make rule.
+</I>&gt;<i> make[2]: warning: jobserver unavailable: using -j1. &#160;Add `+' to parent
+</I>&gt;<i> make rule.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I din't know if it matters. Thank you for your help.
+</I>&gt;<i>
+</I>&gt;<i> regards
+</I>&gt;<i> Marcin
+</I>&gt;<i>
+</I></PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000258.html">[i3] i3 v 4.0 build problems
+</A></li>
+	<LI>Next message: <A HREF="000260.html">[i3] i3 v 4.0 build problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#259">[ date ]</a>
+              <a href="thread.html#259">[ thread ]</a>
+              <a href="subject.html#259">[ subject ]</a>
+              <a href="author.html#259">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

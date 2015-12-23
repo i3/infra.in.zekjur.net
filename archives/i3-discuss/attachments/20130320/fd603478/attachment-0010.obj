@@ -1,0 +1,28 @@
+From 744fdb6a0cac2281998494594f10ee00ff97e123 Mon Sep 17 00:00:00 2001
+From: Marius Muja <mariusm@cs.ubc.ca>
+Date: Thu, 27 Dec 2012 01:46:54 -0800
+Subject: [PATCH 3/8] Close window(s) on middle click
+
+---
+ src/click.c |    5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/src/click.c b/src/click.c
+index 3022c24..63bf2b3 100644
+--- a/src/click.c
++++ b/src/click.c
+@@ -203,6 +203,11 @@ static int route_click(Con *con, xcb_button_press_event_t *event, const bool mod
+     const bool proportional = (event->state & BIND_SHIFT);
+     const bool in_stacked = (con->parent->layout == L_STACKED || con->parent->layout == L_TABBED);
+ 
++    /* Kill on middle click */
++    if (dest == CLICK_DECORATION && event->detail == XCB_BUTTON_INDEX_2 && !mod_pressed) {
++        tree_close(con, KILL_WINDOW, false, false);
++    }
++
+     /* 1: see if the user scrolled on the decoration of a stacked/tabbed con */
+     if (in_stacked &&
+         dest == CLICK_DECORATION &&
+-- 
+1.7.10.4
+

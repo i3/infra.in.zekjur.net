@@ -1,0 +1,204 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Multidimensional spatial tiling
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Multidimensional%20spatial%20tiling&In-Reply-To=%3C20140729121718.GP15171%40cardamom.adamsinfoserv.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001801.html">
+   <LINK REL="Next"  HREF="001800.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Multidimensional spatial tiling</H1>
+    <B>Russell Adams</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Multidimensional%20spatial%20tiling&In-Reply-To=%3C20140729121718.GP15171%40cardamom.adamsinfoserv.com%3E"
+       TITLE="[i3] Multidimensional spatial tiling">RLAdams at AdamsInfoServ.Com
+       </A><BR>
+    <I>Tue Jul 29 14:17:18 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001801.html">[i3] Backported version [Was: Re:  i3 wm problem.]
+</A></li>
+        <LI>Next message: <A HREF="001800.html">[i3] Multidimensional spatial tiling
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1794">[ date ]</a>
+              <a href="thread.html#1794">[ thread ]</a>
+              <a href="subject.html#1794">[ subject ]</a>
+              <a href="author.html#1794">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've been able to port over my workspace management from Awesome to i3
+using IPC, the config is attached.
+
+The concept was discussed frequently on IRC. Imagine instead of using
+workspaces as tags, they are just elements in an array. If you
+represent a workspace as a cell on a piece of graph paper, and then
+use another piece of paper with one or more cells cut out as a mask to
+slide around and view the underlying layer it would be a fair analogy.
+
+Down to the issue I've found. I'm not sure if I'm outracing the IPC
+interface, but frequently IPC commands to make the workspaces change
+are failing while returning success. So I'll have a monitor where the
+workspace is still a scratch one (ie: by output name) instead of it
+changing to the workspace intended. No crashing, and often repeating
+the operation will make it work.
+
+Second I've run into an issue where Gkrellm cannot dock on the left or
+right side of the screen because left/right docking WM hints haven't
+been implemented yet. Is this a pending feature?
+
+Thanks.
+
+
+
+------------------------------------------------------------------
+Russell Adams                            <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">RLAdams at AdamsInfoServ.com</A>
+
+PGP Key ID:     0x1160DCB3           <A HREF="http://www.adamsinfoserv.com/">http://www.adamsinfoserv.com/</A>
+
+Fingerprint:    1723 D8CA 4280 1EC9 557F  66E8 1154 E018 1160 DCB3
+-------------- next part --------------
+set $mod Mod4
+font pango:DejaVu Sans Mono 8
+mouse_warping none
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# start a terminal, I use xbindkeys
+#bindsym $mod+Shift+Return exec urxvt
+
+
+# class                 border  backgr. text    indicator
+client.focused          #888888 #888888 #000000 #2e9ef4
+client.focused_inactive #333333 #222222 #888888 #292d2e
+client.unfocused        #333333 #222222 #888888 #292d2e
+client.urgent           #2f343a #900000 #ffffff #900000
+
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+q exit
+
+# Inter-workspace navigation, panning around the 2d plane
+bindsym Control+Left  exec --no-startup-id ~/.i3/workspaces.py  -1   0  0
+bindsym Control+Right exec --no-startup-id ~/.i3/workspaces.py   1   0  0
+bindsym Control+Up    exec --no-startup-id ~/.i3/workspaces.py   0  -1  0
+bindsym Control+Down  exec --no-startup-id ~/.i3/workspaces.py   0   1  0
+
+# Inter-workspace navigation, swap planes on third dimension
+bindsym Control+Shift+Left  exec --no-startup-id ~/.i3/workspaces.py  0  0 -1
+bindsym Control+Shift+Right exec --no-startup-id ~/.i3/workspaces.py  0  0  1
+
+# Intra-workspace navigation
+# change focus
+bindsym Shift+Left  focus left
+bindsym Shift+Down  focus down
+bindsym Shift+Up    focus up
+bindsym Shift+Right focus right
+
+# Move the window column
+bindsym $mod+Shift+Left  move left
+bindsym $mod+Shift+Down  move down
+bindsym $mod+Shift+Up    move up
+bindsym $mod+Shift+Right move right
+
+# split in horizontal orientation
+bindsym $mod+Shift+h split h
+
+# split in vertical orientation
+bindsym $mod+Shift+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+space fullscreen
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+Shift+s layout stacking
+bindsym $mod+Shift+w layout tabbed
+bindsym $mod+Shift+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# resize window (you can also use the mouse for that)
+mode &quot;resize&quot; {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym j resize shrink width 10 px or 10 ppt
+        bindsym k resize grow height 10 px or 10 ppt
+        bindsym l resize shrink height 10 px or 10 ppt
+        bindsym semicolon resize grow width 10 px or 10 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape
+        bindsym Return mode &quot;default&quot;
+        bindsym Escape mode &quot;default&quot;
+}
+
+bindsym $mod+r mode &quot;resize&quot;
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+        status_command i3status
+}
+
+# Set defaults
+workspace  0_0_0 output LVDS1
+workspace -1_0_0 output DVI-D-2
+workspace  0_0_0 output DVI-I-1
+workspace  1_0_0 output DVI-D-1
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: workspaces.py
+Type: text/x-python
+Size: 4525 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140729/c5e8f175/attachment.py">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140729/c5e8f175/attachment.py</A>&gt;
+</PRE>
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001801.html">[i3] Backported version [Was: Re:  i3 wm problem.]
+</A></li>
+	<LI>Next message: <A HREF="001800.html">[i3] Multidimensional spatial tiling
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1794">[ date ]</a>
+              <a href="thread.html#1794">[ thread ]</a>
+              <a href="subject.html#1794">[ subject ]</a>
+              <a href="author.html#1794">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

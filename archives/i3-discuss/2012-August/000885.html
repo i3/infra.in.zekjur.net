@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] splitting windows - idea
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20splitting%20windows%20-%20idea&In-Reply-To=%3C20120824211105.12190.36423%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000884.html">
+   <LINK REL="Next"  HREF="000886.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] splitting windows - idea</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20splitting%20windows%20-%20idea&In-Reply-To=%3C20120824211105.12190.36423%40midna.zekjur.net%3E"
+       TITLE="[i3] splitting windows - idea">michael at i3wm.org
+       </A><BR>
+    <I>Fri Aug 24 23:11:05 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000884.html">[i3] splitting windows - idea
+</A></li>
+        <LI>Next message: <A HREF="000886.html">[i3] Disable certain i3-nagbar events?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#885">[ date ]</a>
+              <a href="thread.html#885">[ thread ]</a>
+              <a href="subject.html#885">[ subject ]</a>
+              <a href="author.html#885">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Jean,
+
+Quoting Jean Dupont (2012-08-24 14:38:51)
+&gt;<i> I discovered is that you can not specify on which side you want to split
+</I>&gt;<i> the window. It is always the right (or lower) side.
+</I>&gt;<i> 
+</I>&gt;<i> My idea:
+</I>&gt;<i> Leave it that way as default, but if the user also presses another key
+</I>&gt;<i> (down, up, k, l, ...) that indicates a direction i3 use this side.
+</I>&gt;<i> 
+</I>&gt;<i> Keys pressed = result:
+</I>&gt;<i> $mod+v = new Window under the existing one
+</I>&gt;<i> $mod+v+down = the same result
+</I>&gt;<i> $mod+v+up = now the window appears above the old one
+</I>&gt;<i> Something equal for splitting horizontally.
+</I>This introduces a lot of new keybindings, configuration changes,
+documentation changes, friction on upgrade for users and I don&#8217;t see a
+clear benefit.
+
+The splitting works by creating a new split container and placing the
+current window in it. We always append new windows to the end of the
+node list. This is the cause for your observation that new windows
+appear &quot;below&quot; existing windows. Since from left to right and top to
+bottom is very natural, I don&#8217;t see an advantage in introducing an
+additional feature which puts new windows at the top of the node list.
+
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000884.html">[i3] splitting windows - idea
+</A></li>
+	<LI>Next message: <A HREF="000886.html">[i3] Disable certain i3-nagbar events?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#885">[ date ]</a>
+              <a href="thread.html#885">[ thread ]</a>
+              <a href="subject.html#885">[ subject ]</a>
+              <a href="author.html#885">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

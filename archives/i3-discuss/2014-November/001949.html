@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3bar multi-monitor setup
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3bar%20multi-monitor%20setup&In-Reply-To=%3CCANnVG6%3DJ7kkEfpudVH%2Bzw36JmW6QUxZPYum0t7_dWqJVe5yf7Q%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001948.html">
+   <LINK REL="Next"  HREF="001950.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3bar multi-monitor setup</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3bar%20multi-monitor%20setup&In-Reply-To=%3CCANnVG6%3DJ7kkEfpudVH%2Bzw36JmW6QUxZPYum0t7_dWqJVe5yf7Q%40mail.gmail.com%3E"
+       TITLE="[i3] i3bar multi-monitor setup">michael at i3wm.org
+       </A><BR>
+    <I>Fri Nov 21 11:42:33 CET 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001948.html">[i3] i3bar multi-monitor setup
+</A></li>
+        <LI>Next message: <A HREF="001950.html">[i3] i3bar multi-monitor setup
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1949">[ date ]</a>
+              <a href="thread.html#1949">[ thread ]</a>
+              <a href="subject.html#1949">[ subject ]</a>
+              <a href="author.html#1949">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, Nov 20, 2014 at 3:50 PM, Marco Hunsicker &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3 at hunsicker.de</A>&gt; wrote:
+&gt;<i> Howdy,
+</I>&gt;<i>
+</I>&gt;<i> I have a question regarding the configuration of i3bar with multiple
+</I>&gt;<i> monitors.
+</I>&gt;<i>
+</I>&gt;<i> I'm running a somewhat unusual setup with 3 monitors in pivot mode. Total
+</I>&gt;<i> screen size is 3600x1920, but in order to be able to stretch my IDE across 2
+</I>&gt;<i> monitors I'm using the fake-outputs option to form just 2 workspaces:
+</I>&gt;<i>
+</I>&gt;<i>     fake-outputs 1200x1920+0+0,2400x1920+1200+0
+</I>This is the problem. There is a reason this option is not documented:
+it’s not supported and not intended to be used at all. It exists for
+our testsuite only.
+
+Remove the fake-outputs option and the i3bar configuration will work.
+
+&gt;<i>
+</I>&gt;<i> This works really great for the most part, but duplicates the output of the
+</I>&gt;<i> i3bar configuration to a certain degree across the monitors. The date is
+</I>&gt;<i> displayed twice etc.
+</I>&gt;<i>
+</I>&gt;<i> That's why I wanted to use different i3bar instances for the different
+</I>&gt;<i> outputs.
+</I>&gt;<i>
+</I>&gt;<i> xrandr reveals:
+</I>&gt;<i>
+</I>&gt;<i> Screen 0: minimum 8 x 8, current 3600 x 1920, maximum 16384 x 16384
+</I>&gt;<i> DVI-I-0 disconnected
+</I>&gt;<i> DVI-I-1 connected 1200x1920+1200+0 left
+</I>&gt;<i> [...]
+</I>&gt;<i> HDMI-0 connected 1200x1920+0+0 left
+</I>&gt;<i> [...]
+</I>&gt;<i> HDMI-1 disconnected
+</I>&gt;<i> DVI-D-0 connected 1200x1920+2400+0 left
+</I>&gt;<i> [...]
+</I>&gt;<i>
+</I>&gt;<i> So, HDMI-0 is the leftmost monitor. DVI-I-1 and DVI-D-0 are the 2 other
+</I>&gt;<i> monitors that form a single workspace.
+</I>&gt;<i>
+</I>&gt;<i> According to the documentation I was thinking that adding the &quot;output&quot;
+</I>&gt;<i> option to the &quot;bar&quot; section would limit i3bar to that output. But I can't
+</I>&gt;<i> get it to work.
+</I>&gt;<i>
+</I>&gt;<i> If I try to limit the output to just the leftmost output like this:
+</I>&gt;<i>
+</I>&gt;<i> bar {
+</I>&gt;<i>     output HDMI-0
+</I>&gt;<i>     ...
+</I>&gt;<i> }
+</I>&gt;<i>
+</I>&gt;<i> the bar disappears completely! No matter what I tried, adding an &quot;output&quot;
+</I>&gt;<i> option always leaves me with i3bar disappearing!
+</I>&gt;<i>
+</I>&gt;<i> Am I doing something wrong? Or is this kind of setup not possible?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I'm using i3 version 4.8 (2014-06-15, branch &quot;4.8&quot;) running the Nvidia
+</I>&gt;<i> binary driver 340.58 on Debian Wheezy.
+</I>&gt;<i>
+</I>&gt;<i> If any further information is required, just let me know. Thanks in advance.
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i>
+</I>&gt;<i> Marco
+</I>
+
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001948.html">[i3] i3bar multi-monitor setup
+</A></li>
+	<LI>Next message: <A HREF="001950.html">[i3] i3bar multi-monitor setup
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1949">[ date ]</a>
+              <a href="thread.html#1949">[ thread ]</a>
+              <a href="subject.html#1949">[ subject ]</a>
+              <a href="author.html#1949">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

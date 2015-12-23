@@ -1,0 +1,4064 @@
+From michael at i3wm.org  Mon Sep  3 00:28:20 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 03 Sep 2012 00:28:20 +0200
+Subject: [i3] [RFC]render.c cleanup.
+In-Reply-To: <CAMJW5=3k65gkmrHndPQkX8+qLJs6ueXr3Aqdx2-cGQuwa0BDqg@mail.gmail.com>
+References: <CAMJW5=3k65gkmrHndPQkX8+qLJs6ueXr3Aqdx2-cGQuwa0BDqg@mail.gmail.com>
+Message-ID: <20120902222820.21042.65253@midna.zekjur.net>
+
+Hi darkraven,
+
+Quoting DR (2012-08-20 17:52:16)
+> This patch clean up some of the render.c logic, make way for implement
+> popup-while-fullscreen behavior.
+> 
+> This patch hasn't been heavily tested. So maybe this patch would change the
+> rendering result under some circumstance.
+First of all, I apologize for taking so long to comment on this patch.
+I want to clearly point out why reviewing your patches is really hard
+for me and what you can do to improve the situation.
+
+The patch which you posted has multiple issues:
+
+1) The commit title is absolutely meaningless. "make render_con logic
+   more clearer" is a subjective thing. While it?s okay as a title, you
+   absolutely need to provide a description consisting of the individual
+   changes you have done. It would be even better if the individual
+   changes were individual commits, but I don?t pose that as a
+   requirement.
+
+   An example for a good description would be:
+   "Refactored identical code from render_x and render_y into new
+   function render_xy_common(), no functional changes at all."
+
+2) You introduce new unnecessary whitespace (first hunk,
+   src/render.c:24).
+
+3) You change our if (fullscreen) { ?; return; } block to if
+   (!fullscreen){ /* other stuff */ } ?; without any obvious reason.
+   Why? Returning early is good style and consistently used within i3.
+   Also, we use blanks before brackets.
+
+4) More importantly, you refactor two loops into one, but this breaks
+   things! The first loop only cares for cons with ->type ==
+   CT_DOCKAREA, the second one handles all cons.
+
+5) I can?t really figure out what the rest of your changes do. They seem
+   to move code around, but it?s not clear based on the diff. You really
+   should provide an explanation and/or split it up into multiple
+   smaller commits.
+
+I also want to point out that similar comments have been made multiple
+times before in your threads:
+
+http://article.gmane.org/gmane.comp.window-managers.i3.general/200
+http://article.gmane.org/gmane.comp.window-managers.i3.general/343
+http://article.gmane.org/gmane.comp.window-managers.i3.general/279
+
+Why do you keep sending patches like these and don?t pay attention to
+the things we point you to? This makes the whole reviewing and merging
+workflow really hard :-/.
+
+Best regards,
+Michael
+
+From drdarkraven at gmail.com  Mon Sep  3 11:29:25 2012
+From: drdarkraven at gmail.com (DR)
+Date: Mon, 3 Sep 2012 17:29:25 +0800
+Subject: [i3] [RFC]render.c cleanup.
+In-Reply-To: <20120902222820.21042.65253@midna.zekjur.net>
+References: <CAMJW5=3k65gkmrHndPQkX8+qLJs6ueXr3Aqdx2-cGQuwa0BDqg@mail.gmail.com>
+ <20120902222820.21042.65253@midna.zekjur.net>
+Message-ID: <CAMJW5=0TQwozJx=hVQNL7V9a0we6WWE1uKptF6p1p1-6Pxp7xg@mail.gmail.com>
+
+On Mon, Sep 3, 2012 at 6:28 AM, Michael Stapelberg <michael at i3wm.org> wrote:
+
+> Hi darkraven,
+>
+> Quoting DR (2012-08-20 17:52:16)
+> > This patch clean up some of the render.c logic, make way for implement
+> > popup-while-fullscreen behavior.
+> >
+> > This patch hasn't been heavily tested. So maybe this patch would change
+> the
+> > rendering result under some circumstance.
+> First of all, I apologize for taking so long to comment on this patch.
+> I want to clearly point out why reviewing your patches is really hard
+> for me and what you can do to improve the situation.
+
+I apologize for the poor quality.
+Thought this was a draft patch, I hadn't put time to refine this patch. But
+I didn't realize this would cause so much difficulties in patch reviewing.
+I really sorry for wasting your time.
+
+
+> The patch which you posted has multiple issues:
+>
+> 1) The commit title is absolutely meaningless. "make render_con logic
+>    more clearer" is a subjective thing. While it?s okay as a title, you
+>    absolutely need to provide a description consisting of the individual
+>    changes you have done. It would be even better if the individual
+>    changes were individual commits, but I don?t pose that as a
+>    requirement.
+>
+>    An example for a good description would be:
+>    "Refactored identical code from render_x and render_y into new
+>    function render_xy_common(), no functional changes at all."
+>
+> 2) You introduce new unnecessary whitespace (first hunk,
+>    src/render.c:24).
+>
+Just out of curiosity: Why are there whitespaces after if () / for () but
+not function definitions?
+
+
+> 3) You change our if (fullscreen) { ?; return; } block to if
+>    (!fullscreen){ /* other stuff */ } ?; without any obvious reason.
+>    Why? Returning early is good style and consistently used within i3.
+>    Also, we use blanks before brackets.
+>
+Because there possibly are popup windows. So we couldn't return so early.
+
+
+>
+> 4) More importantly, you refactor two loops into one, but this breaks
+>    things! The first loop only cares for cons with ->type ==
+>    CT_DOCKAREA, the second one handles all cons.
+>
+There could only be one CT_CON. And that con is taken care of outside of
+the loop.
+
+
+> 5) I can?t really figure out what the rest of your changes do. They seem
+>    to move code around, but it?s not clear based on the diff. You really
+>    should provide an explanation and/or split it up into multiple
+>    smaller commits.
+>
+I will add more comments.
+
+
+>
+> I also want to point out that similar comments have been made multiple
+> times before in your threads:
+>
+> http://article.gmane.org/gmane.comp.window-managers.i3.general/200
+> http://article.gmane.org/gmane.comp.window-managers.i3.general/343
+> http://article.gmane.org/gmane.comp.window-managers.i3.general/279
+>
+> Why do you keep sending patches like these and don?t pay attention to
+> the things we point you to? This makes the whole reviewing and merging
+> workflow really hard :-/.
+>
+Sorry again.
+
+
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120903/5be2c799/attachment.html>
+
+From michael at i3wm.org  Tue Sep  4 23:04:03 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 04 Sep 2012 23:04:03 +0200
+Subject: [i3] [RFC]render.c cleanup.
+In-Reply-To: <CAMJW5=0TQwozJx=hVQNL7V9a0we6WWE1uKptF6p1p1-6Pxp7xg@mail.gmail.com>
+References: <CAMJW5=3k65gkmrHndPQkX8+qLJs6ueXr3Aqdx2-cGQuwa0BDqg@mail.gmail.com>
+ <20120902222820.21042.65253@midna.zekjur.net>
+ <CAMJW5=0TQwozJx=hVQNL7V9a0we6WWE1uKptF6p1p1-6Pxp7xg@mail.gmail.com>
+Message-ID: <20120904210403.13924.70613@midna.zekjur.net>
+
+Hi darkraven,
+
+Quoting DR (2012-09-03 11:29:25)
+> I apologize for the poor quality.?
+> Thought this was a draft patch, I hadn't put time to refine this patch. But I
+> didn't realize this would cause so much difficulties in patch reviewing. I
+> really sorry for wasting your time.
+No worries, I just hope we can be more productive together in the future
+:-).
+
+>     2) You introduce new unnecessary whitespace (first hunk,
+>     ? ?src/render.c:24).
+> 
+> Just out of curiosity: Why are there whitespaces after if () / for () but not
+> function definitions?
+We use whitespace after control flow keywords (if, else, for, while,
+return), but not between function calls or definitions. This is just a
+matter of personal taste.
+
+>     3) You change our if (fullscreen) { ?; return; } block to if
+>     ? ?(!fullscreen){ /* other stuff */ } ?; without any obvious reason.
+>     ? ?Why? Returning early is good style and consistently used within i3.
+>     ? ?Also, we use blanks before brackets.
+> 
+> Because there possibly are popup windows. So we couldn't return so early.
+Aha. So the actual change (after reading your comment and the patch
+again) is not calling the shortcut render_con(fullscreen); anymore, but
+use render_con(ws); instead. If you hadn?t changed the structure, this
+would have been much more obvious :-).
+
+>     4) More importantly, you refactor two loops into one, but this breaks
+>     ? ?things! The first loop only cares for cons with ->type ==
+>     ? ?CT_DOCKAREA, the second one handles all cons.
+> 
+> There could only be one CT_CON. And that con is taken care of outside of the
+> loop.
+First of all, please adjust the comments, then (make it clear what your
+assumptions are, so that people can react accordingly when they change
+your assumptions). Also, outside the loop, you only set ->rect and call
+render_con(), while the code previously also set ->deco_rect and called
+x_raise_con(). I think your code thus changes behaviour in some cases.
+
+>     5) I can?t really figure out what the rest of your changes do. They seem
+>     ? ?to move code around, but it?s not clear based on the diff. You really
+>     ? ?should provide an explanation and/or split it up into multiple
+>     ? ?smaller commits.
+> 
+> I will add more comments.
+Thanks.
+
+Best regards,
+Michael
+
+From autonomy at tvk.rwth-aachen.de  Wed Sep  5 15:38:23 2012
+From: autonomy at tvk.rwth-aachen.de (=?ISO-8859-15?Q?Lukas_J=FCnger?=)
+Date: Wed, 05 Sep 2012 15:38:23 +0200
+Subject: [i3] Can't figure out a way to redirect screen session to workspace
+Message-ID: <504755CF.1020300@tvk.rwth-aachen.de>
+
+Hi guys,
+
+I somehow can't figure out a way to make my mcabber screen session pop
+up on workspace 2. Here is the part of my conf:
+
+assign [class="Firefox"] 1
+assign [title="[screen 0: mcabber] "] 2
+assign [class="Thunderbird"] 3
+exec firefox
+exec jabmcab
+exec thunderbird
+exec --no-startup-id nitrogen --restore
+
+And here is the xprop of the mcabber window:
+
+WM_STATE(WM_STATE):
+		window state: Normal
+		icon window: 0x0
+_NET_WM_PID(CARDINAL) = 11948
+WM_PROTOCOLS(ATOM): protocols  WM_DELETE_WINDOW, _NET_WM_PING
+WM_LOCALE_NAME(STRING) = "de_DE.utf8"
+WM_CLASS(STRING) = "urxvt", "URxvt"
+WM_HINTS(WM_HINTS):
+		Client accepts input or input focus: True
+		Initial state is Normal State.
+		window id # of group leader: 0xa00009
+WM_NORMAL_HINTS(WM_SIZE_HINTS):
+		program specified minimum size: 12 by 18
+		program specified resize increment: 8 by 14
+		program specified base size: 4 by 4
+		window gravity: NorthWest
+WM_CLIENT_MACHINE(STRING) = "bla bla taken out"
+WM_COMMAND(STRING) = { "urxvt", "-e", "zsh", "-c", "screen -rx mcabber
+|| screen -S mcabber \\mcabber" }
+_NET_WM_ICON_NAME(UTF8_STRING) = "zsh"
+WM_ICON_NAME(STRING) = "zsh"
+_NET_WM_NAME(UTF8_STRING) = "[screen 0: mcabber] "
+WM_NAME(STRING) = "[screen 0: mcabber] "
+
+Can you give me a little hint? If i leave out the whitespace in
+
+assign [title="[screen 0: mcabber] "] 2
+
+all my urxvt windows pop up on workspace 2.
+
+Regards
+Lukas
+
+From honza801 at gmail.com  Wed Sep  5 15:44:17 2012
+From: honza801 at gmail.com (Jan Krcmar)
+Date: Wed, 5 Sep 2012 15:44:17 +0200
+Subject: [i3] Can't figure out a way to redirect screen session to
+	workspace
+In-Reply-To: <504755CF.1020300@tvk.rwth-aachen.de>
+References: <504755CF.1020300@tvk.rwth-aachen.de>
+Message-ID: <CAKneAXkSbLfBm7miEF7ogNB+XNSJUV6uVt4rzDuvfxwxxMnK+w@mail.gmail.com>
+
+hi,
+
+try
+assign [title="mcabber"] 2
+
+some applications change their WM_NAME after start...
+
+cheers
+fous
+
+2012/9/5 Lukas J?nger <autonomy at tvk.rwth-aachen.de>:
+> Hi guys,
+>
+> I somehow can't figure out a way to make my mcabber screen session pop
+> up on workspace 2. Here is the part of my conf:
+>
+> assign [class="Firefox"] 1
+> assign [title="[screen 0: mcabber] "] 2
+> assign [class="Thunderbird"] 3
+> exec firefox
+> exec jabmcab
+> exec thunderbird
+> exec --no-startup-id nitrogen --restore
+>
+> And here is the xprop of the mcabber window:
+>
+> WM_STATE(WM_STATE):
+>                 window state: Normal
+>                 icon window: 0x0
+> _NET_WM_PID(CARDINAL) = 11948
+> WM_PROTOCOLS(ATOM): protocols  WM_DELETE_WINDOW, _NET_WM_PING
+> WM_LOCALE_NAME(STRING) = "de_DE.utf8"
+> WM_CLASS(STRING) = "urxvt", "URxvt"
+> WM_HINTS(WM_HINTS):
+>                 Client accepts input or input focus: True
+>                 Initial state is Normal State.
+>                 window id # of group leader: 0xa00009
+> WM_NORMAL_HINTS(WM_SIZE_HINTS):
+>                 program specified minimum size: 12 by 18
+>                 program specified resize increment: 8 by 14
+>                 program specified base size: 4 by 4
+>                 window gravity: NorthWest
+> WM_CLIENT_MACHINE(STRING) = "bla bla taken out"
+> WM_COMMAND(STRING) = { "urxvt", "-e", "zsh", "-c", "screen -rx mcabber
+> || screen -S mcabber \\mcabber" }
+> _NET_WM_ICON_NAME(UTF8_STRING) = "zsh"
+> WM_ICON_NAME(STRING) = "zsh"
+> _NET_WM_NAME(UTF8_STRING) = "[screen 0: mcabber] "
+> WM_NAME(STRING) = "[screen 0: mcabber] "
+>
+> Can you give me a little hint? If i leave out the whitespace in
+>
+> assign [title="[screen 0: mcabber] "] 2
+>
+> all my urxvt windows pop up on workspace 2.
+>
+> Regards
+> Lukas
+
+From autonomy at tvk.rwth-aachen.de  Wed Sep  5 15:54:23 2012
+From: autonomy at tvk.rwth-aachen.de (=?ISO-8859-1?Q?Lukas_J=FCnger?=)
+Date: Wed, 05 Sep 2012 15:54:23 +0200
+Subject: [i3] Can't figure out a way to redirect screen session to
+	workspace
+In-Reply-To: <CAKneAXkSbLfBm7miEF7ogNB+XNSJUV6uVt4rzDuvfxwxxMnK+w@mail.gmail.com>
+References: <504755CF.1020300@tvk.rwth-aachen.de>
+ <CAKneAXkSbLfBm7miEF7ogNB+XNSJUV6uVt4rzDuvfxwxxMnK+w@mail.gmail.com>
+Message-ID: <5047598F.3080505@tvk.rwth-aachen.de>
+
+Hi,
+
+doesn't work either. I think it is because it is a screen session.
+
+Greets
+Lukas
+
+Am 05.09.2012 15:44, schrieb Jan Krcmar:
+> hi,
+> 
+> try assign [title="mcabber"] 2
+> 
+> some applications change their WM_NAME after start...
+> 
+> cheers fous
+> 
+> 2012/9/5 Lukas J?nger <autonomy at tvk.rwth-aachen.de>:
+>> Hi guys,
+>> 
+>> I somehow can't figure out a way to make my mcabber screen
+>> session pop up on workspace 2. Here is the part of my conf:
+>> 
+>> assign [class="Firefox"] 1 assign [title="[screen 0: mcabber] "]
+>> 2 assign [class="Thunderbird"] 3 exec firefox exec jabmcab exec
+>> thunderbird exec --no-startup-id nitrogen --restore
+>> 
+>> And here is the xprop of the mcabber window:
+>> 
+>> WM_STATE(WM_STATE): window state: Normal icon window: 0x0 
+>> _NET_WM_PID(CARDINAL) = 11948 WM_PROTOCOLS(ATOM): protocols
+>> WM_DELETE_WINDOW, _NET_WM_PING WM_LOCALE_NAME(STRING) =
+>> "de_DE.utf8" WM_CLASS(STRING) = "urxvt", "URxvt" 
+>> WM_HINTS(WM_HINTS): Client accepts input or input focus: True 
+>> Initial state is Normal State. window id # of group leader:
+>> 0xa00009 WM_NORMAL_HINTS(WM_SIZE_HINTS): program specified
+>> minimum size: 12 by 18 program specified resize increment: 8 by
+>> 14 program specified base size: 4 by 4 window gravity: NorthWest 
+>> WM_CLIENT_MACHINE(STRING) = "bla bla taken out" 
+>> WM_COMMAND(STRING) = { "urxvt", "-e", "zsh", "-c", "screen -rx
+>> mcabber || screen -S mcabber \\mcabber" } 
+>> _NET_WM_ICON_NAME(UTF8_STRING) = "zsh" WM_ICON_NAME(STRING) =
+>> "zsh" _NET_WM_NAME(UTF8_STRING) = "[screen 0: mcabber] " 
+>> WM_NAME(STRING) = "[screen 0: mcabber] "
+>> 
+>> Can you give me a little hint? If i leave out the whitespace in
+>> 
+>> assign [title="[screen 0: mcabber] "] 2
+>> 
+>> all my urxvt windows pop up on workspace 2.
+>> 
+>> Regards Lukas
+
+
+From michael at i3wm.org  Wed Sep  5 16:51:06 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 05 Sep 2012 16:51:06 +0200
+Subject: [i3] Can't figure out a way to redirect screen session to
+	workspace
+In-Reply-To: <504755CF.1020300@tvk.rwth-aachen.de>
+References: <504755CF.1020300@tvk.rwth-aachen.de>
+Message-ID: <20120905145106.13553.69864@midna.zekjur.net>
+
+Hi Lukas,
+
+Quoting Lukas J?nger (2012-09-05 15:38:23)
+> I somehow can't figure out a way to make my mcabber screen session pop
+> up on workspace 2. Here is the part of my conf:
+> [?]
+> WM_COMMAND(STRING) = { "urxvt", "-e", "zsh", "-c", "screen -rx mcabber
+> || screen -S mcabber \\mcabber" }
+Since you are starting urxvt with a special command for mcabber anyway,
+the best way is to use:
+
+    urxvt -name mcabber -e zsh ?
+
+And use something like this in your config:
+
+    assign [instance="^mcabber$"] 2
+
+Best regards,
+Michael
+
+From michael at i3wm.org  Wed Sep  5 17:41:31 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 05 Sep 2012 17:41:31 +0200
+Subject: [i3] RFC: Ignoring size increment hints for tiling windows
+Message-ID: <20120905154131.18527.89884@midna.zekjur.net>
+
+Hi,
+
+as many of you might have noticed, terminal emulators such as urxvt set
+an X11 hint for getting resized only in increments of a specific size
+(for example in increments of 13 px, if one line in your font size is 13
+px high).
+
+Oftentimes, the available space cannot be evenly divided by the resize
+increment hint, and therefore you get little borders at the bottom or
+right of a window.
+
+Until now, we thought that this is just the way it is, but it turns out
+that all terminal emulators I have tested (urxvt, xterm, gnome-terminal,
+ROXterm) cope with whatever size one assigns them, that is, they still
+work if i3 entirely ignores the size increment hint.
+
+As I?ve mentioned in http://bugs.i3wm.org/query/ticket/540#comment:7,
+Openbox ignores the size increment hint when windows are in fullscreen
+for several years and that seems to work just fine.
+
+Therefore, I?m announcing that we will ignore size increment hints for
+tiling windows (NOT for floating windows such as GIMP toolbar windows)
+in i3 4.3 UNLESS somebody has a good reason against that. In case you
+have a good reason against it, please tell me/us ASAP.
+
+In case you want to test whether your favorite terminal emulator still
+works fine, apply ignore-size-increment-hints.patch (attached) and
+check. In case you test one which was not mentioned in this thread
+before, feel free to post your results.
+
+Best regards,
+Michael
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: ignore-size-increment-hints.patch
+Type: text/x-diff
+Size: 698 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120905/bb5973dc/attachment.patch>
+
+From autonomy at tvk.rwth-aachen.de  Wed Sep  5 17:50:53 2012
+From: autonomy at tvk.rwth-aachen.de (=?UTF-8?B?THVrYXMgSsO8bmdlcg==?=)
+Date: Wed, 05 Sep 2012 17:50:53 +0200
+Subject: [i3] Can't figure out a way to redirect screen session to
+	workspace
+In-Reply-To: <20120905145106.13553.69864@midna.zekjur.net>
+References: <504755CF.1020300@tvk.rwth-aachen.de>
+ <20120905145106.13553.69864@midna.zekjur.net>
+Message-ID: <504774DD.4030601@tvk.rwth-aachen.de>
+
+Hi,
+
+nice. This works. Thank you.
+
+Greets
+Lukas
+
+Am 05.09.2012 16:51, schrieb Michael Stapelberg:
+> Hi Lukas,
+> 
+> Quoting Lukas J?nger (2012-09-05 15:38:23)
+>> I somehow can't figure out a way to make my mcabber screen session pop
+>> up on workspace 2. Here is the part of my conf:
+>> [?]
+>> WM_COMMAND(STRING) = { "urxvt", "-e", "zsh", "-c", "screen -rx mcabber
+>> || screen -S mcabber \\mcabber" }
+> Since you are starting urxvt with a special command for mcabber anyway,
+> the best way is to use:
+> 
+>     urxvt -name mcabber -e zsh ?
+> 
+> And use something like this in your config:
+> 
+>     assign [instance="^mcabber$"] 2
+> 
+> Best regards,
+> Michael
+> 
+
+
+From j at mesrobertson.com  Thu Sep  6 10:11:52 2012
+From: j at mesrobertson.com (James Robertson)
+Date: Thu, 6 Sep 2012 18:11:52 +1000
+Subject: [i3] RFC: Ignoring size increment hints for tiling windows
+In-Reply-To: <20120905154131.18527.89884@midna.zekjur.net>
+References: <20120905154131.18527.89884@midna.zekjur.net>
+Message-ID: <CAMALoy9pqfnNng_+w6E2_H2_66MkQrky2ZEqNjE36_BZgOifXg@mail.gmail.com>
+
+> In case you want to test whether your favorite terminal emulator still
+> works fine, apply ignore-size-increment-hints.patch (attached) and
+> check. In case you test one which was not mentioned in this thread
+> before, feel free to post your results.
+>
+> Best regards,
+> Michael
+
+I am using URxvt but had to post in appreciation. I just tried this
+patch... Excellent! Now I can set some nice wallpaper and have URxvt
+transparency without the "bars" thing.
+
+Awesome. I am pretty much addicted to i3 now, everything else simply
+doesn't feel right anymore :)
+
+Thanks for such a cool WM!
+
+James
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120906/5d2bcb8f/attachment.html>
+
+From drdarkraven at gmail.com  Thu Sep  6 17:36:10 2012
+From: drdarkraven at gmail.com (DR)
+Date: Thu, 06 Sep 2012 23:36:10 +0800
+Subject: [i3] [RFC]render.c cleanup.
+In-Reply-To: <20120904210403.13924.70613@midna.zekjur.net>
+References: <CAMJW5=3k65gkmrHndPQkX8+qLJs6ueXr3Aqdx2-cGQuwa0BDqg@mail.gmail.com>
+ <20120902222820.21042.65253@midna.zekjur.net>
+ <CAMJW5=0TQwozJx=hVQNL7V9a0we6WWE1uKptF6p1p1-6Pxp7xg@mail.gmail.com>
+ <20120904210403.13924.70613@midna.zekjur.net>
+Message-ID: <op.wj70akryh7z1jl@sraven>
+
+On Wed, 05 Sep 2012 05:04:03 +0800, Michael Stapelberg <michael at i3wm.org>  
+wrote:
+
+> Hi darkraven,
+>
+> Quoting DR (2012-09-03 11:29:25)
+>> I apologize for the poor quality.Thought this was a draft patch, I  
+>> hadn't put time to refine this patch. But I
+>> didn't realize this would cause so much difficulties in patch  
+>> reviewing. I
+>> really sorry for wasting your time.
+> No worries, I just hope we can be more productive together in the future
+> :-).
+>
+>>     2) You introduce new unnecessary whitespace (first hunk,
+>>        src/render.c:24).
+>>
+>> Just out of curiosity: Why are there whitespaces after if () / for ()  
+>> but not
+>> function definitions?
+> We use whitespace after control flow keywords (if, else, for, while,
+> return), but not between function calls or definitions. This is just a
+> matter of personal taste.
+>
+>>     3) You change our if (fullscreen) { ?; return; } block to if
+>>        (!fullscreen){ /* other stuff */ } ?; without any obvious reason.
+>>        Why? Returning early is good style and consistently used within  
+>> i3.
+>>        Also, we use blanks before brackets.
+>>
+>> Because there possibly are popup windows. So we couldn't return so  
+>> early.
+> Aha. So the actual change (after reading your comment and the patch
+> again) is not calling the shortcut render_con(fullscreen); anymore, but
+> use render_con(ws); instead. If you hadn?t changed the structure, this
+> would have been much more obvious :-).
+>
+>>     4) More importantly, you refactor two loops into one, but this  
+>> breaks
+>>        things! The first loop only cares for cons with ->type ==
+>>        CT_DOCKAREA, the second one handles all cons.
+>>
+>> There could only be one CT_CON. And that con is taken care of outside  
+>> of the
+>> loop.
+> First of all, please adjust the comments, then (make it clear what your
+> assumptions are, so that people can react accordingly when they change
+> your assumptions). Also, outside the loop, you only set ->rect and call
+> render_con(), while the code previously also set ->deco_rect and called
+> x_raise_con(). I think your code thus changes behaviour in some cases.
+>
+>>     5) I can?t really figure out what the rest of your changes do. They  
+>> seem
+>>        to move code around, but it?s not clear based on the diff. You  
+>> really
+>>        should provide an explanation and/or split it up into multiple
+>>        smaller commits.
+>>
+>> I will add more comments.
+> Thanks.
+>
+> Best regards,
+> Michael
+I refined this patch and split it into four. Hope this time I've done it  
+right.
+
+-- 
+Using Opera's revolutionary email client: http://www.opera.com/mail/
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0004-remove-fullscreen-rendering-short-cut-used-in-render.patch
+Type: application/octet-stream
+Size: 4211 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120906/10a75770/attachment-0004.obj>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0003-minor-code-cleanup-reorder-and-adding-comments.patch
+Type: application/octet-stream
+Size: 2688 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120906/10a75770/attachment-0005.obj>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0002-handle-CT_WORKSPACEs-separately.patch
+Type: application/octet-stream
+Size: 5038 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120906/10a75770/attachment-0006.obj>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-split-children-rendering-part-of-code-out-of-render_.patch
+Type: application/octet-stream
+Size: 14409 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120906/10a75770/attachment-0007.obj>
+
+From drdarkraven at gmail.com  Thu Sep  6 17:37:41 2012
+From: drdarkraven at gmail.com (DR)
+Date: Thu, 06 Sep 2012 23:37:41 +0800
+Subject: [i3] [PATCH]remove unnecessary code in render_con().
+Message-ID: <op.wj70c306h7z1jl@sraven>
+
+The removed code was add by commit 61b8a62 to fix #564. That bug is cause
+by rendering the mplayer window again as a floating window (even if it
+has been rendered before as a fullscreen window, at line 202). So simply
+checking for fullscreen window is enough to solve this problem. Treating
+floating/tiling fullscreen window differently is not needed.
+---
+  src/render.c | 17 ++---------------
+  1 file changed, 2 insertions(+), 15 deletions(-)
+
+diff --git a/src/render.c b/src/render.c
+index 01628c3..fb5b1ab 100644
+--- a/src/render.c
++++ b/src/render.c
+@@ -254,26 +254,13 @@ void render_con(Con *con, bool render_fullscreen) {
+              Con *content = output_get_content(output);
+              Con *workspace = TAILQ_FIRST(&(content->focus_head));
+
+-            /* Check for (floating!) fullscreen nodes */
++            /* Check for fullscreen nodes */
+              /* XXX: This code duplication is unfortunate. Keep in mind to  
+fix
+               * this when we clean up the whole render.c */
+              Con *fullscreen = NULL;
+              fullscreen = con_get_fullscreen_con(workspace, CF_OUTPUT);
+-            if (fullscreen) {
+-                /* Either the fullscreen window is inside the floating
+-                 * container, then we need to render and raise it now? */
+-                if (con_inside_floating(fullscreen)) {
+-                    fullscreen->rect = output->rect;
+-                    x_raise_con(fullscreen);
+-                    render_con(fullscreen, true);
++            if (fullscreen)
+                      continue;
+-                } else {
+-                    /* ?or it?s a tiling window, in which case the  
+floating
+-                     * windows should not overlap it, so we skip  
+rendering this
+-                     * output. */
+-                    continue;
+-                }
+-            }
+
+              Con *child;
+              TAILQ_FOREACH(child, &(workspace->floating_head),  
+floating_windows) {
+-- 
+1.7.12
+
+
+-- 
+Using Opera's revolutionary email client: http://www.opera.com/mail/
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-remove-unnecessary-code-in-render_con.patch
+Type: application/octet-stream
+Size: 2168 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120906/03b51d22/attachment.obj>
+
+From michael at i3wm.org  Fri Sep  7 14:31:26 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 07 Sep 2012 14:31:26 +0200
+Subject: [i3] Call for testing
+Message-ID: <x6ipbqvwtd.fsf@midna.zekjur.net>
+
+Hi,
+
+I would like to release i3 4.3 soon?. Therefore, it?d be very helpful,
+if you all could upgrade to the latest git version of the "next" branch.
+The output of i3 --version should look like this if you did it right:
+
+    i3 version 4.2-287-ga1823e5 (2012-09-06, branch "next")
+
+This version is stable and can be considered a release-candidate.
+
+Also, I will not merge new features into this version until the new
+release is out. You can still send your patches and I will still review
+them, they just won?t be merged immediately.
+
+If you have any bugfix or ticket that you feel is important enough to be
+included in this release, please speak up now and make me aware of it.
+
+Thanks,
+Best regards,
+Michael
+
+PS: Debian and Ubuntu users can simply use our repositories for
+installing the latest development version, see
+http://i3wm.org/docs/repositories.html
+
+From mateusz at loskot.net  Fri Sep  7 15:08:54 2012
+From: mateusz at loskot.net (Mateusz Loskot)
+Date: Fri, 7 Sep 2012 14:08:54 +0100
+Subject: [i3] Call for testing
+In-Reply-To: <x6ipbqvwtd.fsf@midna.zekjur.net>
+References: <x6ipbqvwtd.fsf@midna.zekjur.net>
+Message-ID: <CABUeae9+8Wn2z7Yn1j5F5qoD-fxsiuPotx5Wa_pPUJvSJMNo6A@mail.gmail.com>
+
+On 7 September 2012 13:31, Michael Stapelberg <michael at i3wm.org> wrote:
+> Hi,
+>
+> I would like to release i3 4.3 soon?. Therefore, it?d be very helpful,
+> if you all could upgrade to the latest git version of the "next" branch.
+
+Great. I'll give it a go after the weekend.
+
+> PS: Debian and Ubuntu users can simply use our repositories for
+> installing the latest development version, see
+> http://i3wm.org/docs/repositories.html
+
+Arch users can simply install i3-git package:
+
+https://aur.archlinux.org/packages.php?ID=24665
+
+Best regards,
+-- 
+Mateusz Loskot, http://mateusz.loskot.net
+
+From jfstraeten at scarlet.be  Fri Sep  7 15:17:39 2012
+From: jfstraeten at scarlet.be (JF Straeten)
+Date: Fri, 7 Sep 2012 15:17:39 +0200
+Subject: [i3] Call for testing
+In-Reply-To: <CABUeae9+8Wn2z7Yn1j5F5qoD-fxsiuPotx5Wa_pPUJvSJMNo6A@mail.gmail.com>
+References: <x6ipbqvwtd.fsf@midna.zekjur.net>
+ <CABUeae9+8Wn2z7Yn1j5F5qoD-fxsiuPotx5Wa_pPUJvSJMNo6A@mail.gmail.com>
+Message-ID: <20120907131739.GA542@jones.jfs.dt>
+
+
+Re,
+
+On Fri, Sep 07, 2012 at 02:08:54PM +0100, Mateusz Loskot wrote:
+
+> On 7 September 2012 13:31, Michael Stapelberg <michael at i3wm.org> wrote:
+> > Hi,
+> >
+> > I would like to release i3 4.3 soon?. Therefore, it?d be very helpful,
+> > if you all could upgrade to the latest git version of the "next" branch.
+> 
+> Great. I'll give it a go after the weekend.
+
+
+Done here (Debian package, on testing) :
+
+jfs at jones:~$ i3 -v
+i3 version 4.2-287-ga1823e5 (2012-09-06, branch "next") ? 2009-2012 Michael Stapelberg and contributors
+
+It restarted (in place) smoothly and everything seems fine for now.
+
+Many thanks to devs for the work !
+
+A+
+
+-- 
+
+JFS.
+
+From bruno.braga at gmail.com  Fri Sep  7 15:30:10 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Fri, 7 Sep 2012 23:30:10 +1000
+Subject: [i3] Call for testing
+In-Reply-To: <20120907131739.GA542@jones.jfs.dt>
+References: <x6ipbqvwtd.fsf@midna.zekjur.net>
+ <CABUeae9+8Wn2z7Yn1j5F5qoD-fxsiuPotx5Wa_pPUJvSJMNo6A@mail.gmail.com>
+ <20120907131739.GA542@jones.jfs.dt>
+Message-ID: <CAAuVr70sDB0wJZeiiAF4UOs_KUHFq=Ge9kqCJqCOy7OcW9R1oA@mail.gmail.com>
+
+Michael,
+
+Is there a release notes for 4.3 version? That would help for testers to
+funnel the focus on double-checking for issues...
+
+Cheers,
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Fri, Sep 7, 2012 at 11:17 PM, JF Straeten <jfstraeten at scarlet.be> wrote:
+
+>
+> Re,
+>
+> On Fri, Sep 07, 2012 at 02:08:54PM +0100, Mateusz Loskot wrote:
+>
+> > On 7 September 2012 13:31, Michael Stapelberg <michael at i3wm.org> wrote:
+> > > Hi,
+> > >
+> > > I would like to release i3 4.3 soon?. Therefore, it?d be very helpful,
+> > > if you all could upgrade to the latest git version of the "next"
+> branch.
+> >
+> > Great. I'll give it a go after the weekend.
+>
+>
+> Done here (Debian package, on testing) :
+>
+> jfs at jones:~$ i3 -v
+> i3 version 4.2-287-ga1823e5 (2012-09-06, branch "next") ? 2009-2012
+> Michael Stapelberg and contributors
+>
+> It restarted (in place) smoothly and everything seems fine for now.
+>
+> Many thanks to devs for the work !
+>
+> A+
+>
+> --
+>
+> JFS.
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120907/62cf2280/attachment.html>
+
+From michael at i3wm.org  Sat Sep  8 00:26:47 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 08 Sep 2012 00:26:47 +0200
+Subject: [i3] Call for testing
+In-Reply-To: <CAAuVr70sDB0wJZeiiAF4UOs_KUHFq=Ge9kqCJqCOy7OcW9R1oA@mail.gmail.com>
+References: <x6ipbqvwtd.fsf@midna.zekjur.net>
+ <CABUeae9+8Wn2z7Yn1j5F5qoD-fxsiuPotx5Wa_pPUJvSJMNo6A@mail.gmail.com>
+ <20120907131739.GA542@jones.jfs.dt>
+ <CAAuVr70sDB0wJZeiiAF4UOs_KUHFq=Ge9kqCJqCOy7OcW9R1oA@mail.gmail.com>
+Message-ID: <x68vclpizc.fsf@midna.zekjur.net>
+
+Hi Bruno,
+
+"BRAGA, Bruno" <bruno.braga at gmail.com> writes:
+> Is there a release notes for 4.3 version? That would help for testers to
+> funnel the focus on double-checking for issues...
+Yes, it?s called RELEASE-NOTES-4.3 in the git repository:
+http://code.stapelberg.de/git/i3/tree/RELEASE-NOTES-4.3?h=next
+
+-- 
+Best regards,
+Michael
+
+From j at mesrobertson.com  Sat Sep  8 01:27:54 2012
+From: j at mesrobertson.com (James Robertson)
+Date: Sat, 8 Sep 2012 09:27:54 +1000
+Subject: [i3] Call for testing
+In-Reply-To: <x6ipbqvwtd.fsf@midna.zekjur.net>
+References: <x6ipbqvwtd.fsf@midna.zekjur.net>
+Message-ID: <CAMALoy9frWoSik4rh02Yn5ca0ybzFj8DVwGeq+diMmbPV8bnng@mail.gmail.com>
+
+On 7 September 2012 22:31, Michael Stapelberg <michael at i3wm.org> wrote:
+> If you have any bugfix or ticket that you feel is important enough to be
+> included in this release, please speak up now and make me aware of it.
+
+Will the patch for Ignoring size increment hints for tiling windows be
+included?  I note this git version does not include it, but you had
+noted it as being part of the 4.3 release as per
+http://bugs.i3wm.org/query/ticket/540.
+
+> i3 --version
+i3 version 4.2-287-ga1823e5 (2012-09-06, branch "next") ? 2009-2012
+Michael Stapelberg and contributors
+
+Kind Regards,
+
+James
+
+From bruno.braga at gmail.com  Sat Sep  8 05:17:47 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Sat, 8 Sep 2012 13:17:47 +1000
+Subject: [i3] Call for testing
+In-Reply-To: <x68vclpizc.fsf@midna.zekjur.net>
+References: <x6ipbqvwtd.fsf@midna.zekjur.net>
+ <CABUeae9+8Wn2z7Yn1j5F5qoD-fxsiuPotx5Wa_pPUJvSJMNo6A@mail.gmail.com>
+ <20120907131739.GA542@jones.jfs.dt>
+ <CAAuVr70sDB0wJZeiiAF4UOs_KUHFq=Ge9kqCJqCOy7OcW9R1oA@mail.gmail.com>
+ <x68vclpizc.fsf@midna.zekjur.net>
+Message-ID: <CAAuVr70qu9YxK7t=AW97vFMBVTzQjo70TwV1mDvMEz0XxU8wQw@mail.gmail.com>
+
+Amazing!
+
+Great work!
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Sat, Sep 8, 2012 at 8:26 AM, Michael Stapelberg <michael at i3wm.org> wrote:
+
+> Hi Bruno,
+>
+> "BRAGA, Bruno" <bruno.braga at gmail.com> writes:
+> > Is there a release notes for 4.3 version? That would help for testers to
+> > funnel the focus on double-checking for issues...
+> Yes, it?s called RELEASE-NOTES-4.3 in the git repository:
+> http://code.stapelberg.de/git/i3/tree/RELEASE-NOTES-4.3?h=next
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120908/75748353/attachment.html>
+
+From michael at i3wm.org  Sat Sep  8 11:52:09 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 08 Sep 2012 11:52:09 +0200
+Subject: [i3] Call for testing
+In-Reply-To: <CAMALoy9frWoSik4rh02Yn5ca0ybzFj8DVwGeq+diMmbPV8bnng@mail.gmail.com>
+References: <x6ipbqvwtd.fsf@midna.zekjur.net>
+ <CAMALoy9frWoSik4rh02Yn5ca0ybzFj8DVwGeq+diMmbPV8bnng@mail.gmail.com>
+Message-ID: <x64nn8q1ti.fsf@midna.zekjur.net>
+
+Hi James,
+
+James Robertson <j at mesrobertson.com> writes:
+> Will the patch for Ignoring size increment hints for tiling windows be
+> included?  I note this git version does not include it, but you had
+> noted it as being part of the 4.3 release as per
+> http://bugs.i3wm.org/query/ticket/540.
+Doesn?t that question answer itself? Since I already stated that it?ll
+be included: yes, it will be included. I?m just waiting a bit for anyone
+to come up with a valid objection.
+
+-- 
+Best regards,
+Michael
+
+From crestani at informatik.uni-tuebingen.de  Sun Sep  9 10:48:11 2012
+From: crestani at informatik.uni-tuebingen.de (Marcus Crestani)
+Date: Sun, 09 Sep 2012 10:48:11 +0200
+Subject: [i3] Call for testing
+In-Reply-To: <x6ipbqvwtd.fsf@midna.zekjur.net> (Michael Stapelberg's message
+ of "Fri, 07 Sep 2012 14:31:26 +0200")
+References: <x6ipbqvwtd.fsf@midna.zekjur.net>
+Message-ID: <m2r4qb37lg.fsf@informatik.uni-tuebingen.de>
+
+>>>>>"MS" == Michael Stapelberg <michael at i3wm.org> writes:
+MS> If you have any bugfix or ticket that you feel is important enough to be
+MS> included in this release, please speak up now and make me aware of it.
+
+I have not yet been able to build i3-4.3 on OS X 10.8 (Mountain Lion).
+
+I've attached one patch that works around "readlink -f" that does not
+exist on OS X.  I think "pwd -P" does what we need, but I'm not
+completly sure about it.  Comments welcome!
+
+Other than that I see a couple of warnings and errors.  Since I won't be
+able to look at these problems in detail in the next few days, I'll just
+post them here:
+
+[i3] CC src/cmdparse.tab.c
+src/cmdparse.y:49:16: error: redefinition of 'owindow'
+typedef struct owindow {
+               ^
+include/commands.h:23:16: note: previous definition is here
+typedef struct owindow {
+               ^
+src/cmdparse.y:52:3: error: typedef redefinition with different types ('struct owindow' (aka 'owindow') vs
+      'struct owindow')
+} owindow;
+  ^
+include/commands.h:26:3: note: previous definition is here
+} owindow;
+  ^
+src/cmdparse.y:53:19: error: redefinition of 'owindows_head'
+static TAILQ_HEAD(owindows_head, owindow) owindows;
+                  ^
+include/queue.h:307:8: note: expanded from macro 'TAILQ_HEAD'
+struct name {                                                           \
+       ^
+include/commands.h:28:20: note: previous definition is here
+typedef TAILQ_HEAD(owindows_head, owindow) owindows_head;
+                   ^
+include/queue.h:307:8: note: expanded from macro 'TAILQ_HEAD'
+struct name {                                                           \
+       ^
+src/cmdparse.y:243:30: error: initializing 'struct owindows_head' with an expression of incompatible type 'struct
+      <anonymous struct at src/cmdparse.y:53:8>'
+        struct owindows_head old = owindows;
+                             ^     ~~~~~~~~
+src/cmdparse.y:260:32: warning: incompatible pointer types passing 'struct regex *' to parameter of type
+      'const char *' [-Wincompatible-pointer-types]
+                    strcasecmp(current_match.mark, current->con->mark) == 0) {
+                               ^~~~~~~~~~~~~~~~~~
+/usr/include/strings.h:82:29: note: passing argument to parameter here
+int      strcasecmp(const char *, const char *);
+                                ^
+src/cmdparse.y:293:29: warning: incompatible pointer types assigning to 'struct regex *' from 'char *'
+      [-Wincompatible-pointer-types]
+        current_match.class = (yyvsp[(3) - (3)].string);
+                            ^ ~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cmdparse.y:328:28: warning: incompatible pointer types assigning to 'struct regex *' from 'char *'
+      [-Wincompatible-pointer-types]
+        current_match.mark = (yyvsp[(3) - (3)].string);
+                           ^ ~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cmdparse.y:333:29: warning: incompatible pointer types assigning to 'struct regex *' from 'char *'
+      [-Wincompatible-pointer-types]
+        current_match.title = (yyvsp[(3) - (3)].string);
+                            ^ ~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cmdparse.y:368:52: error: too few arguments to function call, expected 2, have 1
+        start_application((yyvsp[(2) - (2)].string));
+        ~~~~~~~~~~~~~~~~~                          ^
+include/startup.h:32:1: note: 'start_application' declared here
+void start_application(const char *command, bool no_startup_id);
+^
+src/cmdparse.y:418:28: warning: incompatible pointer types passing 'char *' to parameter of type 'Con *'
+      (aka 'struct Con *') [-Wincompatible-pointer-types]
+            workspace_show(ws->name);
+                           ^~~~~~~~
+include/workspace.h:60:26: note: passing argument to parameter 'ws' here
+void workspace_show(Con *ws);
+                         ^
+src/cmdparse.y:522:74: error: too few arguments to function call, expected 4, have 3
+                tree_close(current->con, (yyvsp[(2) - (2)].number), false);
+                ~~~~~~~~~~                                               ^
+include/tree.h:86:1: note: 'tree_close' declared here
+bool tree_close(Con *con, kill_window_t kill_window, bool dont_kill_parent, bool force_set_focus);
+^
+/usr/bin/../lib/clang/4.0/include/stdbool.h:31:14: note: expanded from macro 'bool'
+#define bool _Bool
+             ^
+src/cmdparse.y:550:24: warning: incompatible pointer types passing 'char *' to parameter of type 'Con *'
+      (aka 'struct Con *') [-Wincompatible-pointer-types]
+        workspace_show((yyvsp[(2) - (2)].string));
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~
+include/workspace.h:60:26: note: passing argument to parameter 'ws' here
+void workspace_show(Con *ws);
+                         ^
+src/cmdparse.y:688:51: error: too few arguments to function call, expected 4, have 2
+            con_move_to_workspace(current->con, ws);
+            ~~~~~~~~~~~~~~~~~~~~~                 ^
+include/con.h:165:1: note: 'con_move_to_workspace' declared here
+void con_move_to_workspace(Con *con, Con *workspace, bool fix_coordinates, bool dont_warp);
+^
+6 warnings and 7 errors generated.
+make: *** [src/cmdparse.tab.o] Error 1
+
+-- 
+Marcus
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-readlink-f-does-not-work-on-OS-X-use-pwd-P-instead.patch
+Type: text/x-patch
+Size: 1107 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120909/32f1b140/attachment.bin>
+
+From discord at uw.edu  Sun Sep  9 11:40:01 2012
+From: discord at uw.edu (Colin Kincaid Williams)
+Date: Sun, 9 Sep 2012 02:40:01 -0700
+Subject: [i3] Call for testing
+In-Reply-To: <m2r4qb37lg.fsf@informatik.uni-tuebingen.de>
+References: <x6ipbqvwtd.fsf@midna.zekjur.net>
+ <m2r4qb37lg.fsf@informatik.uni-tuebingen.de>
+Message-ID: <CAB-gU_u-BGvHWmtCm3HatKXhSLwu575bRuKEhbJtkkLRenKiPA@mail.gmail.com>
+
+I upgraded to the next branch using the i3-git PKGBUILD in arch and it
+seems to work.
+
+[discord at icecream i3]$ i3 --version
+
+i3 version 4.2-287-ga1823e5 (2012-09-06, branch "next") ? 2009-2012
+Michael Stapelberg and contributors
+
+From michael at i3wm.org  Sun Sep  9 15:41:58 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 09 Sep 2012 15:41:58 +0200
+Subject: [i3] Call for testing
+In-Reply-To: <m2r4qb37lg.fsf@informatik.uni-tuebingen.de>
+References: <x6ipbqvwtd.fsf@midna.zekjur.net>
+ <m2r4qb37lg.fsf@informatik.uni-tuebingen.de>
+Message-ID: <x64nn7jot5.fsf@midna.zekjur.net>
+
+Hi Marcus,
+
+Marcus Crestani <crestani at informatik.uni-tuebingen.de> writes:
+> I've attached one patch that works around "readlink -f" that does not
+> exist on OS X.  I think "pwd -P" does what we need, but I'm not
+> completly sure about it.  Comments welcome!
+Thanks, I?ve changed it in the makefile. Your patch didn?t apply at all
+here, also I don?t even have the commit in the "From" line. Is your
+working copy really tracking upstream or did it diverge sometime and you
+merged it back together?
+
+> Other than that I see a couple of warnings and errors.  Since I won't be
+> able to look at these problems in detail in the next few days, I'll just
+> post them here:
+>
+> [i3] CC src/cmdparse.tab.c
+cmdparse is a file which doesn?t exist anymore in i3?s
+code. Unfortunately, the makefile redesign removed it from the clean
+target, which is why you are seeing these build errors. I pushed a fix
+for that just now. Are there any errors left?
+
+-- 
+Best regards,
+Michael
+
+From crestani at informatik.uni-tuebingen.de  Sun Sep  9 22:40:43 2012
+From: crestani at informatik.uni-tuebingen.de (Marcus Crestani)
+Date: Sun, 09 Sep 2012 22:40:43 +0200
+Subject: [i3] Call for testing
+In-Reply-To: <x64nn7jot5.fsf@midna.zekjur.net> (Michael Stapelberg's message
+ of "Sun, 09 Sep 2012 15:41:58 +0200")
+References: <x6ipbqvwtd.fsf@midna.zekjur.net>
+ <m2r4qb37lg.fsf@informatik.uni-tuebingen.de>
+ <x64nn7jot5.fsf@midna.zekjur.net>
+Message-ID: <m2mx0zgcac.fsf@informatik.uni-tuebingen.de>
+
+>>>>>"MS" == Michael Stapelberg <michael at i3wm.org> writes:
+MS> Thanks, I?ve changed it in the makefile. Your patch didn?t apply at all
+MS> here, also I don?t even have the commit in the "From" line. Is your
+MS> working copy really tracking upstream or did it diverge sometime and you
+MS> merged it back together?
+
+I mailed a format-patch relative to origin/next: 
+  git format-patch origin/next
+
+MS> cmdparse is a file which doesn?t exist anymore in i3?s
+MS> code. Unfortunately, the makefile redesign removed it from the clean
+MS> target, which is why you are seeing these build errors. I pushed a fix
+MS> for that just now. Are there any errors left?
+
+No more errors left: The code builds successfully.  Thanks!
+
+-- 
+Marcus
+
+From lists_mk at wujiman.net  Mon Sep 10 20:36:49 2012
+From: lists_mk at wujiman.net (Martin Kraus)
+Date: Mon, 10 Sep 2012 20:36:49 +0200
+Subject: [i3] #784 bring open scratchpad window to the current workspace
+Message-ID: <20120910183649.GA30325@finrod>
+
+Hi. I didn't want to polute the bug report.
+
+> Of course, this behavior should only be triggered when the
+>  scratchpad is empty.
+>> You mean because this way you cannot have more then one
+>> scratchpad window opened at the same time?
+>>> Yes.
+
+>From the description of the scratchpad and the way I'm using it my reasoning
+for this is following.
+Since I cannot open more then one scratchpad window on a workspace, for having
+more then one scratchpad window opened I need to move it around so I can treat
+such windows as normal windows on the workspaces. The scratchpad for me is
+simply a placeholder for stuff that runs in the background that I use for a
+quick onetime task and put back again, such as a media player, IM etc. If I
+need it for something permanent I simply include it in the workspace and when
+I'm done I put it back. The way it is now it doesn't really make it simpler to
+have more of those windows opened and still have it like a scratch pad.
+
+If it is a viable way there could be a switch that would allow to configure i3
+to act either in the current way or in the proposed so it doesn't force
+everybody to confirm to the same way this feature is used. 
+I would think this should only require modification of how the window that is
+brought to the front gets selected so it might not be much of an invasion to
+the current code but I can be mistaken.
+
+Martin
+
+From mateusz at loskot.net  Tue Sep 11 00:08:44 2012
+From: mateusz at loskot.net (Mateusz Loskot)
+Date: Mon, 10 Sep 2012 23:08:44 +0100
+Subject: [i3] Call for testing
+In-Reply-To: <CABUeae9+8Wn2z7Yn1j5F5qoD-fxsiuPotx5Wa_pPUJvSJMNo6A@mail.gmail.com>
+References: <x6ipbqvwtd.fsf@midna.zekjur.net>
+ <CABUeae9+8Wn2z7Yn1j5F5qoD-fxsiuPotx5Wa_pPUJvSJMNo6A@mail.gmail.com>
+Message-ID: <CABUeae9pgaHm+ewmG2QPsDbxFyrbOGwOiRUnYey+xoV_6duJVw@mail.gmail.com>
+
+On 7 September 2012 14:08, Mateusz Loskot <mateusz at loskot.net> wrote:
+> On 7 September 2012 13:31, Michael Stapelberg <michael at i3wm.org> wrote:
+>> Hi,
+>>
+>> I would like to release i3 4.3 soon?. Therefore, it?d be very helpful,
+>> if you all could upgrade to the latest git version of the "next" branch.
+>
+> Great. I'll give it a go after the weekend.
+>
+>> PS: Debian and Ubuntu users can simply use our repositories for
+>> installing the latest development version, see
+>> http://i3wm.org/docs/repositories.html
+>
+> Arch users can simply install i3-git package:
+>
+> https://aur.archlinux.org/packages.php?ID=24665
+
+I've upgraded using i3-git and i3status-git packages for Arch, from its AUR
+and everything works well so far.
+(I used packer script to perform the upgrade https://github.com/bruenig/packer)
+I have noticed the startup is much faster.
+
+Great work, thanks!
+
+Best regards,
+-- 
+Mateusz Loskot, http://mateusz.loskot.net
+
+From lobl.pavel at gmail.com  Tue Sep 11 01:34:58 2012
+From: lobl.pavel at gmail.com (Pavel =?iso-8859-1?Q?L=F6bl?=)
+Date: Tue, 11 Sep 2012 01:34:58 +0200
+Subject: [i3] Call for testing
+In-Reply-To: <x6ipbqvwtd.fsf@midna.zekjur.net>
+References: <x6ipbqvwtd.fsf@midna.zekjur.net>
+Message-ID: <20120910233458.GA2270@lenka.lan>
+
+Hi all,
+
+testing next for a few days. I noticed that for instance trying to resize 
+a window which is alone on a workspace popups an error. Generally it
+does any resizing in any invalid direction.
+
+I've read the release notes. Basically i think it's a good idea to be
+more responsive at runtime. But do we really want to be that strict?
+
+I think it's annoying and the message shown in i3-nagbar is not much
+helpful anyway. Maybe we can just work this out later and make it better
+somehow.
+
+Otherwise i can't complain about anything. Thanks to all of you for your 
+great work i'm starting to be very pleased with i3.
+
+Cheers,
+Pavel
+
+On Fri, Sep 07, 2012 at 02:31:26PM +0200, Michael Stapelberg wrote:
+> Hi,
+> 
+> I would like to release i3 4.3 soon?. Therefore, it?d be very helpful,
+> if you all could upgrade to the latest git version of the "next" branch.
+> The output of i3 --version should look like this if you did it right:
+> 
+>     i3 version 4.2-287-ga1823e5 (2012-09-06, branch "next")
+> 
+> This version is stable and can be considered a release-candidate.
+> 
+> Also, I will not merge new features into this version until the new
+> release is out. You can still send your patches and I will still review
+> them, they just won?t be merged immediately.
+> 
+> If you have any bugfix or ticket that you feel is important enough to be
+> included in this release, please speak up now and make me aware of it.
+> 
+> Thanks,
+> Best regards,
+> Michael
+> 
+> PS: Debian and Ubuntu users can simply use our repositories for
+> installing the latest development version, see
+> http://i3wm.org/docs/repositories.html
+
+From michael at i3wm.org  Tue Sep 11 02:50:26 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 11 Sep 2012 02:50:26 +0200
+Subject: [i3] Call for testing
+In-Reply-To: <20120910233458.GA2270@lenka.lan>
+References: <x6ipbqvwtd.fsf@midna.zekjur.net> <20120910233458.GA2270@lenka.lan>
+Message-ID: <x6vcflidrh.fsf@midna.zekjur.net>
+
+Hi Pavel,
+
+Pavel L?bl <lobl.pavel at gmail.com> writes:
+> I've read the release notes. Basically i think it's a good idea to be
+> more responsive at runtime. But do we really want to be that strict?
+>
+> I think it's annoying and the message shown in i3-nagbar is not much
+> helpful anyway. Maybe we can just work this out later and make it better
+> somehow.
+Yes, this point has been brought up on IRC, too. I suppose I will change
+this behavior to only display i3-nagbar on parser errors (which are
+roughly the same as configuration errors).
+
+Maybe in the future we could instead send notifications (as in
+freedesktop notifications) with the actual error message.
+
+-- 
+Best regards,
+Michael
+
+From ablepharus at googlemail.com  Wed Sep 12 08:18:42 2012
+From: ablepharus at googlemail.com (ablepharus)
+Date: Wed, 12 Sep 2012 08:18:42 +0200
+Subject: [i3] Call for testing
+In-Reply-To: <x6vcflidrh.fsf@midna.zekjur.net>
+References: <x6ipbqvwtd.fsf@midna.zekjur.net>
+ <20120910233458.GA2270@lenka.lan> <x6vcflidrh.fsf@midna.zekjur.net>
+Message-ID: <50502942.3000005@googlemail.com>
+
+Hi,
+
+I would really appreciate this, the new nagbar behaviour is nagging me.
+
+Am 11.09.2012 02:50, schrieb Michael Stapelberg:
+> Hi Pavel,
+>
+> Pavel L?bl <lobl.pavel at gmail.com> writes:
+>> I've read the release notes. Basically i think it's a good idea to be
+>> more responsive at runtime. But do we really want to be that strict?
+>>
+>> I think it's annoying and the message shown in i3-nagbar is not much
+>> helpful anyway. Maybe we can just work this out later and make it better
+>> somehow.
+> Yes, this point has been brought up on IRC, too. I suppose I will change
+> this behavior to only display i3-nagbar on parser errors (which are
+> roughly the same as configuration errors).
+>
+> Maybe in the future we could instead send notifications (as in
+> freedesktop notifications) with the actual error message.
+>
+
+
+From michael at i3wm.org  Wed Sep 12 08:55:09 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 12 Sep 2012 08:55:09 +0200
+Subject: [i3] Call for testing
+In-Reply-To: <50502942.3000005@googlemail.com>
+References: <x6ipbqvwtd.fsf@midna.zekjur.net>
+ <20120910233458.GA2270@lenka.lan> <x6vcflidrh.fsf@midna.zekjur.net>
+ <50502942.3000005@googlemail.com>
+Message-ID: <x6mx0vhgs2.fsf@midna.zekjur.net>
+
+Hey,
+
+this has already been changed. Upgrade to the latest version.
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Wed Sep 12 08:58:44 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 12 Sep 2012 08:58:44 +0200
+Subject: [i3] #784 bring open scratchpad window to the current workspace
+In-Reply-To: <20120910183649.GA30325@finrod>
+References: <20120910183649.GA30325@finrod>
+Message-ID: <x6k3vzhgm3.fsf@midna.zekjur.net>
+
+Hi Martin,
+
+Martin Kraus <lists_mk at wujiman.net> writes:
+> If it is a viable way there could be a switch that would allow to configure i3
+> to act either in the current way or in the proposed so it doesn't force
+> everybody to confirm to the same way this feature is used. 
+> I would think this should only require modification of how the window that is
+> brought to the front gets selected so it might not be much of an invasion to
+> the current code but I can be mistaken.
+Just to be sure you know about this:
+
+You can use multiple windows in your scratchpad by defining distinct
+shortcuts to bring them to the front. These shortcuts use criteria to
+identify the precise window you want to see:
+
+    bindsym Mod4+c [instance="cmus"] scratchpad show
+
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Wed Sep 12 13:26:59 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 12 Sep 2012 13:26:59 +0200
+Subject: [i3] #784 bring open scratchpad window to the current workspace
+In-Reply-To: <20120912075809.GA10307@finrod>
+References: <20120910183649.GA30325@finrod> <x6k3vzhgm3.fsf@midna.zekjur.net>
+ <20120912075809.GA10307@finrod>
+Message-ID: <x6har3h470.fsf@midna.zekjur.net>
+
+Hi Martin,
+
+Martin Kraus <martin.kraus at wujiman.net> writes:
+> Would it be possible to have a special tag that would say prefer already
+> opened if calling scratchpad show? something like:
+>
+> bindsym Mod4+c [prefer-focused="yes"] scratchpad show
+This syntax is reserved for criteria, which don?t really work like
+that. It strikes me that your particular feature might be best
+implemented as an external script. See http://i3wm.org/docs/ipc.html
+
+-- 
+Best regards,
+Michael
+
+From jfstraeten at scarlet.be  Wed Sep 12 13:36:48 2012
+From: jfstraeten at scarlet.be (JF Straeten)
+Date: Wed, 12 Sep 2012 13:36:48 +0200
+Subject: [i3] #784 bring open scratchpad window to the current workspace
+In-Reply-To: <x6har3h470.fsf@midna.zekjur.net>
+References: <20120910183649.GA30325@finrod> <x6k3vzhgm3.fsf@midna.zekjur.net>
+ <20120912075809.GA10307@finrod> <x6har3h470.fsf@midna.zekjur.net>
+Message-ID: <20120912113648.GD20980@jones.jfs.dt>
+
+
+Hi,
+
+On Wed, Sep 12, 2012 at 01:26:59PM +0200, Michael Stapelberg wrote:
+
+
+> > bindsym Mod4+c [prefer-focused="yes"] scratchpad show
+
+> This syntax is reserved for criteria, which don?t really work like
+> that. 
+
+May I ask what's the meaning and intended usage of
+[prefer-focused="yes"] ?
+
+I don't see that statement in the docs.
+
+Tia,
+
+-- 
+
+JFS.
+
+From michael at i3wm.org  Wed Sep 12 16:14:51 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 12 Sep 2012 16:14:51 +0200
+Subject: [i3] #784 bring open scratchpad window to the current workspace
+In-Reply-To: <20120912113648.GD20980@jones.jfs.dt>
+References: <20120910183649.GA30325@finrod> <x6k3vzhgm3.fsf@midna.zekjur.net>
+ <20120912075809.GA10307@finrod> <x6har3h470.fsf@midna.zekjur.net>
+ <20120912113648.GD20980@jones.jfs.dt>
+Message-ID: <x6mx0vfhus.fsf@midna.zekjur.net>
+
+Hi JF,
+
+JF Straeten <jfstraeten at scarlet.be> writes:
+>> This syntax is reserved for criteria, which don?t really work like
+>> that. 
+>
+> May I ask what's the meaning and intended usage of
+> [prefer-focused="yes"] ?
+You have misunderstood me: The syntax (square brackets) is reserved for
+criteria. We do not intend to add anything else (such as an expression
+of preference or general arguments for commands) in square brackets.
+
+-- 
+Best regards,
+Michael
+
+From daniel at steenfamilies.com  Wed Sep 12 17:17:37 2012
+From: daniel at steenfamilies.com (Daniel Steen)
+Date: Wed, 12 Sep 2012 11:17:37 -0400
+Subject: [i3] #784 bring open scratchpad window to the current workspace
+In-Reply-To: <20120912113648.GD20980@jones.jfs.dt>
+References: <20120910183649.GA30325@finrod> <x6k3vzhgm3.fsf@midna.zekjur.net>
+ <20120912075809.GA10307@finrod> <x6har3h470.fsf@midna.zekjur.net>
+ <20120912113648.GD20980@jones.jfs.dt>
+Message-ID: <CAD9tV_E_Bd3NePVL0_ivGpXh2tN1WY+T_z7BzAHxHY2ks+C90A@mail.gmail.com>
+
+I use the method michael is recommending to have multiple Im windows pop up
+on a single keystroke.  Works like a charm!
+On Sep 12, 2012 7:37 AM, "JF Straeten" <jfstraeten at scarlet.be> wrote:
+
+>
+> Hi,
+>
+> On Wed, Sep 12, 2012 at 01:26:59PM +0200, Michael Stapelberg wrote:
+>
+>
+> > > bindsym Mod4+c [prefer-focused="yes"] scratchpad show
+>
+> > This syntax is reserved for criteria, which don?t really work like
+> > that.
+>
+> May I ask what's the meaning and intended usage of
+> [prefer-focused="yes"] ?
+>
+> I don't see that statement in the docs.
+>
+> Tia,
+>
+> --
+>
+> JFS.
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120912/c043008f/attachment.html>
+
+From gkeramidas at gmail.com  Thu Sep 13 10:44:30 2012
+From: gkeramidas at gmail.com (Giorgos Keramidas)
+Date: Thu, 13 Sep 2012 10:44:30 +0200
+Subject: [i3] Colors for i3status in "i3bar" mode?
+Message-ID: <CAKR2__2NqvQAt_sCCCVM3OOBvLneDaezk7J=zUomV_o9yqWF_g@mail.gmail.com>
+
+Hi everyone,
+
+I'm trying to set up colors for i3status in i3bar mode, and for some
+reason it fails to work.
+
+My i3status config file looks like this:
+
+$ cat -n .i3status.conf
+     1 general {
+     2  output_format = "i3bar"
+     3  colors = true
+     4  color_good = "#202020"
+     5  color_degraded = "#e5871f"
+     6  color_bad = "#c83839"
+     7  interval = 10
+     8 }
+     9
+    10 order  = "load"
+    11 order += "time"
+    12
+    13 load {
+    14  format = "L:%5min"
+    15 }
+    16
+    17 time {
+    18  format = "%H:%M ?"
+    19 }
+
+The color-related directives in my ~/.i3/config file look like this:
+
+# -- colours -- #
+#colourclass               border    backg.     text
+client.focused             #1793D0   #1793D0    #FFFFFF
+client.focused_inactive    #000000   #333333    #FFFFFF
+client.unfocused           #000000   #333333    #FFFFFF
+client.urgent              #FF0000   #FF0000    #FF0000
+
+bar {
+  status_command i3status
+  colors {
+    background #aeb2c3
+    statusline #000000
+
+    # color_class      border  backg.  text
+    focused_workspace  #204560 #384560 #f0d830
+    active_workspace   #686868 #aeb2c3 #222222
+    inactive_workspace #686868 #aeb2c3 #222222
+    urgent_workspace   #2f343a #aeb2c3 #ffffff
+  }
+
+But when I run i3status there are no color values in the JSON-formatted output:
+
+$ i3status -v
+i3status 59d52ad (2012-09-05) ? 2008-2012 Michael Stapelberg and contributors
+$ i3status
+{"version":1}
+[
+[{"name":"load","full_text":"L:0.08"},{"name":"time","full_text":"10:42 ?"}]
+,[{"name":"load","full_text":"L:0.08"},{"name":"time","full_text":"10:42 ?"}]
+^C
+
+Am I missing something in the configuration of i3status to actually
+_send_ the colors to i3bar, like the example output in the manual of
+i3bar?
+
+I was expecting to see something like this instead, when colors = true:
+
+$ i3status
+{"version":1}
+[
+[{"name":"load","full_text":"L:0.08","color":
+"#202020"},{"name":"time","full_text":"10:42 ?","color": "#202020"}]
+,[{"name":"load","full_text":"L:0.08","color":
+"#202020"},{"name":"time","full_text":"10:42 ?","color": "#202020"}]
+^C
+
+From michael at i3wm.org  Thu Sep 13 13:49:28 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 13 Sep 2012 13:49:28 +0200
+Subject: [i3] Colors for i3status in "i3bar" mode?
+In-Reply-To: <CAKR2__2NqvQAt_sCCCVM3OOBvLneDaezk7J=zUomV_o9yqWF_g@mail.gmail.com>
+References: <CAKR2__2NqvQAt_sCCCVM3OOBvLneDaezk7J=zUomV_o9yqWF_g@mail.gmail.com>
+Message-ID: <x6a9wuf8hj.fsf@midna.zekjur.net>
+
+Hi Giorgos,
+
+Giorgos Keramidas <gkeramidas at gmail.com> writes:
+>     10 order  = "load"
+>     11 order += "time"
+These two modules just don?t print out colors. Try it with something
+like the ethernet, wireless or battery module (the latter only in latest
+git).
+
+-- 
+Best regards,
+Michael
+
+From gkeramidas at gmail.com  Thu Sep 13 18:48:33 2012
+From: gkeramidas at gmail.com (Giorgos Keramidas)
+Date: Thu, 13 Sep 2012 18:48:33 +0200
+Subject: [i3] Colors for i3status in "i3bar" mode?
+In-Reply-To: <x6a9wuf8hj.fsf@midna.zekjur.net>
+References: <CAKR2__2NqvQAt_sCCCVM3OOBvLneDaezk7J=zUomV_o9yqWF_g@mail.gmail.com>
+ <x6a9wuf8hj.fsf@midna.zekjur.net>
+Message-ID: <CAKR2__0Vdz9BRMV1XDVDBA2H3cnwGgtTKBYZ2A2zTPD2Ur7LEg@mail.gmail.com>
+
+On Thu, Sep 13, 2012 at 1:49 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+> Giorgos Keramidas <gkeramidas at gmail.com> writes:
+>>     10 order  = "load"
+>>     11 order += "time"
+>
+> These two modules just don?t print out colors. Try it with something
+> like the ethernet, wireless or battery module (the latter only in latest
+> git).
+
+That's it. Thanks a lot!
+
+From michael at i3wm.org  Sun Sep 16 20:11:25 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 16 Sep 2012 20:11:25 +0200
+Subject: [i3] [RFC]render.c cleanup.
+In-Reply-To: <op.wj70akryh7z1jl@sraven>
+References: <CAMJW5=3k65gkmrHndPQkX8+qLJs6ueXr3Aqdx2-cGQuwa0BDqg@mail.gmail.com>
+ <20120902222820.21042.65253@midna.zekjur.net>
+ <CAMJW5=0TQwozJx=hVQNL7V9a0we6WWE1uKptF6p1p1-6Pxp7xg@mail.gmail.com>
+ <20120904210403.13924.70613@midna.zekjur.net> <op.wj70akryh7z1jl@sraven>
+Message-ID: <x68vc9et2q.fsf@midna.zekjur.net>
+
+Hi darkraven,
+
+Thanks for updating the patches. The size of the patches is okay now.
+
+In the second patch, you move rendering of the floating containers to
+the CT_WORKSPACE level. I think this breaks rendering because floating
+windows are then no longer guaranteed to always be on-top of tiling
+windows in multi-monitor setups. Consider this case:
+
+On the left 1024x768 output (let?s call it LVDS), I have workspace 1. On
+that workspace, there is a floating window with size 200x100 pixels at
+position (1000, 100).
+
+On the right 1024x768 output (let?s call it VGA), I have workspace 2
+with only tiling windows.
+
+Now, your code will render LVDS first (and even if it doesn?t, we can
+reverse the example) and raise floating windows. Then it will render VGA
+and raise the tiling window above the floating window.
+
+The comment at 
+http://code.stapelberg.de/git/i3/tree/src/render.c?h=next#n237 tries to
+express what I just described.
+
+In the fourth patch, you have an indentation change for no apparent
+reason (first few lines). Can you get rid of that please?
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Sun Sep 16 20:28:31 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 16 Sep 2012 20:28:31 +0200
+Subject: [i3] [PATCH]remove unnecessary code in render_con().
+In-Reply-To: <op.wj70c306h7z1jl@sraven>
+References: <op.wj70c306h7z1jl@sraven>
+Message-ID: <x6627desa8.fsf@midna.zekjur.net>
+
+Hi darkraven,
+
+Thanks, this looks good. I?ll merge it after v4.3 is released.
+
+-- 
+Best regards,
+Michael
+
+From carlosjosepita at gmail.com  Mon Sep 17 15:59:07 2012
+From: carlosjosepita at gmail.com (Carlos Pita)
+Date: Mon, 17 Sep 2012 10:59:07 -0300
+Subject: [i3] Floating mode focus & workspaces
+Message-ID: <CAELgYhehK8LCh5-j26abSDUMZ5BehP3aJ2u5aOpgUFB2Zb9DxQ@mail.gmail.com>
+
+Hi all,
+
+I've a couple of questions related to floating mode.
+
+First, when there are two floating windows one on top of another,
+changing focus between them does not bring the lower one to the front
+unless I click on it with the mouse. Is there any way to automatically
+follow a 'change focus' action with a 'bring to front' action? I can't
+find a command for the second one.
+
+Second, what is the closest method to get a floating layout to an
+entire workspace (and one that you can enable/disable dynamically)?
+
+Best regards
+--
+Carlos
+
+From marcos at anue.biz  Tue Sep 18 00:06:07 2012
+From: marcos at anue.biz (Marcos Moyano)
+Date: Mon, 17 Sep 2012 19:06:07 -0300
+Subject: [i3] i3 roadmap
+Message-ID: <CANxNxiBoz4foTP+NjZ_4W4WE-9uXTv0LeQhOizBf_d+g8S4CLA@mail.gmail.com>
+
+is there a place to see i3's roadmap?
+
+Thanks in advance.
+Marcos
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120917/a168297b/attachment.html>
+
+From michael at i3wm.org  Tue Sep 18 11:24:57 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 18 Sep 2012 11:24:57 +0200
+Subject: [i3] i3 roadmap
+In-Reply-To: <CANxNxiBoz4foTP+NjZ_4W4WE-9uXTv0LeQhOizBf_d+g8S4CLA@mail.gmail.com>
+References: <CANxNxiBoz4foTP+NjZ_4W4WE-9uXTv0LeQhOizBf_d+g8S4CLA@mail.gmail.com>
+Message-ID: <x6a9wnznrq.fsf@midna.zekjur.net>
+
+Hi Marcos,
+
+Marcos Moyano <marcos at anue.biz> writes:
+> is there a place to see i3's roadmap?
+No, since there is no such thing. People implement things they like
+(after checking with us that it fits the philosophy) and fix things
+which bother them. There?s a few feature requests in the bugtracker, so
+that?s the closest you?ll get.
+
+-- 
+Best regards,
+Michael
+
+From marcos at anue.biz  Tue Sep 18 12:57:49 2012
+From: marcos at anue.biz (Marcos Moyano)
+Date: Tue, 18 Sep 2012 07:57:49 -0300
+Subject: [i3] i3 roadmap
+In-Reply-To: <x6a9wnznrq.fsf@midna.zekjur.net>
+References: <CANxNxiBoz4foTP+NjZ_4W4WE-9uXTv0LeQhOizBf_d+g8S4CLA@mail.gmail.com>
+ <x6a9wnznrq.fsf@midna.zekjur.net>
+Message-ID: <CANxNxiCx323KSeD8XMWCu=VmbcyBK7kRrNakLygEGGKeMdoV=Q@mail.gmail.com>
+
+MIchael, thanks for your reply. I asked because you mentioned on my ticket
+(#805) that 4.3 release date is very close and I couldn't find it anywhere.
+Could you please share it with me?
+Awesome job by the way. For a long time I've been trying out tiling wms
+that faild in some way or the other. i3 has been like a breath of fresh
+air. Simple, fast, elegant and so easy to configure it's almost ridculous.
+I'm liking it so much I've been thinking about picking up C again and hack
+some code for it :-)
+To put it in one word: Thanks!
+
+Best,
+Marcos
+
+On Tue, Sep 18, 2012 at 6:24 AM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Marcos,
+>
+> Marcos Moyano <marcos at anue.biz> writes:
+> > is there a place to see i3's roadmap?
+> No, since there is no such thing. People implement things they like
+> (after checking with us that it fits the philosophy) and fix things
+> which bother them. There?s a few feature requests in the bugtracker, so
+> that?s the closest you?ll get.
+>
+> --
+> Best regards,
+> Michael
+>
+
+
+
+-- 
+Marcos Moyano
+Co-Founder of Anue
+Skype: marcosmoyano
+http://www.anue.biz/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120918/a586d449/attachment.html>
+
+From michael at i3wm.org  Tue Sep 18 15:56:55 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 18 Sep 2012 15:56:55 +0200
+Subject: [i3] i3 roadmap
+In-Reply-To: <CANxNxiCx323KSeD8XMWCu=VmbcyBK7kRrNakLygEGGKeMdoV=Q@mail.gmail.com>
+References: <CANxNxiBoz4foTP+NjZ_4W4WE-9uXTv0LeQhOizBf_d+g8S4CLA@mail.gmail.com>
+ <x6a9wnznrq.fsf@midna.zekjur.net>
+ <CANxNxiCx323KSeD8XMWCu=VmbcyBK7kRrNakLygEGGKeMdoV=Q@mail.gmail.com>
+Message-ID: <x6y5k7xwm0.fsf@midna.zekjur.net>
+
+Hi Marcos,
+
+Marcos Moyano <marcos at anue.biz> writes:
+
+> MIchael, thanks for your reply. I asked because you mentioned on my ticket
+> (#805) that 4.3 release date is very close and I couldn't find it anywhere.
+> Could you please share it with me?
+I intend to release 4.3 tomorrow, unless a big blocker comes up.
+
+> Awesome job by the way. For a long time I've been trying out tiling wms
+> that faild in some way or the other. i3 has been like a breath of fresh
+> air. Simple, fast, elegant and so easy to configure it's almost ridculous.
+> I'm liking it so much I've been thinking about picking up C again and hack
+> some code for it :-)
+> To put it in one word: Thanks!
+Thanks for the kind words :-).
+
+-- 
+Best regards,
+Michael
+
+From honza801 at gmail.com  Wed Sep 19 23:26:36 2012
+From: honza801 at gmail.com (Jan Krcmar)
+Date: Wed, 19 Sep 2012 23:26:36 +0200
+Subject: [i3] build problem after git archive
+Message-ID: <CAKneAXndL4GVOC9RuDhXLmnvgm6N-J5mOuCWa1RuYuAsfrLnfQ@mail.gmail.com>
+
+hi,
+
+i've pulled the latest git commit 9c3ece56d20db392610ae3106d570ee47c5831e8
+
+after doing 'git archive master' build fails on
+
+honza801 at fousatko ~/src/i3-archive/src $ make
+fatal: Not a git repository (or any parent up to mount point /home)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+fatal: Not a git repository (or any parent up to mount point /home)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+fatal: Not a git repository (or any parent up to mount point /home)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+fatal: Not a git repository (or any parent up to mount point /home)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[libi3] CC libi3/safewrappers.c
+[libi3] CC libi3/root_atom_contents.c
+[libi3] CC libi3/is_debug_build.c
+[libi3] CC libi3/get_mod_mask.c
+[libi3] CC libi3/string.c
+[libi3] CC libi3/ipc_connect.c
+[libi3] CC libi3/ucs2_conversion.c
+[libi3] CC libi3/font.c
+[libi3] CC libi3/get_colorpixel.c
+[libi3] CC libi3/strndup.c
+[libi3] CC libi3/fake_configure_notify.c
+[libi3] CC libi3/ipc_send_message.c
+[libi3] CC libi3/get_visualtype.c
+[libi3] CC libi3/ipc_recv_message.c
+[libi3] AR libi3.a
+[i3] YACC src/cfgparse.y
+[i3] CC src/cfgparse.tab.c
+[i3] LEX src/cfgparse.l
+[i3] CC src/cfgparse.yy.c
+[i3] CC src/assignments.c
+[i3] CC src/resize.c
+[i3] CC src/log.c
+[i3] CC src/handlers.c
+[i3] CC src/ewmh.c
+[i3] CC src/regex.c
+[i3] CC src/config.c
+[i3] CC src/manage.c
+[i3] CC src/con.c
+[i3] CC src/xinerama.c
+[i3] CC src/scratchpad.c
+[i3] CC src/commands.c
+[i3] CC src/window.c
+[i3] CC src/x.c
+[i3] CC src/key_press.c
+[i3] CC src/load_layout.c
+[i3] CC src/output.c
+[i3] CC src/floating.c
+[i3] CC src/xcb.c
+[i3] CC src/ipc.c
+../src/src/ipc.c: In function 'handle_get_version':
+../src/src/ipc.c:571:5: error: expected expression before ')' token
+../src/src/ipc.c:574:5: error: expected expression before ')' token
+make: *** [src/ipc.o] Error 1
+
+
+also note that the error (fatal: Not a git repository...)  was not
+fatal previously
+
+
+what is the correct way to archive/export sources from git so it
+compiles correctly (without .git and .gitignore)
+
+i'm using
+
+Linux fousatko 3.5.4-1-ARCH #1 SMP PREEMPT Sat Sep 15 13:04:04 UTC
+2012 i686 GNU/Linux
+Using built-in specs.
+COLLECT_GCC=gcc
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/lto-wrapper
+Target: i686-pc-linux-gnu
+Configured with: /build/src/gcc-4.7-20120721/configure --prefix=/usr
+--libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man
+--infodir=/usr/share/info --with-bugurl=https://bugs.archlinux.org/
+--enable-languages=c,c++,ada,fortran,go,lto,objc,obj-c++
+--enable-shared --enable-threads=posix --with-system-zlib
+--enable-__cxa_atexit --disable-libunwind-exceptions
+--enable-clocale=gnu --disable-libstdcxx-pch --enable-libstdcxx-time
+--enable-gnu-unique-object --enable-linker-build-id --with-ppl
+--enable-cloog-backend=isl --disable-ppl-version-check
+--disable-cloog-version-check --enable-lto --enable-gold
+--enable-ld=default --enable-plugin --with-plugin-ld=ld.gold
+--with-linker-hash-style=gnu --disable-multilib --disable-libssp
+--disable-build-with-cxx --disable-build-poststage1-with-cxx
+--enable-checking=release
+Thread model: posix
+gcc version 4.7.1 20120721 (prerelease) (GCC)
+
+thanks
+
+fous
+
+From michael at i3wm.org  Thu Sep 20 00:22:45 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 20 Sep 2012 00:22:45 +0200
+Subject: [i3] build problem after git archive
+In-Reply-To: <CAKneAXndL4GVOC9RuDhXLmnvgm6N-J5mOuCWa1RuYuAsfrLnfQ@mail.gmail.com>
+References: <CAKneAXndL4GVOC9RuDhXLmnvgm6N-J5mOuCWa1RuYuAsfrLnfQ@mail.gmail.com>
+Message-ID: <x6mx0lac0a.fsf@midna.zekjur.net>
+
+Hi Jan,
+
+Jan Krcmar <honza801 at gmail.com> writes:
+> after doing 'git archive master' build fails on
+Using git-archive is not a supported way of building i3 and never has
+been. If you want to build outside of git, use 'make dist' and build the
+resulting tarball. Otherwise, just build within your git working copy.
+
+-- 
+Best regards,
+Michael
+
+From okiddle at yahoo.co.uk  Thu Sep 20 04:18:26 2012
+From: okiddle at yahoo.co.uk (Oliver Kiddle)
+Date: Thu, 20 Sep 2012 04:18:26 +0200
+Subject: [i3] building 4.3 on RHEL 6
+Message-ID: <15732.1348107506@thecus.kiddle.eu>
+
+I had a few issues building the latest i3.
+
+It seems cairo has been built without xcb support or at least
+cairo/cairo-xcb.h was not found. I worked around this by disabling pango
+which is easy enough. My Debian system has a cairo-xcb.pc file so it
+should be possible to make that automatic if it is the most appropriate
+workaround.
+
+The next problem was with ev.h not being found when compiling i3-msg,
+i3-nagbar, i3-config-wizard and i3-input. $(LIBEV_CFLAGS) was missing
+from their Makefiles and ev.h is in /usr/include/libev (it presumably
+works by accident on Debian because there it is just /usr/include/ev.h).
+However, it looks to me like these #includes are superfluous and the
+correct fix is simply to remove them as per the patch below.
+
+Finally, the trickiest problem is that yajl_get_bytes_consumed() was
+introduced with yajl 1.0.8 and RHEL 6 includes yajl 1.0.7. The relevant
+call was introduced in commit e53405c2 and it seemed fairly safe to
+apply that whole change in reverse.
+
+Oliver
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-remove-superfluous-ev.h-include-statements.patch
+Type: text/x-diff
+Size: 1523 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120920/57bb8f67/attachment.patch>
+
+From drdarkraven at gmail.com  Thu Sep 20 11:04:17 2012
+From: drdarkraven at gmail.com (DR)
+Date: Thu, 20 Sep 2012 17:04:17 +0800
+Subject: [i3] [RFC]render.c cleanup.
+In-Reply-To: <x68vc9et2q.fsf@midna.zekjur.net>
+References: <CAMJW5=3k65gkmrHndPQkX8+qLJs6ueXr3Aqdx2-cGQuwa0BDqg@mail.gmail.com>
+ <20120902222820.21042.65253@midna.zekjur.net>
+ <CAMJW5=0TQwozJx=hVQNL7V9a0we6WWE1uKptF6p1p1-6Pxp7xg@mail.gmail.com>
+ <20120904210403.13924.70613@midna.zekjur.net> <op.wj70akryh7z1jl@sraven>
+ <x68vc9et2q.fsf@midna.zekjur.net>
+Message-ID: <CAMJW5=2xJnEK+oqOseFvMAyCXF1e1ZbVvvX_MKeDDAj0L-4qtA@mail.gmail.com>
+
+On Mon, Sep 17, 2012 at 2:11 AM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi darkraven,
+>
+> Thanks for updating the patches. The size of the patches is okay now.
+>
+> In the second patch, you move rendering of the floating containers to
+> the CT_WORKSPACE level. I think this breaks rendering because floating
+> windows are then no longer guaranteed to always be on-top of tiling
+> windows in multi-monitor setups. Consider this case:
+>
+> On the left 1024x768 output (let?s call it LVDS), I have workspace 1. On
+> that workspace, there is a floating window with size 200x100 pixels at
+> position (1000, 100).
+>
+> On the right 1024x768 output (let?s call it VGA), I have workspace 2
+> with only tiling windows.
+>
+> Now, your code will render LVDS first (and even if it doesn?t, we can
+> reverse the example) and raise floating windows. Then it will render VGA
+> and raise the tiling window above the floating window.
+>
+> The comment at
+> http://code.stapelberg.de/git/i3/tree/src/render.c?h=next#n237 tries to
+> express what I just described.
+>
+This is hard....
+The solution I come up with is quite ugly, don't know if you would like it.
+
+>
+> In the fourth patch, you have an indentation change for no apparent
+> reason (first few lines). Can you get rid of that please?
+>
+The fourth patch is now dropped from this patch series. I think it's a bit
+irrelevant. I would send it in a new thread concerning about popup window
+while fullscreen.
+
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120920/0b062bf9/attachment-0001.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-split-children-rendering-part-of-code-out-of-render_.patch
+Type: application/octet-stream
+Size: 14237 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120920/0b062bf9/attachment-0003.obj>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0002-handle-CT_WORKSPACEs-separately.patch
+Type: application/octet-stream
+Size: 3988 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120920/0b062bf9/attachment-0004.obj>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0003-move-floating-window-logic-into-render_l_output.patch
+Type: application/octet-stream
+Size: 6586 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120920/0b062bf9/attachment-0005.obj>
+
+From michael at i3wm.org  Thu Sep 20 11:41:30 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 20 Sep 2012 11:41:30 +0200
+Subject: [i3] building 4.3 on RHEL 6
+In-Reply-To: <15732.1348107506@thecus.kiddle.eu>
+References: <15732.1348107506@thecus.kiddle.eu>
+Message-ID: <x68vc59gl1.fsf@midna.zekjur.net>
+
+Hi Oliver,
+
+Oliver Kiddle <okiddle at yahoo.co.uk> writes:
+> It seems cairo has been built without xcb support or at least
+> cairo/cairo-xcb.h was not found. I worked around this by disabling pango
+> which is easy enough. My Debian system has a cairo-xcb.pc file so it
+> should be possible to make that automatic if it is the most appropriate
+> workaround.
+No, we will NOT make this automatic. Pango support is an important
+feature of i3 and if you decide to rip it out, you should really do that
+in a concious way.
+
+> The next problem was with ev.h not being found when compiling i3-msg,
+> i3-nagbar, i3-config-wizard and i3-input. $(LIBEV_CFLAGS) was missing
+> from their Makefiles and ev.h is in /usr/include/libev (it presumably
+> works by accident on Debian because there it is just /usr/include/ev.h).
+> However, it looks to me like these #includes are superfluous and the
+> correct fix is simply to remove them as per the patch below.
+Thanks, I?ve merged this patch.
+
+> Finally, the trickiest problem is that yajl_get_bytes_consumed() was
+> introduced with yajl 1.0.8 and RHEL 6 includes yajl 1.0.7. The relevant
+> call was introduced in commit e53405c2 and it seemed fairly safe to
+> apply that whole change in reverse.
+Note that this change is important for third-party scripts. Removing it
+is only fine as long as you don?t share that package. If you intend to
+package an RPM and distribute it, please find a different solution, for
+example statically linking yajl 1.0.8 (also, I hate how yajl <2 didn?t
+bring a pkg-config file, so we can?t automatically check for the
+presence of this function).
+
+-- 
+Best regards,
+Michael
+
+From mhcerri at gmail.com  Thu Sep 20 15:09:34 2012
+From: mhcerri at gmail.com (Marcelo Cerri)
+Date: Thu, 20 Sep 2012 10:09:34 -0300
+Subject: [i3] building 4.3 on RHEL 6
+In-Reply-To: <15732.1348107506@thecus.kiddle.eu>
+References: <15732.1348107506@thecus.kiddle.eu>
+Message-ID: <CACg2Y9vBRB2pQz=MAsv0pn_c5W_3NZUfMieDvuh0iGhn=BCzrQ@mail.gmail.com>
+
+Hi Oliver,
+
+I've compiled the latest i3 version from git (next branch) for rhel 6.3
+without any changes. Although I had to compile some deps from source. For
+example, for yajl I updated the SRPM package to 1.0.8 and rebuilt the
+package.
+
+Regards,
+Marcelo
+
+On Wed, Sep 19, 2012 at 11:18 PM, Oliver Kiddle <okiddle at yahoo.co.uk> wrote:
+
+> I had a few issues building the latest i3.
+>
+> It seems cairo has been built without xcb support or at least
+> cairo/cairo-xcb.h was not found. I worked around this by disabling pango
+> which is easy enough. My Debian system has a cairo-xcb.pc file so it
+> should be possible to make that automatic if it is the most appropriate
+> workaround.
+>
+> The next problem was with ev.h not being found when compiling i3-msg,
+> i3-nagbar, i3-config-wizard and i3-input. $(LIBEV_CFLAGS) was missing
+> from their Makefiles and ev.h is in /usr/include/libev (it presumably
+> works by accident on Debian because there it is just /usr/include/ev.h).
+> However, it looks to me like these #includes are superfluous and the
+> correct fix is simply to remove them as per the patch below.
+>
+> Finally, the trickiest problem is that yajl_get_bytes_consumed() was
+> introduced with yajl 1.0.8 and RHEL 6 includes yajl 1.0.7. The relevant
+> call was introduced in commit e53405c2 and it seemed fairly safe to
+> apply that whole change in reverse.
+>
+> Oliver
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120920/09847bf0/attachment.html>
+
+From gkeramidas at gmail.com  Thu Sep 20 17:24:54 2012
+From: gkeramidas at gmail.com (Giorgos Keramidas)
+Date: Thu, 20 Sep 2012 17:24:54 +0200
+Subject: [i3] Floating mode focus & workspaces
+In-Reply-To: <CAELgYhehK8LCh5-j26abSDUMZ5BehP3aJ2u5aOpgUFB2Zb9DxQ@mail.gmail.com>
+References: <CAELgYhehK8LCh5-j26abSDUMZ5BehP3aJ2u5aOpgUFB2Zb9DxQ@mail.gmail.com>
+Message-ID: <CAKR2__3yagB_z+RhvGTxrJawgR-CGMdz=1LB0iFdkqZpsNHitg@mail.gmail.com>
+
+There are two different things that are commonly done with
+floating windows that get focused:
+
+  - When focused by mouse _click_ events, raise immediately
+  - When focused by mouse movement, _maybe_ raise after a timeout
+(commonly called raise_on_focus)
+
+This is currently not supported AFAIK, but if you're interested in
+writing a patch, please do it :-)
+
+On Mon, Sep 17, 2012 at 3:59 PM, Carlos Pita <carlosjosepita at gmail.com> wrote:
+> Hi all,
+>
+> I've a couple of questions related to floating mode.
+>
+> First, when there are two floating windows one on top of another,
+> changing focus between them does not bring the lower one to the front
+> unless I click on it with the mouse. Is there any way to automatically
+> follow a 'change focus' action with a 'bring to front' action? I can't
+> find a command for the second one.
+>
+> Second, what is the closest method to get a floating layout to an
+> entire workspace (and one that you can enable/disable dynamically)?
+>
+> Best regards
+> --
+> Carlos
+
+
+
+-- 
+Giorgos Keramidas; gkeramidas at gmail.com
+
+From michael at i3wm.org  Fri Sep 21 02:41:35 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 21 Sep 2012 02:41:35 +0200
+Subject: [i3] Floating mode focus & workspaces
+In-Reply-To: <CAKR2__3yagB_z+RhvGTxrJawgR-CGMdz=1LB0iFdkqZpsNHitg@mail.gmail.com>
+References: <CAELgYhehK8LCh5-j26abSDUMZ5BehP3aJ2u5aOpgUFB2Zb9DxQ@mail.gmail.com>
+ <CAKR2__3yagB_z+RhvGTxrJawgR-CGMdz=1LB0iFdkqZpsNHitg@mail.gmail.com>
+Message-ID: <x6r4pw8aww.fsf@midna.zekjur.net>
+
+
+Hi Giorgos,
+
+Giorgos Keramidas <gkeramidas at gmail.com> writes:
+>   - When focused by mouse _click_ events, raise immediately
+i3 does this already.
+
+>   - When focused by mouse movement, _maybe_ raise after a timeout
+> (commonly called raise_on_focus)
+A timeout would feel weird and not fit i3?s look&feel well.
+
+> This is currently not supported AFAIK, but if you're interested in
+> writing a patch, please do it :-)
+As I said, it is. Carlos is talking changing focus via keyboard, not
+via mouse.
+
+>> First, when there are two floating windows one on top of another,
+>> changing focus between them does not bring the lower one to the front
+>> unless I click on it with the mouse. Is there any way to automatically
+>> follow a 'change focus' action with a 'bring to front' action? I can't
+>> find a command for the second one.
+Patch welcome. I think raising a floating window on focus should be the
+default action, so no new configuration directives are required.
+
+>> Second, what is the closest method to get a floating layout to an
+>> entire workspace (and one that you can enable/disable dynamically)?
+I?m not sure what exactly you mean by that. Making all windows on one
+workspace floating is not supported, also marking workspaces as
+floating-by-default is not supported. i3 is primarily a tiling window
+manager, floating windows are only for popup windows.
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Sat Sep 22 18:14:54 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 22 Sep 2012 18:14:54 +0200
+Subject: [i3] [PATCH]remove unnecessary code in render_con().
+In-Reply-To: <x6627desa8.fsf@midna.zekjur.net>
+References: <op.wj70c306h7z1jl@sraven> <x6627desa8.fsf@midna.zekjur.net>
+Message-ID: <x6y5k26nlt.fsf@midna.zekjur.net>
+
+Hi,
+
+Michael Stapelberg <michael at i3wm.org> writes:
+> Thanks, this looks good. I?ll merge it after v4.3 is released.
+This is merged now, thanks.
+
+-- 
+Best regards,
+Michael
+
+From marcus.klemm at googlemail.com  Sat Sep 22 18:56:40 2012
+From: marcus.klemm at googlemail.com (Marcus Klemm)
+Date: Sat, 22 Sep 2012 18:56:40 +0200
+Subject: [i3] 2-pixel-border-mode
+Message-ID: <CALfxriK4zW0K3-3dMiaSdG+adsaMujmch9ZNeZqvL9_r5g9a=Q@mail.gmail.com>
+
+Hello Michael,
+
+Would it be possible to add a 2px border mode to i3? I don't want my
+windows to have a title bar but the 1pixel-mode is _way_ too thin on my new
+15" 1920x1200 laptop display.
+
+Ciao, Marcus
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120922/4b215611/attachment.html>
+
+From kemurphy.cmu at gmail.com  Sat Sep 22 20:23:05 2012
+From: kemurphy.cmu at gmail.com (Kevin Murphy)
+Date: Sat, 22 Sep 2012 14:23:05 -0400
+Subject: [i3] 2-pixel-border-mode
+In-Reply-To: <CALfxriK4zW0K3-3dMiaSdG+adsaMujmch9ZNeZqvL9_r5g9a=Q@mail.gmail.com>
+References: <CALfxriK4zW0K3-3dMiaSdG+adsaMujmch9ZNeZqvL9_r5g9a=Q@mail.gmail.com>
+Message-ID: <9E69B2C5-E489-454E-85BE-62A59AEE93C4@gmail.com>
+
+I was planning on rolling a patch to cover border width as a configuration parameter. I already have a personal one for a gap between windows that I'd be willing to release if anyone else is interested in that.
+
+On Sep 22, 2012, at 12:56 PM, Marcus Klemm <marcus.klemm at googlemail.com> wrote:
+
+> Hello Michael,
+> 
+> Would it be possible to add a 2px border mode to i3? I don't want my windows to have a title bar but the 1pixel-mode is _way_ too thin on my new 15" 1920x1200 laptop display.
+> 
+> Ciao, Marcus
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120922/fefc7fcb/attachment.html>
+
+From marcos at anue.biz  Wed Sep 26 19:17:52 2012
+From: marcos at anue.biz (Marcos Moyano)
+Date: Wed, 26 Sep 2012 14:17:52 -0300
+Subject: [i3] Floating mode focus & workspaces
+In-Reply-To: <x6r4pw8aww.fsf@midna.zekjur.net>
+References: <CAELgYhehK8LCh5-j26abSDUMZ5BehP3aJ2u5aOpgUFB2Zb9DxQ@mail.gmail.com>
+ <CAKR2__3yagB_z+RhvGTxrJawgR-CGMdz=1LB0iFdkqZpsNHitg@mail.gmail.com>
+ <x6r4pw8aww.fsf@midna.zekjur.net>
+Message-ID: <CANxNxiB-wvcF1XikxYade4tVWneqO3N9gV0PVu+nEeQSi0B=Ag@mail.gmail.com>
+
+I thought this could be a good starting point for me to start looking at
+i3's code. So I decided to code a patch for this. The only thing is that I
+did add a new configuration option "raise_on_focus" because I don't want
+that to be my default behavior.
+Should I create a ticket and attach my patch to it?
+
+Here's the patch
+
+On Thu, Sep 20, 2012 at 9:41 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+>
+> Hi Giorgos,
+>
+> Giorgos Keramidas <gkeramidas at gmail.com> writes:
+> >   - When focused by mouse _click_ events, raise immediately
+> i3 does this already.
+>
+> >   - When focused by mouse movement, _maybe_ raise after a timeout
+> > (commonly called raise_on_focus)
+> A timeout would feel weird and not fit i3?s look&feel well.
+>
+> > This is currently not supported AFAIK, but if you're interested in
+> > writing a patch, please do it :-)
+> As I said, it is. Carlos is talking changing focus via keyboard, not
+> via mouse.
+>
+> >> First, when there are two floating windows one on top of another,
+> >> changing focus between them does not bring the lower one to the front
+> >> unless I click on it with the mouse. Is there any way to automatically
+> >> follow a 'change focus' action with a 'bring to front' action? I can't
+> >> find a command for the second one.
+> Patch welcome. I think raising a floating window on focus should be the
+> default action, so no new configuration directives are required.
+>
+> >> Second, what is the closest method to get a floating layout to an
+> >> entire workspace (and one that you can enable/disable dynamically)?
+> I?m not sure what exactly you mean by that. Making all windows on one
+> workspace floating is not supported, also marking workspaces as
+> floating-by-default is not supported. i3 is primarily a tiling window
+> manager, floating windows are only for popup windows.
+>
+> --
+> Best regards,
+> Michael
+>
+
+
+
+-- 
+Marcos Moyano
+Co-Founder of Anue
+Skype: marcosmoyano
+http://www.anue.biz/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120926/6ff67afb/attachment.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: raise_on_focus.patch
+Type: application/octet-stream
+Size: 3748 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120926/6ff67afb/attachment.obj>
+
+From michael at i3wm.org  Wed Sep 26 20:13:55 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 26 Sep 2012 20:13:55 +0200
+Subject: [i3] Floating mode focus & workspaces
+In-Reply-To: <CANxNxiB-wvcF1XikxYade4tVWneqO3N9gV0PVu+nEeQSi0B=Ag@mail.gmail.com>
+References: <CAELgYhehK8LCh5-j26abSDUMZ5BehP3aJ2u5aOpgUFB2Zb9DxQ@mail.gmail.com>
+ <CAKR2__3yagB_z+RhvGTxrJawgR-CGMdz=1LB0iFdkqZpsNHitg@mail.gmail.com>
+ <x6r4pw8aww.fsf@midna.zekjur.net>
+ <CANxNxiB-wvcF1XikxYade4tVWneqO3N9gV0PVu+nEeQSi0B=Ag@mail.gmail.com>
+Message-ID: <x6y5jw649o.fsf@midna.zekjur.net>
+
+Hi Marcos,
+
+Marcos Moyano <marcos at anue.biz> writes:
+> did add a new configuration option "raise_on_focus" because I don't want
+> that to be my default behavior.
+Why? What?s the rationale in focusing floating windows without raising
+them?
+
+> Should I create a ticket and attach my patch to it?
+No, as long as I get the patch via mail, there?s no need to create a
+ticket.
+
+Giorgos: Since you didn?t let the mailing list know that you were
+working on this, too, there was some unfortunate duplication of
+work. Anyway, the reason why your code didn?t work was most likely
+because you raised the container *within* its surrounding floating
+container, which effectively has no effect. Instead ? as Macros did ?
+one should use floating_raise_con().
+
+-- 
+Best regards,
+Michael
+
+From marcos at anue.biz  Wed Sep 26 21:54:49 2012
+From: marcos at anue.biz (Marcos Moyano)
+Date: Wed, 26 Sep 2012 16:54:49 -0300
+Subject: [i3] Floating mode focus & workspaces
+In-Reply-To: <x6y5jw649o.fsf@midna.zekjur.net>
+References: <CAELgYhehK8LCh5-j26abSDUMZ5BehP3aJ2u5aOpgUFB2Zb9DxQ@mail.gmail.com>
+ <CAKR2__3yagB_z+RhvGTxrJawgR-CGMdz=1LB0iFdkqZpsNHitg@mail.gmail.com>
+ <x6r4pw8aww.fsf@midna.zekjur.net>
+ <CANxNxiB-wvcF1XikxYade4tVWneqO3N9gV0PVu+nEeQSi0B=Ag@mail.gmail.com>
+ <x6y5jw649o.fsf@midna.zekjur.net>
+Message-ID: <CANxNxiAQUiQz8zpcLv5_9M25V9DcS7ia0hrdTZEfw0gOr7yLVw@mail.gmail.com>
+
+I believe my last message was filtered by its size, so here it goes again:
+Michael,
+Sometimes a floating windows fits inside another floating window (see here
+http://imageshack.us/a/img402/650/floatingwindows.png ) and if I change the
+focus from the top window to any of the other two, the one that was on top
+is now gone. The only way for me to access it is by moving the newly raised
+window to another location. If you use a small floating window on a regular
+basis, like I do with a screen ruler, and use other floating windows from
+time to time, this behavior can get a bit annoying.
+I still think it should be the default behavior (and I'm using it that
+way). I just want a way to switch it off if I want to.
+
+Best Rgds,
+Marcos
+
+
+
+On Wed, Sep 26, 2012 at 3:13 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Marcos,
+>
+> Marcos Moyano <marcos at anue.biz> writes:
+> > did add a new configuration option "raise_on_focus" because I don't want
+> > that to be my default behavior.
+> Why? What?s the rationale in focusing floating windows without raising
+> them?
+>
+> > Should I create a ticket and attach my patch to it?
+> No, as long as I get the patch via mail, there?s no need to create a
+> ticket.
+>
+> Giorgos: Since you didn?t let the mailing list know that you were
+> working on this, too, there was some unfortunate duplication of
+> work. Anyway, the reason why your code didn?t work was most likely
+> because you raised the container *within* its surrounding floating
+> container, which effectively has no effect. Instead ? as Macros did ?
+> one should use floating_raise_con().
+>
+> --
+> Best regards,
+> Michael
+>
+
+
+
+-- 
+Marcos Moyano
+Co-Founder of Anue
+Skype: marcosmoyano
+http://www.anue.biz/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120926/3a671bc8/attachment.html>
+
+From ablepharus at googlemail.com  Wed Sep 26 21:58:50 2012
+From: ablepharus at googlemail.com (ablepharus)
+Date: Wed, 26 Sep 2012 21:58:50 +0200
+Subject: [i3] Help: Code Review Software
+Message-ID: <50635E7A.60002@googlemail.com>
+
+Hi,
+
+I am currently working on a fitting code review board for i3 with
+django. You can see the progress at http://ablepharus.eu/rb/  .
+
+To improve usability, the board needs some javascripts, I won't find the
+time to write them.
+
+So I am asking, who could help me by providing a couple of scripts?
+
+The first one I need involves inserting a form in the middle of the page
+and partially filling it.
+
+
+If you have questions you can ask via email or jabber <ablepharus at ignaz.org>
+
+best regards
+
+From marcos at anue.biz  Wed Sep 26 22:21:41 2012
+From: marcos at anue.biz (Marcos Moyano)
+Date: Wed, 26 Sep 2012 17:21:41 -0300
+Subject: [i3] Help: Code Review Software
+In-Reply-To: <50635E7A.60002@googlemail.com>
+References: <50635E7A.60002@googlemail.com>
+Message-ID: <CANxNxiD3gxTG_0T+7htqtkRqXBGEQhjzYLfOSu=ANmqa+NM6=w@mail.gmail.com>
+
+Is this a personal project or will it be a part of the official flow for
+patch reviewing?
+I'm pretty familiar with Django so I might be able to help.
+
+Best Rgds,
+Marcos
+
+
+On Wed, Sep 26, 2012 at 4:58 PM, ablepharus <ablepharus at googlemail.com>wrote:
+
+> Hi,
+>
+> I am currently working on a fitting code review board for i3 with
+> django. You can see the progress at http://ablepharus.eu/rb/  .
+>
+> To improve usability, the board needs some javascripts, I won't find the
+> time to write them.
+>
+> So I am asking, who could help me by providing a couple of scripts?
+>
+> The first one I need involves inserting a form in the middle of the page
+> and partially filling it.
+>
+>
+> If you have questions you can ask via email or jabber <
+> ablepharus at ignaz.org>
+>
+> best regards
+>
+
+
+
+-- 
+Marcos Moyano
+Co-Founder of Anue
+Skype: marcosmoyano
+http://www.anue.biz/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120926/baf93c5a/attachment-0001.html>
+
+From kemurphy.cmu at gmail.com  Wed Sep 26 22:56:48 2012
+From: kemurphy.cmu at gmail.com (Kevin Murphy)
+Date: Wed, 26 Sep 2012 16:56:48 -0400
+Subject: [i3] Floating mode focus & workspaces
+In-Reply-To: <CANxNxiAQUiQz8zpcLv5_9M25V9DcS7ia0hrdTZEfw0gOr7yLVw@mail.gmail.com>
+References: <CAELgYhehK8LCh5-j26abSDUMZ5BehP3aJ2u5aOpgUFB2Zb9DxQ@mail.gmail.com>
+ <CAKR2__3yagB_z+RhvGTxrJawgR-CGMdz=1LB0iFdkqZpsNHitg@mail.gmail.com>
+ <x6r4pw8aww.fsf@midna.zekjur.net>
+ <CANxNxiB-wvcF1XikxYade4tVWneqO3N9gV0PVu+nEeQSi0B=Ag@mail.gmail.com>
+ <x6y5jw649o.fsf@midna.zekjur.net>
+ <CANxNxiAQUiQz8zpcLv5_9M25V9DcS7ia0hrdTZEfw0gOr7yLVw@mail.gmail.com>
+Message-ID: <C3272BBA-4F7A-41CF-B5A0-A0819BAAF3D5@gmail.com>
+
+It would make more sense to me to have a hotkey bound to something that would "unraise" the focused window (read: send to back). Just a thought.
+
+Kevin
+
+On Sep 26, 2012, at 3:54 PM, Marcos Moyano <marcos at anue.biz> wrote:
+
+> I believe my last message was filtered by its size, so here it goes again:
+> Michael,
+> Sometimes a floating windows fits inside another floating window (see here http://imageshack.us/a/img402/650/floatingwindows.png ) and if I change the focus from the top window to any of the other two, the one that was on top is now gone. The only way for me to access it is by moving the newly raised window to another location. If you use a small floating window on a regular basis, like I do with a screen ruler, and use other floating windows from time to time, this behavior can get a bit annoying. 
+> I still think it should be the default behavior (and I'm using it that way). I just want a way to switch it off if I want to.
+> 
+> Best Rgds,
+> Marcos
+> 
+> 
+> 
+> On Wed, Sep 26, 2012 at 3:13 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+> Hi Marcos,
+> 
+> Marcos Moyano <marcos at anue.biz> writes:
+> > did add a new configuration option "raise_on_focus" because I don't want
+> > that to be my default behavior.
+> Why? What?s the rationale in focusing floating windows without raising
+> them?
+> 
+> > Should I create a ticket and attach my patch to it?
+> No, as long as I get the patch via mail, there?s no need to create a
+> ticket.
+> 
+> Giorgos: Since you didn?t let the mailing list know that you were
+> working on this, too, there was some unfortunate duplication of
+> work. Anyway, the reason why your code didn?t work was most likely
+> because you raised the container *within* its surrounding floating
+> container, which effectively has no effect. Instead ? as Macros did ?
+> one should use floating_raise_con().
+> 
+> --
+> Best regards,
+> Michael
+> 
+> 
+> 
+> -- 
+> Marcos Moyano
+> Co-Founder of Anue
+> Skype: marcosmoyano
+> http://www.anue.biz/
+> 
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120926/ce4f7de5/attachment.html>
+
+From marcos at anue.biz  Wed Sep 26 23:09:48 2012
+From: marcos at anue.biz (Marcos Moyano)
+Date: Wed, 26 Sep 2012 18:09:48 -0300
+Subject: [i3] Floating mode focus & workspaces
+In-Reply-To: <C3272BBA-4F7A-41CF-B5A0-A0819BAAF3D5@gmail.com>
+References: <CAELgYhehK8LCh5-j26abSDUMZ5BehP3aJ2u5aOpgUFB2Zb9DxQ@mail.gmail.com>
+ <CAKR2__3yagB_z+RhvGTxrJawgR-CGMdz=1LB0iFdkqZpsNHitg@mail.gmail.com>
+ <x6r4pw8aww.fsf@midna.zekjur.net>
+ <CANxNxiB-wvcF1XikxYade4tVWneqO3N9gV0PVu+nEeQSi0B=Ag@mail.gmail.com>
+ <x6y5jw649o.fsf@midna.zekjur.net>
+ <CANxNxiAQUiQz8zpcLv5_9M25V9DcS7ia0hrdTZEfw0gOr7yLVw@mail.gmail.com>
+ <C3272BBA-4F7A-41CF-B5A0-A0819BAAF3D5@gmail.com>
+Message-ID: <CANxNxiBuh7gV9Okk_777XsU+39bPcu1aVEmkUehj9_BY_j4=Eg@mail.gmail.com>
+
+How would that differ from sending the window to the scratchpad?
+
+Marcos
+
+On Wed, Sep 26, 2012 at 5:56 PM, Kevin Murphy <kemurphy.cmu at gmail.com>wrote:
+
+> It would make more sense to me to have a hotkey bound to something that
+> would "unraise" the focused window (read: send to back). Just a thought.
+>
+> Kevin
+>
+>
+> On Sep 26, 2012, at 3:54 PM, Marcos Moyano <marcos at anue.biz> wrote:
+>
+> I believe my last message was filtered by its size, so here it goes again:
+> Michael,
+> Sometimes a floating windows fits inside another floating window (see here
+> http://imageshack.us/a/img402/650/floatingwindows.png ) and if I change
+> the focus from the top window to any of the other two, the one that was on
+> top is now gone. The only way for me to access it is by moving the newly
+> raised window to another location. If you use a small floating window on a
+> regular basis, like I do with a screen ruler, and use other floating
+> windows from time to time, this behavior can get a bit annoying.
+> I still think it should be the default behavior (and I'm using it that
+> way). I just want a way to switch it off if I want to.
+>
+> Best Rgds,
+> Marcos
+>
+>
+>
+> On Wed, Sep 26, 2012 at 3:13 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+>
+>> Hi Marcos,
+>>
+>> Marcos Moyano <marcos at anue.biz> writes:
+>> > did add a new configuration option "raise_on_focus" because I don't want
+>> > that to be my default behavior.
+>> Why? What?s the rationale in focusing floating windows without raising
+>> them?
+>>
+>> > Should I create a ticket and attach my patch to it?
+>> No, as long as I get the patch via mail, there?s no need to create a
+>> ticket.
+>>
+>> Giorgos: Since you didn?t let the mailing list know that you were
+>> working on this, too, there was some unfortunate duplication of
+>> work. Anyway, the reason why your code didn?t work was most likely
+>> because you raised the container *within* its surrounding floating
+>> container, which effectively has no effect. Instead ? as Macros did ?
+>> one should use floating_raise_con().
+>>
+>> --
+>> Best regards,
+>> Michael
+>>
+>
+>
+>
+> --
+> Marcos Moyano
+> Co-Founder of Anue
+> Skype: marcosmoyano
+> http://www.anue.biz/
+>
+>
+
+
+-- 
+Marcos Moyano
+Co-Founder of Anue
+Skype: marcosmoyano
+http://www.anue.biz/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120926/619da4d3/attachment.html>
+
+From kemurphy.cmu at gmail.com  Wed Sep 26 23:23:23 2012
+From: kemurphy.cmu at gmail.com (Kevin Murphy)
+Date: Wed, 26 Sep 2012 17:23:23 -0400
+Subject: [i3] Floating mode focus & workspaces
+In-Reply-To: <CANxNxiBuh7gV9Okk_777XsU+39bPcu1aVEmkUehj9_BY_j4=Eg@mail.gmail.com>
+References: <CAELgYhehK8LCh5-j26abSDUMZ5BehP3aJ2u5aOpgUFB2Zb9DxQ@mail.gmail.com>
+ <CAKR2__3yagB_z+RhvGTxrJawgR-CGMdz=1LB0iFdkqZpsNHitg@mail.gmail.com>
+ <x6r4pw8aww.fsf@midna.zekjur.net>
+ <CANxNxiB-wvcF1XikxYade4tVWneqO3N9gV0PVu+nEeQSi0B=Ag@mail.gmail.com>
+ <x6y5jw649o.fsf@midna.zekjur.net>
+ <CANxNxiAQUiQz8zpcLv5_9M25V9DcS7ia0hrdTZEfw0gOr7yLVw@mail.gmail.com>
+ <C3272BBA-4F7A-41CF-B5A0-A0819BAAF3D5@gmail.com>
+ <CANxNxiBuh7gV9Okk_777XsU+39bPcu1aVEmkUehj9_BY_j4=Eg@mail.gmail.com>
+Message-ID: <13E6F1C0-9FBE-45D9-9BC3-B6F3A7B336B4@gmail.com>
+
+Uh.... Sending the window to the scratchpad hides it completely until you show the scratchpad.  "Unraise" would just effectively raise every window behind the focused window without changing focus.  It feels better than a new config option to me, and allows the user to choose how floating windows to behave at runtime.
+
+On Sep 26, 2012, at 5:09 PM, Marcos Moyano <marcos at anue.biz> wrote:
+
+> How would that differ from sending the window to the scratchpad?
+> 
+> Marcos
+> 
+> On Wed, Sep 26, 2012 at 5:56 PM, Kevin Murphy <kemurphy.cmu at gmail.com> wrote:
+> It would make more sense to me to have a hotkey bound to something that would "unraise" the focused window (read: send to back). Just a thought.
+> 
+> Kevin
+> 
+> 
+> On Sep 26, 2012, at 3:54 PM, Marcos Moyano <marcos at anue.biz> wrote:
+> 
+>> I believe my last message was filtered by its size, so here it goes again:
+>> Michael,
+>> Sometimes a floating windows fits inside another floating window (see here http://imageshack.us/a/img402/650/floatingwindows.png ) and if I change the focus from the top window to any of the other two, the one that was on top is now gone. The only way for me to access it is by moving the newly raised window to another location. If you use a small floating window on a regular basis, like I do with a screen ruler, and use other floating windows from time to time, this behavior can get a bit annoying. 
+>> I still think it should be the default behavior (and I'm using it that way). I just want a way to switch it off if I want to.
+>> 
+>> Best Rgds,
+>> Marcos
+>> 
+>> 
+>> 
+>> On Wed, Sep 26, 2012 at 3:13 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+>> Hi Marcos,
+>> 
+>> Marcos Moyano <marcos at anue.biz> writes:
+>> > did add a new configuration option "raise_on_focus" because I don't want
+>> > that to be my default behavior.
+>> Why? What?s the rationale in focusing floating windows without raising
+>> them?
+>> 
+>> > Should I create a ticket and attach my patch to it?
+>> No, as long as I get the patch via mail, there?s no need to create a
+>> ticket.
+>> 
+>> Giorgos: Since you didn?t let the mailing list know that you were
+>> working on this, too, there was some unfortunate duplication of
+>> work. Anyway, the reason why your code didn?t work was most likely
+>> because you raised the container *within* its surrounding floating
+>> container, which effectively has no effect. Instead ? as Macros did ?
+>> one should use floating_raise_con().
+>> 
+>> --
+>> Best regards,
+>> Michael
+>> 
+>> 
+>> 
+>> -- 
+>> Marcos Moyano
+>> Co-Founder of Anue
+>> Skype: marcosmoyano
+>> http://www.anue.biz/
+>> 
+> 
+> 
+> 
+> -- 
+> Marcos Moyano
+> Co-Founder of Anue
+> Skype: marcosmoyano
+> http://www.anue.biz/
+> 
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120926/d1dcf3fb/attachment.html>
+
+From michael at i3wm.org  Wed Sep 26 23:56:56 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 26 Sep 2012 23:56:56 +0200
+Subject: [i3] Floating mode focus & workspaces
+In-Reply-To: <CANxNxiAQUiQz8zpcLv5_9M25V9DcS7ia0hrdTZEfw0gOr7yLVw@mail.gmail.com>
+References: <CAELgYhehK8LCh5-j26abSDUMZ5BehP3aJ2u5aOpgUFB2Zb9DxQ@mail.gmail.com>
+ <CAKR2__3yagB_z+RhvGTxrJawgR-CGMdz=1LB0iFdkqZpsNHitg@mail.gmail.com>
+ <x6r4pw8aww.fsf@midna.zekjur.net>
+ <CANxNxiB-wvcF1XikxYade4tVWneqO3N9gV0PVu+nEeQSi0B=Ag@mail.gmail.com>
+ <x6y5jw649o.fsf@midna.zekjur.net>
+ <CANxNxiAQUiQz8zpcLv5_9M25V9DcS7ia0hrdTZEfw0gOr7yLVw@mail.gmail.com>
+Message-ID: <x6txuk5txz.fsf@midna.zekjur.net>
+
+Hi Marcos,
+
+Marcos Moyano <marcos at anue.biz> writes:
+> Sometimes a floating windows fits inside another floating window (see
+> here http://imageshack.us/a/img402/650/floatingwindows.png ) and if I
+> change the focus from the top window to any of the other two, the one
+> that was on top is now gone. The only way for me to access it is by
+> moving the newly raised window to another location. If you use a small
+> floating window on a regular basis, like I do with a screen ruler, and
+> use other floating windows from time to time, this behavior can get a
+This is your mistake. Using floating windows on a regular basis is wrong
+when using i3. Floating windows are an after-thought, a necessary evil
+for handling popup dialogs in a somewhat acceptable fashion. They are
+not an equal alternative to using tiling windows, they were never
+intended to and they never will be :-).
+
+I?m not convinced that increasing complexity (mainly mental complexity
+for people to understand their choice when reading through the
+userguide) by adding the option you propose is worth the benefit.
+
+I?d argue that when you switch to a floating window with your keyboard,
+you want to see and use that window, so i3 should raise it.
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Thu Sep 27 00:03:13 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 27 Sep 2012 00:03:13 +0200
+Subject: [i3] Help: Code Review Software
+In-Reply-To: <CANxNxiD3gxTG_0T+7htqtkRqXBGEQhjzYLfOSu=ANmqa+NM6=w@mail.gmail.com>
+References: <50635E7A.60002@googlemail.com>
+ <CANxNxiD3gxTG_0T+7htqtkRqXBGEQhjzYLfOSu=ANmqa+NM6=w@mail.gmail.com>
+Message-ID: <x6obks5tni.fsf@midna.zekjur.net>
+
+Hi Marcos,
+
+Marcos Moyano <marcos at anue.biz> writes:
+> Is this a personal project or will it be a part of the official flow for
+> patch reviewing?
+We intend to use this project within i3 once it?s suited for that.
+
+-- 
+Best regards,
+Michael
+
+From jelten at in.tum.de  Thu Sep 27 00:05:51 2012
+From: jelten at in.tum.de (Jonas Jelten)
+Date: Thu, 27 Sep 2012 00:05:51 +0200
+Subject: [i3] dual monitor cloning
+Message-ID: <50637C3F.9050900@in.tum.de>
+
+Hi list!
+
+For presentations it would be really nice if only specified workspaces
+are cloned over both monitors. Is that possible somehow?
+
+I know that this could be complicated, as the monitors only display
+sections of the X Display.
+
+Anyhow, having private workspaces on my laptop only and projector shared
+workspaces would be awesome.
+
+Thanks for any pointers.
+
+
+Cheers,
+
+JJ
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 897 bytes
+Desc: OpenPGP digital signature
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120927/513880a5/attachment.sig>
+
+From marcos at anue.biz  Thu Sep 27 00:10:18 2012
+From: marcos at anue.biz (Marcos Moyano)
+Date: Wed, 26 Sep 2012 19:10:18 -0300
+Subject: [i3] Floating mode focus & workspaces
+In-Reply-To: <x6txuk5txz.fsf@midna.zekjur.net>
+References: <CAELgYhehK8LCh5-j26abSDUMZ5BehP3aJ2u5aOpgUFB2Zb9DxQ@mail.gmail.com>
+ <CAKR2__3yagB_z+RhvGTxrJawgR-CGMdz=1LB0iFdkqZpsNHitg@mail.gmail.com>
+ <x6r4pw8aww.fsf@midna.zekjur.net>
+ <CANxNxiB-wvcF1XikxYade4tVWneqO3N9gV0PVu+nEeQSi0B=Ag@mail.gmail.com>
+ <x6y5jw649o.fsf@midna.zekjur.net>
+ <CANxNxiAQUiQz8zpcLv5_9M25V9DcS7ia0hrdTZEfw0gOr7yLVw@mail.gmail.com>
+ <x6txuk5txz.fsf@midna.zekjur.net>
+Message-ID: <CANxNxiDqpFqPrvOShp6Kydm3eFXOj_1YPD3dq8H4am=YdyJptQ@mail.gmail.com>
+
+Enough said. I'll remove the option and work on a new patch were not only
+that is the default behavior, but also the same thing happens when
+switching floating windows with the keyword (my current patch doesn't
+handle that at the moment).
+Thanks for input.
+
+Rgds,
+Marcos
+
+On Wed, Sep 26, 2012 at 6:56 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Marcos,
+>
+> Marcos Moyano <marcos at anue.biz> writes:
+> > Sometimes a floating windows fits inside another floating window (see
+> > here http://imageshack.us/a/img402/650/floatingwindows.png ) and if I
+> > change the focus from the top window to any of the other two, the one
+> > that was on top is now gone. The only way for me to access it is by
+> > moving the newly raised window to another location. If you use a small
+> > floating window on a regular basis, like I do with a screen ruler, and
+> > use other floating windows from time to time, this behavior can get a
+> This is your mistake. Using floating windows on a regular basis is wrong
+> when using i3. Floating windows are an after-thought, a necessary evil
+> for handling popup dialogs in a somewhat acceptable fashion. They are
+> not an equal alternative to using tiling windows, they were never
+> intended to and they never will be :-).
+>
+> I?m not convinced that increasing complexity (mainly mental complexity
+> for people to understand their choice when reading through the
+> userguide) by adding the option you propose is worth the benefit.
+>
+> I?d argue that when you switch to a floating window with your keyboard,
+> you want to see and use that window, so i3 should raise it.
+>
+> --
+> Best regards,
+> Michael
+>
+
+
+
+-- 
+Marcos Moyano
+Co-Founder of Anue
+Skype: marcosmoyano
+http://www.anue.biz/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120926/ad579897/attachment.html>
+
+From marcos at anue.biz  Thu Sep 27 00:11:33 2012
+From: marcos at anue.biz (Marcos Moyano)
+Date: Wed, 26 Sep 2012 19:11:33 -0300
+Subject: [i3] Help: Code Review Software
+In-Reply-To: <x6obks5tni.fsf@midna.zekjur.net>
+References: <50635E7A.60002@googlemail.com>
+ <CANxNxiD3gxTG_0T+7htqtkRqXBGEQhjzYLfOSu=ANmqa+NM6=w@mail.gmail.com>
+ <x6obks5tni.fsf@midna.zekjur.net>
+Message-ID: <CANxNxiDWMrSikuk4JWNy7rfEsKvkWRfcB40pm1iBT8cR9+p5fg@mail.gmail.com>
+
+Awesome. Count me in to help in any way I can.
+
+Best Rgds,
+Marcos
+
+On Wed, Sep 26, 2012 at 7:03 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Marcos,
+>
+> Marcos Moyano <marcos at anue.biz> writes:
+> > Is this a personal project or will it be a part of the official flow for
+> > patch reviewing?
+> We intend to use this project within i3 once it?s suited for that.
+>
+> --
+> Best regards,
+> Michael
+>
+
+
+
+-- 
+Marcos Moyano
+Co-Founder of Anue
+Skype: marcosmoyano
+http://www.anue.biz/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120926/44e3937d/attachment.html>
+
+From eeno at cox.net  Thu Sep 27 00:15:32 2012
+From: eeno at cox.net (eeno)
+Date: Wed, 26 Sep 2012 15:15:32 -0700
+Subject: [i3] "another container"
+Message-ID: <20120926221532.GA7787@scanner>
+
+
+Hey Folks!
+
+I'm new here, hope not to be an annoyance with this first post...
+
+I was initially going to ask whether there was a way to configure
+the default description of named containers; but then I searched
+and saw that there was/is a patch and a ticket in your trac system.
+
+So it looks like it's just a matter of time before a better 
+default lable for displayed containers appears - next stable 
+release of i3?
+
+Well, before seeing that there was this patch, I simpy wanted to
+configure the container descriptions to be null... seeing as no
+description whatsoever is just as useful as everyone have being
+labled as "another container".
+
+So, if this was enough of a mild aesthetic issue for me, could I
+just modify the appropriate line in .../src/x.c of the source to:
+
+draw_text_ascii("")
+
+...?  
+
+Or should I just pull from git and run with the current changeset?
+( I'm looking at http://code.stapelberg.de/git/i3/commit?id=1806c980 -
+could someone translate what the new default lable looks like when
+displayed? )
+
+
+Thanks!
+
+( By the way, I'm really digging i3 - first time using a tiling wm,
+still kinda getting the hang of things, but I like it! )
+
+
+
+From michael at i3wm.org  Thu Sep 27 00:38:12 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 27 Sep 2012 00:38:12 +0200
+Subject: [i3] "another container"
+In-Reply-To: <20120926221532.GA7787@scanner>
+References: <20120926221532.GA7787@scanner>
+Message-ID: <x6lifw5s17.fsf@midna.zekjur.net>
+
+Hi eeno,
+
+knopwob has written a patch for that which is merged in the current
+development version of i3 (git "next" branch). Feel free to use that in
+order to get better descriptions.
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Thu Sep 27 00:39:42 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 27 Sep 2012 00:39:42 +0200
+Subject: [i3] dual monitor cloning
+In-Reply-To: <50637C3F.9050900@in.tum.de>
+References: <50637C3F.9050900@in.tum.de>
+Message-ID: <x6ipb05ryp.fsf@midna.zekjur.net>
+
+Hi Jonas,
+
+Jonas Jelten <jelten at in.tum.de> writes:
+> For presentations it would be really nice if only specified workspaces
+> are cloned over both monitors. Is that possible somehow?
+No. X11 does not know about workspaces, they are just an abstraction
+provided by the window manager.
+
+The only way to address this (without using a compositing window
+manager) is to not clone your monitors but let your presentation
+application open two different windows, one which you place on your
+output and one which you place on the output which your audience sees.
+
+-- 
+Best regards,
+Michael
+
+From ablepharus at googlemail.com  Thu Sep 27 00:47:43 2012
+From: ablepharus at googlemail.com (ablepharus)
+Date: Thu, 27 Sep 2012 00:47:43 +0200
+Subject: [i3] Help: Code Review Software
+In-Reply-To: <CANxNxiD3gxTG_0T+7htqtkRqXBGEQhjzYLfOSu=ANmqa+NM6=w@mail.gmail.com>
+References: <50635E7A.60002@googlemail.com>
+ <CANxNxiD3gxTG_0T+7htqtkRqXBGEQhjzYLfOSu=ANmqa+NM6=w@mail.gmail.com>
+Message-ID: <5063860F.5070908@googlemail.com>
+
+Am 26.09.2012 22:21, schrieb Marcos Moyano:
+> Is this a personal project or will it be a part of the official flow
+> for patch reviewing?
+> I'm pretty familiar with Django so I might be able to help.
+
+Thats good to hear, help is always appreciated. But most important is
+someone who
+can write a couple of javascript to improve usability, are you familiar
+with that to?
+
+
+I will publish the code and installation instructions soon, to allow
+contribution.
+
+best regards
+
+From bruno.braga at gmail.com  Thu Sep 27 06:03:18 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Thu, 27 Sep 2012 14:03:18 +1000
+Subject: [i3] Help: Code Review Software
+In-Reply-To: <50635E7A.60002@googlemail.com>
+References: <50635E7A.60002@googlemail.com>
+Message-ID: <CAAuVr72tWEn1zQDfEeVpQXaxDWu5VeMi-7x+gc-jStpBjm+tpQ@mail.gmail.com>
+
+I got 404 with this link...
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Thu, Sep 27, 2012 at 5:58 AM, ablepharus <ablepharus at googlemail.com>wrote:
+
+> Hi,
+>
+> I am currently working on a fitting code review board for i3 with
+> django. You can see the progress at http://ablepharus.eu/rb/  .
+>
+> To improve usability, the board needs some javascripts, I won't find the
+> time to write them.
+>
+> So I am asking, who could help me by providing a couple of scripts?
+>
+> The first one I need involves inserting a form in the middle of the page
+> and partially filling it.
+>
+>
+> If you have questions you can ask via email or jabber <
+> ablepharus at ignaz.org>
+>
+> best regards
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120927/8cfba2a0/attachment-0001.html>
+
+From drdarkraven at gmail.com  Thu Sep 27 08:36:40 2012
+From: drdarkraven at gmail.com (DR)
+Date: Thu, 27 Sep 2012 14:36:40 +0800
+Subject: [i3] Help: Code Review Software
+In-Reply-To: <x6obks5tni.fsf@midna.zekjur.net>
+References: <50635E7A.60002@googlemail.com>
+ <CANxNxiD3gxTG_0T+7htqtkRqXBGEQhjzYLfOSu=ANmqa+NM6=w@mail.gmail.com>
+ <x6obks5tni.fsf@midna.zekjur.net>
+Message-ID: <CAMJW5=0L0JasfCD+rBsZ7EiR+__rrOdK4nTS1yJfCAox4LK+-g@mail.gmail.com>
+
+Hi Michael,
+
+On Thu, Sep 27, 2012 at 6:03 AM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Marcos,
+>
+> Marcos Moyano <marcos at anue.biz> writes:
+> > Is this a personal project or will it be a part of the official flow for
+> > patch reviewing?
+> We intend to use this project within i3 once it?s suited for that.
+>
+I've read your criteria at http://www.featurequest.org/FRQ$CodeReview. From
+what I've read I think GitHub is good enough for you.
+
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120927/af299c59/attachment.html>
+
+From john.haltiwanger at gmail.com  Thu Sep 27 09:49:30 2012
+From: john.haltiwanger at gmail.com (John Haltiwanger)
+Date: Thu, 27 Sep 2012 09:49:30 +0200
+Subject: [i3] 2-pixel-border-mode
+In-Reply-To: <9E69B2C5-E489-454E-85BE-62A59AEE93C4@gmail.com>
+References: <CALfxriK4zW0K3-3dMiaSdG+adsaMujmch9ZNeZqvL9_r5g9a=Q@mail.gmail.com>
+ <9E69B2C5-E489-454E-85BE-62A59AEE93C4@gmail.com>
+Message-ID: <CANenyVMM_uuX_JSVd+a9TFMh3DrCNtoW-5rSkH82=U1d4fmVDA@mail.gmail.com>
+
+On Sat, Sep 22, 2012 at 8:23 PM, Kevin Murphy <kemurphy.cmu at gmail.com>wrote:
+
+> I was planning on rolling a patch to cover border width as a configuration
+> parameter. I already have a personal one for a gap between windows that I'd
+> be willing to release if anyone else is interested in that.
+>
+
+I am interested in both of these, especially the gap patch if it is already
+finished. I'm not even sure if I would use it in my default setup or not,
+but I like how it looks in other tiling WMs. If it makes it easier to see
+which window has focus (without using title bars, which deeply annoy me--I
+can recognize my apps on sight and everything is already organized in a
+consistent way) then I can definitely see using it all the time.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120927/b8caa0b5/attachment.html>
+
+From michael at i3wm.org  Thu Sep 27 09:57:14 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 27 Sep 2012 09:57:14 +0200
+Subject: [i3] Help: Code Review Software
+In-Reply-To: <CAMJW5=0L0JasfCD+rBsZ7EiR+__rrOdK4nTS1yJfCAox4LK+-g@mail.gmail.com>
+References: <50635E7A.60002@googlemail.com>
+ <CANxNxiD3gxTG_0T+7htqtkRqXBGEQhjzYLfOSu=ANmqa+NM6=w@mail.gmail.com>
+ <x6obks5tni.fsf@midna.zekjur.net>
+ <CAMJW5=0L0JasfCD+rBsZ7EiR+__rrOdK4nTS1yJfCAox4LK+-g@mail.gmail.com>
+Message-ID: <x6fw636gpx.fsf@midna.zekjur.net>
+
+Hi darkraven,
+
+DR <drdarkraven at gmail.com> writes:
+> I've read your criteria at http://www.featurequest.org/FRQ$CodeReview. From
+> what I've read I think GitHub is good enough for you.
+No. GitHub (while being a cool company with a good product) is
+proprietary. I cannot host their review software on my own
+server, thus using GitHub for code reviews is a vendor lock-in.
+
+I want to avoid such a vendor lock-in for several reasons:
+
+1) Building free software should not depend on closed-source
+   software. I?m not saying this in a _very_ religios fashion such as
+   rms (who?d argue that my server?s BIOS is probably unfree), but it
+   seems reasonable to avoid closed-source if we can reasonably live
+   without it. We?ve seen what happened with BitKeeper and the Linux
+   kernel.
+
+2) If we want to improve the code review workflow in some detail, we
+   cannot do it. Unless GitHub is friendly enough to do it, if it makes
+   sense for them at all. This is the major reason why I switched to a
+   FOSS operating system and software. Similarly, they have the option
+   of modifying the software as they see fit, without asking us first
+   and without an alternative for us.
+
+3) GitHub requires an account to submit a pull request. This is
+   reasonable from GitHub?s point of view but unacceptable from ours. No
+   account creation barriers to reporting bugs and sending improvements
+   has been one of our principles since the very beginning of the
+   project.
+
+4) With using GitHub for reviews, we effectively have to use GitHub for
+   our git repository. Otherwise we?d have to mirror it, but having two
+   copies which might be out of sync is stupid, so we?d have to push to
+   both locations. GitHub (in my daily life) is slow. And sometimes it?s
+   down. My own server is much more reliable for our little
+   project. Also, it seems wise to avoid a central point-of-failure and
+   encourage a distributed system (many git servers instead of every
+   FOSS project on GitHub).
+
+-- 
+Best regards,
+Michael
+
+From ac at acampbell.org.uk  Thu Sep 27 10:08:39 2012
+From: ac at acampbell.org.uk (Anthony Campbell)
+Date: Thu, 27 Sep 2012 09:08:39 +0100
+Subject: [i3] Floating mode focus & workspaces
+In-Reply-To: <x6txuk5txz.fsf@midna.zekjur.net>
+References: <CAELgYhehK8LCh5-j26abSDUMZ5BehP3aJ2u5aOpgUFB2Zb9DxQ@mail.gmail.com>
+ <CAKR2__3yagB_z+RhvGTxrJawgR-CGMdz=1LB0iFdkqZpsNHitg@mail.gmail.com>
+ <x6r4pw8aww.fsf@midna.zekjur.net>
+ <CANxNxiB-wvcF1XikxYade4tVWneqO3N9gV0PVu+nEeQSi0B=Ag@mail.gmail.com>
+ <x6y5jw649o.fsf@midna.zekjur.net>
+ <CANxNxiAQUiQz8zpcLv5_9M25V9DcS7ia0hrdTZEfw0gOr7yLVw@mail.gmail.com>
+ <x6txuk5txz.fsf@midna.zekjur.net>
+Message-ID: <20120927080839.GA9048@acampbell.org.uk>
+
+On 26 Sep 2012, Michael Stapelberg wrote:
+> Hi Marcos,
+> 
+> Marcos Moyano <marcos at anue.biz> writes:
+> > Sometimes a floating windows fits inside another floating window (see
+> > here http://imageshack.us/a/img402/650/floatingwindows.png ) and if I
+> > change the focus from the top window to any of the other two, the one
+> > that was on top is now gone. The only way for me to access it is by
+> > moving the newly raised window to another location. If you use a small
+> > floating window on a regular basis, like I do with a screen ruler, and
+> > use other floating windows from time to time, this behavior can get a
+> This is your mistake. Using floating windows on a regular basis is wrong
+> when using i3. Floating windows are an after-thought, a necessary evil
+> for handling popup dialogs in a somewhat acceptable fashion. They are
+> not an equal alternative to using tiling windows, they were never
+> intended to and they never will be :-).
+
+
+[snip] 
+
+The solution I've adopted for this problem is to launch a second window
+manager (icewm in my case) in a different terminal. I run a little
+script to do this: 
+		
+		xinit  /home/ac/.xxinitrc -- :1 &
+
+where .xxinitrc is used to start icewm. I can then switch back and forth
+with Shift-Alt-F8 and Shift-Alt-F7. I got this idea from ratpoison,
+which has an option to do this.
+
+Anthony
+
+
+-- 
+Anthony Campbell - ac at acampbell.org.uk 
+http://www.reviewbooks.org.uk
+http://www.skepticviews.org.uk 
+http://www.acupuncturecourse.org.uk
+http://www.smashwords.com/profile.view/acampbell
+
+
+
+
+
+From kemurphy.cmu at gmail.com  Thu Sep 27 10:12:26 2012
+From: kemurphy.cmu at gmail.com (Kevin Murphy)
+Date: Thu, 27 Sep 2012 04:12:26 -0400
+Subject: [i3] 2-pixel-border-mode
+In-Reply-To: <CANenyVMM_uuX_JSVd+a9TFMh3DrCNtoW-5rSkH82=U1d4fmVDA@mail.gmail.com>
+References: <CALfxriK4zW0K3-3dMiaSdG+adsaMujmch9ZNeZqvL9_r5g9a=Q@mail.gmail.com>
+ <9E69B2C5-E489-454E-85BE-62A59AEE93C4@gmail.com>
+ <CANenyVMM_uuX_JSVd+a9TFMh3DrCNtoW-5rSkH82=U1d4fmVDA@mail.gmail.com>
+Message-ID: <CAMO0NGbzjKxd3YYiSqR_x6v6nONuhzHoNN1N7F-nEzXiASGWiQ@mail.gmail.com>
+
+Looks like I was beaten to the border width; it's now a config parameter on
+the next branch.
+
+The gap patch is just an "it looks nice" thing for me, though I can see how
+it would help to have window borders contrast with a desktop background.
+ I'll make the width configurable and post the patch to the mailing list.
+
+On Thu, Sep 27, 2012 at 3:49 AM, John Haltiwanger <
+john.haltiwanger at gmail.com> wrote:
+
+>
+>
+> On Sat, Sep 22, 2012 at 8:23 PM, Kevin Murphy <kemurphy.cmu at gmail.com>wrote:
+>
+>> I was planning on rolling a patch to cover border width as a configuration
+>> parameter. I already have a personal one for a gap between windows that I'd
+>> be willing to release if anyone else is interested in that.
+>>
+>
+> I am interested in both of these, especially the gap patch if it is
+> already finished. I'm not even sure if I would use it in my default setup
+> or not, but I like how it looks in other tiling WMs. If it makes it easier
+> to see which window has focus (without using title bars, which deeply annoy
+> me--I can recognize my apps on sight and everything is already organized in
+> a consistent way) then I can definitely see using it all the time.
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120927/57de97f1/attachment.html>
+
+From marcos at anue.biz  Thu Sep 27 11:13:07 2012
+From: marcos at anue.biz (Marcos Moyano)
+Date: Thu, 27 Sep 2012 06:13:07 -0300
+Subject: [i3] Help: Code Review Software
+In-Reply-To: <5063860F.5070908@googlemail.com>
+References: <50635E7A.60002@googlemail.com>
+ <CANxNxiD3gxTG_0T+7htqtkRqXBGEQhjzYLfOSu=ANmqa+NM6=w@mail.gmail.com>
+ <5063860F.5070908@googlemail.com>
+Message-ID: <CANxNxiCFyqSCx35CfZcr-oThC=hVfudiYRo-tAsM51wC+a-7NA@mail.gmail.com>
+
+On Wed, Sep 26, 2012 at 7:47 PM, ablepharus <ablepharus at googlemail.com>wrote:
+
+>
+> Thats good to hear, help is always appreciated. But most important is
+> someone who
+> can write a couple of javascript to improve usability, are you familiar
+> with that to?
+>
+Yes
+
+>
+>
+> I will publish the code and installation instructions soon, to allow
+> contribution.
+>
+> best regards
+>
+
+
+
+-- 
+Marcos Moyano
+Co-Founder of Anue
+Skype: marcosmoyano
+http://www.anue.biz/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120927/f75501bd/attachment.html>
+
+From marcos at anue.biz  Thu Sep 27 11:21:34 2012
+From: marcos at anue.biz (Marcos Moyano)
+Date: Thu, 27 Sep 2012 06:21:34 -0300
+Subject: [i3] Floating mode focus & workspaces
+In-Reply-To: <20120927080839.GA9048@acampbell.org.uk>
+References: <CAELgYhehK8LCh5-j26abSDUMZ5BehP3aJ2u5aOpgUFB2Zb9DxQ@mail.gmail.com>
+ <CAKR2__3yagB_z+RhvGTxrJawgR-CGMdz=1LB0iFdkqZpsNHitg@mail.gmail.com>
+ <x6r4pw8aww.fsf@midna.zekjur.net>
+ <CANxNxiB-wvcF1XikxYade4tVWneqO3N9gV0PVu+nEeQSi0B=Ag@mail.gmail.com>
+ <x6y5jw649o.fsf@midna.zekjur.net>
+ <CANxNxiAQUiQz8zpcLv5_9M25V9DcS7ia0hrdTZEfw0gOr7yLVw@mail.gmail.com>
+ <x6txuk5txz.fsf@midna.zekjur.net>
+ <20120927080839.GA9048@acampbell.org.uk>
+Message-ID: <CANxNxiD1MdrScscSyA3FxosVrvGZ=+e2rtKVgefVLO8tbKOVAQ@mail.gmail.com>
+
+New version of the patch without the configuration option plus focus
+raising when switching over floating containers with the keyboard.
+
+Rgds,
+Marcos
+
+On Thu, Sep 27, 2012 at 5:08 AM, Anthony Campbell <ac at acampbell.org.uk>wrote:
+
+> On 26 Sep 2012, Michael Stapelberg wrote:
+> > Hi Marcos,
+> >
+> > Marcos Moyano <marcos at anue.biz> writes:
+> > > Sometimes a floating windows fits inside another floating window (see
+> > > here http://imageshack.us/a/img402/650/floatingwindows.png ) and if I
+> > > change the focus from the top window to any of the other two, the one
+> > > that was on top is now gone. The only way for me to access it is by
+> > > moving the newly raised window to another location. If you use a small
+> > > floating window on a regular basis, like I do with a screen ruler, and
+> > > use other floating windows from time to time, this behavior can get a
+> > This is your mistake. Using floating windows on a regular basis is wrong
+> > when using i3. Floating windows are an after-thought, a necessary evil
+> > for handling popup dialogs in a somewhat acceptable fashion. They are
+> > not an equal alternative to using tiling windows, they were never
+> > intended to and they never will be :-).
+>
+>
+> [snip]
+>
+> The solution I've adopted for this problem is to launch a second window
+> manager (icewm in my case) in a different terminal. I run a little
+> script to do this:
+>
+>                 xinit  /home/ac/.xxinitrc -- :1 &
+>
+> where .xxinitrc is used to start icewm. I can then switch back and forth
+> with Shift-Alt-F8 and Shift-Alt-F7. I got this idea from ratpoison,
+> which has an option to do this.
+>
+> Anthony
+>
+>
+> --
+> Anthony Campbell - ac at acampbell.org.uk
+> http://www.reviewbooks.org.uk
+> http://www.skepticviews.org.uk
+> http://www.acupuncturecourse.org.uk
+> http://www.smashwords.com/profile.view/acampbell
+>
+>
+>
+>
+>
+
+
+-- 
+Marcos Moyano
+Co-Founder of Anue
+Skype: marcosmoyano
+http://www.anue.biz/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120927/2036d97f/attachment-0001.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: raise_floating_on_focus.patch
+Type: application/octet-stream
+Size: 1461 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120927/2036d97f/attachment-0001.obj>
+
+From drdarkraven at gmail.com  Thu Sep 27 11:38:48 2012
+From: drdarkraven at gmail.com (DR)
+Date: Thu, 27 Sep 2012 17:38:48 +0800
+Subject: [i3] Help: Code Review Software
+In-Reply-To: <x6fw636gpx.fsf@midna.zekjur.net>
+References: <50635E7A.60002@googlemail.com>
+ <CANxNxiD3gxTG_0T+7htqtkRqXBGEQhjzYLfOSu=ANmqa+NM6=w@mail.gmail.com>
+ <x6obks5tni.fsf@midna.zekjur.net>
+ <CAMJW5=0L0JasfCD+rBsZ7EiR+__rrOdK4nTS1yJfCAox4LK+-g@mail.gmail.com>
+ <x6fw636gpx.fsf@midna.zekjur.net>
+Message-ID: <CAMJW5=0O2ADx6inDQZggZy-eUAFi_569n3gUz1xY_HC=7N-LQQ@mail.gmail.com>
+
+Hi Michael,
+On Thu, Sep 27, 2012 at 3:57 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi darkraven,
+>
+> DR <drdarkraven at gmail.com> writes:
+> > I've read your criteria at http://www.featurequest.org/FRQ$CodeReview.
+> From
+> > what I've read I think GitHub is good enough for you.
+> No. GitHub (while being a cool company with a good product) is
+> proprietary. I cannot host their review software on my own
+> server, thus using GitHub for code reviews is a vendor lock-in.
+
+I won't try to persuade you to use GitHub, but I think some of your points
+are quite arguable.
+
+>
+> I want to avoid such a vendor lock-in for several reasons:
+>
+> 1) Building free software should not depend on closed-source
+>    software. I?m not saying this in a _very_ religios fashion such as
+>    rms (who?d argue that my server?s BIOS is probably unfree), but it
+>    seems reasonable to avoid closed-source if we can reasonably live
+>    without it. We?ve seen what happened with BitKeeper and the Linux
+>    kernel.
+>
+I'm quite new on linux, and BitKeeper is long gone before I even heard of
+linux, so I could be wrong on this. But for what I understand, it's
+religious people like RMS who forced linux and BitKeeper to part ways, not
+BitKeeper's being proprietary limited the development of kernel.
+
+>
+> 2) If we want to improve the code review workflow in some detail, we
+>    cannot do it. Unless GitHub is friendly enough to do it, if it makes
+>    sense for them at all. This is the major reason why I switched to a
+>    FOSS operating system and software. Similarly, they have the option
+>    of modifying the software as they see fit, without asking us first
+>    and without an alternative for us.
+>
+Imagine I switched to linux distributions from Windows, and change it to
+look&behave exactly the same as Windows, then why would I make the change?
+If you not really have a better idea, why not just use the existing
+solution, even if it's closed?
+I don't know you, maybe you have a definitely better idea of how a code
+reviewing system should be than GitHub. But if not, why not using GitHub
+for now, and when you eventually feel the itch to make changes, you could
+start making your own. And by that time, what you make will definitely  be
+better.
+Oops, this sounds like persuading. Anyway, I'm just using GitHub as an
+example to make my point.
+
+>
+> 3) GitHub requires an account to submit a pull request. This is
+>    reasonable from GitHub?s point of view but unacceptable from ours. No
+>    account creation barriers to reporting bugs and sending improvements
+>    has been one of our principles since the very beginning of the
+>    project.
+>
+This could be a problem. But GitHub is not dedicated to i3, so people who
+want to contribute might "happens" to have a GitHub account.
+
+>
+> 4) With using GitHub for reviews, we effectively have to use GitHub for
+>    our git repository. Otherwise we?d have to mirror it, but having two
+>    copies which might be out of sync is stupid, so we?d have to push to
+>    both locations. GitHub (in my daily life) is slow. And sometimes it?s
+>    down. My own server is much more reliable for our little
+>    project. Also, it seems wise to avoid a central point-of-failure and
+>    encourage a distributed system (many git servers instead of every
+>    FOSS project on GitHub).
+>
+My perception of "distribution" is a bit different as yours. I think being
+distributed means every one who clone the repo have complete history of the
+repo. So have one *more* clone on GitHub won't harm this kind of
+distribution at all.
+There are no two copies of one repo, there are two different branches which
+could pull from each other. I think out-of-sync would be too big a problem.
+And the network problem is a matter of view point. GitHub might be slow for
+you, but faster for someone else, and your server might be fast for you,
+but slow for someone else.
+
+
+> --
+>
+If my points sound stupid, point that out and help cure my stupidity,
+thanks!
+
+>  Best regards,
+> Michael
+>
+Best regards.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120927/751af435/attachment.html>
+
+From john.haltiwanger at gmail.com  Thu Sep 27 11:51:10 2012
+From: john.haltiwanger at gmail.com (John Haltiwanger)
+Date: Thu, 27 Sep 2012 11:51:10 +0200
+Subject: [i3] Help: Code Review Software
+In-Reply-To: <CAMJW5=0O2ADx6inDQZggZy-eUAFi_569n3gUz1xY_HC=7N-LQQ@mail.gmail.com>
+References: <50635E7A.60002@googlemail.com>
+ <CANxNxiD3gxTG_0T+7htqtkRqXBGEQhjzYLfOSu=ANmqa+NM6=w@mail.gmail.com>
+ <x6obks5tni.fsf@midna.zekjur.net>
+ <CAMJW5=0L0JasfCD+rBsZ7EiR+__rrOdK4nTS1yJfCAox4LK+-g@mail.gmail.com>
+ <x6fw636gpx.fsf@midna.zekjur.net>
+ <CAMJW5=0O2ADx6inDQZggZy-eUAFi_569n3gUz1xY_HC=7N-LQQ@mail.gmail.com>
+Message-ID: <CANenyVM9GROcuUnNsPTvdkFs38=66byAceaN5JYN3TrjJfWbEQ@mail.gmail.com>
+
+On Thu, Sep 27, 2012 at 11:38 AM, DR <drdarkraven at gmail.com> wrote:
+
+> Hi Michael,
+> On Thu, Sep 27, 2012 at 3:57 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+>
+>> Hi darkraven,
+>>
+>> DR <drdarkraven at gmail.com> writes:
+>> > I've read your criteria at http://www.featurequest.org/FRQ$CodeReview.
+>> From
+>> > what I've read I think GitHub is good enough for you.
+>> No. GitHub (while being a cool company with a good product) is
+>> proprietary. I cannot host their review software on my own
+>> server, thus using GitHub for code reviews is a vendor lock-in.
+>
+> I won't try to persuade you to use GitHub, but I think some of your points
+> are quite arguable.
+>
+>>
+>> I want to avoid such a vendor lock-in for several reasons:
+>>
+>> 1) Building free software should not depend on closed-source
+>>    software. I?m not saying this in a _very_ religios fashion such as
+>>    rms (who?d argue that my server?s BIOS is probably unfree), but it
+>>    seems reasonable to avoid closed-source if we can reasonably live
+>>    without it. We?ve seen what happened with BitKeeper and the Linux
+>>    kernel.
+>>
+> I'm quite new on linux, and BitKeeper is long gone before I even heard of
+> linux, so I could be wrong on this. But for what I understand, it's
+> religious people like RMS who forced linux and BitKeeper to part ways, not
+> BitKeeper's being proprietary limited the development of kernel.
+>
+
+FUD. If you really think that Torvalds gives any such degree of credence to
+RMS, then ask him why he never says GNU/Linux.
+
+BitKeeper stopped offering their proprietary product free of charge, plain
+and simple. It's use was always a bit controversial, but no one who had
+supported using BitKeeper despite license concerns could really argue that
+their position had been the most sane to begin with.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120927/41ea0401/attachment.html>
+
+From michael at i3wm.org  Thu Sep 27 11:54:30 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 27 Sep 2012 11:54:30 +0200
+Subject: [i3] Help: Code Review Software
+In-Reply-To: <CAMJW5=0O2ADx6inDQZggZy-eUAFi_569n3gUz1xY_HC=7N-LQQ@mail.gmail.com>
+References: <50635E7A.60002@googlemail.com>
+ <CANxNxiD3gxTG_0T+7htqtkRqXBGEQhjzYLfOSu=ANmqa+NM6=w@mail.gmail.com>
+ <x6obks5tni.fsf@midna.zekjur.net>
+ <CAMJW5=0L0JasfCD+rBsZ7EiR+__rrOdK4nTS1yJfCAox4LK+-g@mail.gmail.com>
+ <x6fw636gpx.fsf@midna.zekjur.net>
+ <CAMJW5=0O2ADx6inDQZggZy-eUAFi_569n3gUz1xY_HC=7N-LQQ@mail.gmail.com>
+Message-ID: <x6a9wb6bah.fsf@midna.zekjur.net>
+
+Hi,
+
+DR <drdarkraven at gmail.com> writes:
+> I'm quite new on linux, and BitKeeper is long gone before I even heard of
+> linux, so I could be wrong on this. But for what I understand, it's
+> religious people like RMS who forced linux and BitKeeper to part ways, not
+> BitKeeper's being proprietary limited the development of kernel.
+No, I think you got that wrong:
+http://better-scm.shlomifish.org/bk/demise-of-gratis-bitkeeper.html
+
+> Imagine I switched to linux distributions from Windows, and change it to
+> look&behave exactly the same as Windows, then why would I make the change?
+> If you not really have a better idea, why not just use the existing
+> solution, even if it's closed?
+I will not go into this discussion. I think I made my point clear
+enough in my previous mail.
+
+> I don't know you, maybe you have a definitely better idea of how a code
+> reviewing system should be than GitHub. But if not, why not using
+> GitHub
+I don?t, GitHub?s review workflow is pretty good.
+
+> This could be a problem. But GitHub is not dedicated to i3, so people who
+> want to contribute might "happens" to have a GitHub account.
+And people who wight mant to contribute to i3 might be very opposed to
+getting a GitHub account.
+
+> My perception of "distribution" is a bit different as yours. I think being
+> distributed means every one who clone the repo have complete history of the
+> repo. So have one *more* clone on GitHub won't harm this kind of
+> distribution at all.
+I already mentioned that having an inferior clone on github sucks, and
+caring about an up-to-date clone sucks even more.
+
+> There are no two copies of one repo, there are two different branches which
+> could pull from each other. I think out-of-sync would be too big a problem.
+> And the network problem is a matter of view point. GitHub might be slow for
+> you, but faster for someone else, and your server might be fast for you,
+> but slow for someone else.
+Yes, but since I push all changes to i3, it matters if it?s fast for
+me, not for anyone else.
+
+-- 
+Best regards,
+Michael
+
+From marcos at anue.biz  Wed Sep 26 20:38:42 2012
+From: marcos at anue.biz (Marcos Moyano)
+Date: Wed, 26 Sep 2012 15:38:42 -0300
+Subject: [i3] Floating mode focus & workspaces
+In-Reply-To: <x6y5jw649o.fsf@midna.zekjur.net>
+References: <CAELgYhehK8LCh5-j26abSDUMZ5BehP3aJ2u5aOpgUFB2Zb9DxQ@mail.gmail.com>
+ <CAKR2__3yagB_z+RhvGTxrJawgR-CGMdz=1LB0iFdkqZpsNHitg@mail.gmail.com>
+ <x6r4pw8aww.fsf@midna.zekjur.net>
+ <CANxNxiB-wvcF1XikxYade4tVWneqO3N9gV0PVu+nEeQSi0B=Ag@mail.gmail.com>
+ <x6y5jw649o.fsf@midna.zekjur.net>
+Message-ID: <CANxNxiDvLPnWwimErZMXxhQ1cMAc9+W7jLBNCX=WGj6HLZf4XQ@mail.gmail.com>
+
+Michael,
+Sometimes a floating windows fits inside another floating window (see
+attachment for an example) and if I change the focus from the top window to
+any of the other two, the one that was on top is now gone. The only way for
+me to access it is by moving the newly raised window to another location.
+If you use a small floating window on a regular basis, like I do with a
+screen ruler, and use other floating windows from time to time, this
+behavior can get a bit annoying.
+I still think it should be the default behavior (and I'm using it that
+way). I just want a way to switch it off if I want to.
+
+Best Rgds,
+Marcos
+
+On Wed, Sep 26, 2012 at 3:13 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Marcos,
+>
+> Marcos Moyano <marcos at anue.biz> writes:
+> > did add a new configuration option "raise_on_focus" because I don't want
+> > that to be my default behavior.
+> Why? What?s the rationale in focusing floating windows without raising
+> them?
+>
+> > Should I create a ticket and attach my patch to it?
+> No, as long as I get the patch via mail, there?s no need to create a
+> ticket.
+>
+> Giorgos: Since you didn?t let the mailing list know that you were
+> working on this, too, there was some unfortunate duplication of
+> work. Anyway, the reason why your code didn?t work was most likely
+> because you raised the container *within* its surrounding floating
+> container, which effectively has no effect. Instead ? as Macros did ?
+> one should use floating_raise_con().
+>
+> --
+> Best regards,
+> Michael
+>
+
+
+
+-- 
+Marcos Moyano
+Co-Founder of Anue
+Skype: marcosmoyano
+http://www.anue.biz/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120926/3706a73e/attachment-0001.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: floating_windows.png
+Type: image/png
+Size: 62447 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120926/3706a73e/attachment-0001.png>
+
+From drdarkraven at gmail.com  Thu Sep 27 12:12:54 2012
+From: drdarkraven at gmail.com (DR)
+Date: Thu, 27 Sep 2012 18:12:54 +0800
+Subject: [i3] Help: Code Review Software
+In-Reply-To: <x6a9wb6bah.fsf@midna.zekjur.net>
+References: <50635E7A.60002@googlemail.com>
+ <CANxNxiD3gxTG_0T+7htqtkRqXBGEQhjzYLfOSu=ANmqa+NM6=w@mail.gmail.com>
+ <x6obks5tni.fsf@midna.zekjur.net>
+ <CAMJW5=0L0JasfCD+rBsZ7EiR+__rrOdK4nTS1yJfCAox4LK+-g@mail.gmail.com>
+ <x6fw636gpx.fsf@midna.zekjur.net>
+ <CAMJW5=0O2ADx6inDQZggZy-eUAFi_569n3gUz1xY_HC=7N-LQQ@mail.gmail.com>
+ <x6a9wb6bah.fsf@midna.zekjur.net>
+Message-ID: <CAMJW5=2df8vy_GQuUgCzeXh7MfZnrH8uiOb3R4rcW-YX_9D8GA@mail.gmail.com>
+
+Hi Michael, thanks for the quick reply.
+
+On 9/27/12, Michael Stapelberg <michael at i3wm.org> wrote:
+> Hi,
+>
+I now regret sending that not-helpful-at-all message.
+I'll go for the decisions you make.
+Sorry for the noise.
+> DR <drdarkraven at gmail.com> writes:
+>> I'm quite new on linux, and BitKeeper is long gone before I even heard of
+>> linux, so I could be wrong on this. But for what I understand, it's
+>> religious people like RMS who forced linux and BitKeeper to part ways,
+>> not
+>> BitKeeper's being proprietary limited the development of kernel.
+> No, I think you got that wrong:
+> http://better-scm.shlomifish.org/bk/demise-of-gratis-bitkeeper.html
+>
+>> Imagine I switched to linux distributions from Windows, and change it to
+>> look&behave exactly the same as Windows, then why would I make the
+>> change?
+>> If you not really have a better idea, why not just use the existing
+>> solution, even if it's closed?
+> I will not go into this discussion. I think I made my point clear
+> enough in my previous mail.
+>
+>> I don't know you, maybe you have a definitely better idea of how a code
+>> reviewing system should be than GitHub. But if not, why not using
+>> GitHub
+> I don?t, GitHub?s review workflow is pretty good.
+>
+>> This could be a problem. But GitHub is not dedicated to i3, so people who
+>> want to contribute might "happens" to have a GitHub account.
+> And people who wight mant to contribute to i3 might be very opposed to
+> getting a GitHub account.
+>
+>> My perception of "distribution" is a bit different as yours. I think
+>> being
+>> distributed means every one who clone the repo have complete history of
+>> the
+>> repo. So have one *more* clone on GitHub won't harm this kind of
+>> distribution at all.
+> I already mentioned that having an inferior clone on github sucks, and
+> caring about an up-to-date clone sucks even more.
+>
+>> There are no two copies of one repo, there are two different branches
+>> which
+>> could pull from each other. I think out-of-sync would be too big a
+>> problem.
+>> And the network problem is a matter of view point. GitHub might be slow
+>> for
+>> you, but faster for someone else, and your server might be fast for you,
+>> but slow for someone else.
+> Yes, but since I push all changes to i3, it matters if it?s fast for
+> me, not for anyone else.
+>
+> --
+> Best regards,
+> Michael
+>
+
+
+-- 
+Best regards.
+
+From gkeramidas at gmail.com  Thu Sep 27 12:27:00 2012
+From: gkeramidas at gmail.com (Giorgos Keramidas)
+Date: Thu, 27 Sep 2012 12:27:00 +0200
+Subject: [i3] Floating mode focus & workspaces
+In-Reply-To: <CANxNxiD1MdrScscSyA3FxosVrvGZ=+e2rtKVgefVLO8tbKOVAQ@mail.gmail.com>
+References: <CAELgYhehK8LCh5-j26abSDUMZ5BehP3aJ2u5aOpgUFB2Zb9DxQ@mail.gmail.com>
+ <CAKR2__3yagB_z+RhvGTxrJawgR-CGMdz=1LB0iFdkqZpsNHitg@mail.gmail.com>
+ <x6r4pw8aww.fsf@midna.zekjur.net>
+ <CANxNxiB-wvcF1XikxYade4tVWneqO3N9gV0PVu+nEeQSi0B=Ag@mail.gmail.com>
+ <x6y5jw649o.fsf@midna.zekjur.net>
+ <CANxNxiAQUiQz8zpcLv5_9M25V9DcS7ia0hrdTZEfw0gOr7yLVw@mail.gmail.com>
+ <x6txuk5txz.fsf@midna.zekjur.net>
+ <20120927080839.GA9048@acampbell.org.uk>
+ <CANxNxiD1MdrScscSyA3FxosVrvGZ=+e2rtKVgefVLO8tbKOVAQ@mail.gmail.com>
+Message-ID: <20120927102700.GA15839@google.com>
+
+On 2012-09-27 06:21, Marcos Moyano <marcos at anue.biz> wrote:
+> New version of the patch without the configuration option plus focus
+> raising when switching over floating containers with the keyboard.
+
+This works perfectly fine here.
+
+Thanks!
+
+
+From michael at i3wm.org  Thu Sep 27 12:44:11 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 27 Sep 2012 12:44:11 +0200
+Subject: [i3] Floating mode focus & workspaces
+In-Reply-To: <CANxNxiD1MdrScscSyA3FxosVrvGZ=+e2rtKVgefVLO8tbKOVAQ@mail.gmail.com>
+References: <CAELgYhehK8LCh5-j26abSDUMZ5BehP3aJ2u5aOpgUFB2Zb9DxQ@mail.gmail.com>
+ <CAKR2__3yagB_z+RhvGTxrJawgR-CGMdz=1LB0iFdkqZpsNHitg@mail.gmail.com>
+ <x6r4pw8aww.fsf@midna.zekjur.net>
+ <CANxNxiB-wvcF1XikxYade4tVWneqO3N9gV0PVu+nEeQSi0B=Ag@mail.gmail.com>
+ <x6y5jw649o.fsf@midna.zekjur.net>
+ <CANxNxiAQUiQz8zpcLv5_9M25V9DcS7ia0hrdTZEfw0gOr7yLVw@mail.gmail.com>
+ <x6txuk5txz.fsf@midna.zekjur.net> <20120927080839.GA9048@acampbell.org.uk>
+ <CANxNxiD1MdrScscSyA3FxosVrvGZ=+e2rtKVgefVLO8tbKOVAQ@mail.gmail.com>
+Message-ID: <x61uhn68zo.fsf@midna.zekjur.net>
+
+Hi Marcos,
+
+I misread your patch previously: Raising a floating window when you
+focus it with the mouse is not wanted behavior (and we don?t want an
+option for that either, since you can just click and/or use the
+keyboard).
+
+I merged raise on keyboard focus change for floating windows in commit
+http://c.i3wm.org/064be457. Was there a special reason why you used
+con_inside_floating(next) instead of just next (which is a floating
+container already)?
+
+-- 
+Best regards,
+Michael
+
+From marcos at anue.biz  Thu Sep 27 13:04:19 2012
+From: marcos at anue.biz (Marcos Moyano)
+Date: Thu, 27 Sep 2012 08:04:19 -0300
+Subject: [i3] Floating mode focus & workspaces
+In-Reply-To: <x61uhn68zo.fsf@midna.zekjur.net>
+References: <CAELgYhehK8LCh5-j26abSDUMZ5BehP3aJ2u5aOpgUFB2Zb9DxQ@mail.gmail.com>
+ <CAKR2__3yagB_z+RhvGTxrJawgR-CGMdz=1LB0iFdkqZpsNHitg@mail.gmail.com>
+ <x6r4pw8aww.fsf@midna.zekjur.net>
+ <CANxNxiB-wvcF1XikxYade4tVWneqO3N9gV0PVu+nEeQSi0B=Ag@mail.gmail.com>
+ <x6y5jw649o.fsf@midna.zekjur.net>
+ <CANxNxiAQUiQz8zpcLv5_9M25V9DcS7ia0hrdTZEfw0gOr7yLVw@mail.gmail.com>
+ <x6txuk5txz.fsf@midna.zekjur.net>
+ <20120927080839.GA9048@acampbell.org.uk>
+ <CANxNxiD1MdrScscSyA3FxosVrvGZ=+e2rtKVgefVLO8tbKOVAQ@mail.gmail.com>
+ <x61uhn68zo.fsf@midna.zekjur.net>
+Message-ID: <CANxNxiBj6+phMaFPprdgDaqwtehVotTFMU7rGho7XFPAobR5mQ@mail.gmail.com>
+
+yes, a previous double check to con_is_floating(next) always returned False
+even though next is floating. Still, raising next does the trick.
+
+On Thu, Sep 27, 2012 at 7:44 AM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Marcos,
+>
+> I misread your patch previously: Raising a floating window when you
+> focus it with the mouse is not wanted behavior (and we don?t want an
+> option for that either, since you can just click and/or use the
+> keyboard).
+>
+> I merged raise on keyboard focus change for floating windows in commit
+> http://c.i3wm.org/064be457. Was there a special reason why you used
+> con_inside_floating(next) instead of just next (which is a floating
+> container already)?
+>
+> --
+> Best regards,
+> Michael
+>
+
+
+
+-- 
+Marcos Moyano
+Co-Founder of Anue
+Skype: marcosmoyano
+http://www.anue.biz/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120927/a6d12f0d/attachment.html>
+
+From michael at i3wm.org  Thu Sep 27 16:01:17 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 27 Sep 2012 16:01:17 +0200
+Subject: [i3] RFC: http://bugs-beta.i3wm.org/ (new ticket form)
+Message-ID: <x6mx0b4laq.fsf@midna.zekjur.net>
+
+Hi,
+
+Good news everyone! I improved our new ticket form.
+
+Have a look at http://bugs-beta.i3wm.org/ (you can play with it all you
+want, but please don?t hit "Submit" in step 4 unless you have a real
+issue to submit).
+
+It?s a small web-app which asks you a few concise and helpful (for us)
+questions. After you answered them all, the ticket will be created in
+our trac. The intention is to reduce the amount of round-trips for
+tickets caused by questions such as "can you reproduce this with a
+recent version of i3?" and "can you please attach a debug
+logfile?". Also, the form encourages people to specify their email
+address and explains why that?s useful (because we otherwise have to
+close the ticket if you don?t respond within 6 weeks).
+
+Any comments and feedback is welcome. If everything works out fine, I?ll
+make this the default new ticket form. Please use it when submitting
+issues from now on.
+
+BTW: Of course this is not final. I have a few more improvements in the
+back of my head once we got this working well, like as-you-type
+duplicate search (in tickets, commits, FAQ) or automatic logfile
+cleaning/analysis.
+
+-- 
+Best regards,
+Michael
+
+From dupont at gmx.net  Sat Sep 29 11:15:40 2012
+From: dupont at gmx.net (Jean Dupont)
+Date: Sat, 29 Sep 2012 11:15:40 +0200
+Subject: [i3] Access i3bar tray with keyboard?
+Message-ID: <5066BC3C.2050906@gmx.net>
+
+Hello,
+
+is it possible to access the i3bar tray with the keyboard?
+
+Because sometimes I feel very lazy and don't want to move the mouse over
+the hole screen (e.g.) to right click nm-applet.
+So I wonder, if this is possible.
+
+Have a nice day.
+Jean
+
+From michael at i3wm.org  Sat Sep 29 12:37:36 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 29 Sep 2012 12:37:36 +0200
+Subject: [i3] Access i3bar tray with keyboard?
+In-Reply-To: <5066BC3C.2050906@gmx.net>
+References: <5066BC3C.2050906@gmx.net>
+Message-ID: <x6fw61w1vz.fsf@midna.zekjur.net>
+
+Hi Jean,
+
+Jean Dupont <dupont at gmx.net> writes:
+> is it possible to access the i3bar tray with the keyboard?
+Not in an easy way. The applications render and handle the tray area
+themselves, i3bar merely embeds their windows.
+
+-- 
+Best regards,
+Michael
+

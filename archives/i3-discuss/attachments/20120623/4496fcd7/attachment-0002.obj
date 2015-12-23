@@ -1,0 +1,25 @@
+From f010fa1a7ffe66e4240661287020c4d6f28eaaea Mon Sep 17 00:00:00 2001
+From: darkraven <drdarkraven@gmail.com>
+Date: Sat, 23 Jun 2012 16:08:49 +0800
+Subject: [PATCH 3/3] Fix a bug where unnecessary urgent events can be sent.
+
+---
+ src/con.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/con.c b/src/con.c
+index f804a20..e25d198 100644
+--- a/src/con.c
++++ b/src/con.c
+@@ -193,7 +193,7 @@ void con_focus(Con *con) {
+         con_focus(con->parent);
+ 
+     focused = con;
+-    if (con->urgent) {
++    if (con->urgent && con->type != CT_WORKSPACE) {
+         con->urgent = false;
+         workspace_update_urgent_flag(con_get_workspace(con));
+     }
+-- 
+1.7.11
+

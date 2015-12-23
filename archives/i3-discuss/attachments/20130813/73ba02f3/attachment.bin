@@ -1,0 +1,440 @@
+diff --git a/common.mk b/common.mk
+index de5c7e9..eff3468 100644
+--- a/common.mk
++++ b/common.mk
+@@ -83,6 +83,7 @@ XCB_CFLAGS  := $(call cflags_for_lib, xcb)
+ XCB_CFLAGS  += $(call cflags_for_lib, xcb-event)
+ XCB_LIBS    := $(call ldflags_for_lib, xcb,xcb)
+ XCB_LIBS    += $(call ldflags_for_lib, xcb-event,xcb-event)
++XCB_LIBS    += $(call ldflags_for_lib, xcb-image,xcb-image)
+ ifeq ($(shell pkg-config --exists xcb-util 2>/dev/null || echo 1),1)
+ XCB_CFLAGS  += $(call cflags_for_lib, xcb-atom)
+ XCB_CFLAGS  += $(call cflags_for_lib, xcb-aux)
+diff --git a/i3bar/include/common.h b/i3bar/include/common.h
+index cb55e0d..a243fd0 100644
+--- a/i3bar/include/common.h
++++ b/i3bar/include/common.h
+@@ -11,6 +11,7 @@
+ #include <stdbool.h>
+ #include <xcb/xcb.h>
+ #include <xcb/xproto.h>
++#include <xcb/xcb_image.h>
+ #include "libi3.h"
+ #include "queue.h"
+ 
+@@ -39,6 +40,7 @@ struct status_block {
+     i3String *full_text;
+ 
+     char *color;
++    char *icon;
+     uint32_t min_width;
+     blockalign_t align;
+ 
+@@ -57,6 +59,7 @@ struct status_block {
+     /* Optional */
+     char *name;
+     char *instance;
++    xcb_image_t *icon_image;
+ 
+     TAILQ_ENTRY(status_block) blocks;
+ };
+@@ -70,6 +73,7 @@ TAILQ_HEAD(statusline_head, status_block) statusline_head;
+ #include "workspaces.h"
+ #include "mode.h"
+ #include "trayclients.h"
++#include "xbm.h"
+ #include "xcb.h"
+ #include "config.h"
+ #include "libi3.h"
+diff --git a/i3bar/include/xbm.h b/i3bar/include/xbm.h
+new file mode 100644
+index 0000000..f3cc3d5
+--- /dev/null
++++ b/i3bar/include/xbm.h
+@@ -0,0 +1,47 @@
++/*
++ * vim:ts=4:sw=4:expandtab
++ *
++ * i3bar - an xcb-based status- and ws-bar for i3
++ * © 2010-2011 Axel Wagner and contributors (see also: LICENSE)
++ *
++ * xbm.c: Parsing/Loading xbm data
++ *
++ */
++#ifndef XBM_H_
++#define XBM_H_
++
++#include "queue.h"
++
++#define BUFSZ 512
++
++struct raw_xbm {
++    uint32_t w,h;
++    uint32_t dlen;
++    uint8_t *data;
++};
++
++struct Cached_Xbm {
++    char *path;
++    xcb_image_t *icon;
++    int used;
++    SLIST_ENTRY(Cached_Xbm) xbm_cache;
++};
++
++/* Set the format information for loaded icons */
++void set_format(xcb_connection_t * c, uint8_t depth, uint8_t bpp);
++
++/* Set xcb context color for icon, needed with pango patch */
++void set_icon_color(xcb_connection_t *c, xcb_gcontext_t gc,
++        uint32_t foreground, uint32_t background);
++
++/* get the xcb image for the given icon path */
++xcb_image_t* get_icon(char* path);
++
++/* cache functions */
++void xbm_clear_cache_used();
++xcb_image_t* xbm_get_cached_icon(char* path);
++void xbm_cache_icon(char* path, xcb_image_t* icon);
++void xbm_free_unused_icons();
++
++
++#endif
+diff --git a/i3bar/src/child.c b/i3bar/src/child.c
+index 4e5e49c..121e6e8 100644
+--- a/i3bar/src/child.c
++++ b/i3bar/src/child.c
+@@ -93,6 +93,7 @@ static int stdin_start_array(void *context) {
+         FREE(first->color);
+         FREE(first->name);
+         FREE(first->instance);
++        FREE(first->icon);
+         TAILQ_REMOVE(&statusline_head, first, blocks);
+         free(first);
+     }
+@@ -147,6 +148,9 @@ static int stdin_string(void *context, const unsigned char *val, unsigned int le
+     if (strcasecmp(ctx->last_map_key, "color") == 0) {
+         sasprintf(&(ctx->block.color), "%.*s", len, val);
+     }
++    if (strcasecmp(ctx->last_map_key, "icon") == 0) {
++        sasprintf(&(ctx->block.icon), "%.*s", len, val);
++    }
+     if (strcasecmp(ctx->last_map_key, "align") == 0) {
+         if (len == strlen("left") && !strncmp((const char*)val, "left", strlen("left"))) {
+             ctx->block.align = ALIGN_LEFT;
+@@ -210,6 +214,7 @@ static int stdin_end_array(void *context) {
+     TAILQ_FOREACH(current, &statusline_head, blocks) {
+         DLOG("full_text = %s\n", i3string_as_utf8(current->full_text));
+         DLOG("color = %s\n", current->color);
++				DLOG("icon = %s\n",current->icon);
+     }
+     DLOG("end of dump\n");
+     return 1;
+diff --git a/i3bar/src/xbm.c b/i3bar/src/xbm.c
+new file mode 100644
+index 0000000..af7d18c
+--- /dev/null
++++ b/i3bar/src/xbm.c
+@@ -0,0 +1,239 @@
++/*
++ * vim:ts=4:sw=4:expandtab
++ *
++ * i3bar - an xcb-based status- and ws-bar for i3
++ * © 2010-2011 Axel Wagner and contributors (see also: LICENSE)
++ *
++ * xbm.c: Parsing/Loading xbm data
++ *
++ * set_format from:
++ * http://vincentsanders.blogspot.de/2010/04/xcb-programming-is-hard.html
++ */
++
++#include <string.h>
++
++#include <xcb/xcb.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <sys/types.h>
++#include <unistd.h>
++#include <errno.h>
++#include <string.h>
++
++#include "common.h"
++
++static xcb_format_t* format = NULL;
++
++void set_format(xcb_connection_t * c, uint8_t depth, uint8_t bpp) {
++    const xcb_setup_t *setup = xcb_get_setup(c);
++    xcb_format_t *fmt = xcb_setup_pixmap_formats(setup);
++    xcb_format_t *fmtend = fmt + xcb_setup_pixmap_formats_length(setup);
++    for(; fmt != fmtend; ++fmt)
++        if((fmt->depth == depth) && (fmt->bits_per_pixel == bpp))
++            format = fmt;
++}
++
++/* With pango we need to set colors ourselves, since the pango
++ * patch only sets font color */
++void set_icon_color(xcb_connection_t *c, xcb_gcontext_t gc,
++                    uint32_t foreground, uint32_t background) {
++    uint32_t mask = XCB_GC_FOREGROUND | XCB_GC_BACKGROUND;
++    uint32_t values[] = {foreground, background };
++    xcb_change_gc(c, gc, mask, values);
++}
++
++static int
++parse_xbm(char* file, struct raw_xbm* data) {
++    FILE *f;
++    char *str;
++    int i,p,r,lim;
++    char *c;
++    uint8_t *d;
++
++    int in_array = 0;
++
++    data->w = data->h = -1;
++
++    f = fopen(file,"r");
++    if (!f) {
++        ELOG("Could not open xbm file: %s",file);
++        return 1;
++    }
++
++    str=malloc(BUFSZ);
++    if (!str) {
++        ELOG("Could not malloc buffer for xbm parsing");
++        fclose(f);
++        return 1;
++    }
++
++    while (fscanf(f," #define %s %d",str,&i) == 2) {
++        if (strstr(str,"width") != NULL)
++            data->w = i;
++        else if (strstr(str,"height") != NULL)
++            data->h = i;
++    }
++
++    if (data->w <= 0 || data->h <= 0) {
++        ELOG("Could not find height and/or width in xbm: %s\n",file);
++        fclose(f);
++        free(str);
++        return 1;
++    }
++
++    d = malloc(data->w*data->h);
++    p = 0;
++
++    r = fread(str,1,BUFSZ,f);
++    lim = r;
++    while(r>0) {
++        if(in_array) {
++            while(c < (str+lim)) {
++                char* t = c;
++                while (*t && t!=(str+lim-1) && *t!=',' && *t!='}') t++;
++                if (*t && (*t==',' || *t=='}'))
++                    d[p++] = strtol(c,NULL,16);
++                else
++                    break;
++                c=t+1;
++            }
++        } else {
++            c = str;
++            while (*c && c!=(str+lim) && *c!='{')
++                c++;
++            if (*c && c!=(str+lim) && *c=='{') {
++                in_array=1;
++                c++;
++                if (c<(str+lim)) continue;
++            }
++        }
++
++        i = (str+lim)-c;
++        if (i > 0) memcpy(str,c,i);
++
++        r = fread(str+i,1,BUFSZ-i,f);
++        c=str;
++        lim = r+i;
++    }
++
++    fclose(f);
++    free(str);
++
++    /* will free if p==0, so we only have malloced mem
++     * when p!=0 */
++    d = realloc(d,p);
++
++    data->dlen = p;
++    data->data = d;
++    return p==0;
++}
++
++static xcb_image_t *
++create_icon_image(struct raw_xbm *xbm) {
++    int i,rowsize,done,di;
++    unsigned char *imgdata;
++    if (format == NULL) return NULL;
++
++    imgdata = (unsigned char *)malloc(xbm->w*xbm->h);
++    memset(imgdata,0,sizeof(imgdata));
++
++    rowsize = format->scanline_pad;
++    while(rowsize < xbm->w) rowsize+=format->scanline_pad;
++
++    for(done=0,di=0,i=0;i<xbm->dlen;i++) {
++        imgdata[di] = xbm->data[i];
++        di++;
++        done+=8;
++        if (done >= xbm->w) {
++            // pad out to rowsize
++            while (done < rowsize) {
++                di++;
++                done+=8;
++            }
++            done=0;
++        }
++    }
++
++    return xcb_image_create(xbm->w,
++                            xbm->h,
++                            XCB_IMAGE_FORMAT_XY_BITMAP,
++                            format->scanline_pad,
++                            format->depth,
++                            format->bits_per_pixel,
++                            0,
++                            XCB_IMAGE_ORDER_LSB_FIRST,
++                            XCB_IMAGE_ORDER_LSB_FIRST,
++                            imgdata,
++                            xbm->w*xbm->h,
++                            imgdata);
++}
++
++xcb_image_t* get_icon(char* path) {
++    xcb_image_t* ret;
++    struct raw_xbm rxbm;
++
++    ret = xbm_get_cached_icon(path);
++    if (ret) return ret;
++
++    DLOG("Loading xbm: %s\n",path);
++
++    rxbm.data = NULL;
++    if (parse_xbm(path,&rxbm)) {
++        ELOG("Cannot parse xbm: %s\n",path);
++        return NULL;
++    }
++    ret = create_icon_image(&rxbm);
++    xbm_cache_icon(path,ret);
++    free(rxbm.data);
++    return ret;
++}
++
++/* Below we implement a cache for parsed xbm icons.
++ *
++ * If an icon is used in a draw of the bar, it sticks around until the
++ * next draw, otherwise we throw it away at the end of a update.  The
++ * idea being that most icons are fairly static, or change rarely
++ * (like when a battery threshold is reached).  Therefore, we are very
++ * aggresive about throwing things out of the cache.
++ */
++
++static SLIST_HEAD(xbm_cache_head, Cached_Xbm) xbm_cache;
++
++void xbm_clear_cache_used() {
++    struct Cached_Xbm* cxbm;
++    SLIST_FOREACH(cxbm,&xbm_cache,xbm_cache) {
++        cxbm->used = 0;
++    }
++}
++
++xcb_image_t* xbm_get_cached_icon(char* path) {
++    struct Cached_Xbm* cxbm;
++    SLIST_FOREACH(cxbm,&xbm_cache,xbm_cache) {
++        if (!strcmp(path,cxbm->path)) {
++            cxbm->used = 1;
++            return cxbm->icon;
++        }
++    }
++    return NULL;
++}
++
++void xbm_cache_icon(char* path, xcb_image_t* icon) {
++    struct Cached_Xbm *cxbm = smalloc(sizeof(struct Cached_Xbm));
++    cxbm->used = 1;
++    cxbm->path = strdup(path);
++    cxbm->icon = icon;
++    SLIST_INSERT_HEAD(&xbm_cache,cxbm,xbm_cache);
++}
++
++void xbm_free_unused_icons() {
++    struct Cached_Xbm* cxbm;
++    SLIST_FOREACH(cxbm,&xbm_cache,xbm_cache) {
++        if (!cxbm->used) {
++            SLIST_REMOVE(&xbm_cache, cxbm, Cached_Xbm, xbm_cache);
++            free(cxbm->path);
++            xcb_image_destroy(cxbm->icon);
++            free(cxbm);
++        }
++    }
++}
++
+diff --git a/i3bar/src/xcb.c b/i3bar/src/xcb.c
+index 15c68a0..f59aefe 100644
+--- a/i3bar/src/xcb.c
++++ b/i3bar/src/xcb.c
+@@ -131,6 +131,14 @@ void refresh_statusline(void) {
+ 
+         block->width = predict_text_width(block->full_text);
+ 
++        if (block->icon) {
++          block->icon_image = get_icon(block->icon);
++          if (!block->icon_image)
++            ELOG("Could not load icon: %s\n",block->icon);
++          else
++            statusline_width += block->icon_image->width+1;
++        }
++
+         /* Compute offset and append for text aligment in min_width. */
+         if (block->min_width <= block->width) {
+             block->x_offset = 0;
+@@ -176,6 +184,18 @@ void refresh_statusline(void) {
+ 
+         uint32_t colorpixel = (block->color ? get_colorpixel(block->color) : colors.bar_fg);
+         set_font_colors(statusline_ctx, colorpixel, colors.bar_bg);
++
++        if (block->icon_image) {
++          int h = (font.height-block->icon_image->height)/2;
++          set_icon_color(xcb_connection,statusline_ctx,
++                         colorpixel,colors.bar_bg);
++          xcb_image_put(xcb_connection,statusline_pm,statusline_ctx,
++                        block->icon_image,x,h,0);
++          set_icon_color(xcb_connection,statusline_ctx,
++                         get_colorpixel("#666666"),colors.bar_bg);
++          x+=block->icon_image->width+1;
++        }
++
+         draw_text(block->full_text, statusline_pm, statusline_ctx, x + block->x_offset, 1, block->width);
+         x += block->width + block->x_offset + block->x_append;
+ 
+@@ -977,6 +997,8 @@ char *init_xcb_early() {
+         }
+     }
+ 
++    /* Set the format for icons */
++    set_format(xcb_connection,1,1);
+ 
+     if (xcb_request_failed(sl_pm_cookie, "Could not allocate statusline-buffer") ||
+         xcb_request_failed(clear_ctx_cookie, "Could not allocate statusline-buffer-clearcontext") ||
+@@ -1610,6 +1632,7 @@ void draw_bars(bool unhide) {
+     DLOG("Drawing Bars...\n");
+     int i = 0;
+ 
++    xbm_clear_cache_used();
+     refresh_statusline();
+ 
+     static char *last_urgent_ws = NULL;
+@@ -1780,6 +1803,8 @@ void draw_bars(bool unhide) {
+         hide_bars();
+     }
+ 
++    xbm_free_unused_icons();
++
+     redraw_bars();
+ }
+ 

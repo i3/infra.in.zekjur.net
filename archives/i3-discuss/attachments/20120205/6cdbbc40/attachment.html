@@ -1,0 +1,40 @@
+<tt>
+Hi&nbsp;sorry&nbsp;I&nbsp;couldn&#39;t&nbsp;stick&nbsp;around&nbsp;on&nbsp;IRC.&nbsp;I&nbsp;was&nbsp;tweaking&nbsp;my&nbsp;config&nbsp;file&nbsp;and&nbsp;when&nbsp;restarting&nbsp;my&nbsp;xserver,etc.&nbsp;I&nbsp;was&nbsp;unable&nbsp;to&nbsp;keep&nbsp;my&nbsp;client&nbsp;up.&nbsp;Thanks&nbsp;for&nbsp;the&nbsp;response.&nbsp;I&nbsp;was&nbsp;looking&nbsp;at&nbsp;i3-msg&nbsp;but&nbsp;it&nbsp;wasn&#39;t&nbsp;clear&nbsp;to&nbsp;me&nbsp;how&nbsp;to&nbsp;use&nbsp;it.&nbsp;Thanks&nbsp;for&nbsp;elucidating&nbsp;that&nbsp;for&nbsp;me.&nbsp;I&#39;ll&nbsp;have&nbsp;a&nbsp;look&nbsp;at&nbsp;the&nbsp;thought&nbsp;experiments,&nbsp;I&#39;m&nbsp;very&nbsp;happy&nbsp;to&nbsp;use&nbsp;i3&nbsp;it&#39;s&nbsp;very&nbsp;excellent. &lt;div&gt;<br>
+&lt;br&gt;&lt;/div&gt;&lt;div&gt;Best.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Colin&nbsp;Williams&lt;br&gt;&lt;br&gt;&lt;div&nbsp;class=&quot;gmail_quote&quot;&gt;On&nbsp;Sun,&nbsp;Feb&nbsp;5,&nbsp;2012&nbsp;at&nbsp;3:49&nbsp;PM,&nbsp;Michael&nbsp;Stapelberg&nbsp;&lt;span&nbsp;dir=&quot;ltr&quot;&gt;&lt;&lt;a&nbsp;href=&quot;mailto:michael%2Bi3@stapelberg.de&quot;&gt;michael+i3@stapelberg.de&lt;/a&gt;&gt;&lt;/span&gt;&nbsp;wrote:&lt;br&gt;<br>
+&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;Hi&nbsp;Colin,&lt;br&gt;<br>
+&lt;br&gt;<br>
+First&nbsp;of&nbsp;all:&nbsp;you&nbsp;asked&nbsp;this&nbsp;on&nbsp;IRC&nbsp;twice,&nbsp;and&nbsp;I&nbsp;got&nbsp;no&nbsp;chance&nbsp;to&nbsp;answer&nbsp;before&lt;br&gt;<br>
+you&nbsp;left.&nbsp;Please&nbsp;stay&nbsp;around&nbsp;for&nbsp;a&nbsp;while&nbsp;if&nbsp;you&nbsp;want&nbsp;answers&nbsp;on&nbsp;IRC.&nbsp;Most&nbsp;of&nbsp;us&lt;br&gt;<br>
+live&nbsp;in&nbsp;Europe,&nbsp;e.g.&nbsp;UTC&nbsp;or&nbsp;UTC+1&nbsp;:).&lt;br&gt;<br>
+&lt;br&gt;<br>
+Excerpts&nbsp;from&nbsp;Colin&nbsp;Kincaid&nbsp;Williams&#39;s&nbsp;message&nbsp;of&nbsp;2012-02-05&nbsp;22:59:22&nbsp;+0100:&lt;br&gt;<br>
+&lt;div&nbsp;class=&quot;im&quot;&gt;&gt;&nbsp;I&#39;m&nbsp;trying&nbsp;to&nbsp;get&nbsp;a&nbsp;certain&nbsp;behavior&nbsp;out&nbsp;of&nbsp;I3.&nbsp;As&nbsp;an&nbsp;example,&nbsp;lets&nbsp;say&nbsp;I&#39;d&lt;br&gt;<br>
+&gt;&nbsp;like&nbsp;to&nbsp;have&nbsp;a&nbsp;firefox&nbsp;browser&nbsp;window&nbsp;on&nbsp;workspace&nbsp;3,&nbsp;a&nbsp;chromium&nbsp;browser&lt;br&gt;<br>
+&gt;&nbsp;window&nbsp;on&nbsp;workspace&nbsp;9&nbsp;,&nbsp;etc.&nbsp; *&nbsp;However,&nbsp;I&nbsp;do&nbsp;not&nbsp;want&nbsp;to&nbsp;launch&nbsp;another&lt;br&gt;<br>
+&gt;&nbsp;firefox&nbsp;again&nbsp;and&nbsp;have&nbsp;it&nbsp;also&nbsp;appear&nbsp;on&nbsp;workspace&nbsp;3&nbsp;*.&lt;br&gt;<br>
+&lt;/div&gt;The&nbsp;solution&nbsp;for&nbsp;this&nbsp;is:&lt;br&gt;<br>
+&lt;br&gt;<br>
+i3-msg&nbsp;workspace&nbsp;3;&nbsp;i3-msg&nbsp;exec&nbsp;firefox&lt;br&gt;<br>
+i3-msg&nbsp;workspace&nbsp;9;&nbsp;i3-msg&nbsp;exec&nbsp;chromium&lt;br&gt;<br>
+&lt;br&gt;<br>
+…assuming&nbsp;that&nbsp;both&nbsp;browsers&nbsp;are&nbsp;startup-notification&nbsp;compatible&nbsp;and&nbsp;you&nbsp;are&lt;br&gt;<br>
+using&nbsp;i3&nbsp;v4.1&nbsp;or&nbsp;newer.&nbsp;At&nbsp;least&nbsp;chromium&nbsp;is&nbsp;definitely&nbsp;startup-notification&lt;br&gt;<br>
+compatible.&lt;br&gt;<br>
+&lt;div&nbsp;class=&quot;im&quot;&gt;&lt;br&gt;<br>
+&gt;&nbsp; I&nbsp;can&nbsp;think&nbsp;of&nbsp;two&nbsp;ways&nbsp;to&nbsp;get&nbsp;my&nbsp;desired&nbsp;behavior&nbsp;to&nbsp;work.&nbsp;One&nbsp; would&nbsp;be&lt;br&gt;<br>
+&gt;&nbsp;a&nbsp;on_workspace&nbsp;command&nbsp;which&nbsp;I&nbsp;would&nbsp;add&nbsp;to&nbsp;the&nbsp;config&nbsp;file&nbsp;and&nbsp;its&lt;br&gt;<br>
+&gt;&nbsp;signature&nbsp;would&nbsp;be&nbsp;&quot;on_workspace&nbsp;9&nbsp;exec&nbsp;chromium&quot;&nbsp;or&nbsp;something&nbsp;similar,&lt;br&gt;<br>
+&gt;&nbsp;with&nbsp;the&nbsp;expected&nbsp;behavior&nbsp;launching&nbsp;a&nbsp;chromium&nbsp;browser&nbsp;on&nbsp;workspace&nbsp;9.&lt;br&gt;<br>
+&gt;&nbsp;Another&nbsp;way&nbsp;would&nbsp;be&nbsp;to&nbsp;change&nbsp;the&nbsp;exec&nbsp;command&nbsp;to&nbsp;pass&nbsp;back&nbsp;the&nbsp;window&nbsp;id,&lt;br&gt;<br>
+&gt;&nbsp;however&nbsp;I&#39;m&nbsp;not&nbsp;sure&nbsp;this&nbsp;is&nbsp;possible,&nbsp;and&nbsp;it&nbsp;doesn&#39;t&nbsp;seem&nbsp;to&nbsp;go&nbsp;with&nbsp;the&lt;br&gt;<br>
+&gt;&nbsp;design&nbsp;plan&nbsp;for&nbsp;i3.&nbsp; Can&nbsp;anybody&nbsp;suggest&nbsp;a&nbsp;way&nbsp;to&nbsp;achieve&nbsp;the&nbsp;behavior&nbsp;I&#39;m&lt;br&gt;<br>
+&gt;&nbsp;looking&nbsp;for,&nbsp;or&nbsp;give&nbsp;me&nbsp;a&nbsp;pointer&nbsp;on&nbsp;how&nbsp;to&nbsp;implement&nbsp;the&nbsp;feature&nbsp;myself?&lt;br&gt;<br>
+&lt;/div&gt;I&nbsp;gave&nbsp;you&nbsp;the&nbsp;solution&nbsp;above.&nbsp;If&nbsp;you&nbsp;want&nbsp;to&nbsp;read&nbsp;our&nbsp;thoughts&nbsp;on&nbsp;why&nbsp;it&nbsp;is&lt;br&gt;<br>
+not&nbsp;possible&nbsp;any&nbsp;other&nbsp;way,&nbsp;see&lt;br&gt;<br>
+&lt;a&nbsp;href=&quot;http://build.i3wm.org/docs/hacking-howto.html#_thought_experiments&quot;&nbsp;target=&quot;_blank&quot;&gt;http://build.i3wm.org/docs/hacking-howto.html#_thought_experiments&lt;/a&gt;&lt;br&gt;<br>
+&lt;br&gt;<br>
+Best&nbsp;regards,&lt;br&gt;<br>
+Michael&lt;br&gt;<br>
+&lt;/blockquote&gt;&lt;/div&gt;&lt;br&gt;&lt;/div&gt;<br>
+
+</tt>

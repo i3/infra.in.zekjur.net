@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3bar POC: workspace button with focused window name
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3bar%20POC%3A%20workspace%20button%20with%20focused%20window%20name&In-Reply-To=%3CCABgc4wQt8_4NfpyJak6h6Uwbqh8F-NBAOFYDhcREJGfyAD23xg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001227.html">
+   <LINK REL="Next"  HREF="001229.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3bar POC: workspace button with focused window name</H1>
+    <B>Fam Zheng</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3bar%20POC%3A%20workspace%20button%20with%20focused%20window%20name&In-Reply-To=%3CCABgc4wQt8_4NfpyJak6h6Uwbqh8F-NBAOFYDhcREJGfyAD23xg%40mail.gmail.com%3E"
+       TITLE="[i3] i3bar POC: workspace button with focused window name">famcool at gmail.com
+       </A><BR>
+    <I>Thu Mar 21 13:27:27 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001227.html">[i3] i3bar POC: workspace button with focused window name
+</A></li>
+        <LI>Next message: <A HREF="001229.html">[i3] i3bar POC: workspace button with focused window name
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1228">[ date ]</a>
+              <a href="thread.html#1228">[ thread ]</a>
+              <a href="subject.html#1228">[ subject ]</a>
+              <a href="author.html#1228">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, Mar 21, 2013 at 6:31 PM, Axel Wagner &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">mail at merovius.de</A>&gt; wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Excerpts from Fam Zheng's message of 2013-03-21 04:16:32 +0100:
+</I>&gt;&gt;<i> Of course a bar option can be added too to enable/disable this
+</I>&gt;&gt;<i> feature. Or even give some sophisticated format option for the title,
+</I>&gt;&gt;<i> and also enable user to manually rename it. Would this feature be
+</I>&gt;&gt;<i> useful?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> To do this we need to add a few new events trigger and maybe a &quot;title&quot;
+</I>&gt;&gt;<i> field in get_workspace msg. I already have a demo modification for you
+</I>&gt;&gt;<i> to test how it feels, based on master. Now my life with many
+</I>&gt;&gt;<i> workspaces is much easier. :)
+</I>&gt;<i>
+</I>&gt;<i> I think the only modification needed to i3 would be a focus-change-event
+</I>&gt;<i> (and maybe with a little hack not even that) and what you want can be
+</I>&gt;<i> entirely done with an ipc-script, no modifications to i3bar necessary.
+</I>&gt;<i>
+</I>&gt;<i> So I would do it like that: Have a daemon running that listens for focus
+</I>&gt;<i> events, everytime such an event is triggered, get the current
+</I>&gt;<i> workspaces, find out for each one, what window is currently focused
+</I>&gt;<i> (maybe the focus event could include the &#8222;change&#8220;-data which would make
+</I>&gt;<i> this step unnecessary) and change the title of that workspace to the
+</I>&gt;<i> title of that window.
+</I>
+
+&gt;<i>
+</I>&gt;<i> As I said, I think it could also be possible with a little &#8222;hack&#8220;: By
+</I>&gt;<i> using the workspace-event you could change the title everytime you
+</I>&gt;<i> change away from a ws. Then you would have accurately titles for every
+</I>&gt;<i> ws _not_ currently focused, which should be enough for getting an
+</I>&gt;<i> overview.
+</I>&gt;<i>
+</I>&gt;<i> I think i3bar is definitely the wrong place to do what you want, though
+</I>&gt;<i> it is a good idea.
+</I>&gt;<i> Doing it in i3 (by including an option to change the ws-title to the
+</I>&gt;<i> currently focused window) would be better, because then the feature
+</I>&gt;<i> would be available to users of alternative ws-bars, if they exist. But
+</I>&gt;<i> this would still be a lot of complexity added to i3 in C for something,
+</I>&gt;<i> that can be done with IPC and a scripting-language.
+</I>&gt;<i> Implementing the focus-change-event you should do in any case, imho,
+</I>&gt;<i> because I ran over a few usecases which would profit from that in my
+</I>&gt;<i> time.
+</I>
+Event is the easiest part, just send an event at the end of `con_focus
+for window, as well as handle_destroy_notify_event,
+handle_windowname_change, would suffice.
+
+Renaming would be trickier, that would need a remap of key binding
+too, which sounds not so neat. IMO &quot;name&quot; of ws and &quot;caption&quot; or
+&quot;title&quot; of ws should be isolated, because mixing ws identifier and
+it's display is not a good idea, despite the complexity for the
+&quot;ipc-script&quot; to decompose and extract the original ws name, and query
+and parse the whole tree, and then remap all the keybindings to this
+workspace (would be a nightmare if many bindings refer to it) for each
+change.
+
+The thing will be much easier if i3 adds a &quot;caption&quot; property to ws,
+so that i3bar and other bars can optionally render it to user, and
+this also benefits that renaming a workspace becomes more
+straightforward (no longer messing any keybinding). Maybe I'm too used
+to tmux.
+
+This is &lt;100 LOC for both i3 and i3bar changes, if this feature is
+demanded, I can post my patch for review.
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i>
+</I>&gt;<i> Axel
+</I></PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001227.html">[i3] i3bar POC: workspace button with focused window name
+</A></li>
+	<LI>Next message: <A HREF="001229.html">[i3] i3bar POC: workspace button with focused window name
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1228">[ date ]</a>
+              <a href="thread.html#1228">[ thread ]</a>
+              <a href="subject.html#1228">[ subject ]</a>
+              <a href="author.html#1228">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,950 @@
+From mherda at gmail.com  Sat Jul 16 21:13:03 2011
+From: mherda at gmail.com (Martin)
+Date: Sat, 16 Jul 2011 20:13:03 +0100
+Subject: [i3] dzen2 on i3-3.e_bfl1
+Message-ID: <4E21E2BF.1030705@gmail.com>
+
+Hi there,
+I'm using i3 on Slackware64 13.37 with dual head monitors (2x 1920x1200)
+
+Why do windows cover the status bar (dzen2) - in other words it's only 
+visible if I close all the windows.
+
+in the config file I disabled the workspace bar:
+workspace_bar no
+
+
+
+Here's my .xinitrc
+userresources=$HOME/.Xresources
+usermodmap=$HOME/.Xmodmap
+sysresources=/etc/X11/xinit/.Xresources
+sysmodmap=/etc/X11/xinit/.Xmodmap
+
+# Merge in defaults and keymaps
+[ -f $sysresources ] && /usr/bin/xrdb -merge $sysresources
+[ -f $sysmodmap ] && /usr/bin/xmodmap $sysmodmap
+[ -f $userresources ] && /usr/bin/xrdb -merge $userresources
+[ -f $usermodmap ] && /usr/bin/xmodmap $usermodmap
+
+# Start i3
+if [ -z "$DESKTOP_SESSION" -a -x /usr/bin/ck-launch-session ]; then
+         exec i3 --force-xinerama -V >>/home/martin/.i3/i3log 2>&1 &
+         sh startup.sh
+#    exec ck-launch-session i3
+else
+     exec i3
+fi
+
+
+and dzen2 startup:
+
+while true
+do
+         DATE=$(date)
+         MEMINFO=$(sed -n -e '3d' -e '1,4p' /proc/meminfo | awk '{printf 
+"%d ", $2 }')
+         UPTIME=$(uptime | sed 's/.*://; s/,//g')
+         QUALITY=$(sed -e '1,2d' /proc/net/wireless | cut -d" " -f6,7)
+         UNAME=$(uname -a | cut -d" " -f1,2,3)
+         HD=$(df -h | awk '/root/ {print $4, $5}')
+         echo "^fg(green)$DATE | $UNAME | T/F/C $MEMINFO | Wifi: 
+$QUALITY | Load Average: $UPTIME | Root: $HD"
+         sleep 5
+
+done | dzen2 -y 1180 -bg black -fg grey -fn fixed
+
+
+
+
+
+thank you
+Martin
+
+
+From michael+i3 at stapelberg.de  Sat Jul 16 21:20:47 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 16 Jul 2011 21:20:47 +0200
+Subject: [i3] dzen2 on i3-3.e_bfl1
+In-Reply-To: <4E21E2BF.1030705@gmail.com>
+References: <4E21E2BF.1030705@gmail.com>
+Message-ID: <1310843896-sup-8009@midna.zekjur.net>
+
+Hi Martin,
+
+Excerpts from Martin's message of 2011-07-16 21:13:03 +0200:
+> Why do windows cover the status bar (dzen2) - in other words it's only 
+> visible if I close all the windows.
+> done | dzen2 -y 1180 -bg black -fg grey -fn fixed
+Because you position dzen2 using -x / -y. Use -dock instead. For -dock you need
+a recent SVN checkout of dzen2.
+
+Best regards,
+Michael
+
+From mherda at gmail.com  Sat Jul 16 21:38:56 2011
+From: mherda at gmail.com (Martin)
+Date: Sat, 16 Jul 2011 20:38:56 +0100
+Subject: [i3] dzen2 on i3-3.e_bfl1
+In-Reply-To: <1310843896-sup-8009@midna.zekjur.net>
+References: <4E21E2BF.1030705@gmail.com> <1310843896-sup-8009@midna.zekjur.net>
+Message-ID: <4E21E8D0.9090201@gmail.com>
+
+On 16/07/11 20:20, Michael Stapelberg wrote:
+> Hi Martin,
+>
+> Excerpts from Martin's message of 2011-07-16 21:13:03 +0200:
+>> Why do windows cover the status bar (dzen2) - in other words it's only
+>> visible if I close all the windows.
+>> done | dzen2 -y 1180 -bg black -fg grey -fn fixed
+> Because you position dzen2 using -x / -y. Use -dock instead. For -dock you need
+> a recent SVN checkout of dzen2.
+>
+> Best regards,
+> Michael
+Excellent. Thank you. It's worked.
+Now another problem arises is that the status bar is now only on 
+workspace 1.
+I've tried the following:
+
+done | dzen2  -xs 2 -bg black -fg grey -fn fixed -dock
+but it doesn't start X at all then.
+
+thank you.
+Martin
+
+
+
+
+From michael+i3 at stapelberg.de  Sat Jul 16 21:45:06 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 16 Jul 2011 21:45:06 +0200
+Subject: [i3] dzen2 on i3-3.e_bfl1
+In-Reply-To: <4E21E8D0.9090201@gmail.com>
+References: <4E21E2BF.1030705@gmail.com> <1310843896-sup-8009@midna.zekjur.net>
+	<4E21E8D0.9090201@gmail.com>
+Message-ID: <1310845472-sup-3548@midna.zekjur.net>
+
+Hi Martin,
+
+Excerpts from Martin's message of 2011-07-16 21:38:56 +0200:
+> Now another problem arises is that the status bar is now only on 
+> workspace 1.
+You need one dzen2 instance per monitor. You can use i3-wsbar which will take
+care of that.
+
+Best regards,
+Michael
+
+From mherda at gmail.com  Sat Jul 16 22:03:17 2011
+From: mherda at gmail.com (Martin)
+Date: Sat, 16 Jul 2011 21:03:17 +0100
+Subject: [i3] dzen2 on i3-3.e_bfl1
+In-Reply-To: <1310845472-sup-3548@midna.zekjur.net>
+References: <4E21E2BF.1030705@gmail.com>
+	<1310843896-sup-8009@midna.zekjur.net>	<4E21E8D0.9090201@gmail.com>
+	<1310845472-sup-3548@midna.zekjur.net>
+Message-ID: <4E21EE85.5090008@gmail.com>
+
+Hi Michael,
+Thanks for your help.
+
+I've tried the following:
+done | i3-wsbar -c "dzen2 -fn 
+-bitstream-terminal-bold-r-normal--15-140-100-100-c-110-iso8859-1 -bg 
+black -fg grey -x %x -dock"
+
+However, it starts X (without any bar) and exits X after a few seconds 
+with the error:
+
+X.Org X Server 1.9.5
+Release Date: 2011-03-17
+X Protocol Version 11, Revision 0
+Build Operating System: Slackware 13.37 Slackware Linux Project
+Current Operating System: Linux mordor 2.6.38.7 #3 SMP Sun May 22 
+16:21:50 CDT 2011 x86_64
+Kernel command line: BOOT_IMAGE=Slack-generic ro root=812 vt.default_utf8=1
+Build Date: 17 March 2011  10:50:17PM
+
+Current version of pixman: 0.20.2
+         Before reporting problems, check http://wiki.x.org
+         to make sure that you have the latest version.
+Markers: (--) probed, (**) from config file, (==) default setting,
+         (++) from command line, (!!) notice, (II) informational,
+         (WW) warning, (EE) error, (NI) not implemented, (??) unknown.
+(==) Log file: "/var/log/Xorg.0.log", Time: Sat Jul 16 20:59:54 2011
+(==) Using config file: "/etc/X11/xorg.conf"
+(==) Using system config directory "/usr/share/X11/xorg.conf.d"
+Can't locate IPC/Run.pm in @INC (@INC contains: /usr/local/lib64/perl5 
+/usr/local/share/perl5 /usr/lib64/perl5/vendor_perl 
+/usr/share/perl5/vendor_perl /usr/lib64/perl5 /usr/share/perl5 .) at 
+/usr/bin/i3-wsbar line 9.
+BEGIN failed--compilation aborted at /usr/bin/i3-wsbar line 9.
+xinit: connection to X server lost
+
+waiting for X server to shut down
+
+
+Thank you. I really appreciate your help.
+
+regards
+Martin
+
+
+
+
+From michael+i3 at stapelberg.de  Sat Jul 16 22:17:01 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 16 Jul 2011 22:17:01 +0200
+Subject: [i3] dzen2 on i3-3.e_bfl1
+In-Reply-To: <4E21EE85.5090008@gmail.com>
+References: <4E21E2BF.1030705@gmail.com> <1310843896-sup-8009@midna.zekjur.net>
+	<4E21E8D0.9090201@gmail.com> <1310845472-sup-3548@midna.zekjur.net>
+	<4E21EE85.5090008@gmail.com>
+Message-ID: <1310847293-sup-2971@midna.zekjur.net>
+
+Hi Martin,
+
+Excerpts from Martin's message of 2011-07-16 22:03:17 +0200:
+> However, it starts X (without any bar) and exits X after a few seconds 
+> with the error:
+Better try starting it within an existing X session, that makes debugging
+easier.
+
+> Can't locate IPC/Run.pm in @INC (@INC contains: /usr/local/lib64/perl5 
+> /usr/local/share/perl5 /usr/lib64/perl5/vendor_perl 
+> /usr/share/perl5/vendor_perl /usr/lib64/perl5 /usr/share/perl5 .) at 
+> /usr/bin/i3-wsbar line 9.
+> BEGIN failed--compilation aborted at /usr/bin/i3-wsbar line 9.
+Well, you need to install the IPC::Run perl module. The package is named
+libipc-run-perl in debian, not sure about slackware. You also need a few more
+packages: AnyEvent, Try::Tiny, AnyEvent::I3. There probably is no package for
+the last one, so install it via cpan. You can also use cpanminus instead, see
+http://cpanmin.us/
+
+Best regards,
+Michael
+
+From mherda at gmail.com  Sat Jul 16 22:49:00 2011
+From: mherda at gmail.com (Martin)
+Date: Sat, 16 Jul 2011 21:49:00 +0100
+Subject: [i3] dzen2 on i3-3.e_bfl1
+In-Reply-To: <1310847293-sup-2971@midna.zekjur.net>
+References: <4E21E2BF.1030705@gmail.com>
+	<1310843896-sup-8009@midna.zekjur.net>	<4E21E8D0.9090201@gmail.com>
+	<1310845472-sup-3548@midna.zekjur.net>	<4E21EE85.5090008@gmail.com>
+	<1310847293-sup-2971@midna.zekjur.net>
+Message-ID: <4E21F93C.9060200@gmail.com>
+
+On 16/07/11 21:17, Michael Stapelberg wrote:
+> Hi Martin,
+>
+> Excerpts from Martin's message of 2011-07-16 22:03:17 +0200:
+>> However, it starts X (without any bar) and exits X after a few seconds
+>> with the error:
+> Better try starting it within an existing X session, that makes debugging
+> easier.
+>
+>> Can't locate IPC/Run.pm in @INC (@INC contains: /usr/local/lib64/perl5
+>> /usr/local/share/perl5 /usr/lib64/perl5/vendor_perl
+>> /usr/share/perl5/vendor_perl /usr/lib64/perl5 /usr/share/perl5 .) at
+>> /usr/bin/i3-wsbar line 9.
+>> BEGIN failed--compilation aborted at /usr/bin/i3-wsbar line 9.
+> Well, you need to install the IPC::Run perl module. The package is named
+> libipc-run-perl in debian, not sure about slackware. You also need a few more
+> packages: AnyEvent, Try::Tiny, AnyEvent::I3. There probably is no package for
+> the last one, so install it via cpan. You can also use cpanminus instead, see
+> http://cpanmin.us/
+>
+> Best regards,
+> Michael
+Thanks Michael,
+
+I can't see those packages available in Slackware. Sorry for a dumb 
+question, but what are the names of the packages here:
+
+AnyEvent, Try::Tiny, AnyEvent::I3.
+
+Are you referring to 3 separate packages?
+AnyEvent
+Try::Tiny
+AnyEvent::I3
+?
+
+I am going to research the availability of those packages in Slackware. In the meantime, I was just thinking if it would be possible to create separate dzen2 wrappers for each monitor? Also does it matter that I run TwinView with Nvidia's binary driver.
+
+
+thank you
+
+kindest regards
+Martin
+
+
+
+From mherda at gmail.com  Sat Jul 16 23:24:12 2011
+From: mherda at gmail.com (Martin)
+Date: Sat, 16 Jul 2011 22:24:12 +0100
+Subject: [i3] dzen2 on i3-3.e_bfl1
+In-Reply-To: <1310847293-sup-2971@midna.zekjur.net>
+References: <4E21E2BF.1030705@gmail.com>
+	<1310843896-sup-8009@midna.zekjur.net>	<4E21E8D0.9090201@gmail.com>
+	<1310845472-sup-3548@midna.zekjur.net>	<4E21EE85.5090008@gmail.com>
+	<1310847293-sup-2971@midna.zekjur.net>
+Message-ID: <4E22017C.7090909@gmail.com>
+
+On 16/07/11 21:17, Michael Stapelberg wrote:
+> Hi Martin,
+>
+> Excerpts from Martin's message of 2011-07-16 22:03:17 +0200:
+>> However, it starts X (without any bar) and exits X after a few seconds
+>> with the error:
+> Better try starting it within an existing X session, that makes debugging
+> easier.
+>
+>> Can't locate IPC/Run.pm in @INC (@INC contains: /usr/local/lib64/perl5
+>> /usr/local/share/perl5 /usr/lib64/perl5/vendor_perl
+>> /usr/share/perl5/vendor_perl /usr/lib64/perl5 /usr/share/perl5 .) at
+>> /usr/bin/i3-wsbar line 9.
+>> BEGIN failed--compilation aborted at /usr/bin/i3-wsbar line 9.
+> Well, you need to install the IPC::Run perl module. The package is named
+> libipc-run-perl in debian, not sure about slackware. You also need a few more
+> packages: AnyEvent, Try::Tiny, AnyEvent::I3. There probably is no package for
+> the last one, so install it via cpan. You can also use cpanminus instead, see
+> http://cpanmin.us/
+>
+> Best regards,
+> Michael
+
+I have installed the above mentioned packages downloading the sources 
+from cpan.
+Now the error I get is:
+Can't locate JSON/XS.pm in @INC (@INC contains: /usr/local/lib64/perl5 
+/usr/local/share/perl5 /usr/lib64/perl5/vendor_perl 
+/usr/share/perl5/vendor_perl /usr/lib64/perl5 /usr/share/perl5 .) at 
+/usr/share/perl5/AnyEvent/I3.pm line 6.
+BEGIN failed--compilation aborted at /usr/share/perl5/AnyEvent/I3.pm line 6.
+Compilation failed in require at /usr/bin/i3-wsbar line 10.
+BEGIN failed--compilation aborted at /usr/bin/i3-wsbar line 10.
+
+Which json package would I have to install?
+
+thank you
+regards
+Martin
+
+From michael+i3 at stapelberg.de  Sat Jul 16 23:48:13 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 16 Jul 2011 23:48:13 +0200
+Subject: [i3] dzen2 on i3-3.e_bfl1
+In-Reply-To: <4E22017C.7090909@gmail.com>
+References: <4E21E2BF.1030705@gmail.com> <1310843896-sup-8009@midna.zekjur.net>
+	<4E21E8D0.9090201@gmail.com> <1310845472-sup-3548@midna.zekjur.net>
+	<4E21EE85.5090008@gmail.com> <1310847293-sup-2971@midna.zekjur.net>
+	<4E22017C.7090909@gmail.com>
+Message-ID: <1310852835-sup-2458@midna.zekjur.net>
+
+Hi Martin,
+
+Excerpts from Martin's message of 2011-07-16 23:24:12 +0200:
+> I have installed the above mentioned packages downloading the sources 
+> from cpan.
+Please use the cpan(1) installer, it will resolve dependencies. Just running
+cpan AnyEvent is enough (for example).
+
+> Now the error I get is:
+> Can't locate JSON/XS.pm in @INC (@INC contains: /usr/local/lib64/perl5 
+> Which json package would I have to install?
+JSON::XS (rule of thumb: replace / with ::).
+
+Best regards,
+Michael
+
+From mherda at gmail.com  Sun Jul 17 00:03:05 2011
+From: mherda at gmail.com (Martin)
+Date: Sat, 16 Jul 2011 23:03:05 +0100
+Subject: [i3] dzen2 on i3-3.e_bfl1
+In-Reply-To: <1310852835-sup-2458@midna.zekjur.net>
+References: <4E21E2BF.1030705@gmail.com>
+	<1310843896-sup-8009@midna.zekjur.net>	<4E21E8D0.9090201@gmail.com>
+	<1310845472-sup-3548@midna.zekjur.net>	<4E21EE85.5090008@gmail.com>
+	<1310847293-sup-2971@midna.zekjur.net>	<4E22017C.7090909@gmail.com>
+	<1310852835-sup-2458@midna.zekjur.net>
+Message-ID: <4E220A99.20805@gmail.com>
+
+Hi Michael,
+
+Ooops, I didn't know about the cpan command. It's so much easier.
+Having installed JSON:XS, it works almost perfect. There's just one glitch.
+The content of the status bar on monitor 1 is kind of cropped.
+I've attached the screenshot how it looks like.
+
+thank you for your help.
+btw, I've been browsing the i3 mailing list archives. Your name pops up 
+most often. Are you the creator of i3?
+
+regards
+Martin
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 2011-07-16-225730_3840x1200_scrot.png
+Type: image/png
+Size: 94942 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20110716/81640729/attachment-0001.png>
+
+From michael+i3 at stapelberg.de  Sun Jul 17 00:14:36 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 17 Jul 2011 00:14:36 +0200
+Subject: [i3] dzen2 on i3-3.e_bfl1
+In-Reply-To: <4E220A99.20805@gmail.com>
+References: <4E21E2BF.1030705@gmail.com> <1310843896-sup-8009@midna.zekjur.net>
+	<4E21E8D0.9090201@gmail.com> <1310845472-sup-3548@midna.zekjur.net>
+	<4E21EE85.5090008@gmail.com> <1310847293-sup-2971@midna.zekjur.net>
+	<4E22017C.7090909@gmail.com> <1310852835-sup-2458@midna.zekjur.net>
+	<4E220A99.20805@gmail.com>
+Message-ID: <1310854435-sup-9991@midna.zekjur.net>
+
+Hi Martin,
+
+Excerpts from Martin's message of 2011-07-17 00:03:05 +0200:
+> Ooops, I didn't know about the cpan command. It's so much easier.
+> Having installed JSON:XS, it works almost perfect. There's just one glitch.
+> The content of the status bar on monitor 1 is kind of cropped.
+> I've attached the screenshot how it looks like.
+Weird. Can you tell me which dzen2 commands i3-wsbar actually starts?
+See ps aux.
+
+> btw, I've been browsing the i3 mailing list archives. Your name pops up 
+> most often. Are you the creator of i3?
+Yes.
+
+Best regards,
+Michael
+
+From mherda at gmail.com  Sun Jul 17 00:22:09 2011
+From: mherda at gmail.com (Martin)
+Date: Sat, 16 Jul 2011 23:22:09 +0100
+Subject: [i3] dzen2 on i3-3.e_bfl1
+In-Reply-To: <1310854435-sup-9991@midna.zekjur.net>
+References: <4E21E2BF.1030705@gmail.com>
+	<1310843896-sup-8009@midna.zekjur.net>	<4E21E8D0.9090201@gmail.com>
+	<1310845472-sup-3548@midna.zekjur.net>	<4E21EE85.5090008@gmail.com>
+	<1310847293-sup-2971@midna.zekjur.net>	<4E22017C.7090909@gmail.com>
+	<1310852835-sup-2458@midna.zekjur.net>	<4E220A99.20805@gmail.com>
+	<1310854435-sup-9991@midna.zekjur.net>
+Message-ID: <4E220F11.3090003@gmail.com>
+
+Hi Michael
+>> btw, I've been browsing the i3 mailing list archives. Your name pops up
+>> most often. Are you the creator of i3?
+> Yes.
+>
+Thank you for a wonderful piece of software. I really like it.
+
+
+As to the out put of output of ps aux:
+
+xtd8865 at mordor:~$ ps aux | grep i3-wsbar
+xtd8865  24662  0.9  0.2  58780 13240 tty1     S    23:17   0:00 perl 
+/usr/bin/i3-wsbar -c dzen2 -fn 
+-bitstream-terminal-bold-r-normal--15-140-100-100-c-110-iso8859-1 -bg 
+black -fg grey -x %x -dock
+xtd8865  24748  0.0  0.0   4812  1048 pts/0    S+   23:17   0:00 grep 
+i3-wsbar
+xtd8865 at mordor:~$ ps aux | grep i3
+xtd8865  24659  0.0  0.0  39944  1964 tty1     S    23:17   0:00 i3 
+--force-xinerama -V
+xtd8865  24662  0.4  0.2  58780 13240 tty1     S    23:17   0:00 perl 
+/usr/bin/i3-wsbar -c dzen2 -fn 
+-bitstream-terminal-bold-r-normal--15-140-100-100-c-110-iso8859-1 -bg 
+black -fg grey -x %x -dock
+xtd8865  24810  0.0  0.0   4816  1044 pts/0    S+   23:18   0:00 grep i3
+xtd8865 at mordor:~$ ps aux | grep dzen2
+xtd8865  24662  0.2  0.2  58780 13240 tty1     S    23:17   0:00 perl 
+/usr/bin/i3-wsbar -c dzen2 -fn 
+-bitstream-terminal-bold-r-normal--15-140-100-100-c-110-iso8859-1 -bg 
+black -fg grey -x %x -dock
+xtd8865  24698  0.0  0.0  30964  3148 tty1     S    23:17   0:00 dzen2 
+-fn -bitstream-terminal-bold-r-normal--15-140-100-100-c-110-iso8859-1 
+-bg black -fg grey -x 1920 -dock
+xtd8865  24699  0.0  0.0  30964  3148 tty1     S    23:17   0:00 dzen2 
+-fn -bitstream-terminal-bold-r-normal--15-140-100-100-c-110-iso8859-1 
+-bg black -fg grey -x 0 -dock
+xtd8865  24852  0.0  0.0   4816  1048 pts/0    S+   23:18   0:00 grep dzen2
+
+Is that what you meant?
+
+thank you
+Martin
+
+From michael+i3 at stapelberg.de  Sun Jul 17 00:38:07 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 17 Jul 2011 00:38:07 +0200
+Subject: [i3] dzen2 on i3-3.e_bfl1
+In-Reply-To: <4E220F11.3090003@gmail.com>
+References: <4E21E2BF.1030705@gmail.com> <1310843896-sup-8009@midna.zekjur.net>
+	<4E21E8D0.9090201@gmail.com> <1310845472-sup-3548@midna.zekjur.net>
+	<4E21EE85.5090008@gmail.com> <1310847293-sup-2971@midna.zekjur.net>
+	<4E22017C.7090909@gmail.com> <1310852835-sup-2458@midna.zekjur.net>
+	<4E220A99.20805@gmail.com> <1310854435-sup-9991@midna.zekjur.net>
+	<4E220F11.3090003@gmail.com>
+Message-ID: <1310855737-sup-8436@midna.zekjur.net>
+
+Hi Martin,
+
+Excerpts from Martin's message of 2011-07-17 00:22:09 +0200:
+> Thank you for a wonderful piece of software. I really like it.
+Thanks.
+
+> xtd8865 at mordor:~$ ps aux | grep dzen2
+> xtd8865  24662  0.2  0.2  58780 13240 tty1     S    23:17   0:00 perl 
+> /usr/bin/i3-wsbar -c dzen2 -fn 
+> -bitstream-terminal-bold-r-normal--15-140-100-100-c-110-iso8859-1 -bg 
+> black -fg grey -x %x -dock
+> xtd8865  24698  0.0  0.0  30964  3148 tty1     S    23:17   0:00 dzen2 
+> -fn -bitstream-terminal-bold-r-normal--15-140-100-100-c-110-iso8859-1 
+> -bg black -fg grey -x 1920 -dock
+> xtd8865  24699  0.0  0.0  30964  3148 tty1     S    23:17   0:00 dzen2 
+> -fn -bitstream-terminal-bold-r-normal--15-140-100-100-c-110-iso8859-1 
+> -bg black -fg grey -x 0 -dock
+> xtd8865  24852  0.0  0.0   4816  1048 pts/0    S+   23:18   0:00 grep dzen2
+> 
+> Is that what you meant?
+Yes. Strange, the arguments to dzen2 look OK. Try adding -w 1920 to your
+arguments, though it should not be necessary.
+
+If that doesn?t help, try running i3status | dzen2 -x 1920 -dock and see if
+that is wrong, too. If so, dzen2 is to blame. Did you compile it with Xinerama
+support?
+
+Best regards,
+Michael
+
+From mherda at gmail.com  Sun Jul 17 00:42:52 2011
+From: mherda at gmail.com (Martin)
+Date: Sat, 16 Jul 2011 23:42:52 +0100
+Subject: [i3] dzen2 on i3-3.e_bfl1
+In-Reply-To: <1310855737-sup-8436@midna.zekjur.net>
+References: <4E21E2BF.1030705@gmail.com>
+	<1310843896-sup-8009@midna.zekjur.net>	<4E21E8D0.9090201@gmail.com>
+	<1310845472-sup-3548@midna.zekjur.net>	<4E21EE85.5090008@gmail.com>
+	<1310847293-sup-2971@midna.zekjur.net>	<4E22017C.7090909@gmail.com>
+	<1310852835-sup-2458@midna.zekjur.net>	<4E220A99.20805@gmail.com>
+	<1310854435-sup-9991@midna.zekjur.net>	<4E220F11.3090003@gmail.com>
+	<1310855737-sup-8436@midna.zekjur.net>
+Message-ID: <4E2213EC.4030302@gmail.com>
+
+
+> Yes. Strange, the arguments to dzen2 look OK. Try adding -w 1920 to your
+> arguments, though it should not be necessary.
+>
+Thank you. The -w 1920 flag has fixed the problem. It's now displayed as 
+it's supposed to be (both status bars are centred)
+
+
+> that is wrong, too. If so, dzen2 is to blame. Did you compile it with Xinerama
+> support?
+>
+I grabbed dzen2 from svn and did not modify anything apart from changes 
+in config.mk (lib => lib64)
+
+
+thank you again for your help and i3.
+
+regards
+Martin
+
+From crestani at informatik.uni-tuebingen.de  Sun Jul 17 09:38:45 2011
+From: crestani at informatik.uni-tuebingen.de (Marcus Crestani)
+Date: Sun, 17 Jul 2011 09:38:45 +0200
+Subject: [i3] Change focus in i3-tree
+Message-ID: <m2zkkds6ey.fsf@informatik.uni-tuebingen.de>
+
+I have trouble achieving certain focus change functionality in
+i3-tree-pr4 that I use all the time in i3-v3.
+
+My screen shows something like this:
+
++---------------------+---------------------+
+|=t1=======| t2       | t3       |=t4=======+
++---------------------+---------------------+
+| $                   | $                   |
+|                     |                     |
+|                     |                     |
+
+Two containers, each tabbed, one on the left hand side with two
+terminal windows (t1 and t2, where t1 is in front, denoted by ===) and
+one on the right hand side with two more terminal windows (t3 and t4,
+where t4 is in front, also denoted by ===).  Focus is on t1.
+
+In i3-v3, I can hit the key that I've configured to `wcl' to move focus
+from t1 to t4 directly, and `wcj' to move focus from t4 to t1 directly.
+
+In i3-tree, the "with container" commands are obsolete, so the `wc*'
+commands do not exist anymore.  How can I achieve the described focus
+change in i3-tree?
+
+In i3-tree, it seems to me that I only can `focus left' and `focus
+right'.  Coming from t1, a `focus right' key brings t2 to front, then
+moves over to t3 and brings it to front, then moves to t4, but t1 is no
+longer visible:
+ 
++---------------------+---------------------+
+| t1       |=t2=======| t3       |=t4=======+
++---------------------+---------------------+
+| $                   | $                   |
+|                     |                     |
+|                     |                     |
+
+Maybe the right way to think about this focus navigation in i3-tree is
+something like "focus left parent" respectively "focus right parent"?
+Is there a way to bind a key to a sequence of commands, eg. `focus
+parent; focus left'?
+
+What am I missing?
+
+-- 
+Marcus
+
+From michael+i3 at stapelberg.de  Sun Jul 17 14:39:13 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 17 Jul 2011 14:39:13 +0200
+Subject: [i3] Change focus in i3-tree
+In-Reply-To: <m2zkkds6ey.fsf@informatik.uni-tuebingen.de>
+References: <m2zkkds6ey.fsf@informatik.uni-tuebingen.de>
+Message-ID: <1310906255-sup-801@midna.zekjur.net>
+
+Hi Marcus,
+
+Excerpts from Marcus Crestani's message of 2011-07-17 09:38:45 +0200:
+> Maybe the right way to think about this focus navigation in i3-tree is
+> something like "focus left parent" respectively "focus right parent"?
+> Is there a way to bind a key to a sequence of commands, eg. `focus
+> parent; focus left'?
+Yes, the command looks like this: "focus parent; focus left" :).
+
+> What am I missing?
+Nothing, you already provided the correct answer.
+
+Best regards,
+Michael
+
+From crestani at informatik.uni-tuebingen.de  Sun Jul 17 21:50:58 2011
+From: crestani at informatik.uni-tuebingen.de (Marcus Crestani)
+Date: Sun, 17 Jul 2011 21:50:58 +0200
+Subject: [i3] Change focus in i3-tree
+In-Reply-To: <1310906255-sup-801@midna.zekjur.net> (Michael Stapelberg's
+	message of "Sun, 17 Jul 2011 14:39:13 +0200")
+References: <m2zkkds6ey.fsf@informatik.uni-tuebingen.de>
+	<1310906255-sup-801@midna.zekjur.net>
+Message-ID: <m2zkkcpty5.fsf@informatik.uni-tuebingen.de>
+
+Thanks for the quick reply!
+
+>>>>>"MS" == Michael Stapelberg <michael+i3 at stapelberg.de> writes:
+MS> Yes, the command looks like this: "focus parent; focus left" :).
+
+I should've tried this syntax instead of all the variations I've
+actually tried that didn't work...
+
+How to sequence commands would be a great addition to the User's Guide.
+
+Also, couldn't i3-migrate-config-to-v4.pl translate the 'with container'
+commands to the navigate parent equivalent (i.e. "wch" -> "focus parent;
+focus left"), instead of complaining "'with container' commands are
+obsolete in 4.x"?
+
+Another question: Is there a way to prevent the focus commands from
+moving focus to outside the parent's subtree?
+
+Let's assume I have this configuration:
+
+                                h-split
+                                /     \
+                          tabbed      tabbed
+                          /    \      /    \
+                         t1    t2    t3    t4
+
+Starting from t1 with "focus right" moves focus to t2, another "focus
+right" moves focus to t3.  What I'd like to see is that a "focus right"
+from t2 cycles focus back to t1 instead.  Is this possible?
+
+By the way, "focus left" from t1 moves the focus to t2, what I see as
+the "correct" behaviour, since focus stays within the parent's subtree,
+but with the above described behaviour I would expect it to move the
+focus to t4.  This differing behaviour puzzles me.
+
+-- 
+Marcus
+
+From michael+i3 at stapelberg.de  Sun Jul 17 22:16:49 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 17 Jul 2011 22:16:49 +0200
+Subject: [i3] Change focus in i3-tree
+In-Reply-To: <m2zkkcpty5.fsf@informatik.uni-tuebingen.de>
+References: <m2zkkds6ey.fsf@informatik.uni-tuebingen.de>
+	<1310906255-sup-801@midna.zekjur.net>
+	<m2zkkcpty5.fsf@informatik.uni-tuebingen.de>
+Message-ID: <1310933640-sup-2843@midna.zekjur.net>
+
+Hi Marcus,
+
+Excerpts from Marcus Crestani's message of 2011-07-17 21:50:58 +0200:
+> I should've tried this syntax instead of all the variations I've
+> actually tried that didn't work...
+:).
+
+> How to sequence commands would be a great addition to the User's Guide.
+Correct, I will add it.
+
+> Also, couldn't i3-migrate-config-to-v4.pl translate the 'with container'
+> commands to the navigate parent equivalent (i.e. "wch" -> "focus parent;
+> focus left"), instead of complaining "'with container' commands are
+> obsolete in 4.x"?
+Good idea, thanks. Will change that, too.
+
+> Another question: Is there a way to prevent the focus commands from
+> moving focus to outside the parent's subtree?
+Not yet. What you describe is reasonable and it was actually implemented this
+way until commit d641e1da3ba1586bc563f09e216ee7577d4a8b6f. We changed the
+implementation to its current state because it makes focus switching possible
+for people who don?t know focus parent yet. I guess making this behaviour
+configurable is fine, but I don?t want to do that before the first release of
+v4.0.
+
+If you want me to remember it for later, please file an enhancement ticket at
+our bugtracker :).
+
+Best regards,
+Michael
+
+From crestani at informatik.uni-tuebingen.de  Mon Jul 18 07:29:52 2011
+From: crestani at informatik.uni-tuebingen.de (Marcus Crestani)
+Date: Mon, 18 Jul 2011 07:29:52 +0200
+Subject: [i3] Change focus in i3-tree
+In-Reply-To: <1310933640-sup-2843@midna.zekjur.net> (Michael Stapelberg's
+	message of "Sun, 17 Jul 2011 22:16:49 +0200")
+References: <m2zkkds6ey.fsf@informatik.uni-tuebingen.de>
+	<1310906255-sup-801@midna.zekjur.net>
+	<m2zkkcpty5.fsf@informatik.uni-tuebingen.de>
+	<1310933640-sup-2843@midna.zekjur.net>
+Message-ID: <m2fwm4i2b3.fsf@informatik.uni-tuebingen.de>
+
+>>>>>"MS" == Michael Stapelberg <michael+i3 at stapelberg.de> writes:
+MS> If you want me to remember it for later, please file an enhancement
+MS> ticket at our bugtracker :).
+
+I've done that.  Thanks a lot!
+
+-- 
+Marcus
+
+From michael+i3 at stapelberg.de  Sat Jul 23 22:17:14 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 23 Jul 2011 22:17:14 +0200
+Subject: [i3] dzen2 on i3-3.e_bfl1
+In-Reply-To: <4E2213EC.4030302@gmail.com>
+References: <4E21E2BF.1030705@gmail.com> <1310843896-sup-8009@midna.zekjur.net>
+	<4E21E8D0.9090201@gmail.com> <1310845472-sup-3548@midna.zekjur.net>
+	<4E21EE85.5090008@gmail.com> <1310847293-sup-2971@midna.zekjur.net>
+	<4E22017C.7090909@gmail.com> <1310852835-sup-2458@midna.zekjur.net>
+	<4E220A99.20805@gmail.com> <1310854435-sup-9991@midna.zekjur.net>
+	<4E220F11.3090003@gmail.com> <1310855737-sup-8436@midna.zekjur.net>
+	<4E2213EC.4030302@gmail.com>
+Message-ID: <1311452169-sup-6095@midna.zekjur.net>
+
+Hi Martin,
+
+Excerpts from Martin's message of 2011-07-17 00:42:52 +0200:
+> Thank you. The -w 1920 flag has fixed the problem. It's now displayed as 
+> it's supposed to be (both status bars are centred)
+While going through old commits I noticed that we in fact introduced a flag %w
+for precisely this (in commit 76c4e95b608787cd95ac2b0ba9ab442110cbd7df), so you
+should be able to use --command "dzen2 -dock -x %x -w %w" (if your i3-wsbar is
+recent enough).
+
+Best regards,
+Michael
+
+From mherda at gmail.com  Mon Jul 25 02:28:41 2011
+From: mherda at gmail.com (Martin)
+Date: Mon, 25 Jul 2011 01:28:41 +0100
+Subject: [i3] dzen2 on i3-3.e_bfl1
+In-Reply-To: <1311452169-sup-6095@midna.zekjur.net>
+References: <4E21E2BF.1030705@gmail.com>
+	<1310843896-sup-8009@midna.zekjur.net>	<4E21E8D0.9090201@gmail.com>
+	<1310845472-sup-3548@midna.zekjur.net>	<4E21EE85.5090008@gmail.com>
+	<1310847293-sup-2971@midna.zekjur.net>	<4E22017C.7090909@gmail.com>
+	<1310852835-sup-2458@midna.zekjur.net>	<4E220A99.20805@gmail.com>
+	<1310854435-sup-9991@midna.zekjur.net>	<4E220F11.3090003@gmail.com>
+	<1310855737-sup-8436@midna.zekjur.net>	<4E2213EC.4030302@gmail.com>
+	<1311452169-sup-6095@midna.zekjur.net>
+Message-ID: <4E2CB8B9.6020005@gmail.com>
+
+On 23/07/11 21:17, Michael Stapelberg wrote:
+> Hi Martin,
+>
+> Excerpts from Martin's message of 2011-07-17 00:42:52 +0200:
+>> Thank you. The -w 1920 flag has fixed the problem. It's now displayed as
+>> it's supposed to be (both status bars are centred)
+> While going through old commits I noticed that we in fact introduced a flag %w
+> for precisely this (in commit 76c4e95b608787cd95ac2b0ba9ab442110cbd7df), so you
+> should be able to use --command "dzen2 -dock -x %x -w %w" (if your i3-wsbar is
+> recent enough).
+>
+> Best regards,
+> Michael
+Hi Michael,
+
+Thanks for the update. How is it going with i3 v4? Do you think it's 
+still going to be released this month?
+
+regards
+
+Martin
+
+From michael+i3 at stapelberg.de  Mon Jul 25 02:34:18 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Mon, 25 Jul 2011 02:34:18 +0200
+Subject: [i3] dzen2 on i3-3.e_bfl1
+In-Reply-To: <4E2CB8B9.6020005@gmail.com>
+References: <4E21E2BF.1030705@gmail.com> <1310843896-sup-8009@midna.zekjur.net>
+	<4E21E8D0.9090201@gmail.com> <1310845472-sup-3548@midna.zekjur.net>
+	<4E21EE85.5090008@gmail.com> <1310847293-sup-2971@midna.zekjur.net>
+	<4E22017C.7090909@gmail.com> <1310852835-sup-2458@midna.zekjur.net>
+	<4E220A99.20805@gmail.com> <1310854435-sup-9991@midna.zekjur.net>
+	<4E220F11.3090003@gmail.com> <1310855737-sup-8436@midna.zekjur.net>
+	<4E2213EC.4030302@gmail.com> <1311452169-sup-6095@midna.zekjur.net>
+	<4E2CB8B9.6020005@gmail.com>
+Message-ID: <1311554030-sup-3220@midna.zekjur.net>
+
+Hi Martin,
+
+Excerpts from Martin's message of 2011-07-25 02:28:41 +0200:
+> Thanks for the update. How is it going with i3 v4? Do you think it's 
+> still going to be released this month?
+Yes, I do :).
+
+Best regards,
+Michael
+
+From mherda at gmail.com  Mon Jul 25 13:53:14 2011
+From: mherda at gmail.com (Martin)
+Date: Mon, 25 Jul 2011 12:53:14 +0100
+Subject: [i3] dzen2 on i3-3.e_bfl1
+In-Reply-To: <1311554030-sup-3220@midna.zekjur.net>
+References: <4E21E2BF.1030705@gmail.com>
+	<1310843896-sup-8009@midna.zekjur.net>	<4E21E8D0.9090201@gmail.com>
+	<1310845472-sup-3548@midna.zekjur.net>	<4E21EE85.5090008@gmail.com>
+	<1310847293-sup-2971@midna.zekjur.net>	<4E22017C.7090909@gmail.com>
+	<1310852835-sup-2458@midna.zekjur.net>	<4E220A99.20805@gmail.com>
+	<1310854435-sup-9991@midna.zekjur.net>	<4E220F11.3090003@gmail.com>
+	<1310855737-sup-8436@midna.zekjur.net>	<4E2213EC.4030302@gmail.com>
+	<1311452169-sup-6095@midna.zekjur.net>	<4E2CB8B9.6020005@gmail.com>
+	<1311554030-sup-3220@midna.zekjur.net>
+Message-ID: <4E2D592A.2020202@gmail.com>
+
+On 25/07/11 01:34, Michael Stapelberg wrote:
+> Hi Martin,
+>
+> Excerpts from Martin's message of 2011-07-25 02:28:41 +0200:
+>> Thanks for the update. How is it going with i3 v4? Do you think it's
+>> still going to be released this month?
+> Yes, I do :).
+>
+> Best regards,
+> Michael
+
+Excellent!!!
+
+regards
+Martin
+
+From michael+i3 at stapelberg.de  Fri Jul 29 13:40:50 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Fri, 29 Jul 2011 13:40:50 +0200
+Subject: [i3] i3 on the CCC Camp and FrOSCon
+Message-ID: <1311939444-sup-457@midna.zekjur.net>
+
+Hi!
+
+I hereby announce that some of the i3 developers are on the CCC Camp [1] during
+2011-08-10 to 2011-08-14 in Finowfurt (near Berlin) in Germany. We would be
+happy to meet you there :).
+
+Also, the i3 project will have a booth at the FrOSCon [2], a free and
+open source software conference from 2011-08-20 to 2011-08-21 in Sankt Augustin
+(near Bonn) in Germany. Again, we would be happy to meet you!
+
+See you there,
+Best regards,
+Michael
+
+[1] http://events.ccc.de/camp/2011/
+[2] http://www.froscon.de/
+
+From fooker at lab.sh  Fri Jul 29 08:45:49 2011
+From: fooker at lab.sh (fooker)
+Date: Fri, 29 Jul 2011 08:45:49 +0200
+Subject: [i3] i3 on the CCC Camp and FrOSCon
+In-Reply-To: <1311939444-sup-457@midna.zekjur.net>
+References: <1311939444-sup-457@midna.zekjur.net>
+Message-ID: <8e78455a911be1bd00dd06736f9f31b0@lab.sh>
+
+ hi,
+
+ nice to hear.
+ we will bring something to drink. what do you prefer? beer or club 
+ mate?
+
+ see you
+ fooker
+
+ On Fri, 29 Jul 2011 13:40:50 +0200, Michael Stapelberg wrote:
+> Hi!
+>
+> I hereby announce that some of the i3 developers are on the CCC Camp
+> [1] during
+> 2011-08-10 to 2011-08-14 in Finowfurt (near Berlin) in Germany. We 
+> would be
+> happy to meet you there :).
+>
+> Also, the i3 project will have a booth at the FrOSCon [2], a free and
+> open source software conference from 2011-08-20 to 2011-08-21 in
+> Sankt Augustin
+> (near Bonn) in Germany. Again, we would be happy to meet you!
+>
+> See you there,
+> Best regards,
+> Michael
+>
+> [1] http://events.ccc.de/camp/2011/
+> [2] http://www.froscon.de/
+
+-- 
+ --
+
+ http://lab.sh
+
+From michael+i3 at stapelberg.de  Fri Jul 29 18:24:39 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Fri, 29 Jul 2011 18:24:39 +0200
+Subject: [i3] i3 on the CCC Camp and FrOSCon
+In-Reply-To: <8e78455a911be1bd00dd06736f9f31b0@lab.sh>
+References: <1311939444-sup-457@midna.zekjur.net>
+	<8e78455a911be1bd00dd06736f9f31b0@lab.sh>
+Message-ID: <1311956641-sup-1632@midna.zekjur.net>
+
+Hi fooker,
+
+Excerpts from fooker's message of 2011-07-29 08:45:49 +0200:
+>  nice to hear.
+>  we will bring something to drink. what do you prefer? beer or club 
+>  mate?
+I prefer Club-Mate, I don?t drink alcohol :).
+
+Thanks and see you there,
+Best regards,
+Michael
+

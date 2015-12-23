@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] add good, degraded and bad colors per module
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20add%20good%2C%20degraded%20and%20bad%20colors%20per%20module&In-Reply-To=%3C1350593741-10831-1-git-send-email-mhcerri%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001022.html">
+   <LINK REL="Next"  HREF="001023.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] add good, degraded and bad colors per module</H1>
+    <B>Marcelo Cerri</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20add%20good%2C%20degraded%20and%20bad%20colors%20per%20module&In-Reply-To=%3C1350593741-10831-1-git-send-email-mhcerri%40gmail.com%3E"
+       TITLE="[i3] [PATCH] add good, degraded and bad colors per module">mhcerri at gmail.com
+       </A><BR>
+    <I>Thu Oct 18 22:55:41 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001022.html">[i3] 4.3 Build error on FreeBSD
+</A></li>
+        <LI>Next message: <A HREF="001023.html">[i3] [PATCH] add good, degraded and bad colors per module
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1020">[ date ]</a>
+              <a href="thread.html#1020">[ thread ]</a>
+              <a href="subject.html#1020">[ subject ]</a>
+              <a href="author.html#1020">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>This commit adds support for color_good, color_degraded and color_bad
+directives per module section in the config file.
+---
+
+Please consider this patch for i3status. I'm not sure if this would be
+accepted but feedbacks and suggestions are welcome.
+
+ i3status.c         | 19 +++++++++++++++----
+ include/i3status.h | 12 ++++++++----
+ man/i3status.man   |  5 +++++
+ 3 files changed, 28 insertions(+), 8 deletions(-)
+
+diff --git a/i3status.c b/i3status.c
+index 5d3153c..0037fbc 100644
+--- a/i3status.c
++++ b/i3status.c
+@@ -35,10 +35,17 @@
+ 
+ #define exit_if_null(pointer, ...) { if (pointer == NULL) die(__VA_ARGS__); }
+ 
++#define CFG_COLOR_OPTS(good, degraded, bad) \
++    CFG_STR(&quot;color_good&quot;, good, CFGF_NONE), \
++    CFG_STR(&quot;color_degraded&quot;, degraded, CFGF_NONE), \
++    CFG_STR(&quot;color_bad&quot;, bad, CFGF_NONE)
++
++#define CFG_CUSTOM_COLOR_OPTS CFG_COLOR_OPTS(NULL, NULL, NULL)
++
+ /* socket file descriptor for general purposes */
+ int general_socket;
+ 
+-cfg_t *cfg, *cfg_general;
++cfg_t *cfg, *cfg_general, *cfg_section;
+ 
+ /*
+  * Exit upon SIGPIPE because when we have nowhere to write to, gathering
+@@ -179,35 +186,37 @@ int main(int argc, char *argv[]) {
+         cfg_opt_t general_opts[] = {
+                 CFG_STR(&quot;output_format&quot;, &quot;auto&quot;, CFGF_NONE),
+                 CFG_BOOL(&quot;colors&quot;, 1, CFGF_NONE),
+-                CFG_STR(&quot;color_good&quot;, &quot;#00FF00&quot;, CFGF_NONE),
+-                CFG_STR(&quot;color_degraded&quot;, &quot;#FFFF00&quot;, CFGF_NONE),
+-                CFG_STR(&quot;color_bad&quot;, &quot;#FF0000&quot;, CFGF_NONE),
+                 CFG_STR(&quot;color_separator&quot;, &quot;#333333&quot;, CFGF_NONE),
+                 CFG_INT(&quot;interval&quot;, 1, CFGF_NONE),
++                CFG_COLOR_OPTS(&quot;#00FF00&quot;, &quot;#FFFF00&quot;, &quot;#FF0000&quot;),
+                 CFG_END()
+         };
+ 
+         cfg_opt_t run_watch_opts[] = {
+                 CFG_STR(&quot;pidfile&quot;, NULL, CFGF_NONE),
+                 CFG_STR(&quot;format&quot;, &quot;%title: %status&quot;, CFGF_NONE),
++                CFG_CUSTOM_COLOR_OPTS,
+                 CFG_END()
+         };
+ 
+         cfg_opt_t wireless_opts[] = {
+                 CFG_STR(&quot;format_up&quot;, &quot;W: (%quality at %essid, %bitrate) %ip&quot;, CFGF_NONE),
+                 CFG_STR(&quot;format_down&quot;, &quot;W: down&quot;, CFGF_NONE),
++                CFG_CUSTOM_COLOR_OPTS,
+                 CFG_END()
+         };
+ 
+         cfg_opt_t ethernet_opts[] = {
+                 CFG_STR(&quot;format_up&quot;, &quot;E: %ip (%speed)&quot;, CFGF_NONE),
+                 CFG_STR(&quot;format_down&quot;, &quot;E: down&quot;, CFGF_NONE),
++                CFG_CUSTOM_COLOR_OPTS,
+                 CFG_END()
+         };
+ 
+         cfg_opt_t ipv6_opts[] = {
+                 CFG_STR(&quot;format_up&quot;, &quot;%ip&quot;, CFGF_NONE),
+                 CFG_STR(&quot;format_down&quot;, &quot;no IPv6&quot;, CFGF_NONE),
++                CFG_CUSTOM_COLOR_OPTS,
+                 CFG_END()
+         };
+ 
+@@ -257,6 +266,7 @@ int main(int argc, char *argv[]) {
+                 CFG_STR(&quot;device&quot;, &quot;default&quot;, CFGF_NONE),
+                 CFG_STR(&quot;mixer&quot;, &quot;Master&quot;, CFGF_NONE),
+                 CFG_INT(&quot;mixer_idx&quot;, 0, CFGF_NONE),
++                CFG_CUSTOM_COLOR_OPTS,
+                 CFG_END()
+         };
+ 
+@@ -275,6 +285,7 @@ int main(int argc, char *argv[]) {
+                 CFG_SEC(&quot;ddate&quot;, ddate_opts, CFGF_NONE),
+                 CFG_SEC(&quot;load&quot;, load_opts, CFGF_NONE),
+                 CFG_SEC(&quot;cpu_usage&quot;, usage_opts, CFGF_NONE),
++                CFG_CUSTOM_COLOR_OPTS,
+                 CFG_END()
+         };
+ 
+diff --git a/include/i3status.h b/include/i3status.h
+index fc984f8..559df9e 100644
+--- a/include/i3status.h
++++ b/include/i3status.h
+@@ -45,13 +45,13 @@ enum { O_DZEN2, O_XMOBAR, O_I3BAR, O_NONE } output_format;
+ 
+ #define CASE_SEC(name) \
+         if (BEGINS_WITH(current, name)) \
+-                with(cfg_t *, sec, cfg_getsec(cfg, name)) \
++                with(cfg_t *, sec, cfg_section = cfg_getsec(cfg, name)) \
+                         if (sec != NULL)
+ 
+ #define CASE_SEC_TITLE(name) \
+         if (BEGINS_WITH(current, name)) \
+                 with(const char *, title, current + strlen(name) + 1) \
+-                        with(cfg_t *, sec, cfg_gettsec(cfg, name, title)) \
++                        with(cfg_t *, sec, cfg_section = cfg_gettsec(cfg, name, title)) \
+                                 if (sec != NULL)
+ 
+ /* Macro which any plugin can use to output the full_text part (when the output
+@@ -88,7 +88,11 @@ enum { O_DZEN2, O_XMOBAR, O_I3BAR, O_NONE } output_format;
+ #define START_COLOR(colorstr) \
+ 	do { \
+ 		if (cfg_getbool(cfg_general, &quot;colors&quot;)) { \
+-			const char *_val = cfg_getstr(cfg_general, colorstr); \
++			const char *_val = NULL; \
++			if (cfg_section) \
++				_val = cfg_getstr(cfg_section, colorstr); \
++			if (!_val) \
++				_val = cfg_getstr(cfg_general, colorstr); \
+ 			if (output_format == O_I3BAR) { \
+ 				yajl_gen_string(json_gen, (const unsigned char *)&quot;color&quot;, strlen(&quot;color&quot;)); \
+ 				yajl_gen_string(json_gen, (const unsigned char *)_val, strlen(_val)); \
+@@ -147,6 +151,6 @@ bool process_runs(const char *path);
+ /* socket file descriptor for general purposes */
+ extern int general_socket;
+ 
+-extern cfg_t *cfg, *cfg_general;
++extern cfg_t *cfg, *cfg_general, *cfg_section;
+ 
+ #endif
+diff --git a/man/i3status.man b/man/i3status.man
+index 0d98f8f..1e0278b 100644
+--- a/man/i3status.man
++++ b/man/i3status.man
+@@ -143,6 +143,11 @@ none::
+ Does not use any color codes. Separates values by the pipe symbol. This should
+ be used with i3bar and can be used for custom scripts.
+ 
++It's also possible to use the color_good, color_degraded, color_bad directives
++to define specific colors to each module. If one of these directives is defined
++in a module section its value will override the value defined in the general
++section just for this module.a
++
+ === IPv6
+ 
+ This module gets the IPv6 address used for outgoing connections (that is, the
+-- 
+1.7.12
+
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001022.html">[i3] 4.3 Build error on FreeBSD
+</A></li>
+	<LI>Next message: <A HREF="001023.html">[i3] [PATCH] add good, degraded and bad colors per module
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1020">[ date ]</a>
+              <a href="thread.html#1020">[ thread ]</a>
+              <a href="subject.html#1020">[ subject ]</a>
+              <a href="author.html#1020">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

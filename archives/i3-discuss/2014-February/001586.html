@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3status only displays the temperature from one sensor
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3status%20only%20displays%20the%20temperature%20from%20one%20sensor&In-Reply-To=%3C5308A213.3060201%40hunsicker.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001585.html">
+   <LINK REL="Next"  HREF="001587.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3status only displays the temperature from one sensor</H1>
+    <B>Marco Hunsicker</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3status%20only%20displays%20the%20temperature%20from%20one%20sensor&In-Reply-To=%3C5308A213.3060201%40hunsicker.de%3E"
+       TITLE="[i3] i3status only displays the temperature from one sensor">i3 at hunsicker.de
+       </A><BR>
+    <I>Sat Feb 22 14:11:47 CET 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001585.html">[i3] Resize direction does not behave how I'd expect
+</A></li>
+        <LI>Next message: <A HREF="001587.html">[i3] i3status only displays the temperature from one sensor
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1586">[ date ]</a>
+              <a href="thread.html#1586">[ thread ]</a>
+              <a href="subject.html#1586">[ subject ]</a>
+              <a href="author.html#1586">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Howdy,
+
+I've ran into a small problem with i3status. I want to show temperatures 
+for all CPU cores, but i3status always shows the same temperature for 
+all cores!
+
+
+My relevant config looks like this:
+
+order += &quot;cpu_temperature 1&quot;
+order += &quot;cpu_temperature 2&quot;
+order += &quot;cpu_temperature 3&quot;
+order += &quot;cpu_temperature 4&quot;
+
+cpu_temperature 1 {
+     format = &quot;%degrees&#176;&quot;
+     path = &quot;/sys/devices/platform/coretemp.0/temp2_input&quot;
+     max_threshold = 70
+}
+cpu_temperature 2 {
+     format = &quot;%degrees&#176;&quot;
+     path = &quot;/sys/devices/platform/coretemp.0/temp3_input&quot;
+     max_threshold = 70
+}
+cpu_temperature 3 {
+     format = &quot;%degrees&#176;&quot;
+     path = &quot;/sys/devices/platform/coretemp.0/temp4_input&quot;
+     max_threshold = 70
+}
+cpu_temperature 4 {
+     format = &quot;%degrees&#176;&quot;
+     path = &quot;/sys/devices/platform/coretemp.0/temp5_input&quot;
+     max_threshold = 70
+}
+
+The output is:
+
+[
+{&quot;name&quot;:&quot;cpu_temperature&quot;,&quot;instance&quot;:&quot;/sys/devices/platform/coretemp.0/temp1_input&quot;,&quot;full_text&quot;:&quot;28&#176;&quot;},
+{&quot;name&quot;:&quot;cpu_temperature&quot;,&quot;instance&quot;:&quot;/sys/devices/platform/coretemp.0/temp1_input&quot;,&quot;full_text&quot;:&quot;28&#176;&quot;},
+{&quot;name&quot;:&quot;cpu_temperature&quot;,&quot;instance&quot;:&quot;/sys/devices/platform/coretemp.0/temp1_input&quot;,&quot;full_text&quot;:&quot;28&#176;&quot;},
+{&quot;name&quot;:&quot;cpu_temperature&quot;,&quot;instance&quot;:&quot;/sys/devices/platform/coretemp.0/temp1_input&quot;,&quot;full_text&quot;:&quot;28&#176;&quot;}
+]
+
+Always the same path is used!
+
+
+Looking at src/print_cpu_temperature.c, the following code seems to be 
+the culprit:
+
+     if (thermal_zone == NULL) {
+         if (path == NULL)
+             asprintf(&amp;thermal_zone, THERMAL_ZONE, zone);
+         else
+             asprintf(&amp;thermal_zone, path, zone);
+     }
+     path = thermal_zone;
+
+
+
+I've changed my copy to:
+
+     if (path == NULL) {
+         if (thermal_zone == NULL) {
+             if (path == NULL)
+                 asprintf(&amp;thermal_zone, THERMAL_ZONE, zone);
+             else
+                 asprintf(&amp;thermal_zone, path, zone);
+         }
+         path = thermal_zone;
+     }
+
+as I provide the full paths to the sensor outputs in my config file.
+
+But before I submit a patch, I wanted to ask whether this still catches 
+the intention of this method?
+
+The man page only rudimentary describes this feature and it's not clear 
+to me whether the parameter substitution should always take place.
+
+Can anybody please clarify? Thanks!
+
+Cheers,
+   Marco
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001585.html">[i3] Resize direction does not behave how I'd expect
+</A></li>
+	<LI>Next message: <A HREF="001587.html">[i3] i3status only displays the temperature from one sensor
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1586">[ date ]</a>
+              <a href="thread.html#1586">[ thread ]</a>
+              <a href="subject.html#1586">[ subject ]</a>
+              <a href="author.html#1586">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

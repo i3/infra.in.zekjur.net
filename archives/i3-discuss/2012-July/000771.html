@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Improved%20i3bar%20hide%20mode%20behavior%20%28In%20my%20point%20of%0A%09view%29&In-Reply-To=%3CCAMJW5%3D1n6_DF7A_J4rQ3HfD4Un1Vgn8y3JxqktOQmgNe6PvqQQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000770.html">
+   <LINK REL="Next"  HREF="000772.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)</H1>
+    <B>DR</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Improved%20i3bar%20hide%20mode%20behavior%20%28In%20my%20point%20of%0A%09view%29&In-Reply-To=%3CCAMJW5%3D1n6_DF7A_J4rQ3HfD4Un1Vgn8y3JxqktOQmgNe6PvqQQ%40mail.gmail.com%3E"
+       TITLE="[i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)">drdarkraven at gmail.com
+       </A><BR>
+    <I>Sat Jul  7 17:45:52 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000770.html">[i3] Tray Icons Disappearing on i3bar
+</A></li>
+        <LI>Next message: <A HREF="000772.html">[i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#771">[ date ]</a>
+              <a href="thread.html#771">[ thread ]</a>
+              <a href="subject.html#771">[ subject ]</a>
+              <a href="author.html#771">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Since I failed to convince Michael to accept my newer patch, I decide to
+drop those more &quot;advanced&quot; patch, and try to push this simple patch into i3.
+
+On Fri, Feb 24, 2012 at 8:13 AM, Fernando Lemos &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">fernandotcl at i3wm.org</A>&gt;wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Wed, Feb 22, 2012 at 7:15 AM, DR &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">drdarkraven at gmail.com</A>&gt; wrote:
+</I>&gt;<i> &gt; On Wed, Feb 22, 2012 at 2:21 PM, DR &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">drdarkraven at gmail.com</A>&gt; wrote:
+</I>&gt;<i> &gt;&gt; When a workspace marked 'urgent', i3bar unhide itself. if I want to
+</I>&gt;<i> &gt;&gt; hide it again, I must press the modifier.
+</I>&gt;<i> &gt;&gt; This sometimes annoys me.
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; In this patch I change the above behavior to this: If a urgent
+</I>&gt;<i> &gt;&gt; workspace occurs, i3bar will unhide itself; and when you navigates
+</I>&gt;<i> &gt;&gt; away from the last urgent workspace and there is no more urgent
+</I>&gt;<i> &gt;&gt; workspace, i3bar will hide itself again.
+</I>&gt;<i>
+</I>&gt;<i> This sounds interesting, but have you discussed it with Michael first?
+</I>&gt;<i> I'd recommend always pinging Michael first to see if what you intend
+</I>&gt;<i> to do is in line with the project goals and things like that. Unless,
+</I>&gt;<i> of course, you don't care about getting your patches merged.
+</I>&gt;<i>
+</I>&gt;<i> Anyways, some comments below.
+</I>&gt;<i>
+</I>&gt;<i> &gt; Oops... I messed it up.
+</I>&gt;<i> &gt; Here is the patch fix build, and improve the behavior a little bit more:
+</I>&gt;<i> &gt; When the urgent workspace is currently focused, i3bar will hide as
+</I>&gt;<i> &gt; soon as the urgent mark has gone.
+</I>&gt;<i>
+</I>&gt;<i> Please merge both patches in a single one to make it easier to review
+</I>&gt;<i> (unless they do separate things, of course).
+</I>&gt;<i>
+</I>&gt;<i> I noticed you used &quot;if (&quot; and &quot;if(&quot;, please stick with &quot;if (&quot; as
+</I>&gt;<i> that's what the rest of xcb.c uses.
+</I>&gt;<i>
+</I>&gt;<i> You declare and read bar_hidden, but you never seem to write to it. Am
+</I>&gt;<i> I missing something? Also, I'd rather have the code that calls
+</I>&gt;<i> hide/unhide_bar simply not call those functions rather than do the
+</I>&gt;<i> checking inside the functions, but that's subjective, I guess.
+</I>&gt;<i>
+</I>&gt;<i> The indentation level on the call to hide_bars() in the last chunk of
+</I>&gt;<i> the second patch is wrong. Are you sure you don't want that enclosed
+</I>&gt;<i> by brackets, as part of the &quot;else&quot; branch?
+</I>&gt;<i>
+</I>Above problem are solved.
+
+&gt;<i>
+</I>&gt;<i> You're doing all the logic in the drawing code. Perhaps it would be
+</I>&gt;<i> better to detect that stuff directly in the ipc.c, when you receive
+</I>&gt;<i> the workspace info from i3, after the call to parse_workspaces_json.
+</I>&gt;<i>
+</I>I think it's fine. The original hide/unhide logical is done in draw_bar as
+well, I just follow it. And I think the logical is simple enough to be
+included in drawing code.
+
+
+&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120707/e6bb5bbd/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120707/e6bb5bbd/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Automatically-hide-i3bar-when-it-s-unneeded.patch
+Type: application/octet-stream
+Size: 2543 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120707/e6bb5bbd/attachment.obj">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120707/e6bb5bbd/attachment.obj</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000770.html">[i3] Tray Icons Disappearing on i3bar
+</A></li>
+	<LI>Next message: <A HREF="000772.html">[i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#771">[ date ]</a>
+              <a href="thread.html#771">[ thread ]</a>
+              <a href="subject.html#771">[ subject ]</a>
+              <a href="author.html#771">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

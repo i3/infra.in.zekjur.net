@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] idea on default layout orientation: complete binary tree	model
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20idea%20on%20default%20layout%20orientation%3A%20complete%20binary%20tree%0A%09model&In-Reply-To=%3CCABf5LwDZotr_%3Dc7aYWzveSoHaBKxhQZtnpBYWfhHSwg0ow%2Bfbw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001154.html">
+   <LINK REL="Next"  HREF="001156.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] idea on default layout orientation: complete binary tree	model</H1>
+    <B>Tai-Lin Chu</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20idea%20on%20default%20layout%20orientation%3A%20complete%20binary%20tree%0A%09model&In-Reply-To=%3CCABf5LwDZotr_%3Dc7aYWzveSoHaBKxhQZtnpBYWfhHSwg0ow%2Bfbw%40mail.gmail.com%3E"
+       TITLE="[i3] idea on default layout orientation: complete binary tree	model">tailinchu at gmail.com
+       </A><BR>
+    <I>Mon Jan 21 20:41:07 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001154.html">[i3] idea on default layout orientation: complete binary tree	model
+</A></li>
+        <LI>Next message: <A HREF="001156.html">[i3] idea on default layout orientation: complete binary tree	model
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1155">[ date ]</a>
+              <a href="thread.html#1155">[ thread ]</a>
+              <a href="subject.html#1155">[ subject ]</a>
+              <a href="author.html#1155">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>1. I dont think there is a option for auto toggle between splitv and
+splith. maybe you mean default_orientation auto? but it is statically
+determined by the screen size in the beginning. (p.s. maybe awesome
+wm?)
+
+2. I forget to talk about the benefits in my last post. let's analyze a bit:
+* when we continuously use mod+ return, both stacking and tabbed
+result in a readable window size. however splitvh does not. I know
+someone mentioned that if the screen is large enough, you can actually
+split 3 or 4 times. but the property of complete binary tree is that
+all windows (except those in the deepest level) should have about the
+same window size. if you keep splitting more windows, the property
+ensures that all windows do not get ridiculously tall or fat. (if you
+still want to split 3, 4 times, you can manually move the new windows.
+but i dont think cbtree is less readable.)
+
+* as mentioned, this actually benefits people who have smaller screen
+(12 in x 8 in) like me. I cannot do splitv because this makes windows
+too fat, one splith is ok but more than that makes the windows too
+thin. because i have to move things around, this is
+counter-productive. (I now stay with tabbed, but by default it is hard
+to look at 2 windows together)
+
+* split v and split h comment is still there. but by default splitv
+splith orientation are not that useful (for reason above).  The
+purpose of default orientation is that it reduces work for users, so
+cbtree model is just about right.
+
+
+
+
+
+
+On Mon, Jan 21, 2013 at 3:20 AM, Tai-Lin Chu &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">tailinchu at gmail.com</A>&gt; wrote:
+&gt;<i> at this moment i3wm has 4 layouts: 1. splitv 2. splith 3. tabbed 4. stacked.
+</I>&gt;<i>
+</I>&gt;<i> But I think we should remove 1 and 2 because this default setting
+</I>&gt;<i>  is useless. Our screen has limited width or height, so splitting more
+</I>&gt;<i> than 2 times will make nothing readable.
+</I>&gt;<i>
+</I>&gt;<i> Instead, I purpose complete binary tree model. this will replace the
+</I>&gt;<i> default 1 and 2.
+</I>&gt;<i>
+</I>&gt;<i> the new behaviour for splitv will be like this if I have 4 windows opened:
+</I>&gt;<i>
+</I>&gt;<i>           v
+</I>&gt;<i>        h    h
+</I>&gt;<i>      1  3 2  4
+</I>&gt;<i>
+</I>&gt;<i> the new behaviour for splith is simply:
+</I>&gt;<i>            h
+</I>&gt;<i>        v    v
+</I>&gt;<i>      1  3 2  4
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> when we insert a new node (windows) for splith
+</I>&gt;<i>            h
+</I>&gt;<i>        v    v
+</I>&gt;<i>      h  3 2  4
+</I>&gt;<i>     1 5
+</I>&gt;<i>
+</I>&gt;<i> if you are curious, how we get 1324 instead of 1234:
+</I>&gt;<i>
+</I>&gt;<i>      h
+</I>&gt;<i>     1 2
+</I>&gt;<i>
+</I>&gt;<i>      h
+</I>&gt;<i>    v  2
+</I>&gt;<i>   1 3
+</I>&gt;<i>
+</I>&gt;<i>           h
+</I>&gt;<i>        v    v
+</I>&gt;<i>      1  3 2  4
+</I></PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001154.html">[i3] idea on default layout orientation: complete binary tree	model
+</A></li>
+	<LI>Next message: <A HREF="001156.html">[i3] idea on default layout orientation: complete binary tree	model
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1155">[ date ]</a>
+              <a href="thread.html#1155">[ thread ]</a>
+              <a href="subject.html#1155">[ subject ]</a>
+              <a href="author.html#1155">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

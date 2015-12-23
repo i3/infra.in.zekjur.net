@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3-msg - move all/some workspaces to another output
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3-msg%20-%20move%20all/some%20workspaces%20to%20another%20output&In-Reply-To=%3CCANnVG6%3DuVeBXZOQA3_G7AgiDgLDERHJ3RNrdr-eJ0wCBNO6VGw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001912.html">
+   <LINK REL="Next"  HREF="001914.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3-msg - move all/some workspaces to another output</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3-msg%20-%20move%20all/some%20workspaces%20to%20another%20output&In-Reply-To=%3CCANnVG6%3DuVeBXZOQA3_G7AgiDgLDERHJ3RNrdr-eJ0wCBNO6VGw%40mail.gmail.com%3E"
+       TITLE="[i3] i3-msg - move all/some workspaces to another output">michael at i3wm.org
+       </A><BR>
+    <I>Tue Oct 14 20:53:17 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001912.html">[i3] i3-msg - move all/some workspaces to another output
+</A></li>
+        <LI>Next message: <A HREF="001914.html">[i3] i3-msg - move all/some workspaces to another output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1913">[ date ]</a>
+              <a href="thread.html#1913">[ thread ]</a>
+              <a href="subject.html#1913">[ subject ]</a>
+              <a href="author.html#1913">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Have you tried assigning the workspaces to VGA1? See
+<A HREF="http://i3wm.org/docs/userguide.html#workspace_screen.">http://i3wm.org/docs/userguide.html#workspace_screen.</A> When the output
+is unavailable, workspaces get moved to another output, which in your
+case is LVDS1.
+
+On Tue, Oct 14, 2014 at 8:34 PM, Fabian Raetz &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">fabian.raetz at gmail.com</A>&gt; wrote:
+&gt;<i> On Tue, Oct 14, 2014 at 10:55:07AM -0500, Bigby James wrote:
+</I>&gt;&gt;<i> On 10/14, Fabian Raetz wrote:
+</I>&gt;&gt;<i> &gt; Hi all,
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; i am looking for a way to move all (or some)
+</I>&gt;&gt;<i> &gt; of my workspaces to another output.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; Something like in the following shell script  would be nice:
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; -------------------------
+</I>&gt;&gt;<i> &gt; #!/bin/sh
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; WS=&quot;2 3 4 5 6&quot;
+</I>&gt;&gt;<i> &gt; OUTPUT=VGA1
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; for W in $WS; do
+</I>&gt;&gt;<i> &gt;     i3-msg move workspace $W to output $OUTPUT
+</I>&gt;&gt;<i> &gt; done
+</I>&gt;&gt;<i> &gt; -------------------------
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; Is there an easy solution i have overseen?
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; Regards,
+</I>&gt;&gt;<i> &gt; Fabian
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> An active monitor *must* have a workspace on it, and a workspace only exists after
+</I>&gt;&gt;<i> being explicitly created. So you can't move all currently existing workspaces to
+</I>&gt;&gt;<i> another monitor simultaneously. You'd need to first create a new workspace on
+</I>&gt;&gt;<i> the current monitor, then move all the previously created ones to a new monitor.
+</I>&gt;&gt;<i> What you can also do is use xrandr to deactivate the current display, which (if you
+</I>&gt;&gt;<i> only have two monitors in total) will move all worskpaces to the only active
+</I>&gt;&gt;<i> monitor.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> It's probably worth explaining exactly why you'd want to do this, though, since
+</I>&gt;&gt;<i> needing to move everything to another monitor all at once really sounds like a
+</I>&gt;&gt;<i> scenario that could be avoided with proper planning.
+</I>&gt;<i>
+</I>&gt;<i> Sure.
+</I>&gt;<i> I am using i3wm on my Notebook which has a small screen resolution
+</I>&gt;<i> (1366x768).  So it happens that i have most workspaces on a second
+</I>&gt;<i> output (VGA1). On the first output (LVDS1) is most of the time only
+</I>&gt;<i> workspace 1 and 10 active which shows xconsole/mutt/logs.
+</I>&gt;<i>
+</I>&gt;<i> Before i switch locations i detach the second output (VGA1) and all workspaces move
+</I>&gt;<i> to the first (LVDS1).  Then i suspend.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> So far, so good.  Now the problem i am trying to solve:
+</I>&gt;<i>
+</I>&gt;<i> When i resume and plug in a second monitor, i have to manually move all
+</I>&gt;<i> workspaces back to the second output which is a bit frustrating.
+</I>&gt;<i> This happens multiple times a day.
+</I>&gt;<i>
+</I>&gt;<i> I run a script whenever an output changes via an external tool,
+</I>&gt;<i> so i thought i could use the above snippet or something else to move all
+</I>&gt;<i> existing workspaces except 1 and 10 to the second output (VGA1).
+</I>&gt;<i>
+</I>&gt;<i> Any suggestions?
+</I>&gt;<i>
+</I>&gt;<i> Thanks for your time,
+</I>&gt;<i> Fabian
+</I>&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i> &quot;A common mistake that people make when trying to design something completely
+</I>&gt;&gt;<i> foolproof is to underestimate the ingenuity of complete fools.&quot; - Douglas Adams
+</I>&gt;&gt;<i>
+</I>
+
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001912.html">[i3] i3-msg - move all/some workspaces to another output
+</A></li>
+	<LI>Next message: <A HREF="001914.html">[i3] i3-msg - move all/some workspaces to another output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1913">[ date ]</a>
+              <a href="thread.html#1913">[ thread ]</a>
+              <a href="subject.html#1913">[ subject ]</a>
+              <a href="author.html#1913">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

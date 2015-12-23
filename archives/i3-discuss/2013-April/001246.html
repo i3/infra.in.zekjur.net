@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Natural sizing of windows
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Natural%20sizing%20of%20windows&In-Reply-To=%3C20130407121257.C46DA42F75%40snark.thyrsus.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001257.html">
+   <LINK REL="Next"  HREF="001247.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Natural sizing of windows</H1>
+    <B>Eric S. Raymond</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Natural%20sizing%20of%20windows&In-Reply-To=%3C20130407121257.C46DA42F75%40snark.thyrsus.com%3E"
+       TITLE="[i3] Natural sizing of windows">esr at thyrsus.com
+       </A><BR>
+    <I>Sun Apr  7 14:12:57 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001257.html">[i3] i3lock hooks
+</A></li>
+        <LI>Next message: <A HREF="001247.html">[i3] Natural sizing of windows
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1246">[ date ]</a>
+              <a href="thread.html#1246">[ thread ]</a>
+              <a href="subject.html#1246">[ subject ]</a>
+              <a href="author.html#1246">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I am new to i3 and to tiling window managers in general.  I'm using i3 now,
+after having experimented briefly with awesome and xmonad, because the UI
+seems a little better thought out and documented here.
+
+There is one thing I miss from conventional window managers, though,
+and I am wondering if it could be integrated into i3's model.  The
+practical problem is that I normally want both my terminal emulators
+and my Emacs windows to have a fixed 80-column width (unless I
+explicitly resize them), in order for the text displays to look
+natural.
+
+The more general problem is that i3's rules for sizing windows take no
+account of the application's preferred or default size.  This also
+affects (for example) Pithos, which in a floating-layout window
+manager creates a smallish window but under i3 gets sized so it has
+acres of pointless whitespace.
+
+I propose a &quot;natural sizing&quot; option that would, at window-layout
+time, query an application for its preferred size and try to meet
+that preference as closely as possible. I suggest the following rules:
+
+(1) When splitting a container vertically to create a naturally-sized
+application window, the new window's width is set to that size
+(provided it is less than the parent width).  The new window's 
+height is the parent height.
+
+(2) When splitting a container horizontally to create a naturally-sized
+application window, the new window's height is set to that size
+(provided it is less than the parent height).  The new window's 
+width is the parent width.
+
+(3) When the user explicitly resizes a window, it is no longer treated
+as naturally sized.
+
+(4) When a container is resized, naturally-sized subwindows are *not*
+resized - only the &quot;flex-sized&quot; others shrink or expand. This rule may
+lock the container's horizontal or vertical or both sizes depending on
+the subwindow layout.
+
+(5) Because the first window created in a workspace isn't made with 
+a container split, it is always flex-sized.
+
+I would like to be able to tell i3 to size all terminal emulators 
+and Emacs windows naturally. Then my normal startup sequence would look
+like this:
+
+1. $mod-Enter to create a flex-sized terminal emulator filling the screen.
+
+2. $mod-Enter to create a natural-sized terminal emulator
+
+3. Change focus to the flex-sized window
+
+4. $mod-d emacs to create a naturally-sized Emacs
+
+My normal practice when suggesting a feature like this would be to
+ship a patch implementing it, and I apologize for not doing so. But it
+seems like a simple enough idea to be implemented very quickly by
+someone who (unlike me) already knows the window manager internals.
+-- 
+		&lt;a href=&quot;<A HREF="http://www.catb.org/~esr/">http://www.catb.org/~esr/</A>&quot;&gt;Eric S. Raymond&lt;/a&gt;
+
+When all government ...in little as in great things... shall be drawn to
+Washington as the center of all power; it will render powerless the checks
+provided of one government on another, and will become as venal and oppressive
+as the government from which we separated.&quot;	-- Thomas Jefferson, 1821
+</PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001257.html">[i3] i3lock hooks
+</A></li>
+	<LI>Next message: <A HREF="001247.html">[i3] Natural sizing of windows
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1246">[ date ]</a>
+              <a href="thread.html#1246">[ thread ]</a>
+              <a href="subject.html#1246">[ subject ]</a>
+              <a href="author.html#1246">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

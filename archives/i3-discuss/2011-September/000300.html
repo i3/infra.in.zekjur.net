@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Switching workspaces when mouse touch the border of it
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Switching%20workspaces%20when%20mouse%20touch%20the%20border%20of%20it&In-Reply-To=%3Calpine.LNX.2.02.1109250123560.24084%40myhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000299.html">
+   <LINK REL="Next"  HREF="000304.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Switching workspaces when mouse touch the border of it</H1>
+    <B>Bernhard Guillon</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Switching%20workspaces%20when%20mouse%20touch%20the%20border%20of%20it&In-Reply-To=%3Calpine.LNX.2.02.1109250123560.24084%40myhost%3E"
+       TITLE="[i3] Switching workspaces when mouse touch the border of it">Bernhard.Guillon at opensimpad.org
+       </A><BR>
+    <I>Sun Sep 25 01:25:39 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000299.html">[i3] Switching workspaces when mouse touch the border of it
+</A></li>
+        <LI>Next message: <A HREF="000304.html">[i3] Switching workspaces when mouse touch the border of it
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#300">[ date ]</a>
+              <a href="thread.html#300">[ thread ]</a>
+              <a href="subject.html#300">[ subject ]</a>
+              <a href="author.html#300">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+
+On Sat, 24 Sep 2011, Michael Stapelberg wrote:
+
+&gt;<i> Well, a few hints on how to implement this:
+</I>&gt;<i> &#8226; Check out grabbing, see for example drag_pointer() in src/floating.c. You
+</I>&gt;<i>   will probably need to grab the pointer in order to always receive
+</I>&gt;<i>   PointerMotion events.
+</I>&gt;<i> &#8226;&#160;You have to get a bit more familiar with the tree. checking the root window
+</I>&gt;<i>   size is not appropriate for finding out how big your screen(s) are. Just
+</I>&gt;<i>   recursively go to the parent until you find the appropriate containers (type
+</I>&gt;<i>   == CT_OUTPUT).
+</I>&gt;<i> &#8226; Also, use con_focus() instead of pointer warping.
+</I>
+
+Thanks for your advice I will dig deeper into the suggested code :)
+
+Best regards,
+Bernhard
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000299.html">[i3] Switching workspaces when mouse touch the border of it
+</A></li>
+	<LI>Next message: <A HREF="000304.html">[i3] Switching workspaces when mouse touch the border of it
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#300">[ date ]</a>
+              <a href="thread.html#300">[ thread ]</a>
+              <a href="subject.html#300">[ subject ]</a>
+              <a href="author.html#300">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Nested key bindings?
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Nested%20key%20bindings%3F&In-Reply-To=%3C912AF00192B7E9489DA0B24692F65B3B2FD53A2A%40XCH108CNC.rim.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000206.html">
+   <LINK REL="Next"  HREF="000175.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Nested key bindings?</H1>
+    <B>Derek Wyatt</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Nested%20key%20bindings%3F&In-Reply-To=%3C912AF00192B7E9489DA0B24692F65B3B2FD53A2A%40XCH108CNC.rim.net%3E"
+       TITLE="[i3] Nested key bindings?">dwyatt at rim.com
+       </A><BR>
+    <I>Tue Jan 25 18:14:21 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000206.html">[i3] Nested key bindings?
+</A></li>
+        <LI>Next message: <A HREF="000175.html">[i3] Nested key bindings?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#173">[ date ]</a>
+              <a href="thread.html#173">[ thread ]</a>
+              <a href="subject.html#173">[ subject ]</a>
+              <a href="author.html#173">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thanks guys,
+
+Yeah, I saw that, and it looked like it might work, but what made me see if there was something better was this:
+
+mode &quot;resize&quot; {
+   ...
+   bind 36 mode default
+}
+
+Which you've confirmed below... you're kinda &quot;stuck&quot; there until you explicitly get out, as opposed to just executing the command and being done after it executes.  However, this looks like it'll do alright.
+
+Thanks a lot,
+Derek
+
+P.S. Would there be any plan to add this in the future?  I may hack at it, but it would be at work, and I'd have to fly it by legal :)
+
+-----Original Message-----
+From: <A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss-bounces at i3.zekjur.net</A> [mailto:<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss-bounces at i3.zekjur.net</A>] On Behalf Of Michael Stapelberg
+Sent: Tuesday, January 25, 2011 11:59 AM
+To: i3-discuss
+Subject: Re: [i3] Nested key bindings?
+
+Hi Derek,
+
+Excerpts from Derek Wyatt's message of 2011-01-25 17:51:01 +0100:
+&gt;<i> This gives me more of that &quot;vim feeling&quot; where I can do things like: 'map ,of
+</I>&gt;<i> :call ...', so I'm not holding down Shift+Mod1+Contro+k or whatever... Does
+</I>&gt;<i> anyone know if this is possible or if there's some other feature that can
+</I>&gt;<i> mimic this, or even do better?
+</I>This is possible using modes, see for example [1] or take the following (untested) example:
+
+  mode &quot;leader&quot; {
+    bindsym t exec /usr/bin/urxvt
+    bindsym b exec /usr/bin/firefox
+    bindsym Enter mode default
+  }
+  
+  bindsym Mod1+a mode leader
+
+Please note that there is no concept of a timeout (so when pressing Mod1+a and
+then pressing nothing, you are still stuck in the leader mode and need to press
+Enter to get out of it). Also, there is no visual indication about modes at the
+moment.
+
+Best regards,
+Michael
+
+[1] <A HREF="http://i3.zekjur.net/docs/userguide.html#resizingconfig">http://i3.zekjur.net/docs/userguide.html#resizingconfig</A>
+
+---------------------------------------------------------------------
+This transmission (including any attachments) may contain confidential information, privileged material (including material protected by the solicitor-client or other applicable privileges), or constitute non-public information. Any use of this information by anyone other than the intended recipient is prohibited. If you have received this transmission in error, please immediately reply to the sender and delete this information from your system. Use, dissemination, distribution, or reproduction of this transmission by unintended recipients is not authorized and may be unlawful.
+</PRE>
+
+
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000206.html">[i3] Nested key bindings?
+</A></li>
+	<LI>Next message: <A HREF="000175.html">[i3] Nested key bindings?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#173">[ date ]</a>
+              <a href="thread.html#173">[ thread ]</a>
+              <a href="subject.html#173">[ subject ]</a>
+              <a href="author.html#173">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

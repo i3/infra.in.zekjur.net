@@ -1,0 +1,183 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] GLFW_FLOATING window
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20GLFW_FLOATING%20window&In-Reply-To=%3Cc05d3062-dea3-4c9b-ad50-07a76c6c0bf0%40typeapp.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002155.html">
+   <LINK REL="Next"  HREF="002152.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] GLFW_FLOATING window</H1>
+    <B>Ingo Bürk</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20GLFW_FLOATING%20window&In-Reply-To=%3Cc05d3062-dea3-4c9b-ad50-07a76c6c0bf0%40typeapp.com%3E"
+       TITLE="[i3] GLFW_FLOATING window">admin at airblader.de
+       </A><BR>
+    <I>Tue Aug 25 17:59:27 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002155.html">[i3] GLFW_FLOATING window
+</A></li>
+        <LI>Next message: <A HREF="002152.html">[i3] GLFW_FLOATING window
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2156">[ date ]</a>
+              <a href="thread.html#2156">[ thread ]</a>
+              <a href="subject.html#2156">[ subject ]</a>
+              <a href="author.html#2156">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Kevin, 
+
+Applications generally shouldn't dictate how the window manager has to manage windows. In fact the specs clearly state that the window manager is allowed to deny, allow or modify such requests and that the application needs to deal with that. Also note that if you provide proper information on the window (class or role etc.), any user can make sure that the window will float.
+
+As for supporting the atom in i3, I'm all for i3 supporting more of the standards, but we need to find the appropriate way to handle these atoms and fully understand the consequences. It doesn't seem immediately clear to me that such windows must be floated. I think Michael seems to see it similarly. 
+
+Regards 
+Ingo 
+
+Sent from TypeMail
+
+
+
+On Aug 25, 2015, 17:53, at 17:53, Kevin J &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jkevin1 at umbc.edu</A>&gt; wrote:
+&gt;<i>Michael:
+</I>&gt;<i>The reason I want the window to float is if I want a specific
+</I>&gt;<i>resolution
+</I>&gt;<i>for the window (I'm working on an OpenGL project).  Especially if the
+</I>&gt;<i>window is set to be not user-resizeable, i3 will still resize it to fit
+</I>&gt;<i>it
+</I>&gt;<i>to a tile.  I had read that and thought that maybe that wouldn't be the
+</I>&gt;<i>correct atom to use, but none of the ones i3 uses to determine whether
+</I>&gt;<i>to
+</I>&gt;<i>make a window floating seem correct either (MODAL, DIALOG, UTILITY,
+</I>&gt;<i>TOOLBAR, and SPLASH)
+</I>&gt;<i>
+</I>&gt;<i>Ingo:
+</I>&gt;<i>Thanks, I will look into that once I get back from work.  Also &quot;instead
+</I>&gt;<i>use
+</I>&gt;<i>a more suitable atom&quot; do you know of any that would work? Otherwise
+</I>&gt;<i>should
+</I>&gt;<i>this atom be added to i3's floating window detection?
+</I>&gt;<i>
+</I>&gt;<i>On Tue, Aug 25, 2015 at 11:44 AM, Ingo Bürk &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">admin at airblader.de</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Hi Michael,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I agree that there are better choices. On a side note, I noticed the
+</I>&gt;<i>other
+</I>&gt;&gt;<i> day that Google Hangout screen sharing opens a window to offer ending
+</I>&gt;<i>the
+</I>&gt;&gt;<i> screen share session with this very atom. That window definitely
+</I>&gt;<i>needs to
+</I>&gt;&gt;<i> float, though it's easy to argue that Chrome is at fault here and
+</I>&gt;<i>should
+</I>&gt;&gt;<i> use a more suitable atom.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Either way, i3 doesn't claim to support this atom and that alone
+</I>&gt;<i>should
+</I>&gt;&gt;<i> cause applications to not rely on it and instead use a more suitable
+</I>&gt;<i>atom.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Ingo
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Sent from TypeMail &lt;<A HREF="http://www.typeapp.com/r">http://www.typeapp.com/r</A>&gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Aug 25, 2015, at 17:40, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt;
+</I>&gt;<i>wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> <A HREF="http://standards.freedesktop.org/wm-spec/1.3/ar01s05.html">http://standards.freedesktop.org/wm-spec/1.3/ar01s05.html</A> contains:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> &quot;&quot;&quot;
+</I>&gt;&gt;&gt;<i> _NET_WM_STATE_ABOVE indicates that the window should be on top of
+</I>&gt;<i>most
+</I>&gt;&gt;&gt;<i> windows (see the section called “Stacking order” for details).
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> _NET_WM_STATE_BELOW indicates that the window should be below most
+</I>&gt;&gt;&gt;<i> windows (see the section called “Stacking order” for details).
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> _NET_WM_STATE_ABOVE and _NET_WM_STATE_BELOW are mainly meant for
+</I>&gt;<i>user
+</I>&gt;&gt;&gt;<i> preferences and should not be used by applications e.g. for drawing
+</I>&gt;&gt;&gt;<i> attention to their dialogs (the Urgency hint should be used in that
+</I>&gt;&gt;&gt;<i> case, see the section called “Urgency”).
+</I>&gt;&gt;&gt;<i> &quot;&quot;&quot;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> From that, I don’t think using _NET_WM_STATE_ABOVE to make a window
+</I>&gt;&gt;&gt;<i> floating is the correct way.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Taking a step back, why does the window need to be floating at all?
+</I>&gt;<i>i3
+</I>&gt;&gt;&gt;<i> deliberately only makes dialog windows floating, and if your window
+</I>&gt;&gt;&gt;<i> is
+</I>&gt;&gt;&gt;<i> not a dialog window, it not being floating is working as intended.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> On Tue, Aug 25, 2015 at 5:21 PM, Kevin J &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jkevin1 at umbc.edu</A>&gt; wrote:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>  Hi everyone,
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>  GLFW has a window creation flag to make a window FLOATING, it uses
+</I>&gt;&gt;&gt;&gt;<i>  _NET_WM_STATE_ABOVE to do this in x11_window.c.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>  I have tried adding to the if statement in manage.c and the
+</I>&gt;<i>corresponding
+</I>&gt;&gt;&gt;&gt;<i>  xmacro to atoms.xmacro, but it still doesn't open as a floating
+</I>&gt;<i>window.
+</I>&gt;&gt;&gt;&gt;<i>  After adding this, GLFW's check in x11_init.c works, it didn't
+</I>&gt;<i>before, so it
+</I>&gt;&gt;&gt;&gt;<i>  seems to be registered within i3 correctly, but the
+</I>&gt;&gt;&gt;&gt;<i>  xcb_reply_contains_atom(state_reply, A__NET_WM_STATE_ABOVE) check
+</I>&gt;<i>still
+</I>&gt;&gt;&gt;&gt;<i>  fails.  Any idea why this could be happening?
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>  Additionally, if I do get it working, would this be something
+</I>&gt;<i>worthy of
+</I>&gt;&gt;&gt;&gt;<i>  submitting? or should GLFW be changed to use something other than
+</I>&gt;<i>the&lt;
+</I>&gt;&gt;&gt;&gt;<i>  br&gt;
+</I>&gt;&gt;&gt;&gt;<i> WM_STATE_ABOVE atom to make floating windows?  ...although none of
+</I>&gt;<i>the tests
+</I>&gt;&gt;&gt;&gt;<i>  used by i3 seem to be the right fit.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>  Thanks,
+</I>&gt;&gt;&gt;&gt;<i>  Kevin
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150825/a07a427c/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150825/a07a427c/attachment.html</A>&gt;
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002155.html">[i3] GLFW_FLOATING window
+</A></li>
+	<LI>Next message: <A HREF="002152.html">[i3] GLFW_FLOATING window
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2156">[ date ]</a>
+              <a href="thread.html#2156">[ thread ]</a>
+              <a href="subject.html#2156">[ subject ]</a>
+              <a href="author.html#2156">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

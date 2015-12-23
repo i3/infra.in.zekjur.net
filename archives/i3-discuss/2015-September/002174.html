@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Keep windows focused on workspace move
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Keep%20windows%20focused%20on%20workspace%20move&In-Reply-To=%3CCANnVG6%3DySTCSSfZeoDBM7p%3D5fX69%3DN%2BRUOpgQ9RagVM6ozHNkA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002173.html">
+   <LINK REL="Next"  HREF="002175.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Keep windows focused on workspace move</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Keep%20windows%20focused%20on%20workspace%20move&In-Reply-To=%3CCANnVG6%3DySTCSSfZeoDBM7p%3D5fX69%3DN%2BRUOpgQ9RagVM6ozHNkA%40mail.gmail.com%3E"
+       TITLE="[i3] Keep windows focused on workspace move">michael at i3wm.org
+       </A><BR>
+    <I>Thu Sep  3 20:40:51 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002173.html">[i3] Keep windows focused on workspace move
+</A></li>
+        <LI>Next message: <A HREF="002175.html">[i3] Keep windows focused on workspace move
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2174">[ date ]</a>
+              <a href="thread.html#2174">[ thread ]</a>
+              <a href="subject.html#2174">[ subject ]</a>
+              <a href="author.html#2174">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>What are you trying to accomplish with “exec i3-msg workspace $WS1”?
+This is equivalent to just “workspace $WS1”, but will be executed
+out-of-order because it spawns a new process in the background which
+sends the command.
+
+Also, I think the “focus” command used on its own (i.e. without any
+criteria) is a no-op.
+
+The previously mentioned “move container to workspace 1, workspace 1”
+command is the way to go.
+
+On Wed, Sep 2, 2015 at 4:59 PM, Serge Kroes &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">serge at kroescontrol.nl</A>&gt; wrote:
+&gt;<i> Hi
+</I>&gt;<i>
+</I>&gt;<i> i'm using this:
+</I>&gt;<i> bindsym $mod+Shift+1 move container to workspace $WS1, exec i3-msg workspace
+</I>&gt;<i> $WS1, focus
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Wed, Sep 2, 2015 at 4:38 PM, Florian Lindner &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">mailinglists at xgm.de</A>&gt; wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hello,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Am Mittwoch, 2. September 2015, 16:17:56 schrieb Mateusz Poszwa:
+</I>&gt;&gt;<i> &gt; Je 2015-09-02 16:06:41
+</I>&gt;&gt;<i> &gt; Florian Lindner &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">mailinglists at xgm.de</A>&gt; skribis:
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; &gt; Hello,
+</I>&gt;&gt;<i> &gt; &gt;
+</I>&gt;&gt;<i> &gt; &gt; when I move a window from a workspace to another (mod + shift + num)
+</I>&gt;&gt;<i> &gt; &gt; it looses the focus and a window (or parent) of the originating workspace is
+</I>&gt;&gt;<i> &gt; &gt; focused.
+</I>&gt;&gt;<i> &gt; &gt;
+</I>&gt;&gt;<i> &gt; &gt; How can I have the window to stay focused when moved across
+</I>&gt;&gt;<i> &gt; &gt; workspaces?
+</I>&gt;&gt;<i> &gt; &gt;
+</I>&gt;&gt;<i> &gt; &gt; Use case:
+</I>&gt;&gt;<i> &gt; &gt; I have a conversation open on the small and farer away laptop screen.
+</I>&gt;&gt;<i> &gt; &gt; I see activity there and I move it to one of my main screens. I want it to
+</I>&gt;&gt;<i> &gt; &gt; keep focused.
+</I>&gt;&gt;<i> &gt; &gt;
+</I>&gt;&gt;<i> &gt; &gt; Best Regards,
+</I>&gt;&gt;<i> &gt; &gt; Florian
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; Hello.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; Try to change your binding from
+</I>&gt;&gt;<i> &gt; move workspace «X»
+</I>&gt;&gt;<i> &gt; to
+</I>&gt;&gt;<i> &gt; move workspace «X», focus workspace «X»
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I have set it to:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> bindsym $mod+Shift+1 move container to workspace 1, focus workspace 1
+</I>&gt;&gt;<i> bindsym $mod+Shift+2 move container to workspace 2, focus workspace 2
+</I>&gt;&gt;<i> bindsym $mod+Shift+3 move container to workspace 3, focus workspace 3
+</I>&gt;&gt;<i> bindsym $mod+Shift+4 move container to workspace 4, focus workspace 4
+</I>&gt;&gt;<i> [...]
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> but that shows no effect.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thanks,
+</I>&gt;&gt;<i> Florian
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Serge Kroes | Kroescontrol | LinkedIn | Twitter
+</I>
+
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002173.html">[i3] Keep windows focused on workspace move
+</A></li>
+	<LI>Next message: <A HREF="002175.html">[i3] Keep windows focused on workspace move
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2174">[ date ]</a>
+              <a href="thread.html#2174">[ thread ]</a>
+              <a href="subject.html#2174">[ subject ]</a>
+              <a href="author.html#2174">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

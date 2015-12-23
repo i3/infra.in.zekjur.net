@@ -1,0 +1,756 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] startup some apps on specified workspaces in stacked mode
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20startup%20some%20apps%20on%20specified%20workspaces%20in%20stacked%20mode&In-Reply-To=%3CCANnVG6nKVkwpkyY2PRM1dGGDQt-cQ%3DOjgP_fE56q%3DVPxwYgsiQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001936.html">
+   <LINK REL="Next"  HREF="001930.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] startup some apps on specified workspaces in stacked mode</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20startup%20some%20apps%20on%20specified%20workspaces%20in%20stacked%20mode&In-Reply-To=%3CCANnVG6nKVkwpkyY2PRM1dGGDQt-cQ%3DOjgP_fE56q%3DVPxwYgsiQ%40mail.gmail.com%3E"
+       TITLE="[i3] startup some apps on specified workspaces in stacked mode">michael at i3wm.org
+       </A><BR>
+    <I>Fri Nov 14 12:58:47 CET 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001936.html">[i3] startup some apps on specified workspaces in stacked mode
+</A></li>
+        <LI>Next message: <A HREF="001930.html">[i3] Battery info in i3-status
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1937">[ date ]</a>
+              <a href="thread.html#1937">[ thread ]</a>
+              <a href="subject.html#1937">[ subject ]</a>
+              <a href="author.html#1937">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, Nov 14, 2014 at 2:35 AM, Robert Bude &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3 at rupat.de</A>&gt; wrote:
+&gt;<i> The Problem on Layout saving/loading is, that i have to edit the layouts
+</I>&gt;<i> everytime i change the startup of my session
+</I>&gt;<i> i have to save the layout, edit the layout, edit startup (to start new app
+</I>&gt;<i> oder remove some app
+</I>Yeah, but these edits should be fairly simple. You may even be able to
+automate them.
+
+&gt;<i>
+</I>&gt;<i> so for my feeling starting and building layout live is cleaner ;)
+</I>&gt;<i>
+</I>&gt;<i> ....
+</I>&gt;<i> after checkout the i3-exec-wait i tried to compile but it throws an error
+</I>&gt;<i>
+</I>&gt;<i>  make
+</I>&gt;<i> gcc -Wall -g -lyajl    i3-exec-wait.c   -o i3-exec-wait
+</I>&gt;<i> i3-exec-wait.c:19:28: fatal error: yajl/yajl_tree.h: Datei oder Verzeichnis
+</I>&gt;<i> nicht gefunden
+</I>&gt;<i> compilation terminated.
+</I>&gt;<i> make: *** [i3-exec-wait] Fehler 1
+</I>Install libyajl-dev (on Debian(-derived) distributions)
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> hav checked out yajl and copied to the given place but another error is
+</I>&gt;<i> thrown
+</I>&gt;<i>
+</I>&gt;<i> make
+</I>&gt;<i> gcc -Wall -g -lyajl    i3-exec-wait.c   -o i3-exec-wait
+</I>&gt;<i> In file included from i3-exec-wait.c:19:0:
+</I>&gt;<i> yajl/yajl_tree.h:34:25: fatal error: yajl_common.h: Datei oder Verzeichnis
+</I>&gt;<i> nicht gefunden
+</I>&gt;<i> compilation terminated.
+</I>&gt;<i> make: *** [i3-exec-wait] Fehler 1
+</I>&gt;<i>
+</I>&gt;<i> any help were good
+</I>&gt;<i>
+</I>&gt;<i> thx to you
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Fri, 14 Nov 2014 10:16:00 +0100, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt;
+</I>&gt;<i> wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Tue, Nov 11, 2014 at 10:09 AM, Robert Bude &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3 at rupat.de</A>&gt; wrote:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Hi,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> my config is like the following:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> ﻿cat ~/.i3/config | tail -n 1
+</I>&gt;&gt;&gt;<i> exec ~/bin/i3startup.sh
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> cat ~/bin/i3startup.sh
+</I>&gt;&gt;&gt;<i> #!/bin/bash
+</I>&gt;&gt;&gt;<i> # execute some apps on specific workspaces
+</I>&gt;&gt;&gt;<i> i3-msg 'workspace 1; exec google-chrome; exec i3-sensible-terminal;
+</I>&gt;&gt;&gt;<i> layout
+</I>&gt;&gt;&gt;<i> stacked; workspace 1'
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Note that “exec” is not blocking, i.e. this will start google-chrome
+</I>&gt;&gt;<i> and then immediately continue the execution of commands. Your “layout
+</I>&gt;&gt;<i> stacked” will therefore be run when there are not yet any windows on
+</I>&gt;&gt;<i> the screen, I think.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> There is <A HREF="https://github.com/drbig/i3-exec-wait">https://github.com/drbig/i3-exec-wait</A> which works around this
+</I>&gt;&gt;<i> in a way that is possibly the most simple to implement with the script
+</I>&gt;&gt;<i> you currently have.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> However, I think the much cleaner solution is to use
+</I>&gt;&gt;<i> <A HREF="http://i3wm.org/docs/layout-saving.html,">http://i3wm.org/docs/layout-saving.html,</A> which was introduced with i3
+</I>&gt;&gt;<i> v4.8. In the layout, you can specify placeholders in the correct
+</I>&gt;&gt;<i> layout (and much more) for chrome, your terminal, etc. Then, restore
+</I>&gt;&gt;<i> the layout file on the appropriate workspace in a script, much like
+</I>&gt;&gt;<i> the script you currently have, and start the appropriate applications.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> i3-msg 'workspace 2; exec pgadmin3; exec
+</I>&gt;&gt;&gt;<i> software/SoapUI-Pro-5.1.2/bin/soapui-pro.sh; layout stacked; workspace 1'
+</I>&gt;&gt;&gt;<i> i3-msg 'workspace 3; exec icedove; workspace 1'
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> As you see i want on desktop 1: a terminal and google chrome stacked
+</I>&gt;&gt;&gt;<i> chrome and terminal opens in default layout (i also tried layout stacked
+</I>&gt;&gt;&gt;<i> before exec the apps.)
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> the same behaviour on workspace 2.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> any hints ?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Thanks Robert
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> PS: here is the log
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> grep &quot;11.11.2014 09:51:44 - executing: ~/bin/i3startup.sh&quot; .i3/logfile
+</I>&gt;&gt;&gt;<i> -A
+</I>&gt;&gt;&gt;<i> 300
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - executing: ~/bin/i3startup.sh
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Starting bar process: i3bar --bar_id=bar-0
+</I>&gt;&gt;&gt;<i> --socket=&quot;/tmp/i3-rbu.IOOJHK/ipc-socket.31929&quot;
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - executing: i3bar --bar_id=bar-0
+</I>&gt;&gt;&gt;<i> --socket=&quot;/tmp/i3-rbu.IOOJHK/ipc-socket.31929&quot;
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Starting bar process: i3bar --bar_id=bar-1
+</I>&gt;&gt;&gt;<i> --socket=&quot;/tmp/i3-rbu.IOOJHK/ipc-socket.31929&quot;
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - executing: i3bar --bar_id=bar-1
+</I>&gt;&gt;&gt;<i> --socket=&quot;/tmp/i3-rbu.IOOJHK/ipc-socket.31929&quot;
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - handlers.c:handle_destroy_notify_event:526 -
+</I>&gt;&gt;&gt;<i> destroy
+</I>&gt;&gt;&gt;<i> notify for 0x00800056, 0x00800056
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - handlers.c:handle_unmap_notify_event:459 -
+</I>&gt;&gt;&gt;<i> UnmapNotify
+</I>&gt;&gt;&gt;<i> for 0x00800056 (received from 0x00800056), serial 629
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Not a managed window, ignoring UnmapNotify event
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - handlers.c:handle_destroy_notify_event:526 -
+</I>&gt;&gt;&gt;<i> destroy
+</I>&gt;&gt;&gt;<i> notify for 0x00800057, 0x00800057
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - handlers.c:handle_unmap_notify_event:459 -
+</I>&gt;&gt;&gt;<i> UnmapNotify
+</I>&gt;&gt;&gt;<i> for 0x00800057 (received from 0x00800057), serial 638
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Not a managed window, ignoring UnmapNotify event
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:ipc_new_client:994 - IPC: new client
+</I>&gt;&gt;&gt;<i> connected
+</I>&gt;&gt;&gt;<i> on fd 9
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - IPC: received: *workspace 1; exec google-chrome;
+</I>&gt;&gt;&gt;<i> exec
+</I>&gt;&gt;&gt;<i> i3-sensible-terminal; layout stacked; workspace 1*
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands_parser.c:parse_command:215 - COMMAND:
+</I>&gt;&gt;&gt;<i> *workspace 1; exec google-chrome; exec i3-sensible-terminal; layout
+</I>&gt;&gt;&gt;<i> stacked;
+</I>&gt;&gt;&gt;<i> workspace 1*
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands.c:cmd_criteria_init:266 - Initializing
+</I>&gt;&gt;&gt;<i> criteria, current_match = 0x6505c0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands.c:cmd_workspace_name:1013 - should switch
+</I>&gt;&gt;&gt;<i> to
+</I>&gt;&gt;&gt;<i> workspace 1
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands.c:maybe_back_and_forth:112 - This
+</I>&gt;&gt;&gt;<i> workspace
+</I>&gt;&gt;&gt;<i> is already focused.
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands.c:cmd_criteria_init:266 - Initializing
+</I>&gt;&gt;&gt;<i> criteria, current_match = 0x6505c0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands.c:cmd_exec:1356 - should execute
+</I>&gt;&gt;&gt;<i> google-chrome, no_startup_id = 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - startup id =
+</I>&gt;&gt;&gt;<i> i3/google-chrome/31929-2-assek-team_TIME92352682
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - executing: google-chrome
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands.c:cmd_criteria_init:266 - Initializing
+</I>&gt;&gt;&gt;<i> criteria, current_match = 0x6505c0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands.c:cmd_exec:1356 - should execute
+</I>&gt;&gt;&gt;<i> i3-sensible-terminal, no_startup_id = 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - startup id =
+</I>&gt;&gt;&gt;<i> i3/i3-sensible-terminal/31929-3-assek-team_TIME92352682
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - executing: i3-sensible-terminal
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands.c:cmd_criteria_init:266 - Initializing
+</I>&gt;&gt;&gt;<i> criteria, current_match = 0x6505c0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands.c:cmd_layout:1604 - changing layout to
+</I>&gt;&gt;&gt;<i> stacked (1)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_set_layout:1232 -
+</I>&gt;&gt;&gt;<i> con_set_layout(0xe29f40,
+</I>&gt;&gt;&gt;<i> 1), con-&gt;type = 4
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_set_layout:1253 - Setting
+</I>&gt;&gt;&gt;<i> workspace_layout
+</I>&gt;&gt;&gt;<i> to 1
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands.c:cmd_criteria_init:266 - Initializing
+</I>&gt;&gt;&gt;<i> criteria, current_match = 0x6505c0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands.c:cmd_workspace_name:1013 - should switch
+</I>&gt;&gt;&gt;<i> to
+</I>&gt;&gt;&gt;<i> workspace 1
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands.c:maybe_back_and_forth:112 - This
+</I>&gt;&gt;&gt;<i> workspace
+</I>&gt;&gt;&gt;<i> is already focused.
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands.c:cmd_criteria_init:266 - Initializing
+</I>&gt;&gt;&gt;<i> criteria, current_match = 0x6505c0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - tree.c:tree_render:511 - -- BEGIN RENDERING --
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe0e6b0 /
+</I>&gt;&gt;&gt;<i> root / layout 6 / children 3
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe0e8c0 /
+</I>&gt;&gt;&gt;<i> __i3 / layout 4 / children 1
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe29570 /
+</I>&gt;&gt;&gt;<i> DVI-I-3 / layout 4 / children 3
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_l_output:112 - child at (1920, 0)
+</I>&gt;&gt;&gt;<i> with
+</I>&gt;&gt;&gt;<i> (1920 x 0)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe297c0 /
+</I>&gt;&gt;&gt;<i> topdock / layout 3 / children 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_l_output:112 - child at (1920, 0)
+</I>&gt;&gt;&gt;<i> with
+</I>&gt;&gt;&gt;<i> (1920 x 1200)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe29a50 /
+</I>&gt;&gt;&gt;<i> content / layout 6 / children 1
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering fullscreen node
+</I>&gt;&gt;&gt;<i> 0xe2a190 / 6 / layout 6 / children 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_l_output:112 - child at (1920,
+</I>&gt;&gt;&gt;<i> 1200)
+</I>&gt;&gt;&gt;<i> with (1920 x 0)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe29c90 /
+</I>&gt;&gt;&gt;<i> bottomdock / layout 3 / children 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe28d90 /
+</I>&gt;&gt;&gt;<i> DVI-I-2 / layout 4 / children 3
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_l_output:112 - child at (0, 0) with
+</I>&gt;&gt;&gt;<i> (1920 x 0)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe28f00 /
+</I>&gt;&gt;&gt;<i> topdock / layout 3 / children 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_l_output:112 - child at (0, 0) with
+</I>&gt;&gt;&gt;<i> (1920 x 1200)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe290e0 /
+</I>&gt;&gt;&gt;<i> content / layout 6 / children 1
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering fullscreen node
+</I>&gt;&gt;&gt;<i> 0xe29f40 / 1 / layout 6 / children 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_l_output:112 - child at (0, 1200)
+</I>&gt;&gt;&gt;<i> with
+</I>&gt;&gt;&gt;<i> (1920 x 0)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe292f0 /
+</I>&gt;&gt;&gt;<i> bottomdock / layout 3 / children 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:258 - Rendering floating
+</I>&gt;&gt;&gt;<i> windows:
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_push_changes:892 - -- PUSHING WINDOW STACK --
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_push_changes:962 - PUSHING CHANGES
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_push_changes:1001 - Not updating focus (to
+</I>&gt;&gt;&gt;<i> 0xe29f40 / 1), focused window is not mapped.
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_push_changes:1042 - Still no window focused,
+</I>&gt;&gt;&gt;<i> better set focus to the root window
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_push_changes:1049 - ENDING CHANGES
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - tree.c:tree_render:520 - -- END RENDERING --
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - handlers.c:handle_destroy_notify_event:526 -
+</I>&gt;&gt;&gt;<i> destroy
+</I>&gt;&gt;&gt;<i> notify for 0x00800058, 0x00800058
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 -
+</I>&gt;&gt;&gt;<i> [{&quot;success&quot;:true},{&quot;success&quot;:true},{&quot;success&quot;:true}]
+</I>&gt;&gt;&gt;<i> handlers.c:handle_unmap_notify_event:459 - UnmapNotify for 0x00800058
+</I>&gt;&gt;&gt;<i> (received from 0x00800058), serial 647
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Not a managed window, ignoring UnmapNotify event
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:ipc_receive_message:952 - IPC: client
+</I>&gt;&gt;&gt;<i> disconnected
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - handlers.c:handle_destroy_notify_event:526 -
+</I>&gt;&gt;&gt;<i> destroy
+</I>&gt;&gt;&gt;<i> notify for 0x00800059, 0x00800059
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - handlers.c:handle_unmap_notify_event:459 -
+</I>&gt;&gt;&gt;<i> UnmapNotify
+</I>&gt;&gt;&gt;<i> for 0x00800059 (received from 0x00800059), serial 656
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Not a managed window, ignoring UnmapNotify event
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:ipc_new_client:994 - IPC: new client
+</I>&gt;&gt;&gt;<i> connected
+</I>&gt;&gt;&gt;<i> on fd 9
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - IPC: looking for config for bar ID &quot;bar-0&quot;
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:add_subscription:826 - should add
+</I>&gt;&gt;&gt;<i> subscription
+</I>&gt;&gt;&gt;<i> to extra 0xe28a30, sub workspace
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:add_subscription:836 - client is now
+</I>&gt;&gt;&gt;<i> subscribed
+</I>&gt;&gt;&gt;<i> to:
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:add_subscription:838 - event workspace
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:add_subscription:839 - (done)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:add_subscription:826 - should add
+</I>&gt;&gt;&gt;<i> subscription
+</I>&gt;&gt;&gt;<i> to extra 0xe28a30, sub output
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:add_subscription:836 - client is now
+</I>&gt;&gt;&gt;<i> subscribed
+</I>&gt;&gt;&gt;<i> to:
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:add_subscription:838 - event workspace
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:add_subscription:838 - event output
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:add_subscription:839 - (done)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:add_subscription:826 - should add
+</I>&gt;&gt;&gt;<i> subscription
+</I>&gt;&gt;&gt;<i> to extra 0xe28a30, sub mode
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:add_subscription:836 - client is now
+</I>&gt;&gt;&gt;<i> subscribed
+</I>&gt;&gt;&gt;<i> to:
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:add_subscription:838 - event workspace
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:add_subscription:838 - event output
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:add_subscription:838 - event mode
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:add_subscription:839 - (done)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:add_subscription:826 - should add
+</I>&gt;&gt;&gt;<i> subscription
+</I>&gt;&gt;&gt;<i> to extra 0xe28a30, sub barconfig_update
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:add_subscription:836 - client is now
+</I>&gt;&gt;&gt;<i> subscribed
+</I>&gt;&gt;&gt;<i> to:
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:add_subscription:838 - event workspace
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:add_subscription:838 - event output
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:add_subscription:838 - event mode
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:add_subscription:838 - event barconfig_update
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:add_subscription:839 - (done)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - workspace visible? fs = 0xe2a190, ws = 0xe2a190
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - workspace visible? fs = 0xe29f40, ws = 0xe29f40
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:ipc_new_client:994 - IPC: new client
+</I>&gt;&gt;&gt;<i> connected
+</I>&gt;&gt;&gt;<i> on fd 9
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - IPC: received: *workspace 2; exec pgadmin3; exec
+</I>&gt;&gt;&gt;<i> software/SoapUI-Pro-5.1.2/bin/soapui-pro.sh; layout stacked; workspace 1*
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands_parser.c:parse_command:215 - COMMAND:
+</I>&gt;&gt;&gt;<i> *workspace 2; exec pgadmin3; exec
+</I>&gt;&gt;&gt;<i> software/SoapUI-Pro-5.1.2/bin/soapui-pro.sh; layout stacked; workspace 1*
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands.c:cmd_criteria_init:266 - Initializing
+</I>&gt;&gt;&gt;<i> criteria, current_match = 0x6505c0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands.c:cmd_workspace_name:1013 - should switch
+</I>&gt;&gt;&gt;<i> to
+</I>&gt;&gt;&gt;<i> workspace 2
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Creating new workspace &quot;2&quot;
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - workspace.c:workspace_get:64 - Found workspace name
+</I>&gt;&gt;&gt;<i> assignment to output &quot;DVI-I-2&quot;
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - got output 0xe28d90 with content 0xe290e0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_new_skeleton:63 - opening window 4
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_new_skeleton:66 - color #00ffff
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_con_init:153 - Adding window 0x0080005a to
+</I>&gt;&gt;&gt;<i> lists
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_con_init:157 - adding new state for window id
+</I>&gt;&gt;&gt;<i> 0x0080005a
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - num = 2
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - workspace.c:_workspace_apply_default_orientation:32
+</I>&gt;&gt;&gt;<i> -
+</I>&gt;&gt;&gt;<i> Auto orientation. Workspace size set to (1920,1200), setting layout to 6.
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_attach:113 - it's a workspace. num = 2
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - workspace.c:_workspace_show:372 - Setting
+</I>&gt;&gt;&gt;<i> previous_workspace_name = 1
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - workspace.c:_workspace_show:378 - switching to
+</I>&gt;&gt;&gt;<i> 0xe2b680 / 2
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_focus:215 - con_focus = 0xe2b680
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_focus:215 - con_focus = 0xe290e0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_focus:215 - con_focus = 0xe28d90
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - workspace.c:_workspace_show:415 - old = 0xe29f40 /
+</I>&gt;&gt;&gt;<i> 1
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - workspace visible? fs = 0xe2b680, ws = 0xe29f40
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Closing old workspace (0xe29f40 / 1), it is empty
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_next_focused:923 - Using first entry
+</I>&gt;&gt;&gt;<i> 0xe2b680
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - tree.c:tree_close:210 - next = 0xe2b680, focused =
+</I>&gt;&gt;&gt;<i> 0xe2b680
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - tree.c:tree_close:212 - closing 0xe29f40,
+</I>&gt;&gt;&gt;<i> kill_window
+</I>&gt;&gt;&gt;<i> = 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_is_floating:421 - checking if con
+</I>&gt;&gt;&gt;<i> 0xe29f40
+</I>&gt;&gt;&gt;<i> is floating
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - tree.c:tree_render:511 - -- BEGIN RENDERING --
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe0e6b0 /
+</I>&gt;&gt;&gt;<i> root / layout 6 / children 3
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe0e8c0 /
+</I>&gt;&gt;&gt;<i> __i3 / layout 4 / children 1
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe29570 /
+</I>&gt;&gt;&gt;<i> DVI-I-3 / layout 4 / children 3
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_l_output:112 - child at (1920, 0)
+</I>&gt;&gt;&gt;<i> with
+</I>&gt;&gt;&gt;<i> (1920 x 0)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe297c0 /
+</I>&gt;&gt;&gt;<i> topdock / layout 3 / children 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_l_output:112 - child at (1920, 0)
+</I>&gt;&gt;&gt;<i> with
+</I>&gt;&gt;&gt;<i> (1920 x 1200)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe29a50 /
+</I>&gt;&gt;&gt;<i> content / layout 6 / children 1
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering fullscreen node
+</I>&gt;&gt;&gt;<i> 0xe2a190 / 6 / layout 6 / children 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_l_output:112 - child at (1920,
+</I>&gt;&gt;&gt;<i> 1200)
+</I>&gt;&gt;&gt;<i> with (1920 x 0)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe29c90 /
+</I>&gt;&gt;&gt;<i> bottomdock / layout 3 / children 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe28d90 /
+</I>&gt;&gt;&gt;<i> DVI-I-2 / layout 4 / children 3
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_l_output:112 - child at (0, 0) with
+</I>&gt;&gt;&gt;<i> (1920 x 0)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe28f00 /
+</I>&gt;&gt;&gt;<i> topdock / layout 3 / children 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_l_output:112 - child at (0, 0) with
+</I>&gt;&gt;&gt;<i> (1920 x 1200)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe290e0 /
+</I>&gt;&gt;&gt;<i> content / layout 6 / children 1
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering fullscreen node
+</I>&gt;&gt;&gt;<i> 0xe2b680 / 2 / layout 6 / children 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_l_output:112 - child at (0, 1200)
+</I>&gt;&gt;&gt;<i> with
+</I>&gt;&gt;&gt;<i> (1920 x 0)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe292f0 /
+</I>&gt;&gt;&gt;<i> bottomdock / layout 3 / children 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:258 - Rendering floating
+</I>&gt;&gt;&gt;<i> windows:
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_push_changes:892 - -- PUSHING WINDOW STACK --
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_push_changes:948 - Client list changed (0
+</I>&gt;&gt;&gt;<i> clients)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_push_changes:962 - PUSHING CHANGES
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_push_node:612 - pushing name [i3 con]
+</I>&gt;&gt;&gt;<i> workspace
+</I>&gt;&gt;&gt;<i> 2 for con 0xe2b680
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_push_changes:1001 - Not updating focus (to
+</I>&gt;&gt;&gt;<i> 0xe2b680 / 2), focused window is not mapped.
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_push_changes:1042 - Still no window focused,
+</I>&gt;&gt;&gt;<i> better set focus to the root window
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_push_changes:1049 - ENDING CHANGES
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - tree.c:tree_render:520 - -- END RENDERING --
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_is_floating:421 - checking if con
+</I>&gt;&gt;&gt;<i> 0xe29f40
+</I>&gt;&gt;&gt;<i> is floating
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - tree.c:tree_close:345 - not focusing, was not
+</I>&gt;&gt;&gt;<i> mapped
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_on_remove_child:1371 - on_remove_child
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_on_remove_child:1379 - not handling, type
+</I>&gt;&gt;&gt;<i> =
+</I>&gt;&gt;&gt;<i> 2, name = content
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - focused now = 0xe2b680 / 2
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands.c:cmd_criteria_init:266 - Initializing
+</I>&gt;&gt;&gt;<i> criteria, current_match = 0x6505c0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands.c:cmd_exec:1356 - should execute pgadmin3,
+</I>&gt;&gt;&gt;<i> no_startup_id = 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - startup id =
+</I>&gt;&gt;&gt;<i> i3/pgadmin3/31929-4-assek-team_TIME92352684
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - executing: pgadmin3
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands.c:cmd_criteria_init:266 - Initializing
+</I>&gt;&gt;&gt;<i> criteria, current_match = 0x6505c0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands.c:cmd_exec:1356 - should execute
+</I>&gt;&gt;&gt;<i> software/SoapUI-Pro-5.1.2/bin/soapui-pro.sh, no_startup_id = 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - startup id =
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> i3/software|SoapUI-Pro-5.1.2|bin|soapui-pro.sh/31929-5-assek-team_TIME92352684
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - executing:
+</I>&gt;&gt;&gt;<i> software/SoapUI-Pro-5.1.2/bin/soapui-pro.sh
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands.c:cmd_criteria_init:266 - Initializing
+</I>&gt;&gt;&gt;<i> criteria, current_match = 0x6505c0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands.c:cmd_layout:1604 - changing layout to
+</I>&gt;&gt;&gt;<i> stacked (1)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_set_layout:1232 -
+</I>&gt;&gt;&gt;<i> con_set_layout(0xe2b680,
+</I>&gt;&gt;&gt;<i> 1), con-&gt;type = 4
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_set_layout:1253 - Setting
+</I>&gt;&gt;&gt;<i> workspace_layout
+</I>&gt;&gt;&gt;<i> to 1
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands.c:cmd_criteria_init:266 - Initializing
+</I>&gt;&gt;&gt;<i> criteria, current_match = 0x6505c0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands.c:cmd_workspace_name:1013 - should switch
+</I>&gt;&gt;&gt;<i> to
+</I>&gt;&gt;&gt;<i> workspace 1
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Creating new workspace &quot;1&quot;
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - workspace.c:workspace_get:64 - Found workspace name
+</I>&gt;&gt;&gt;<i> assignment to output &quot;DVI-I-2&quot;
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - got output 0xe28d90 with content 0xe290e0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_new_skeleton:63 - opening window 5
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_new_skeleton:66 - color #ffff00
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_con_init:153 - Adding window 0x0080005d to
+</I>&gt;&gt;&gt;<i> lists
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_con_init:157 - adding new state for window id
+</I>&gt;&gt;&gt;<i> 0x0080005d
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - num = 1
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - workspace.c:_workspace_apply_default_orientation:32
+</I>&gt;&gt;&gt;<i> -
+</I>&gt;&gt;&gt;<i> Auto orientation. Workspace size set to (1920,1200), setting layout to 6.
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_attach:113 - it's a workspace. num = 1
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - workspace.c:_workspace_show:372 - Setting
+</I>&gt;&gt;&gt;<i> previous_workspace_name = 2
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - workspace.c:_workspace_show:378 - switching to
+</I>&gt;&gt;&gt;<i> 0xe2cb90 / 1
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_focus:215 - con_focus = 0xe2cb90
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_focus:215 - con_focus = 0xe290e0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_focus:215 - con_focus = 0xe28d90
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - workspace.c:_workspace_show:415 - old = 0xe2b680 /
+</I>&gt;&gt;&gt;<i> 2
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - workspace visible? fs = 0xe2cb90, ws = 0xe2b680
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Closing old workspace (0xe2b680 / 2), it is empty
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_next_focused:923 - Using first entry
+</I>&gt;&gt;&gt;<i> 0xe2cb90
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - tree.c:tree_close:210 - next = 0xe2cb90, focused =
+</I>&gt;&gt;&gt;<i> 0xe2cb90
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - tree.c:tree_close:212 - closing 0xe2b680,
+</I>&gt;&gt;&gt;<i> kill_window
+</I>&gt;&gt;&gt;<i> = 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_is_floating:421 - checking if con
+</I>&gt;&gt;&gt;<i> 0xe2b680
+</I>&gt;&gt;&gt;<i> is floating
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - tree.c:tree_render:511 - -- BEGIN RENDERING --
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe0e6b0 /
+</I>&gt;&gt;&gt;<i> root / layout 6 / children 3
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe0e8c0 /
+</I>&gt;&gt;&gt;<i> __i3 / layout 4 / children 1
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe29570 /
+</I>&gt;&gt;&gt;<i> DVI-I-3 / layout 4 / children 3
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_l_output:112 - child at (1920, 0)
+</I>&gt;&gt;&gt;<i> with
+</I>&gt;&gt;&gt;<i> (1920 x 0)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe297c0 /
+</I>&gt;&gt;&gt;<i> topdock / layout 3 / children 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_l_output:112 - child at (1920, 0)
+</I>&gt;&gt;&gt;<i> with
+</I>&gt;&gt;&gt;<i> (1920 x 1200)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe29a50 /
+</I>&gt;&gt;&gt;<i> content / layout 6 / children 1
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering fullscreen node
+</I>&gt;&gt;&gt;<i> 0xe2a190 / 6 / layout 6 / children 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_l_output:112 - child at (1920,
+</I>&gt;&gt;&gt;<i> 1200)
+</I>&gt;&gt;&gt;<i> with (1920 x 0)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe29c90 /
+</I>&gt;&gt;&gt;<i> bottomdock / layout 3 / children 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe28d90 /
+</I>&gt;&gt;&gt;<i> DVI-I-2 / layout 4 / children 3
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_l_output:112 - child at (0, 0) with
+</I>&gt;&gt;&gt;<i> (1920 x 0)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe28f00 /
+</I>&gt;&gt;&gt;<i> topdock / layout 3 / children 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_l_output:112 - child at (0, 0) with
+</I>&gt;&gt;&gt;<i> (1920 x 1200)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe290e0 /
+</I>&gt;&gt;&gt;<i> content / layout 6 / children 1
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering fullscreen node
+</I>&gt;&gt;&gt;<i> 0xe2cb90 / 1 / layout 6 / children 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_l_output:112 - child at (0, 1200)
+</I>&gt;&gt;&gt;<i> with
+</I>&gt;&gt;&gt;<i> (1920 x 0)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe292f0 /
+</I>&gt;&gt;&gt;<i> bottomdock / layout 3 / children 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:258 - Rendering floating
+</I>&gt;&gt;&gt;<i> windows:
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_push_changes:892 - -- PUSHING WINDOW STACK --
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_push_changes:948 - Client list changed (0
+</I>&gt;&gt;&gt;<i> clients)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_push_changes:962 - PUSHING CHANGES
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_push_node:612 - pushing name [i3 con]
+</I>&gt;&gt;&gt;<i> workspace
+</I>&gt;&gt;&gt;<i> 1 for con 0xe2cb90
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_push_changes:1001 - Not updating focus (to
+</I>&gt;&gt;&gt;<i> 0xe2cb90 / 1), focused window is not mapped.
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_push_changes:1042 - Still no window focused,
+</I>&gt;&gt;&gt;<i> better set focus to the root window
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_push_changes:1049 - ENDING CHANGES
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - tree.c:tree_render:520 - -- END RENDERING --
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_is_floating:421 - checking if con
+</I>&gt;&gt;&gt;<i> 0xe2b680
+</I>&gt;&gt;&gt;<i> is floating
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - tree.c:tree_close:345 - not focusing, was not
+</I>&gt;&gt;&gt;<i> mapped
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_on_remove_child:1371 - on_remove_child
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_on_remove_child:1379 - not handling, type
+</I>&gt;&gt;&gt;<i> =
+</I>&gt;&gt;&gt;<i> 2, name = content
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - focused now = 0xe2cb90 / 1
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - commands.c:cmd_criteria_init:266 - Initializing
+</I>&gt;&gt;&gt;<i> criteria, current_match = 0x6505c0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - tree.c:tree_render:511 - -- BEGIN RENDERING --
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe0e6b0 /
+</I>&gt;&gt;&gt;<i> root / layout 6 / children 3
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe0e8c0 /
+</I>&gt;&gt;&gt;<i> __i3 / layout 4 / children 1
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe29570 /
+</I>&gt;&gt;&gt;<i> DVI-I-3 / layout 4 / children 3
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_l_output:112 - child at (1920, 0)
+</I>&gt;&gt;&gt;<i> with
+</I>&gt;&gt;&gt;<i> (1920 x 0)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe297c0 /
+</I>&gt;&gt;&gt;<i> topdock / layout 3 / children 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_l_output:112 - child at (1920, 0)
+</I>&gt;&gt;&gt;<i> with
+</I>&gt;&gt;&gt;<i> (1920 x 1200)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe29a50 /
+</I>&gt;&gt;&gt;<i> content / layout 6 / children 1
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering fullscreen node
+</I>&gt;&gt;&gt;<i> 0xe2a190 / 6 / layout 6 / children 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_l_output:112 - child at (1920,
+</I>&gt;&gt;&gt;<i> 1200)
+</I>&gt;&gt;&gt;<i> with (1920 x 0)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe29c90 /
+</I>&gt;&gt;&gt;<i> bottomdock / layout 3 / children 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe28d90 /
+</I>&gt;&gt;&gt;<i> DVI-I-2 / layout 4 / children 3
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_l_output:112 - child at (0, 0) with
+</I>&gt;&gt;&gt;<i> (1920 x 0)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe28f00 /
+</I>&gt;&gt;&gt;<i> topdock / layout 3 / children 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_l_output:112 - child at (0, 0) with
+</I>&gt;&gt;&gt;<i> (1920 x 1200)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe290e0 /
+</I>&gt;&gt;&gt;<i> content / layout 6 / children 1
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering fullscreen node
+</I>&gt;&gt;&gt;<i> 0xe2cb90 / 1 / layout 6 / children 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_l_output:112 - child at (0, 1200)
+</I>&gt;&gt;&gt;<i> with
+</I>&gt;&gt;&gt;<i> (1920 x 0)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:130 - Rendering node 0xe292f0 /
+</I>&gt;&gt;&gt;<i> bottomdock / layout 3 / children 0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - render.c:render_con:258 - Rendering floating
+</I>&gt;&gt;&gt;<i> windows:
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_push_changes:892 - -- PUSHING WINDOW STACK --
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_push_changes:962 - PUSHING CHANGES
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_push_changes:1001 - Not updating focus (to
+</I>&gt;&gt;&gt;<i> 0xe2cb90 / 1), focused window is not mapped.
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_push_changes:1042 - Still no window focused,
+</I>&gt;&gt;&gt;<i> better set focus to the root window
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_push_changes:1049 - ENDING CHANGES
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - tree.c:tree_render:520 - -- END RENDERING --
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - ipc.c:ipc_new_client:994 - IPC: new client
+</I>&gt;&gt;&gt;<i> connected
+</I>&gt;&gt;&gt;<i> on fd 9
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - handlers.c:handle_destroy_notify_event:526 -
+</I>&gt;&gt;&gt;<i> destroy
+</I>&gt;&gt;&gt;<i> notify for 0x00800052, 0x00800052
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - handlers.c:handle_unmap_notify_event:459 -
+</I>&gt;&gt;&gt;<i> UnmapNotify
+</I>&gt;&gt;&gt;<i> for 0x00800052 (received from 0x00800052), serial 676
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> [{&quot;success&quot;:true},{&quot;success&quot;:true},{&quot;success&quot;:true},{&quot;success&quot;:true},{&quot;success&quot;:true}]
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Not a managed window, ignoring UnmapNotify event
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - main.c:xcb_check_cb:136 - X11 Error received
+</I>&gt;&gt;&gt;<i> (probably
+</I>&gt;&gt;&gt;<i> harmless)! sequence 0x2a5, error_code = 4
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - main.c:xcb_check_cb:136 - X11 Error received
+</I>&gt;&gt;&gt;<i> (probably
+</I>&gt;&gt;&gt;<i> harmless)! sequence 0x2a6, error_code = 13
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - handlers.c:handle_destroy_notify_event:526 -
+</I>&gt;&gt;&gt;<i> destroy
+</I>&gt;&gt;&gt;<i> notify for 0x0080005b, 0x0080005b
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - handlers.c:handle_unmap_notify_event:459 -
+</I>&gt;&gt;&gt;<i> UnmapNotify
+</I>&gt;&gt;&gt;<i> for 0x0080005b (received from 0x0080005b), serial 687
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Not a managed window, ignoring UnmapNotify event
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - handlers.c:handle_map_request:281 - window =
+</I>&gt;&gt;&gt;<i> 0x01000007, serial is 687.
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - manage.c:manage_window:165 - Managing window
+</I>&gt;&gt;&gt;<i> 0x01000007
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - WM_CLASS changed to i3bar (instance), i3bar (class)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - WM_NAME changed to &quot;i3bar for output DVI-I-2&quot;
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Using legacy window title. Note that in order to
+</I>&gt;&gt;&gt;<i> get
+</I>&gt;&gt;&gt;<i> Unicode window titles in i3, the application has to set _NET_WM_NAME
+</I>&gt;&gt;&gt;<i> (UTF-8)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - window.c:window_update_name:59 - _NET_WM_NAME not
+</I>&gt;&gt;&gt;<i> specified, not changing
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - window.c:window_update_leader:128 - CLIENT_LEADER
+</I>&gt;&gt;&gt;<i> not
+</I>&gt;&gt;&gt;<i> set.
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - window.c:window_update_transient_for:152 -
+</I>&gt;&gt;&gt;<i> TRANSIENT_FOR not set.
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - window.c:window_update_strut_partial:188 - Reserved
+</I>&gt;&gt;&gt;<i> pixels changed to: left = 0, right = 0, top = 0, bottom = 19
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - window.c:window_update_role:201 - WM_WINDOW_ROLE
+</I>&gt;&gt;&gt;<i> not
+</I>&gt;&gt;&gt;<i> set.
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - window.c:window_update_hints:237 - WM_HINTS not
+</I>&gt;&gt;&gt;<i> set.
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - startup.c:startup_sequence_get:270 - No
+</I>&gt;&gt;&gt;<i> _NET_STARTUP_ID set on window 0x01000007
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - manage.c:manage_window:208 - startup workspace =
+</I>&gt;&gt;&gt;<i> (null)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - This window is of type dock
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - randr.c:get_output_containing:86 - comparing x=0
+</I>&gt;&gt;&gt;<i> y=1181 with x=0 and y=0 width 1920 height 1200
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - manage.c:manage_window:220 - Starting search at
+</I>&gt;&gt;&gt;<i> output
+</I>&gt;&gt;&gt;<i> DVI-I-2
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - manage.c:manage_window:229 - Bottom dock client
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - manage.c:manage_window:245 - Initial geometry: (0,
+</I>&gt;&gt;&gt;<i> 1181, 1920, 19)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Checking window 0x01000007 (class i3bar)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - dock status does not match
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Checking window 0x01000007 (class i3bar)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - dock status matches
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_new_skeleton:63 - opening window 6
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - con.c:con_new_skeleton:66 - color #aa0000
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_con_init:153 - Adding window 0x0080005e to
+</I>&gt;&gt;&gt;<i> lists
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_con_init:157 - adding new state for window id
+</I>&gt;&gt;&gt;<i> 0x0080005e
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - manage.c:manage_window:309 - new container =
+</I>&gt;&gt;&gt;<i> 0xe2beb0
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - x.c:x_reinit:174 - resetting state 0xe2b430 to
+</I>&gt;&gt;&gt;<i> initial
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - manage.c:manage_window:342 - Not in fullscreen
+</I>&gt;&gt;&gt;<i> mode,
+</I>&gt;&gt;&gt;<i> focusing
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - manage.c:manage_window:358 - dock, not focusing
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - assignments.c:run_assignments:20 - Checking if any
+</I>&gt;&gt;&gt;<i> assignments match this window
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Checking window 0x01000007 (class i3bar)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Regular expression &quot;Google-chrome&quot; does not match
+</I>&gt;&gt;&gt;<i> &quot;i3bar&quot;
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Checking window 0x01000007 (class i3bar)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Regular expression &quot;Pgadmin3&quot; does not match
+</I>&gt;&gt;&gt;<i> &quot;i3bar&quot;
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Checking window 0x01000007 (class i3bar)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Regular expression &quot;Icedove&quot; does not match &quot;i3bar&quot;
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Checking window 0x01000007 (class i3bar)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Regular expression &quot;com-eviware-soapui-SoapUIPro&quot;
+</I>&gt;&gt;&gt;<i> does
+</I>&gt;&gt;&gt;<i> not match &quot;i3bar&quot;
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Checking window 0x01000007 (class i3bar)
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Regular expression &quot;Vlc&quot; does not match &quot;i3bar&quot;
+</I>&gt;&gt;&gt;<i> 11.11.2014 09:51:44 - Checking window 0x01000007 (class i3bar)
+</I>&gt;&gt;&gt;<i>
+</I>&gt;<i>
+</I>
+
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001936.html">[i3] startup some apps on specified workspaces in stacked mode
+</A></li>
+	<LI>Next message: <A HREF="001930.html">[i3] Battery info in i3-status
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1937">[ date ]</a>
+              <a href="thread.html#1937">[ thread ]</a>
+              <a href="subject.html#1937">[ subject ]</a>
+              <a href="author.html#1937">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

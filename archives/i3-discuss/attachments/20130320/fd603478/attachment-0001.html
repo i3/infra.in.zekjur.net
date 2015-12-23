@@ -1,0 +1,55 @@
+<tt>
+Hi,&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;I&#39;m&nbsp;running&nbsp;kde&nbsp;with&nbsp;i3&nbsp;as&nbsp;window&nbsp;manager&nbsp;and&nbsp;it&#39;s&nbsp;working&nbsp;very&nbsp;well.&nbsp;I&nbsp;did&nbsp;have&nbsp;to&nbsp;make&nbsp;a&nbsp;few&nbsp;changes&nbsp;to&nbsp;i3&nbsp;to&nbsp;make&nbsp;them&nbsp;play&nbsp;nicely&nbsp;together,&nbsp;which&nbsp;I&#39;ll&nbsp;describe&nbsp;below.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;<br>
+<br>
+&lt;div&gt;First&nbsp;of&nbsp;all&nbsp;to&nbsp;tell&nbsp;kde&nbsp;to&nbsp;use&nbsp;i3&nbsp;instead&nbsp;of&nbsp;kwin&nbsp;I&nbsp;used&nbsp;the&nbsp;KDEWM&nbsp;environment&nbsp;variable&nbsp;which&nbsp;is&nbsp;set&nbsp;inside&nbsp;the .kde/env/set_window_manager.sh&nbsp;shell&nbsp;script.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Inside&nbsp;i3&#39;s&nbsp;config&nbsp;file&nbsp;I&nbsp;have&nbsp;added&nbsp;the&nbsp;following&nbsp;commands&nbsp;to&nbsp;prevent&nbsp;various&nbsp;kde&nbsp;pop-ups&nbsp;from&nbsp;being&nbsp;decorated/tiled:&lt;/div&gt;<br>
+<br>
+&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;for_window&nbsp;[class=&quot;Plasma-desktop&quot;]&nbsp;border&nbsp;none&lt;/div&gt;&lt;div&gt;for_window&nbsp;[class=&quot;krunner&quot;]&nbsp;border&nbsp;none&lt;/div&gt;&lt;div&gt;for_window&nbsp;[class=&quot;Kmix&quot;]&nbsp;floating&nbsp;enable;&lt;/div&gt;&lt;div&gt;for_window&nbsp;[class=&quot;Plasmoidviewer&quot;]&nbsp;floating&nbsp;enable;&lt;/div&gt;<br>
+<br>
+&lt;div&gt;for_window&nbsp;[class=&quot;Klipper&quot;]&nbsp;floating&nbsp;enable;&nbsp;border&nbsp;none&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Lastly,&nbsp;I&nbsp;have&nbsp;a&nbsp;set&nbsp;of&nbsp;patches&nbsp;on&nbsp;top&nbsp;of&nbsp;the&nbsp;i3&nbsp;next&nbsp;branch&nbsp;(they&nbsp;should&nbsp;apply&nbsp;fine&nbsp;on&nbsp;top&nbsp;of&nbsp;4.5&nbsp;as&nbsp;well),&nbsp;which&nbsp;I&#39;m&nbsp;attaching&nbsp;to&nbsp;this&nbsp;email.&nbsp;Not&nbsp;all&nbsp;are&nbsp;needed&nbsp;for&nbsp;kde/i3&nbsp;integration,&nbsp;I&#39;m&nbsp;including&nbsp;all&nbsp;of&nbsp;them&nbsp;here&nbsp;because&nbsp;I&nbsp;don&#39;t&nbsp;have&nbsp;time&nbsp;to&nbsp;check&nbsp;if&nbsp;they&nbsp;apply&nbsp;cleanly&nbsp;when&nbsp;some&nbsp;are&nbsp;missing.&lt;/div&gt;<br>
+<br>
+&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;0001-Fix-crash-in-some-situations.patch &lt;/div&gt;&lt;div&gt;This&nbsp;should&nbsp;fix&nbsp;the&nbsp;krunner&nbsp;crash.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;0002-Added-support-for-window-icons-_NET_WM_ICON-property.patch&lt;/div&gt;&lt;div&gt;This&nbsp;adds&nbsp;support&nbsp;for&nbsp;displaying&nbsp;the&nbsp;window&nbsp;icons&nbsp;(_NET_WM_ICON)&nbsp;on&nbsp;the&nbsp;window&#39;s&nbsp;title.&nbsp;I&nbsp;find&nbsp;that&nbsp;when&nbsp;I&nbsp;have&nbsp;many&nbsp;windows&nbsp;in&nbsp;tabbed/stacked&nbsp;mode&nbsp;it&#39;s&nbsp;much&nbsp;quicker&nbsp;to&nbsp;find&nbsp;some&nbsp;window&nbsp;if&nbsp;there&nbsp;are&nbsp;icons&nbsp;next&nbsp;to&nbsp;the&nbsp;window&nbsp;titles.&nbsp;Not&nbsp;needed&nbsp;for&nbsp;kde/i3&nbsp;integration.&lt;/div&gt;<br>
+<br>
+&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;0003-Close-window-s-on-middle-click.patch&lt;/div&gt;&lt;div&gt;This&nbsp;added&nbsp;support&nbsp;for&nbsp;closing&nbsp;a&nbsp;window&nbsp;by&nbsp;middle&nbsp;clicking&nbsp;on&nbsp;it&#39;s&nbsp;title.&nbsp;Not&nbsp;needed&nbsp;for&nbsp;kde/i3&nbsp;integration.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;0004-Don-t-manage-desktop-type-windows-only-map-them.patch&lt;/div&gt;<br>
+<br>
+&lt;div&gt;This&nbsp;adds&nbsp;&quot;support&quot;&nbsp;for&nbsp;desktop&nbsp;windows(_NET_WM_WINDOW_TYPE_DESKTOP)&nbsp;by&nbsp;just&nbsp;mapping&nbsp;them&nbsp;instead&nbsp;of&nbsp;managing&nbsp;them.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;0005-Handling-_NET_WM_STATE_STAYS_ON_TOP-window-state-use.patch&lt;/div&gt;<br>
+<br>
+&lt;div&gt;Implements&nbsp;support&nbsp;for _NET_WM_STATE_STAYS_ON_TOP&nbsp;window&nbsp;states&nbsp;(useful&nbsp;for&nbsp;most&nbsp;KDE4&nbsp;popups).&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;0006-Allow-focusing-to-change-to-worskpaces-that-are-not-.patch&lt;/div&gt;&lt;div&gt;Allows&nbsp;focus&nbsp;change&nbsp;to&nbsp;workspaces&nbsp;that&nbsp;are&nbsp;not&nbsp;visible.&nbsp;Not&nbsp;needed&nbsp;for&nbsp;kde/i3&nbsp;integration.&lt;/div&gt;<br>
+<br>
+&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;0007-Workaround-for-resize-to-work-while-krunner-is-start.patch&lt;/div&gt;&lt;div&gt;Window&nbsp;resizing&nbsp;using&nbsp;the&nbsp;mouse&nbsp;doesn&#39;t&nbsp;work&nbsp;while&nbsp;krunner&nbsp;is&nbsp;started.&nbsp;This&nbsp;patch&nbsp;is&nbsp;a&nbsp;workaround&nbsp;to&nbsp;fix&nbsp;that.&lt;/div&gt;&lt;div&gt;&lt;br&gt;<br>
+<br>
+&lt;/div&gt;&lt;div&gt;0008-Fix-for-invisible-borders-after-restart-when-composi.patch&lt;/div&gt;&lt;/div&gt;&lt;div&gt;I&nbsp;using&nbsp;a&nbsp;compositor,&nbsp;after&nbsp;restarting&nbsp;i3&nbsp;some&nbsp;window&nbsp;borders&nbsp;become&nbsp;invisible.&nbsp;This&nbsp;patch&nbsp;is&nbsp;a&nbsp;workaround&nbsp;to&nbsp;fix&nbsp;that,&nbsp;not&nbsp;needed&nbsp;for&nbsp;kde/i3&nbsp;integration.&lt;/div&gt;<br>
+<br>
+&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Hope&nbsp;this&nbsp;helps,&lt;/div&gt;&lt;div&gt;Marius&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;div&nbsp;class=&quot;gmail_quote&quot;&gt;&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;<br>
+<br>
+<br>
+&lt;br&gt;<br>
+Basically,&nbsp;I&#39;d&nbsp;like&nbsp;to&nbsp;just&nbsp;use&nbsp;i3wm&nbsp;for&nbsp;its&nbsp;window-handling&lt;br&gt;<br>
+and&nbsp;management,&nbsp;but&nbsp;I&#39;d&nbsp;like&nbsp;to&nbsp;use&nbsp;as&nbsp;much&nbsp;of&nbsp;kde&nbsp;and&lt;br&gt;<br>
+kde-integration&nbsp;as&nbsp;possible.&lt;br&gt;<br>
+&lt;br&gt;<br>
+&lt;br&gt;<br>
+So&nbsp;I&nbsp;guess&nbsp;I&nbsp;can&nbsp;list&nbsp;this&nbsp;another&nbsp;way&nbsp;-&nbsp;what&nbsp;I&#39;d&nbsp;like&nbsp;to&lt;br&gt;<br>
+be&nbsp;able&nbsp;to&nbsp;do:&lt;br&gt;<br>
+&lt;br&gt;<br>
+*&nbsp;access&nbsp;system-tray&nbsp;stuff&nbsp;either&nbsp;via&nbsp;a&nbsp;kde&nbsp;panel,&nbsp;or&nbsp;via&lt;br&gt;<br>
+ &nbsp;i3bar/i3status.&lt;br&gt;<br>
+&lt;br&gt;<br>
+*&nbsp;execute&nbsp;krunner&nbsp;without&nbsp;crashes,&nbsp;possibly&nbsp;use&nbsp;krunner&lt;br&gt;<br>
+ &nbsp;in&nbsp;lieue&nbsp;of&nbsp;dmenu&nbsp;if&nbsp;possible.&lt;br&gt;<br>
+&lt;br&gt;<br>
+*&nbsp;be&nbsp;able&nbsp;to&nbsp;properly&nbsp;exit/logout-of&nbsp;the&nbsp;kde&nbsp;session&lt;br&gt;<br>
+&lt;br&gt;<br>
+&lt;br&gt;<br>
+Anyone&nbsp;else&nbsp;using&nbsp;i3&nbsp;as&nbsp;an&nbsp;alternative&nbsp;to&nbsp;kwin&nbsp;in&nbsp;a&nbsp;mostly&lt;br&gt;<br>
+kde&nbsp;environment,&nbsp;primarily&nbsp;for&nbsp;i3&#39;s&nbsp;tiling&nbsp;window&nbsp;management&lt;br&gt;<br>
+features?&lt;br&gt;<br>
+&lt;br&gt;<br>
+&lt;br&gt;<br>
+Thanks&nbsp;for&nbsp;any&nbsp;assistance,&nbsp;much&nbsp;appreciated!&nbsp;I&nbsp;did&nbsp;spend&lt;br&gt;<br>
+quite&nbsp;a&nbsp;bit&nbsp;of&nbsp;time&nbsp;last&nbsp;night&nbsp;experimenting&nbsp;and&nbsp;hunting&lt;br&gt;<br>
+google&nbsp;and&nbsp;forums&nbsp;for&nbsp;solutions,&nbsp;but&nbsp;to&nbsp;no&nbsp;avail.&lt;br&gt;<br>
+&lt;br&gt;<br>
+&lt;br&gt;<br>
+&lt;/blockquote&gt;&lt;/div&gt;&lt;br&gt;&lt;/div&gt;<br>
+
+</tt>

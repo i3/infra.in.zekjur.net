@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Status line and system tray
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Status%20line%20and%20system%20tray&In-Reply-To=%3CAANLkTimh5dbh4KLaoY95RPC0yGsGG2qBwDx4ZHF0fQnX%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000128.html">
+   <LINK REL="Next"  HREF="000117.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Status line and system tray</H1>
+    <B>Joaquin Sorianello</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Status%20line%20and%20system%20tray&In-Reply-To=%3CAANLkTimh5dbh4KLaoY95RPC0yGsGG2qBwDx4ZHF0fQnX%40mail.gmail.com%3E"
+       TITLE="[i3] Status line and system tray">soriasoft at gmail.com
+       </A><BR>
+    <I>Thu Jul 29 16:15:38 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000128.html">[i3] Status line and system tray
+</A></li>
+        <LI>Next message: <A HREF="000117.html">[i3] Status line and system tray
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#129">[ date ]</a>
+              <a href="thread.html#129">[ thread ]</a>
+              <a href="subject.html#129">[ subject ]</a>
+              <a href="author.html#129">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, Jul 29, 2010 at 10:49 AM, Jiri Kanicky &lt;<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jirik at ganomi.com</A>&gt; wrote:
+&gt;<i> On 27/07/10 19:10, David Coppa wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Tue, Jul 27, 2010 at 11:04 AM, Jiri Kanicky&lt;<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jirik at ganomi.com</A>&gt; &#160;wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Hi Michael.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Sorry, I am not developer. I just made a suggestion. I understand that
+</I>&gt;&gt;&gt;<i> you
+</I>&gt;&gt;&gt;<i> may not need it. I need it primarily for Skype. I am trying to say that
+</I>&gt;&gt;&gt;<i> it
+</I>&gt;&gt;&gt;<i> would not have to be bad to have it there.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> # i3-wsbar -c &quot;dzen2 -fg white -fn
+</I>&gt;&gt;&gt;<i> '-misc-fixed-medium-r-normal--13-120-75-75-C-70-iso8859-1' -ta r&quot;|
+</I>&gt;&gt;&gt;<i> I tried, but I get only black top bar. Also if I open terminal on new
+</I>&gt;&gt;&gt;<i> workspace, the window top panel will hide it.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> # i3status | dzen2 -fg white -fn
+</I>&gt;&gt;&gt;<i> '-misc-fixed-medium-r-normal--13-120-75-75-C-70-iso8859-1' -ta r
+</I>&gt;&gt;&gt;<i> works but then I have issues if I switch screens.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> You want the &quot;-dock&quot; option for dzen2 (a svn version of dzen2 is
+</I>&gt;&gt;<i> needed for this)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ciao,
+</I>&gt;&gt;<i> David
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Hi David
+</I>&gt;<i>
+</I>&gt;<i> I downloaded and compiled the svn version of dzen2.
+</I>&gt;<i>
+</I>&gt;<i> dzen2 will load as a dock now, but I am not able to see the time, network
+</I>&gt;<i> details, etc., as I was able with the Debian package. Is this expected
+</I>&gt;<i> behavior?
+</I>&gt;<i>
+</I>&gt;<i> Thanks!
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i>
+</I>&gt;<i> Jiri
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+You need to use i3-status with a pipe:
+
+i3status | dzen2 -y 882  -ta r  -x 500 &amp;   (I have this line in my
+~/.i3/config file)
+
+If you use arch linux, you have to make a few changes in ~/.i3status.conf
+
+like <A HREF="http://joac.pastebin.com/3LkFiMy9">http://joac.pastebin.com/3LkFiMy9</A>
+
+happy i3ing
+
+-- 
+Joaqu&#237;n Sorianello
+
+Sea libre, use software libre
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000128.html">[i3] Status line and system tray
+</A></li>
+	<LI>Next message: <A HREF="000117.html">[i3] Status line and system tray
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#129">[ date ]</a>
+              <a href="thread.html#129">[ thread ]</a>
+              <a href="subject.html#129">[ subject ]</a>
+              <a href="author.html#129">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

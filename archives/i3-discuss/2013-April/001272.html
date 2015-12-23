@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3bar: toggle mode
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3bar%3A%20toggle%20mode&In-Reply-To=%3C5169AF4D.606%40web.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001271.html">
+   <LINK REL="Next"  HREF="001273.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3bar: toggle mode</H1>
+    <B>justus jonas</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3bar%3A%20toggle%20mode&In-Reply-To=%3C5169AF4D.606%40web.de%3E"
+       TITLE="[i3] i3bar: toggle mode">haptix at web.de
+       </A><BR>
+    <I>Sat Apr 13 21:17:33 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001271.html">[i3] i3bar: toggle mode
+</A></li>
+        <LI>Next message: <A HREF="001273.html">[i3] i3bar: toggle mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1272">[ date ]</a>
+              <a href="thread.html#1272">[ thread ]</a>
+              <a href="subject.html#1272">[ subject ]</a>
+              <a href="author.html#1272">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Michael,
+
+thanks again for your answer :)
+
+As far as I understand, we would then have a state in the barconfig, 
+which could be either &quot;show&quot; or &quot;hidden&quot; (and maybe &quot;forcehide&quot;). We 
+would then switch between the values for toggling. Is there already some 
+existing code for sending config updates to i3bar, where you could point 
+me to?
+
+Best
+jj
+
+Am 13.04.2013 15:59, schrieb Michael Stapelberg:
+&gt;<i> Hi justus,
+</I>&gt;<i>
+</I>&gt;<i> (I like that nickname :-))
+</I>&gt;<i>
+</I>&gt;<i> justus jonas &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">haptix at web.de</A>&gt; writes:
+</I>&gt;&gt;<i> currently I am working on a patch for fixing feature request #651 and
+</I>&gt;&gt;<i> #833. This would introduce a mode &quot;toggle&quot; for i3bar, which toggles
+</I>&gt;&gt;<i> between showing and hiding the i3bar whenever the i3bar modifier is
+</I>&gt;&gt;<i> pressed.
+</I>&gt;<i> You rock! Thanks for all the patches and ongoing work.
+</I>&gt;<i>
+</I>&gt;&gt;<i> Can anyone of you give me a hint on how to synchronize the state of the
+</I>&gt;&gt;<i> two bars or how to tackle this problem in another way?
+</I>&gt;<i> Here&#8217;s an idea:
+</I>&gt;<i>
+</I>&gt;<i> 1) In the bar config, introduce a &#8220;hidden&#8221; state.
+</I>&gt;<i> 2) Introduce a new i3 command named &#8220;bar toggle&#8221; (bonus points for also
+</I>&gt;<i>     implementing &#8220;bar show&#8221; and &#8220;bar hide&#8221;, they are trivial), that
+</I>&gt;<i>     optionally accepts a parameter, which is the bar id.
+</I>&gt;<i> 3) Users configure e.g. &#8220;bindsym $mod+x bar toggle&#8221; in their i3 config,
+</I>&gt;<i>     i3 sends the config update with &#8220;hidden&#8221; as state to all bar
+</I>&gt;<i>     instances (or only the specified one).
+</I>&gt;<i>
+</I>&gt;<i> The advantages are:
+</I>&gt;<i> &#8226; i3 already provides keybinding configuration, so it should probably go
+</I>&gt;<i>    into i3 anyways
+</I>&gt;<i> &#8226; people can use the IPC interface to do all kinds of specific setup
+</I>&gt;<i>    outside of i3, by using the bar toggle/show/hide command, optionally
+</I>&gt;<i>    with instances.
+</I>&gt;<i>
+</I></PRE>
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001271.html">[i3] i3bar: toggle mode
+</A></li>
+	<LI>Next message: <A HREF="001273.html">[i3] i3bar: toggle mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1272">[ date ]</a>
+              <a href="thread.html#1272">[ thread ]</a>
+              <a href="subject.html#1272">[ subject ]</a>
+              <a href="author.html#1272">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

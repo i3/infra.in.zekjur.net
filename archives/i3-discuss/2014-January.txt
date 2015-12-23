@@ -1,0 +1,1600 @@
+From me at izzybl.tk  Wed Jan  8 09:19:37 2014
+From: me at izzybl.tk (Izzy)
+Date: Wed, 08 Jan 2014 09:19:37 +0100
+Subject: [i3] Feature request: disable switching to virtual terminal with
+	i3lock
+Message-ID: <8c29946957cbc844ab615e782d0e68c0@mailoo.org>
+
+ 
+
+Hi,
+
+I've been an i3 user for a few months now, and I just began using
+i3lock instead of slimlock[1].
+
+There's just one thing that kind of bothers me, though: with slimlock
+it's possible to use an option (called 'tty_lock') which disables
+switching to another virtual terminal while the screen is locked (using
+VT_LOCKSWITCH).
+
+I think this is a nice "security feature", if you wish. So, I was
+wondering: first if this would be desirable in i3lock, and in that case
+if it could be possible to add a similar option. It doesn't seem to be
+_that_ difficult to implement, but unfortunately I don't know C, so
+submitting a patch is out of the question.
+
+Thank you.
+
+[1] https://github.com/dannyn/slimlock 
+
+-- 
+
+Izzy 
+ 
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140108/e6c22e2a/attachment.html>
+
+From mail at merovius.de  Wed Jan  8 09:43:16 2014
+From: mail at merovius.de (Axel Wagner)
+Date: Wed, 08 Jan 2014 09:43:16 +0100
+Subject: [i3] Feature request: disable switching to virtual terminal
+	with i3lock
+In-Reply-To: <8c29946957cbc844ab615e782d0e68c0@mailoo.org>
+References: <8c29946957cbc844ab615e782d0e68c0@mailoo.org>
+Message-ID: <87txde984b.fsf@rincewind.i-did-not-set--mail-host-address--so-tickle-me>
+
+Hi,
+
+Izzy <me at izzybl.tk> writes:
+> There's just one thing that kind of bothers me, though: with slimlock
+> it's possible to use an option (called 'tty_lock') which disables
+> switching to another virtual terminal while the screen is locked (using
+> VT_LOCKSWITCH).
+>
+> I think this is a nice "security feature", if you wish. So, I was
+> wondering: first if this would be desirable in i3lock, and in that case
+> if it could be possible to add a similar option. It doesn't seem to be
+> _that_ difficult to implement, but unfortunately I don't know C, so
+> submitting a patch is out of the question.
+
+Yuck. I'm no expert, but this seems only possible, if you run as
+root. And indeed, slimlock is installed setuid root. I don't think, it
+is very wise, to have an X-application run as setuid root, let alone
+i3lock, I'm not sure, the code is ripe for that as that's not the
+security model it was written under.
+
+I also wouldn't use slimlock in the future, btw. I wouldn't trust any
+application with code like [1] for security-sensitive purposes (let
+alone having it setuid root). Indeed, AFAICT slimlock is not even
+dropping it's priviledges at any point.
+
+So, IMHO you grossly underestimate the complexity of doing this
+right. You would probably need a seperate setuid-helper-binary for that
+and you would have to worry about what the security-implications of this
+feature are (for example: What if I log in, lock all terminals and
+lock out again? No one would be able to use them. Is that acceptable?).
+
+I think you better look for some application that does this standalone
+and add it to your i3lock-invocation.
+
+Best,
+
+Axel
+
+[1] https://github.com/dannyn/slimlock/blob/master/slimlock.cpp#L86
+
+From mail at merovius.de  Wed Jan  8 10:15:21 2014
+From: mail at merovius.de (Axel Wagner)
+Date: Wed, 08 Jan 2014 10:15:21 +0100
+Subject: [i3] Feature request: disable switching to virtual terminal
+	with i3lock
+In-Reply-To: <87txde984b.fsf@rincewind.i-did-not-set--mail-host-address--so-tickle-me>
+References: <8c29946957cbc844ab615e782d0e68c0@mailoo.org>
+ <87txde984b.fsf@rincewind.i-did-not-set--mail-host-address--so-tickle-me>
+Message-ID: <87ob3m96mu.fsf@rincewind.i-did-not-set--mail-host-address--so-tickle-me>
+
+Axel Wagner <mail at merovius.de> writes:
+> [1] https://github.com/dannyn/slimlock/blob/master/slimlock.cpp#L86
+
+Ohm, scratch that, I should read before I rant, I overloocked the
+run/var difference. My other points are still valid, though.
+
+From michael at i3wm.org  Wed Jan  8 12:35:45 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 08 Jan 2014 12:35:45 +0100
+Subject: [i3] Feature request: disable switching to virtual terminal
+	with i3lock
+In-Reply-To: <8c29946957cbc844ab615e782d0e68c0@mailoo.org>
+References: <8c29946957cbc844ab615e782d0e68c0@mailoo.org>
+Message-ID: <x661puwvse.fsf@midna.zekjur.net>
+
+Hi Izzy,
+
+Izzy <me at izzybl.tk> writes:
+> There's just one thing that kind of bothers me, though: with slimlock
+> it's possible to use an option (called 'tty_lock') which disables
+> switching to another virtual terminal while the screen is locked (using
+> VT_LOCKSWITCH).
+>
+> I think this is a nice "security feature", if you wish. So, I was
+> wondering: first if this would be desirable in i3lock, and in that case
+> if it could be possible to add a similar option. It doesn't seem to be
+> _that_ difficult to implement, but unfortunately I don't know C, so
+> submitting a patch is out of the question.
+Switching to a VT in itself is not a security issue since these are
+protected by getty (or other software which asks you to login).
+
+If you actually use the VTs and want to lock them, use different tools,
+e.g. vlock.
+
+i3lock is an X11 screen locker and I don?t want to extend its scope to
+VTs.
+
+-- 
+Best regards,
+Michael
+
+From antonio.corbi at ua.es  Mon Jan 13 13:34:02 2014
+From: antonio.corbi at ua.es (Antonio-M. Corbi Bellot)
+Date: Mon, 13 Jan 2014 13:34:02 +0100
+Subject: [i3] libi3 and .xsession-errors
+Message-ID: <20140113133402.71b9fddc@pacb>
+
+Hi!
+
+My ~/.xsession-errors file is flooded with this kind of lines:
+
+[libi3] libi3/font.c X11 root window dictates 100.263158 DPI
+
+Is it possible to disable these kinds of notifications!
+
+Thanks in advance for your help.
+A. Corbi
+
+From dcoppa at gmail.com  Mon Jan 13 13:41:43 2014
+From: dcoppa at gmail.com (David Coppa)
+Date: Mon, 13 Jan 2014 13:41:43 +0100
+Subject: [i3] libi3 and .xsession-errors
+In-Reply-To: <20140113133402.71b9fddc@pacb>
+References: <20140113133402.71b9fddc@pacb>
+Message-ID: <CABM=MF+AoiWYvSZg3JRhaQ+jhYTgOq1y_7XbfdCyQKRoCVjyYw@mail.gmail.com>
+
+On Mon, Jan 13, 2014 at 1:34 PM, Antonio-M. Corbi Bellot
+<antonio.corbi at ua.es> wrote:
+> Hi!
+>
+> My ~/.xsession-errors file is flooded with this kind of lines:
+>
+> [libi3] libi3/font.c X11 root window dictates 100.263158 DPI
+>
+> Is it possible to disable these kinds of notifications!
+>
+> Thanks in advance for your help.
+> A. Corbi
+
+Michael already fixed this bug.
+See: http://code.stapelberg.de/git/i3/commit/?id=0883dfbe14628430caaeefdb00e282a008d30d76
+
+Ciao,
+David
+
+From michael at i3wm.org  Tue Jan 14 21:06:09 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 14 Jan 2014 21:06:09 +0100
+Subject: [i3] i3wm buttons
+In-Reply-To: <207311389721647@web20g.yandex.ru>
+References: <207311389721647@web20g.yandex.ru>
+Message-ID: <x61u0amiq6.fsf@midna.zekjur.net>
+
+Hi ???????,
+
+Thanks for your suggestion. I have CC'ed i3-discuss, where this should
+have been sent to in the first place.
+
+??????? ?????? <ag-3d at yandex.ru> writes:
+
+> -----------
+> i3 buttons.
+> -----------
+>
+> idea: add buttons to i3wm
+> Why:
+> i3wm`s problem: it is aims only on geeks, not on usual users:
+This is not a problem. i3 is a niche window manager and we are very
+aware of that. Most usual users have no interest in using a tiling
+window manager, and we have no interest in accomodating novice users.
+
+>  - user cant see, how to mnipulate i3wm, he need to learn i3 hotkeys.
+Which is good, because then she knows the hotkeys, and they are very
+useful :).
+
+>  - i3wm need keybord for even simple things, like closing window, what
+>  is not always userful.
+Agreed. There is ticket #558 though, which is actively being worked on,
+to improve mouse usage of i3.
+
+>  - it can slow down users (launch applications is not so simple, and if program have a lot of hotkeys, like blender, user need to switch his mind form program to i3wm)
+> What about users, already familiar to i3wm?:
+>  - Of course, user can remove all buutons, he can easily #comment it in config.
+>  - add to i3wm first launch(where is win-alt choise) "show buttons",
+> default answer sloud be yes(! becase new user usualy just click
+> default, familiar have more attention and he easily choose)
+We don?t want to make i3-config-wizard a configuration tool. The only
+reason it exists in the first place is because configs that are tailored
+to your keyboard layout _have to_ be generated at runtime. The reason it
+also offers you a choice between the alt and the windows key as a
+modifier is that we strongly prefer the windows key (due to less clashes
+with other applications), but not all laptops have it. Perhaps we can
+drop it in a couple of years.
+
+> just adding buttons to i3 can make avalibe this awesome tiling manager
+> for every user, you can get more donates!
+I don?t need more donations.
+
+I hope I have explained well enough why I don?t think adding buttons is
+a good idea, especially if it?s for catering to a group of users which
+we explicitly don?t want to have at all. By focusing on power users, we
+can make much better software for them, and the market for novice/light
+users is already saturated with programs like GNOME, KDE, Xfce, LXDE and
+others.
+
+I?ll leave the rest of the proposal in the mail for transparency:
+
+> Window buttons:
+>   add buttons to title of window(left of right corner):
+>     image:
+>       (it can be just xbm for begining, but png would be better)
+>       (for example, xbm color is color of title text)
+>     click this image: this call command for current window:
+>       for example 'kill'
+>   image is in ~/.i3 
+>     example: ~/.i3/close.xbm or ~/.i3/close.png
+>   In config:
+>
+>     #button place image     command
+>     button  left  close.png kill
+>
+>   (First button on left side is first button with "left" in config, second is second...)
+>   examples:
+>
+>     #here .png can be .xbm if you now want to make only .xbm
+>     #close button on right
+>     button right close.png kill
+>     #full scree on the left
+>     button left full.png fullscreen
+>     #floating mode (simular to maximaze button)
+>     button left floating toggle
+>     #split in horizontal orientation
+>     button left splith.png split h
+>
+>
+> Buttons for i3bar (panel of i3):
+>   you can do it, because you did system tray
+>   launch buttons - reson, why i use gnome-panel, not i3bar
+>   add buttons to i3bar:
+>   - left (from the left of workspace butons)
+>   - right (from the right of tray)
+>   - ?at center?
+>   In config it is in "bar":
+>     
+>     bar {
+> 	    status_comand i3status
+> 	    button right tabbed.png layout tabbed
+> 	    button right splite.png layout toggle split
+> 	    button left  /usr/pixmaps/firefox.png exec firefox
+> 	}
+>
+
+-- 
+Best regards,
+Michael
+
+From alexander at plaimi.net  Tue Jan 14 21:14:39 2014
+From: alexander at plaimi.net (Alexander Berntsen)
+Date: Tue, 14 Jan 2014 21:14:39 +0100
+Subject: [i3] i3wm buttons
+In-Reply-To: <x61u0amiq6.fsf@midna.zekjur.net>
+References: <207311389721647@web20g.yandex.ru>
+ <x61u0amiq6.fsf@midna.zekjur.net>
+Message-ID: <52D59AAF.9060508@plaimi.net>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+On 14/01/14 21:06, Michael Stapelberg wrote:
+> I hope I have explained well enough why I don?t think adding
+> buttons is a good idea
+You have. And I agree. Efforts are better spent elsewhere, and fewer
+LOC is a win.
+
+- -- 
+Alexander
+alexander at plaimi.net
+http://plaimi.net/~alexander
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+
+iF4EAREIAAYFAlLVmq8ACgkQRtClrXBQc7Xw7wD+I/BytNolTQkUz0YywxG6Dj5Q
+ipguoBJVTMsiPPqfp9UA/R5RuomFfJ+ND8jHHH/v2ZAvNAoOovEjBdMy/mirzBHf
+=4CG6
+-----END PGP SIGNATURE-----
+
+From michael at i3wm.org  Wed Jan 15 08:24:09 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 15 Jan 2014 08:24:09 +0100
+Subject: [i3] i3wm buttons
+In-Reply-To: <87531389759587@web25g.yandex.ru>
+References: <207311389721647@web20g.yandex.ru>
+ <x61u0amiq6.fsf@midna.zekjur.net> <87531389759587@web25g.yandex.ru>
+Message-ID: <x6k3e1lnc6.fsf@midna.zekjur.net>
+
+Hi ???????,
+
+??????? ?????? <ag-3d at yandex.ru> writes:
+> another idea for closing windows - "kill" on middle mouse click
+This is specifically what we are discussing in the ticket #558 which I
+have been referring you to.
+
+-- 
+Best regards,
+Michael
+
+From alexander at plaimi.net  Wed Jan 15 09:45:24 2014
+From: alexander at plaimi.net (Alexander Berntsen)
+Date: Wed, 15 Jan 2014 09:45:24 +0100
+Subject: [i3] i3wm buttons
+In-Reply-To: <x6k3e1lnc6.fsf@midna.zekjur.net>
+References: <207311389721647@web20g.yandex.ru>
+ <x61u0amiq6.fsf@midna.zekjur.net> <87531389759587@web25g.yandex.ru>
+ <x6k3e1lnc6.fsf@midna.zekjur.net>
+Message-ID: <52D64AA4.5090106@plaimi.net>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+??????? ?????? <ag-3d at yandex.ru> writes:
+
+Consider binding xkill to some keyboard shortcut. It is useful.
+
+- -- 
+Alexander
+alexander at plaimi.net
+http://plaimi.net/~alexander
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+
+iF4EAREIAAYFAlLWSqQACgkQRtClrXBQc7VsKAD/dCW95mv8T5lfnYKTDAL7rucz
+qDK1Yy+NGZ7AtqMJrkoA/1ukInpqVCOqgHIo4O2fxuhNontE13cnKb9GCV+GyuSy
+=Fv2G
+-----END PGP SIGNATURE-----
+
+From old4 at o2.pl  Wed Jan 15 14:34:19 2014
+From: old4 at o2.pl (Mateusz Poszwa)
+Date: Wed, 15 Jan 2014 14:34:19 +0100
+Subject: [i3] i3wm buttons
+In-Reply-To: <52D64AA4.5090106@plaimi.net>
+References: <207311389721647@web20g.yandex.ru>
+ <x61u0amiq6.fsf@midna.zekjur.net> <87531389759587@web25g.yandex.ru>
+ <x6k3e1lnc6.fsf@midna.zekjur.net> <52D64AA4.5090106@plaimi.net>
+Message-ID: <20140115133419.GA2346@finnix.cie.put.poznan.pl>
+
+On Wed, Jan 15, 2014 at 09:45:24AM +0100, Alexander Berntsen wrote:
+> Consider binding xkill to some keyboard shortcut. It is useful.
+
+We also have the kill command.
+I find it better for keyboard-only usage.
+I have the following in my .i3/config:
+?
+set $Mod1 Mod4
+# (?)
+# kill focused window
+bindsym $Mod1+k kill
+?
+
+Regards.
+
+-- 
+Mateusz Poszwa
+
+From alexander at plaimi.net  Wed Jan 15 15:06:37 2014
+From: alexander at plaimi.net (Alexander Berntsen)
+Date: Wed, 15 Jan 2014 15:06:37 +0100
+Subject: [i3] i3wm buttons
+In-Reply-To: <20140115133419.GA2346@finnix.cie.put.poznan.pl>
+References: <207311389721647@web20g.yandex.ru>
+ <x61u0amiq6.fsf@midna.zekjur.net> <87531389759587@web25g.yandex.ru>
+ <x6k3e1lnc6.fsf@midna.zekjur.net> <52D64AA4.5090106@plaimi.net>
+ <20140115133419.GA2346@finnix.cie.put.poznan.pl>
+Message-ID: <52D695ED.8060603@plaimi.net>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+On 15/01/14 14:34, Mateusz Poszwa wrote:
+> We also have the kill command.
+> I find it better for keyboard-only usage.
+> I have the following in my .i3/config:
+> ?
+> set $Mod1 Mod4
+> # (?)
+> # kill focused window
+> bindsym $Mod1+k kill
+> ?
+I agree. This is more useful. My suggestion was aimed at mouse-users.
+
+- -- 
+Alexander
+alexander at plaimi.net
+http://plaimi.net/~alexander
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+
+iF4EAREIAAYFAlLWle0ACgkQRtClrXBQc7Xb+gEAld7nk8fa7ZUpVg+ezjEeM9qA
+73YNYVe+LwoBOIeeUXAA/0/X9QUFDhlxuqXE+dLe0O2w2F1NCV4/XIxfGG8bsXgp
+=DEzY
+-----END PGP SIGNATURE-----
+
+From michael at i3wm.org  Sat Jan 18 21:21:22 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 18 Jan 2014 21:21:22 +0100
+Subject: [i3] =?utf-8?q?Call_for_testing=3A_i3lock=E2=80=99s_xcb-xkb_branc?=
+	=?utf-8?q?h?=
+Message-ID: <x6ppnphwhp.fsf@midna.zekjur.net>
+
+Hi,
+
+Ran Benita (CC'ed) has been working on libxkbcommon-x11, a library that
+handles the last few bits of tedious details in getting input handling
+right. In i3lock, we have been using a mixture of libX11?s XKB functions
+and libxkbcommon until now, but with the most recent release, xcb has
+xcb-xkb enabled by default, so we can start using that. The advantage is
+that i3lock will be XCB-only and more of the input handling code goes
+into libxkbcommon, where bugs can be addressed without us having to
+update our code.
+
+Anyway, there is a new i3lock branch which contains a number of commits
+to use libxkbcommon-x11 and xcb-xkb; you can get it using
+
+   git clone -b xcb-xkb git://code.i3wm.org/i3lock
+
+To compile it, you?ll need libxcb-xkb and libxkbcommon-x11. The latter
+is only available via git:
+
+   git clone -b xcb-wip https://github.com/xkbcommon/libxkbcommon.git
+
+Be sure to pass --enable-x11 when compiling libxkbcommon.
+
+It would be great if as many of you as possible could build libxkbcommon
+by hand, compile the i3lock branch and use the new i3lock code in your
+day to day work. To verify that you are using the new code, watch out
+for ?process_xkb_event? messages when i3lock was started with --debug
+and you press the shift key (or any other modifier).
+
+The code has been tested with the US and NEO2 keyboard layouts. I?d be
+especially interested to hear about success in layouts other than
+those two. Please just reply to this email and keep Ran CC'ed.
+
+-- 
+Best regards,
+Michael
+
+From i3 at hunsicker.de  Sat Jan 18 23:49:04 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Sat, 18 Jan 2014 23:49:04 +0100
+Subject: [i3] IPC window focus change event
+Message-ID: <52DB04E0.10602@hunsicker.de>
+
+Howdy,
+
+first and foremost thanks for all the work that went into i3! It seems 
+to hit just the right sweet spot between feature set, ease of use, 
+documentation and extensibility.
+
+While searching for solutions to display the title of the focused window 
+in the bar (I have three monitors and plenty of horizontal space that 
+should be put to good use), I was not able to come up with a fully 
+satisfying solution.
+
+But I found an old thread that provides some useful code for such a 
+feature: "Added 'focus' IPC message/event" by Kevin Murphy, 
+<http://infra.in.zekjur.net/pipermail/i3-discuss/2012-November/001039.html>
+
+With such an event it should be possible to keep the general refresh 
+rate low and still have the title updated immediately after focus change.
+
+ From the reply it seems that such an enhancement could make it into the 
+core. If the mentioned shortcomings could be fixed, would you be willing 
+to accept a patch? Thanks.
+
+Cheers,
+
+Marco
+
+From michael at i3wm.org  Sun Jan 19 09:15:11 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 19 Jan 2014 09:15:11 +0100
+Subject: [i3] IPC window focus change event
+In-Reply-To: <52DB04E0.10602@hunsicker.de>
+References: <52DB04E0.10602@hunsicker.de>
+Message-ID: <x6k3dwie0g.fsf@midna.zekjur.net>
+
+Hi Marco,
+
+Marco Hunsicker <i3 at hunsicker.de> writes:
+>  From the reply it seems that such an enhancement could make it into the 
+> core. If the mentioned shortcomings could be fixed, would you be willing 
+> to accept a patch? Thanks.
+Yes. Please submit a fixed version to http://cr.i3wm.org/ and read
+http://build.i3wm.org/docs/hacking-howto.html first :).
+
+-- 
+Best regards,
+Michael
+
+From i3 at hunsicker.de  Sun Jan 19 11:08:43 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Sun, 19 Jan 2014 11:08:43 +0100
+Subject: [i3] IPC window focus change event
+In-Reply-To: <x6k3dwie0g.fsf@midna.zekjur.net>
+References: <52DB04E0.10602@hunsicker.de> <x6k3dwie0g.fsf@midna.zekjur.net>
+Message-ID: <52DBA42B.1020006@hunsicker.de>
+
+Hello Michael,
+
+thanks for your quick action!
+
+>> If the mentioned shortcomings could be fixed, would you be willing
+>> to accept a patch?
+
+> Yes. Please submit a fixed version to http://cr.i3wm.org/ and read
+> http://build.i3wm.org/docs/hacking-howto.html first :).
+
+OK. I'm not much of a C hacker and it will probably already take some 
+time to even get the sources to compile, but once I'm done I will make 
+sure that the little patch goes to the mentioned channels.
+
+Should I open a ticket with the tracker?
+
+Cheers,
+Marco
+
+From michael at i3wm.org  Sun Jan 19 11:16:48 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 19 Jan 2014 11:16:48 +0100
+Subject: [i3] IPC window focus change event
+In-Reply-To: <52DBA42B.1020006@hunsicker.de>
+References: <52DB04E0.10602@hunsicker.de> <x6k3dwie0g.fsf@midna.zekjur.net>
+ <52DBA42B.1020006@hunsicker.de>
+Message-ID: <x6ha90i8dr.fsf@midna.zekjur.net>
+
+Hi Marco,
+
+Marco Hunsicker <i3 at hunsicker.de> writes:
+> Should I open a ticket with the tracker?
+I don?t really think that?s necessary, but if you absolutely want to, go
+ahead.
+
+-- 
+Best regards,
+Michael
+
+From i3 at hunsicker.de  Mon Jan 20 07:10:49 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Mon, 20 Jan 2014 07:10:49 +0100
+Subject: [i3] IPC window focus change event
+In-Reply-To: <x6k3dwie0g.fsf@midna.zekjur.net>
+References: <52DB04E0.10602@hunsicker.de> <x6k3dwie0g.fsf@midna.zekjur.net>
+Message-ID: <52DCBDE9.6080309@hunsicker.de>
+
+Hello Michael,
+
+> Yes. Please submit a fixed version to http://cr.i3wm.org/
+
+The patch has been submitted.
+
+I've altered the naming of the event as the patch really deals with 
+window title changes. If there is interest for a window focus specific 
+change event, this could be added separately.
+
+There is unfortunately no unit test. I don't speak Perl. The 
+documentation would need to be adjusted as well. I haven't looked into 
+that yet.
+
+Feel free to contact me if there are any questions. Thanks.
+
+Cheers,
+Marco
+
+
+
+From i3 at hunsicker.de  Mon Jan 20 07:20:06 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Mon, 20 Jan 2014 07:20:06 +0100
+Subject: [i3] Obsolete focus change?
+Message-ID: <52DCC016.8080205@hunsicker.de>
+
+Howdy,
+
+During testing of my IPC patch, I've found an edge case that might be 
+worthwhile to investigate.
+
+If a window currently has the focus and the mouse is placed within the 
+window bounds, moving the mouse over (not beyond) the window border 
+triggers a focus change although the window is already focused!
+
+As I don't know whether this behavior is intentional, I've addressed 
+this use case specifically for my code path in con.c->con_focus() to 
+avoid sending pointless window events. Might be possible to extend the 
+checking to the whole method to spare some cycles.
+
+Cheers,
+Marco
+
+From michael at i3wm.org  Mon Jan 20 19:43:17 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 20 Jan 2014 19:43:17 +0100
+Subject: [i3] IPC window focus change event
+In-Reply-To: <52DCBDE9.6080309@hunsicker.de>
+References: <52DB04E0.10602@hunsicker.de> <x6k3dwie0g.fsf@midna.zekjur.net>
+ <52DCBDE9.6080309@hunsicker.de>
+Message-ID: <x6zjmqh4u2.fsf@midna.zekjur.net>
+
+Hi Marco,
+
+Marco Hunsicker <i3 at hunsicker.de> writes:
+> The patch has been submitted.
+For the record: http://cr.i3wm.org/patch/384
+
+I commented on the bug and expect further communication to happen there
+instead of on this mailing list :).
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Mon Jan 20 19:46:14 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 20 Jan 2014 19:46:14 +0100
+Subject: [i3] Obsolete focus change?
+In-Reply-To: <52DCC016.8080205@hunsicker.de>
+References: <52DCC016.8080205@hunsicker.de>
+Message-ID: <x6wqhuh4p5.fsf@midna.zekjur.net>
+
+Hi Marco,
+
+Marco Hunsicker <i3 at hunsicker.de> writes:
+> During testing of my IPC patch, I've found an edge case that might be 
+> worthwhile to investigate.
+>
+> If a window currently has the focus and the mouse is placed within the 
+> window bounds, moving the mouse over (not beyond) the window border 
+> triggers a focus change although the window is already focused!
+Yeah, because those are different X11 windows and i3 gets an EnterNotify
+event.
+
+> As I don't know whether this behavior is intentional, I've addressed 
+> this use case specifically for my code path in con.c->con_focus() to 
+> avoid sending pointless window events. Might be possible to extend the 
+> checking to the whole method to spare some cycles.
+Well, focus will not actually be updated, i.e. no communication from i3
+to X11 happens because of our state machine model. con_focus() and
+rendering the tree are both supposed to work at any time and be pretty
+fast, so it?s not a big concern.
+
+In case you feel strongly about this, you could send a patch which would
+short-circuit this code path and then try all the weird corner cases we
+have (various layouts, decoration styles, mouse transitions between
+monitors, etc.). Personally, I don?t think that?s worth it.
+
+-- 
+Best regards,
+Michael
+
+From i3 at hunsicker.de  Mon Jan 20 21:43:08 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Mon, 20 Jan 2014 21:43:08 +0100
+Subject: [i3] Obsolete focus change?
+In-Reply-To: <x6wqhuh4p5.fsf@midna.zekjur.net>
+References: <52DCC016.8080205@hunsicker.de> <x6wqhuh4p5.fsf@midna.zekjur.net>
+Message-ID: <52DD8A5C.6010507@hunsicker.de>
+
+Hey Michael,
+
+> Well, focus will not actually be updated, i.e. no communication from i3
+> to X11 happens because of our state machine model. con_focus() and
+> rendering the tree are both supposed to work at any time and be pretty
+> fast, so it?s not a big concern.
+
+Thanks for the explanation. I did not delve that deep into the source 
+code to be aware of such machinery. My changes were merely superficial 
+and wouldn't have been possible without Kevin Murphy already having done 
+the real work.
+
+> In case you feel strongly about this, you could send a patch which would
+> short-circuit this code path and then try all the weird corner cases we
+> have (various layouts, decoration styles, mouse transitions between
+> monitors, etc.). Personally, I don?t think that?s worth it.
+
+I certainly trust your judgement :)
+
+Cheers,
+Marco
+
+
+
+
+From nashpapa at gmail.com  Tue Jan 21 16:56:35 2014
+From: nashpapa at gmail.com (avinash r)
+Date: Tue, 21 Jan 2014 21:26:35 +0530
+Subject: [i3] Color mode of i3status using as i3bar
+Message-ID: <CAHCistdEf2aWXT4s+6YojDOZZO-QLkk=2P0PVumMYAwJZbrQCA@mail.gmail.com>
+
+Hi,
+I'm running i3 4.7, and the i3status is not showing any color. I have
+enabled color mode using
+
+  general {
+    colors = true
+  }
+
+Is this a bug? Or has the configuration changed since?
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140121/5169d0dc/attachment.html>
+
+From michael at i3wm.org  Tue Jan 21 17:21:04 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 21 Jan 2014 17:21:04 +0100
+Subject: [i3] Color mode of i3status using as i3bar
+In-Reply-To: <CAHCistdEf2aWXT4s+6YojDOZZO-QLkk=2P0PVumMYAwJZbrQCA@mail.gmail.com>
+References: <CAHCistdEf2aWXT4s+6YojDOZZO-QLkk=2P0PVumMYAwJZbrQCA@mail.gmail.com>
+Message-ID: <x6fvohgvbj.fsf@midna.zekjur.net>
+
+Hi avinash,
+
+avinash r <nashpapa at gmail.com> writes:
+> I'm running i3 4.7, and the i3status is not showing any color. I have
+> enabled color mode using
+>
+>   general {
+>     colors = true
+>   }
+>
+> Is this a bug? Or has the configuration changed since?
+Upgrade to i3status 2.8, or, if you cannot, add output_format = "i3bar"
+into the general {} section of your ~/.i3status.conf.
+
+-- 
+Best regards,
+Michael
+
+From dcoppa at openbsd.org  Wed Jan 22 14:06:20 2014
+From: dcoppa at openbsd.org (David Coppa)
+Date: Wed, 22 Jan 2014 06:06:20 -0700
+Subject: [i3] [PATCH] Fix install target of i3-with-shmlog.desktop
+Message-ID: <20140122130620.GA584@cvs.openbsd.org>
+
+
+Hi!
+
+Installation of i3-with-shmlog.desktop overwrites i3.desktop.
+Diff attached.
+
+Ciao,
+David
+
+diff --git a/src/i3.mk b/src/i3.mk
+index 1d6bc3f..c09610b 100644
+--- a/src/i3.mk
++++ b/src/i3.mk
+@@ -83,7 +83,7 @@ install-i3: i3
+ 	test -e $(DESTDIR)$(SYSCONFDIR)/i3/config || $(INSTALL) -m 0644 i3.config $(DESTDIR)$(SYSCONFDIR)/i3/config
+ 	test -e $(DESTDIR)$(SYSCONFDIR)/i3/config.keycodes || $(INSTALL) -m 0644 i3.config.keycodes $(DESTDIR)$(SYSCONFDIR)/i3/config.keycodes
+ 	$(INSTALL) -m 0644 i3.xsession.desktop $(DESTDIR)$(PREFIX)/share/xsessions/i3.desktop
+-	$(INSTALL) -m 0644 i3-with-shmlog.xsession.desktop $(DESTDIR)$(PREFIX)/share/xsessions/i3.desktop
++	$(INSTALL) -m 0644 i3-with-shmlog.xsession.desktop $(DESTDIR)$(PREFIX)/share/xsessions/i3-with-shmlog.desktop
+ 	$(INSTALL) -m 0644 i3.applications.desktop $(DESTDIR)$(PREFIX)/share/applications/i3.desktop
+ 	$(INSTALL) -m 0644 include/i3/ipc.h $(DESTDIR)$(PREFIX)/include/i3/
+ 
+-- 
+1.8.5.2
+-------------- next part --------------
+>From 970026099f33edf21eb930112f015fc0d7558fee Mon Sep 17 00:00:00 2001
+From: David Coppa <dcoppa at gmail.com>
+Date: Wed, 22 Jan 2014 13:52:35 +0100
+Subject: [PATCH] Fix install target of i3-with-shmlog.desktop
+
+---
+ src/i3.mk | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/i3.mk b/src/i3.mk
+index 1d6bc3f..c09610b 100644
+--- a/src/i3.mk
++++ b/src/i3.mk
+@@ -83,7 +83,7 @@ install-i3: i3
+ 	test -e $(DESTDIR)$(SYSCONFDIR)/i3/config || $(INSTALL) -m 0644 i3.config $(DESTDIR)$(SYSCONFDIR)/i3/config
+ 	test -e $(DESTDIR)$(SYSCONFDIR)/i3/config.keycodes || $(INSTALL) -m 0644 i3.config.keycodes $(DESTDIR)$(SYSCONFDIR)/i3/config.keycodes
+ 	$(INSTALL) -m 0644 i3.xsession.desktop $(DESTDIR)$(PREFIX)/share/xsessions/i3.desktop
+-	$(INSTALL) -m 0644 i3-with-shmlog.xsession.desktop $(DESTDIR)$(PREFIX)/share/xsessions/i3.desktop
++	$(INSTALL) -m 0644 i3-with-shmlog.xsession.desktop $(DESTDIR)$(PREFIX)/share/xsessions/i3-with-shmlog.desktop
+ 	$(INSTALL) -m 0644 i3.applications.desktop $(DESTDIR)$(PREFIX)/share/applications/i3.desktop
+ 	$(INSTALL) -m 0644 include/i3/ipc.h $(DESTDIR)$(PREFIX)/include/i3/
+ 
+-- 
+1.8.5.2
+
+
+From dcoppa at openbsd.org  Wed Jan 22 14:14:15 2014
+From: dcoppa at openbsd.org (David Coppa)
+Date: Wed, 22 Jan 2014 06:14:15 -0700
+Subject: [i3] [PATCH] OpenBSD lacks posix_fallocate()
+Message-ID: <20140122131415.GA27770@cvs.openbsd.org>
+
+
+Hi again!
+
+Just like OS X, also OpenBSD currently lacks posix_fallocate().
+Diff attached.
+
+Ciao,
+David
+
+diff --git a/src/log.c b/src/log.c
+index 86f47b9..7bd2e74 100644
+--- a/src/log.c
++++ b/src/log.c
+@@ -129,7 +129,7 @@ void open_logbuffer(void) {
+             return;
+         }
+ 
+-#if defined(__APPLE__)
++#if defined(__OpenBSD__) || defined(__APPLE__)
+         if (ftruncate(logbuffer_shm, logbuffer_size) == -1) {
+             fprintf(stderr, "Could not ftruncate SHM segment for the i3 log: %s\n", strerror(errno));
+ #else
+-- 
+1.8.5.2
+-------------- next part --------------
+>From e17cad055284b03dcf9633a5015f6799a4531afd Mon Sep 17 00:00:00 2001
+From: David Coppa <dcoppa at gmail.com>
+Date: Wed, 22 Jan 2014 13:55:49 +0100
+Subject: [PATCH] OpenBSD lacks posix_fallocate()
+
+---
+ src/log.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/log.c b/src/log.c
+index 86f47b9..7bd2e74 100644
+--- a/src/log.c
++++ b/src/log.c
+@@ -129,7 +129,7 @@ void open_logbuffer(void) {
+             return;
+         }
+ 
+-#if defined(__APPLE__)
++#if defined(__OpenBSD__) || defined(__APPLE__)
+         if (ftruncate(logbuffer_shm, logbuffer_size) == -1) {
+             fprintf(stderr, "Could not ftruncate SHM segment for the i3 log: %s\n", strerror(errno));
+ #else
+-- 
+1.8.5.2
+
+
+From nashpapa at gmail.com  Wed Jan 22 18:57:52 2014
+From: nashpapa at gmail.com (avinash r)
+Date: Wed, 22 Jan 2014 23:27:52 +0530
+Subject: [i3] Color mode of i3status using as i3bar
+In-Reply-To: <x6fvohgvbj.fsf@midna.zekjur.net>
+References: <CAHCistdEf2aWXT4s+6YojDOZZO-QLkk=2P0PVumMYAwJZbrQCA@mail.gmail.com>
+ <x6fvohgvbj.fsf@midna.zekjur.net>
+Message-ID: <CAHCistddURk5GJk2sqWNioO1m4euT-PKmQTdqrOA_eEDtL+Umw@mail.gmail.com>
+
+Thank you, that worked
+On Jan 21, 2014 9:51 PM, "Michael Stapelberg" <michael at i3wm.org> wrote:
+
+> Hi avinash,
+>
+> avinash r <nashpapa at gmail.com> writes:
+> > I'm running i3 4.7, and the i3status is not showing any color. I have
+> > enabled color mode using
+> >
+> >   general {
+> >     colors = true
+> >   }
+> >
+> > Is this a bug? Or has the configuration changed since?
+> Upgrade to i3status 2.8, or, if you cannot, add output_format = "i3bar"
+> into the general {} section of your ~/.i3status.conf.
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140122/6c27dfb0/attachment.html>
+
+From discord at uw.edu  Thu Jan 23 05:34:33 2014
+From: discord at uw.edu (Colin Kincaid Williams)
+Date: Wed, 22 Jan 2014 20:34:33 -0800
+Subject: [i3] =?iso-8859-1?q?error=3A_i3-wm=3A_signature_from_=22Thorsten_?=
+	=?iso-8859-1?q?T=F6pper_=3Catsutane=40freethoughts=2Ede=3E=22_is_u?=
+	=?iso-8859-1?q?nknown_trust?=
+Message-ID: <CAB-gU_vgfmNZ+3vpfw5kuRBPiXmti-SCA74idw1Q7kU=QwkNMQ@mail.gmail.com>
+
+I'm having trouble upgrading i3 packages, have a bad gpg key but I reloaded
+my keys
+
+
+http://pastie.org/8659117
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140122/cb4b8033/attachment.html>
+
+From discord at uw.edu  Thu Jan 23 06:28:36 2014
+From: discord at uw.edu (Colin Kincaid Williams)
+Date: Wed, 22 Jan 2014 21:28:36 -0800
+Subject: [i3]
+	=?iso-8859-1?q?error=3A_i3-wm=3A_signature_from_=22Thorsten_?=
+	=?iso-8859-1?q?T=F6pper_=3Catsutane=40freethoughts=2Ede=3E=22_is_u?=
+	=?iso-8859-1?q?nknown_trust?=
+In-Reply-To: <CAB-gU_vgfmNZ+3vpfw5kuRBPiXmti-SCA74idw1Q7kU=QwkNMQ@mail.gmail.com>
+References: <CAB-gU_vgfmNZ+3vpfw5kuRBPiXmti-SCA74idw1Q7kU=QwkNMQ@mail.gmail.com>
+Message-ID: <CAB-gU_stHLLGQH5xprHHcobxZxoU_C20Nriy3nFnPqp+iS+vDw@mail.gmail.com>
+
+My error, I had to manually install the archlinux-keyring package and
+refresh keys and then it installed fine. Sorry for the mail.
+
+
+On Wed, Jan 22, 2014 at 8:34 PM, Colin Kincaid Williams <discord at uw.edu>wrote:
+
+> I'm having trouble upgrading i3 packages, have a bad gpg key but I
+> reloaded my keys
+>
+>
+> http://pastie.org/8659117
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140122/d0662120/attachment.html>
+
+From oliver at first.in-berlin.de  Thu Jan 23 10:27:09 2014
+From: oliver at first.in-berlin.de (oliver)
+Date: Thu, 23 Jan 2014 10:27:09 +0100
+Subject: [i3] =?utf-8?q?error=3A_i3-wm=3A_signature_from_=22Thorsten_T?=
+	=?utf-8?q?=C3=B6pper_=3Catsutane=40freethoughts=2Ede=3E=22_is_unkn?=
+	=?utf-8?q?own_trust?=
+In-Reply-To: <CAB-gU_stHLLGQH5xprHHcobxZxoU_C20Nriy3nFnPqp+iS+vDw@mail.gmail.com>
+References: <CAB-gU_vgfmNZ+3vpfw5kuRBPiXmti-SCA74idw1Q7kU=QwkNMQ@mail.gmail.com>
+ <CAB-gU_stHLLGQH5xprHHcobxZxoU_C20Nriy3nFnPqp+iS+vDw@mail.gmail.com>
+Message-ID: <20140123092709.GA2043@siouxsie>
+
+Well,
+
+archlinux-keyring is installed on my systems and I also got
+these messages.
+
+What is the step to solve the problem?
+I thought keys will be refreshed automatocally...
+
+
+Ciao,
+  Oliver
+
+
+On Wed, Jan 22, 2014 at 09:28:36PM -0800, Colin Kincaid Williams wrote:
+> My error, I had to manually install the archlinux-keyring package and
+> refresh keys and then it installed fine. Sorry for the mail.
+> 
+> 
+> On Wed, Jan 22, 2014 at 8:34 PM, Colin Kincaid Williams <discord at uw.edu>wrote:
+> 
+> > I'm having trouble upgrading i3 packages, have a bad gpg key but I
+> > reloaded my keys
+> >
+> >
+> > http://pastie.org/8659117
+> >
+
+From mail at merovius.de  Thu Jan 23 10:36:38 2014
+From: mail at merovius.de (Axel Wagner)
+Date: Thu, 23 Jan 2014 10:36:38 +0100
+Subject: [i3] =?utf-8?q?error=3A_i3-wm=3A_signature_from_=22Thorsten_T?=
+ =?utf-8?q?=C3=B6pper_=3Catsutane=40freethoughts=2Ede=3E=22_is_unknown_tru?=
+ =?utf-8?q?st?=
+In-Reply-To: <20140123092709.GA2043@siouxsie>
+References: <CAB-gU_vgfmNZ+3vpfw5kuRBPiXmti-SCA74idw1Q7kU=QwkNMQ@mail.gmail.com>
+ <CAB-gU_stHLLGQH5xprHHcobxZxoU_C20Nriy3nFnPqp+iS+vDw@mail.gmail.com>
+ <20140123092709.GA2043@siouxsie>
+Message-ID: <878uu7f3a1.fsf@rincewind.i-did-not-set--mail-host-address--so-tickle-me>
+
+Hi,
+
+this appears to be an archlinux-specific problem. Maybe you should
+consult the arch-forum, maybe there is a solution there.
+
+Best,
+
+Merovius
+
+From oliver.schad at oschad.de  Thu Jan 23 12:43:29 2014
+From: oliver.schad at oschad.de (Oliver Schad)
+Date: Thu, 23 Jan 2014 12:43:29 +0100
+Subject: [i3] Restore old behaviour of i3
+Message-ID: <20140123124329.586e335c@dickeberta.automatic-server.com>
+
+Hi all,
+
+first of all: thank all supporters for i3, it's a great piece of
+software to increase productivity.
+
+For my use cases the old behaviour of i3 in version 3 was really good.
+Whenever I try to migrate to version 4, I have to push more keys on my
+keyboard to get the same thing or it bites my way of thinking.
+
+So my question is, if there is a way to restore the behaviour of i3 in
+version 3 with version 4.
+
+Today I solve that problem with downloading the old source, compile it
+by myself. I would prefer to follow the upstream.
+
+Thank you for your help and best regards
+Oli
+
+From alexander at plaimi.net  Thu Jan 23 12:45:45 2014
+From: alexander at plaimi.net (Alexander Berntsen)
+Date: Thu, 23 Jan 2014 12:45:45 +0100
+Subject: [i3] Restore old behaviour of i3
+In-Reply-To: <20140123124329.586e335c@dickeberta.automatic-server.com>
+References: <20140123124329.586e335c@dickeberta.automatic-server.com>
+Message-ID: <52E100E9.9050403@plaimi.net>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+On 23/01/14 12:43, Oliver Schad wrote:
+> So my question is, if there is a way to restore the behaviour of i3
+> in version 3 with version 4.
+Do you have any *specific* behaviour elements in mind?
+
+- -- 
+Alexander
+alexander at plaimi.net
+http://plaimi.net/~alexander
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+
+iF4EAREIAAYFAlLhAOkACgkQRtClrXBQc7UlagD+LGtr6XXDMwfWy+gSK2z4PRxr
+IjNglsL6RphHgSh7q9kA+gIEFZIcfi/+BcCwHRarBXoOy6VOB8ZAAaVbRgavLNE4
+=Hol4
+-----END PGP SIGNATURE-----
+
+From oliver.schad at oschad.de  Thu Jan 23 13:37:54 2014
+From: oliver.schad at oschad.de (Oliver Schad)
+Date: Thu, 23 Jan 2014 13:37:54 +0100
+Subject: [i3] Restore old behaviour of i3
+In-Reply-To: <52E100E9.9050403@plaimi.net>
+References: <20140123124329.586e335c@dickeberta.automatic-server.com>
+ <52E100E9.9050403@plaimi.net>
+Message-ID: <20140123133754.2b2bf4fd@dickeberta.automatic-server.com>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+On Thu, 23 Jan 2014 12:45:45 +0100
+Alexander Berntsen <alexander at plaimi.net> wrote:
+
+> -----BEGIN PGP SIGNED MESSAGE-----
+> Hash: SHA256
+> 
+> On 23/01/14 12:43, Oliver Schad wrote:
+> > So my question is, if there is a way to restore the behaviour of i3
+> > in version 3 with version 4.
+> Do you have any *specific* behaviour elements in mind?
+
+Yes: the default splitting was vertically. Second thing is moving a
+horizontal splitted window:
+
+- ----------------
+|       |   2   |
+|       |       |
+|  1    ---------
+|       |   3   |
+|       |       |
+- -----------------
+
+When I moved window 3 to the left with mod+shift, it got be a part of
+column 1:
+
+
+- ----------------
+|  1    |   2  |
+|       |      |
+ -------|      |
+|  3    |      |
+|       |      |
+ --------------
+
+I don't remember exactly, but if it's the right case, but I remember
+the case, when a moving window got the whole width of the screen, and
+wasn't a part of a column anymore. So I think in this case the window 3
+would have the whole width of the screen, and window 1 and 2 are small
+on the top.
+
+Definitly the moving behaviour is different. In version 3 you were
+always a part of existing columns.
+
+Because I work almost with terminal windows of equal size, I want
+always that column scheme so it isn't useful to break out of it if I
+move a window.
+
+Best regards
+Oli
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iEYEARECAAYFAlLhDSIACgkQRilxUUuWlvBXEwCgjyc3Hhk3nC/M+1b5S3e/pHEY
+vAAAoL1I6g+kO4L4JAXIh000eP2mBBsW
+=V6Bl
+-----END PGP SIGNATURE-----
+
+From koebischnell at googlemail.com  Thu Jan 23 18:33:55 2014
+From: koebischnell at googlemail.com (Jakob Schnell)
+Date: Thu, 23 Jan 2014 18:33:55 +0100
+Subject: [i3] Restore old behaviour of i3
+In-Reply-To: <20140123133754.2b2bf4fd@dickeberta.automatic-server.com>
+References: <20140123124329.586e335c@dickeberta.automatic-server.com>
+ <52E100E9.9050403@plaimi.net>
+ <20140123133754.2b2bf4fd@dickeberta.automatic-server.com>
+Message-ID: <52E15283.7070708@googlemail.com>
+
+Hey,
+
+as documented in the Users-Guide, you can change the default split
+orientation to vertical, see http://i3wm.org/docs/userguide.html Section 4.6
+
+If you have two horizontally split windows and set the split for each
+window to vertical, you should get the behaviour you explained for
+opening and moving windows.
+
+best regards,
+koebi
+
+From michael at i3wm.org  Thu Jan 23 23:09:27 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 23 Jan 2014 23:09:27 +0100
+Subject: [i3] [PATCH] OpenBSD lacks posix_fallocate()
+In-Reply-To: <20140122131415.GA27770@cvs.openbsd.org>
+References: <20140122131415.GA27770@cvs.openbsd.org>
+Message-ID: <x6y526fizs.fsf@midna.zekjur.net>
+
+Hi David,
+
+David Coppa <dcoppa at openbsd.org> writes:
+> Just like OS X, also OpenBSD currently lacks posix_fallocate().
+> Diff attached.
+Merged. Please submit directly to http://cr.i3wm.org/ in the future
+:). Thanks!
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Thu Jan 23 23:09:52 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 23 Jan 2014 23:09:52 +0100
+Subject: [i3] [PATCH] Fix install target of i3-with-shmlog.desktop
+In-Reply-To: <20140122130620.GA584@cvs.openbsd.org>
+References: <20140122130620.GA584@cvs.openbsd.org>
+Message-ID: <x6vbxafiz3.fsf@midna.zekjur.net>
+
+Hi David,
+
+David Coppa <dcoppa at openbsd.org> writes:
+> Installation of i3-with-shmlog.desktop overwrites i3.desktop.
+> Diff attached.
+Merged. Please submit directly to http://cr.i3wm.org/ in the future
+:). Thanks!
+
+-- 
+Best regards,
+Michael
+
+From mail at merovius.de  Fri Jan 24 02:48:50 2014
+From: mail at merovius.de (Axel Wagner)
+Date: Fri, 24 Jan 2014 02:48:50 +0100
+Subject: [i3] conky output on i3lock
+Message-ID: <87iotadu9p.fsf@rincewind.i-did-not-set--mail-host-address--so-tickle-me>
+
+Hi all,
+
+there has been people who want to display time and similar statistics in
+a locked screen. In fact there has already been a fork [1] to do such
+things.
+
+If you want something similar, but don't want to follow or maintain a
+fork (and don't need the number of failed unlock attempts), you might
+also use a conky instance that is configured to draw on the
+i3lock-window. Without much testing, any commitment to maintain anything
+and just as a starting point, I provide [2], which is a working proof of
+concept. If someone has interest and the time to further expand upon
+this script and make it more stable and widely usable, I would be very
+glad and appreciate a notice.
+
+If Michael would be willing to merge something like this, you could
+probably also add the number of failed unlock attempts, by having i3lock
+output a message on stdout/stderr on a failed attemp, counting them and
+using this in conky (or else grep through the debug-output). I think
+that would be general enough to not add a lot of bloat to i3lock, while
+still enabling some nice usecases. But I did not think that through yet.
+
+Best,
+
+Merovius
+
+[1] https://github.com/popoffka/i3lock
+[2] http://sprunge.us/jiJg
+
+From michael at i3wm.org  Fri Jan 24 18:02:34 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 24 Jan 2014 18:02:34 +0100
+Subject: [i3] conky output on i3lock
+In-Reply-To: <87iotadu9p.fsf@rincewind.i-did-not-set--mail-host-address--so-tickle-me>
+References: <87iotadu9p.fsf@rincewind.i-did-not-set--mail-host-address--so-tickle-me>
+Message-ID: <x6d2jh8g9h.fsf@midna.zekjur.net>
+
+Hi Axel,
+
+Axel Wagner <mail at merovius.de> writes:
+> i3lock-window. Without much testing, any commitment to maintain anything
+> and just as a starting point, I provide [2], which is a working proof of
+> concept. If someone has interest and the time to further expand upon
+> this script and make it more stable and widely usable, I would be very
+> glad and appreciate a notice.
+>
+> If Michael would be willing to merge something like this, you could
+I?m slightly confused. What would I need to merge? Your reference points
+to an i3lock-external shell script (which I have attached to this
+message, so that it doesn?t get lost when sprunge garbage collects).
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: i3lock-conky.sh
+Type: text/x-sh
+Size: 330 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140124/94fe9e6d/attachment.sh>
+
+From mail at merovius.de  Fri Jan 24 19:24:07 2014
+From: mail at merovius.de (Axel Wagner)
+Date: Fri, 24 Jan 2014 19:24:07 +0100
+Subject: [i3] conky output on i3lock
+In-Reply-To: <x6d2jh8g9h.fsf@midna.zekjur.net>
+References: <87iotadu9p.fsf@rincewind.i-did-not-set--mail-host-address--so-tickle-me>
+ <x6d2jh8g9h.fsf@midna.zekjur.net>
+Message-ID: <87d2jhck6w.fsf@rincewind.i-did-not-set--mail-host-address--so-tickle-me>
+
+Since I used the wrong mail-address before, again to the mailing-list:
+
+Hi Michael,
+
+Michael Stapelberg <michael at i3wm.org> writes:
+> I?m slightly confused. What would I need to merge? Your reference points
+> to an i3lock-external shell script (which I have attached to this
+> message, so that it doesn?t get lost when sprunge garbage collects).
+
+Sorry, I wasn't very clear here. I can see mostly one shortcoming of a
+script like this to the mentioned fork: The inability to log and display
+failed login-attempts.
+Currently the only way to do this would be to run i3lock in debug mode
+and grep for "Authentication failure", counting the lines, that come up
+and show this somehow in conky. I see this as a little bit ugly (but
+nevertheless possible, it only occured to me later), so a nicer way 
+would be for i3lock to output failed attempts even without debug-mode
+(possibly with an additional switch?).
+
+So no, there actually is nothing to merge yet. If someone wants this
+functionality, that _might_ be a way to do it, _if_ a change like this
+(in some way expose failed login attempts) would be accepted.
+
+As I said, I just wanted to dump some of my thoughts and results of a
+bit of discussion, in case someone might be interested in doing such a
+thing.
+
+Best,
+
+Axel
+
+From michael at i3wm.org  Mon Jan 27 16:52:10 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 27 Jan 2014 16:52:10 +0100
+Subject: [i3] i3, caps lock mapping
+In-Reply-To: <CAM-pwt7XKX5zitQzk79gFCFmAR+5C1ztPp7P4A4Y6gvboiaj7g@mail.gmail.com>
+References: <CAM-pwt7XKX5zitQzk79gFCFmAR+5C1ztPp7P4A4Y6gvboiaj7g@mail.gmail.com>
+Message-ID: <x6ppnde82d.fsf@midna.zekjur.net>
+
+Hi Louis,
+
+Louis Pop <louispopinjay at gmail.com> writes:
+
+> Good morning Michael!
+>
+> First, thank you for your excellent i3 guide!
+>
+> In this section ( => http://i3wm.org/docs/3.e/userguide.html#keybindings)
+> you hint that caps lock can be used as the i3 modifier key. May I ask how
+> you'd accomplish this?
+>
+> So far I've worked out that I can disable the toggle caps feature of the
+> key by exec-ing 'setxkbmap -option caps:none', but I can't work out the
+> syntax for setting it to be the modifier in my i3 config.
+>
+> I'm hoping for something like 'set $mod Caps_Lock' so I can keep the entire
+> configuration contained within the i3 config file, so I can drop it neatly
+> into new installs.
+The key is called ?Mode_switch? in X11 speak.
+
+-- 
+Best regards,
+Michael
+
+From public at enkore.de  Mon Jan 27 17:12:37 2014
+From: public at enkore.de (Marian Beermann)
+Date: Mon, 27 Jan 2014 17:12:37 +0100
+Subject: [i3] i3, caps lock mapping
+In-Reply-To: <x6ppnde82d.fsf@midna.zekjur.net>
+References: <CAM-pwt7XKX5zitQzk79gFCFmAR+5C1ztPp7P4A4Y6gvboiaj7g@mail.gmail.com>
+ <x6ppnde82d.fsf@midna.zekjur.net>
+Message-ID: <CAEi-PsveUxCwJ6KSEOKqHdHtcKQasTopURCFvueXoP=nJoeHvg@mail.gmail.com>
+
+You can easily find the name of any key using "xev"
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140127/cdf1498b/attachment.html>
+
+From michael at i3wm.org  Mon Jan 27 18:25:00 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 27 Jan 2014 18:25:00 +0100
+Subject: [i3] i3, caps lock mapping
+In-Reply-To: <CAM-pwt7LW6T874C+LN8AbJcaDoCSMUEMKhLEqaJtN0O42dZ=nw@mail.gmail.com>
+References: <CAM-pwt7XKX5zitQzk79gFCFmAR+5C1ztPp7P4A4Y6gvboiaj7g@mail.gmail.com>
+ <x6ppnde82d.fsf@midna.zekjur.net>
+ <CAM-pwt7LW6T874C+LN8AbJcaDoCSMUEMKhLEqaJtN0O42dZ=nw@mail.gmail.com>
+Message-ID: <x6mwihe3rn.fsf@midna.zekjur.net>
+
+Hi Louis,
+
+Louis Pop <louispopinjay at gmail.com> writes:
+> Huh- I've tried that, and several other more complex solutions.
+> I'm starting to think that it may stem from the fact I'm currently working
+> within a virtual machine within OS X. I'll try in another environment and
+> get back to you.
+Please send your mails to the mailing list in the future (i.e. use
+Reply-All). I am not doing support for i3 alone personally, there are
+many qualified people on our list, FAQ and IRC channel who can answer in
+a more timely fashion.
+
+-- 
+Best regards,
+Michael
+
+From i3 at hunsicker.de  Wed Jan 29 20:28:06 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Wed, 29 Jan 2014 20:28:06 +0100
+Subject: [i3] Buggy conditional test?
+Message-ID: <52E95646.6030802@hunsicker.de>
+
+Howdy,
+
+I'm not sure whether this could be a bug...
+
+In method dump_node() of ipc.c
+
+     void dump_node(yajl_gen gen, struct Con *con, bool inplace_restart)
+
+There is a conditional test (line 294):
+
+     if (con->window && con->window->name)
+
+Is this correct?
+
+I'd expect that the line should be at least
+
+     if (con->window && con->window->name != NULL)
+
+similar to line 327 in the same file.
+
+If someone could please confirm or explain. Thank you.
+
+Cheers,
+   Marco
+
+From michael at i3wm.org  Thu Jan 30 11:07:53 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 30 Jan 2014 11:07:53 +0100
+Subject: [i3] Buggy conditional test?
+In-Reply-To: <52E95646.6030802@hunsicker.de>
+References: <52E95646.6030802@hunsicker.de>
+Message-ID: <x6ha8l4wau.fsf@midna.zekjur.net>
+
+Hi Marco,
+
+Marco Hunsicker <i3 at hunsicker.de> writes:
+>      if (con->window && con->window->name)
+>      if (con->window && con->window->name != NULL)
+These two lines do exactly the same thing in C.
+
+-- 
+Best regards,
+Michael
+
+From alexander at plaimi.net  Thu Jan 30 12:58:51 2014
+From: alexander at plaimi.net (Alexander Berntsen)
+Date: Thu, 30 Jan 2014 12:58:51 +0100
+Subject: [i3] Buggy conditional test?
+In-Reply-To: <x6ha8l4wau.fsf@midna.zekjur.net>
+References: <52E95646.6030802@hunsicker.de> <x6ha8l4wau.fsf@midna.zekjur.net>
+Message-ID: <52EA3E7B.3010403@plaimi.net>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+On 30/01/14 11:07, Michael Stapelberg wrote:
+> Marco Hunsicker <i3 at hunsicker.de> writes:
+>> if (con->window && con->window->name)
+>> if (con->window && con->window->name != NULL)
+> These two lines do exactly the same thing in C.
+It's obviously not a bug, but consistency is neat. If I write you a 
+patch that makes this consistent (I'll look for others as well),
+would you apply it? Do you prefer the former or the latter?
+Personally, I prefer the latter.
+
+- -- 
+Alexander
+alexander at plaimi.net
+http://plaimi.net/~alexander
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+
+iF4EAREIAAYFAlLqPnsACgkQRtClrXBQc7XqkAD+Oe7fTLhki15iS1BhoswIPRnI
+OSAJ9tMR/TbgTUEZkikA/RVUC7EMnxRWDRcoG/5AVzEXzYdSDRNhVKVjAzHqAwRH
+=GGyk
+-----END PGP SIGNATURE-----
+
+From old4 at o2.pl  Thu Jan 30 13:26:40 2014
+From: old4 at o2.pl (Mateusz Poszwa)
+Date: Thu, 30 Jan 2014 13:26:40 +0100
+Subject: [i3] Buggy conditional test?
+In-Reply-To: <52EA3E7B.3010403@plaimi.net>
+References: <52E95646.6030802@hunsicker.de> <x6ha8l4wau.fsf@midna.zekjur.net>
+ <52EA3E7B.3010403@plaimi.net>
+Message-ID: <20140130122640.GC2372@finnix.cie.put.poznan.pl>
+
+On Thu, Jan 30, 2014 at 12:58:51PM +0100, Alexander Berntsen wrote:
+> On 30/01/14 11:07, Michael Stapelberg wrote:
+> > Marco Hunsicker <i3 at hunsicker.de> writes:
+> >> if (con->window && con->window->name)
+> >> if (con->window && con->window->name != NULL)
+> > These two lines do exactly the same thing in C.
+> It's obviously not a bug, but consistency is neat. If I write you a 
+> patch that makes this consistent (I'll look for others as well),
+> would you apply it? Do you prefer the former or the latter?
+> Personally, I prefer the latter.
+
+IMHO, that would be inconsistent. I'd say either the former or
+?
+if (con->window != NULL && con->window->name != NULL)
+?
+I find it less readable, so I vote for leaving it as it is now.
+Too much purism may be harmful. ;-)
+
+Regards.
+
+-- 
+Mateusz Poszwa
+
+From alexander at plaimi.net  Thu Jan 30 13:50:53 2014
+From: alexander at plaimi.net (Alexander Berntsen)
+Date: Thu, 30 Jan 2014 13:50:53 +0100
+Subject: [i3] Buggy conditional test?
+In-Reply-To: <20140130122640.GC2372@finnix.cie.put.poznan.pl>
+References: <52E95646.6030802@hunsicker.de> <x6ha8l4wau.fsf@midna.zekjur.net>
+ <52EA3E7B.3010403@plaimi.net>
+ <20140130122640.GC2372@finnix.cie.put.poznan.pl>
+Message-ID: <52EA4AAD.6050300@plaimi.net>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+On 30/01/14 13:26, Mateusz Poszwa wrote:
+> IMHO, that would be inconsistent. I'd say either the former or ? if
+> (con->window != NULL && con->window->name != NULL) ?
+Right. I misread it.
+
+> I find it less readable, so I vote for leaving it as it is now. Too
+> much purism may be harmful. ;-)
+I would be just as happy to remove all the != NULLs as adding them,
+even if I prefer explicit checking.
+
+Regards,
+an advocate of strongly typed languages
+- -- 
+Alexander
+alexander at plaimi.net
+http://plaimi.net/~alexander
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+
+iF4EAREIAAYFAlLqSq0ACgkQRtClrXBQc7VnpgD/QAt620WGU6HzcOKhPSh+fTDE
+mYRiriTlFEWagqOcwZoA/2HZle1u33jMpR87nhbctmUH1VanwB68RWMNRG41dANF
+=/79A
+-----END PGP SIGNATURE-----
+
+From michael at i3wm.org  Thu Jan 30 16:34:25 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 30 Jan 2014 16:34:25 +0100
+Subject: [i3] Buggy conditional test?
+In-Reply-To: <52EA3E7B.3010403@plaimi.net>
+References: <52E95646.6030802@hunsicker.de> <x6ha8l4wau.fsf@midna.zekjur.net>
+ <52EA3E7B.3010403@plaimi.net>
+Message-ID: <x6wqhho54u.fsf@midna.zekjur.net>
+
+Hi Alexander,
+
+Alexander Berntsen <alexander at plaimi.net> writes:
+> It's obviously not a bug, but consistency is neat. If I write you a 
+> patch that makes this consistent (I'll look for others as well),
+> would you apply it? Do you prefer the former or the latter?
+> Personally, I prefer the latter.
+I agree that consistency is a good thing. However, I think humans should
+not be bothered to format code. That is so last century :).
+
+A thing that I periodically look into is moving the i3 codebase to
+clang-format. Maybe by now it?s actually good enough that we can do it.
+
+(The other code formatting tools all sucked really hard for one reason
+ or another, but I still have hope for clang-format :)).
+
+-- 
+Best regards,
+Michael
+
+From i3 at hunsicker.de  Thu Jan 30 19:42:42 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Thu, 30 Jan 2014 19:42:42 +0100
+Subject: [i3] Buggy conditional test?
+In-Reply-To: <x6ha8l4wau.fsf@midna.zekjur.net>
+References: <52E95646.6030802@hunsicker.de> <x6ha8l4wau.fsf@midna.zekjur.net>
+Message-ID: <52EA9D22.6070701@hunsicker.de>
+
+Hello Michael,
+
+> These two lines do exactly the same thing in C.
+
+Thanks. Now I feel stupid ;)
+
+I was confused by some seemingly misleading behavior as I was 
+experiencing crashes after having applied a (minor) code change and 
+adjusting the conditional seemed to fix it.
+
+Only later did I come up with a reproducible testcase that still fails. 
+I will post some information to the code review for "Send IPC window 
+events for focus and title changes" for your consideration.
+
+Thanks much for your support. Much appreciated!
+
+Cheers,
+   Marco
+

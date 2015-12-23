@@ -1,0 +1,323 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] Transparency support
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Transparency%20support&In-Reply-To=%3CCAMJW5%3D2OO1Y722tUXB-yoyrkMH0_d9WCPEKm_qCbUFHGHyy38g%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000416.html">
+   <LINK REL="Next"  HREF="000418.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] Transparency support</H1>
+    <B>DR</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Transparency%20support&In-Reply-To=%3CCAMJW5%3D2OO1Y722tUXB-yoyrkMH0_d9WCPEKm_qCbUFHGHyy38g%40mail.gmail.com%3E"
+       TITLE="[i3] [PATCH] Transparency support">drdarkraven at gmail.com
+       </A><BR>
+    <I>Mon Jan 16 10:10:26 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000416.html">[i3] [PATCH] Transparency support
+</A></li>
+        <LI>Next message: <A HREF="000418.html">[i3] [PATCH] Transparency support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#417">[ date ]</a>
+              <a href="thread.html#417">[ thread ]</a>
+              <a href="subject.html#417">[ subject ]</a>
+              <a href="author.html#417">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Incremental patch, fixing the NULL default_visual problem.
+
+diff --git a/src/main.c b/src/main.c
+index c218aaf..28350c5 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -210,24 +210,20 @@ static void i3_exit() {
+&#160;#endif
+&#160;}
+
+-static xcb_visualtype_t *
+-a_argb_visual(xcb_screen_t *s)
+-{
++static xcb_visualtype_t *get_argb_visual(xcb_screen_t *s) {
+&#160; &#160; &#160;xcb_depth_iterator_t depth_iter = xcb_screen_allowed_depths_iterator(s);
+
+&#160; &#160; &#160;if(depth_iter.data)
+- &#160; &#160; &#160; &#160;for(; depth_iter.rem; xcb_depth_next (&amp;depth_iter))
++ &#160; &#160; &#160; &#160;for(; depth_iter.rem; xcb_depth_next(&amp;depth_iter))
+&#160; &#160; &#160; &#160; &#160; &#160; &#160;if(depth_iter.data-&gt;depth == 32)
+&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;for(xcb_visualtype_iterator_t visual_iter =
+xcb_depth_visuals_iterator(depth_iter.data);
+- &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;visual_iter.rem; xcb_visualtype_next (&amp;visual_iter))
++ &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;visual_iter.rem; xcb_visualtype_next(&amp;visual_iter))
+&#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;return visual_iter.data;
+
+&#160; &#160; &#160;return NULL;
+&#160;}
+
+-static uint8_t
+-a_visual_depth(xcb_screen_t *s, xcb_visualid_t vis)
+-{
++static uint8_t get_visual_depth(xcb_screen_t *s, xcb_visualid_t vis) {
+&#160; &#160; &#160;xcb_depth_iterator_t depth_iter = xcb_screen_allowed_depths_iterator(s);
+
+&#160; &#160; &#160;if(depth_iter.data)
+@@ -239,6 +235,18 @@ a_visual_depth(xcb_screen_t *s, xcb_visualid_t vis)
+&#160; &#160; &#160;return 24;
+&#160;}
+
++static xcb_visualtype_t *get_default_visual(xcb_screen_t *s) {
++ &#160; &#160;xcb_depth_iterator_t depth_iter = xcb_screen_allowed_depths_iterator(s);
++
++ &#160; &#160;if(depth_iter.data)
++ &#160; &#160; &#160; &#160;for(; depth_iter.rem; xcb_depth_next (&amp;depth_iter))
++ &#160; &#160; &#160; &#160; &#160; &#160;for(xcb_visualtype_iterator_t visual_iter =
+xcb_depth_visuals_iterator(depth_iter.data);
++ &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;visual_iter.rem; xcb_visualtype_next (&amp;visual_iter))
++ &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;if(s-&gt;root_visual == visual_iter.data-&gt;visual_id)
++ &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;return visual_iter.data;
++
++ &#160; &#160;return NULL;
++}
+&#160;int main(int argc, char *argv[]) {
+&#160; &#160; &#160;char *override_configpath = NULL;
+&#160; &#160; &#160;bool autostart = true;
+@@ -509,11 +517,17 @@ int main(int argc, char *argv[]) {
+
+
+&#160; &#160; &#160;/* Acquire a argb visual */
+- &#160; &#160;default_visual = a_argb_visual(root_screen);
+- &#160; &#160;default_depth = a_visual_depth(root_screen, default_visual-&gt;visual_id);
++ &#160; &#160;default_visual = get_argb_visual(root_screen);
++ &#160; &#160;if(!default_visual)
++ &#160; &#160; &#160; &#160;default_visual = get_default_visual(root_screen);
++ &#160; &#160;if (!default_visual) {
++ &#160; &#160; &#160; &#160;ELOG(&quot;No available visual found, exiting\n&quot;);
++ &#160; &#160; &#160; &#160;return 1;
++ &#160; &#160;}
++ &#160; &#160;default_depth = get_visual_depth(root_screen, default_visual-&gt;visual_id);
+&#160; &#160; &#160;/* Acquire corresponding colormap */
+&#160; &#160; &#160;default_colormap = root_screen-&gt;default_colormap;
+- &#160; &#160;if(default_depth != root_depth){
++ &#160; &#160;if(default_depth != root_depth) {
+&#160; &#160; &#160; &#160; &#160;default_colormap = xcb_generate_id(conn);
+&#160; &#160; &#160; &#160; &#160;xcb_create_colormap(conn, XCB_COLORMAP_ALLOC_NONE,
+&#160; &#160; &#160; &#160; &#160; &#160; &#160;default_colormap, root,
+diff --git a/src/xcb.c b/src/xcb.c
+index eb7c61e..e181180 100644
+--- a/src/xcb.c
++++ b/src/xcb.c
+@@ -32,7 +32,6 @@ xcb_window_t create_window(xcb_connection_t *conn,
+Rect dims, uint16_t window_cl
+&#160; &#160; &#160; &#160; &#160; &#160; &#160;0, /* border = 0, we draw our own */
+&#160; &#160; &#160; &#160; &#160; &#160; &#160;window_class,
+&#160; &#160; &#160; &#160; &#160; &#160; &#160;visual_id,
+- &#160; &#160; &#160; &#160; &#160; &#160;//XCB_WINDOW_CLASS_COPY_FROM_PARENT, /* copy visual from parent */
+&#160; &#160; &#160; &#160; &#160; &#160; &#160;mask,
+&#160; &#160; &#160; &#160; &#160; &#160; &#160;values);
+
+
+On Mon, Jan 16, 2012 at 5:08 PM, DR &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">drdarkraven at gmail.com</A>&gt; wrote:
+&gt;<i> On Sun, Jan 15, 2012 at 5:14 AM, Fernando Lemos &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">fernandotcl at gmail.com</A>&gt; wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Sat, Jan 14, 2012 at 10:38 AM, DR &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">drdarkraven at gmail.com</A>&gt; wrote:
+</I>&gt;&gt;<i> &gt; This patch is in a very early stage. It may break something, or I may have
+</I>&gt;&gt;<i> &gt; done this in a way differ from what you would expect. So please review and
+</I>&gt;&gt;<i> &gt; give me some response.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; This patch is largely copied from the awesome window manager, which acquire
+</I>&gt;&gt;<i> &gt; a argb visual at startup, and use this visual for every xcb_create_window().
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> That sounds good. I don't have enough X experience, but a few things stand out:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> &gt; +static xcb_visualtype_t *
+</I>&gt;&gt;<i> &gt; +a_argb_visual(xcb_screen_t *s)
+</I>&gt;&gt;<i> &gt; +{
+</I>&gt;&gt;<i> &gt; + &#160; &#160;xcb_depth_iterator_t depth_iter =
+</I>&gt;&gt;<i> &gt; xcb_screen_allowed_depths_iterator(s);
+</I>&gt;&gt;<i> &gt; +
+</I>&gt;&gt;<i> &gt; + &#160; &#160;if(depth_iter.data)
+</I>&gt;&gt;<i> &gt; + &#160; &#160; &#160; &#160;for(; depth_iter.rem; xcb_depth_next (&amp;depth_iter))
+</I>&gt;&gt;<i> &gt; + &#160; &#160; &#160; &#160; &#160; &#160;if(depth_iter.data-&gt;depth == 32)
+</I>&gt;&gt;<i> &gt; + &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;for(xcb_visualtype_iterator_t visual_iter =
+</I>&gt;&gt;<i> &gt; xcb_depth_visuals_iterator(depth_iter.data);
+</I>&gt;&gt;<i> &gt; + &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;visual_iter.rem; xcb_visualtype_next (&amp;visual_iter))
+</I>&gt;&gt;<i> &gt; + &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;return visual_iter.data;
+</I>&gt;&gt;<i> &gt; +
+</I>&gt;&gt;<i> &gt; + &#160; &#160;return NULL;
+</I>&gt;&gt;<i> &gt; +}
+</I>&gt;&gt;<i> &gt; +
+</I>&gt;&gt;<i> &gt; +static uint8_t
+</I>&gt;&gt;<i> &gt; +a_visual_depth(xcb_screen_t *s, xcb_visualid_t vis)
+</I>&gt;&gt;<i> &gt; +{
+</I>&gt;&gt;<i> &gt; + &#160; &#160;xcb_depth_iterator_t depth_iter =
+</I>&gt;&gt;<i> &gt; xcb_screen_allowed_depths_iterator(s);
+</I>&gt;&gt;<i> &gt; +
+</I>&gt;&gt;<i> &gt; + &#160; &#160;if(depth_iter.data)
+</I>&gt;&gt;<i> &gt; + &#160; &#160; &#160; &#160;for(; depth_iter.rem; xcb_depth_next (&amp;depth_iter))
+</I>&gt;&gt;<i> &gt; + &#160; &#160; &#160; &#160; &#160; &#160;for(xcb_visualtype_iterator_t visual_iter =
+</I>&gt;&gt;<i> &gt; xcb_depth_visuals_iterator(depth_iter.data);
+</I>&gt;&gt;<i> &gt; + &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;visual_iter.rem; xcb_visualtype_next (&amp;visual_iter))
+</I>&gt;&gt;<i> &gt; + &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;if(vis == visual_iter.data-&gt;visual_id)
+</I>&gt;&gt;<i> &gt; + &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;return depth_iter.data-&gt;depth;
+</I>&gt;&gt;<i> &gt; + &#160; &#160;return 24;
+</I>&gt;&gt;<i> &gt; +}
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> You might want to adapt the code to the i3 style. Take a look at other
+</I>&gt;&gt;<i> functions, conditionals and for loops. Also, those function names
+</I>&gt;&gt;<i> might not be ideal.
+</I>&gt;<i>
+</I>&gt;<i> I don't quite understand i3's coding style or naming conventions, are
+</I>&gt;<i> there any documents explaining this?
+</I>&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> &gt; + &#160; &#160;/* Acquire a argb visual */
+</I>&gt;&gt;<i> &gt; + &#160; &#160;default_visual = a_argb_visual(root_screen);
+</I>&gt;&gt;<i> &gt; + &#160; &#160;default_depth = a_visual_depth(root_screen, default_visual-&gt;visual_id);
+</I>&gt;&gt;<i> &gt; + &#160; &#160;/* Acquire corresponding colormap */
+</I>&gt;&gt;<i> &gt; + &#160; &#160;default_colormap = root_screen-&gt;default_colormap;
+</I>&gt;&gt;<i> &gt; + &#160; &#160;if(default_depth != root_depth){
+</I>&gt;&gt;<i> &gt; + &#160; &#160; &#160; &#160;default_colormap = xcb_generate_id(conn);
+</I>&gt;&gt;<i> &gt; + &#160; &#160; &#160; &#160;xcb_create_colormap(conn, XCB_COLORMAP_ALLOC_NONE,
+</I>&gt;&gt;<i> &gt; + &#160; &#160; &#160; &#160; &#160; &#160;default_colormap, root,
+</I>&gt;&gt;<i> &gt; + &#160; &#160; &#160; &#160; &#160; &#160;default_visual-&gt;visual_id);
+</I>&gt;&gt;<i> &gt; + &#160; &#160;}
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> If we can't find an ARGB visual, i3 will segfault. Is an ARGB visual
+</I>&gt;&gt;<i> always going to be present? If yes, then please use asserts to
+</I>&gt;&gt;<i> indicate that. Otherwise handle the cases where we can't find an ARGB
+</I>&gt;&gt;<i> visual.
+</I>&gt;<i>
+</I>&gt;<i> I'll fix this.
+</I>&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I'd also prefer if you renamed default_* to argb_*, since I plan to
+</I>&gt;&gt;<i> introduce vars like root_visual_type for Pango support, and that can
+</I>&gt;&gt;<i> be confusing.
+</I>&gt;<i>
+</I>&gt;<i> The default_* is actually the default, since default_visual,
+</I>&gt;<i> default_depth will be applied to every single window. I think it will
+</I>&gt;<i> not be confused with root_visual_type, if root_visual_type means
+</I>&gt;<i> visual type of the root window.
+</I>&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> &gt; diff --git a/src/x.c b/src/x.c
+</I>&gt;&gt;<i> &gt; index e8bfaeb..281e961 100644
+</I>&gt;&gt;<i> &gt; --- a/src/x.c
+</I>&gt;&gt;<i> &gt; +++ b/src/x.c
+</I>&gt;&gt;<i> &gt; @@ -90,15 +90,24 @@ void x_con_init(Con *con) {
+</I>&gt;&gt;<i> &gt; &#160; &#160; &#160; * get the initial geometry right */
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; &#160; &#160; &#160;uint32_t mask = 0;
+</I>&gt;&gt;<i> &gt; - &#160; &#160;uint32_t values[2];
+</I>&gt;&gt;<i> &gt; + &#160; &#160;uint32_t values[5];
+</I>&gt;&gt;<i> &gt; +
+</I>&gt;&gt;<i> &gt; + &#160; &#160;mask |= XCB_CW_BACK_PIXEL;
+</I>&gt;&gt;<i> &gt; + &#160; &#160;values[0] = root_screen-&gt;black_pixel;
+</I>&gt;&gt;<i> &gt; +
+</I>&gt;&gt;<i> &gt; + &#160; &#160;mask |= XCB_CW_BORDER_PIXEL;
+</I>&gt;&gt;<i> &gt; + &#160; &#160;values[1] = root_screen-&gt;black_pixel;
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; &#160; &#160; &#160;/* our own frames should not be managed */
+</I>&gt;&gt;<i> &gt; &#160; &#160; &#160;mask |= XCB_CW_OVERRIDE_REDIRECT;
+</I>&gt;&gt;<i> &gt; - &#160; &#160;values[0] = 1;
+</I>&gt;&gt;<i> &gt; + &#160; &#160;values[2] = 1;
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; &#160; &#160; &#160;/* see include/xcb.h for the FRAME_EVENT_MASK */
+</I>&gt;&gt;<i> &gt; &#160; &#160; &#160;mask |= XCB_CW_EVENT_MASK;
+</I>&gt;&gt;<i> &gt; - &#160; &#160;values[1] = FRAME_EVENT_MASK &amp; ~XCB_EVENT_MASK_ENTER_WINDOW;
+</I>&gt;&gt;<i> &gt; + &#160; &#160;values[3] = FRAME_EVENT_MASK &amp; ~XCB_EVENT_MASK_ENTER_WINDOW;
+</I>&gt;&gt;<i> &gt; +
+</I>&gt;&gt;<i> &gt; + &#160; &#160;mask |= XCB_CW_COLORMAP;
+</I>&gt;&gt;<i> &gt; + &#160; &#160;values[4] = default_colormap;
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; &#160; &#160; &#160;Rect dims = { -15, -15, 10, 10 };
+</I>&gt;&gt;<i> &gt; &#160; &#160; &#160;con-&gt;frame = create_window(conn, dims, XCB_WINDOW_CLASS_INPUT_OUTPUT,
+</I>&gt;&gt;<i> &gt; XCURSOR_CURSOR_POINTER, false, mask, values);
+</I>&gt;&gt;<i> &gt; @@ -586,7 +595,7 @@ void x_push_node(Con *con) {
+</I>&gt;&gt;<i> &gt; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;xcb_free_pixmap(conn, con-&gt;pixmap);
+</I>&gt;&gt;<i> &gt; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;xcb_free_gc(conn, con-&gt;pm_gc);
+</I>&gt;&gt;<i> &gt; &#160; &#160; &#160; &#160; &#160; &#160; &#160;}
+</I>&gt;&gt;<i> &gt; - &#160; &#160; &#160; &#160; &#160; &#160;xcb_create_pixmap(conn, root_depth, con-&gt;pixmap, con-&gt;frame,
+</I>&gt;&gt;<i> &gt; rect.width, rect.height);
+</I>&gt;&gt;<i> &gt; + &#160; &#160; &#160; &#160; &#160; &#160;xcb_create_pixmap(conn, default_depth, con-&gt;pixmap, con-&gt;frame,
+</I>&gt;&gt;<i> &gt; rect.width, rect.height);
+</I>&gt;&gt;<i> &gt; &#160; &#160; &#160; &#160; &#160; &#160; &#160;/* For the graphics context, we disable GraphicsExposure
+</I>&gt;&gt;<i> &gt; events.
+</I>&gt;&gt;<i> &gt; &#160; &#160; &#160; &#160; &#160; &#160; &#160; * Those will be sent when a CopyArea request cannot be
+</I>&gt;&gt;<i> &gt; fulfilled
+</I>&gt;&gt;<i> &gt; &#160; &#160; &#160; &#160; &#160; &#160; &#160; * properly due to parts of the source being unmapped or
+</I>&gt;&gt;<i> &gt; otherwise
+</I>&gt;&gt;<i> &gt; diff --git a/src/xcb.c b/src/xcb.c
+</I>&gt;&gt;<i> &gt; index aa761ca..eb7c61e 100644
+</I>&gt;&gt;<i> &gt; --- a/src/xcb.c
+</I>&gt;&gt;<i> &gt; +++ b/src/xcb.c
+</I>&gt;&gt;<i> &gt; @@ -21,7 +21,8 @@ xcb_window_t create_window(xcb_connection_t *conn, Rect
+</I>&gt;&gt;<i> &gt; dims, uint16_t window_cl
+</I>&gt;&gt;<i> &gt; &#160; &#160; &#160;xcb_window_t result = xcb_generate_id(conn);
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; &#160; &#160; &#160;/* If the window class is XCB_WINDOW_CLASS_INPUT_ONLY, depth has to be
+</I>&gt;&gt;<i> &gt; 0 */
+</I>&gt;&gt;<i> &gt; - &#160; &#160;uint16_t depth = (window_class == XCB_WINDOW_CLASS_INPUT_ONLY ? 0 :
+</I>&gt;&gt;<i> &gt; XCB_COPY_FROM_PARENT);
+</I>&gt;&gt;<i> &gt; + &#160; &#160;uint16_t depth = (window_class == XCB_WINDOW_CLASS_INPUT_ONLY ? 0 :
+</I>&gt;&gt;<i> &gt; default_depth);
+</I>&gt;&gt;<i> &gt; + &#160; &#160;xcb_visualid_t visual_id= (window_class == XCB_WINDOW_CLASS_INPUT_ONLY
+</I>&gt;&gt;<i> &gt; ? XCB_WINDOW_CLASS_COPY_FROM_PARENT : default_visual-&gt;visual_id);
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; &#160; &#160; &#160;xcb_create_window(conn,
+</I>&gt;&gt;<i> &gt; &#160; &#160; &#160; &#160; &#160; &#160; &#160;depth,
+</I>&gt;&gt;<i> &gt; @@ -30,7 +31,8 @@ xcb_window_t create_window(xcb_connection_t *conn, Rect
+</I>&gt;&gt;<i> &gt; dims, uint16_t window_cl
+</I>&gt;&gt;<i> &gt; &#160; &#160; &#160; &#160; &#160; &#160; &#160;dims.x, dims.y, dims.width, dims.height, /* dimensions */
+</I>&gt;&gt;<i> &gt; &#160; &#160; &#160; &#160; &#160; &#160; &#160;0, /* border = 0, we draw our own */
+</I>&gt;&gt;<i> &gt; &#160; &#160; &#160; &#160; &#160; &#160; &#160;window_class,
+</I>&gt;&gt;<i> &gt; - &#160; &#160; &#160; &#160; &#160; &#160;XCB_WINDOW_CLASS_COPY_FROM_PARENT, /* copy visual from parent
+</I>&gt;&gt;<i> &gt; */
+</I>&gt;&gt;<i> &gt; + &#160; &#160; &#160; &#160; &#160; &#160;visual_id,
+</I>&gt;&gt;<i> &gt; + &#160; &#160; &#160; &#160; &#160; &#160;//XCB_WINDOW_CLASS_COPY_FROM_PARENT, /* copy visual from parent
+</I>&gt;&gt;<i> &gt; */
+</I>&gt;&gt;<i> &gt; &#160; &#160; &#160; &#160; &#160; &#160; &#160;mask,
+</I>&gt;&gt;<i> &gt; &#160; &#160; &#160; &#160; &#160; &#160; &#160;values);
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> All this also needs handling for cases where we can't find an ARGB visual, no?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Also, don't comment out stuff, just remove it, we have history in the VCS.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regards,
+</I></PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000416.html">[i3] [PATCH] Transparency support
+</A></li>
+	<LI>Next message: <A HREF="000418.html">[i3] [PATCH] Transparency support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#417">[ date ]</a>
+              <a href="thread.html#417">[ thread ]</a>
+              <a href="subject.html#417">[ subject ]</a>
+              <a href="author.html#417">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

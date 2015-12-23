@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH 4/5] Alignment fixes for i3bar
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%204/5%5D%20Alignment%20fixes%20for%20i3bar&In-Reply-To=%3C1353236215-32206-5-git-send-email-kemurphy.cmu%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001058.html">
+   <LINK REL="Next"  HREF="001044.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH 4/5] Alignment fixes for i3bar</H1>
+    <B>Kevin Murphy</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%204/5%5D%20Alignment%20fixes%20for%20i3bar&In-Reply-To=%3C1353236215-32206-5-git-send-email-kemurphy.cmu%40gmail.com%3E"
+       TITLE="[i3] [PATCH 4/5] Alignment fixes for i3bar">kemurphy.cmu at gmail.com
+       </A><BR>
+    <I>Sun Nov 18 11:56:54 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001058.html">[i3] [PATCH 3/5] Show title of focused window in i3bar
+</A></li>
+        <LI>Next message: <A HREF="001044.html">[i3] [PATCH 4/5] Alignment fixes for i3bar
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1041">[ date ]</a>
+              <a href="thread.html#1041">[ thread ]</a>
+              <a href="subject.html#1041">[ subject ]</a>
+              <a href="author.html#1041">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>From: Kevin Murphy &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">kemurphy at andrew.cmu.edu</A>&gt;
+
+---
+ i3bar/src/xcb.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/i3bar/src/xcb.c b/i3bar/src/xcb.c
+index c20ff37..983d5ad 100644
+--- a/i3bar/src/xcb.c
++++ b/i3bar/src/xcb.c
+@@ -130,7 +130,7 @@ void refresh_statusline(void) {
+         block-&gt;width = predict_text_width(block-&gt;full_text);
+         /* If this is not the last block, add some pixels for a separator. */
+         if (TAILQ_NEXT(block, blocks) != NULL)
+-            block-&gt;width += 9;
++            block-&gt;width += 10;
+         statusline_width += block-&gt;width;
+     }
+ 
+@@ -141,7 +141,7 @@ void refresh_statusline(void) {
+         realloc_sl_buffer();
+ 
+     /* Clear the statusline pixmap. */
+-    xcb_rectangle_t rect = { 0, 0, root_screen-&gt;width_in_pixels, font.height };
++    xcb_rectangle_t rect = { 0, 0, root_screen-&gt;width_in_pixels, font.height + 4 };
+     xcb_poly_fill_rectangle(xcb_connection, statusline_pm, statusline_clear, 1, &amp;rect);
+ 
+     /* Draw the text of each block. */
+@@ -1576,7 +1576,7 @@ void draw_bars(bool unhide) {
+                           outputs_walk-&gt;buffer,
+                           outputs_walk-&gt;bargc,
+                           MAX(0, (int16_t)(statusline_width - outputs_walk-&gt;rect.w + 4)), 0,
+-                          MAX(0, (int16_t)(outputs_walk-&gt;rect.w - statusline_width - traypx - 4)), 3,
++                          MAX(0, (int16_t)(outputs_walk-&gt;rect.w - statusline_width - traypx - 4)), 2,
+                           MIN(outputs_walk-&gt;rect.w - traypx - 4, statusline_width), font.height);
+         }
+ 
+-- 
+1.8.0
+
+</PRE>
+
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001058.html">[i3] [PATCH 3/5] Show title of focused window in i3bar
+</A></li>
+	<LI>Next message: <A HREF="001044.html">[i3] [PATCH 4/5] Alignment fixes for i3bar
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1041">[ date ]</a>
+              <a href="thread.html#1041">[ thread ]</a>
+              <a href="subject.html#1041">[ subject ]</a>
+              <a href="author.html#1041">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

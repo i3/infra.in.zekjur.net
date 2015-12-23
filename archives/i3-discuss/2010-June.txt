@@ -1,0 +1,509 @@
+From michael+i3 at stapelberg.de  Sat Jun  5 16:52:17 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 05 Jun 2010 16:52:17 +0200
+Subject: [i3] No respond on any keys
+In-Reply-To: <q2r4d89abe61004110659h6b921682wd339d8b9fa757ff3@mail.gmail.com>
+References: <p2v4d89abe61004021132z4c02810er60cf4e75f89d060b@mail.gmail.com>
+	<1270671663-sup-9885@midna.zekjur.net>
+	<l2v4d89abe61004080040h92d76623s9bcb1c30c215e58a@mail.gmail.com>
+	<1270717900-sup-9926@midna.zekjur.net>
+	<t2n4d89abe61004081059jd516e323l5058705662272f74@mail.gmail.com>
+	<1270752692-sup-6810@midna.zekjur.net>
+	<t2g4d89abe61004091229q9727aa6cl8733215551bcbdb3@mail.gmail.com>
+	<1270843375-sup-5674@midna.zekjur.net>
+	<u2n4d89abe61004100409ne6fb32b9q63892f850ba54b35@mail.gmail.com>
+	<1270933811-sup-3620@midna.zekjur.net>
+	<q2r4d89abe61004110659h6b921682wd339d8b9fa757ff3@mail.gmail.com>
+Message-ID: <1275749467-sup-197@midna.zekjur.net>
+
+Hi Alexander,
+
+Sorry for answering so late, I?ve been quite busy.
+
+Excerpts from Alexander Kalentyev's message of 2010-04-11 15:59:18 +0200:
+> I tried with cdm (http://cdm.ghost1227.com/X11/) and it works!
+> But I'm not sure, that I will stay with cdm. Actually I really prefer
+> to use startx...
+Strange. I just tried using startx /usr/bin/i3 without having a .xinitrc
+and it works fine with fish as a login shell (I start urxvt, though, xterm
+does not seem to work for some strange reason). So, can you try startx 
+/usr/bin/i3, not having a .xinitrc and using urxvt?
+
+Best regards,
+Michael
+
+
+From uli.armbruster at googlemail.com  Sun Jun  6 15:04:18 2010
+From: uli.armbruster at googlemail.com (Uli Armbruster)
+Date: Sun, 6 Jun 2010 15:04:18 +0200
+Subject: [i3] No border in tabbed layout?
+Message-ID: <20100606130418.GA7405@Archlinux>
+
+Hi
+
+I have one question, is it possible to have no borders (or lets say borders with a width of 0 pixels) with tabbed layout?
+That's in my config:
+
+new_container tabbed
+new_window bb
+# toggle with win+space
+bind Mod4+65 bt
+
+When only one application is opened, there's no border. But as soon as another app is opened, there's this border. I don't really need this, because these applications don't overlap at all, so it's not necessary imo. If one wants to have a border, there are still other options (bp or bn)
+
+Greetz
+Army
+
+
+From michael+i3 at stapelberg.de  Sun Jun  6 21:58:34 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 06 Jun 2010 21:58:34 +0200
+Subject: [i3] No border in tabbed layout?
+In-Reply-To: <20100606130418.GA7405@Archlinux>
+References: <20100606130418.GA7405@Archlinux>
+Message-ID: <1275854275-sup-6276@midna.zekjur.net>
+
+Hi Uli,
+
+Excerpts from Uli Armbruster's message of 2010-06-06 15:04:18 +0200:
+> I have one question, is it possible to have no borders (or lets say borders
+> with a width of 0 pixels) with tabbed layout?
+No, that?s not possible yet.
+
+Best regards,
+Michael
+
+
+From songcq at gmail.com  Wed Jun  9 16:22:04 2010
+From: songcq at gmail.com (Chengqi Song)
+Date: Wed, 9 Jun 2010 22:22:04 +0800
+Subject: [i3] "move" mode?
+Message-ID: <AANLkTikQHYEJBR89wFWQK9Xf2m-zgK5ADSyQIe_bUiIG@mail.gmail.com>
+
+Hi all,
+
+I've been using XMonad, Sawfish, Musca... for two years, but I always want a
+WM with a good manual tiling operation as well as good support for floating
+windows.
+Then today I found I3 wm is exactly what I want. Thanks for the author'
+great job!
+
+I like the 'resize' mode very much, and I also want to have a 'move' mode,
+in which I can use left/right/up/down keys to move a floating window around.
+But I can not find related document, is there a 'move' command works like
+'move up 10' ?
+
+besides, I can not start dzen2 as my status bar with this line in my i3
+config:
+
+exec i3status | i3-wsbar -c "dzen2 -x %x -dock"
+
+dzen2 has no such parameter as "-dock", but this line still does not work
+after I remove "-dock". Could some one show me your configuration?
+
+Thanks
+Lars
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100609/72b16a8b/attachment.html>
+
+From michael+i3 at stapelberg.de  Wed Jun  9 17:05:19 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Wed, 09 Jun 2010 17:05:19 +0200
+Subject: [i3] "move" mode?
+In-Reply-To: <AANLkTikQHYEJBR89wFWQK9Xf2m-zgK5ADSyQIe_bUiIG@mail.gmail.com>
+References: <AANLkTikQHYEJBR89wFWQK9Xf2m-zgK5ADSyQIe_bUiIG@mail.gmail.com>
+Message-ID: <1276095815-sup-6676@midna.zekjur.net>
+
+Hi,
+
+Excerpts from Chengqi Song's message of 2010-06-09 16:22:04 +0200:
+> Then today I found I3 wm is exactly what I want. Thanks for the author'
+> great job!
+Thanks.
+
+> I like the 'resize' mode very much, and I also want to have a 'move' mode,
+> in which I can use left/right/up/down keys to move a floating window around.
+> But I can not find related document, is there a 'move' command works like
+> 'move up 10' ?
+Almost. If you issue the normal move commands on floating windows
+(mh, mj, mk, ml), they will move the floating window by 10 px in the given
+direction. You can easily build a new mode for that.
+
+> dzen2 has no such parameter as "-dock", but this line still does not work
+> after I remove "-dock". Could some one show me your configuration?
+You need the most recent version from subversion to have the -dock option.
+
+My config looks like this:
+exec i3status | i3-wsbar -c "dzen2 -dock -fg white -fn -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso8859-1 -ta l -w 1280 -h 17 -x %x"
+
+Best regards,
+Michael
+
+
+From songcq at gmail.com  Wed Jun  9 17:26:52 2010
+From: songcq at gmail.com (Chengqi Song)
+Date: Wed, 9 Jun 2010 23:26:52 +0800
+Subject: [i3] "move" mode?
+In-Reply-To: <1276095815-sup-6676@midna.zekjur.net>
+References: <AANLkTikQHYEJBR89wFWQK9Xf2m-zgK5ADSyQIe_bUiIG@mail.gmail.com>
+	<1276095815-sup-6676@midna.zekjur.net>
+Message-ID: <AANLkTik9t90bIppnoQbngn-oUyka0U-v_QwCvAty8FE6@mail.gmail.com>
+
+thanks, how to change output template of i3status?
+
+On Wed, Jun 9, 2010 at 11:05 PM, Michael Stapelberg <
+michael+i3 at stapelberg.de <michael%2Bi3 at stapelberg.de>> wrote:
+
+> Hi,
+>
+> Excerpts from Chengqi Song's message of 2010-06-09 16:22:04 +0200:
+> > Then today I found I3 wm is exactly what I want. Thanks for the author'
+> > great job!
+> Thanks.
+>
+> > I like the 'resize' mode very much, and I also want to have a 'move'
+> mode,
+> > in which I can use left/right/up/down keys to move a floating window
+> around.
+> > But I can not find related document, is there a 'move' command works like
+> > 'move up 10' ?
+> Almost. If you issue the normal move commands on floating windows
+> (mh, mj, mk, ml), they will move the floating window by 10 px in the given
+> direction. You can easily build a new mode for that.
+>
+> > dzen2 has no such parameter as "-dock", but this line still does not work
+> > after I remove "-dock". Could some one show me your configuration?
+> You need the most recent version from subversion to have the -dock option.
+>
+> My config looks like this:
+> exec i3status | i3-wsbar -c "dzen2 -dock -fg white -fn
+> -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso8859-1 -ta l -w 1280 -h 17
+> -x %x"
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100609/75e634f2/attachment.html>
+
+From michael+i3 at stapelberg.de  Wed Jun  9 17:43:53 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Wed, 09 Jun 2010 17:43:53 +0200
+Subject: [i3] "move" mode?
+In-Reply-To: <AANLkTik9t90bIppnoQbngn-oUyka0U-v_QwCvAty8FE6@mail.gmail.com>
+References: <AANLkTikQHYEJBR89wFWQK9Xf2m-zgK5ADSyQIe_bUiIG@mail.gmail.com>
+	<1276095815-sup-6676@midna.zekjur.net>
+	<AANLkTik9t90bIppnoQbngn-oUyka0U-v_QwCvAty8FE6@mail.gmail.com>
+Message-ID: <1276098211-sup-6814@midna.zekjur.net>
+
+Hi,
+
+Excerpts from Chengqi Song's message of 2010-06-09 17:26:52 +0200:
+> thanks, how to change output template of i3status?
+By editing the config file.
+
+Best regards,
+Michael
+
+
+From songcq at gmail.com  Wed Jun  9 17:50:41 2010
+From: songcq at gmail.com (Chengqi Song)
+Date: Wed, 9 Jun 2010 23:50:41 +0800
+Subject: [i3] "move" mode?
+In-Reply-To: <1276098211-sup-6814@midna.zekjur.net>
+References: <AANLkTikQHYEJBR89wFWQK9Xf2m-zgK5ADSyQIe_bUiIG@mail.gmail.com>
+	<1276095815-sup-6676@midna.zekjur.net>
+	<AANLkTik9t90bIppnoQbngn-oUyka0U-v_QwCvAty8FE6@mail.gmail.com>
+	<1276098211-sup-6814@midna.zekjur.net>
+Message-ID: <AANLkTinmcOXgrqiCkJhux6XkZyI-aVS8dar9tvBiTR23@mail.gmail.com>
+
+thanks. is there anyway to display CPU%, MEM% and audio volume using
+i3status + dzen2?
+
+On Wed, Jun 9, 2010 at 11:43 PM, Michael Stapelberg <
+michael+i3 at stapelberg.de <michael%2Bi3 at stapelberg.de>> wrote:
+
+> Hi,
+>
+> Excerpts from Chengqi Song's message of 2010-06-09 17:26:52 +0200:
+> > thanks, how to change output template of i3status?
+> By editing the config file.
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100609/52f18012/attachment.html>
+
+From michael+i3 at stapelberg.de  Wed Jun  9 18:07:54 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Wed, 09 Jun 2010 18:07:54 +0200
+Subject: [i3] "move" mode?
+In-Reply-To: <AANLkTinmcOXgrqiCkJhux6XkZyI-aVS8dar9tvBiTR23@mail.gmail.com>
+References: <AANLkTikQHYEJBR89wFWQK9Xf2m-zgK5ADSyQIe_bUiIG@mail.gmail.com>
+	<1276095815-sup-6676@midna.zekjur.net>
+	<AANLkTik9t90bIppnoQbngn-oUyka0U-v_QwCvAty8FE6@mail.gmail.com>
+	<1276098211-sup-6814@midna.zekjur.net>
+	<AANLkTinmcOXgrqiCkJhux6XkZyI-aVS8dar9tvBiTR23@mail.gmail.com>
+Message-ID: <1276099420-sup-3244@midna.zekjur.net>
+
+Hi,
+
+Excerpts from Chengqi Song's message of 2010-06-09 17:50:41 +0200:
+> thanks. is there anyway to display CPU%, MEM% and audio volume using
+CPU:
+CPU usage is hard to measure in a good way and also it?s not really
+interesting. For a notebook, it?s more interesting how long your CPU can
+stay in sleep states, see powertop(1) for that.
+
+Memory:
+Also hard to measure. Usually, you should not care about memory, unless
+your computer starts swapping when you use it. Apart from that, you should
+trust your OS to handle memory as good as possible.
+
+For audio volume we have a ticket, but it?s not implemented yet.
+
+Best regards,
+Michael
+
+
+From songcq at gmail.com  Wed Jun  9 18:20:22 2010
+From: songcq at gmail.com (Chengqi Song)
+Date: Thu, 10 Jun 2010 00:20:22 +0800
+Subject: [i3] "move" mode?
+In-Reply-To: <1276099420-sup-3244@midna.zekjur.net>
+References: <AANLkTikQHYEJBR89wFWQK9Xf2m-zgK5ADSyQIe_bUiIG@mail.gmail.com>
+	<1276095815-sup-6676@midna.zekjur.net>
+	<AANLkTik9t90bIppnoQbngn-oUyka0U-v_QwCvAty8FE6@mail.gmail.com>
+	<1276098211-sup-6814@midna.zekjur.net>
+	<AANLkTinmcOXgrqiCkJhux6XkZyI-aVS8dar9tvBiTR23@mail.gmail.com>
+	<1276099420-sup-3244@midna.zekjur.net>
+Message-ID: <AANLkTilM9xI185kpIU6cNmqBqgDgzIm4-9GJyEGejEuC@mail.gmail.com>
+
+In xmobar, we can add an applet called PipeReader, which does its name says.
+
+I use it to add some customized info, such as volume. I wrap aumix in a
+script to write current volume into a named pipe /tmp/cur-vol, then add an
+applet  "PipeReader /tmp/cur-vol" into xmobar's template. Then whenever I
+use that script to change volume, the volume info on xmobar is changed
+instantly.
+
+Is it possible to add such an PipeReader to i3status? It's quite flexible,
+because it can display any info. It's also efficient, because it does not
+need periodic update.
+
+lars
+
+On Thu, Jun 10, 2010 at 12:07 AM, Michael Stapelberg <
+michael+i3 at stapelberg.de <michael%2Bi3 at stapelberg.de>> wrote:
+
+> Hi,
+>
+> Excerpts from Chengqi Song's message of 2010-06-09 17:50:41 +0200:
+> > thanks. is there anyway to display CPU%, MEM% and audio volume using
+> CPU:
+> CPU usage is hard to measure in a good way and also it?s not really
+> interesting. For a notebook, it?s more interesting how long your CPU can
+> stay in sleep states, see powertop(1) for that.
+>
+> Memory:
+> Also hard to measure. Usually, you should not care about memory, unless
+> your computer starts swapping when you use it. Apart from that, you should
+> trust your OS to handle memory as good as possible.
+>
+> For audio volume we have a ticket, but it?s not implemented yet.
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100610/2dd0f42a/attachment.html>
+
+From michael+i3 at stapelberg.de  Wed Jun  9 19:09:42 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Wed, 09 Jun 2010 19:09:42 +0200
+Subject: [i3] "move" mode?
+In-Reply-To: <AANLkTilM9xI185kpIU6cNmqBqgDgzIm4-9GJyEGejEuC@mail.gmail.com>
+References: <AANLkTikQHYEJBR89wFWQK9Xf2m-zgK5ADSyQIe_bUiIG@mail.gmail.com>
+	<1276095815-sup-6676@midna.zekjur.net>
+	<AANLkTik9t90bIppnoQbngn-oUyka0U-v_QwCvAty8FE6@mail.gmail.com>
+	<1276098211-sup-6814@midna.zekjur.net>
+	<AANLkTinmcOXgrqiCkJhux6XkZyI-aVS8dar9tvBiTR23@mail.gmail.com>
+	<1276099420-sup-3244@midna.zekjur.net>
+	<AANLkTilM9xI185kpIU6cNmqBqgDgzIm4-9GJyEGejEuC@mail.gmail.com>
+Message-ID: <1276103283-sup-5338@midna.zekjur.net>
+
+Hi,
+
+Excerpts from Chengqi Song's message of 2010-06-09 18:20:22 +0200:
+> Is it possible to add such an PipeReader to i3status? It's quite flexible,
+> because it can display any info. It's also efficient, because it does not
+> need periodic update.
+Nope, not necessary. Instead, you can use a simple shell wrapper:
+
+  i3status | while [ 1 ] ; do read input; echo "foo: $input"; done
+
+?and append/suffix/replace whatever you like.
+
+Best regards,
+Michael
+
+
+From songcq at gmail.com  Thu Jun 10 07:59:18 2010
+From: songcq at gmail.com (Chengqi Song)
+Date: Thu, 10 Jun 2010 13:59:18 +0800
+Subject: [i3] How to config trayer?
+Message-ID: <AANLkTin5d5_vC9f56l5pDR4lBRAkZsqyq8gZIegHi24C@mail.gmail.com>
+
+Hi,
+
+I'm using trayer. I've set it to dock mode and floating over dzen2.
+
+but it does not work as I want. now it looks like a bar and is moved out of
+dzen2's area. It's not floating over dzen2, but looks like a status bar next
+to dzen2.
+
+can you show me your config of trayer?
+
+thanks
+lars
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100610/d3de0f03/attachment.html>
+
+From songcq at gmail.com  Fri Jun 11 04:11:34 2010
+From: songcq at gmail.com (Chengqi Song)
+Date: Fri, 11 Jun 2010 10:11:34 +0800
+Subject: [i3] "move" mode?
+In-Reply-To: <1276095815-sup-6676@midna.zekjur.net>
+References: <AANLkTikQHYEJBR89wFWQK9Xf2m-zgK5ADSyQIe_bUiIG@mail.gmail.com>
+	<1276095815-sup-6676@midna.zekjur.net>
+Message-ID: <AANLkTilkxLj8eqEKudfd9mTLB4LZNcidImGLC8DicRw9@mail.gmail.com>
+
+how can I move window by specified number of pixels?
+
+I usually use a combination of 20 pixels move + 1 pixel move to move/resize
+windows.
+
+by the way, can anyone share me your config of tray program? my trayer
+config does not work well with i3.
+
+thanks
+lars
+
+On Wed, Jun 9, 2010 at 11:05 PM, Michael Stapelberg <
+michael+i3 at stapelberg.de <michael%2Bi3 at stapelberg.de>> wrote:
+
+> Hi,
+>
+> Excerpts from Chengqi Song's message of 2010-06-09 16:22:04 +0200:
+> > Then today I found I3 wm is exactly what I want. Thanks for the author'
+> > great job!
+> Thanks.
+>
+> > I like the 'resize' mode very much, and I also want to have a 'move'
+> mode,
+> > in which I can use left/right/up/down keys to move a floating window
+> around.
+> > But I can not find related document, is there a 'move' command works like
+> > 'move up 10' ?
+> Almost. If you issue the normal move commands on floating windows
+> (mh, mj, mk, ml), they will move the floating window by 10 px in the given
+> direction. You can easily build a new mode for that.
+>
+> > dzen2 has no such parameter as "-dock", but this line still does not work
+> > after I remove "-dock". Could some one show me your configuration?
+> You need the most recent version from subversion to have the -dock option.
+>
+> My config looks like this:
+> exec i3status | i3-wsbar -c "dzen2 -dock -fg white -fn
+> -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso8859-1 -ta l -w 1280 -h 17
+> -x %x"
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100611/c25ef4e8/attachment.html>
+
+From michael+i3 at stapelberg.de  Fri Jun 11 10:08:07 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Fri, 11 Jun 2010 10:08:07 +0200
+Subject: [i3] "move" mode?
+In-Reply-To: <AANLkTilkxLj8eqEKudfd9mTLB4LZNcidImGLC8DicRw9@mail.gmail.com>
+References: <AANLkTikQHYEJBR89wFWQK9Xf2m-zgK5ADSyQIe_bUiIG@mail.gmail.com>
+	<1276095815-sup-6676@midna.zekjur.net>
+	<AANLkTilkxLj8eqEKudfd9mTLB4LZNcidImGLC8DicRw9@mail.gmail.com>
+Message-ID: <1276243618-sup-4349@midna.zekjur.net>
+
+Hi,
+
+Excerpts from Chengqi Song's message of 2010-06-11 04:11:34 +0200:
+> how can I move window by specified number of pixels?
+You cannot. I already wrote that the move command always moves by 10 px.
+
+> by the way, can anyone share me your config of tray program? my trayer
+> config does not work well with i3.
+There is no need to write two mails about this. I don?t use a tray program,
+so I can?t help you out.
+
+Best regards,
+Michael
+
+
+From comrad.karlovich at googlemail.com  Tue Jun 22 18:24:55 2010
+From: comrad.karlovich at googlemail.com (Alexander Kalentyev)
+Date: Tue, 22 Jun 2010 18:24:55 +0200
+Subject: [i3] No respond on any keys
+In-Reply-To: <1275749467-sup-197@midna.zekjur.net>
+References: <p2v4d89abe61004021132z4c02810er60cf4e75f89d060b@mail.gmail.com>
+	<1270671663-sup-9885@midna.zekjur.net>
+	<l2v4d89abe61004080040h92d76623s9bcb1c30c215e58a@mail.gmail.com>
+	<1270717900-sup-9926@midna.zekjur.net>
+	<t2n4d89abe61004081059jd516e323l5058705662272f74@mail.gmail.com>
+	<1270752692-sup-6810@midna.zekjur.net>
+	<t2g4d89abe61004091229q9727aa6cl8733215551bcbdb3@mail.gmail.com>
+	<1270843375-sup-5674@midna.zekjur.net>
+	<u2n4d89abe61004100409ne6fb32b9q63892f850ba54b35@mail.gmail.com>
+	<1270933811-sup-3620@midna.zekjur.net>
+	<q2r4d89abe61004110659h6b921682wd339d8b9fa757ff3@mail.gmail.com>
+	<1275749467-sup-197@midna.zekjur.net>
+Message-ID: <AANLkTimkSlaoqyxBCjFMNhPk_FxcdcthypRIJxElu9J6@mail.gmail.com>
+
+Hi Michael,
+
+Sorry for such a delay, now I was quite busy :)
+
+I tried "startx /usr/bin/i3" and it also worked... with urxvt, but then I've
+opened firefox (it was still ok)
+and after some time closed it and again no respond on any key...
+
+2010/6/5 Michael Stapelberg
+<michael+i3 at stapelberg.de<michael%2Bi3 at stapelberg.de>
+>
+
+> Hi Alexander,
+>
+> Sorry for answering so late, I?ve been quite busy.
+>
+> Excerpts from Alexander Kalentyev's message of 2010-04-11 15:59:18 +0200:
+> > I tried with cdm (http://cdm.ghost1227.com/X11/) and it works!
+> > But I'm not sure, that I will stay with cdm. Actually I really prefer
+> > to use startx...
+> Strange. I just tried using startx /usr/bin/i3 without having a .xinitrc
+> and it works fine with fish as a login shell (I start urxvt, though, xterm
+> does not seem to work for some strange reason). So, can you try startx
+> /usr/bin/i3, not having a .xinitrc and using urxvt?
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100622/76c109b5/attachment.html>
+

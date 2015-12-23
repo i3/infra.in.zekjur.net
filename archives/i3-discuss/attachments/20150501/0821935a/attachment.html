@@ -1,0 +1,222 @@
+<tt>
+&lt;div&nbsp;dir=&quot;ltr&quot;&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;A&nbsp;bit&nbsp;more&nbsp;info. &nbsp;It&nbsp;appears&nbsp;that&nbsp;the&nbsp;sequence&nbsp;of&nbsp;events&nbsp;may&nbsp;be&nbsp;the&nbsp;following:&lt;br&gt;&lt;br&gt;&lt;/div&gt;I&nbsp;lock&nbsp;the&nbsp;screen&nbsp;from&nbsp;the&nbsp;keyboard. &nbsp;That&nbsp;key&nbsp;is&nbsp;bound&nbsp;to&nbsp;&lt;span&nbsp;style=&quot;color:rgb(7,55,99)&quot;&gt;&lt;span&nbsp;style=&quot;font-family:monospace,monospace&quot;&gt;i3lock&nbsp;--dpms&nbsp;--inactivity-timeout&nbsp;10&nbsp;--color=220022&lt;/span&gt;&lt;/span&gt;&nbsp;.&lt;br&gt;&lt;br&gt;&lt;/div&gt;A&nbsp;bit&nbsp;later,&nbsp;xautolock&nbsp;decides&nbsp;to&nbsp;lock&nbsp;the&nbsp;screen&nbsp;as&nbsp;well. &nbsp;That&nbsp;command,&nbsp;by&nbsp;chance,&nbsp;is&nbsp;not&nbsp;quite&nbsp;the&nbsp;same,&nbsp;which&nbsp;is&nbsp;how&nbsp;I&nbsp;identified&nbsp;the&nbsp;two&nbsp;locks. &nbsp;&lt;span&nbsp;style=&quot;color:rgb(12,52,61)&quot;&gt;&lt;span&nbsp;style=&quot;font-family:monospace,monospace&quot;&gt;i3lock&nbsp;--dpms&nbsp;--color=220022&nbsp;--inactivity-timeout&nbsp;10&nbsp;--nofork&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;/div&gt;There&nbsp;is&nbsp;no&nbsp;good&nbsp;reason&nbsp;they&nbsp;are&nbsp;different,&nbsp;but&nbsp;they&nbsp;do&nbsp;both&nbsp;run&nbsp;sometimes. &nbsp;For&nbsp;some&nbsp;reason,&nbsp;the&nbsp;xautolock-launched&nbsp;version&nbsp;sometimes&nbsp;neither&nbsp;asks&nbsp;for&nbsp;my&nbsp;password&nbsp;nor&nbsp;exits. &nbsp;This&nbsp;doesn&#39;t&nbsp;happen&nbsp;every&nbsp;time,&nbsp;most&nbsp;of&nbsp;the&nbsp;time,&nbsp;it&nbsp;all&nbsp;works&nbsp;correctly.&lt;br&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&nbsp;class=&quot;gmail_extra&quot;&gt;&lt;br&nbsp;clear=&quot;all&quot;&gt;&lt;div&gt;&lt;div&nbsp;class=&quot;gmail_signature&quot;&gt;&lt;div&nbsp;dir=&quot;ltr&quot;&gt;&lt;font&nbsp;face=&quot;courier&nbsp;new,&nbsp;monospace&quot;&gt;Jeff&nbsp;Abrahamson&lt;br&gt;+33&nbsp;6&nbsp;24&nbsp;40&nbsp;01&nbsp;57&lt;/font&gt;&lt;div&gt;&lt;font&nbsp;face=&quot;courier&nbsp;new,&nbsp;monospace&quot;&gt;+44&nbsp;7920&nbsp;594&nbsp;255&nbsp; &nbsp; &lt;--&nbsp;only&nbsp;if&nbsp;I&#39;m&nbsp;in&nbsp;the&nbsp;UK&lt;br&gt;&lt;br&gt;&lt;a&nbsp;href=&quot;http://jeff.purple.com/&quot;&nbsp;target=&quot;_blank&quot;&gt;http://jeff.purple.com/&lt;/a&gt;&lt;br&gt;&lt;a&nbsp;href=&quot;http://blog.purple.com/jeff/&quot;&nbsp;target=&quot;_blank&quot;&gt;http://blog.purple.com/jeff/&lt;/a&gt;&lt;/font&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;<br>
+&lt;br&gt;&lt;div&nbsp;class=&quot;gmail_quote&quot;&gt;On&nbsp;17&nbsp;April&nbsp;2015&nbsp;at&nbsp;12:50,&nbsp;Michael&nbsp;Stapelberg&nbsp;&lt;span&nbsp;dir=&quot;ltr&quot;&gt;&lt;&lt;a&nbsp;href=&quot;mailto:michael@i3wm.org&quot;&nbsp;target=&quot;_blank&quot;&gt;michael@i3wm.org&lt;/a&gt;&gt;&lt;/span&gt;&nbsp;wrote:&lt;br&gt;&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;&lt;span&nbsp;class=&quot;&quot;&gt;On&nbsp;Fri,&nbsp;Apr&nbsp;17,&nbsp;2015&nbsp;at&nbsp;3:00&nbsp;AM,&nbsp;Jeff&nbsp;Abrahamson&nbsp;&lt;&lt;a&nbsp;href=&quot;mailto:jeff@purple.com&quot;&gt;jeff@purple.com&lt;/a&gt;&gt;&nbsp;wrote:&lt;br&gt;<br>
+&gt;&nbsp;Thanks. &nbsp;I&nbsp;understand&nbsp;(and&nbsp;a&nbsp;bit&nbsp;better,&nbsp;now)&nbsp;why&nbsp;strace/ptrace&nbsp;may&nbsp;have&lt;br&gt;<br>
+&gt;&nbsp;problems&nbsp;with&nbsp;a&nbsp;program&nbsp;that&nbsp;calls&nbsp;setuid. &nbsp;On&nbsp;the&nbsp;other&nbsp;hand,&nbsp;i3lock&lt;br&gt;<br>
+&gt;&nbsp;doesn&#39;t&nbsp;have&nbsp;the&nbsp;setuid&nbsp;bit&nbsp;set,&nbsp;and&nbsp;the&nbsp;strace&nbsp;logs&nbsp;do&nbsp;not&nbsp;show&nbsp;an&nbsp;attempt&lt;br&gt;<br>
+&gt;&nbsp;to&nbsp;call&nbsp;strace.&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&nbsp;[S-18]jeff@siegfried:~&nbsp;$&nbsp;stat&nbsp;/usr/bin/i3lock&lt;br&gt;<br>
+&gt; &nbsp; File:&nbsp;‘/usr/bin/i3lock’&lt;br&gt;<br>
+&gt; &nbsp; Size:&nbsp;31912 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Blocks:&nbsp;64 &nbsp; &nbsp; &nbsp; &nbsp; IO&nbsp;Block:&nbsp;4096 &nbsp; regular&nbsp;file&lt;br&gt;<br>
+&gt;&nbsp;Device:&nbsp;fc01h/64513d &nbsp; &nbsp;Inode:&nbsp;1575208 &nbsp; &nbsp; Links:&nbsp;1&lt;br&gt;<br>
+&gt;&nbsp;Access:&nbsp;(0755/-rwxr-xr-x) &nbsp;Uid:&nbsp;( &nbsp; &nbsp;0/ &nbsp; &nbsp;root) &nbsp; Gid:&nbsp;( &nbsp; &nbsp;0/ &nbsp; &nbsp;root)&lt;br&gt;<br>
+&gt;&nbsp;Access:&nbsp;2015-04-16&nbsp;20:02:56.634223226&nbsp;+0200&lt;br&gt;<br>
+&gt;&nbsp;Modify:&nbsp;2014-07-19&nbsp;01:13:09.000000000&nbsp;+0200&lt;br&gt;<br>
+&gt;&nbsp;Change:&nbsp;2015-03-04&nbsp;15:18:43.959784604&nbsp;+0100&lt;br&gt;<br>
+&gt; &nbsp;Birth:&nbsp;-&lt;br&gt;<br>
+&gt;&nbsp;[S-18]jeff@siegfried:~&nbsp;$&nbsp;grep&nbsp;setuid&nbsp;/tmp/i3lock-log-1429256*&lt;br&gt;<br>
+&gt;&nbsp;1,[S-18]&nbsp;jeff@siegfried:~&nbsp;$&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&nbsp;This&nbsp;said,&nbsp;if&nbsp;something&nbsp;PAM&nbsp;did&nbsp;when&nbsp;I&nbsp;logged&nbsp;in&nbsp;affects&nbsp;the&nbsp;behavior&nbsp;of&lt;br&gt;<br>
+&gt;&nbsp;stracing&nbsp;i3lock,&nbsp;I&nbsp;do&nbsp;not&nbsp;think&nbsp;I&nbsp;will&nbsp;try&nbsp;to&nbsp;figure&nbsp;out&nbsp;what&nbsp;PAM&nbsp;has&nbsp;done.&lt;br&gt;<br>
+&gt;&nbsp;;-) &nbsp;But&nbsp;I&nbsp;still&nbsp;find&nbsp;it&nbsp;odd&nbsp;that&nbsp;i3lock&nbsp;would&nbsp;interpret&nbsp;keystrokes&lt;br&gt;<br>
+&gt;&nbsp;differently&nbsp;under&nbsp;strace&nbsp;or&nbsp;not&nbsp;based&nbsp;on&nbsp;what&nbsp;I&nbsp;know&nbsp;so&nbsp;far.&lt;br&gt;<br>
+&lt;br&gt;<br>
+&lt;/span&gt;It&nbsp;doesn’t.&nbsp;I’m&nbsp;saying&nbsp;the&nbsp;PAM&nbsp;stack&nbsp;(outside&nbsp;of&nbsp;i3’s&nbsp;code)&nbsp;likely&lt;br&gt;<br>
+requires&nbsp;setuid&nbsp;permission&nbsp;for&nbsp;some&nbsp;modules&nbsp;(most&nbsp;likely&nbsp;pam_unix).&lt;br&gt;<br>
+&lt;div&nbsp;class=&quot;HOEnZb&quot;&gt;&lt;div&nbsp;class=&quot;h5&quot;&gt;&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&nbsp;Well,&nbsp;I&nbsp;will&nbsp;debug&nbsp;what&nbsp;I&nbsp;can. &nbsp;Maybe&nbsp;I&nbsp;will&nbsp;compile&nbsp;an&nbsp;i3lock&nbsp;with&lt;br&gt;<br>
+&gt;&nbsp;scaffolding&nbsp;over&nbsp;the&nbsp;weekend&nbsp;to&nbsp;see&nbsp;what&nbsp;I&nbsp;can&nbsp;learn.&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&nbsp;Thanks&nbsp;again.&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&nbsp;Jeff&nbsp;Abrahamson&lt;br&gt;<br>
+&gt;&nbsp;&lt;a&nbsp;href=&quot;tel:%2B33%206%2024%2040%2001%2057&quot;&nbsp;value=&quot;+33624400157&quot;&gt;+33&nbsp;6&nbsp;24&nbsp;40&nbsp;01&nbsp;57&lt;/a&gt;&lt;br&gt;<br>
+&gt;&nbsp;&lt;a&nbsp;href=&quot;tel:%2B44%207920%20594%20255&quot;&nbsp;value=&quot;+447920594255&quot;&gt;+44&nbsp;7920&nbsp;594&nbsp;255&lt;/a&gt; &nbsp; &nbsp;&lt;--&nbsp;only&nbsp;if&nbsp;I&#39;m&nbsp;in&nbsp;the&nbsp;UK&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&nbsp;&lt;a&nbsp;href=&quot;http://jeff.purple.com/&quot;&nbsp;target=&quot;_blank&quot;&gt;http://jeff.purple.com/&lt;/a&gt;&lt;br&gt;<br>
+&gt;&nbsp;&lt;a&nbsp;href=&quot;http://blog.purple.com/jeff/&quot;&nbsp;target=&quot;_blank&quot;&gt;http://blog.purple.com/jeff/&lt;/a&gt;&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&nbsp;On&nbsp;17&nbsp;April&nbsp;2015&nbsp;at&nbsp;11:47,&nbsp;Michael&nbsp;Stapelberg&nbsp;&lt;&lt;a&nbsp;href=&quot;mailto:michael@i3wm.org&quot;&gt;michael@i3wm.org&lt;/a&gt;&gt;&nbsp;wrote:&lt;br&gt;<br>
+&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;See&nbsp;&lt;a&nbsp;href=&quot;http://superuser.com/a/248127&quot;&nbsp;target=&quot;_blank&quot;&gt;http://superuser.com/a/248127&lt;/a&gt;&nbsp;for&nbsp;why&nbsp;setuid&nbsp;is&nbsp;ignored&nbsp;when&lt;br&gt;<br>
+&gt;&gt;&nbsp;running&nbsp;under&nbsp;strace.&lt;br&gt;<br>
+&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;Given&nbsp;that&nbsp;you&nbsp;run&nbsp;i3lock&nbsp;on&nbsp;linux,&nbsp;it&nbsp;might&nbsp;be&nbsp;PAM&nbsp;which&nbsp;uses&nbsp;setuid&lt;br&gt;<br>
+&gt;&gt;&nbsp;in&nbsp;some&nbsp;of&nbsp;its&nbsp;modules.&lt;br&gt;<br>
+&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;On&nbsp;Fri,&nbsp;Apr&nbsp;17,&nbsp;2015&nbsp;at&nbsp;1:20&nbsp;AM,&nbsp;Jeff&nbsp;Abrahamson&nbsp;&lt;&lt;a&nbsp;href=&quot;mailto:jeff@purple.com&quot;&gt;jeff@purple.com&lt;/a&gt;&gt;&nbsp;wrote:&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&nbsp;Interesting. &nbsp;How&nbsp;does&nbsp;setuid&nbsp;have&nbsp;this&nbsp;effect&nbsp;on&nbsp;i3lock&nbsp;but&nbsp;only&nbsp;under&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&nbsp;strace?&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&nbsp;Any&nbsp;idea&nbsp;where&nbsp;the&nbsp;setuid&nbsp;is&nbsp;coming&nbsp;from&nbsp;or&nbsp;how&nbsp;to&nbsp;find&nbsp;out? &nbsp;The&nbsp;system&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&nbsp;is&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&nbsp;pretty&nbsp;vanilla&nbsp;ubuntu&nbsp;14.10&nbsp;(they&nbsp;have&nbsp;a&nbsp;good&nbsp;installer)&nbsp;aside&nbsp;from&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&nbsp;running&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&nbsp;i3&nbsp;instead&nbsp;of&nbsp;gnome.&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&nbsp;The&nbsp;exec&nbsp;path&nbsp;that&#39;s&nbsp;visible&nbsp;once&nbsp;I&#39;m&nbsp;logged&nbsp;in&nbsp;is&nbsp;lightdm&nbsp;-&gt;&nbsp;lightdm&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&nbsp;--sesion-child&nbsp;-&gt;&nbsp;i3. &nbsp;I&nbsp;see&nbsp;that&nbsp;i3&nbsp;parents&nbsp;what&nbsp;is&nbsp;executed&nbsp;due&nbsp;to&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&nbsp;.xsessionrc.&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&nbsp;I&#39;ll&nbsp;try&nbsp;to&nbsp;gather&nbsp;traces&nbsp;with&nbsp;-p,&nbsp;but&nbsp;this&nbsp;will&nbsp;depend&nbsp;on&nbsp;me&nbsp;thinking&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&nbsp;to&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&nbsp;trace&nbsp;i3lock&nbsp;from&nbsp;a&nbsp;vt&nbsp;before&nbsp;unlocking&nbsp;the&nbsp;screen. &nbsp;My&nbsp;apologies&nbsp;in&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&nbsp;advance&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&nbsp;if&nbsp;I&nbsp;take&nbsp;a&nbsp;long&nbsp;time&nbsp;to&nbsp;catch&nbsp;the&nbsp;occasional&nbsp;errant&nbsp;process&nbsp;that&nbsp;way.&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&nbsp;And&nbsp;thanks&nbsp;for&nbsp;your&nbsp;ever&nbsp;prompt&nbsp;assistance&nbsp;and&nbsp;insights.&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&nbsp;Jeff&nbsp;Abrahamson&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&nbsp;&lt;a&nbsp;href=&quot;tel:%2B33%206%2024%2040%2001%2057&quot;&nbsp;value=&quot;+33624400157&quot;&gt;+33&nbsp;6&nbsp;24&nbsp;40&nbsp;01&nbsp;57&lt;/a&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&nbsp;&lt;a&nbsp;href=&quot;tel:%2B44%207920%20594%20255&quot;&nbsp;value=&quot;+447920594255&quot;&gt;+44&nbsp;7920&nbsp;594&nbsp;255&lt;/a&gt; &nbsp; &nbsp;&lt;--&nbsp;only&nbsp;if&nbsp;I&#39;m&nbsp;in&nbsp;the&nbsp;UK&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&nbsp;&lt;a&nbsp;href=&quot;http://jeff.purple.com/&quot;&nbsp;target=&quot;_blank&quot;&gt;http://jeff.purple.com/&lt;/a&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&nbsp;&lt;a&nbsp;href=&quot;http://blog.purple.com/jeff/&quot;&nbsp;target=&quot;_blank&quot;&gt;http://blog.purple.com/jeff/&lt;/a&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&nbsp;On&nbsp;17&nbsp;April&nbsp;2015&nbsp;at&nbsp;10:09,&nbsp;Michael&nbsp;Stapelberg&nbsp;&lt;&lt;a&nbsp;href=&quot;mailto:michael@i3wm.org&quot;&gt;michael@i3wm.org&lt;/a&gt;&gt;&nbsp;wrote:&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&nbsp;Ugh,&nbsp;then&nbsp;you’re&nbsp;running&nbsp;it&nbsp;in&nbsp;a&nbsp;setuid&nbsp;setup.&nbsp;You’ll&nbsp;need&nbsp;to&nbsp;start&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&nbsp;i3lock&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&nbsp;and&nbsp;then&nbsp;attach&nbsp;strace&nbsp;afterwards&nbsp;using&nbsp;-p.&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&nbsp;On&nbsp;Fri,&nbsp;Apr&nbsp;17,&nbsp;2015&nbsp;at&nbsp;9:56&nbsp;AM,&nbsp;Jeff&nbsp;Abrahamson&nbsp;&lt;&lt;a&nbsp;href=&quot;mailto:jeff@purple.com&quot;&gt;jeff@purple.com&lt;/a&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&nbsp;wrote:&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&nbsp;I&nbsp;invoke&nbsp;i3lock&nbsp;at&nbsp;the&nbsp;commandline&nbsp;thus:&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&nbsp;[S-18]jeff@siegfried:gtd&nbsp;$&nbsp;strace&nbsp;-o/tmp/i3lock-log-$(date&nbsp;+%s)&nbsp;-f&nbsp;-s&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&nbsp;2048&nbsp;-tt &nbsp;i3lock&nbsp;--dpms&nbsp;--inactivity-timeout&nbsp;10&nbsp;--color=220022&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&nbsp;[S-18]jeff@siegfried:gtd&nbsp;$&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&nbsp;and&nbsp;the&nbsp;result&nbsp;is&nbsp;that&nbsp;i3lock&nbsp;does&nbsp;not&nbsp;recognize&nbsp;my&nbsp;password. &nbsp;It&nbsp;does&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&nbsp;echo&nbsp;my&nbsp;typing,&nbsp;it&nbsp;just&nbsp;always&nbsp;says&nbsp;fail. &nbsp;I&nbsp;switch&nbsp;to&nbsp;a&nbsp;vt,&nbsp;login,&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&nbsp;and&nbsp;kill&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&nbsp;it.&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&nbsp;Jeff&nbsp;Abrahamson&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&nbsp;&lt;a&nbsp;href=&quot;tel:%2B33%206%2024%2040%2001%2057&quot;&nbsp;value=&quot;+33624400157&quot;&gt;+33&nbsp;6&nbsp;24&nbsp;40&nbsp;01&nbsp;57&lt;/a&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&nbsp;&lt;a&nbsp;href=&quot;tel:%2B44%207920%20594%20255&quot;&nbsp;value=&quot;+447920594255&quot;&gt;+44&nbsp;7920&nbsp;594&nbsp;255&lt;/a&gt; &nbsp; &nbsp;&lt;--&nbsp;only&nbsp;if&nbsp;I&#39;m&nbsp;in&nbsp;the&nbsp;UK&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&nbsp;&lt;a&nbsp;href=&quot;http://jeff.purple.com/&quot;&nbsp;target=&quot;_blank&quot;&gt;http://jeff.purple.com/&lt;/a&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&nbsp;&lt;a&nbsp;href=&quot;http://blog.purple.com/jeff/&quot;&nbsp;target=&quot;_blank&quot;&gt;http://blog.purple.com/jeff/&lt;/a&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&nbsp;On&nbsp;17&nbsp;April&nbsp;2015&nbsp;at&nbsp;09:39,&nbsp;Michael&nbsp;Stapelberg&nbsp;&lt;&lt;a&nbsp;href=&quot;mailto:michael@i3wm.org&quot;&gt;michael@i3wm.org&lt;/a&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&nbsp;wrote:&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&nbsp;Yes,&nbsp;but&nbsp;also&nbsp;use&nbsp;-f&nbsp;(to&nbsp;follow&nbsp;child&nbsp;processes)&nbsp;and&nbsp;-s&nbsp;2048&nbsp;(to&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&nbsp;increase&nbsp;the&nbsp;size&nbsp;of&nbsp;strings)&nbsp;and&nbsp;-tt&nbsp;(to&nbsp;get&nbsp;timing).&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&nbsp;On&nbsp;Fri,&nbsp;Apr&nbsp;17,&nbsp;2015&nbsp;at&nbsp;9:23&nbsp;AM,&nbsp;Jeff&nbsp;Abrahamson&nbsp;&lt;&lt;a&nbsp;href=&quot;mailto:jeff@purple.com&quot;&gt;jeff@purple.com&lt;/a&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&nbsp;wrote:&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&nbsp;Sure&nbsp;thing.&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&nbsp;Just&nbsp;to&nbsp;be&nbsp;clear,&nbsp;do&nbsp;you&nbsp;mean&nbsp;that&nbsp;instead&nbsp;of&nbsp;launching&nbsp;&quot;i3lock&nbsp;..&quot;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&nbsp;I&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&nbsp;substitute&nbsp;&quot;strace&nbsp;-o/tmp/i3lock-log-$(date&nbsp;+%s)&nbsp;i3lock&nbsp;...&quot;?&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&nbsp;Jeff&nbsp;Abrahamson&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&nbsp;&lt;a&nbsp;href=&quot;tel:%2B33%206%2024%2040%2001%2057&quot;&nbsp;value=&quot;+33624400157&quot;&gt;+33&nbsp;6&nbsp;24&nbsp;40&nbsp;01&nbsp;57&lt;/a&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&nbsp;&lt;a&nbsp;href=&quot;tel:%2B44%207920%20594%20255&quot;&nbsp;value=&quot;+447920594255&quot;&gt;+44&nbsp;7920&nbsp;594&nbsp;255&lt;/a&gt; &nbsp; &nbsp;&lt;--&nbsp;only&nbsp;if&nbsp;I&#39;m&nbsp;in&nbsp;the&nbsp;UK&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&nbsp;&lt;a&nbsp;href=&quot;http://jeff.purple.com/&quot;&nbsp;target=&quot;_blank&quot;&gt;http://jeff.purple.com/&lt;/a&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&nbsp;&lt;a&nbsp;href=&quot;http://blog.purple.com/jeff/&quot;&nbsp;target=&quot;_blank&quot;&gt;http://blog.purple.com/jeff/&lt;/a&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&nbsp;On&nbsp;17&nbsp;April&nbsp;2015&nbsp;at&nbsp;09:19,&nbsp;Michael&nbsp;Stapelberg&nbsp;&lt;&lt;a&nbsp;href=&quot;mailto:michael@i3wm.org&quot;&gt;michael@i3wm.org&lt;/a&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&nbsp;wrote:&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;i3lock&nbsp;shouldn’t&nbsp;hang&nbsp;around.&nbsp;Can&nbsp;you&nbsp;start&nbsp;stracing&nbsp;all&nbsp;your&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;i3lock&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;instances&nbsp;automatically&nbsp;and&nbsp;provide&nbsp;the&nbsp;corresponding&nbsp;strace&nbsp;output&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;of&nbsp;a&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;hung&nbsp;instance&nbsp;in&nbsp;a&nbsp;bugreport?&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;On&nbsp;Fri,&nbsp;Apr&nbsp;17,&nbsp;2015&nbsp;at&nbsp;9:04&nbsp;AM,&nbsp;Jeff&nbsp;Abrahamson&nbsp;&lt;&lt;a&nbsp;href=&quot;mailto:jeff@purple.com&quot;&gt;jeff@purple.com&lt;/a&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;wrote:&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;I&nbsp;have&nbsp;a&nbsp;maintenance&nbsp;function&nbsp;that&nbsp;ought&nbsp;not&nbsp;bother&nbsp;spinning&nbsp;the&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;CPU&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;if&nbsp;the&nbsp;screen&nbsp;is&nbsp;locked. &nbsp;It&nbsp;checks&nbsp;this&nbsp;thus:&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;if&nbsp;pidof&nbsp;i3lock&nbsp;&gt;/dev/null;&nbsp;then&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &nbsp; &nbsp; ...&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;This&nbsp;is&nbsp;i3-specific,&nbsp;which&nbsp;is&nbsp;sad,&nbsp;but&nbsp;not&nbsp;a&nbsp;huge&nbsp;problem. &nbsp;What&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;is&nbsp;a&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;problem&nbsp;is&nbsp;that&nbsp;i3lock&nbsp;sometimes&nbsp;hangs&nbsp;around&nbsp;even&nbsp;though&nbsp;I&nbsp;think&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;it&nbsp;should&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;exit&nbsp;on&nbsp;unlock. &nbsp;And,&nbsp;indeed,&nbsp;most&nbsp;of&nbsp;the&nbsp;time&nbsp;it&nbsp;does&nbsp;exit&nbsp;on&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;unlock. &nbsp;Once&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;in&nbsp;a&nbsp;while,&nbsp;I&nbsp;find&nbsp;I&nbsp;have&nbsp;one&nbsp;or&nbsp;even&nbsp;several&nbsp;i3lock&nbsp;processes&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;hanging&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;around.&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;I&nbsp;either&nbsp;lock&nbsp;my&nbsp;screen&nbsp;explicitly&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;bindsym&nbsp;$mod+Control+L&nbsp;exec&nbsp;i3lock&nbsp;--dpms&nbsp;--inactivity-timeout&nbsp;10&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;--color=220022&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;or&nbsp;else&nbsp;it&#39;s&nbsp;done&nbsp;by&nbsp;inactivity&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;xautolock&nbsp;-detectsleep&nbsp;\&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt; &nbsp; &nbsp; -time&nbsp;3&nbsp;-locker&nbsp;&quot;i3lock&nbsp;--dpms&nbsp;--color=220022&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;--inactivity-timeout&nbsp;10&nbsp;--nofork&quot;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;This&nbsp;question&nbsp;thus&nbsp;has&nbsp;two&nbsp;parts:&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;1.&nbsp;Am&nbsp;I&nbsp;doing&nbsp;something&nbsp;wrong&nbsp;that&nbsp;I&nbsp;sometimes&nbsp;have&nbsp;multiple&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;i3lock&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;instances?&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;2.&nbsp;Is&nbsp;there&nbsp;a&nbsp;better&nbsp;way&nbsp;to&nbsp;detect&nbsp;screen&nbsp;lock&nbsp;than&nbsp;pidof&nbsp;i3lock?&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;Jeff&nbsp;Abrahamson&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;+33&nbsp;6&nbsp;24&nbsp;40&nbsp;01&nbsp;57&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;+44&nbsp;7920&nbsp;594&nbsp;255 &nbsp; &nbsp;&lt;--&nbsp;only&nbsp;if&nbsp;I&#39;m&nbsp;in&nbsp;the&nbsp;UK&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;&lt;a&nbsp;href=&quot;http://jeff.purple.com/&quot;&nbsp;target=&quot;_blank&quot;&gt;http://jeff.purple.com/&lt;/a&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;&lt;a&nbsp;href=&quot;http://blog.purple.com/jeff/&quot;&nbsp;target=&quot;_blank&quot;&gt;http://blog.purple.com/jeff/&lt;/a&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;--&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;Best&nbsp;regards,&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&gt;&nbsp;Michael&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&nbsp;--&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&nbsp;Best&nbsp;regards,&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&gt;&nbsp;Michael&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&nbsp;--&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&nbsp;Best&nbsp;regards,&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&gt;&nbsp;Michael&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;&gt;&lt;br&gt;<br>
+&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;--&lt;br&gt;<br>
+&gt;&gt;&nbsp;Best&nbsp;regards,&lt;br&gt;<br>
+&gt;&gt;&nbsp;Michael&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&lt;br&gt;<br>
+&lt;br&gt;<br>
+&lt;br&gt;<br>
+&lt;/div&gt;&lt;/div&gt;&lt;span&nbsp;class=&quot;HOEnZb&quot;&gt;&lt;font&nbsp;color=&quot;#888888&quot;&gt;--&lt;br&gt;<br>
+Best&nbsp;regards,&lt;br&gt;<br>
+Michael&lt;br&gt;<br>
+&lt;/font&gt;&lt;/span&gt;&lt;/blockquote&gt;&lt;/div&gt;&lt;br&gt;&lt;/div&gt;<br>
+
+</tt>

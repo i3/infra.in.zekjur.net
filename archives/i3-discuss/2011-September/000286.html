@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] egde snapping for floating windows
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20egde%20snapping%20for%20floating%20windows&In-Reply-To=%3C1315241590-sup-1042%40stapelberg.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000293.html">
+   <LINK REL="Next"  HREF="000288.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] egde snapping for floating windows</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20egde%20snapping%20for%20floating%20windows&In-Reply-To=%3C1315241590-sup-1042%40stapelberg.de%3E"
+       TITLE="[i3] egde snapping for floating windows">michael+i3 at stapelberg.de
+       </A><BR>
+    <I>Mon Sep  5 19:04:25 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000293.html">[i3] pan icon in display
+</A></li>
+        <LI>Next message: <A HREF="000288.html">[i3] Installing i3status on Ubuntu 10.04,	requires libasound2 &gt; 1.0.24.1
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#286">[ date ]</a>
+              <a href="thread.html#286">[ thread ]</a>
+              <a href="subject.html#286">[ subject ]</a>
+              <a href="author.html#286">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Jan,
+
+Thanks for your patch, sorry for taking so long to respond.
+
+Excerpts from Jan Krcmar's message of 2011-08-26 10:58:31 +0200:
+&gt;<i> now, the windows are snapping while moving and while resizing
+</I>&gt;<i> 
+</I>&gt;<i> i've also pushed the new configuration option into the config file
+</I>&gt;<i> determining the edge snap threshold
+</I>I tried your patch with the default snap_threshold of 10 pixels. I noticed
+multiple issues:
+
+1) I can&#8217;t seem to position my windows within the 10 pixels to every screen
+   edge (e.g. I cannot position them at x=6, y=3). It always snaps. That is a
+   serious usability problem, but I don&#8217;t see a good way to solve it within the
+   existing i3 codebase.
+
+   A way that could work better (without having tried it): Signaling the user
+   that the window could snap. If you have ever used Apple Keynote or Xcode&#8217;s
+   User Interface Builder you know the helper lines they have to signal that
+   something can be aligned somewhere [1]. After signaling, the user could
+   either let the mouse button go (and the window would snap) or keep on
+   positioning and would be allowed to do it like he wants. As I said, I don&#8217;t
+   see how to implement this with i3&#8217;s codebase (in particular not without
+   using compositing).
+
+   Another way would be to press a specific key while dragging, like Control.
+   Not sure if Control is a good choice for that, and also not sure if using it
+   together with the floating_modifier (which might already include Control
+   :-/) is a reasonable key combination to press.
+
+2) You don&#8217;t consider dock clients but always snap to the screen edges.
+
+3) There are various little code style points which I&#8217;m omitting in this mail,
+   due to the reasons below.
+
+Now that I saw how it looks and feels, I don&#8217;t think this is a good feature for
+i3. It feels a little weird to use and frankly, I don&#8217;t think we need it.
+Floating mode is mainly implemented for (modal) popup dialogs like password
+prompts. i3 does not aim to become a good floating window manager.
+
+So, in conclusion: Thanks for your efforts, but I say no to this version of the
+patch and probably also to further versions, unless you can convince me that
+it&#8217;s really worth it and that you sorted out the usability problems.
+
+Best regards,
+Michael
+
+[1] See
+<A HREF="http://www.techotopia.com/images/7/74/Interface_builder_align_objects.png">http://www.techotopia.com/images/7/74/Interface_builder_align_objects.png</A> for
+example &#8211; the blue dashed line signals that the button is centered below the
+input field.
+</PRE>
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000293.html">[i3] pan icon in display
+</A></li>
+	<LI>Next message: <A HREF="000288.html">[i3] Installing i3status on Ubuntu 10.04,	requires libasound2 &gt; 1.0.24.1
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#286">[ date ]</a>
+              <a href="thread.html#286">[ thread ]</a>
+              <a href="subject.html#286">[ subject ]</a>
+              <a href="author.html#286">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

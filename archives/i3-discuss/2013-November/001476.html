@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] urgency hint
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20urgency%20hint&In-Reply-To=%3Cx6ob5zu9sf.fsf%40midna.lan%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001475.html">
+   <LINK REL="Next"  HREF="001477.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] urgency hint</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20urgency%20hint&In-Reply-To=%3Cx6ob5zu9sf.fsf%40midna.lan%3E"
+       TITLE="[i3] urgency hint">michael at i3wm.org
+       </A><BR>
+    <I>Mon Nov  4 22:38:56 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001475.html">[i3] urgency hint
+</A></li>
+        <LI>Next message: <A HREF="001477.html">[i3] Fwd: Minimalistic borders
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1476">[ date ]</a>
+              <a href="thread.html#1476">[ thread ]</a>
+              <a href="subject.html#1476">[ subject ]</a>
+              <a href="author.html#1476">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Zeus,
+
+Zeus Panchenko &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">zeus at ibs.dn.ua</A>&gt; writes:
+&gt;<i> 1. start i3 (it starts emacs and firefox automatically)
+</I>&gt;<i> 2. switch to emacs desktop (No.4) and started jabber.el mode
+</I>&gt;<i> 3. switched to desktop No.1 and launched terminal
+</I>&gt;<i> 4. sent myself test message from another box
+</I>&gt;<i>
+</I>&gt;<i>    desktop No.4 indicator remained as was
+</I>i3 is not seeing any urgency hint changes, which you can verify by using
+bzgrep -i urgen i3log-20131104_111417.dump.log.bz2 &#8212; all the lines show
+that either the urgency state changes to 0, or it is ignored because the
+window is currently focused.
+
+So, I&#8217;d check jabber.el to see whether it properly updates the urgency
+hint.
+
+&gt;<i> 5. switched to firefox desktop (No.10) and started to download file
+</I>&gt;<i> 6. switched to desktop No.1 and waited until ff spawns info popup
+</I>&gt;<i>    concerning the download completion
+</I>&gt;<i>
+</I>&gt;<i>    desktop No.10 indicator remained as was (may be because of ff pop, but
+</I>&gt;<i>    in older versions of i3 I remember it was showing the event)
+</I>I think the following commit adresses this:
+<A HREF="http://code.stapelberg.de/git/i3/commit/?h=next&amp;id=e99158e419d4204bbce16ea5df249c630636ed3d">http://code.stapelberg.de/git/i3/commit/?h=next&amp;id=e99158e419d4204bbce16ea5df249c630636ed3d</A>
+(it&#8217;s newer than the version of i3 you are running)
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001475.html">[i3] urgency hint
+</A></li>
+	<LI>Next message: <A HREF="001477.html">[i3] Fwd: Minimalistic borders
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1476">[ date ]</a>
+              <a href="thread.html#1476">[ thread ]</a>
+              <a href="subject.html#1476">[ subject ]</a>
+              <a href="author.html#1476">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

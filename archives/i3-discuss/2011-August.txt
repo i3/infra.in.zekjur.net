@@ -1,0 +1,1041 @@
+From mherda at gmail.com  Mon Aug  1 14:47:00 2011
+From: mherda at gmail.com (Marcin Herda)
+Date: Mon, 1 Aug 2011 13:47:00 +0100
+Subject: [i3] i3 v 4.0 build problems
+Message-ID: <CAKgsu=FcTDZopAsMgOvBusN5SC+OCkBt=Wdi3i+rOn0gcL5HNQ@mail.gmail.com>
+
+Hi I'm really sorry if it's a double mail, but I'm not really sure if
+my previous email has been sent.
+
+Hi Michael and others,
+
+Thanks for the new release. Are there any specific build instructions
+for 4.0. I'm trying to compile it on Slackware64 13.37. I just enter
+'make' and that's what I get:
+
+
+bash-4.1$ make
+YACC src/cfgparse.y
+LEX src/cfgparse.l
+YACC src/cmdparse.y
+LEX src/cmdparse.l
+CC src/resize.c
+CC src/con.c
+CC src/handlers.c
+CC src/config.c
+CC src/manage.c
+CC src/move.c
+CC src/xinerama.c
+CC src/match.c
+CC src/log.c
+CC src/x.c
+CC src/load_layout.c
+CC src/output.c
+CC src/floating.c
+CC src/ipc.c
+CC src/window.c
+CC src/main.c
+CC src/debug.c
+CC src/xcursor.c
+CC src/util.c
+CC src/workspace.c
+CC src/xcb.c
+CC src/click.c
+CC src/sighandler.c
+CC src/ewmh.c
+CC src/assignments.c
+CC src/randr.c
+CC src/render.c
+CC src/tree.c
+LINK i3
+
+MAKE i3-msg
+CC main.c
+LINK i3-msg
+
+MAKE i3-input
+CC ucs2_to_utf8.c
+CC ipc.c
+CC keysym2ucs.c
+CC main.c
+CC xcb.c
+LINK i3-input
+
+MAKE i3-nagbar
+CC main.c
+CC xcb.c
+LINK i3-nagbar
+
+MAKE i3-config-wizard
+YACC cfgparse.y
+LEX cfgparse.l
+CC ipc.c
+CC main.c
+CC xcb.c
+LINK i3-config-wizard
+
+MAKE i3bar
+CC src/ucs2_to_utf8.c
+CC src/outputs.c
+src/outputs.c:15:20: fatal error: i3/ipc.h: No such file or directory
+compilation terminated.
+make[1]: *** [src/outputs.o] Error 1
+make: *** [subdirs] Error 2
+
+
+I can't seem to find any relevant information on it.
+
+Thank you
+
+regards
+Martin
+
+From michael+i3 at stapelberg.de  Mon Aug  1 14:57:39 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Mon, 01 Aug 2011 14:57:39 +0200
+Subject: [i3] i3 v 4.0 build problems
+In-Reply-To: <CAKgsu=FcTDZopAsMgOvBusN5SC+OCkBt=Wdi3i+rOn0gcL5HNQ@mail.gmail.com>
+References: <CAKgsu=FcTDZopAsMgOvBusN5SC+OCkBt=Wdi3i+rOn0gcL5HNQ@mail.gmail.com>
+Message-ID: <1312203209-sup-4496@midna.zekjur.net>
+
+Hi Marcin,
+
+Excerpts from Marcin Herda's message of 2011-08-01 14:47:00 +0200:
+> MAKE i3bar
+> CC src/ucs2_to_utf8.c
+> CC src/outputs.c
+> src/outputs.c:15:20: fatal error: i3/ipc.h: No such file or directory
+> compilation terminated.
+> make[1]: *** [src/outputs.o] Error 1
+> make: *** [subdirs] Error 2
+The problem has been reported on IRC and will be adressed in a new minor
+release soon. Until then, you can fix this issue by adding the following line
+in i3bar/Makefile before the 'all: i3bar doc' line:
+
+CFLAGS += -I$(TOPDIR)/../include
+
+Best regards,
+Michael
+
+From mherda at gmail.com  Mon Aug  1 17:08:43 2011
+From: mherda at gmail.com (Marcin Herda)
+Date: Mon, 1 Aug 2011 16:08:43 +0100
+Subject: [i3] i3 v 4.0 build problems
+In-Reply-To: <1312203209-sup-4496@midna.zekjur.net>
+References: <CAKgsu=FcTDZopAsMgOvBusN5SC+OCkBt=Wdi3i+rOn0gcL5HNQ@mail.gmail.com>
+	<1312203209-sup-4496@midna.zekjur.net>
+Message-ID: <CAKgsu=EtkKnS4E=3X=bM0Hj1rr35z-gXnTPt=T4CNYtp6GJd-A@mail.gmail.com>
+
+On 1 August 2011 13:57, Michael Stapelberg <michael+i3 at stapelberg.de> wrote:
+> Hi Marcin,
+>
+> Excerpts from Marcin Herda's message of 2011-08-01 14:47:00 +0200:
+>> MAKE i3bar
+>> CC src/ucs2_to_utf8.c
+>> CC src/outputs.c
+>> src/outputs.c:15:20: fatal error: i3/ipc.h: No such file or directory
+>> compilation terminated.
+>> make[1]: *** [src/outputs.o] Error 1
+>> make: *** [subdirs] Error 2
+> The problem has been reported on IRC and will be adressed in a new minor
+> release soon. Until then, you can fix this issue by adding the following line
+> in i3bar/Makefile before the 'all: i3bar doc' line:
+>
+> CFLAGS += -I$(TOPDIR)/../include
+>
+> Best regards,
+> Michael
+>
+
+Thank you Michael. Unfortunately it hasn't helped. The error hasn't
+disappeared. I removed the old sources and downloaded the tarball
+again. The i3-4.0/i3bar/Makefile is as follows:
+TOPDIR=$(shell pwd)
+
+include $(TOPDIR)/common.mk
+
+FILES:=$(wildcard src/*.c)
+FILES:=$(FILES:.c=.o)
+HEADERS:=$(wildcard include/*.h)
+FCLAGS+=-l$(TOPDIR)/../include
+all: i3bar doc
+
+When I 'make clean' after the error, I get the following:
+
+which: no lcov in
+(/usr/local/bin:/usr/bin:/bin:/usr/games:/usr/lib64/java/bin:/usr/lib64/java/jre/bin:/usr/lib64/java/bin:/usr/lib64/kde4/libexec:/usr/lib64/qt/bin:/usr/share/texmf/bin:.:/home/xtd8865/bin)
+CLEAN i3-msg
+CLEAN i3-input
+CLEAN i3-nagbar
+CLEAN i3-config-wizard
+CLEAN i3bar
+make[2]: warning: jobserver unavailable: using -j1.  Add `+' to parent
+make rule.
+make[2]: warning: jobserver unavailable: using -j1.  Add `+' to parent
+make rule.
+
+
+I din't know if it matters. Thank you for your help.
+
+regards
+Marcin
+
+From mherda at gmail.com  Mon Aug  1 21:17:57 2011
+From: mherda at gmail.com (Marcin Herda)
+Date: Mon, 1 Aug 2011 20:17:57 +0100
+Subject: [i3] i3 v 4.0 build problems
+In-Reply-To: <CAKgsu=EtkKnS4E=3X=bM0Hj1rr35z-gXnTPt=T4CNYtp6GJd-A@mail.gmail.com>
+References: <CAKgsu=FcTDZopAsMgOvBusN5SC+OCkBt=Wdi3i+rOn0gcL5HNQ@mail.gmail.com>
+	<1312203209-sup-4496@midna.zekjur.net>
+	<CAKgsu=EtkKnS4E=3X=bM0Hj1rr35z-gXnTPt=T4CNYtp6GJd-A@mail.gmail.com>
+Message-ID: <CAKgsu=EHTDavFg9xRkJdW5HoXGM-PCbm72SSOXY4wjKOECiYfg@mail.gmail.com>
+
+Just a correction. Obviously I've got a typo there. It's supposed to
+be CFLAGS instead of FCLAGS. I've corrected it and now I've got the
+following error:
+
+MAKE i3bar
+CC src/ucs2_to_utf8.c
+CC src/outputs.c
+CC src/workspaces.c
+CC src/ipc.c
+src/ipc.c: In function 'reconnect':
+src/ipc.c:57:13: warning: implicit declaration of function 'strerror'
+src/ipc.c:57:13: warning: format '%s' expects type 'char *', but
+argument 5 has type 'int'
+src/ipc.c: In function 'got_data':
+src/ipc.c:152:5: warning: implicit declaration of function 'strlen'
+src/ipc.c:152:27: warning: incompatible implicit declaration of
+built-in function 'strlen'
+src/ipc.c:155:9: warning: format '%s' expects type 'char *', but
+argument 5 has type 'int'
+src/ipc.c:165:13: warning: format '%s' expects type 'char *', but
+argument 5 has type 'int'
+src/ipc.c:179:5: warning: implicit declaration of function 'strncmp'
+src/ipc.c:189:5: warning: implicit declaration of function 'memcpy'
+src/ipc.c:189:5: warning: incompatible implicit declaration of
+built-in function 'memcpy'
+src/ipc.c:210:13: warning: format '%s' expects type 'char *', but
+argument 5 has type 'int'
+src/ipc.c: In function 'i3_send_msg':
+src/ipc.c:241:15: warning: incompatible implicit declaration of
+built-in function 'strlen'
+src/ipc.c:245:25: warning: incompatible implicit declaration of
+built-in function 'strlen'
+src/ipc.c:251:9: warning: format '%s' expects type 'char *', but
+argument 5 has type 'int'
+src/ipc.c:257:5: warning: implicit declaration of function 'strncpy'
+src/ipc.c:257:5: warning: incompatible implicit declaration of
+built-in function 'strncpy'
+src/ipc.c:259:5: warning: incompatible implicit declaration of
+built-in function 'memcpy'
+src/ipc.c:272:13: warning: format '%s' expects type 'char *', but
+argument 5 has type 'int'
+src/ipc.c: In function 'init_connection':
+src/ipc.c:294:9: warning: format '%s' expects type 'char *', but
+argument 5 has type 'int'
+src/ipc.c:299:5: warning: implicit declaration of function 'memset'
+src/ipc.c:299:5: warning: incompatible implicit declaration of
+built-in function 'memset'
+src/ipc.c:301:5: warning: implicit declaration of function 'strcpy'
+src/ipc.c:301:5: warning: incompatible implicit declaration of
+built-in function 'strcpy'
+src/ipc.c:303:9: warning: format '%s' expects type 'char *', but
+argument 6 has type 'int'
+src/ipc.c:310:9: warning: format '%s' expects type 'char *', but
+argument 5 has type 'int'
+CC src/main.c
+CC src/xcb.c
+src/main.c: In function 'expand_path':
+src/main.c:31:5: warning: implicit declaration of function 'strdup'
+src/main.c:31:20: warning: initialization makes pointer from integer
+without a cast
+src/main.c: In function 'read_color':
+src/main.c:55:20: warning: assignment makes pointer from integer without a cast
+src/main.c: In function 'main':
+src/main.c:160:25: warning: assignment makes pointer from integer without a cast
+src/main.c:181:26: warning: assignment makes pointer from integer without a cast
+CC src/child.c
+src/xcb.c: In function 'init_xcb':
+src/xcb.c:574:39: error: 'PATH_MAX' undeclared (first use in this function)
+src/xcb.c:574:39: note: each undeclared identifier is reported only
+once for each function it appears in
+src/xcb.c:584:13: warning: implicit declaration of function 'strndup'
+src/xcb.c:584:18: warning: assignment makes pointer from integer without a cast
+make[1]: *** [src/xcb.o] Error 1
+make[1]: *** Waiting for unfinished jobs....
+src/child.c: In function 'kill_child':
+src/child.c:185:9: warning: implicit declaration of function 'kill'
+make: *** [subdirs] Error 2
+
+
+Has anyone tried it on Slackware?
+
+thank you
+
+regards
+Marcin
+
+
+On 1 August 2011 16:08, Marcin Herda <mherda at gmail.com> wrote:
+> On 1 August 2011 13:57, Michael Stapelberg <michael+i3 at stapelberg.de> wrote:
+>> Hi Marcin,
+>>
+>> Excerpts from Marcin Herda's message of 2011-08-01 14:47:00 +0200:
+>>> MAKE i3bar
+>>> CC src/ucs2_to_utf8.c
+>>> CC src/outputs.c
+>>> src/outputs.c:15:20: fatal error: i3/ipc.h: No such file or directory
+>>> compilation terminated.
+>>> make[1]: *** [src/outputs.o] Error 1
+>>> make: *** [subdirs] Error 2
+>> The problem has been reported on IRC and will be adressed in a new minor
+>> release soon. Until then, you can fix this issue by adding the following line
+>> in i3bar/Makefile before the 'all: i3bar doc' line:
+>>
+>> CFLAGS += -I$(TOPDIR)/../include
+>>
+>> Best regards,
+>> Michael
+>>
+>
+> Thank you Michael. Unfortunately it hasn't helped. The error hasn't
+> disappeared. I removed the old sources and downloaded the tarball
+> again. The i3-4.0/i3bar/Makefile is as follows:
+> TOPDIR=$(shell pwd)
+>
+> include $(TOPDIR)/common.mk
+>
+> FILES:=$(wildcard src/*.c)
+> FILES:=$(FILES:.c=.o)
+> HEADERS:=$(wildcard include/*.h)
+> FCLAGS+=-l$(TOPDIR)/../include
+> all: i3bar doc
+>
+> When I 'make clean' after the error, I get the following:
+>
+> which: no lcov in
+> (/usr/local/bin:/usr/bin:/bin:/usr/games:/usr/lib64/java/bin:/usr/lib64/java/jre/bin:/usr/lib64/java/bin:/usr/lib64/kde4/libexec:/usr/lib64/qt/bin:/usr/share/texmf/bin:.:/home/xtd8865/bin)
+> CLEAN i3-msg
+> CLEAN i3-input
+> CLEAN i3-nagbar
+> CLEAN i3-config-wizard
+> CLEAN i3bar
+> make[2]: warning: jobserver unavailable: using -j1. ?Add `+' to parent
+> make rule.
+> make[2]: warning: jobserver unavailable: using -j1. ?Add `+' to parent
+> make rule.
+>
+>
+> I din't know if it matters. Thank you for your help.
+>
+> regards
+> Marcin
+>
+
+From michael+i3 at stapelberg.de  Mon Aug  1 21:23:25 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Mon, 01 Aug 2011 21:23:25 +0200
+Subject: [i3] i3 v 4.0 build problems
+In-Reply-To: <CAKgsu=EHTDavFg9xRkJdW5HoXGM-PCbm72SSOXY4wjKOECiYfg@mail.gmail.com>
+References: <CAKgsu=FcTDZopAsMgOvBusN5SC+OCkBt=Wdi3i+rOn0gcL5HNQ@mail.gmail.com>
+	<1312203209-sup-4496@midna.zekjur.net>
+	<CAKgsu=EtkKnS4E=3X=bM0Hj1rr35z-gXnTPt=T4CNYtp6GJd-A@mail.gmail.com>
+	<CAKgsu=EHTDavFg9xRkJdW5HoXGM-PCbm72SSOXY4wjKOECiYfg@mail.gmail.com>
+Message-ID: <1312226557-sup-8832@midna.zekjur.net>
+
+Hi Marcin,
+
+Debugging this on a mailing list is tedious. Can you come to #i3 on IRC?
+
+In any case, check out the current next branch, where the build problems should
+be fixed:
+
+  git clone -b next git://code.i3wm.org/i3
+
+Best regards,
+Michael
+
+From mherda at gmail.com  Mon Aug  1 23:59:53 2011
+From: mherda at gmail.com (Marcin Herda)
+Date: Mon, 1 Aug 2011 22:59:53 +0100
+Subject: [i3] i3 v 4.0 build problems
+In-Reply-To: <1312226557-sup-8832@midna.zekjur.net>
+References: <CAKgsu=FcTDZopAsMgOvBusN5SC+OCkBt=Wdi3i+rOn0gcL5HNQ@mail.gmail.com>
+	<1312203209-sup-4496@midna.zekjur.net>
+	<CAKgsu=EtkKnS4E=3X=bM0Hj1rr35z-gXnTPt=T4CNYtp6GJd-A@mail.gmail.com>
+	<CAKgsu=EHTDavFg9xRkJdW5HoXGM-PCbm72SSOXY4wjKOECiYfg@mail.gmail.com>
+	<1312226557-sup-8832@midna.zekjur.net>
+Message-ID: <CAKgsu=GKf7tNL_oHP+hKtL0jF6jCDDC9CqzZo2S6HTyE+xwamg@mail.gmail.com>
+
+On 1 August 2011 20:23, Michael Stapelberg <michael+i3 at stapelberg.de> wrote:
+> Hi Marcin,
+>
+> Debugging this on a mailing list is tedious. Can you come to #i3 on IRC?
+>
+> In any case, check out the current next branch, where the build problems should
+> be fixed:
+>
+> ?git clone -b next git://code.i3wm.org/i3
+>
+> Best regards,
+> Michael
+>
+
+Thanks Michael,
+
+The next branch compiled without any problems. I'm using it now. I'll
+try to migrate my dzen2 config to the new version. If I have any
+problems with it I'm going to join #i3.
+
+Thanks
+
+regards
+Marcin
+
+From ml at thomasba.de  Wed Aug  3 09:49:47 2011
+From: ml at thomasba.de (Thomas Ba)
+Date: Wed, 3 Aug 2011 09:49:47 +0200
+Subject: [i3] Container
+Message-ID: <20110803074947.GA2911@thomasb>
+
+Hi,
+
+is it somehow possible to get this layout?
+?????????
+? 1 ?   ?
+????? 3 ?
+? 2 ?   ?
+?????????
+
+1: 1 Window
+2: 1 Window
+3: 2 Windows in Tabbed mode
+
+in i3 v. 3.? that was simple but in v4 i dont get it :-/
+
+
+regards,
+  Thomas
+
+
+-- 
+?SIMM crosstalk.?
+ 
+GPG-Key:     http://t-battermann.de/thomas_ba.asc
+Fingerprint: D80B 64DD 78A7 4F15 57AD  20F2 9913 00F0 C341 D8FF
+Jabber:      thomasba at draugr.de
+Linux User:  #447872
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 836 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20110803/af7d4add/attachment.pgp>
+
+From michael+i3 at stapelberg.de  Wed Aug  3 12:11:32 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Wed, 03 Aug 2011 12:11:32 +0200
+Subject: [i3] Container
+In-Reply-To: <20110803074947.GA2911@thomasb>
+References: <20110803074947.GA2911@thomasb>
+Message-ID: <1312365793-sup-737@midna.zekjur.net>
+
+Hi Thomas,
+
+Excerpts from Thomas Ba's message of 2011-08-03 09:49:47 +0200:
+> is it somehow possible to get this layout?
+> ?????????
+> ? 1 ?   ?
+> ????? 3 ?
+> ? 2 ?   ?
+> ?????????
+> 
+> 1: 1 Window
+> 2: 1 Window
+> 3: 2 Windows in Tabbed mode
+Sure. Assuming your workspace starts in horizontal orientation (if width >
+height):
+
+ ? Open a terminal, open another one
+ ? Split the right terminal vertically (mod1+v)
+ ??Open another terminal 
+ ? Change layout to tabbed
+ ? Split the left terminal vertically
+ ? Open another terminal
+
+Best regards,
+Michael
+
+From honza801 at gmail.com  Fri Aug  5 11:34:29 2011
+From: honza801 at gmail.com (Jan Krcmar)
+Date: Fri, 5 Aug 2011 11:34:29 +0200
+Subject: [i3] i3bar input problem
+Message-ID: <CAKneAX=zFcE+y1kGnQthc9XNOXHk5wMFCivLk1S3cx6YYcsxWg@mail.gmail.com>
+
+hi,
+
+on i3-3 i used to my dzen2 bar,
+while sleep 1s; do
+  echo -n $(hostname);
+  echo -n " | ";
+  echo $(date);
+done | dzen2
+
+using the i3bar, it displays only the last echo output
+while sleep 1s; do
+  echo -n $(hostname);
+  echo -n " | ";
+  echo $(date);
+done | i3bar -d
+
+is this some feature, or bug? :)
+i would expect i3bar to display the whole line, because there is a pipe
+
+thx
+fous
+
+From michael+i3 at stapelberg.de  Fri Aug  5 11:59:18 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Fri, 05 Aug 2011 11:59:18 +0200
+Subject: [i3] i3bar input problem
+In-Reply-To: <CAKneAX=zFcE+y1kGnQthc9XNOXHk5wMFCivLk1S3cx6YYcsxWg@mail.gmail.com>
+References: <CAKneAX=zFcE+y1kGnQthc9XNOXHk5wMFCivLk1S3cx6YYcsxWg@mail.gmail.com>
+Message-ID: <1312538293-sup-3803@midna.zekjur.net>
+
+Hi Jan,
+
+Excerpts from Jan Krcmar's message of 2011-08-05 11:34:29 +0200:
+> using the i3bar, it displays only the last echo output
+This is a bug, kind of. We did not get around to fixing it yet, though.
+
+> while sleep 1s; do
+>   echo -n $(hostname);
+>   echo -n " | ";
+>   echo $(date);
+> done | i3bar -d
+You can fix it like this:
+    echo "$(hostname) | $(date)"
+(or buffer whatever you are doing before and just use one single echo)
+
+Best regards,
+Michael
+
+From honza801 at gmail.com  Fri Aug  5 16:31:53 2011
+From: honza801 at gmail.com (Jan Krcmar)
+Date: Fri, 5 Aug 2011 16:31:53 +0200
+Subject: [i3] documentation bug (split command)
+Message-ID: <CAKneAX=X+3CwbTH7zujkspFEhVVoWZZAxbdbE4wOHFN9eC8gfA@mail.gmail.com>
+
+hi,
+
+there is a bug in the documentation
+http://i3wm.org/docs/4.0/userguide.html#_splitting_containers
+and docs/userguide
+
+wrong:
+Syntax:
+split <vertical|horizontal>
+
+Example:
+split vertical
+
+good version accoding to git/next/i3.config:
+Example:
+bindsym mod+v split vertical
+
+regards,
+fous
+
+From honza801 at gmail.com  Fri Aug  5 16:34:05 2011
+From: honza801 at gmail.com (Jan Krcmar)
+Date: Fri, 5 Aug 2011 16:34:05 +0200
+Subject: [i3] i3bar input problem
+In-Reply-To: <1312538293-sup-3803@midna.zekjur.net>
+References: <CAKneAX=zFcE+y1kGnQthc9XNOXHk5wMFCivLk1S3cx6YYcsxWg@mail.gmail.com>
+	<1312538293-sup-3803@midna.zekjur.net>
+Message-ID: <CAKneAXnYZsQQgZex-8y2P71GhXRq_fUOONGT+0dyGu2c96C+Tg@mail.gmail.com>
+
+thanks, i've already figured out this workaround :)
+f.
+
+2011/8/5 Michael Stapelberg <michael+i3 at stapelberg.de>:
+> Hi Jan,
+>
+> Excerpts from Jan Krcmar's message of 2011-08-05 11:34:29 +0200:
+>> using the i3bar, it displays only the last echo output
+> This is a bug, kind of. We did not get around to fixing it yet, though.
+>
+>> while sleep 1s; do
+>> ? echo -n $(hostname);
+>> ? echo -n " | ";
+>> ? echo $(date);
+>> done | i3bar -d
+> You can fix it like this:
+> ? ?echo "$(hostname) | $(date)"
+> (or buffer whatever you are doing before and just use one single echo)
+>
+> Best regards,
+> Michael
+>
+
+From michael+i3 at stapelberg.de  Fri Aug  5 16:39:42 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Fri, 05 Aug 2011 16:39:42 +0200
+Subject: [i3] documentation bug (split command)
+In-Reply-To: <CAKneAX=X+3CwbTH7zujkspFEhVVoWZZAxbdbE4wOHFN9eC8gfA@mail.gmail.com>
+References: <CAKneAX=X+3CwbTH7zujkspFEhVVoWZZAxbdbE4wOHFN9eC8gfA@mail.gmail.com>
+Message-ID: <1312555126-sup-7067@midna.zekjur.net>
+
+Hi Jan,
+
+Excerpts from Jan Krcmar's message of 2011-08-05 16:31:53 +0200:
+> wrong:
+> Syntax:
+> split <vertical|horizontal>
+> 
+> Example:
+> split vertical
+> 
+> good version accoding to git/next/i3.config:
+> Example:
+> bindsym mod+v split vertical
+I don?t get what you mean. The command is exactly as described above in the
+example?
+
+Best regards,
+Michael
+
+From honza801 at gmail.com  Fri Aug  5 16:50:34 2011
+From: honza801 at gmail.com (Jan Krcmar)
+Date: Fri, 5 Aug 2011 16:50:34 +0200
+Subject: [i3] documentation bug (split command)
+In-Reply-To: <1312555126-sup-7067@midna.zekjur.net>
+References: <CAKneAX=X+3CwbTH7zujkspFEhVVoWZZAxbdbE4wOHFN9eC8gfA@mail.gmail.com>
+	<1312555126-sup-7067@midna.zekjur.net>
+Message-ID: <CAKneAXkrek=7uzJ9wpGM1oZcSMQM1FGWTsr-iO8NLbzswH5FVg@mail.gmail.com>
+
+hi,
+
+the documentation says: 'split vertical'
+but the right way is: 'bindsym mod+v split vertical'
+
+all the other commands are introduced with the 'bindsym' pre-command,
+so this is quite a bit misleading
+
+f.
+
+2011/8/5 Michael Stapelberg <michael+i3 at stapelberg.de>:
+> Hi Jan,
+>
+> Excerpts from Jan Krcmar's message of 2011-08-05 16:31:53 +0200:
+>> wrong:
+>> Syntax:
+>> split <vertical|horizontal>
+>>
+>> Example:
+>> split vertical
+>>
+>> good version accoding to git/next/i3.config:
+>> Example:
+>> bindsym mod+v split vertical
+> I don?t get what you mean. The command is exactly as described above in the
+> example?
+>
+> Best regards,
+> Michael
+>
+
+From michael+i3 at stapelberg.de  Sun Aug  7 18:05:13 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 07 Aug 2011 18:05:13 +0200
+Subject: [i3] documentation bug (split command)
+In-Reply-To: <CAKneAXkrek=7uzJ9wpGM1oZcSMQM1FGWTsr-iO8NLbzswH5FVg@mail.gmail.com>
+References: <CAKneAX=X+3CwbTH7zujkspFEhVVoWZZAxbdbE4wOHFN9eC8gfA@mail.gmail.com>
+	<1312555126-sup-7067@midna.zekjur.net>
+	<CAKneAXkrek=7uzJ9wpGM1oZcSMQM1FGWTsr-iO8NLbzswH5FVg@mail.gmail.com>
+Message-ID: <1312733091-sup-1449@midna.zekjur.net>
+
+Hi Jan,
+
+Excerpts from Jan Krcmar's message of 2011-08-05 16:50:34 +0200:
+> the documentation says: 'split vertical'
+> but the right way is: 'bindsym mod+v split vertical'
+> 
+> all the other commands are introduced with the 'bindsym' pre-command,
+> so this is quite a bit misleading
+Thanks. I have fixed that inconsistency.
+
+Best regards,
+Michael
+
+From honza801 at gmail.com  Tue Aug 16 15:55:39 2011
+From: honza801 at gmail.com (Jan Krcmar)
+Date: Tue, 16 Aug 2011 15:55:39 +0200
+Subject: [i3] i3bar input problem
+In-Reply-To: <CAKneAXnYZsQQgZex-8y2P71GhXRq_fUOONGT+0dyGu2c96C+Tg@mail.gmail.com>
+References: <CAKneAX=zFcE+y1kGnQthc9XNOXHk5wMFCivLk1S3cx6YYcsxWg@mail.gmail.com>
+	<1312538293-sup-3803@midna.zekjur.net>
+	<CAKneAXnYZsQQgZex-8y2P71GhXRq_fUOONGT+0dyGu2c96C+Tg@mail.gmail.com>
+Message-ID: <CAKneAXmz9ROj1kcVjE-htX15vtTEd4RbhZ7RyicAyyZ1cgapvQ@mail.gmail.com>
+
+hi,
+
+there is a patch in the attachment fixing this issue
+
+fous
+
+2011/8/5 Jan Krcmar <honza801 at gmail.com>:
+> thanks, i've already figured out this workaround :)
+> f.
+>
+> 2011/8/5 Michael Stapelberg <michael+i3 at stapelberg.de>:
+>> Hi Jan,
+>>
+>> Excerpts from Jan Krcmar's message of 2011-08-05 11:34:29 +0200:
+>>> using the i3bar, it displays only the last echo output
+>> This is a bug, kind of. We did not get around to fixing it yet, though.
+>>
+>>> while sleep 1s; do
+>>> ? echo -n $(hostname);
+>>> ? echo -n " | ";
+>>> ? echo $(date);
+>>> done | i3bar -d
+>> You can fix it like this:
+>> ? ?echo "$(hostname) | $(date)"
+>> (or buffer whatever you are doing before and just use one single echo)
+>>
+>> Best regards,
+>> Michael
+>>
+>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: i3bar_fd.patch
+Type: text/x-patch
+Size: 1405 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20110816/8fc049b4/attachment.bin>
+
+From michael+i3 at stapelberg.de  Wed Aug 17 14:34:08 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Wed, 17 Aug 2011 14:34:08 +0200
+Subject: [i3] i3bar input problem
+In-Reply-To: <CAKneAXmz9ROj1kcVjE-htX15vtTEd4RbhZ7RyicAyyZ1cgapvQ@mail.gmail.com>
+References: <CAKneAX=zFcE+y1kGnQthc9XNOXHk5wMFCivLk1S3cx6YYcsxWg@mail.gmail.com>
+	<1312538293-sup-3803@midna.zekjur.net>
+	<CAKneAXnYZsQQgZex-8y2P71GhXRq_fUOONGT+0dyGu2c96C+Tg@mail.gmail.com>
+	<CAKneAXmz9ROj1kcVjE-htX15vtTEd4RbhZ7RyicAyyZ1cgapvQ@mail.gmail.com>
+Message-ID: <1313584266-sup-598@midna.zekjur.net>
+
+Hi fous,
+
+Excerpts from Jan Krcmar's message of 2011-08-16 15:55:39 +0200:
+> there is a patch in the attachment fixing this issue
+Thanks for the patch. I don?t want to merge it however, since I think it?s
+rather hackish. The ev-manpage explicitly discourages blocking mode and I think
+using blocking read within a callback is bad.
+
+i3bar will gain JSON input support soon and \n-termination won?t be an issue
+anymore, then. I think the best strategy is to wait for the JSON support.
+
+Best regards,
+Michael
+
+From honza801 at gmail.com  Thu Aug 18 10:50:59 2011
+From: honza801 at gmail.com (Jan Krcmar)
+Date: Thu, 18 Aug 2011 10:50:59 +0200
+Subject: [i3] documentation bug "5.5 Resizing containers/windows"
+Message-ID: <CAKneAXmFpU8Zi9adS9nhPLimiCyuhQhwu2+ZDtro-VvmcxiETA@mail.gmail.com>
+
+hi,
+
+there is a bug in the documentation
+http://i3wm.org/docs/4.0/userguide.html#resizingconfig
+
+in "Example:" section (wrong):
+=====
+bindsym k resize grow bottom
+bindsym Shift+k resize shrink bottom
+
+bindsym l resize shrink top
+bindsym Shift+l resize grow top
+...
+bindcode 36 mode default
+=====
+
+a correct version according to the i3 log should be:
+=====
+bindsym k resize grow down
+bindsym Shift+k resize shrink down
+
+bindsym l resize shrink up
+bindsym Shift+l resize grow up
+...
+bindcode 36 mode "default"
+=====
+
+regards
+fous
+
+From michael+i3 at stapelberg.de  Thu Aug 18 22:32:46 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Thu, 18 Aug 2011 22:32:46 +0200
+Subject: [i3] documentation bug "5.5 Resizing containers/windows"
+In-Reply-To: <CAKneAXmFpU8Zi9adS9nhPLimiCyuhQhwu2+ZDtro-VvmcxiETA@mail.gmail.com>
+References: <CAKneAXmFpU8Zi9adS9nhPLimiCyuhQhwu2+ZDtro-VvmcxiETA@mail.gmail.com>
+Message-ID: <1313699542-sup-6020@midna.zekjur.net>
+
+Hi Jan,
+
+Excerpts from Jan Krcmar's message of 2011-08-18 10:50:59 +0200:
+> there is a bug in the documentation
+> http://i3wm.org/docs/4.0/userguide.html#resizingconfig
+Thanks, I updated the website now.
+
+Best regards,
+Michael
+
+From marcus.klemm at googlemail.com  Mon Aug 22 20:46:18 2011
+From: marcus.klemm at googlemail.com (Marcus Klemm)
+Date: Mon, 22 Aug 2011 20:46:18 +0200
+Subject: [i3] i3 exits saying "Could not get geometry of the root window,
+ exiting", crashing X in the process.
+Message-ID: <CALfxriKCyWG47DsRNF87RJToUiy6itTwF-nwFSPfMF1vT9mTQA@mail.gmail.com>
+
+Hello List,
+
+I have a problem getting i3 to run on my desktop computer. As it says
+in the subject, i3 exits with the message "Could not get geometry of
+the root window, exiting" and then X crashes.
+
+Setup:
+
+- Ubuntu 11.04
+- NVidia GeForce 6800 with latest drivers (280.13)
+- 19" Monitor and a TV connected to the computer
+- i3 "next" branch from git
+- Twinview or seperate X screens - it doesn't matter, the error is
+always the same
+- starting i3 with or without "--force-xinerama" doesn't change anything either
+- other window managers (blackbox, xfwm4) do work
+- on my Laptop with ATI Mobility Radeon 9700, everything works fine,
+even when connecting the same Monitor and configuring dual head via
+xrandr
+
+Please let me know if you need additional information.
+
+Ciao, Marcus
+
+From michael+i3 at stapelberg.de  Tue Aug 23 21:36:16 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Tue, 23 Aug 2011 21:36:16 +0200
+Subject: [i3] i3 exits saying "Could not get geometry of the root window,
+	exiting", crashing X in the process.
+In-Reply-To: <CALfxriKCyWG47DsRNF87RJToUiy6itTwF-nwFSPfMF1vT9mTQA@mail.gmail.com>
+References: <CALfxriKCyWG47DsRNF87RJToUiy6itTwF-nwFSPfMF1vT9mTQA@mail.gmail.com>
+Message-ID: <1314128139-sup-782@midna.zekjur.net>
+
+Hi,
+
+Excerpts from Marcus Klemm's message of 2011-08-22 20:46:18 +0200:
+> I have a problem getting i3 to run on my desktop computer. As it says
+> in the subject, i3 exits with the message "Could not get geometry of
+> the root window, exiting" and then X crashes.
+For the record: We fixed this by uninstalling xfs. X also crashed when opening
+xfontsel within a GNOME session, so it was not an i3 bug.
+
+Best regards,
+Michael
+
+From marcus.klemm at googlemail.com  Tue Aug 23 22:02:48 2011
+From: marcus.klemm at googlemail.com (Marcus Klemm)
+Date: Tue, 23 Aug 2011 22:02:48 +0200
+Subject: [i3] i3 exits saying "Could not get geometry of the root window,
+ exiting", crashing X in the process.
+In-Reply-To: <1314128139-sup-782@midna.zekjur.net>
+References: <CALfxriKCyWG47DsRNF87RJToUiy6itTwF-nwFSPfMF1vT9mTQA@mail.gmail.com>
+	<1314128139-sup-782@midna.zekjur.net>
+Message-ID: <CALfxriKyq6aTWhkhj5ws=3BrQ7Fvt42_=r4q8eBMExvF9m_u=Q@mail.gmail.com>
+
+Hello Michael,
+
+On Tue, Aug 23, 2011 at 9:36 PM, Michael Stapelberg
+<michael+i3 at stapelberg.de> wrote:
+> Hi,
+>
+> For the record: We fixed this by uninstalling xfs. X also crashed when opening
+> xfontsel within a GNOME session, so it was not an i3 bug.
+
+I fact, every application using X core fonts (the ugly ones) crashed
+(I tried xclock to verify). As Micheal said, uninstalling the xfs font
+server fixed this for me,
+
+Michael, thanks again for your assistance.
+
+Ciao, Marcus
+
+PS: XFT support for i3 would still be great. ;-)
+
+From sebastian at heupts.de  Wed Aug 24 20:01:51 2011
+From: sebastian at heupts.de (Sebastian Heupts)
+Date: Wed, 24 Aug 2011 20:01:51 +0200
+Subject: [i3] i3 with VNC, NX, RDP or similar
+Message-ID: <4E553C8F.6090501@heupts.de>
+
+Hey guys,
+
+are there any experience of using i3 with a remote desktop software?
+I tried tightvnc some time ago and I didn't get the keyboard control to
+work.
+At the moment I actually don't have the time to try harder but I think
+that it would be nice if some remote control would work.
+
+Regards,
+Sebastian Heupts
+
+
+From honza801 at gmail.com  Fri Aug 26 10:58:31 2011
+From: honza801 at gmail.com (Jan Krcmar)
+Date: Fri, 26 Aug 2011 10:58:31 +0200
+Subject: [i3] egde snapping for floating windows
+In-Reply-To: <BANLkTikfgOR3t1MzgNQzsh1RUSgDM5Cp-A@mail.gmail.com>
+References: <AANLkTikqYCFPK2Y7ic3Aw+UP6j=6rbeLDtd_T1za2aY8@mail.gmail.com>
+	<1296209361-sup-851@midna.zekjur.net>
+	<BANLkTinfV0pfy5syM4Mo2uKyOJB6Hao06g@mail.gmail.com>
+	<BANLkTi=8gtHAaFU-aQW2KXyRsrknOafWdw@mail.gmail.com>
+	<BANLkTinMr4A3v66g-LcBSssOamTMF=gbYw@mail.gmail.com>
+	<BANLkTimP18j7XjbNNjXiixF3E-3FMr8dcQ@mail.gmail.com>
+	<BANLkTinWhzyq3nqimpHWARUJdJb5dT-Fng@mail.gmail.com>
+	<BANLkTikfgOR3t1MzgNQzsh1RUSgDM5Cp-A@mail.gmail.com>
+Message-ID: <CAKneAX=1KweOtHS5+wtr5BrDt9wTM651z9O2Gt969Fjra+W3qQ@mail.gmail.com>
+
+hi again,
+
+i've made some some other progress in the "floating windows edge
+snapping" feature
+
+now, the windows are snapping while moving and while resizing
+
+i've also pushed the new configuration option into the config file
+determining the edge snap threshold
+
+if interested, download the patch here
+http://home.zcu.cz/~honza801/i3-4.0.1-master-snap_floating_windows.diff
+
+it is ready to be merged with the master branch
+
+enjoy
+fous
+
+From nealhogan at gmail.com  Fri Aug 26 14:49:44 2011
+From: nealhogan at gmail.com (Neal Hogan)
+Date: Fri, 26 Aug 2011 07:49:44 -0500
+Subject: [i3] hello and screenshot
+Message-ID: <CAKW-1DxVfveLQMCD59Q6O0xXq5ijnJ7YqFLf-B=CpKG6BS4j-w@mail.gmail.com>
+
+I just joined the list and wanted to say hello. I'm really liking my
+i3-experience so far. Attached is a screenshot of i3 on a dual screen
+with vimprobable (vimprobable.org) and xstatbar
+(https://github.com/ryanflannery/xstatbar). The OS is openbsd
+(openbsd.org). Thanks!
+
+-Neal
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: i3.png
+Type: image/png
+Size: 158461 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20110826/a8db2677/attachment-0001.png>
+
+From michael+i3 at stapelberg.de  Sat Aug 27 17:18:19 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 27 Aug 2011 17:18:19 +0200
+Subject: [i3] i3 with VNC, NX, RDP or similar
+In-Reply-To: <4E553C8F.6090501@heupts.de>
+References: <4E553C8F.6090501@heupts.de>
+Message-ID: <1314458090-sup-5591@midna.zekjur.net>
+
+Hi Sebastian,
+
+Since nobody replied, I?ll reply without knowing much about the subject, though
+:).
+
+Excerpts from Sebastian Heupts's message of 2011-08-24 20:01:51 +0200:
+> are there any experience of using i3 with a remote desktop software?
+> I tried tightvnc some time ago and I didn't get the keyboard control to
+> work.
+I know of some people who use i3 with some VNC software.
+
+> At the moment I actually don't have the time to try harder but I think
+> that it would be nice if some remote control would work.
+It?s always a good idea to look at http://i3wm.org/docs/4.0/debugging.html and
+enable the logfile. Maybe that tells you what?s wrong.
+
+Things you should verify in any case: Which keyboard shortcut(s) did you try?
+If it was Mod+Enter, do you actually have the configured terminal emulator
+installed on your system? If you use Debian, this should not be an issue, as it
+uses x-terminal-emulator and has a proper dependency. i3?s default config in
+!Debian uses urxvt, though (sometimes called rxvt-unicode in distributions), so
+make sure you have that installed or you appropriately modified your config.
+
+Best regards,
+Michael
+
+From ml at hhecht.e4ward.com  Sun Aug 28 03:50:28 2011
+From: ml at hhecht.e4ward.com (Henryk Hecht)
+Date: Sat, 27 Aug 2011 19:50:28 -0600 (MDT)
+Subject: [i3] i3-input command building
+Message-ID: <alpine.LNX.2.00.1108271935480.5936@juffo-wup.dyndns.org>
+
+I discovered i3 a day or so ago, and have a number of questions that don't 
+seem to be covered in the documentation.  I don't know if the readers of 
+the list would prefer one email per question or otherwise, so I'll just 
+start with the most immediate:
+
+i3-input accepts a -p argument as a prefix to a command, but does not seem 
+to allow one to have a suffix to what is read; is this correct?  The 
+motivation is to build a goto-by-class binding:
+i3-input -p '[class=' -P 'Goto :' '] focus'
+
+but it seems that it ignores anything in argv not in the getopt loop, 
+leaving no way to build a command where the "interesting" part does not 
+occur at the end.  An equivalent example is found in section 5.7 of the 
+user guide ("VIM-like marks (mark/goto)"): there appears to be no way to 
+actually implement this functionality with i3-input, which is recommended 
+for the task.  One could, of course, enter the whole command with 
+i3-input, or just append "] focus" oneself, but this seems unnecessarily 
+tedious: hardly a timesaver.
+
+Is it better to just ignore i3-input and write a shell script around 
+i3-msg and xdialog?
+
+-- 
+HH
+
+From miguel.deval at gmail.com  Sun Aug 28 23:24:36 2011
+From: miguel.deval at gmail.com (Miguel de Val-Borro)
+Date: Sun, 28 Aug 2011 23:24:36 +0200
+Subject: [i3] pan icon in display
+Message-ID: <20110828212423.GC6684@poincare.pc.linmpi.mpg.de>
+
+The pan icon in Imagemagick's display should appear only when the size
+of the image is largen than the screen. However in i3 the panning icon
+also appears when the image is smaller than the screen.  Please find
+attached the relevant part of my logfile with verbose output. Another
+perhaps unrelated problem is that display opens the image with
+coordinates 640,640 by default in i3 so in this example I have used
+'display -geometry +0+0' to center the image.
+
+Regards,
+Miguel
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: i3.logfile.gz
+Type: application/octet-stream
+Size: 24587 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20110828/784b8358/attachment-0001.obj>
+

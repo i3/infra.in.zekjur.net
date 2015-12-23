@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] append layout works from commandline, (i3: to exclusive) but not from .i3/config
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20append%20layout%20works%20from%20commandline%2C%0A%20%28i3%3A%20to%20exclusive%29%20but%20not%20from%20.i3/config&In-Reply-To=%3C20150811191743.6fc76edd%40haktar.galaxy.home%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002135.html">
+   <LINK REL="Next"  HREF="002137.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] append layout works from commandline, (i3: to exclusive) but not from .i3/config</H1>
+    <B>i3.thegrue at spamgourmet.com</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20append%20layout%20works%20from%20commandline%2C%0A%20%28i3%3A%20to%20exclusive%29%20but%20not%20from%20.i3/config&In-Reply-To=%3C20150811191743.6fc76edd%40haktar.galaxy.home%3E"
+       TITLE="[i3] append layout works from commandline, (i3: to exclusive) but not from .i3/config">i3.thegrue at spamgourmet.com
+       </A><BR>
+    <I>Tue Aug 11 19:17:43 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002135.html">[i3] append layout works from commandline,	but not from .i3/config
+</A></li>
+        <LI>Next message: <A HREF="002137.html">[i3] append layout works from commandline, (i3: to exclusive) but not from .i3/config
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2136">[ date ]</a>
+              <a href="thread.html#2136">[ thread ]</a>
+              <a href="subject.html#2136">[ subject ]</a>
+              <a href="author.html#2136">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Michael,
+
+
+&gt;<i> &gt;
+</I>&gt;<i> &gt; What am I doing wrong?  
+</I>&gt;<i> 
+</I>&gt;<i> append_layout is a command, not a configuration directive. Just like
+</I>&gt;<i> the workspace command you are using a line above, you’ll need to use
+</I>&gt;<i> i3-msg to send it.
+</I>
+Sorry, my fault: the statement above is in one line (the tickmarks might be a
+hint that's easily overlooked...
+
+Hope, that's in one line now:
+
+exec --no-startup-id i3-msg 'workspace $wsp3; append_layout /home/markus/.i3/emacs.json'
+
+-- 
+Markus Grunwald
+<A HREF="https://www.the-grue.de">https://www.the-grue.de</A>
+
+Fragen zur Mail? <A HREF="https://www.the-grue.de/mail_und_co">https://www.the-grue.de/mail_und_co</A>
+<A HREF="https://www.the-grue.de/~markus/markus_grunwald.gpg">https://www.the-grue.de/~markus/markus_grunwald.gpg</A>
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002135.html">[i3] append layout works from commandline,	but not from .i3/config
+</A></li>
+	<LI>Next message: <A HREF="002137.html">[i3] append layout works from commandline, (i3: to exclusive) but not from .i3/config
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2136">[ date ]</a>
+              <a href="thread.html#2136">[ thread ]</a>
+              <a href="subject.html#2136">[ subject ]</a>
+              <a href="author.html#2136">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

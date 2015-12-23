@@ -1,0 +1,35 @@
+<tt>
+&lt;div&nbsp;dir=&quot;ltr&quot;&gt;&lt;div&nbsp;class=&quot;gmail_extra&quot;&gt;Hi,&lt;br&gt;&lt;br&gt;&lt;div&nbsp;class=&quot;gmail_quote&quot;&gt;On&nbsp;Wed,&nbsp;Mar&nbsp;5,&nbsp;2014&nbsp;at&nbsp;6:59&nbsp;AM,&nbsp;Michael&nbsp;Stapelberg&nbsp;&lt;span&nbsp;dir=&quot;ltr&quot;&gt;&lt;&lt;a&nbsp;href=&quot;mailto:michael@i3wm.org&quot;&nbsp;target=&quot;_blank&quot;&gt;michael@i3wm.org&lt;/a&gt;&gt;&lt;/span&gt;&nbsp;wrote:&lt;br&gt;<br>
+<br>
+&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;Hi&nbsp;Yuxuan,&lt;br&gt;<br>
+&lt;div&nbsp;class=&quot;&quot;&gt;&lt;br&gt;<br>
+Yuxuan&nbsp;Shui&nbsp;&lt;&lt;a&nbsp;href=&quot;mailto:yshuiv7@gmail.com&quot;&gt;yshuiv7@gmail.com&lt;/a&gt;&gt;&nbsp;writes:&lt;br&gt;<br>
+&gt;&nbsp;It&nbsp;will&nbsp;be&nbsp;better&nbsp;if&nbsp;i3&nbsp;could&nbsp;automatically&nbsp;start&nbsp;all&nbsp;the&nbsp;programs&nbsp;for&lt;br&gt;<br>
+&gt;&nbsp;me.&nbsp;I&nbsp;think&nbsp;it&#39;s&nbsp;possible&nbsp;for&nbsp;programs&nbsp;that&nbsp;support&nbsp;startup&lt;br&gt;<br>
+&gt;&nbsp;notification.&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&nbsp;Could&nbsp;this&nbsp;feature&nbsp;be&nbsp;added,&nbsp;or&nbsp;is&nbsp;it&nbsp;too&nbsp;much&nbsp;to&nbsp;integrate&nbsp;into&nbsp;i3?&lt;br&gt;<br>
+&lt;/div&gt;I’m&nbsp;not&nbsp;sure&nbsp;how&nbsp;this&nbsp;would&nbsp;work.&nbsp;Are&nbsp;you&nbsp;suggesting&nbsp;that&nbsp;all&nbsp;programs&lt;br&gt;<br>
+which&nbsp;were&nbsp;opened&nbsp;should&nbsp;be&nbsp;started&nbsp;again?&lt;br&gt;&lt;/blockquote&gt;&lt;div&gt; &lt;/div&gt;&lt;div&gt;Yes.&lt;/div&gt;&lt;div&gt; &lt;/div&gt;&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;<br>
+&lt;br&gt;<br>
+This&nbsp;is&nbsp;a&nbsp;bit&nbsp;tricky.&nbsp;Theoretically,&nbsp;there&nbsp;is&nbsp;the&nbsp;WM_COMMAND&nbsp;hint&nbsp;in&lt;br&gt;<br>
+which&nbsp;programs&nbsp;can&nbsp;store&nbsp;a&nbsp;command&nbsp;line&nbsp;with&nbsp;which&nbsp;they&nbsp;can&nbsp;be&nbsp;started&lt;br&gt;<br>
+again.&lt;br&gt;<br>
+&lt;br&gt;<br>
+However,&nbsp;the&nbsp;hint&nbsp;is&nbsp;rarely&nbsp;set,&nbsp;and&nbsp;when&nbsp;it’s&nbsp;set,&nbsp;it’s&nbsp;typically&nbsp;not&lt;br&gt;<br>
+accurate.&lt;br&gt;&lt;/blockquote&gt;&lt;div&gt; &lt;/div&gt;&lt;div&gt;I&nbsp;think&nbsp;there&#39;re&nbsp;other&nbsp;ways.&nbsp;For&nbsp;example,&nbsp;there&#39;s&nbsp;_NET_WM_PID&nbsp;which&nbsp;can&nbsp;be&nbsp;used&nbsp;to&nbsp;find&nbsp;correspond&nbsp;command&nbsp;line.&nbsp;If&nbsp;the&nbsp;application&nbsp;is&nbsp;started&nbsp;via&nbsp;i3&#39;s&nbsp;exec&nbsp;and&nbsp;supports&nbsp;start&nbsp;notification,&nbsp;_NET_STARTUP_ID&nbsp;can&nbsp;be&nbsp;used. &lt;/div&gt;<br>
+<br>
+&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;<br>
+&lt;br&gt;<br>
+Therefore,&nbsp;I&nbsp;currently&nbsp;think&nbsp;adding&nbsp;some&nbsp;code&nbsp;to&nbsp;use&nbsp;this&nbsp;will&nbsp;not&nbsp;be&lt;br&gt;<br>
+very&nbsp;successful,&nbsp;and&nbsp;letting&nbsp;users&nbsp;add&nbsp;a&nbsp;bunch&nbsp;of&nbsp;“exec”&nbsp;lines&nbsp;in&nbsp;their&lt;br&gt;<br>
+i3&nbsp;config&nbsp;files&nbsp;(or&nbsp;session&nbsp;restore&nbsp;scripts)&nbsp;is&nbsp;acceptable.&lt;br&gt;&lt;/blockquote&gt;&lt;div&gt; &lt;/div&gt;&lt;div&gt;Maybe.&nbsp;When&nbsp;I&nbsp;get&nbsp;some&nbsp;time,&nbsp;I&nbsp;will&nbsp;do&nbsp;some&nbsp;experiments&nbsp;to&nbsp;see&nbsp;if&nbsp;it&nbsp;will&nbsp;work&nbsp;or&nbsp;not.&lt;/div&gt;&lt;div&gt; &lt;/div&gt;&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;<br>
+<br>
+<br>
+&lt;span&nbsp;class=&quot;HOEnZb&quot;&gt;&lt;font&nbsp;color=&quot;#888888&quot;&gt;&lt;br&gt;<br>
+--&lt;br&gt;<br>
+Best&nbsp;regards,&lt;br&gt;<br>
+Michael&lt;br&gt;<br>
+&lt;/font&gt;&lt;/span&gt;&lt;/blockquote&gt;&lt;/div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&nbsp;class=&quot;gmail_extra&quot;&gt;Regards,&lt;/div&gt;&lt;div&nbsp;class=&quot;gmail_extra&quot;&gt;Yuxuan&nbsp;Shui&lt;/div&gt;&lt;/div&gt;<br>
+
+</tt>

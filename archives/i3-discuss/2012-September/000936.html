@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [RFC]render.c cleanup.
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BRFC%5Drender.c%20cleanup.&In-Reply-To=%3CCAMJW5%3D2xJnEK%2BoqOseFvMAyCXF1e1ZbVvvX_MKeDDAj0L-4qtA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000926.html">
+   <LINK REL="Next"  HREF="000891.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [RFC]render.c cleanup.</H1>
+    <B>DR</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BRFC%5Drender.c%20cleanup.&In-Reply-To=%3CCAMJW5%3D2xJnEK%2BoqOseFvMAyCXF1e1ZbVvvX_MKeDDAj0L-4qtA%40mail.gmail.com%3E"
+       TITLE="[i3] [RFC]render.c cleanup.">drdarkraven at gmail.com
+       </A><BR>
+    <I>Thu Sep 20 11:04:17 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000926.html">[i3] [RFC]render.c cleanup.
+</A></li>
+        <LI>Next message: <A HREF="000891.html">[i3] Can't figure out a way to redirect screen session to workspace
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#936">[ date ]</a>
+              <a href="thread.html#936">[ thread ]</a>
+              <a href="subject.html#936">[ subject ]</a>
+              <a href="author.html#936">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, Sep 17, 2012 at 2:11 AM, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt;wrote:
+
+&gt;<i> Hi darkraven,
+</I>&gt;<i>
+</I>&gt;<i> Thanks for updating the patches. The size of the patches is okay now.
+</I>&gt;<i>
+</I>&gt;<i> In the second patch, you move rendering of the floating containers to
+</I>&gt;<i> the CT_WORKSPACE level. I think this breaks rendering because floating
+</I>&gt;<i> windows are then no longer guaranteed to always be on-top of tiling
+</I>&gt;<i> windows in multi-monitor setups. Consider this case:
+</I>&gt;<i>
+</I>&gt;<i> On the left 1024x768 output (let&#8217;s call it LVDS), I have workspace 1. On
+</I>&gt;<i> that workspace, there is a floating window with size 200x100 pixels at
+</I>&gt;<i> position (1000, 100).
+</I>&gt;<i>
+</I>&gt;<i> On the right 1024x768 output (let&#8217;s call it VGA), I have workspace 2
+</I>&gt;<i> with only tiling windows.
+</I>&gt;<i>
+</I>&gt;<i> Now, your code will render LVDS first (and even if it doesn&#8217;t, we can
+</I>&gt;<i> reverse the example) and raise floating windows. Then it will render VGA
+</I>&gt;<i> and raise the tiling window above the floating window.
+</I>&gt;<i>
+</I>&gt;<i> The comment at
+</I>&gt;<i> <A HREF="http://code.stapelberg.de/git/i3/tree/src/render.c?h=next#n237">http://code.stapelberg.de/git/i3/tree/src/render.c?h=next#n237</A> tries to
+</I>&gt;<i> express what I just described.
+</I>&gt;<i>
+</I>This is hard....
+The solution I come up with is quite ugly, don't know if you would like it.
+
+&gt;<i>
+</I>&gt;<i> In the fourth patch, you have an indentation change for no apparent
+</I>&gt;<i> reason (first few lines). Can you get rid of that please?
+</I>&gt;<i>
+</I>The fourth patch is now dropped from this patch series. I think it's a bit
+irrelevant. I would send it in a new thread concerning about popup window
+while fullscreen.
+
+&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Michael
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120920/0b062bf9/attachment-0001.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120920/0b062bf9/attachment-0001.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-split-children-rendering-part-of-code-out-of-render_.patch
+Type: application/octet-stream
+Size: 14237 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120920/0b062bf9/attachment-0003.obj">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120920/0b062bf9/attachment-0003.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0002-handle-CT_WORKSPACEs-separately.patch
+Type: application/octet-stream
+Size: 3988 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120920/0b062bf9/attachment-0004.obj">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120920/0b062bf9/attachment-0004.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0003-move-floating-window-logic-into-render_l_output.patch
+Type: application/octet-stream
+Size: 6586 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120920/0b062bf9/attachment-0005.obj">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120920/0b062bf9/attachment-0005.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000926.html">[i3] [RFC]render.c cleanup.
+</A></li>
+	<LI>Next message: <A HREF="000891.html">[i3] Can't figure out a way to redirect screen session to workspace
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#936">[ date ]</a>
+              <a href="thread.html#936">[ thread ]</a>
+              <a href="subject.html#936">[ subject ]</a>
+              <a href="author.html#936">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

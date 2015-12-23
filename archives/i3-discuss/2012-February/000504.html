@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [RFC] [PATCH] i3status: memory-stats
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BRFC%5D%20%5BPATCH%5D%20i3status%3A%20memory-stats&In-Reply-To=%3C4F478EFD.5090605%40mageta.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000500.html">
+   <LINK REL="Next"  HREF="000505.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [RFC] [PATCH] i3status: memory-stats</H1>
+    <B>Benjamin Block</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BRFC%5D%20%5BPATCH%5D%20i3status%3A%20memory-stats&In-Reply-To=%3C4F478EFD.5090605%40mageta.org%3E"
+       TITLE="[i3] [RFC] [PATCH] i3status: memory-stats">bebl at mageta.org
+       </A><BR>
+    <I>Fri Feb 24 14:22:05 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000500.html">[i3] [RFC] [PATCH] i3status: memory-stats
+</A></li>
+        <LI>Next message: <A HREF="000505.html">[i3] [RFC] [PATCH] i3status: memory-stats
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#504">[ date ]</a>
+              <a href="thread.html#504">[ thread ]</a>
+              <a href="subject.html#504">[ subject ]</a>
+              <a href="author.html#504">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 24.02.2012 00:28, Fernando Lemos wrote:
+&gt;<i> Hi, Benjamin,
+</I>&gt;<i> 
+</I>&gt;<i> On Thu, Feb 23, 2012 at 6:31 PM, Benjamin Block &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">bebl at mageta.org</A>&gt; wrote:
+</I>&gt;&gt;<i> Hi folks,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I noticed that there is currently no way to display memory-stats with i3status.
+</I>&gt;&gt;<i> Because I like to know how much memory is used/free on my systems I wrote a
+</I>&gt;&gt;<i> small addition to i3status to cover this.
+</I>&gt;&gt;<i>
+</I>&gt;<i> 
+</I>&gt;<i> I believe we don't have memory stats in i3status because Michael
+</I>&gt;<i> doesn't think it's a good idea, since it's too volatile and it's not
+</I>&gt;<i> something you're supposed to monitor. Same thing about CPU usage at a
+</I>&gt;<i> given time. Have you talked to Michael about this?
+</I>&gt;<i> 
+</I>
+Nah, haven't talked about this with anyone. I just wanted to see my
+memstats and hacked it in ;)
+
+I haven't measured it, but as for the kernel-side-code, it seems not to
+be much more &quot;volatile&quot; than reading /proc/loadavg or /proc/stat, things
+that you already do in i3status.
+It simply reads some system-wide-statistics and iterates over some
+block-devices to figure out what amount of memory is used for buffers.
+
+The userland does only one read on the proc-file and some
+string-matching, which is ugly as hell but should be fast enough to be
+negligible (on modern cpu's with things like sseXY or MMX).
+
+&gt;<i>
+</I>&gt;<i> Of course, nothing prevents you from distributing those patches
+</I>&gt;<i> yourself, feel free to post them here too.
+</I>&gt;<i> 
+</I>
+If you don't like it, don't use it :)
+
+best regards,
+- Benjamin
+
+</PRE>
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000500.html">[i3] [RFC] [PATCH] i3status: memory-stats
+</A></li>
+	<LI>Next message: <A HREF="000505.html">[i3] [RFC] [PATCH] i3status: memory-stats
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#504">[ date ]</a>
+              <a href="thread.html#504">[ thread ]</a>
+              <a href="subject.html#504">[ subject ]</a>
+              <a href="author.html#504">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

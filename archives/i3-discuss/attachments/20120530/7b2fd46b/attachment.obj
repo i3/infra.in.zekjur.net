@@ -1,0 +1,33 @@
+From a5f57740b24c3a813896b69dde184d2feec5a8aa Mon Sep 17 00:00:00 2001
+From: David Coppa <dcoppa@gmail.com>
+Date: Wed, 30 May 2012 11:11:08 +0200
+Subject: [PATCH] Replace deprecated XKeycodeToKeysym() with XkbKeycodeToKeysym()
+
+---
+ i3-config-wizard/cfgparse.y |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+diff --git a/i3-config-wizard/cfgparse.y b/i3-config-wizard/cfgparse.y
+index bbe1193..e5a8686 100644
+--- a/i3-config-wizard/cfgparse.y
++++ b/i3-config-wizard/cfgparse.y
+@@ -13,6 +13,7 @@
+ #include <string.h>
+ 
+ #include <X11/Xlib.h>
++#include <X11/XKBlib.h>
+ 
+ #include "libi3.h"
+ 
+@@ -139,7 +140,7 @@ bindcode:
+              * more likely for special characters). */
+             level = 1;
+         }
+-        KeySym sym = XKeycodeToKeysym(dpy, $4, level);
++        KeySym sym = XkbKeycodeToKeysym(dpy, $4, 0, level);
+         char *str = XKeysymToString(sym);
+         char *modifiers = modifier_to_string($<number>3);
+         // TODO: modifier to string
+-- 
+1.7.6
+

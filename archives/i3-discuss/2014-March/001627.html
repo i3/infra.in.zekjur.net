@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [i3status] Update interval alignment glitch
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5Bi3status%5D%20Update%20interval%20alignment%20glitch&In-Reply-To=%3C531F5D30.10404%40rwth-aachen.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001626.html">
+   <LINK REL="Next"  HREF="001628.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [i3status] Update interval alignment glitch</H1>
+    <B>Gereon Kremer</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5Bi3status%5D%20Update%20interval%20alignment%20glitch&In-Reply-To=%3C531F5D30.10404%40rwth-aachen.de%3E"
+       TITLE="[i3] [i3status] Update interval alignment glitch">gereon.kremer at rwth-aachen.de
+       </A><BR>
+    <I>Tue Mar 11 20:00:00 CET 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001626.html">[i3] [i3status] Update interval alignment glitch
+</A></li>
+        <LI>Next message: <A HREF="001628.html">[i3] [i3status] Update interval alignment glitch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1627">[ date ]</a>
+              <a href="thread.html#1627">[ thread ]</a>
+              <a href="subject.html#1627">[ subject ]</a>
+              <a href="author.html#1627">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Marco,
+
+As I'm the one who added this alignment in the first place [1], I
+somewhat feel obligated to answer here :-)
+At that time, I did not think about nanosleep() being interupted.
+
+Can you describe under which circumstances i3status receives an USR1?
+I've never noticed such a behavior...
+
+What would be your preferred solution here? As for me, we must decide on
+what we consider more important (the implementation is easy in either
+case): The overall number of refreshs? Have nice numbers?
+
+Possible solutions:
+1) We could suppress or defer the signal and continue sleeping until the
+proper number of seconds have passed. Not what I'd like to do...
+2) We could refresh and start with the intervals from there. This
+however means that we drop the alignment. This basically amounts to the
+code before I changed it.
+3) We could refresh, start with the intervals from there and realign
+every minute or so. In this case, we have another shorter interval right
+before a new minute starts and &quot;ugly&quot; numbers in between.
+4) We could refresh and return to the alignment directly afterwards.
+That is what happens right now.
+
+As I don't care about an additional refresh once in a while, I'd go for
+the nice numbers... What are your opinions?
+
+Cheers,
+Gereon
+
+[1]
+<A HREF="http://code.stapelberg.de/git/i3status/commit/?id=11757b8105ebebba40c3a94c5d6c5431cc58b3d1">http://code.stapelberg.de/git/i3status/commit/?id=11757b8105ebebba40c3a94c5d6c5431cc58b3d1</A>
+
+On 03/11/2014 07:12 PM, Marco Hunsicker wrote:
+&gt;<i> Hello Michael,
+</I>&gt;<i> 
+</I>&gt;<i> thanks again for your quick response.
+</I>&gt;<i> 
+</I>&gt;&gt;&gt;<i> Would it not be more important to enforce that updates happen (roughly)
+</I>&gt;&gt;&gt;<i> every 'interval' seconds? Is it really that important to update at the
+</I>&gt;&gt;&gt;<i> start of a new minute anyway?
+</I>&gt;<i> 
+</I>&gt;&gt;<i> I don&#8217;t understand why you are asking which behavior is more
+</I>&gt;&gt;<i> important. Can&#8217;t we fix this problem properly and have both?
+</I>&gt;<i> 
+</I>&gt;<i> Well, sometimes there is behavior for no good reason and if I touch the
+</I>&gt;<i> code anyway, I might as well get rid of the alignment.
+</I>&gt;<i> 
+</I>&gt;<i> But if it should stay there, fine with me. I will forward a patch for
+</I>&gt;<i> review. Thanks.
+</I>&gt;<i> 
+</I>&gt;<i> Cheers,
+</I>&gt;<i>   Marco
+</I>
+-- 
+Email: <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">gereon.kremer at rwth-aachen.de</A>
+Mobil: 01520 / 9844454
+Adalbertsteinweg 1b, 52070 Aachen
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0x78359F29.asc
+Type: application/pgp-keys
+Size: 5375 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140311/bb6615d9/attachment.key">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140311/bb6615d9/attachment.key</A>&gt;
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001626.html">[i3] [i3status] Update interval alignment glitch
+</A></li>
+	<LI>Next message: <A HREF="001628.html">[i3] [i3status] Update interval alignment glitch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1627">[ date ]</a>
+              <a href="thread.html#1627">[ thread ]</a>
+              <a href="subject.html#1627">[ subject ]</a>
+              <a href="author.html#1627">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

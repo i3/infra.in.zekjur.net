@@ -1,0 +1,2215 @@
+From veljko3 at gmail.com  Fri Apr  4 14:19:48 2014
+From: veljko3 at gmail.com (Veljko)
+Date: Fri, 4 Apr 2014 14:19:48 +0200
+Subject: [i3] Notifications for IM
+Message-ID: <20140404121948.GE7104@angelina.example.com>
+
+Hello,
+
+I just started to use mcabber, console based IM client. What I want to
+configure is notification in form of a urgent hint on status bar and
+window decoration. mcabber have events_command option. I can set value
+to some external command, but I'm not sure which command to use for
+this. I guess i3-msg, but have no clue how to raise urgent hint with it
+for window/workspace where mcabber is running.
+
+Does anyone have some idea how to make this work?
+
+Regards,
+Veljko
+
+From alexander at plaimi.net  Fri Apr  4 14:31:57 2014
+From: alexander at plaimi.net (Alexander Berntsen)
+Date: Fri, 04 Apr 2014 14:31:57 +0200
+Subject: [i3] Notifications for IM
+In-Reply-To: <20140404121948.GE7104@angelina.example.com>
+References: <20140404121948.GE7104@angelina.example.com>
+Message-ID: <533EA63D.8010306@plaimi.net>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+On 04/04/14 14:19, Veljko wrote:
+> Hello,
+> 
+> I just started to use mcabber, console based IM client. What I want
+> to configure is notification in form of a urgent hint on status bar
+> and window decoration. mcabber have events_command option. I can
+> set value to some external command, but I'm not sure which command
+> to use for this. I guess i3-msg, but have no clue how to raise
+> urgent hint with it for window/workspace where mcabber is running.
+> 
+> Does anyone have some idea how to make this work?
+Can you not make the client do \a on activity, and then make your
+terminal emulator treat \a to mean "set window manager urgency hint"?
+This is what I do.
+- -- 
+Alexander
+alexander at plaimi.net
+https://secure.plaimi.net/~alexander
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+
+iF4EAREIAAYFAlM+pj0ACgkQRtClrXBQc7WEnwD+MoJMUdlCMQ1W6Bhuq6+FJvL9
+KLCAqioVCKcFECMQa/cBAKFkR15wjcEBDv/Ig9iHFKfPIFdbUew492nrZDPJp+9d
+=Q+Ge
+-----END PGP SIGNATURE-----
+
+From veljko3 at gmail.com  Fri Apr  4 14:46:52 2014
+From: veljko3 at gmail.com (Veljko)
+Date: Fri, 4 Apr 2014 14:46:52 +0200
+Subject: [i3] Notifications for IM
+In-Reply-To: <533EA63D.8010306@plaimi.net>
+References: <20140404121948.GE7104@angelina.example.com>
+ <533EA63D.8010306@plaimi.net>
+Message-ID: <20140404124652.GF7104@angelina.example.com>
+
+On 2014-Apr-04 14:31, Alexander Berntsen wrote:
+> Can you not make the client do \a on activity, and then make your
+> terminal emulator treat \a to mean "set window manager urgency hint"?
+> This is what I do.
+
+I don't know. Can \a be set through some command? How do you make
+terminal emulator treat \a that way? I'm using xfce-terminal and urxvt.
+
+Thanks!
+
+
+From alexander at plaimi.net  Fri Apr  4 14:51:00 2014
+From: alexander at plaimi.net (Alexander Berntsen)
+Date: Fri, 04 Apr 2014 14:51:00 +0200
+Subject: [i3] Notifications for IM
+In-Reply-To: <20140404124652.GF7104@angelina.example.com>
+References: <20140404121948.GE7104@angelina.example.com>
+ <533EA63D.8010306@plaimi.net> <20140404124652.GF7104@angelina.example.com>
+Message-ID: <533EAAB4.4070504@plaimi.net>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+On 04/04/14 14:46, Veljko wrote:
+> I don't know. Can \a be set through some command? How do you make 
+> terminal emulator treat \a that way? I'm using xfce-terminal and
+> urxvt.
+Is doing
+
+echo $'\a'
+
+an option? That should suffice.
+
+I don't know anything about xfce-terminal, but for urxvt you add
+URxvt.urgentOnBell:		true
+
+to your ~/.Xdefaults, or ~/.Xresources, depending on which one you have.
+- -- 
+Alexander
+alexander at plaimi.net
+https://secure.plaimi.net/~alexander
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+
+iF4EAREIAAYFAlM+qrQACgkQRtClrXBQc7VNFAEApT1oEJwJOqmHGV6a3jUSX42F
+G2uY/2yTVbIJrbMxA20A/iSXUV3MIrItCxFqGTZxq3jQkgdnWVP5slMLbiAIbjxD
+=G6j2
+-----END PGP SIGNATURE-----
+
+From keitho at strucktower.com  Fri Apr  4 15:46:18 2014
+From: keitho at strucktower.com (keitho at strucktower.com)
+Date: Fri, 4 Apr 2014 06:46:18 -0700
+Subject: [i3] Notifications for IM
+In-Reply-To: <533EAAB4.4070504@plaimi.net>
+References: <20140404121948.GE7104@angelina.example.com>
+ <533EA63D.8010306@plaimi.net>
+ <20140404124652.GF7104@angelina.example.com>
+ <533EAAB4.4070504@plaimi.net>
+Message-ID: <a34a73874240efd05cf3c58d16ce9bce.squirrel@webmail.strucktower.com>
+
+Somewhat related:
+
+How can I connect a process on the i3status bar to an URxvt.urgentOnBell?
+For instance, is there a way to have the bell ring when any i3status
+process changes from color_good to color_degraded?
+
+This would be handy, for example, when you lose connectivity, or the
+temperature goes into urgent status.
+
+Thanks,
+Keith Ostertag
+
+> -----BEGIN PGP SIGNED MESSAGE-----
+> Hash: SHA256
+>
+> On 04/04/14 14:46, Veljko wrote:
+>> I don't know. Can \a be set through some command? How do you make
+>> terminal emulator treat \a that way? I'm using xfce-terminal and
+>> urxvt.
+> Is doing
+>
+> echo $'\a'
+>
+> an option? That should suffice.
+>
+> I don't know anything about xfce-terminal, but for urxvt you add
+> URxvt.urgentOnBell:		true
+>
+> to your ~/.Xdefaults, or ~/.Xresources, depending on which one you have.
+> - --
+> Alexander
+> alexander at plaimi.net
+> https://secure.plaimi.net/~alexander
+> -----BEGIN PGP SIGNATURE-----
+> Version: GnuPG v2.0.22 (GNU/Linux)
+> Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+>
+> iF4EAREIAAYFAlM+qrQACgkQRtClrXBQc7VNFAEApT1oEJwJOqmHGV6a3jUSX42F
+> G2uY/2yTVbIJrbMxA20A/iSXUV3MIrItCxFqGTZxq3jQkgdnWVP5slMLbiAIbjxD
+> =G6j2
+> -----END PGP SIGNATURE-----
+>
+
+
+
+From veljko3 at gmail.com  Fri Apr  4 16:15:02 2014
+From: veljko3 at gmail.com (Veljko)
+Date: Fri, 4 Apr 2014 16:15:02 +0200
+Subject: [i3] Notifications for IM
+In-Reply-To: <533EAAB4.4070504@plaimi.net>
+References: <20140404121948.GE7104@angelina.example.com>
+ <533EA63D.8010306@plaimi.net>
+ <20140404124652.GF7104@angelina.example.com>
+ <533EAAB4.4070504@plaimi.net>
+Message-ID: <20140404141502.GG7104@angelina.example.com>
+
+On 2014-Apr-04 14:51, Alexander Berntsen wrote:
+> Is doing
+> 
+> echo $'\a'
+> 
+> an option? That should suffice.
+> 
+> I don't know anything about xfce-terminal, but for urxvt you add
+> URxvt.urgentOnBell:		true
+> 
+> to your ~/.Xdefaults, or ~/.Xresources, depending on which one you have.
+
+echo $'\a' works in urxvt with that line, xfce-terminal have
+MiscBell=TRUE but it only produces beep. I guess there is no
+urgentOnBell equivalent for it.
+
+Giving mcabber command or script with echo $'\a' does nothing. Playing
+sound from it works, but no urgency hint.
+
+Any other way to raise urgency hint?
+
+
+From free.software at gmx.com  Fri Apr  4 17:00:55 2014
+From: free.software at gmx.com (Joachim Henke)
+Date: Fri, 4 Apr 2014 17:00:55 +0200
+Subject: [i3] Notifications for IM
+In-Reply-To: <20140404141502.GG7104@angelina.example.com>
+References: <20140404121948.GE7104@angelina.example.com>
+ <533EA63D.8010306@plaimi.net>
+ <20140404124652.GF7104@angelina.example.com>
+ <533EAAB4.4070504@plaimi.net>
+ <20140404141502.GG7104@angelina.example.com>
+Message-ID: <20140404170055.59a99bf1@localhost>
+
+On Fri, 4 Apr 2014 16:15:02 +0200
+Veljko <veljko3 at gmail.com> wrote:
+
+> echo $'\a' works in urxvt with that line, xfce-terminal have
+> MiscBell=TRUE but it only produces beep. I guess there is no
+> urgentOnBell equivalent for it.
+> 
+> Giving mcabber command or script with echo $'\a' does nothing. Playing
+> sound from it works, but no urgency hint.
+> 
+> Any other way to raise urgency hint?
+
+Hi,
+
+for me setting
+
+	set beep_on_message = 1
+
+in mcabberrc in combination with
+
+	URxvt.urgentOnBell: true
+
+in .Xresources works.
+
+Regards,
+Jo.
+
+From berenger.morel at neutralite.org  Fri Apr  4 17:05:40 2014
+From: berenger.morel at neutralite.org (berenger.morel at neutralite.org)
+Date: Fri, 04 Apr 2014 17:05:40 +0200
+Subject: [i3] Notifications for IM
+In-Reply-To: <20140404121948.GE7104@angelina.example.com>
+References: <20140404121948.GE7104@angelina.example.com>
+Message-ID: <4aeb409436dbb45b777621fc821d20ab@neutralite.org>
+
+
+
+Le 04.04.2014 14:19, Veljko a ?crit?:
+> Hello,
+>
+> I just started to use mcabber, console based IM client. What I want 
+> to
+> configure is notification in form of a urgent hint on status bar and
+> window decoration. mcabber have events_command option. I can set 
+> value
+> to some external command, but I'm not sure which command to use for
+> this. I guess i3-msg, but have no clue how to raise urgent hint with 
+> it
+> for window/workspace where mcabber is running.
+>
+> Does anyone have some idea how to make this work?
+>
+> Regards,
+> Veljko
+
+Maybe there could be some possibilities through the command 
+"send-notify"?
+The quick tests I made did not allowed to place the "urgent" message, 
+but I do not know exactly how those hints work.
+
+From veljko3 at gmail.com  Fri Apr  4 17:49:28 2014
+From: veljko3 at gmail.com (Veljko)
+Date: Fri, 4 Apr 2014 17:49:28 +0200
+Subject: [i3] [Solved]Re:  Notifications for IM
+In-Reply-To: <20140404170055.59a99bf1@localhost>
+References: <20140404121948.GE7104@angelina.example.com>
+ <533EA63D.8010306@plaimi.net>
+ <20140404124652.GF7104@angelina.example.com>
+ <533EAAB4.4070504@plaimi.net>
+ <20140404141502.GG7104@angelina.example.com>
+ <20140404170055.59a99bf1@localhost>
+Message-ID: <20140404154928.GH7104@angelina.example.com>
+
+On 2014-Apr-04 17:00, Joachim Henke wrote:
+> for me setting
+> 
+> 	set beep_on_message = 1
+> 
+> in mcabberrc in combination with
+> 
+> 	URxvt.urgentOnBell: true
+> 
+> in .Xresources works.
+
+Yes, it works that way.
+
+Thanks Jo.
+
+Regards,
+Veljko
+
+
+From veljko3 at gmail.com  Fri Apr  4 17:55:13 2014
+From: veljko3 at gmail.com (Veljko)
+Date: Fri, 4 Apr 2014 17:55:13 +0200
+Subject: [i3] Notifications for IM
+In-Reply-To: <4aeb409436dbb45b777621fc821d20ab@neutralite.org>
+References: <20140404121948.GE7104@angelina.example.com>
+ <4aeb409436dbb45b777621fc821d20ab@neutralite.org>
+Message-ID: <20140404155513.GI7104@angelina.example.com>
+
+On 2014-Apr-04 17:05, berenger.morel at neutralite.org wrote:
+> Maybe there could be some possibilities through the command
+> "send-notify"?
+> The quick tests I made did not allowed to place the "urgent"
+> message, but I do not know exactly how those hints work.
+
+I don't have that command.
+
+Anyhow, I got it working, thanks to Joachim.
+
+Thanks for your response, Berenger.
+
+Regards,
+Veljko
+
+From tobias at frilling-online.de  Fri Apr  4 19:24:01 2014
+From: tobias at frilling-online.de (Tobias Frilling)
+Date: Fri, 04 Apr 2014 19:24:01 +0200
+Subject: [i3] i3 not capturing key syms
+Message-ID: <533EEAB1.2000004@frilling-online.de>
+
+Hi,
+
+I'm currently trying an alternative keyboard layout, Neo2, but I'm having trouble with i3. It seems like i3 isn't capturing any key syms, so no 'bindsym' is triggered.
+Here's the console output from i3-config-wizard for pressing Super_L, Return and a, once as it should be with keymap de, then broken with de-neo:
+
+Keypress 133, state raw = 16
+sym = (65515)
+Modifier keycode for Mod1: 0x40
+Modifier keycode for Mod1: 0xcd
+Modifier keycode for Mod4: 0x85
+This is Mod4!
+Modifier keycode for Mod4: 0x86
+Modifier keycode for Mod4: 0xce
+Modifier keycode for Mod4: 0xcf
+Keypress 36, state raw = 16
+ (65293)
+ Modifier keycode for Mod1: 0x40
+ Modifier keycode for Mod1: 0xcd
+ Modifier keycode for Mod4: 0x85
+ Modifier keycode for Mod4: 0x86
+ Modifier keycode for Mod4: 0xce
+ Modifier keycode for Mod4: 0xcf
+ Keypress 38, state raw = 16
+ sym = a (97)
+ Modifier keycode for Mod1: 0x40
+ Modifier keycode for Mod1: 0xcd
+ Modifier keycode for Mod4: 0x85
+ Modifier keycode for Mod4: 0x86
+ Modifier keycode for Mod4: 0xce
+ Modifier keycode for Mod4: 0xcf
+
+
+Keypress 133, state raw = 16
+sym =  (0)
+Modifier keycode for Mod1: 0x40
+Modifier keycode for Mod1: 0xcd
+Modifier keycode for Mod4: 0x85
+This is Mod4!
+Modifier keycode for Mod4: 0x86
+Modifier keycode for Mod4: 0xce
+Modifier keycode for Mod4: 0xcf
+Keypress 36, state raw = 16
+sym =  (0)
+Modifier keycode for Mod1: 0x40
+Modifier keycode for Mod1: 0xcd
+Modifier keycode for Mod4: 0x85
+Modifier keycode for Mod4: 0x86
+Modifier keycode for Mod4: 0xce
+Modifier keycode for Mod4: 0xcf
+Keypress 38, state raw = 16
+sym =  (0)
+Modifier keycode for Mod1: 0x40
+Modifier keycode for Mod1: 0xcd
+Modifier keycode for Mod4: 0x85
+Modifier keycode for Mod4: 0x86
+Modifier keycode for Mod4: 0xce
+Modifier keycode for Mod4: 0xcf
+
+I've tested this issue with OpenBox and Awesome; neither have a problem with it.
+
+From michael at i3wm.org  Sun Apr  6 00:51:30 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 06 Apr 2014 00:51:30 +0200
+Subject: [i3] i3 not capturing key syms
+In-Reply-To: <533EEAB1.2000004@frilling-online.de>
+References: <533EEAB1.2000004@frilling-online.de>
+Message-ID: <x6mwfzqtjh.fsf@midna.zekjur.net>
+
+Hi Tobias,
+
+Tobias Frilling <tobias at frilling-online.de> writes:
+> I'm currently trying an alternative keyboard layout, Neo2, but I'm
+> having trouble with i3. It seems like i3 isn't capturing any key syms,
+> so no 'bindsym' is triggered.
+I use neo2 since many years, and all i3 features work perfectly fine for
+me.
+
+> Here's the console output from i3-config-wizard for pressing Super_L,
+> Return and a, once as it should be with keymap de, then broken with
+> de-neo:
+> [?]
+> Keypress 133, state raw = 16
+> sym =  (0)
+> Modifier keycode for Mod1: 0x40
+> Modifier keycode for Mod1: 0xcd
+> Modifier keycode for Mod4: 0x85
+> This is Mod4!
+> Modifier keycode for Mod4: 0x86
+> Modifier keycode for Mod4: 0xce
+> Modifier keycode for Mod4: 0xcf
+> Keypress 36, state raw = 16
+> sym =  (0)
+> Modifier keycode for Mod1: 0x40
+> Modifier keycode for Mod1: 0xcd
+> Modifier keycode for Mod4: 0x85
+> Modifier keycode for Mod4: 0x86
+> Modifier keycode for Mod4: 0xce
+> Modifier keycode for Mod4: 0xcf
+> Keypress 38, state raw = 16
+> sym =  (0)
+> Modifier keycode for Mod1: 0x40
+> Modifier keycode for Mod1: 0xcd
+> Modifier keycode for Mod4: 0x85
+> Modifier keycode for Mod4: 0x86
+> Modifier keycode for Mod4: 0xce
+> Modifier keycode for Mod4: 0xcf
+So i3-config-wizard cannot translate the keysyms. This could be a bug in
+how i3-config-wizard works ? keyboard handling in XCB is tricky.
+
+Can you test whether i3lock from git (it has to be the git version)
+works with neo2 for you?
+
+Also, which i3 version are you using? And can you append the output of
+xmodmap -pke?
+
+-- 
+Best regards,
+Michael
+
+From tobias at frilling-online.de  Tue Apr  8 13:05:06 2014
+From: tobias at frilling-online.de (Tobias Frilling)
+Date: Tue, 08 Apr 2014 13:05:06 +0200
+Subject: [i3] i3 not capturing key syms
+In-Reply-To: <x6mwfzqtjh.fsf@midna.zekjur.net>
+References: <533EEAB1.2000004@frilling-online.de>
+ <x6mwfzqtjh.fsf@midna.zekjur.net>
+Message-ID: <5343D7E2.4070807@frilling-online.de>
+
+Michael Stapelberg wrote, On 2014-04-06 00:51:
+> Can you test whether i3lock from git (it has to be the git version) works with neo2 for you?
+Both 2.5 and the git version work fine.
+
+> Also, which i3 version are you using?
+I'm currently using the one packaged with arch, so 4.7.2, but the problem still exists in the git version.
+
+> And can you append the output of xmodmap -pke?
+http://codepad.org/WC8EUETi
+
+Also, the problem disappears if I'm using neo as a second layout via
+setxkbmap -layout de,de -variant nodeadkeys,neo -option -option grp:sclk_toggle -option grp_led:scroll
+but then I cant use the 4th layer.
+
+From veljko3 at gmail.com  Tue Apr  8 17:41:36 2014
+From: veljko3 at gmail.com (Veljko)
+Date: Tue, 8 Apr 2014 17:41:36 +0200
+Subject: [i3] [Solved]Re:  Notifications for IM
+In-Reply-To: <20140404154928.GH7104@angelina.example.com>
+References: <20140404121948.GE7104@angelina.example.com>
+ <533EA63D.8010306@plaimi.net>
+ <20140404124652.GF7104@angelina.example.com>
+ <533EAAB4.4070504@plaimi.net>
+ <20140404141502.GG7104@angelina.example.com>
+ <20140404170055.59a99bf1@localhost>
+ <20140404154928.GH7104@angelina.example.com>
+Message-ID: <20140408154136.GA11752@angelina.example.com>
+
+On 2014-Apr-04 17:49, Veljko wrote:
+> On 2014-Apr-04 17:00, Joachim Henke wrote:
+> > for me setting
+> > 
+> > 	set beep_on_message = 1
+> > 
+> > in mcabberrc in combination with
+> > 
+> > 	URxvt.urgentOnBell: true
+> > 
+> > in .Xresources works.
+
+One more question. How did you get urgent bell to work with chat rooms
+(MUC)? They seem not to work as normal one to one chat. 
+ 
+
+From gour at atmarama.net  Wed Apr  9 13:46:45 2014
+From: gour at atmarama.net (Gour)
+Date: Wed, 09 Apr 2014 13:46:45 +0200
+Subject: [i3] Layout saving/restoring (PREVIEW)
+References: <x6y53lbz0h.fsf@midna.zekjur.net>
+Message-ID: <86r456lo7u.fsf@atmarama.net>
+
+Michael Stapelberg <michael at i3wm.org> writes:
+
+Hello Michael,
+
+> As for the release plan: I intend to release i3 4.7 soonish (maybe in a
+> week or so). After that is done, I’ll merge the session-saving branch
+> into the “next” branch, i.e. the earliest i3 release that can possibly
+> have this feature will be 4.8.
+
+After moving most of my apps to Emacs-based, now I feel strong need for
+this new feature enabling saving/restoring of one's layout. I want to
+have bigger container with Emacs on the left and urxvt on the right, but
+the with former stretching towards right side.
+
+Do you have any plan in regard to 4.8 release which will, hopefully,
+bring this new feature?
+
+
+Sincerely,
+Gour
+
+-- 
+A person is considered still further advanced when he regards honest 
+well-wishers, affectionate benefactors, the neutral, mediators, the envious, 
+friends and enemies, the pious and the sinners all with an equal mind.
+
+
+From michael at i3wm.org  Wed Apr  9 20:48:08 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 09 Apr 2014 20:48:08 +0200
+Subject: [i3] Layout saving/restoring (PREVIEW)
+In-Reply-To: <86r456lo7u.fsf@atmarama.net>
+References: <x6y53lbz0h.fsf@midna.zekjur.net> <86r456lo7u.fsf@atmarama.net>
+Message-ID: <x6bnwaqqzb.fsf@midna.zekjur.net>
+
+Hi Gour,
+
+Gour <gour at atmarama.net> writes:
+>> As for the release plan: I intend to release i3 4.7 soonish (maybe in a
+>> week or so). After that is done, I’ll merge the session-saving branch
+>> into the “next” branch, i.e. the earliest i3 release that can possibly
+>> have this feature will be 4.8.
+>
+> After moving most of my apps to Emacs-based, now I feel strong need for
+> this new feature enabling saving/restoring of one's layout. I want to
+> have bigger container with Emacs on the left and urxvt on the right, but
+> the with former stretching towards right side.
+>
+> Do you have any plan in regard to 4.8 release which will, hopefully,
+> bring this new feature?
+No.
+
+Please just use the git version (we have repositories for Debian and
+Ubuntu, see http://i3wm.org/docs/repositories.html) and please report
+feedback.
+
+I got _zero_ feedback so far on this feature, so I don’t feel like it’s
+a good idea to make a new release anytime soon.
+
+-- 
+Best regards,
+Michael
+
+From i3 at hunsicker.de  Wed Apr  9 21:25:01 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Wed, 09 Apr 2014 21:25:01 +0200
+Subject: [i3] IPC window close event
+Message-ID: <53459E8D.70603@hunsicker.de>
+
+Howdy,
+
+regarding the implementation of the proposed IPC window close event, I 
+have one question.
+
+The workspace reply should indicate whether the workspace is empty. 
+There are several possibilities:
+
++ a boolean field with the empty state
++ an integer field with the number of opened application windows
++ an array with the window ids of the opened application windows
+
+Which option would be best? For my specific usecase option 1) would be 
+sufficient, but maybe the other options could prove useful in other 
+situations as well? Thanks.
+
+Cheers,
+   Marco
+
+From michael at i3wm.org  Wed Apr  9 22:32:55 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 09 Apr 2014 22:32:55 +0200
+Subject: [i3] IPC window close event
+In-Reply-To: <53459E8D.70603@hunsicker.de>
+References: <53459E8D.70603@hunsicker.de>
+Message-ID: <x68ureqm4o.fsf@midna.zekjur.net>
+
+Hi Marco,
+
+Marco Hunsicker <i3 at hunsicker.de> writes:
+> regarding the implementation of the proposed IPC window close event, I 
+> have one question.
+>
+> The workspace reply should indicate whether the workspace is empty. 
+> There are several possibilities:
+>
+> + a boolean field with the empty state
+> + an integer field with the number of opened application windows
+> + an array with the window ids of the opened application windows
+I think the last two are both more useful than the first one. In fact,
+the last one (array with window IDs) is consistent with what we already
+have in the GET_TREE reply (“focus” property), so I think it makes most
+sense to go with that one.
+
+-- 
+Best regards,
+Michael
+
+From imcnanie.saga at gmail.com  Wed Apr  9 23:58:51 2014
+From: imcnanie.saga at gmail.com (Ian McNanie)
+Date: Wed, 9 Apr 2014 14:58:51 -0700
+Subject: [i3] Layout saving/restoring (PREVIEW)
+In-Reply-To: <x6bnwaqqzb.fsf@midna.zekjur.net>
+References: <x6y53lbz0h.fsf@midna.zekjur.net> <86r456lo7u.fsf@atmarama.net>
+ <x6bnwaqqzb.fsf@midna.zekjur.net>
+Message-ID: <CAFK+k_w6XBsSwy+Z3DrgFWcifBdvQ1dtmEFTP6qAhFv0BH+W_A@mail.gmail.com>
+
+This feature would be useful for me as well, but I think it might make more
+sense to make it a separate application. That app could sit in the
+background and change the i3 config file on the window manager exit.
+On Apr 9, 2014 11:48 AM, "Michael Stapelberg" <michael at i3wm.org> wrote:
+
+> Hi Gour,
+>
+> Gour <gour at atmarama.net> writes:
+> >> As for the release plan: I intend to release i3 4.7 soonish (maybe in a
+> >> week or so). After that is done, I’ll merge the session-saving branch
+> >> into the “next” branch, i.e. the earliest i3 release that can possibly
+> >> have this feature will be 4.8.
+> >
+> > After moving most of my apps to Emacs-based, now I feel strong need for
+> > this new feature enabling saving/restoring of one's layout. I want to
+> > have bigger container with Emacs on the left and urxvt on the right, but
+> > the with former stretching towards right side.
+> >
+> > Do you have any plan in regard to 4.8 release which will, hopefully,
+> > bring this new feature?
+> No.
+>
+> Please just use the git version (we have repositories for Debian and
+> Ubuntu, see http://i3wm.org/docs/repositories.html) and please report
+> feedback.
+>
+> I got _zero_ feedback so far on this feature, so I don’t feel like it’s
+> a good idea to make a new release anytime soon.
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140409/1bdbdd5a/attachment.html>
+
+From gour at atmarama.net  Thu Apr 10 09:45:05 2014
+From: gour at atmarama.net (Gour)
+Date: Thu, 10 Apr 2014 09:45:05 +0200
+Subject: [i3] Layout saving/restoring (PREVIEW)
+References: <x6y53lbz0h.fsf@midna.zekjur.net> <86r456lo7u.fsf@atmarama.net>
+ <x6bnwaqqzb.fsf@midna.zekjur.net>
+Message-ID: <861tx5typq.fsf@atmarama.net>
+
+Michael Stapelberg <michael at i3wm.org> writes:
+
+> Please just use the git version (we have repositories for Debian and
+> Ubuntu, see http://i3wm.org/docs/repositories.html) and please report
+> feedback.
+
+OK. I'm on Free/PC-BSD, but will try git version.
+
+> I got _zero_ feedback so far on this feature, so I don’t feel like it’s
+> a good idea to make a new release anytime soon.
+
+I see...
+
+
+Sincerely,
+Gour
+
+
+From tony at dubstepdish.com  Thu Apr 10 18:42:13 2014
+From: tony at dubstepdish.com (Tony)
+Date: Thu, 10 Apr 2014 12:42:13 -0400
+Subject: [i3] IPC window close event
+In-Reply-To: <x68ureqm4o.fsf@midna.zekjur.net>
+References: <53459E8D.70603@hunsicker.de> <x68ureqm4o.fsf@midna.zekjur.net>
+Message-ID: <5346C9E5.7010408@dubstepdish.com>
+
+I think sending the focus stack is a good idea because it could be used to
+determine what window is focused (or focused-inactive) on the workspace. I
+would like to see some tests that confirm that an empty array does indeed
+indicate an empty workspace as well.
+
+Also, I would like this "workspace" member to be part of every window event
+and the new property of the "workspace reply" object to be included in
+GET_WORKSPACE replies as well to maintain some consistency in the api.
+
+Other than that, the only kinds of properties I have trouble with are 
+nullable
+non-pointer types, nullable lists, and lists with mixed-type members. 
+For more
+information on my data structures, see this part of the i3ipc-GLib docs:
+
+<http://dubstepdish.com/i3ipc-glib/i3ipc-glib-i3ipc-reply-types.html#i3ipcWorkspaceReply-struct>
+<http://dubstepdish.com/i3ipc-glib/i3ipc-glib-i3ipc-event-types.html#i3ipcWindowEvent-struct>
+
+
+On 04/09/2014 04:32 PM, Michael Stapelberg wrote:
+> Hi Marco,
+>
+> Marco Hunsicker <i3 at hunsicker.de> writes:
+>> regarding the implementation of the proposed IPC window close event, I
+>> have one question.
+>>
+>> The workspace reply should indicate whether the workspace is empty.
+>> There are several possibilities:
+>>
+>> + a boolean field with the empty state
+>> + an integer field with the number of opened application windows
+>> + an array with the window ids of the opened application windows
+> I think the last two are both more useful than the first one. In fact,
+> the last one (array with window IDs) is consistent with what we already
+> have in the GET_TREE reply (“focus” property), so I think it makes most
+> sense to go with that one.
+>
+
+
+From i3 at hunsicker.de  Fri Apr 11 00:57:14 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Fri, 11 Apr 2014 00:57:14 +0200
+Subject: [i3] IPC window close event
+In-Reply-To: <5346C9E5.7010408@dubstepdish.com>
+References: <53459E8D.70603@hunsicker.de> <x68ureqm4o.fsf@midna.zekjur.net>
+ <5346C9E5.7010408@dubstepdish.com>
+Message-ID: <534721CA.40902@hunsicker.de>
+
+Hello Tony,
+
+> I think sending the focus stack is a good idea because it could be used to
+> determine what window is focused (or focused-inactive) on the workspace.
+
+My plan was to simply include the window ids of all opened X11 windows 
+with WORKSPACE replies (ignoring all other nodes!):
+
+"windows":[id1, id2, ...]
+
+This would make it (relatively) easy to determine whether a workspace is 
+empty or not and be somewhat consistent with the TREE reply where each 
+node provides a "window" field with the window id.
+
+If the reply should indicate the focused window as well, we would either 
+have to add another field. Or extend the array to not only include the 
+window ids, but the focus state as well.
+
+"windows":[
+     {"window": id1, "focused": true},
+     {"window": id2, "focused": false},
+     ...
+]
+
+API-wise it could make sense to use the dump_node() function and include 
+the whole set of window properties. This would require additional code 
+to deal with the protocol extension, though (i3bar is currently very 
+strict when parsing the WORKSPACE reply).
+
+Any thoughts?
+
+
+> I
+> would like to see some tests that confirm that an empty array does indeed
+> indicate an empty workspace as well.
+
+I've already written several tests to ensure the implementation works as 
+desired.
+
+
+> Also, I would like this "workspace" member to be part of every window event
+> and the new property of the "workspace reply" object to be included in
+> GET_WORKSPACE replies as well to maintain some consistency in the api.
+
+As discussed. That's trivial because there is a central function that is 
+used to create all window events.
+
+Cheers,
+   Marco
+
+From tony at dubstepdish.com  Fri Apr 11 18:02:57 2014
+From: tony at dubstepdish.com (Tony)
+Date: Fri, 11 Apr 2014 12:02:57 -0400
+Subject: [i3] IPC window close event
+In-Reply-To: <534721CA.40902@hunsicker.de>
+References: <53459E8D.70603@hunsicker.de> <x68ureqm4o.fsf@midna.zekjur.net>
+ <5346C9E5.7010408@dubstepdish.com> <534721CA.40902@hunsicker.de>
+Message-ID: <53481231.6050509@dubstepdish.com>
+
+Hi Marco,
+
+I think it might be easier than you think. The 'focus' property is a list of
+container ids derived directly from the container struct in the core 
+code. This
+list is important for focus movement and structural changes to the tree 
+such as
+when a container is moved or closed.
+
+For our purposes, the interesting properties of this list should be 1) The
+length of the list is the number of containers on the workspace 
+(corollary: an
+empty list indicates the workspace is empty) 2) otherwise if the 
+workspace is
+focused, the id of the first container in the list represents the focused
+container.
+
+So this is very expressive, but a bit cryptic and not very well documented
+outside of the testcases. It also plays to the primary strength of the
+workspace reply object which is that no recursive tree-parsing is 
+required so
+it can be used with simple tools (in the ipc library, it is a simple two
+function calls from the root to have the complete container object).
+
+Would this implementation fit your use case?
+
+
+On 04/10/2014 06:57 PM, Marco Hunsicker wrote:
+> Hello Tony,
+>
+>> I think sending the focus stack is a good idea because it could be 
+>> used to
+>> determine what window is focused (or focused-inactive) on the workspace.
+>
+> My plan was to simply include the window ids of all opened X11 windows 
+> with WORKSPACE replies (ignoring all other nodes!):
+>
+> "windows":[id1, id2, ...]
+>
+> This would make it (relatively) easy to determine whether a workspace 
+> is empty or not and be somewhat consistent with the TREE reply where 
+> each node provides a "window" field with the window id.
+>
+> If the reply should indicate the focused window as well, we would 
+> either have to add another field. Or extend the array to not only 
+> include the window ids, but the focus state as well.
+>
+> "windows":[
+>     {"window": id1, "focused": true},
+>     {"window": id2, "focused": false},
+>     ...
+> ]
+>
+> API-wise it could make sense to use the dump_node() function and 
+> include the whole set of window properties. This would require 
+> additional code to deal with the protocol extension, though (i3bar is 
+> currently very strict when parsing the WORKSPACE reply).
+>
+> Any thoughts?
+>
+>
+>> I
+>> would like to see some tests that confirm that an empty array does 
+>> indeed
+>> indicate an empty workspace as well.
+>
+> I've already written several tests to ensure the implementation works 
+> as desired.
+>
+>
+>> Also, I would like this "workspace" member to be part of every window 
+>> event
+>> and the new property of the "workspace reply" object to be included in
+>> GET_WORKSPACE replies as well to maintain some consistency in the api.
+>
+> As discussed. That's trivial because there is a central function that 
+> is used to create all window events.
+>
+> Cheers,
+>   Marco
+
+
+From Eric.Roseman at Colorado.EDU  Fri Apr 11 22:05:12 2014
+From: Eric.Roseman at Colorado.EDU (Eric Roseman)
+Date: Fri, 11 Apr 2014 20:05:12 +0000
+Subject: [i3] monitor dependent workspaces
+Message-ID: <201404112005.s3BK5CYw021254@refuge.colorado.edu>
+
+In a multi monitor setup, is it possible to configure the workspaces to
+be dependent of the monitor? For instance, say there are two or three
+monitors, is it configurable to have ten workspaces per monitor such
+that movement between the monitors can be done with a $mod+left or right,
+and $mod+{0-9} would switch to the workspace of the focused monitor?
+
+Thanks,
+Eric
+
+From brian.grossman+i3-discuss at gmail.com  Fri Apr 11 22:47:09 2014
+From: brian.grossman+i3-discuss at gmail.com (Brian Grossman)
+Date: Fri, 11 Apr 2014 14:47:09 -0600
+Subject: [i3] monitor dependent workspaces
+In-Reply-To: <201404112005.s3BK5CYw021254@refuge.colorado.edu>
+References: <201404112005.s3BK5CYw021254@refuge.colorado.edu>
+Message-ID: <CAPUwkJKaFJEnNXmzxvQCw=OX2Z8a8KS_ew8UjB0haaUA9uEGLw@mail.gmail.com>
+
+I use something like this:
+
+set $dpyLeft DP1
+set $dpyRight eDP1
+set $mymod Control+Mod1
+
+bindsym $mymod+Right focus right
+bindsym $mymod+Left focus left
+
+workspace 1 output $dpyLeft
+workspace 2 output $dpyLeft
+#      ...
+workspace 10 output $dpyLeft
+#
+workspace 11 output $dpyRight
+workspace 12 output $dpyRight
+#      ...
+workspace 20 output $dpyRight
+
+
+
+Brian
+
+
+
+On Fri, Apr 11, 2014 at 2:05 PM, Eric Roseman <Eric.Roseman at colorado.edu>wrote:
+
+> In a multi monitor setup, is it possible to configure the workspaces to
+> be dependent of the monitor? For instance, say there are two or three
+> monitors, is it configurable to have ten workspaces per monitor such
+> that movement between the monitors can be done with a $mod+left or right,
+> and $mod+{0-9} would switch to the workspace of the focused monitor?
+>
+> Thanks,
+> Eric
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140411/6f351ea6/attachment.html>
+
+From Eric.Roseman at Colorado.EDU  Fri Apr 11 23:59:16 2014
+From: Eric.Roseman at Colorado.EDU (Eric Roseman)
+Date: Fri, 11 Apr 2014 21:59:16 +0000
+Subject: [i3] monitor dependent workspaces
+Message-ID: <201404112159.s3BLxGpY030776@refuge.colorado.edu>
+
+Thanks for the input. I tried this and I'm not sure how to switch to
+workspaces 11-20. What I'm trying to do is have workspace 1-10 per
+monitor, and a mod+2 or mod+3 would focus the #2 or #3 workspace of the
+current monitor.
+
+Thanks,
+Eric
+
+
+> I use something like this:
+> 
+> 
+>     set $dpyLeft DP1
+>     set $dpyRight eDP1
+>     set $mymod Control+Mod1
+> 
+>     bindsym $mymod+Right focus right
+>     bindsym $mymod+Left focus left
+> 
+>     workspace 1 output $dpyLeft
+>     workspace 2 output $dpyLeft
+>     #      ...
+>     workspace 10 output $dpyLeft
+>     #
+>     workspace 11 output $dpyRight
+>     workspace 12 output $dpyRight
+>     #      ...
+>     workspace 20 output $dpyRight
+> 
+> 
+> 
+> Brian
+> 
+> 
+> 
+> On Fri, Apr 11, 2014 at 2:05 PM, Eric Roseman <[1]Eric.Roseman at colorado.edu> wrote:
+> 
+>     In a multi monitor setup, is it possible to configure the workspaces to
+>     be dependent of the monitor? For instance, say there are two or three
+>     monitors, is it configurable to have ten workspaces per monitor such
+>     that movement between the monitors can be done with a $mod+left or right,
+>     and $mod+{0-9} would switch to the workspace of the focused monitor?
+> 
+>     Thanks,
+>     Eric
+> 
+> 
+> 
+> References:
+> 
+> [1] mailto:Eric.Roseman at colorado.edu
+
+From brian.grossman+i3-discuss at gmail.com  Sat Apr 12 00:20:58 2014
+From: brian.grossman+i3-discuss at gmail.com (Brian Grossman)
+Date: Fri, 11 Apr 2014 16:20:58 -0600
+Subject: [i3] monitor dependent workspaces
+In-Reply-To: <201404112159.s3BLxGpY030776@refuge.colorado.edu>
+References: <201404112159.s3BLxGpY030776@refuge.colorado.edu>
+Message-ID: <CAPUwkJKLSzEyOXew-NFftq5rsShJ08VQWWK32k9OQhiy7CTY6w@mail.gmail.com>
+
+Sorry, I didn't read your message well.  I've no idea how to make mod+1
+switch to workspace 1 or 11 depending on which monitor you're on.
+
+For completeness, but not answering your question, here's what I use for
+workspaces 1 and 11:
+
+set $mod Mod4
+bindsym $mod+1 workspace number 1
+bindsym $mod+Control+1 workspace number 11
+
+
+Brian
+
+
+On Fri, Apr 11, 2014 at 3:59 PM, Eric Roseman <Eric.Roseman at colorado.edu>wrote:
+
+> Thanks for the input. I tried this and I'm not sure how to switch to
+> workspaces 11-20. What I'm trying to do is have workspace 1-10 per
+> monitor, and a mod+2 or mod+3 would focus the #2 or #3 workspace of the
+> current monitor.
+>
+> Thanks,
+> Eric
+>
+>
+> > I use something like this:
+> >
+> >
+> >     set $dpyLeft DP1
+> >     set $dpyRight eDP1
+> >     set $mymod Control+Mod1
+> >
+> >     bindsym $mymod+Right focus right
+> >     bindsym $mymod+Left focus left
+> >
+> >     workspace 1 output $dpyLeft
+> >     workspace 2 output $dpyLeft
+> >     #      ...
+> >     workspace 10 output $dpyLeft
+> >     #
+> >     workspace 11 output $dpyRight
+> >     workspace 12 output $dpyRight
+> >     #      ...
+> >     workspace 20 output $dpyRight
+> >
+> >
+> >
+> > Brian
+> >
+> >
+> >
+> > On Fri, Apr 11, 2014 at 2:05 PM, Eric Roseman <[1]
+> Eric.Roseman at colorado.edu> wrote:
+> >
+> >     In a multi monitor setup, is it possible to configure the workspaces
+> to
+> >     be dependent of the monitor? For instance, say there are two or three
+> >     monitors, is it configurable to have ten workspaces per monitor such
+> >     that movement between the monitors can be done with a $mod+left or
+> right,
+> >     and $mod+{0-9} would switch to the workspace of the focused monitor?
+> >
+> >     Thanks,
+> >     Eric
+> >
+> >
+> >
+> > References:
+> >
+> > [1] mailto:Eric.Roseman at colorado.edu
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140411/d7ac4c14/attachment.html>
+
+From tobias at frilling-online.de  Sat Apr 12 11:58:22 2014
+From: tobias at frilling-online.de (Tobias Frilling)
+Date: Sat, 12 Apr 2014 11:58:22 +0200
+Subject: [i3] i3 not capturing key syms
+In-Reply-To: <5343D7E2.4070807@frilling-online.de>
+References: <533EEAB1.2000004@frilling-online.de>
+ <x6mwfzqtjh.fsf@midna.zekjur.net> <5343D7E2.4070807@frilling-online.de>
+Message-ID: <53490E3E.8040809@frilling-online.de>
+
+So, does anybody have any idea how I can investigate this any further?
+
+From mail at merovius.de  Sat Apr 12 12:49:38 2014
+From: mail at merovius.de (Axel Wagner)
+Date: Sat, 12 Apr 2014 12:49:38 +0200
+Subject: [i3] monitor dependent workspaces
+In-Reply-To: <201404112159.s3BLxGpY030776@refuge.colorado.edu>
+References: <201404112159.s3BLxGpY030776@refuge.colorado.edu>
+Message-ID: <87ob06g6v1.fsf@rincewind.i-did-not-set--mail-host-address--so-tickle-me>
+
+Hi,
+
+I think the easiest way would be, to have a perl-script, that gets the
+currently active output over IPC and sends the command "workspace
+$1_{output}", when called with "scriptname n", then put into your config
+file something like this:
+bindsym 1 exec /path/to/scriptname 1
+bindsym 2 exec /path/to/scriptname 2
+…
+workspace 1_DPI1 output DPI1
+workspace 2_DPI1 output DPI2
+…
+workspace 1_eDPI1 output eDPI1
+…
+
+Alternatively you could do without an external script, by using modes in
+your config, so effectively duplicate all your bindings into two modes,
+just change the keybindings for switching between workspaces. Then have
+a binding to toggle between modes (effectively switching outputs).
+
+Best,
+
+Axel
+
+From i3 at hunsicker.de  Sat Apr 12 12:52:04 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Sat, 12 Apr 2014 12:52:04 +0200
+Subject: [i3] IPC window close event
+In-Reply-To: <53481231.6050509@dubstepdish.com>
+References: <53459E8D.70603@hunsicker.de> <x68ureqm4o.fsf@midna.zekjur.net>
+ <5346C9E5.7010408@dubstepdish.com> <534721CA.40902@hunsicker.de>
+ <53481231.6050509@dubstepdish.com>
+Message-ID: <53491AD4.2020904@hunsicker.de>
+
+Hello Tony,
+
+thanks for your detailed explanation.
+
+
+ > So this is very expressive, but a bit cryptic and not very well
+ > documented outside of the testcases. It also plays to the primary
+ > strength of the workspace reply object which is that no recursive
+ > tree-parsing is required so it can be used with simple tools.
+
+The i3bar workspace parsing code still has to be adjusted because of its 
+very strict nature. I was quite surprised that there was no i3bar when I 
+first started i3 after my changes!
+
+
+ > Would this implementation fit your use case?
+
+Yes, that would fit my use case perfectly well.
+
+I was essentially doing the same thing, just using nodes_head and 
+floating_head instead. But after adjusting the code to use focus_head, 
+several test cases fail.
+
+Problematic seems to be that I have to alter focus_head before the 
+window close event is send, in order to get the correct window count. It 
+worked just fine with the other mentioned data structures. I will try 
+and see whether I can get it working again. If I can't, I will still 
+post my working patch and we can go from there. Thanks.
+
+
+Cheers,
+   Marco
+
+From jeff at jibson.com  Sun Apr 13 09:23:22 2014
+From: jeff at jibson.com (Jeff Jibson)
+Date: Sun, 13 Apr 2014 01:23:22 -0600
+Subject: [i3] monitor dependent workspaces
+In-Reply-To: <201404112159.s3BLxGpY030776@refuge.colorado.edu>
+References: <201404112159.s3BLxGpY030776@refuge.colorado.edu>
+Message-ID: <CAPAw0WrciJ8Zmzrw1W-Zihbmb=C7e3uyg6=TNm5P_-uOPK+arQ@mail.gmail.com>
+
+On Fri, Apr 11, 2014 at 3:59 PM, Eric Roseman <Eric.Roseman at colorado.edu>wrote:
+
+> Thanks for the input. I tried this and I'm not sure how to switch to
+> workspaces 11-20. What I'm trying to do is have workspace 1-10 per
+> monitor, and a mod+2 or mod+3 would focus the #2 or #3 workspace of the
+> current monitor.
+>
+> Thanks,
+> Eric
+>
+
+You can use other mod keys.  I have the left windows key setup as hyper and
+the right as super.  I tend to use the monitors in pairs (browsers on the
+left and tmux on the right) so, $Hyper+Control changes to both.  Using 0L
+and 0R works nice for scripting the pairs.
+
+set $Hyper Mod3
+set $Super Mod4
+
+# switch to another workspace
+bindcode $Hyper+19 workspace "0L"
+bindcode $Super+19 workspace "0R"
+bindcode $Hyper+Control+19 workspace "0L"; workspace "0R"
+bindcode $Hyper+10 workspace "1L"
+bindcode $Super+10 workspace "1R"
+bindcode $Hyper+Control+10 workspace "1L"; workspace "1R"
+bindcode $Hyper+11 workspace "2L"
+bindcode $Super+11 workspace "2R"
+bindcode $Hyper+Control+11 workspace "2L"; workspace "2R"
+...
+
+# Workspace assignments
+workspace "0L"        output DVI-I-1
+workspace "1L"        output DVI-I-1
+workspace "2L"        output DVI-I-1
+...
+workspace "0R"        output HDMI-1
+workspace "1R"        output HDMI-1
+workspace "2R"        output HDMI-1
+...
+
+# move to another workspace
+bindcode $Hyper+Shift+19 move workspace "0L"
+bindcode $Super+Shift+19 move workspace "0R"
+bindcode $Hyper+Shift+10 move workspace "1L"
+bindcode $Super+Shift+10 move workspace "1R"
+bindcode $Hyper+Shift+11 move workspace "2L"
+bindcode $Super+Shift+11 move workspace "2R"
+...
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140413/42c70808/attachment.html>
+
+From michael at i3wm.org  Mon Apr 14 14:19:00 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 14 Apr 2014 14:19:00 +0200
+Subject: [i3] i3 not capturing key syms
+In-Reply-To: <53490E3E.8040809@frilling-online.de>
+References: <533EEAB1.2000004@frilling-online.de>
+ <x6mwfzqtjh.fsf@midna.zekjur.net> <5343D7E2.4070807@frilling-online.de>
+ <53490E3E.8040809@frilling-online.de>
+Message-ID: <x638hgw1cb.fsf@midna.home>
+
+Hi Tobias,
+
+Tobias Frilling <tobias at frilling-online.de> writes:
+> So, does anybody have any idea how I can investigate this any further?
+I compared your xmodmap -pke output with mine, and it is different like
+this:
+
+(yours:)
+keycode  10 = 1 degree 1 degree onesuperior onesubscript ordfeminine
+NoSymbol notsign
+
+(mine:)
+keycode  10 = 1 degree onesuperior onesubscript ordfeminine NoSymbol
+notsign
+
+I’m using revision 2332 of the neo2 xmodmap file to load the
+layout. Maybe that makes a difference?
+
+Also, I’m unclear on whether you have any trouble _within_ i3 or just
+with i3-config-wizard. If the former: please provide a log, see
+http://i3wm.org/docs/debugging.html. If the latter: just don’t use
+i3-config-wizard for now?
+
+-- 
+Best regards,
+Michael
+
+From tobias at frilling-online.de  Mon Apr 14 15:46:43 2014
+From: tobias at frilling-online.de (Tobias Frilling)
+Date: Mon, 14 Apr 2014 15:46:43 +0200
+Subject: [i3] i3 not capturing key syms
+In-Reply-To: <x638hgw1cb.fsf@midna.home>
+References: <533EEAB1.2000004@frilling-online.de>
+ <x6mwfzqtjh.fsf@midna.zekjur.net> <5343D7E2.4070807@frilling-online.de>
+ <53490E3E.8040809@frilling-online.de> <x638hgw1cb.fsf@midna.home>
+Message-ID: <534BE6C3.1010309@frilling-online.de>
+
+Michael Stapelberg wrote, On 2014-04-14 14:19:
+> I’m using revision 2332 of the neo2 xmodmap file to load the
+> layout. Maybe that makes a difference?
+I don't know. Currently I'm using the xkbmap shipped with X, but switching to the xmodmap as per [1] does not help.
+
+> Also, I’m unclear on whether you have any trouble _within_ i3 or just
+> with i3-config-wizard.
+I'm having trouble within i3. I've got Mod4 as the leader for anything related to moving focus or spawning terminals, so this bug is a deal breaker.
+
+> If the former: please provide a log, [...]
+http://codepad.org/HzRDvnkX
+I'm just starting i3 and pressing Mod4+Return a couple of times.
+
+[1] http://wiki.neo-layout.org/wiki/Neo%20unter%20Linux%20einrichten
+
+From tobias at frilling-online.de  Mon Apr 14 15:52:35 2014
+From: tobias at frilling-online.de (Tobias Frilling)
+Date: Mon, 14 Apr 2014 15:52:35 +0200
+Subject: [i3] i3 not capturing key syms
+In-Reply-To: <534BE6C3.1010309@frilling-online.de>
+References: <533EEAB1.2000004@frilling-online.de>
+ <x6mwfzqtjh.fsf@midna.zekjur.net> <5343D7E2.4070807@frilling-online.de>
+ <53490E3E.8040809@frilling-online.de> <x638hgw1cb.fsf@midna.home>
+ <534BE6C3.1010309@frilling-online.de>
+Message-ID: <534BE823.1010907@frilling-online.de>
+
+Tobias Frilling wrote, On 2014-04-14 15:46:
+>> If the former: please provide a log, [...]
+> http://codepad.org/HzRDvnkX
+> I'm just starting i3 and pressing Mod4+Return a couple of times.
+
+Sorry, it seems like that page has borked the paste. Here's the full one:
+http://pastebin.com/cwb14uTF
+
+From michael at i3wm.org  Mon Apr 14 18:53:55 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 14 Apr 2014 18:53:55 +0200
+Subject: [i3] i3 not capturing key syms
+In-Reply-To: <534BE6C3.1010309@frilling-online.de>
+References: <533EEAB1.2000004@frilling-online.de>
+ <x6mwfzqtjh.fsf@midna.zekjur.net> <5343D7E2.4070807@frilling-online.de>
+ <53490E3E.8040809@frilling-online.de> <x638hgw1cb.fsf@midna.home>
+ <534BE6C3.1010309@frilling-online.de>
+Message-ID: <x6r44zq2cc.fsf@midna.zekjur.net>
+
+Hi Tobias,
+
+Tobias Frilling <tobias at frilling-online.de> writes:
+>> Also, I’m unclear on whether you have any trouble _within_ i3 or just
+>> with i3-config-wizard.
+> I'm having trouble within i3. I've got Mod4 as the leader for anything related to moving focus or spawning terminals, so this bug is a deal breaker.
+>
+>> If the former: please provide a log, [...]
+> http://codepad.org/HzRDvnkX
+> I'm just starting i3 and pressing Mod4+Return a couple of times.
+In your logfile, in line 1009, the keybindings are re-grabbed, this time
+with the correct mapping (presumably you load your layout manually after
+starting i3).
+
+AFAICT, the mapping is correct:
+
+2014-04-14 15:33:30 - config.c:translate_keysyms:156 - Translated symbol "Return" to 1 keycode
+[…]
+2014-04-14 15:33:30 - config.c:grab_keycode_for_binding:34 - Grabbing 36 with modifiers 64 (with mod_mask_lock 66)
+
+This is exactly the same line that I get in my log, and it works just
+fine for me.
+
+Are you sure that you have neither caps lock nor num lock pressed by
+accident? Also, what is the output of “xev” when you start it and press
+Mod4+Return?
+
+I also noticed that the Return keybinding in your “xmodmap -pke” output
+only has symbols for the first two layers:
+
+keycode  36 = Return NoSymbol Return
+
+Maybe try defining the upper layers too? For me it looks like this:
+
+keycode  36 = Return Return Return Return KP_Enter KP_Enter Return Return
+
+Also, maybe try this with a fresh user account, or booting from a live
+system? I am pretty sure this is a configuration problem of some sort,
+since there are many many i3 users with strange layouts and there were
+no bug reports like what you are reporting in the last couple of years.
+
+-- 
+Best regards,
+Michael
+
+From tobias at frilling-online.de  Mon Apr 14 22:13:30 2014
+From: tobias at frilling-online.de (Tobias Frilling)
+Date: Mon, 14 Apr 2014 22:13:30 +0200
+Subject: [i3] i3 not capturing key syms
+In-Reply-To: <x6r44zq2cc.fsf@midna.zekjur.net>
+References: <533EEAB1.2000004@frilling-online.de>
+ <x6mwfzqtjh.fsf@midna.zekjur.net> <5343D7E2.4070807@frilling-online.de>
+ <53490E3E.8040809@frilling-online.de> <x638hgw1cb.fsf@midna.home>
+ <534BE6C3.1010309@frilling-online.de> <x6r44zq2cc.fsf@midna.zekjur.net>
+Message-ID: <534C416A.2040505@frilling-online.de>
+
+Michael Stapelberg wrote, On 2014-04-14 18:53:
+> Are you sure that you have neither caps lock nor num lock pressed by
+> accident?
+> [...]
+> Also, maybe try this with a fresh user account, or booting from a live
+> system? I am pretty sure this is a configuration problem of some sort,
+> since there are many many i3 users with strange layouts and there were
+> no bug reports like what you are reporting in the last couple of years.
+
+You're absolutely right. I've created and used a new user, and the problem vanished. So I bisected my configs for something that could interfere with the keyboard layout. Turns out I have "numlockx" in my autostart since ancient times. Removing it sorted out the issue.
+
+Thanks for your help and sorry for the noise.
+
+From jk at zognet.com  Wed Apr 16 15:17:22 2014
+From: jk at zognet.com (Gerald Klein)
+Date: Wed, 16 Apr 2014 08:17:22 -0500
+Subject: [i3] i3status
+Message-ID: <CAP8NtCyoWJHGMw-PjVOaPDM+J9JcPk92BsR3K8-3Fxp-rfhsUQ@mail.gmail.com>
+
+Hi I use Gentoo and arch linux, I had i3 setup on gentoo using i3bar with
+i3status, I set it up on Arch and I can't seem to get the network info for
+i3 status, does anyone know the network oackage that I need to enable or
+install? thanks
+
+-- 
+
+Gerald Klein DBA
+
+ContactMe at geraldklein.com
+
+www.geraldklein.com <http://geraldklein.com/>
+
+geraldklein.wordpress.com
+
+jk at zognet.com
+
+708-599-0352
+
+
+Arch Awesome, Ranger & Vim the coding triple threat.
+
+Linux registered user #548580
+
+Brought to you by the Amish Mafia
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140416/3afe70dc/attachment.html>
+
+From mariusz.libera at gmail.com  Wed Apr 16 16:13:19 2014
+From: mariusz.libera at gmail.com (Mariusz Libera)
+Date: Wed, 16 Apr 2014 16:13:19 +0200
+Subject: [i3] i3status
+In-Reply-To: <CAP8NtCyoWJHGMw-PjVOaPDM+J9JcPk92BsR3K8-3Fxp-rfhsUQ@mail.gmail.com>
+References: <CAP8NtCyoWJHGMw-PjVOaPDM+J9JcPk92BsR3K8-3Fxp-rfhsUQ@mail.gmail.com>
+Message-ID: <CACLQ8MsxB-2ybfHqTC1d6oeWkUhoKbkcmwwm0sT4Sv4MPe0A5Q@mail.gmail.com>
+
+Hi,
+it's probably because of wrong network interface names. I don't know
+about gentoo but arch uses "Predictable Network Interface Names"
+feature of udev/systemd, so your interfaces are no longer named eth0
+and wlan0. Read
+https://wiki.archlinux.org/index.php/Network_configuration#Device_names
+
+On Wed, Apr 16, 2014 at 3:17 PM, Gerald Klein <jk at zognet.com> wrote:
+> Hi I use Gentoo and arch linux, I had i3 setup on gentoo using i3bar with
+> i3status, I set it up on Arch and I can't seem to get the network info for
+> i3 status, does anyone know the network oackage that I need to enable or
+> install? thanks
+>
+> --
+>
+> Gerald Klein DBA
+>
+> ContactMe at geraldklein.com
+>
+> www.geraldklein.com
+>
+> geraldklein.wordpress.com
+>
+> jk at zognet.com
+>
+> 708-599-0352
+>
+>
+> Arch Awesome, Ranger & Vim the coding triple threat.
+>
+> Linux registered user #548580
+>
+> Brought to you by the Amish Mafia
+
+From dcoppa at gmail.com  Wed Apr 16 16:20:44 2014
+From: dcoppa at gmail.com (David Coppa)
+Date: Wed, 16 Apr 2014 16:20:44 +0200
+Subject: [i3] i3status
+In-Reply-To: <CACLQ8MsxB-2ybfHqTC1d6oeWkUhoKbkcmwwm0sT4Sv4MPe0A5Q@mail.gmail.com>
+References: <CAP8NtCyoWJHGMw-PjVOaPDM+J9JcPk92BsR3K8-3Fxp-rfhsUQ@mail.gmail.com>
+ <CACLQ8MsxB-2ybfHqTC1d6oeWkUhoKbkcmwwm0sT4Sv4MPe0A5Q@mail.gmail.com>
+Message-ID: <CABM=MF+-v+aDtx2_aau8RHmRzQ_2zWrbLoWNiWyeMHuiMA9NMQ@mail.gmail.com>
+
+On Wed, Apr 16, 2014 at 4:13 PM, Mariusz Libera
+<mariusz.libera at gmail.com> wrote:
+> Hi,
+> it's probably because of wrong network interface names. I don't know
+> about gentoo but arch uses "Predictable Network Interface Names"
+> feature of udev/systemd, so your interfaces are no longer named eth0
+> and wlan0. Read
+> https://wiki.archlinux.org/index.php/Network_configuration#Device_names
+
+On my linux notebook, eth0 is now enp0s25 and wlan0 is wlp3s0.
+
+ciao,
+David
+
+From jk at zognet.com  Wed Apr 16 18:14:46 2014
+From: jk at zognet.com (Gerald Klein)
+Date: Wed, 16 Apr 2014 11:14:46 -0500
+Subject: [i3] i3status
+In-Reply-To: <CABM=MF+-v+aDtx2_aau8RHmRzQ_2zWrbLoWNiWyeMHuiMA9NMQ@mail.gmail.com>
+References: <CAP8NtCyoWJHGMw-PjVOaPDM+J9JcPk92BsR3K8-3Fxp-rfhsUQ@mail.gmail.com>
+ <CACLQ8MsxB-2ybfHqTC1d6oeWkUhoKbkcmwwm0sT4Sv4MPe0A5Q@mail.gmail.com>
+ <CABM=MF+-v+aDtx2_aau8RHmRzQ_2zWrbLoWNiWyeMHuiMA9NMQ@mail.gmail.com>
+Message-ID: <CAP8NtCwMfA-JST5RBmSQVZ_bO-yKy=KaL8Z28vPCA1jkagSNAA@mail.gmail.com>
+
+thanks for your reply,
+
+Yea that part I got ok both Arch and Gentoo are eno1 on this box, I think
+that I need to look at network utility packages a little closer.
+
+When I installed on Gentoo I didn't even think about it and it just worked.
+
+--jerry
+
+
+
+
+On Wed, Apr 16, 2014 at 9:20 AM, David Coppa <dcoppa at gmail.com> wrote:
+
+> On Wed, Apr 16, 2014 at 4:13 PM, Mariusz Libera
+> <mariusz.libera at gmail.com> wrote:
+> > Hi,
+> > it's probably because of wrong network interface names. I don't know
+> > about gentoo but arch uses "Predictable Network Interface Names"
+> > feature of udev/systemd, so your interfaces are no longer named eth0
+> > and wlan0. Read
+> > https://wiki.archlinux.org/index.php/Network_configuration#Device_names
+>
+> On my linux notebook, eth0 is now enp0s25 and wlan0 is wlp3s0.
+>
+> ciao,
+> David
+>
+
+
+
+-- 
+
+Gerald Klein DBA
+
+ContactMe at geraldklein.com
+
+www.geraldklein.com <http://geraldklein.com/>
+
+geraldklein.wordpress.com
+
+jk at zognet.com
+
+708-599-0352
+
+
+Arch Awesome, Ranger & Vim the coding triple threat.
+
+Linux registered user #548580
+
+Brought to you by the Amish Mafia
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140416/b8bca27a/attachment.html>
+
+From thomas.sanchz at gmail.com  Wed Apr 16 18:18:53 2014
+From: thomas.sanchz at gmail.com (Thomas Sanchez)
+Date: Wed, 16 Apr 2014 18:18:53 +0200
+Subject: [i3] Questions regarding bindsym through ipc, tabbed layout, etc.
+Message-ID: <CAHR9pOHM89YRj_nY9L=MmMEWSv4_kPRbDiQCZTRau0tzbviNPA@mail.gmail.com>
+
+Hi,
+First of all I wanted to say thank you for i3. I finally found a WM
+that answer all my needs :)
+
+However I have some questions:
+
+* Is there any rational for bindsym not being considered as any other command ?
+$> i3-msg 'bindsym Mod4+i exec gvim'
+ERROR: Your command: bindsym Mod4+i exec gvim
+ERROR:               ^^^^^^^^^^^^^^^^^^^^^^^^
+
+I wrote a set of script ( https://github.com/daedric/i3scripts ) to
+manage dynamic workspaces according to the project I'm working on.
+IMO it would make sense to be able to setup some specific binding.
+Thus, it would make also sense to be able to delete/replace a binding.
+
+I searched a bit, and I found nothing, so if it has already been asked
+I'm sorry.
+
+* Why when I have a splitted workspace with say chromium and a
+terminal, I can't set the layout to tabbed (or stacked) for the
+terminal but I can split it ?
+
+* Why this does not work (no error reported, but i3lock does not get
+executed, nothing in the logs):
+bindsym F1 exec i3lock
+or
+bindsym $mod+F1 exec i3lock
+
+I thought that maybe F1 is not the right symbol, but according to
+xmodmap -pke/xev it is
+
+* The following binding, does not show the i3-input on the focused output
+bindsym $mod+m exec i3-input -P "Mark: " -F "mark %s"
+
+
+Thanks,
+-- 
+Thomas Sanchez
+
+From jk at zognet.com  Wed Apr 16 18:28:13 2014
+From: jk at zognet.com (Gerald Klein)
+Date: Wed, 16 Apr 2014 11:28:13 -0500
+Subject: [i3] Questions regarding bindsym through ipc, tabbed layout,
+	etc.
+In-Reply-To: <CAHR9pOHM89YRj_nY9L=MmMEWSv4_kPRbDiQCZTRau0tzbviNPA@mail.gmail.com>
+References: <CAHR9pOHM89YRj_nY9L=MmMEWSv4_kPRbDiQCZTRau0tzbviNPA@mail.gmail.com>
+Message-ID: <CAP8NtCz8fLY0ijb-JzfTTO1zeAD7vayNJHYi0smHmD8MK-UiEA@mail.gmail.com>
+
+I have found for some reason that certain key combos won't work but the
+same action will work with different keys, not to say this is ideal but
+only to make sure that the question were asking is the correct one. I am
+able to change layouts at will so that is why I mention it. I also use F1
+in my modes no problem. Here is my mark scenario.
+
+mode "markIt" {
+
+    bindsym m exec i3-input -F 'mark %s' -l 1 -P 'Mark: '
+    bindsym apostrophe exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Go
+to: '
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+    bindsym F3 mode "default"
+    bindsym $alt+apostrophe mode "default"
+
+}
+bindsym $alt+apostrophe mode "markIt"
+bindsym F3 mode "markIt"
+
+
+
+On Wed, Apr 16, 2014 at 11:18 AM, Thomas Sanchez <thomas.sanchz at gmail.com>wrote:
+
+> Hi,
+> First of all I wanted to say thank you for i3. I finally found a WM
+> that answer all my needs :)
+>
+> However I have some questions:
+>
+> * Is there any rational for bindsym not being considered as any other
+> command ?
+> $> i3-msg 'bindsym Mod4+i exec gvim'
+> ERROR: Your command: bindsym Mod4+i exec gvim
+> ERROR:               ^^^^^^^^^^^^^^^^^^^^^^^^
+>
+> I wrote a set of script ( https://github.com/daedric/i3scripts ) to
+> manage dynamic workspaces according to the project I'm working on.
+> IMO it would make sense to be able to setup some specific binding.
+> Thus, it would make also sense to be able to delete/replace a binding.
+>
+> I searched a bit, and I found nothing, so if it has already been asked
+> I'm sorry.
+>
+> * Why when I have a splitted workspace with say chromium and a
+> terminal, I can't set the layout to tabbed (or stacked) for the
+> terminal but I can split it ?
+>
+> * Why this does not work (no error reported, but i3lock does not get
+> executed, nothing in the logs):
+> bindsym F1 exec i3lock
+> or
+> bindsym $mod+F1 exec i3lock
+>
+> I thought that maybe F1 is not the right symbol, but according to
+> xmodmap -pke/xev it is
+>
+> * The following binding, does not show the i3-input on the focused output
+> bindsym $mod+m exec i3-input -P "Mark: " -F "mark %s"
+>
+>
+> Thanks,
+> --
+> Thomas Sanchez
+>
+
+
+
+-- 
+
+Gerald Klein DBA
+
+ContactMe at geraldklein.com
+
+www.geraldklein.com <http://geraldklein.com/>
+
+geraldklein.wordpress.com
+
+jk at zognet.com
+
+708-599-0352
+
+
+Arch Awesome, Ranger & Vim the coding triple threat.
+
+Linux registered user #548580
+
+Brought to you by the Amish Mafia
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140416/d6c3916d/attachment-0001.html>
+
+From thomas.sanchz at gmail.com  Wed Apr 16 18:36:14 2014
+From: thomas.sanchz at gmail.com (Thomas Sanchez)
+Date: Wed, 16 Apr 2014 18:36:14 +0200
+Subject: [i3] Questions regarding bindsym through ipc, tabbed layout,
+	etc.
+In-Reply-To: <CAP8NtCz8fLY0ijb-JzfTTO1zeAD7vayNJHYi0smHmD8MK-UiEA@mail.gmail.com>
+References: <CAHR9pOHM89YRj_nY9L=MmMEWSv4_kPRbDiQCZTRau0tzbviNPA@mail.gmail.com>
+ <CAP8NtCz8fLY0ijb-JzfTTO1zeAD7vayNJHYi0smHmD8MK-UiEA@mail.gmail.com>
+Message-ID: <CAHR9pOG-fDGK3hbVtq-Gn_-VM392GLE8FFfErMUN81BsaYPanw@mail.gmail.com>
+
+2014-04-16 18:28 GMT+02:00 Gerald Klein <jk at zognet.com>:
+> I have found for some reason that certain key combos won't work but the same
+> action will work with different keys, not to say this is ideal but only to
+> make sure that the question were asking is the correct one. I am able to
+> change layouts at will so that is why I mention it. I also use F1 in my
+> modes no problem. Here is my mark scenario.
+>
+> mode "markIt" {
+>
+>     bindsym m exec i3-input -F 'mark %s' -l 1 -P 'Mark: '
+>     bindsym apostrophe exec i3-input -F '[con_mark="%s"] focus' -l 1 -P 'Go
+> to: '
+>     bindsym Return mode "default"
+>     bindsym Escape mode "default"
+>     bindsym F3 mode "default"
+>     bindsym $alt+apostrophe mode "default"
+>
+> }
+> bindsym $alt+apostrophe mode "markIt"
+> bindsym F3 mode "markIt"
+
+Mhhh, indeed, F3 works, I did try F1 and F12 but these keys do not work.
+
+About the layou thing I've been stupid, I can do it but to set the
+layout to tabbed for a container, I need it to have a child.
+If I split the terminal, I create another terminal for instance, then
+I can set the layout to tabbed.
+That is one question and half solved :P
+
+Thanks for you answer !
+
+>
+> [...]
+
+
+
+-- 
+Thomas Sanchez
+
+From michael at i3wm.org  Wed Apr 16 19:13:22 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 16 Apr 2014 19:13:22 +0200
+Subject: [i3] Questions regarding bindsym through ipc, tabbed layout,
+	etc.
+In-Reply-To: <CAHR9pOHM89YRj_nY9L=MmMEWSv4_kPRbDiQCZTRau0tzbviNPA@mail.gmail.com>
+References: <CAHR9pOHM89YRj_nY9L=MmMEWSv4_kPRbDiQCZTRau0tzbviNPA@mail.gmail.com>
+Message-ID: <x6lhv5p58t.fsf@midna.zekjur.net>
+
+Hi Thomas,
+
+Thomas Sanchez <thomas.sanchz at gmail.com> writes:
+> * Is there any rational for bindsym not being considered as any other command ?
+> $> i3-msg 'bindsym Mod4+i exec gvim'
+> ERROR: Your command: bindsym Mod4+i exec gvim
+> ERROR:               ^^^^^^^^^^^^^^^^^^^^^^^^
+bindsym is not a command, it’s a configuration directive. Implementing a
+command to add new configuration lines to the current configuration is
+something I had planned for some time, but I’m not entirely sure it’s a
+good idea anymore. It’d kill the very clear current mapping from a
+configuration file on-disk to what i3 keeps in memory. I suppose we’d
+need a “dump current configuration” command at least.
+
+> I wrote a set of script ( https://github.com/daedric/i3scripts ) to
+> manage dynamic workspaces according to the project I'm working on.
+> IMO it would make sense to be able to setup some specific binding.
+> Thus, it would make also sense to be able to delete/replace a binding.
+Have you considered generating a configfile and simply issuing the
+“reload” command?
+
+> * Why when I have a splitted workspace with say chromium and a
+> terminal, I can't set the layout to tabbed (or stacked) for the
+> terminal but I can split it ?
+Because the terminal is not a split container, it’s a leaf node. After
+you split it, you’ll be able to change the layout, but until you open
+more windows, you will not see any effects. See also
+http://www.youtube.com/watch?v=AWA8Pl57UBY for more details.
+
+> * The following binding, does not show the i3-input on the focused output
+> bindsym $mod+m exec i3-input -P "Mark: " -F "mark %s"
+There’s a bugreport for that: http://bugs.i3wm.org/report/ticket/1058
+
+-- 
+Best regards,
+Michael
+
+From thomas.sanchz at gmail.com  Thu Apr 17 18:05:05 2014
+From: thomas.sanchz at gmail.com (Thomas Sanchez)
+Date: Thu, 17 Apr 2014 18:05:05 +0200
+Subject: [i3] Questions regarding bindsym through ipc, tabbed layout,
+	etc.
+In-Reply-To: <x6lhv5p58t.fsf@midna.zekjur.net>
+References: <CAHR9pOHM89YRj_nY9L=MmMEWSv4_kPRbDiQCZTRau0tzbviNPA@mail.gmail.com>
+ <x6lhv5p58t.fsf@midna.zekjur.net>
+Message-ID: <CAHR9pOHTuOuBp9xTYYe5Lnn52xhvfevVX6G3QqOZYC2cRvT=jw@mail.gmail.com>
+
+Hi !
+
+2014-04-16 19:13 GMT+02:00 Michael Stapelberg <michael at i3wm.org>:
+> Hi Thomas,
+>
+> Thomas Sanchez <thomas.sanchz at gmail.com> writes:
+>> * Is there any rational for bindsym not being considered as any other command ?
+>> $> i3-msg 'bindsym Mod4+i exec gvim'
+>> ERROR: Your command: bindsym Mod4+i exec gvim
+>> ERROR:               ^^^^^^^^^^^^^^^^^^^^^^^^
+> bindsym is not a command, it’s a configuration directive. Implementing a
+> command to add new configuration lines to the current configuration is
+> something I had planned for some time, but I’m not entirely sure it’s a
+> good idea anymore. It’d kill the very clear current mapping from a
+> configuration file on-disk to what i3 keeps in memory. I suppose we’d
+> need a “dump current configuration” command at least.
+
+Altering the configuration during the runtime as you work is not
+something that is choking me but you have much more experience that I
+have.
+
+
+>
+>> I wrote a set of script ( https://github.com/daedric/i3scripts ) to
+>> manage dynamic workspaces according to the project I'm working on.
+>> IMO it would make sense to be able to setup some specific binding.
+>> Thus, it would make also sense to be able to delete/replace a binding.
+> Have you considered generating a configfile and simply issuing the
+> “reload” command?
+
+That is actually a good idea but would you consider then adding a
+directive like `source another_i3_config_file` ?
+It would also be nice to be able to get the current mapping configured.
+
+>
+>> * Why when I have a splitted workspace with say chromium and a
+>> terminal, I can't set the layout to tabbed (or stacked) for the
+>> terminal but I can split it ?
+> Because the terminal is not a split container, it’s a leaf node. After
+> you split it, you’ll be able to change the layout, but until you open
+> more windows, you will not see any effects. See also
+> http://www.youtube.com/watch?v=AWA8Pl57UBY for more details.
+
+Yes I understood it a bit later after my mail as I stated in my answer
+to Gerald. Thanks for the video.
+
+>
+>> * The following binding, does not show the i3-input on the focused output
+>> bindsym $mod+m exec i3-input -P "Mark: " -F "mark %s"
+> There’s a bugreport for that: http://bugs.i3wm.org/report/ticket/1058
+
+Ho, I should have looked, thanks.
+
+
+Thanks for your answers.
+
+
+-- 
+Thomas Sanchez
+
+From michael at i3wm.org  Fri Apr 18 11:03:28 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 18 Apr 2014 11:03:28 +0200
+Subject: [i3] Questions regarding bindsym through ipc, tabbed layout,
+	etc.
+In-Reply-To: <CAHR9pOHTuOuBp9xTYYe5Lnn52xhvfevVX6G3QqOZYC2cRvT=jw@mail.gmail.com>
+References: <CAHR9pOHM89YRj_nY9L=MmMEWSv4_kPRbDiQCZTRau0tzbviNPA@mail.gmail.com>
+ <x6lhv5p58t.fsf@midna.zekjur.net>
+ <CAHR9pOHTuOuBp9xTYYe5Lnn52xhvfevVX6G3QqOZYC2cRvT=jw@mail.gmail.com>
+Message-ID: <x6fvlbovq7.fsf@midna.zekjur.net>
+
+Hi Thomas,
+
+Thomas Sanchez <thomas.sanchz at gmail.com> writes:
+>> Have you considered generating a configfile and simply issuing the
+>> “reload” command?
+>
+> That is actually a good idea but would you consider then adding a
+> directive like `source another_i3_config_file` ?
+> It would also be nice to be able to get the current mapping
+> configured.
+I think in terms of effects that is equivalent to alerting the
+configuration at runtime. I.e. it makes debugging equally harder and
+requires an equal amount of new commands. Given that it doesn’t
+establish as much as the other directive, I think it doesn’t make sense
+to be able to source another configuration file.
+
+Furthermore, I think that having a single path to read the configuration
+from is enough from i3’s point of view, and control over how this
+configuration should be concatenated/generated stays with the user.
+
+-- 
+Best regards,
+Michael
+
+From anton.lofgren at gmail.com  Wed Apr 23 08:27:24 2014
+From: anton.lofgren at gmail.com (Anton =?iso-8859-1?Q?L=F6fgren?=)
+Date: Wed, 23 Apr 2014 08:27:24 +0200
+Subject: [i3] i3-input shell out
+Message-ID: <20140423062724.GD1932@anton-t430s.int.op5.se>
+
+Hi list,
+
+I've been looking around for a while to get some sort of auto-completion
+going for switching between temporary named workspaces. I'm currently using
+i3-input, as such:
+
+bindsym $mod+t exec i3-input -F 'workspace %s' -P 'Switch to: '
+
+to allow me to switch between workspaces.
+
+Now, this works completely fine, but becomes a bit cumbersome when you
+want to give your workspaces more descriptive names.
+
+My current idea (and I'm not sure if it's a terrible one or not, hence
+this message), is to patch i3-input to allow some sort of shell-out
+functionality. Let's consider a hypothetical -U option, which is
+probably dependent on the -F option and which takes as
+an argument any old string:
+
+-U <string>
+
+<string> here (likely a shell command), would be something that takes
+the input (as provided by the user), does "something" with it, and
+instead of interpolating the format string with the user input,
+interpolates it with <string>'s output.
+
+Reusing my binding from above, I'd like to do something similar to:
+
+bindsym $mod+t exec i3-input -F 'workspace %s' -U '~/bin/autocomplete-i3-workspace %s'  -P 'Switch to: '
+
+which executes the autocomplete-i3-workspace program, which in turn
+returns a workspace autocompletion of my input, interpolates that into
+the command and switches the workspace for me, without me having to type
+the entire name of the workspace.
+
+Possibly, you'd want some sort of checking of the exit code of the
+subshell as well to allow for graceful handling of failures.
+
+Am I making sense? Is this something that might be desirable for the
+community in general? If so, what would you change about the proposal
+outlined here? If not, is there a better way to do this already?
+
+I've considered using dmenu to achieve basically the same thing. if I
+remember correctly, I once had a wmii setup like that, but I wanted to
+run the idea by you all first, and hear your input, since I feel like
+it'd be a neat feature to have built-in.
+
+Anton
+
+From michael at i3wm.org  Wed Apr 23 09:56:36 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 23 Apr 2014 09:56:36 +0200
+Subject: [i3] i3-input shell out
+In-Reply-To: <20140423062724.GD1932@anton-t430s.int.op5.se>
+References: <20140423062724.GD1932@anton-t430s.int.op5.se>
+Message-ID: <x6fvl4jx6z.fsf@midna.zekjur.net>
+
+Hi Anton,
+
+Sounds to me like you’re trying to rebuild quickswitch-for-i3’s
+--workspaces flag: https://github.com/proxypoke/quickswitch-for-i3
+
+-- 
+Best regards,
+Michael
+
+From nashpapa at gmail.com  Fri Apr 25 18:44:20 2014
+From: nashpapa at gmail.com (avinash r)
+Date: Fri, 25 Apr 2014 22:14:20 +0530
+Subject: [i3] Window resize issue
+Message-ID: <CAHCistcuXZjivTK+fVHgk+SfkGGLqDXpRmfLM4yopfum78WKGw@mail.gmail.com>
+
+Hi,
+
+I was using Android Studio (AS) which has java awt based UI,
+In i3wm only[1], the dialog content appear like little box of 10-15px
+in size, or in partial size.
+
+As it doesn't appear in other WMs[1], the developers of AS, cannot be
+asked to find the cause of this.
+
+I don't know if it is an i3 bug even, as I haven't seen done by any
+other application using java awt (So I believe it may be the bug of
+toolkit).
+
+I am citing the image of working and error dialog and the result of
+xprop in both cases:
+
+dialog "Update Info":
+-----------------------------
+* working src: http://goo.gl/WEKDUi
+* error scr: http://goo.gl/8wCg2H
+* working xprop: http://goo.gl/KuLpVE
+* error xprop: http://goo.gl/Izp6sj
+
+dialog "Invalidate Cache":
+-------------------------------------
+* working scr: http://goo.gl/UmRrMI
+* error src: http://goo.gl/MYMC2m
+* working xprop: http://goo.gl/PDzJ4w
+* error xprop: http://goo.gl/5tEhvJ
+
+Hope someone will know what the issue maybe.
+
+[1]: not shown on xfce4/Gnome/awesome
+
+--
+Avinash R.
+
+From mail at profpatsch.de  Sat Apr 26 10:27:17 2014
+From: mail at profpatsch.de (Profpatsch)
+Date: Sat, 26 Apr 2014 10:27:17 +0200
+Subject: [i3] Window resize issue
+In-Reply-To: <CAHCistcuXZjivTK+fVHgk+SfkGGLqDXpRmfLM4yopfum78WKGw@mail.gmail.com>
+References: <CAHCistcuXZjivTK+fVHgk+SfkGGLqDXpRmfLM4yopfum78WKGw@mail.gmail.com>
+Message-ID: <20140426082717.GH11261@nyx>
+
+On 14-04-25 10:14pm, avinash r wrote:
+> Hi,
+> 
+> I was using Android Studio (AS) which has java awt based UI,
+> In i3wm only[1], the dialog content appear like little box of 10-15px
+> in size, or in partial size.
+
+Try to bear with it. It’s AWT-based, thus a sh-load of crap as far as _
+well, anything goes.
+
+But it can’t be helped I guess.
+
+With me, any IntelliJ-based IDE isn’t capable of opening windows on the
+right monitor, has weird mouse-jumping bugs, my 3-5th layer of the
+keyboard-layout doesn’t work, &c.
+
+-- 
+Proudly written in Mutt with Vim on Archlinux.
+Q: Why is this email five sentences or less?
+A: http://five.sentenc.es
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 836 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140426/fafb1d59/attachment.sig>
+
+From michael at i3wm.org  Sat Apr 26 12:52:07 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 26 Apr 2014 12:52:07 +0200
+Subject: [i3] Window resize issue
+In-Reply-To: <CAHCistcuXZjivTK+fVHgk+SfkGGLqDXpRmfLM4yopfum78WKGw@mail.gmail.com>
+References: <CAHCistcuXZjivTK+fVHgk+SfkGGLqDXpRmfLM4yopfum78WKGw@mail.gmail.com>
+Message-ID: <x6y4ysxt0o.fsf@midna.zekjur.net>
+
+Hi avinash,
+
+avinash r <nashpapa at gmail.com> writes:
+> I was using Android Studio (AS) which has java awt based UI,
+> In i3wm only[1], the dialog content appear like little box of 10-15px
+> in size, or in partial size.
+>
+> As it doesn't appear in other WMs[1], the developers of AS, cannot be
+> asked to find the cause of this.
+>
+> I don't know if it is an i3 bug even, as I haven't seen done by any
+> other application using java awt (So I believe it may be the bug of
+> toolkit).
+>
+> I am citing the image of working and error dialog and the result of
+> xprop in both cases:
+>
+> dialog "Update Info":
+> -----------------------------
+> * working src: http://goo.gl/WEKDUi
+> * error scr: http://goo.gl/8wCg2H
+> * working xprop: http://goo.gl/KuLpVE
+> * error xprop: http://goo.gl/Izp6sj
+>
+> dialog "Invalidate Cache":
+> -------------------------------------
+> * working scr: http://goo.gl/UmRrMI
+> * error src: http://goo.gl/MYMC2m
+> * working xprop: http://goo.gl/PDzJ4w
+> * error xprop: http://goo.gl/5tEhvJ
+>
+> Hope someone will know what the issue maybe.
+>
+> [1]: not shown on xfce4/Gnome/awesome
+I don’t see any significant difference in the xprop output, which is a
+bad sign. I suspect it’s another weird subtle protocol issue, where java
+relies on some subtlety that we don’t do.
+
+Please file a report at http://bugs.i3wm.org/. Also please try to
+reproduce it with the default i3 configuration file under a new user
+account. Bonus points if you can find something that is lighter-weight
+than Android Studio, but triggers the same bug.
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Sat Apr 26 13:06:56 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 26 Apr 2014 13:06:56 +0200
+Subject: [i3] Documentation layout saving/restoring
+Message-ID: <x6vbtwxsbz.fsf@midna.zekjur.net>
+
+Hi,
+
+There now is documentation on layout saving/restoring:
+http://build.i3wm.org/docs/layout-saving.html
+
+Please give feedback in case there is anything that is unclear or could
+be improved.
+
+For the initial announcement of this feature, see:
+http://thread.gmane.org/gmane.comp.window-managers.i3.general/1194
+
+-- 
+Best regards,
+Michael
+
+From cts at thomasstover.com  Tue Apr 29 22:07:58 2014
+From: cts at thomasstover.com (C. Thomas Stover)
+Date: Tue, 29 Apr 2014 20:07:58 +0000 (UTC)
+Subject: [i3] Documentation layout saving/restoring
+References: <x6vbtwxsbz.fsf@midna.zekjur.net>
+Message-ID: <ljp0qu$icp$1@ger.gmane.org>
+
+On Sat, 26 Apr 2014 13:06:56 +0200, Michael Stapelberg wrote:
+
+> Hi,
+> 
+> There now is documentation on layout saving/restoring:
+> http://build.i3wm.org/docs/layout-saving.html
+> 
+> Please give feedback in case there is anything that is unclear or could
+> be improved.
+> 
+> For the initial announcement of this feature, see:
+> http://thread.gmane.org/gmane.comp.window-managers.i3.general/1194
+
+Which branch do we build to try this? My build of i3-4.7.2.tar.bz2 did 
+not produce a "i3-save-tree".
+
+
+From michael at i3wm.org  Wed Apr 30 09:13:18 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 30 Apr 2014 09:13:18 +0200
+Subject: [i3] Documentation layout saving/restoring
+In-Reply-To: <ljp0qu$icp$1@ger.gmane.org>
+References: <x6vbtwxsbz.fsf@midna.zekjur.net> <ljp0qu$icp$1@ger.gmane.org>
+Message-ID: <x6y4ynjnn5.fsf@midna.zekjur.net>
+
+Hi,
+
+"C. Thomas Stover" <cts at thomasstover.com> writes:
+
+> On Sat, 26 Apr 2014 13:06:56 +0200, Michael Stapelberg wrote:
+>
+>> Hi,
+>> 
+>> There now is documentation on layout saving/restoring:
+>> http://build.i3wm.org/docs/layout-saving.html
+>> 
+>> Please give feedback in case there is anything that is unclear or could
+>> be improved.
+>> 
+>> For the initial announcement of this feature, see:
+>> http://thread.gmane.org/gmane.comp.window-managers.i3.general/1194
+>
+> Which branch do we build to try this? My build of i3-4.7.2.tar.bz2 did 
+> not produce a "i3-save-tree".
+See http://i3wm.org/downloads/, section “Development version”. The
+“next” branch contains the next version, whereas master is always stable
+(including bugfixes).
+
+-- 
+Best regards,
+Michael
+

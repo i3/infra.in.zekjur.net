@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Binding adventures between mappings
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Binding%20adventures%20between%20mappings&In-Reply-To=%3CCAM4Y7zyoY-wv1JqVQ%2BE8QSM65WLxdRC4OnujgKW35iv%3DCKUarA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+   <LINK REL="Next"  HREF="002120.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Binding adventures between mappings</H1>
+    <B>Jeff Abrahamson</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Binding%20adventures%20between%20mappings&In-Reply-To=%3CCAM4Y7zyoY-wv1JqVQ%2BE8QSM65WLxdRC4OnujgKW35iv%3DCKUarA%40mail.gmail.com%3E"
+       TITLE="[i3] Binding adventures between mappings">jeff at purple.com
+       </A><BR>
+    <I>Thu Jul  2 11:54:07 CEST 2015</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="002120.html">[i3] Binding adventures between mappings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2119">[ date ]</a>
+              <a href="thread.html#2119">[ thread ]</a>
+              <a href="subject.html#2119">[ subject ]</a>
+              <a href="author.html#2119">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I said that wrong in the subject, let me try in more than one line:
+
+I have a somewhat modal idea of how to interact with a window manager, so
+my i3 config binds very little at global level, the rest is in modes.  One
+mode I call &quot;focus&quot;, because the items in that mode I might want to do
+without leaving the mode, mostly moving between windows.  In mode &quot;i3&quot;,
+most of the bindings end with a mode command, often back to &quot;default&quot;.
+
+I have this in my $HOME/i3/.config:
+
+set $mod Mod1
+bindsym $mod+Tab mode &quot;i3&quot;
+
+mode &quot;i3&quot; {
+    # Some things I might want to do.
+    # Includes a transition to focus mode.
+
+    # The mode is long, but here's an example:
+    bindsym c  exec urxvt; mode &quot;default&quot;
+}
+
+mode &quot;focus&quot; {
+    # A handful of actions that I want in a separate mode.
+
+    # And then there's a bunch of move/resize bindings, and then:
+
+    # If I forget where I am, do the right thing.
+    bindsym $mod+Tab mode &quot;i3&quot;
+
+    # Get me out of here.
+    bindsym Return     mode &quot;default&quot;
+    bindsym Escape     mode &quot;default&quot;
+    bindsym Control+g  mode &quot;default&quot;
+}
+
+This works great but for two bindings in &quot;focus&quot; mode:
+
+1.  The $mod+Tab binding I would expect to drop me into &quot;i3&quot; mode, but it
+has no effect.
+
+2.  The ESC and C-G bindings exit &quot;focus&quot; mode correctly, but RET has no
+effect.
+
+Any suggestions what I've done wrong?
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    &lt;-- only if I'm in the UK
+
+<A HREF="http://jeff.purple.com/">http://jeff.purple.com/</A>
+<A HREF="http://blog.purple.com/jeff/">http://blog.purple.com/jeff/</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150702/5fec9e18/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150702/5fec9e18/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="002120.html">[i3] Binding adventures between mappings
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2119">[ date ]</a>
+              <a href="thread.html#2119">[ thread ]</a>
+              <a href="subject.html#2119">[ subject ]</a>
+              <a href="author.html#2119">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

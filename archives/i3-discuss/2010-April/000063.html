@@ -1,0 +1,258 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3 respond on any keys
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%20respond%20on%20any%20keys&In-Reply-To=%3Cr2u4d89abe61004031422hd40adc15l8e02f3609c7dab3a%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000062.html">
+   <LINK REL="Next"  HREF="000064.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3 respond on any keys</H1>
+    <B>Alexander Kalentyev</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%20respond%20on%20any%20keys&In-Reply-To=%3Cr2u4d89abe61004031422hd40adc15l8e02f3609c7dab3a%40mail.gmail.com%3E"
+       TITLE="[i3] i3 respond on any keys">comrad.karlovich at googlemail.com
+       </A><BR>
+    <I>Sat Apr  3 23:22:32 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000062.html">[i3] i3 respond on any keys
+</A></li>
+        <LI>Next message: <A HREF="000064.html">[i3] i3 respond on any keys
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#63">[ date ]</a>
+              <a href="thread.html#63">[ thread ]</a>
+              <a href="subject.html#63">[ subject ]</a>
+              <a href="author.html#63">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&quot;Those issues sound to me as if they have more to do with your urxvtc script
+and firefox rather than i3...&quot;
+Absolutely not! You at do the same for example using xterm:
+1) open rxvt on 1 workspace
+2) open another workspace
+3) launch xterm with dmenu
+4) go to the workspace 1
+5) ps aux | grep xterm
+6) kill {xterm pid} and everything hangs again.
+
+Can somebody reproduce that, or I am the only one like that?
+----
+&quot;Running  minimal system is a bit harder than the point and click things..&quot;
+- I'm aware of that. I've used wmii, then awesome, now have found i3...
+It allows flexible layout configuration, that's the reason I like It.
+What I miss:
+1) Goto notified window. And then go back.
+2) Configuration via lua (but that's my personal taste and I think I could
+do that, right?)
+
+
+
+2010/4/3 Will Set &lt;<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">debiandunes at yahoo.com</A>&gt;
+
+&gt;<i> Those issues sound to me as if they have more to do with your urxvtc script
+</I>&gt;<i> and firefox rather than i3 and you should probably ask about what is going
+</I>&gt;<i> on with them in the arch forum.
+</I>&gt;<i>
+</I>&gt;<i> Also, the &quot;i3 welcome message&quot; is instructions for how to use i3....
+</I>&gt;<i>
+</I>&gt;<i> Running  minimal system is a bit harder than the point and click things..
+</I>&gt;<i> You're getting closer to the nuts and bolts of your computer...
+</I>&gt;<i>
+</I>&gt;<i> vvill
+</I>&gt;<i>
+</I>&gt;<i> --- On Sat, 4/3/10, Alexander Kalentyev &lt;<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">comrad.karlovich at googlemail.com</A>&gt;
+</I>&gt;<i> wrote:
+</I>&gt;<i>
+</I>&gt;<i> From: Alexander Kalentyev &lt;<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">comrad.karlovich at googlemail.com</A>&gt;
+</I>&gt;<i> Subject: Re: [i3] i3 respond on any keys!
+</I>&gt;<i> To: <A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>
+</I>&gt;<i> Date: Saturday, April 3, 2010, 3:43 PM
+</I>&gt;<i>
+</I>&gt;<i> &quot;I'd recommend you NOT click the OK button of the welcome message.&quot; -
+</I>&gt;<i> Ooops.
+</I>&gt;<i> Yes, you are right I didn't read the message. I read a lot before, all kind
+</I>&gt;<i> of information what was on the web page.
+</I>&gt;<i> And looking through I
+</I>&gt;<i>  thought, that it's all I know already.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Then two other issues remain. I'll just repeat what I wrote before:
+</I>&gt;<i> I have found two more issues:
+</I>&gt;<i>
+</I>&gt;<i> 1) When I used my script for starting urxvt instead of directly doing
+</I>&gt;<i> this, everything also hanged. The script is:
+</I>&gt;<i>
+</I>&gt;<i> #!/bin/sh
+</I>&gt;<i> urxvtc
+</I>&gt;<i> &quot;$@&quot;
+</I>&gt;<i> if [ $? -eq 2 ]; then
+</I>&gt;<i> urxvtd -q -o -f
+</I>&gt;<i> urxvtc &quot;$@&quot;
+</I>&gt;<i>
+</I>&gt;<i> fi
+</I>&gt;<i>
+</I>&gt;<i> *note: this has no problems working with awesome.
+</I>&gt;<i>
+</I>&gt;<i> 2)
+</I>&gt;<i> When I killed a firefox (from console), which was alone on the tag, the
+</I>&gt;<i> tag was destroyed, but again everything was hanging.
+</I>&gt;<i> ---
+</I>&gt;<i> Especially the second issue is irritating.
+</I>&gt;<i>
+</I>&gt;<i> 2010/4/3 Will Set &lt;<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">debiandunes at yahoo.com</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> It sounds to me from &quot;description 1-9 below&quot; that i3 is behaving as it
+</I>&gt;<i> should..
+</I>&gt;<i> example: &quot;4) Click on the &quot;ok&quot; button on the message&quot;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Do you read the message before you click ok?
+</I>&gt;<i>
+</I>&gt;<i> you don't need to click the &quot;ok button&quot; of the Welcome message to continue
+</I>&gt;<i> using i3.
+</I>&gt;<i> Futhurmore, I'd recommend you NOT click the OK button of the welcome
+</I>&gt;<i> message.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> vvill
+</I>&gt;<i>
+</I>&gt;<i> --- On Sat, 4/3/10, Alexander Kalentyev &lt;<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">comrad.karlovich at googlemail.com</A>&gt;
+</I>&gt;<i> wrote:
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> From: Alexander Kalentyev &lt;<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">comrad.karlovich at googlemail.com</A>&gt;
+</I>&gt;<i> Subject: Re: [i3] No respond on any keys
+</I>&gt;<i> To: <A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Date: Saturday, April 3, 2010, 10:34 AM
+</I>&gt;<i>
+</I>&gt;<i> I tried that, but i3 didn't react.
+</I>&gt;<i> In fact I could see (switching
+</I>&gt;<i>  back to Alt-F7) only black window with mouse cursor on it.
+</I>&gt;<i> The full description of what I did:
+</I>&gt;<i> 1) start i3
+</I>&gt;<i> 2) see the welcome message
+</I>&gt;<i> 3) do not touching it I try to see whether window manager reacts on keys
+</I>&gt;<i> and it is (OK)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 4) Click on the &quot;ok&quot; button on the message
+</I>&gt;<i> 5) i3 stack (mouse is moving, but it doesn't react on keys)
+</I>&gt;<i> 6) switch to console Ctrl-Alt-F2
+</I>&gt;<i> 7) sending message ( i3-msg 2)
+</I>&gt;<i> 8) switch back to X Alt-F7
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 9) see black window with the mouse cursor
+</I>&gt;<i>
+</I>&gt;<i> 2010/4/3 Michael Stapelberg &lt;<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael+i3 at stapelberg.de</A>&lt;michael%<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">2Bi3 at stapelberg.de</A>&gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Hi Alexander,
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Excerpts from Alexander Kalentyev's message of 2010-04-02 20:32:27 +0200:
+</I>&gt;<i>
+</I>&gt;<i> &gt; After start I see first tag, mouse is moving although I can't do
+</I>&gt;<i> anything.
+</I>&gt;<i>
+</I>&gt;<i> &gt; It just doesn't react on keys. I even couldn't kill it.
+</I>&gt;<i>
+</I>&gt;<i> &gt; As I started in a verbose mode I have logs (see attach).
+</I>&gt;<i>
+</I>&gt;<i> &gt; I guess I'm doing something wrong, but don't know what...
+</I>&gt;<i>
+</I>&gt;<i> Please enable the IPC interface (if not already done) and use the following
+</I>&gt;<i>
+</I>&gt;<i> command (issue it on a Console or using SSH from a different computer):
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>   i3-msg 2
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> You should see i3 switching to the second workspace now. Now try clicking
+</I>&gt;<i>
+</I>&gt;<i> on the &quot;1&quot; in the workspace bar. It should switch back now.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> If this is the case, there is something wrong with your keybindings or
+</I>&gt;<i>
+</I>&gt;<i> keyboard or something like that&#8230;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Best regards,
+</I>&gt;<i>
+</I>&gt;<i> Michael
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100403/0927a721/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100403/0927a721/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000062.html">[i3] i3 respond on any keys
+</A></li>
+	<LI>Next message: <A HREF="000064.html">[i3] i3 respond on any keys
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#63">[ date ]</a>
+              <a href="thread.html#63">[ thread ]</a>
+              <a href="subject.html#63">[ subject ]</a>
+              <a href="author.html#63">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

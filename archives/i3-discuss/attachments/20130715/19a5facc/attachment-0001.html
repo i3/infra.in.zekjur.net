@@ -1,0 +1,112 @@
+<tt>
+&lt;div&nbsp;dir=&quot;ltr&quot;&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;Thanks&nbsp;very&nbsp;much&nbsp;for&nbsp;your&nbsp;detailed&nbsp;answer!&nbsp;I&nbsp;will&nbsp;study&nbsp;it&nbsp;carefully&nbsp;and&nbsp;make&nbsp;some&nbsp;experiments&nbsp;and&nbsp;maybe&nbsp;come&nbsp;up&nbsp;with&nbsp;a&nbsp;tree-model&nbsp;I&nbsp;can&nbsp;understand&nbsp;better--something&nbsp;I&nbsp;love&nbsp;doing.&nbsp;I&nbsp;like&nbsp;i3&nbsp;very&nbsp;much&nbsp;because:&lt;br&gt;<br>
+&lt;/div&gt;(1)&nbsp;trees&nbsp;are&nbsp;IMO&nbsp;a&nbsp;better&nbsp;starting&nbsp;point&nbsp;than&nbsp;the&nbsp;column&nbsp;models&nbsp;others&nbsp;use;&lt;br&gt;&lt;/div&gt;(2)&nbsp;I&nbsp;hate&nbsp;having&nbsp;to&nbsp;go&nbsp;through&nbsp;the&nbsp;pre-designed&nbsp;layouts&nbsp;given&nbsp;to&nbsp;you&nbsp;by&nbsp;some&nbsp;others&nbsp;(e.g.&nbsp;awesome&nbsp;and&nbsp;xmonad)&nbsp;(in&nbsp;the&nbsp;Microsoft&nbsp;spirit&nbsp;of&nbsp;&quot;We&nbsp;know&nbsp;what&#39;s&nbsp;best&nbsp;for&nbsp;you&quot;).&lt;br&gt;<br>
+&lt;/div&gt;So&nbsp;I&#39;m&nbsp;glad&nbsp;i3&nbsp;has&nbsp;surprises!&nbsp;(I&nbsp;think&nbsp;the&nbsp;tragedy&nbsp;of&nbsp;doing&nbsp;mathematics&nbsp;is&nbsp;that&nbsp;you&nbsp;start&nbsp;with&nbsp;something&nbsp;totally&nbsp;magical,&nbsp;and&nbsp;you&nbsp;put&nbsp;in&nbsp;a&nbsp;lot&nbsp;of&nbsp;thought&nbsp;and&nbsp;work&nbsp;to&nbsp;understand&nbsp;it;&nbsp;and&nbsp;if&nbsp;you&nbsp;succeed&nbsp;you&nbsp;destroy&nbsp;its&nbsp;magic&nbsp;(but&nbsp;not&nbsp;totally!).)&lt;br&gt;<br>
+&lt;/div&gt;&lt;div&nbsp;class=&quot;gmail_extra&quot;&gt;&lt;br&gt;&lt;br&gt;&lt;div&nbsp;class=&quot;gmail_quote&quot;&gt;On&nbsp;Mon,&nbsp;Jul&nbsp;15,&nbsp;2013&nbsp;at&nbsp;12:00&nbsp;AM,&nbsp;Axel&nbsp;Wagner&nbsp;&lt;span&nbsp;dir=&quot;ltr&quot;&gt;&lt;&lt;a&nbsp;href=&quot;mailto:mail@merovius.de&quot;&nbsp;target=&quot;_blank&quot;&gt;mail@merovius.de&lt;/a&gt;&gt;&lt;/span&gt;&nbsp;wrote:&lt;br&gt;<br>
+&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;Hi,&lt;br&gt;<br>
+&lt;br&gt;<br>
+Excerpts&nbsp;from&nbsp;Harry&nbsp;Allenby&#39;s&nbsp;message&nbsp;of&nbsp;2013-07-15&nbsp;07:50:39&nbsp;+0200:&lt;br&gt;<br>
+&lt;div&nbsp;class=&quot;im&quot;&gt;&gt;&nbsp;I&#39;m&nbsp;a&nbsp;very&nbsp;literal-minded&nbsp;mathematician&lt;br&gt;<br>
+&lt;br&gt;<br>
+&lt;/div&gt;Then&nbsp;let&nbsp;me,&nbsp;as&nbsp;a&nbsp;fellow&nbsp;mathematician&nbsp;try&nbsp;to&nbsp;explain&nbsp;at&nbsp;least&nbsp;part&nbsp;of&lt;br&gt;<br>
+your&nbsp;questions&nbsp;;)&lt;br&gt;<br>
+&lt;div&nbsp;class=&quot;im&quot;&gt;&lt;br&gt;<br>
+&gt;&nbsp;(3)&nbsp;I&nbsp;just&nbsp;don&#39;t&nbsp;grasp&nbsp;the&nbsp;concept&nbsp;of&nbsp;a&nbsp;container&nbsp;in&nbsp;i3.&nbsp;It&nbsp;seems&nbsp;to&lt;br&gt;<br>
+&gt;&nbsp;me&nbsp;that&nbsp;the&nbsp;basic&nbsp;objects&nbsp;are&nbsp;windows,&nbsp;and&nbsp;that&nbsp;&quot;container&quot;&nbsp;is&nbsp;a&lt;br&gt;<br>
+&gt;&nbsp;derived,&nbsp;relational&nbsp;notion,&nbsp;namely:&nbsp;two&nbsp;windows&nbsp;may&nbsp;(or&nbsp;may&nbsp;not)&nbsp;be&nbsp;in&lt;br&gt;<br>
+&gt;&nbsp;the&nbsp;same&nbsp;container.&nbsp;[So,&nbsp;mathematically,&nbsp;I&nbsp;think&nbsp;of&nbsp;a&nbsp;container&nbsp;as&nbsp;an&lt;br&gt;<br>
+&gt;&nbsp;equivalence&nbsp;class&nbsp;of&nbsp;windows;&nbsp;but&nbsp;I&nbsp;don&#39;t&nbsp;know&nbsp;what&nbsp;the&nbsp;equivalence&lt;br&gt;<br>
+&gt;&nbsp;relation&nbsp;is.]&lt;br&gt;<br>
+&lt;br&gt;<br>
+&lt;/div&gt;Mathematically&nbsp;it&nbsp;is&nbsp;pretty&nbsp;simple.&nbsp;Containers&nbsp;are&nbsp;nodes&nbsp;in&nbsp;a&nbsp;tree,&lt;br&gt;<br>
+whose&nbsp;root&nbsp;the&nbsp;X-root-window&nbsp;is.&nbsp;Children&nbsp;of&nbsp;this&nbsp;root&nbsp;level&nbsp;there&nbsp;are&lt;br&gt;<br>
+individual&nbsp;outputs,&nbsp;children&nbsp;of&nbsp;the&nbsp;outputs&nbsp;are&nbsp;the&nbsp;workspaces,&nbsp;whose&lt;br&gt;<br>
+children&nbsp;in&nbsp;turn&nbsp;are&nbsp;the&nbsp;container-trees&nbsp;containing&nbsp;the&nbsp;windows&nbsp;you&nbsp;see.&lt;br&gt;<br>
+&lt;br&gt;<br>
+A&nbsp;container&nbsp;can&nbsp;either&nbsp;be&nbsp;an&nbsp;inner&nbsp;node&nbsp;containing&nbsp;more&nbsp;containers&nbsp;(I&lt;br&gt;<br>
+think&nbsp;this&nbsp;is&nbsp;called&nbsp;a&nbsp;„split-container“&nbsp;in&nbsp;the&nbsp;documentation),&nbsp;or&nbsp;it&lt;br&gt;<br>
+can&nbsp;be&nbsp;a&nbsp;leaf,&nbsp;containing&nbsp;a&nbsp;window.&lt;br&gt;<br>
+&lt;br&gt;<br>
+The&nbsp;nodes&nbsp;are&nbsp;not&nbsp;all&nbsp;equal,&nbsp;leafs&nbsp;contain&nbsp;windows&nbsp;and&nbsp;near&nbsp;the&nbsp;top&nbsp;of&lt;br&gt;<br>
+the&nbsp;hierarchy&nbsp;there&nbsp;has&nbsp;to&nbsp;be&nbsp;special&nbsp;treatment&nbsp;(to&nbsp;use&nbsp;the&nbsp;more&lt;br&gt;<br>
+user-friendly&nbsp;abstractions&nbsp;of&nbsp;outputs&nbsp;and&nbsp;workspaces),&nbsp;but&nbsp;mostly&nbsp;this&lt;br&gt;<br>
+should&nbsp;be&nbsp;the&nbsp;way&nbsp;to&nbsp;think&nbsp;of&nbsp;it.&lt;br&gt;<br>
+&lt;div&nbsp;class=&quot;im&quot;&gt;&lt;br&gt;<br>
+&gt;&nbsp;(2)&nbsp;If&nbsp;I&nbsp;press&nbsp;mod+v&nbsp;and&nbsp;make&nbsp;some&nbsp;windows,&nbsp;are&nbsp;they&nbsp;all&nbsp;in&nbsp;the&nbsp;same&lt;br&gt;<br>
+&gt;&nbsp;container?&nbsp;If&nbsp;I&nbsp;now&nbsp;press&nbsp;mod+h&nbsp;and&nbsp;make&nbsp;some&nbsp;more&nbsp;windows,&nbsp;are&nbsp;they&lt;br&gt;<br>
+&gt;&nbsp;in&nbsp;a&nbsp;different&nbsp;container?&lt;br&gt;<br>
+&lt;br&gt;<br>
+&lt;/div&gt;Yes&nbsp;and&nbsp;no.&nbsp;If&nbsp;by&nbsp;„window“&nbsp;you&nbsp;think&nbsp;of&nbsp;„a&nbsp;leaf&nbsp;node&nbsp;in&nbsp;the&nbsp;container&lt;br&gt;<br>
+tree“,&nbsp;then&nbsp;yes.&lt;br&gt;<br>
+&lt;br&gt;<br>
+If&nbsp;you&nbsp;create&nbsp;some&nbsp;windows&nbsp;(for&nbsp;example&nbsp;pressing&nbsp;Mod+Enter&nbsp;to&lt;br&gt;<br>
+open&nbsp;some&nbsp;terminals),&nbsp;then&nbsp;each&nbsp;one&nbsp;is&nbsp;put&nbsp;in&nbsp;an&nbsp;individual&nbsp;container.&lt;br&gt;<br>
+These&nbsp;containers&nbsp;are&nbsp;then&nbsp;put&nbsp;in&nbsp;a&nbsp;big&nbsp;container.&nbsp;If&nbsp;you&nbsp;then&nbsp;press&lt;br&gt;<br>
+mod+h,&nbsp;the&nbsp;currently&nbsp;focused&nbsp;node&nbsp;in&nbsp;the&nbsp;tree&nbsp;(which&nbsp;would&nbsp;be&nbsp;a&nbsp;leaf&nbsp;in&lt;br&gt;<br>
+most&nbsp;cases,&nbsp;so&nbsp;a&nbsp;container&nbsp;having&nbsp;a&nbsp;window&nbsp;inside&nbsp;it)&nbsp;is&nbsp;replaced&nbsp;by&nbsp;a&lt;br&gt;<br>
+new&nbsp;container,&nbsp;with&nbsp;the&nbsp;old&nbsp;content&nbsp;as&nbsp;a&nbsp;subtree.&nbsp;If&nbsp;you&nbsp;then&nbsp;open&nbsp;some&lt;br&gt;<br>
+windows,&nbsp;they&nbsp;are&nbsp;new&nbsp;leafs&nbsp;which&nbsp;are&nbsp;put&nbsp;in&nbsp;that&nbsp;new&nbsp;container.&lt;br&gt;<br>
+&lt;br&gt;<br>
+So&nbsp;I&nbsp;think&nbsp;the&nbsp;solution&nbsp;here&nbsp;is&nbsp;to&nbsp;stop&nbsp;thinking&nbsp;about&nbsp;windows&nbsp;as&lt;br&gt;<br>
+entities&nbsp;in&nbsp;the&nbsp;container-tree,&nbsp;because&nbsp;they&#39;re&nbsp;really&nbsp;not.&nbsp;The&lt;br&gt;<br>
+container-tree&nbsp;is&nbsp;an&nbsp;abstraction&nbsp;used&nbsp;by&nbsp;i3&nbsp;and&nbsp;leaf-nodes&nbsp;in&nbsp;this&nbsp;tree&lt;br&gt;<br>
+have&nbsp;a&nbsp;window-property&nbsp;attached&nbsp;to&nbsp;them.&lt;br&gt;<br>
+&lt;div&nbsp;class=&quot;im&quot;&gt;&lt;br&gt;<br>
+&gt;&nbsp;(1)&nbsp;I&#39;m&nbsp;sitting&nbsp;in&nbsp;front&nbsp;of&nbsp;an&nbsp;i3-screen&nbsp;with&nbsp;a&nbsp;focused&nbsp;window.&nbsp;I&nbsp;want&lt;br&gt;<br>
+&gt;&nbsp;to&nbsp;know&nbsp;(preferably&nbsp;in&nbsp;a&nbsp;semi-algorithmic&nbsp;statement),&nbsp;if&nbsp;I&nbsp;press&nbsp;Mod&nbsp;+&lt;br&gt;<br>
+&gt;&nbsp;s,&nbsp;exactly&nbsp;which&nbsp;windows&nbsp;will&nbsp;be&nbsp;stacked.&nbsp;In&nbsp;particular,&nbsp;does&nbsp;the&lt;br&gt;<br>
+&gt;&nbsp;answer&nbsp;depend&nbsp;on&nbsp;the&nbsp;history&nbsp;of&nbsp;the&nbsp;focused&nbsp;window?&lt;br&gt;<br>
+&lt;br&gt;<br>
+&lt;/div&gt;I&#39;m&nbsp;actually&nbsp;not&nbsp;very&nbsp;clear&nbsp;of&nbsp;this&nbsp;myself.&nbsp;It&nbsp;just&nbsp;magically&nbsp;does&lt;br&gt;<br>
+exactly&nbsp;what&nbsp;I&nbsp;want.&nbsp;I&nbsp;_think_&nbsp;the&nbsp;container&nbsp;being&nbsp;stacked&nbsp;is&nbsp;always&nbsp;the&lt;br&gt;<br>
+parent&nbsp;of&nbsp;the&nbsp;currently&nbsp;focused&nbsp;container.&lt;br&gt;<br>
+&lt;br&gt;<br>
+So,&nbsp;if&nbsp;you&nbsp;just&nbsp;open&nbsp;a&nbsp;bunch&nbsp;of&nbsp;terminals&nbsp;on&nbsp;an&nbsp;empty&nbsp;workspace,&nbsp;focus&lt;br&gt;<br>
+one&nbsp;of&nbsp;them,&nbsp;your&nbsp;layout&nbsp;would&nbsp;be&nbsp;something&nbsp;like&nbsp;(I&nbsp;apologize&nbsp;for&nbsp;my&lt;br&gt;<br>
+crude&nbsp;ASCII-art):&lt;br&gt;<br>
+&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp;Workspace&lt;br&gt;<br>
+ &nbsp; &nbsp;/&nbsp; |&nbsp; |&nbsp; |&nbsp;\&lt;br&gt;<br>
+ &nbsp; C1&nbsp;C2&nbsp;C3&nbsp;C4&nbsp;C5&lt;br&gt;<br>
+ &nbsp; |&nbsp; |&nbsp; |&nbsp; |&nbsp; |&lt;br&gt;<br>
+ &nbsp; T1&nbsp;T2&nbsp;T3&nbsp;T4&nbsp;T5&lt;br&gt;<br>
+&lt;br&gt;<br>
+With&nbsp;C1…C5&nbsp;being&nbsp;node-containers&nbsp;and&nbsp;T1…T5&nbsp;are&nbsp;the&nbsp;five&nbsp;windows&nbsp;attached&nbsp;to&lt;br&gt;<br>
+these&nbsp;node-containers.&lt;br&gt;<br>
+Pressing&nbsp;Alt+s&nbsp;would&nbsp;(if&nbsp;you&nbsp;focus&nbsp;for&nbsp;example&nbsp;T1,&nbsp;or&nbsp;rather&nbsp;C1)&nbsp;stack&lt;br&gt;<br>
+all&nbsp;your&nbsp;terminals.&lt;br&gt;<br>
+&lt;br&gt;<br>
+If&nbsp;on&nbsp;the&nbsp;other&nbsp;hand&nbsp;you&nbsp;open&nbsp;some&nbsp;terminals,&nbsp;split&nbsp;one&nbsp;leaf&nbsp;and&nbsp;open&lt;br&gt;<br>
+some&nbsp;more,&nbsp;your&nbsp;tree&nbsp;will&nbsp;look&nbsp;like&nbsp;this:&lt;br&gt;<br>
+&lt;br&gt;<br>
+ &nbsp; &nbsp; Workspace&lt;br&gt;<br>
+ &nbsp; /&nbsp; &nbsp;|&nbsp; &nbsp; &nbsp; \&lt;br&gt;<br>
+ &nbsp;C1&nbsp; C2&nbsp; &nbsp; &nbsp; C3&lt;br&gt;<br>
+ &nbsp;|&nbsp; &nbsp; |&nbsp; &nbsp; &nbsp;/&nbsp; \&lt;br&gt;<br>
+ &nbsp;T1&nbsp; T2&nbsp; &nbsp;C4&nbsp; &nbsp;C5&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;|&nbsp; &nbsp; |&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; T4&nbsp; &nbsp;T5&lt;br&gt;<br>
+&lt;br&gt;<br>
+Now&nbsp;if&nbsp;you&nbsp;focus&nbsp;C4&nbsp;or&nbsp;C5&nbsp;and&nbsp;press&nbsp;Mod+s,&nbsp;you&nbsp;will&nbsp;get&nbsp;a&nbsp;workspace&nbsp;with&lt;br&gt;<br>
+two&nbsp;terminals&nbsp;visible&nbsp;(T1/T2)&nbsp;and&nbsp;one&nbsp;stacked&nbsp;container&nbsp;(C3),&nbsp;containing&lt;br&gt;<br>
+two&nbsp;terminals&nbsp;(T4/T5).&lt;br&gt;<br>
+&lt;br&gt;<br>
+If&nbsp;on&nbsp;the&nbsp;other&nbsp;hand&nbsp;you&nbsp;focus&nbsp;C1&nbsp;ore&nbsp;C2&nbsp;and&nbsp;press&nbsp;Mod+s,&nbsp;you&nbsp;will&nbsp;get&nbsp;a&lt;br&gt;<br>
+stacked&nbsp;workspace&nbsp;and&nbsp;can&nbsp;cycle&nbsp;between&nbsp;T1,&nbsp;T2&nbsp;and&nbsp;(T4+T5).&lt;br&gt;<br>
+&lt;br&gt;<br>
+One&nbsp;small&nbsp;warning:&nbsp;I&nbsp;think&nbsp;near&nbsp;the&nbsp;top&nbsp;of&nbsp;the&nbsp;container-tree&nbsp;(at&nbsp;the&lt;br&gt;<br>
+workspace-level&nbsp;and&nbsp;above)&nbsp;there&nbsp;is&nbsp;some&nbsp;special-casing&nbsp;regarding&nbsp;this,&lt;br&gt;<br>
+because&nbsp;you&nbsp;cannot&nbsp;sensibly&nbsp;„stack“&nbsp;workspaces.&nbsp;So&nbsp;if&nbsp;you&nbsp;try&nbsp;focusing&lt;br&gt;<br>
+an&nbsp;entire&nbsp;workspace&nbsp;(via&nbsp;focus&nbsp;parent)&nbsp;you&nbsp;just&nbsp;might&nbsp;get&nbsp;unexpected&lt;br&gt;<br>
+results.&lt;br&gt;<br>
+&lt;br&gt;<br>
+&lt;br&gt;<br>
+So,&nbsp;I&nbsp;hope&nbsp;I&nbsp;could&nbsp;make&nbsp;at&nbsp;least&nbsp;some&nbsp;things&nbsp;more&nbsp;clear.&nbsp;Maybe&nbsp;I&lt;br&gt;<br>
+confused&nbsp;you&nbsp;even&nbsp;more,&nbsp;in&nbsp;that&nbsp;case&nbsp;„sorry“&nbsp;;)&lt;br&gt;<br>
+&lt;br&gt;<br>
+Kind&nbsp;regards,&lt;br&gt;<br>
+&lt;br&gt;<br>
+Axel&lt;br&gt;<br>
+&lt;/blockquote&gt;&lt;/div&gt;&lt;br&gt;&lt;/div&gt;<br>
+
+</tt>

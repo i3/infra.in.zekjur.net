@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Floating mode focus &amp; workspaces
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Floating%20mode%20focus%20%26%20workspaces&In-Reply-To=%3C13E6F1C0-9FBE-45D9-9BC3-B6F3A7B336B4%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000950.html">
+   <LINK REL="Next"  HREF="000952.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Floating mode focus &amp; workspaces</H1>
+    <B>Kevin Murphy</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Floating%20mode%20focus%20%26%20workspaces&In-Reply-To=%3C13E6F1C0-9FBE-45D9-9BC3-B6F3A7B336B4%40gmail.com%3E"
+       TITLE="[i3] Floating mode focus &amp; workspaces">kemurphy.cmu at gmail.com
+       </A><BR>
+    <I>Wed Sep 26 23:23:23 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000950.html">[i3] Floating mode focus &amp; workspaces
+</A></li>
+        <LI>Next message: <A HREF="000952.html">[i3] Floating mode focus &amp; workspaces
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#951">[ date ]</a>
+              <a href="thread.html#951">[ thread ]</a>
+              <a href="subject.html#951">[ subject ]</a>
+              <a href="author.html#951">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Uh.... Sending the window to the scratchpad hides it completely until you show the scratchpad.  &quot;Unraise&quot; would just effectively raise every window behind the focused window without changing focus.  It feels better than a new config option to me, and allows the user to choose how floating windows to behave at runtime.
+
+On Sep 26, 2012, at 5:09 PM, Marcos Moyano &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">marcos at anue.biz</A>&gt; wrote:
+
+&gt;<i> How would that differ from sending the window to the scratchpad?
+</I>&gt;<i> 
+</I>&gt;<i> Marcos
+</I>&gt;<i> 
+</I>&gt;<i> On Wed, Sep 26, 2012 at 5:56 PM, Kevin Murphy &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">kemurphy.cmu at gmail.com</A>&gt; wrote:
+</I>&gt;<i> It would make more sense to me to have a hotkey bound to something that would &quot;unraise&quot; the focused window (read: send to back). Just a thought.
+</I>&gt;<i> 
+</I>&gt;<i> Kevin
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> On Sep 26, 2012, at 3:54 PM, Marcos Moyano &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">marcos at anue.biz</A>&gt; wrote:
+</I>&gt;<i> 
+</I>&gt;&gt;<i> I believe my last message was filtered by its size, so here it goes again:
+</I>&gt;&gt;<i> Michael,
+</I>&gt;&gt;<i> Sometimes a floating windows fits inside another floating window (see here <A HREF="http://imageshack.us/a/img402/650/floatingwindows.png">http://imageshack.us/a/img402/650/floatingwindows.png</A> ) and if I change the focus from the top window to any of the other two, the one that was on top is now gone. The only way for me to access it is by moving the newly raised window to another location. If you use a small floating window on a regular basis, like I do with a screen ruler, and use other floating windows from time to time, this behavior can get a bit annoying. 
+</I>&gt;&gt;<i> I still think it should be the default behavior (and I'm using it that way). I just want a way to switch it off if I want to.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Best Rgds,
+</I>&gt;&gt;<i> Marcos
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> On Wed, Sep 26, 2012 at 3:13 PM, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt; wrote:
+</I>&gt;&gt;<i> Hi Marcos,
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Marcos Moyano &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">marcos at anue.biz</A>&gt; writes:
+</I>&gt;&gt;<i> &gt; did add a new configuration option &quot;raise_on_focus&quot; because I don't want
+</I>&gt;&gt;<i> &gt; that to be my default behavior.
+</I>&gt;&gt;<i> Why? What&#8217;s the rationale in focusing floating windows without raising
+</I>&gt;&gt;<i> them?
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> &gt; Should I create a ticket and attach my patch to it?
+</I>&gt;&gt;<i> No, as long as I get the patch via mail, there&#8217;s no need to create a
+</I>&gt;&gt;<i> ticket.
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> Giorgos: Since you didn&#8217;t let the mailing list know that you were
+</I>&gt;&gt;<i> working on this, too, there was some unfortunate duplication of
+</I>&gt;&gt;<i> work. Anyway, the reason why your code didn&#8217;t work was most likely
+</I>&gt;&gt;<i> because you raised the container *within* its surrounding floating
+</I>&gt;&gt;<i> container, which effectively has no effect. Instead &#8213; as Macros did &#8213;
+</I>&gt;&gt;<i> one should use floating_raise_con().
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i> Best regards,
+</I>&gt;&gt;<i> Michael
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> -- 
+</I>&gt;&gt;<i> Marcos Moyano
+</I>&gt;&gt;<i> Co-Founder of Anue
+</I>&gt;&gt;<i> Skype: marcosmoyano
+</I>&gt;&gt;<i> <A HREF="http://www.anue.biz/">http://www.anue.biz/</A>
+</I>&gt;&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> -- 
+</I>&gt;<i> Marcos Moyano
+</I>&gt;<i> Co-Founder of Anue
+</I>&gt;<i> Skype: marcosmoyano
+</I>&gt;<i> <A HREF="http://www.anue.biz/">http://www.anue.biz/</A>
+</I>&gt;<i> 
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120926/d1dcf3fb/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120926/d1dcf3fb/attachment.html</A>&gt;
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000950.html">[i3] Floating mode focus &amp; workspaces
+</A></li>
+	<LI>Next message: <A HREF="000952.html">[i3] Floating mode focus &amp; workspaces
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#951">[ date ]</a>
+              <a href="thread.html#951">[ thread ]</a>
+              <a href="subject.html#951">[ subject ]</a>
+              <a href="author.html#951">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

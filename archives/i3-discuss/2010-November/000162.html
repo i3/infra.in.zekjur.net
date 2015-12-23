@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3status questions
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3status%20questions&In-Reply-To=%3C20101115003019.GB899%40s70206.gridserver.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000161.html">
+   <LINK REL="Next"  HREF="000163.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3status questions</H1>
+    <B>John Magolske</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3status%20questions&In-Reply-To=%3C20101115003019.GB899%40s70206.gridserver.com%3E"
+       TITLE="[i3] i3status questions">listmail at b79.net
+       </A><BR>
+    <I>Mon Nov 15 01:30:19 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000161.html">[i3] i3status questions
+</A></li>
+        <LI>Next message: <A HREF="000163.html">[i3] i3status questions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#162">[ date ]</a>
+              <a href="thread.html#162">[ thread ]</a>
+              <a href="subject.html#162">[ subject ]</a>
+              <a href="author.html#162">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>* Fernando Lemos &lt;<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">fernandotcl at gmail.com</A>&gt; [101114 16:03]:
+&gt;<i> On Sun, Nov 14, 2010 at 9:54 PM, John Magolske &lt;<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">listmail at b79.net</A>&gt; wrote:
+</I>&gt;<i> &gt; &#160;general {
+</I>&gt;<i> &gt; &#160; &#160; &#160; &#160; &#160;color_good = #00FF00
+</I>&gt;<i> &gt; &#160; &#160; &#160; &#160; &#160;colors = true
+</I>&gt;<i> &gt; &#160; &#160; &#160;interval = 5
+</I>&gt;<i> &gt; &#160;}
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; and got
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &#160;unexpected token '='
+</I>&gt;<i> 
+</I>&gt;<i> color_good = &quot;#00FF00&quot;
+</I>&gt;<i> 
+</I>&gt;<i> (use quotes around strings)
+</I>
+Yes, that does it, thanks!
+
+One more question, i3status(1) says:
+
+  You can also specify the colors that will be used to display
+  &quot;good&quot;, &quot;degraded&quot; or &quot;bad&quot; values using the color_good,
+  color_degraded or color_bad directives ...
+
+What determines what a &quot;good&quot;, &quot;degraded&quot; or &quot;bad&quot; value is? Assigning
+various values to color_good color_degraded &amp; color_bad doesn't seem
+to have any effect on the output. I tried:
+
+  general {
+          output_format = &quot;dzen2&quot;
+          colors = true
+          color_good = &quot;#00FF00&quot;
+          color_degraded = &quot;#0000FF&quot;
+          color_bad = &quot;#FF0000&quot;
+          color_separator = &quot;#b096b7&quot;
+      interval = 5
+  }
+
+The color separator looks different, but all the text just
+shows up as white. I also changed the line in my script from:
+
+  i3status | dzen2 -y 750 -tw 700 -x 640 -fg white \
+  -fn '-misc-fixed-medium-r-normal--13-120-75-75-C-70-iso8859-1' &amp;
+
+
+to
+
+  i3status | dzen2 -y 750 -tw 700 -x 640 \
+  -fn '-misc-fixed-medium-r-normal--13-120-75-75-C-70-iso8859-1' &amp;
+
+But that didn't make any difference.
+
+Regards,
+
+John
+
+-- 
+John Magolske
+<A HREF="http://B79.net/contact">http://B79.net/contact</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000161.html">[i3] i3status questions
+</A></li>
+	<LI>Next message: <A HREF="000163.html">[i3] i3status questions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#162">[ date ]</a>
+              <a href="thread.html#162">[ thread ]</a>
+              <a href="subject.html#162">[ subject ]</a>
+              <a href="author.html#162">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

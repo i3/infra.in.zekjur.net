@@ -1,0 +1,449 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3-save-tree questions continued
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3-save-tree%20questions%20continued&In-Reply-To=%3CCANnVG6mWxMTQW2pmGGPuRYfabtBdZ%2Bn_Qgc_wB4c3MR1YjK8qQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001851.html">
+   <LINK REL="Next"  HREF="001852.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3-save-tree questions continued</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3-save-tree%20questions%20continued&In-Reply-To=%3CCANnVG6mWxMTQW2pmGGPuRYfabtBdZ%2Bn_Qgc_wB4c3MR1YjK8qQ%40mail.gmail.com%3E"
+       TITLE="[i3] i3-save-tree questions continued">michael at i3wm.org
+       </A><BR>
+    <I>Wed Sep 17 07:17:31 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001851.html">[i3] i3-save-tree questions continued
+</A></li>
+        <LI>Next message: <A HREF="001852.html">[i3] i3 save/restore bug
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1854">[ date ]</a>
+              <a href="thread.html#1854">[ thread ]</a>
+              <a href="subject.html#1854">[ subject ]</a>
+              <a href="author.html#1854">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Can you please stop creating new threads for this? This is the fourth
+thread on the same topic that I have in my Inbox right now.
+
+Also, it seems like your questions are better suited for a live medium
+like IRC. Or just sleep over what you have and ask the next day, since
+you seem to frequently figure it out after posting to the list.
+
+On Tue, Sep 16, 2014 at 1:20 PM, Sargrad, Dave
+&lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">Dave.Sargrad at saabsensis.com</A>&gt; wrote:
+&gt;<i> I almost have this working.
+</I>&gt;<i>
+</I>&gt;<i> Can someone please explain to me what the following code snippet (drawn from i3-save-tree) does:
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     for my $key (qw(nodes floating_nodes)) {
+</I>&gt;<i>         $tree-&gt;{$key} = [ map { strip_containers($_) } @{$tree-&gt;{$key}} ];
+</I>&gt;<i>     }
+</I>&gt;<i>
+</I>&gt;<i> I think this is making a recursive call to strip_containers, for containers that container either &quot;nodes&quot; or &quot;floating_nodes&quot;.
+</I>It is replacing “nodes” and “floating_nodes” with the result of
+calling strip_containers() on each of the elements of “nodes” and
+“floating_nodes”.
+
+&gt;<i>
+</I>&gt;<i> I don’t see the code that actually deletes &quot;empty nodes&quot; and empty &quot;floating_nodes&quot;. Perhaps this code does that as well through the creation of a new map that contains just the allowed_keys..
+</I><A HREF="http://code.stapelberg.de/git/i3/tree/i3-save-tree?id=ad7bf58822b7d6f937a6da29689b8177fd69cc05#n170">http://code.stapelberg.de/git/i3/tree/i3-save-tree?id=ad7bf58822b7d6f937a6da29689b8177fd69cc05#n170</A>
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: i3-discuss [mailto:<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss-bounces at i3.zekjur.net</A>] On Behalf Of <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss-request at i3.zekjur.net</A>
+</I>&gt;<i> Sent: Tuesday, September 16, 2014 6:01 AM
+</I>&gt;<i> To: <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>
+</I>&gt;<i> Subject: i3-discuss Digest, Vol 53, Issue 6
+</I>&gt;<i>
+</I>&gt;<i> Send i3-discuss mailing list submissions to
+</I>&gt;<i>         <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>
+</I>&gt;<i>
+</I>&gt;<i> To subscribe or unsubscribe via the World Wide Web, visit
+</I>&gt;<i>         <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss</A>
+</I>&gt;<i> or, via email, send a message with subject or body 'help' to
+</I>&gt;<i>         <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss-request at i3.zekjur.net</A>
+</I>&gt;<i>
+</I>&gt;<i> You can reach the person managing the list at
+</I>&gt;<i>         <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss-owner at i3.zekjur.net</A>
+</I>&gt;<i>
+</I>&gt;<i> When replying, please edit your Subject line so it is more specific than &quot;Re: Contents of i3-discuss digest...&quot;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Today's Topics:
+</I>&gt;<i>
+</I>&gt;<i>    1. Re: i3-discuss Digest, Vol 53, Issue 5 (Sargrad, Dave)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ----------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> Message: 1
+</I>&gt;<i> Date: Mon, 15 Sep 2014 18:50:01 +0000
+</I>&gt;<i> From: &quot;Sargrad, Dave&quot; &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">Dave.Sargrad at saabsensis.com</A>&gt;
+</I>&gt;<i> To: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>&quot; &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>&gt;
+</I>&gt;<i> Subject: Re: [i3] i3-discuss Digest, Vol 53, Issue 5
+</I>&gt;<i> Message-ID:
+</I>&gt;<i>         &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">85EA6F68AC24DA48B220EBEA7A8C08B81B506DC7 at corpmail01.corp.sensis.com</A>&gt;
+</I>&gt;<i> Content-Type: text/plain; charset=&quot;utf-8&quot;
+</I>&gt;<i>
+</I>&gt;<i> Ok. I have made even further headway with this. Let me summarize what I think I have learned:
+</I>&gt;<i>
+</I>&gt;<i> 1] By removing the window_properties from the spec I was able to get the &quot;swallows&quot; to work properly 2] By only including the leaf nodes I was able to append, rather than overlay.
+</I>&gt;<i>
+</I>&gt;<i> So it would seem that i3 has the ability to not only append a layout but to overlay a layout (onto an existing workspace). This almost seems like a feature. Though I am not sure what unintended consequences there might be.
+</I>&gt;<i>
+</I>&gt;<i> The latter can be seen in two examples:
+</I>&gt;<i> The following spec does an append:
+</I>&gt;<i>
+</I>&gt;<i> {
+</I>&gt;<i>         &quot;window_properties&quot;: {&quot;title&quot;: &quot;mo&quot;},
+</I>&gt;<i>         &quot;fullscreen_mode&quot;: 0,
+</I>&gt;<i>         &quot;floating&quot;: &quot;auto_off&quot;,
+</I>&gt;<i>         &quot;border&quot;: &quot;normal&quot;,
+</I>&gt;<i>         &quot;layout&quot;: &quot;splith&quot;,
+</I>&gt;<i>         &quot;percent&quot;: 0.5,
+</I>&gt;<i>         &quot;nodes&quot;: [],
+</I>&gt;<i>         &quot;type&quot;: &quot;con&quot;,
+</I>&gt;<i>         &quot;swallows&quot;: [
+</I>&gt;<i>                     {
+</I>&gt;<i>                     &quot;class&quot;: &quot;^XTerm$&quot;
+</I>&gt;<i>                     }
+</I>&gt;<i>         ],
+</I>&gt;<i>         &quot;name&quot;: &quot;one&quot;,
+</I>&gt;<i>         &quot;geometry&quot;: {&quot;y&quot;: 0, &quot;x&quot;: 0, &quot;height&quot;: 316, &quot;width&quot;: 484} }
+</I>&gt;<i>
+</I>&gt;<i> {
+</I>&gt;<i>         &quot;fullscreen_mode&quot;: 0,
+</I>&gt;<i>         &quot;floating&quot;: &quot;auto_off&quot;,
+</I>&gt;<i>         &quot;border&quot;: &quot;normal&quot;,
+</I>&gt;<i>         &quot;layout&quot;: &quot;splith&quot;,
+</I>&gt;<i>         &quot;percent&quot;: 0.5,
+</I>&gt;<i>         &quot;nodes&quot;: [],
+</I>&gt;<i>         &quot;type&quot;: &quot;con&quot;,
+</I>&gt;<i>         &quot;swallows&quot;: [
+</I>&gt;<i>                 {
+</I>&gt;<i>                 &quot;class&quot;: &quot;^XTerm$&quot;
+</I>&gt;<i>                 }
+</I>&gt;<i>         ],
+</I>&gt;<i>         &quot;name&quot;: &quot;two&quot;,
+</I>&gt;<i>         &quot;geometry&quot;: {&quot;y&quot;: 0, &quot;x&quot;: 0, &quot;height&quot;: 316, &quot;width&quot;: 484} }
+</I>&gt;<i>
+</I>&gt;<i> Whereas by keeping the parent workspace we end up with an overlay:
+</I>&gt;<i>
+</I>&gt;<i> {
+</I>&gt;<i> &quot;fullscreen_mode&quot;: 1,
+</I>&gt;<i> &quot;floating&quot;: &quot;auto_off&quot;,
+</I>&gt;<i>  &quot;border&quot;: &quot;normal&quot;,
+</I>&gt;<i> &quot;layout&quot;: &quot;splith&quot;,
+</I>&gt;<i> &quot;percent&quot;: null,
+</I>&gt;<i>  &quot;nodes&quot;: [
+</I>&gt;<i>           {
+</I>&gt;<i>          &quot;fullscreen_mode&quot;: 0,
+</I>&gt;<i>          &quot;floating&quot;: &quot;auto_off&quot;,
+</I>&gt;<i>          &quot;border&quot;: &quot;normal&quot;,
+</I>&gt;<i>          &quot;layout&quot;: &quot;splith&quot;,
+</I>&gt;<i>          &quot;percent&quot;: 0.5,
+</I>&gt;<i>          &quot;nodes&quot;: [],
+</I>&gt;<i>          &quot;type&quot;: &quot;con&quot;,
+</I>&gt;<i>          &quot;swallows&quot;: [{&quot;class&quot;: &quot;^XTerm$&quot;}],
+</I>&gt;<i>          &quot;name&quot;: &quot;one&quot;,
+</I>&gt;<i>          &quot;geometry&quot;: {&quot;y&quot;: 0, &quot;x&quot;: 0, &quot;height&quot;: 316, &quot;width&quot;: 484}},
+</I>&gt;<i>          {
+</I>&gt;<i>          &quot;fullscreen_mode&quot;: 0,
+</I>&gt;<i>          &quot;floating&quot;: &quot;auto_off&quot;,
+</I>&gt;<i>          &quot;border&quot;: &quot;normal&quot;,
+</I>&gt;<i>          &quot;layout&quot;: &quot;splith&quot;,
+</I>&gt;<i>          &quot;percent&quot;: 0.5,
+</I>&gt;<i>          &quot;nodes&quot;: [],
+</I>&gt;<i>          &quot;type&quot;: &quot;con&quot;,
+</I>&gt;<i>          &quot;swallows&quot;: [{&quot;class&quot;: &quot;^XTerm$&quot;}],
+</I>&gt;<i>          &quot;name&quot;: &quot;two&quot;,
+</I>&gt;<i>          &quot;geometry&quot;: {&quot;y&quot;: 0, &quot;x&quot;: 0, &quot;height&quot;: 316, &quot;width&quot;: 484}}
+</I>&gt;<i>          ],
+</I>&gt;<i> &quot;type&quot;: &quot;workspace&quot;,
+</I>&gt;<i> &quot;swallows&quot;: []
+</I>&gt;<i> }
+</I>&gt;<i>
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: i3-discuss [mailto:<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss-bounces at i3.zekjur.net</A>] On Behalf Of <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss-request at i3.zekjur.net</A>
+</I>&gt;<i> Sent: Monday, September 15, 2014 1:41 PM
+</I>&gt;<i> To: <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>
+</I>&gt;<i> Subject: i3-discuss Digest, Vol 53, Issue 5
+</I>&gt;<i>
+</I>&gt;<i> Send i3-discuss mailing list submissions to
+</I>&gt;<i>         <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>
+</I>&gt;<i>
+</I>&gt;<i> To subscribe or unsubscribe via the World Wide Web, visit
+</I>&gt;<i>         <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss</A>
+</I>&gt;<i> or, via email, send a message with subject or body 'help' to
+</I>&gt;<i>         <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss-request at i3.zekjur.net</A>
+</I>&gt;<i>
+</I>&gt;<i> You can reach the person managing the list at
+</I>&gt;<i>         <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss-owner at i3.zekjur.net</A>
+</I>&gt;<i>
+</I>&gt;<i> When replying, please edit your Subject line so it is more specific than &quot;Re: Contents of i3-discuss digest...&quot;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Today's Topics:
+</I>&gt;<i>
+</I>&gt;<i>    1. i3 layout save/restore (Sargrad, Dave)
+</I>&gt;<i>    2. Re: i3 layout save/restore (Sargrad, Dave)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ----------------------------------------------------------------------
+</I>&gt;<i>
+</I>&gt;<i> Message: 1
+</I>&gt;<i> Date: Mon, 15 Sep 2014 16:33:04 +0000
+</I>&gt;<i> From: &quot;Sargrad, Dave&quot; &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">Dave.Sargrad at saabsensis.com</A>&gt;
+</I>&gt;<i> To: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>&quot; &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>&gt;
+</I>&gt;<i> Subject: [i3] i3 layout save/restore
+</I>&gt;<i> Message-ID:
+</I>&gt;<i>         &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">85EA6F68AC24DA48B220EBEA7A8C08B81B506D74 at corpmail01.corp.sensis.com</A>&gt;
+</I>&gt;<i> Content-Type: text/plain; charset=&quot;utf-8&quot;
+</I>&gt;<i>
+</I>&gt;<i> I am trying to generate my own layout files in python (similar to the files generated by i3-save-tree). I am looking for something that describes the layout specification [above and beyond the i3-save-tree code, which is a bit cryptic for a non-perl expert].
+</I>&gt;<i>
+</I>&gt;<i> I am already able to get the i3 tree in python. Furthermore I already have a number of operations that I perform on that tree. For example I have an operation that generates an image (representing the workspace structure) for each workspace in the tree. I am at a point where I need to generate layout specs, so that I can subsequently append these to workspaces.
+</I>&gt;<i>
+</I>&gt;<i> The first couple of specs that I generated are essentially just a dump of the portion of the portion of the tree that corresponds to the workspace. I know these need to be tweaked further. For example I have not yet added &quot;swallows&quot;, nor stripped non-necessary elements (like &quot;fullscreen_mode&quot; or &quot;layout&quot;). However I thought that i3 would allow me to load these specs and then I could begin to trim them and modify them until they looked more like the specs generated by i3-save-tree. Indeed I hoped that i3 might provide feedback relative to the elements of the spec that were not right.
+</I>&gt;<i>
+</I>&gt;<i> The unfortunate thing is that i3 crashes when it attempts to load my specs. So rather than move from the form that I have incrementally towards the &quot;right form&quot;, I need to jump to the right form more quickly.
+</I>&gt;<i>
+</I>&gt;<i> A specification for the layout structure would help. Is there anything that exists above and beyond the perl code, and the samples of generated layouts that I can create with it?
+</I>&gt;<i>
+</I>&gt;<i> For example, here is the portion of the tree that corresponds to the workspace that I am trying to save a spec for: this particular simple workspace is one window on top of another.  Other than the obvious things like adding a proper swallows element, what are the key things that I need to keep in mind when transforming portions of the i3 tree into a form that can later be appended?
+</I>&gt;<i>
+</I>&gt;<i> {&quot;fullscreen_mode&quot;: 1, &quot;orientation&quot;: &quot;horizontal&quot;, &quot;focus&quot;: [23160000, 23125184], &quot;urgent&quot;: false, &quot;num&quot;: 1, &quot;last_split_layout&quot;: &quot;splith&quot;, &quot;floating&quot;: &quot;auto_off&quot;, &quot;border&quot;: &quot;normal&quot;, &quot;id&quot;: 23119648, &quot;current_border_width&quot;: -1, &quot;layout&quot;: &quot;splith&quot;, &quot;percent&quot;: null, &quot;workspace_layout&quot;: &quot;default&quot;, &quot;window&quot;: null, &quot;nodes&quot;: [{&quot;window_properties&quot;: {&quot;instance&quot;: &quot;xterm&quot;, &quot;class&quot;: &quot;XTerm&quot;, &quot;title&quot;: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at example-8930</A>: ~/playground/cwpmash&quot;}, &quot;fullscreen_mode&quot;: 0, &quot;orientation&quot;: &quot;none&quot;, &quot;focus&quot;: [], &quot;urgent&quot;: false, &quot;last_split_layout&quot;: &quot;splith&quot;, &quot;floating&quot;: &quot;auto_off&quot;, &quot;border&quot;: &quot;normal&quot;, &quot;id&quot;: 23125184, &quot;current_border_width&quot;: -1, &quot;layout&quot;: &quot;splith&quot;, &quot;percent&quot;: 0.5, &quot;workspace_layout&quot;: &quot;default&quot;, &quot;window&quot;: 25165860, &quot;nodes&quot;: [], &quot;type&quot;: &quot;con&quot;, &quot;swallows&quot;: [], &quot;focused&quot;: false, &quot;scratchpad_state&quot;: &quot;none&quot;, &quot;rect&quot;: {&quot;y&quot;: 18, &quot;x&quot;: 0, &quot;height&quot;: 1013, &quot;width&quot;: 840}, &quot;window_rect&quot;: {&quot;y&quot;: 0, &quot;x&quot;: 2, &quot;height&quot;: 1009, &quot;width&quot;: 834}, &quot;name&quot;: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at example-8930</A>: ~/playground/cwpmash&quot;, &quot;geometry&quot;: {&quot;y&quot;: 0, &quot;x&quot;: 0, &quot;height&quot;: 316, &quot;width&quot;: 484}, &quot;floating_nodes&quot;: []}, {&quot;window_properties&quot;: {&quot;instance&quot;: &quot;xterm&quot;, &quot;class&quot;: &quot;XTerm&quot;, &quot;title&quot;: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at example-8930</A>: ~&quot;}, &quot;fullscreen_mode&quot;: 0, &quot;orientation&quot;: &quot;none&quot;, &quot;focus&quot;: [], &quot;urgent&quot;: false, &quot;last_split_layout&quot;: &quot;splith&quot;, &quot;floating&quot;: &quot;auto_off&quot;, &quot;border&quot;: &quot;normal&quot;, &quot;id&quot;: 23160000, &quot;current_border_width&quot;: -1, &quot;layout&quot;: &quot;splith&quot;, &quot;percent&quot;: 0.5, &quot;workspace_layout&quot;: &quot;default&quot;, &quot;window&quot;: 27263012, &quot;nodes&quot;: [], &quot;type&quot;: &quot;con&quot;, &quot;swallows&quot;: [], &quot;focused&quot;: true, &quot;scratchpad_state&quot;: &quot;none&quot;, &quot;rect&quot;: {&quot;y&quot;: 18, &quot;x&quot;: 840, &quot;height&quot;: 1013, &quot;width&quot;: 840}, &quot;window_rect&quot;: {&quot;y&quot;: 0, &quot;x&quot;: 2, &quot;height&quot;: 1009, &quot;width&quot;: 834}, &quot;name&quot;: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at example-8930</A>: ~&quot;, &quot;geometry&quot;: {&quot;y&quot;: 0, &quot;x&quot;: 0, &quot;height&quot;: 316, &quot;width&quot;: 484}, &quot;floating_nodes&quot;: []}], &quot;type&quot;: &quot;workspace&quot;, &quot;swallows&quot;: [], &quot;focused&quot;: false, &quot;scratchpad_state&quot;: &quot;none&quot;, &quot;rect&quot;: {&quot;y&quot;: 0, &quot;x&quot;: 0, &quot;height&quot;: 1031, &quot;width&quot;: 1680}, &quot;window_rect&quot;: {&quot;y&quot;: 0, &quot;x&quot;: 0, &quot;height&quot;: 0, &quot;width&quot;: 0}, &quot;name&quot;: &quot;1&quot;, &quot;geometry&quot;: {&quot;y&quot;: 0, &quot;x&quot;: 0, &quot;height&quot;: 0, &quot;width&quot;: 0}, &quot;floating_nodes&quot;: []}
+</I>&gt;<i>
+</I>&gt;<i> The correct form (as generated by i3-save-tree) is:
+</I>&gt;<i>
+</I>&gt;<i> // vim:ts=4:sw=4:et
+</I>&gt;<i> {
+</I>&gt;<i>     &quot;border&quot;: &quot;normal&quot;,
+</I>&gt;<i>     &quot;floating&quot;: &quot;auto_off&quot;,
+</I>&gt;<i>     &quot;geometry&quot;: {
+</I>&gt;<i>        &quot;height&quot;: 316,
+</I>&gt;<i>        &quot;width&quot;: 484,
+</I>&gt;<i>       &quot;x&quot;: 0,
+</I>&gt;<i>        &quot;y&quot;: 0
+</I>&gt;<i>     },
+</I>&gt;<i>     &quot;name&quot;: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at example-8930</A>: ~/playground/cwpmash&quot;,
+</I>&gt;<i>     &quot;percent&quot;: 0.5,
+</I>&gt;<i>     &quot;swallows&quot;: [
+</I>&gt;<i>        {
+</I>&gt;<i>        // &quot;class&quot;: &quot;^XTerm$&quot;,
+</I>&gt;<i>        // &quot;instance&quot;: &quot;^xterm$&quot;,
+</I>&gt;<i>        // &quot;title&quot;: &quot;^ubuntu\\@example\\-8930\\:\\ \\~\\/playground\\/cwpmash$&quot;
+</I>&gt;<i>        }
+</I>&gt;<i>     ],
+</I>&gt;<i>     &quot;type&quot;: &quot;con&quot;
+</I>&gt;<i> }
+</I>&gt;<i>
+</I>&gt;<i> {
+</I>&gt;<i>     &quot;border&quot;: &quot;normal&quot;,
+</I>&gt;<i>     &quot;floating&quot;: &quot;auto_off&quot;,
+</I>&gt;<i>     &quot;geometry&quot;: {
+</I>&gt;<i>        &quot;height&quot;: 316,
+</I>&gt;<i>        &quot;width&quot;: 484,
+</I>&gt;<i>        &quot;x&quot;: 0,
+</I>&gt;<i>        &quot;y&quot;: 0
+</I>&gt;<i>     },
+</I>&gt;<i>     &quot;name&quot;: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at example-8930</A>: ~&quot;,
+</I>&gt;<i>     &quot;percent&quot;: 0.5,
+</I>&gt;<i>     &quot;swallows&quot;: [
+</I>&gt;<i>        {
+</I>&gt;<i>        // &quot;class&quot;: &quot;^XTerm$&quot;,
+</I>&gt;<i>        // &quot;instance&quot;: &quot;^xterm$&quot;,
+</I>&gt;<i>        // &quot;title&quot;: &quot;^ubuntu\\@example\\-8930\\:\\ \\~$&quot;
+</I>&gt;<i>        }
+</I>&gt;<i>     ],
+</I>&gt;<i>     &quot;type&quot;: &quot;con&quot;
+</I>&gt;<i> }
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://i3wm.org/docs/layout-saving.html#_saving_the_layout">http://i3wm.org/docs/layout-saving.html#_saving_the_layout</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> This message is intended only for the addressee and may contain information that is company confidential or privileged. Any technical data in this message may be exported only in accordance with the U.S. International Traffic in Arms Regulations (22 CFR Parts 120-130) or the Export Administration Regulations (15 CFR Parts 730-774). Unauthorized use is strictly prohibited and may be unlawful. If you are not the intended recipient, or the person responsible for delivering to the intended recipient, you should not read, copy, disclose or otherwise use this message. If you have received this email in error, please delete it, and advise the sender immediately.
+</I>&gt;<i> -------------- next part --------------
+</I>&gt;<i> An HTML attachment was scrubbed...
+</I>&gt;<i> URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140915/5655f113/attachment-0001.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140915/5655f113/attachment-0001.html</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------
+</I>&gt;<i>
+</I>&gt;<i> Message: 2
+</I>&gt;<i> Date: Mon, 15 Sep 2014 17:38:45 +0000
+</I>&gt;<i> From: &quot;Sargrad, Dave&quot; &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">Dave.Sargrad at saabsensis.com</A>&gt;
+</I>&gt;<i> To: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>&quot; &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>&gt;
+</I>&gt;<i> Subject: Re: [i3] i3 layout save/restore
+</I>&gt;<i> Message-ID:
+</I>&gt;<i>         &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">85EA6F68AC24DA48B220EBEA7A8C08B81B506DA6 at corpmail01.corp.sensis.com</A>&gt;
+</I>&gt;<i> Content-Type: text/plain; charset=&quot;utf-8&quot;
+</I>&gt;<i>
+</I>&gt;<i> I've made a little progress with this generation of a json layout spec. Note that I am trying to be completely json compliant. So, unlike the i3-save-tree (which saves multiple json documents), I have a json spec that only has one json document. My reading of the i3 documentation seems to suggest that i3 has no problem with this, and it seems that it doesn't have a problem.
+</I>&gt;<i>
+</I>&gt;<i> In the sample that I provided below I have reduced the spec to the following form:
+</I>&gt;<i>
+</I>&gt;<i> {&quot;fullscreen_mode&quot;: 1, &quot;floating&quot;: &quot;auto_off&quot;, &quot;border&quot;: &quot;normal&quot;, &quot;layout&quot;: &quot;splith&quot;, &quot;percent&quot;: null, &quot;nodes&quot;: [{&quot;window_properties&quot;: {&quot;title&quot;: &quot;yo&quot;}, &quot;fullscreen_mode&quot;: 0, &quot;floating&quot;: &quot;auto_off&quot;, &quot;border&quot;: &quot;normal&quot;, &quot;layout&quot;: &quot;splith&quot;, &quot;percent&quot;: 0.5,  &quot;nodes&quot;: [], &quot;type&quot;: &quot;con&quot;, &quot;swallows&quot;: [{&quot;class&quot;: &quot;^XTerm$&quot;}], &quot;name&quot;: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at example-8930</A>: ~&quot;, &quot;geometry&quot;: {&quot;y&quot;: 0, &quot;x&quot;: 0, &quot;height&quot;: 316, &quot;width&quot;: 484}}, {&quot;window_properties&quot;: {&quot;title&quot;: &quot;go&quot;}, &quot;fullscreen_mode&quot;: 0, &quot;floating&quot;: &quot;auto_off&quot;, &quot;border&quot;: &quot;normal&quot;,  &quot;layout&quot;: &quot;splith&quot;, &quot;percent&quot;: 0.5, &quot;nodes&quot;: [], &quot;type&quot;: &quot;con&quot;, &quot;swallows&quot;: [{&quot;class&quot;: &quot;^XTerm$&quot;}], &quot;name&quot;: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at example-8930</A>: ~&quot;, &quot;geometry&quot;: {&quot;y&quot;: 0, &quot;x&quot;: 0, &quot;height&quot;: 316, &quot;width&quot;: 484}}], &quot;type&quot;: &quot;workspace&quot;, &quot;swallows&quot;: []}
+</I>&gt;<i>
+</I>&gt;<i> Notice that this spec actually has 3 swallows one for the parent workspace and two for the 2 xterm leaf nodes. Not sure why this is, but it is what I received when I requested the tree. I3-save-tree (I think) only shows a swallows for leaf nodes.
+</I>&gt;<i>
+</I>&gt;<i> I can actually append this document to a workspace (i3-msg &quot;workspace 2; append_layout /home/ubuntu/.i3/layout_spec&quot;) - i3 does not crash on this spec.
+</I>&gt;<i>
+</I>&gt;<i> However I see two problems:
+</I>&gt;<i> 1] The spec actually overlays the workspace (rather than appending to it) 2] The windows do not swallow a subsequent xterm.
+</I>&gt;<i>
+</I>&gt;<i> Why does this spec result in an &quot;overlay&quot; rather than an &quot;append&quot;?  Why is my swallow not working?
+</I>&gt;<i>
+</I>&gt;<i> From: Sargrad, Dave
+</I>&gt;<i> Sent: Monday, September 15, 2014 12:33 PM
+</I>&gt;<i> To: '<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>'
+</I>&gt;<i> Subject: i3 layout save/restore
+</I>&gt;<i>
+</I>&gt;<i> I am trying to generate my own layout files in python (similar to the files generated by i3-save-tree). I am looking for something that describes the layout specification [above and beyond the i3-save-tree code, which is a bit cryptic for a non-perl expert].
+</I>&gt;<i>
+</I>&gt;<i> I am already able to get the i3 tree in python. Furthermore I already have a number of operations that I perform on that tree. For example I have an operation that generates an image (representing the workspace structure) for each workspace in the tree. I am at a point where I need to generate layout specs, so that I can subsequently append these to workspaces.
+</I>&gt;<i>
+</I>&gt;<i> The first couple of specs that I generated are essentially just a dump of the portion of the portion of the tree that corresponds to the workspace. I know these need to be tweaked further. For example I have not yet added &quot;swallows&quot;, nor stripped non-necessary elements (like &quot;fullscreen_mode&quot; or &quot;layout&quot;). However I thought that i3 would allow me to load these specs and then I could begin to trim them and modify them until they looked more like the specs generated by i3-save-tree. Indeed I hoped that i3 might provide feedback relative to the elements of the spec that were not right.
+</I>&gt;<i>
+</I>&gt;<i> The unfortunate thing is that i3 crashes when it attempts to load my specs. So rather than move from the form that I have incrementally towards the &quot;right form&quot;, I need to jump to the right form more quickly.
+</I>&gt;<i>
+</I>&gt;<i> A specification for the layout structure would help. Is there anything that exists above and beyond the perl code, and the samples of generated layouts that I can create with it?
+</I>&gt;<i>
+</I>&gt;<i> For example, here is the portion of the tree that corresponds to the workspace that I am trying to save a spec for: this particular simple workspace is one window on top of another.  Other than the obvious things like adding a proper swallows element, what are the key things that I need to keep in mind when transforming portions of the i3 tree into a form that can later be appended?
+</I>&gt;<i>
+</I>&gt;<i> {&quot;fullscreen_mode&quot;: 1, &quot;orientation&quot;: &quot;horizontal&quot;, &quot;focus&quot;: [23160000, 23125184], &quot;urgent&quot;: false, &quot;num&quot;: 1, &quot;last_split_layout&quot;: &quot;splith&quot;, &quot;floating&quot;: &quot;auto_off&quot;, &quot;border&quot;: &quot;normal&quot;, &quot;id&quot;: 23119648, &quot;current_border_width&quot;: -1, &quot;layout&quot;: &quot;splith&quot;, &quot;percent&quot;: null, &quot;workspace_layout&quot;: &quot;default&quot;, &quot;window&quot;: null, &quot;nodes&quot;: [{&quot;window_properties&quot;: {&quot;instance&quot;: &quot;xterm&quot;, &quot;class&quot;: &quot;XTerm&quot;, &quot;title&quot;: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at example-8930</A>: ~/playground/cwpmash&quot;}, &quot;fullscreen_mode&quot;: 0, &quot;orientation&quot;: &quot;none&quot;, &quot;focus&quot;: [], &quot;urgent&quot;: false, &quot;last_split_layout&quot;: &quot;splith&quot;, &quot;floating&quot;: &quot;auto_off&quot;, &quot;border&quot;: &quot;normal&quot;, &quot;id&quot;: 23125184, &quot;current_border_width&quot;: -1, &quot;layout&quot;: &quot;splith&quot;, &quot;percent&quot;: 0.5, &quot;workspace_layout&quot;: &quot;default&quot;, &quot;window&quot;: 25165860, &quot;nodes&quot;: [], &quot;type&quot;: &quot;con&quot;, &quot;swallows&quot;: [], &quot;focused&quot;: false, &quot;scratchpad_state&quot;: &quot;none&quot;, &quot;rect&quot;: {&quot;y&quot;: 18, &quot;x&quot;: 0, &quot;height&quot;: 1013, &quot;width&quot;: 840}, &quot;window_rect&quot;: {&quot;y&quot;: 0, &quot;x&quot;: 2, &quot;height&quot;: 1009, &quot;width&quot;: 834}, &quot;name&quot;: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at example-8930</A>: ~/playground/cwpmash&quot;, &quot;geometry&quot;: {&quot;y&quot;: 0, &quot;x&quot;: 0, &quot;height&quot;: 316, &quot;width&quot;: 484}, &quot;floating_nodes&quot;: []}, {&quot;window_properties&quot;: {&quot;instance&quot;: &quot;xterm&quot;, &quot;class&quot;: &quot;XTerm&quot;, &quot;title&quot;: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at example-8930</A>: ~&quot;}, &quot;fullscreen_mode&quot;: 0, &quot;orientation&quot;: &quot;none&quot;, &quot;focus&quot;: [], &quot;urgent&quot;: false, &quot;last_split_layout&quot;: &quot;splith&quot;, &quot;floating&quot;: &quot;auto_off&quot;, &quot;border&quot;: &quot;normal&quot;, &quot;id&quot;: 23160000, &quot;current_border_width&quot;: -1, &quot;layout&quot;: &quot;splith&quot;, &quot;percent&quot;: 0.5, &quot;workspace_layout&quot;: &quot;default&quot;, &quot;window&quot;: 27263012, &quot;nodes&quot;: [], &quot;type&quot;: &quot;con&quot;, &quot;swallows&quot;: [], &quot;focused&quot;: true, &quot;scratchpad_state&quot;: &quot;none&quot;, &quot;rect&quot;: {&quot;y&quot;: 18, &quot;x&quot;: 840, &quot;height&quot;: 1013, &quot;width&quot;: 840}, &quot;window_rect&quot;: {&quot;y&quot;: 0, &quot;x&quot;: 2, &quot;height&quot;: 1009, &quot;width&quot;: 834}, &quot;name&quot;: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at example-8930</A>: ~&quot;, &quot;geometry&quot;: {&quot;y&quot;: 0, &quot;x&quot;: 0, &quot;height&quot;: 316, &quot;width&quot;: 484}, &quot;floating_nodes&quot;: []}], &quot;type&quot;: &quot;workspace&quot;, &quot;swallows&quot;: [], &quot;focused&quot;: false, &quot;scratchpad_state&quot;: &quot;none&quot;, &quot;rect&quot;: {&quot;y&quot;: 0, &quot;x&quot;: 0, &quot;height&quot;: 1031, &quot;width&quot;: 1680}, &quot;window_rect&quot;: {&quot;y&quot;: 0, &quot;x&quot;: 0, &quot;height&quot;: 0, &quot;width&quot;: 0}, &quot;name&quot;: &quot;1&quot;, &quot;geometry&quot;: {&quot;y&quot;: 0, &quot;x&quot;: 0, &quot;height&quot;: 0, &quot;width&quot;: 0}, &quot;floating_nodes&quot;: []}
+</I>&gt;<i>
+</I>&gt;<i> The correct form (as generated by i3-save-tree) is:
+</I>&gt;<i>
+</I>&gt;<i> // vim:ts=4:sw=4:et
+</I>&gt;<i> {
+</I>&gt;<i>     &quot;border&quot;: &quot;normal&quot;,
+</I>&gt;<i>     &quot;floating&quot;: &quot;auto_off&quot;,
+</I>&gt;<i>     &quot;geometry&quot;: {
+</I>&gt;<i>        &quot;height&quot;: 316,
+</I>&gt;<i>        &quot;width&quot;: 484,
+</I>&gt;<i>       &quot;x&quot;: 0,
+</I>&gt;<i>        &quot;y&quot;: 0
+</I>&gt;<i>     },
+</I>&gt;<i>     &quot;name&quot;: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at example-8930</A>: ~/playground/cwpmash&quot;,
+</I>&gt;<i>     &quot;percent&quot;: 0.5,
+</I>&gt;<i>     &quot;swallows&quot;: [
+</I>&gt;<i>        {
+</I>&gt;<i>        // &quot;class&quot;: &quot;^XTerm$&quot;,
+</I>&gt;<i>        // &quot;instance&quot;: &quot;^xterm$&quot;,
+</I>&gt;<i>        // &quot;title&quot;: &quot;^ubuntu\\@example\\-8930\\:\\ \\~\\/playground\\/cwpmash$&lt;<A HREF="file:///\\~\playground\cwpmash$">file:///\\~\playground\cwpmash$</A>&gt;&quot;
+</I>&gt;<i>        }
+</I>&gt;<i>     ],
+</I>&gt;<i>     &quot;type&quot;: &quot;con&quot;
+</I>&gt;<i> }
+</I>&gt;<i>
+</I>&gt;<i> {
+</I>&gt;<i>     &quot;border&quot;: &quot;normal&quot;,
+</I>&gt;<i>     &quot;floating&quot;: &quot;auto_off&quot;,
+</I>&gt;<i>     &quot;geometry&quot;: {
+</I>&gt;<i>        &quot;height&quot;: 316,
+</I>&gt;<i>        &quot;width&quot;: 484,
+</I>&gt;<i>        &quot;x&quot;: 0,
+</I>&gt;<i>        &quot;y&quot;: 0
+</I>&gt;<i>     },
+</I>&gt;<i>     &quot;name&quot;: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at example-8930</A>: ~&quot;,
+</I>&gt;<i>     &quot;percent&quot;: 0.5,
+</I>&gt;<i>     &quot;swallows&quot;: [
+</I>&gt;<i>        {
+</I>&gt;<i>        // &quot;class&quot;: &quot;^XTerm$&quot;,
+</I>&gt;<i>        // &quot;instance&quot;: &quot;^xterm$&quot;,
+</I>&gt;<i>        // &quot;title&quot;: &quot;^ubuntu\\@example\\-8930\\:\\ \\~$&quot;
+</I>&gt;<i>        }
+</I>&gt;<i>     ],
+</I>&gt;<i>     &quot;type&quot;: &quot;con&quot;
+</I>&gt;<i> }
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://i3wm.org/docs/layout-saving.html#_saving_the_layout">http://i3wm.org/docs/layout-saving.html#_saving_the_layout</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> This message is intended only for the addressee and may contain information that is company confidential or privileged. Any technical data in this message may be exported only in accordance with the U.S. International Traffic in Arms Regulations (22 CFR Parts 120-130) or the Export Administration Regulations (15 CFR Parts 730-774). Unauthorized use is strictly prohibited and may be unlawful. If you are not the intended recipient, or the person responsible for delivering to the intended recipient, you should not read, copy, disclose or otherwise use this message. If you have received this email in error, please delete it, and advise the sender immediately.
+</I>&gt;<i> -------------- next part --------------
+</I>&gt;<i> An HTML attachment was scrubbed...
+</I>&gt;<i> URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140915/4450c667/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140915/4450c667/attachment.html</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------
+</I>&gt;<i>
+</I>&gt;<i> Subject: Digest Footer
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> i3-discuss mailing list
+</I>&gt;<i> <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>
+</I>&gt;<i> <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------
+</I>&gt;<i>
+</I>&gt;<i> End of i3-discuss Digest, Vol 53, Issue 5
+</I>&gt;<i> *****************************************
+</I>&gt;<i> -
+</I>&gt;<i> This message is intended only for the addressee and may contain information that is company confidential or privileged.  Any technical data in this message may be exported only in accordance with the U.S. International Traffic in Arms Regulations (22 CFR Parts 120-130) or the Export Administration Regulations (15 CFR Parts 730-774). Unauthorized use is strictly prohibited and may be unlawful. If you are not the intended recipient, or the person responsible for delivering to the intended recipient, you should not read, copy, disclose or otherwise use this message. If you have received this email in error, please delete it, and advise the sender immediately.
+</I>&gt;<i> -
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------
+</I>&gt;<i>
+</I>&gt;<i> Subject: Digest Footer
+</I>&gt;<i>
+</I>&gt;<i> _______________________________________________
+</I>&gt;<i> i3-discuss mailing list
+</I>&gt;<i> <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>
+</I>&gt;<i> <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ------------------------------
+</I>&gt;<i>
+</I>&gt;<i> End of i3-discuss Digest, Vol 53, Issue 6
+</I>&gt;<i> *****************************************
+</I>&gt;<i> -
+</I>&gt;<i> This message is intended only for the addressee and may contain information that is company confidential or privileged.  Any technical data in this message may be exported only in accordance with the U.S. International Traffic in Arms Regulations (22 CFR Parts 120-130) or the Export Administration Regulations (15 CFR Parts 730-774). Unauthorized use is strictly prohibited and may be unlawful. If you are not the intended recipient, or the person responsible for delivering to the intended recipient, you should not read, copy, disclose or otherwise use this message. If you have received this email in error, please delete it, and advise the sender immediately.
+</I>&gt;<i> -
+</I>
+
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001851.html">[i3] i3-save-tree questions continued
+</A></li>
+	<LI>Next message: <A HREF="001852.html">[i3] i3 save/restore bug
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1854">[ date ]</a>
+              <a href="thread.html#1854">[ thread ]</a>
+              <a href="subject.html#1854">[ subject ]</a>
+              <a href="author.html#1854">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

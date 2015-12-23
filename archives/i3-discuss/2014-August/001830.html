@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Cant subscribe to window::focus events
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Cant%20subscribe%20to%20window%3A%3Afocus%20events&In-Reply-To=%3C5400C66F.6040108%40dubstepdish.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001829.html">
+   <LINK REL="Next"  HREF="001831.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Cant subscribe to window::focus events</H1>
+    <B>Tony Crisci</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Cant%20subscribe%20to%20window%3A%3Afocus%20events&In-Reply-To=%3C5400C66F.6040108%40dubstepdish.com%3E"
+       TITLE="[i3] Cant subscribe to window::focus events">tony at dubstepdish.com
+       </A><BR>
+    <I>Fri Aug 29 20:29:03 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001829.html">[i3] Cant subscribe to window::focus events
+</A></li>
+        <LI>Next message: <A HREF="001831.html">[i3] probleme with i3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1830">[ date ]</a>
+              <a href="thread.html#1830">[ thread ]</a>
+              <a href="subject.html#1830">[ subject ]</a>
+              <a href="author.html#1830">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+You seem to be doing everything right with the library.
+
+The problem is most likely that you are using a version of i3 that does 
+not emit the `focus` events. This feature was added in version 4.8. 
+Check your version with `i3 --version` and make sure it is up to date.
+
+Am 08/29/2014 um 01:03 PM schrieb Sargrad, Dave:
+&gt;<i>
+</I>&gt;<i> I am trying to register for a window::focus event, but am not seeing 
+</I>&gt;<i> the events come in.
+</I>&gt;<i>
+</I>&gt;<i> I can register for window::new and for workspace::focus just fine.
+</I>&gt;<i>
+</I>&gt;<i> The code snippet I am using to register is:
+</I>&gt;<i>
+</I>&gt;<i> *from gi.repository import i3ipc*
+</I>&gt;<i>
+</I>&gt;<i> **
+</I>&gt;<i>
+</I>&gt;<i> *# Create the Connection object that can be used to send commands and 
+</I>&gt;<i> subscribe*
+</I>&gt;<i>
+</I>&gt;<i> *# to events.*
+</I>&gt;<i>
+</I>&gt;<i> *conn = i3ipc.Connection()*
+</I>&gt;<i>
+</I>&gt;<i> **
+</I>&gt;<i>
+</I>&gt;<i> *conn.on('window::focus', on_window_focus)*
+</I>&gt;<i>
+</I>&gt;<i> I did turn on i3 debug and I did notice the following (this occurs 
+</I>&gt;<i> when I call conn.on):
+</I>&gt;<i>
+</I>&gt;<i> 08/29/2014 04:53:25 PM - ipc.c:add_subscription:744 - should add 
+</I>&gt;<i> subscription to extra 0xef61a0, sub window
+</I>&gt;<i>
+</I>&gt;<i> 08/29/2014 04:53:25 PM - ipc.c:add_subscription:754 - client is now 
+</I>&gt;<i> subscribed to:
+</I>&gt;<i>
+</I>&gt;<i> 08/29/2014 04:53:25 PM - ipc.c:add_subscription:756 - event window
+</I>&gt;<i>
+</I>&gt;<i> 08/29/2014 04:53:25 PM - ipc.c:add_subscription:757 - (done)
+</I>&gt;<i>
+</I>&gt;<i> Not sure how to interpret that debug info, but I think its telling me 
+</I>&gt;<i> that I need to subscribe for window::focus differently.
+</I>&gt;<i>
+</I>&gt;<i> Again, I am able to register for workspace::focus just fine (and 
+</I>&gt;<i> receive workspace focus events).
+</I>&gt;<i>
+</I>&gt;<i> *conn.on('workspace::focus', on_workspace_focus)*
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> /This message is intended only for the addressee and may contain 
+</I>&gt;<i> information that is company confidential or privileged. Any technical 
+</I>&gt;<i> data in this message may be exported only in accordance with the U.S. 
+</I>&gt;<i> International Traffic in Arms Regulations (22 CFR Parts 120-130) or 
+</I>&gt;<i> the Export Administration Regulations (15 CFR Parts 730-774). 
+</I>&gt;<i> Unauthorized use is strictly prohibited and may be unlawful. If you 
+</I>&gt;<i> are not the intended recipient, or the person responsible for 
+</I>&gt;<i> delivering to the intended recipient, you should not read, copy, 
+</I>&gt;<i> disclose or otherwise use this message. If you have received this 
+</I>&gt;<i> email in error, please delete it, and advise the sender immediately. / 
+</I>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140829/854b9a0a/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140829/854b9a0a/attachment.html</A>&gt;
+</PRE>
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001829.html">[i3] Cant subscribe to window::focus events
+</A></li>
+	<LI>Next message: <A HREF="001831.html">[i3] probleme with i3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1830">[ date ]</a>
+              <a href="thread.html#1830">[ thread ]</a>
+              <a href="subject.html#1830">[ subject ]</a>
+              <a href="author.html#1830">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

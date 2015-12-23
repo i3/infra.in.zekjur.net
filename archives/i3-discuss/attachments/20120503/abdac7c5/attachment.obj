@@ -1,0 +1,711 @@
+From 507a050fc1c8d8717a659f5a448d1dd44adb8f9f Mon Sep 17 00:00:00 2001
+From: darkraven <drdarkraven@gmail.com>
+Date: Thu, 3 May 2012 01:19:13 +0800
+Subject: [PATCH] Above commits squashed
+
+---
+ i3bar/include/ipc.h        |    1 +
+ i3bar/include/workspaces.h |    1 +
+ i3bar/include/xcb.h        |    7 ++
+ i3bar/src/ipc.c            |    3 +-
+ i3bar/src/workspaces.c     |  194 ++++++++++++++++++++++++++++++++++++++++++++
+ i3bar/src/xcb.c            |    6 +-
+ include/commands_parser.h  |    4 +
+ include/ipc.h              |    8 ++
+ src/assignments.c          |    7 +-
+ src/commands_parser.c      |   26 ++++++
+ src/con.c                  |    2 +-
+ src/handlers.c             |    9 +-
+ src/ipc.c                  |   50 ++++++++----
+ src/workspace.c            |   33 +++++---
+ src/x.c                    |   15 ++--
+ 15 files changed, 312 insertions(+), 54 deletions(-)
+
+diff --git a/i3bar/include/ipc.h b/i3bar/include/ipc.h
+index a0c4970..9d6c062 100644
+--- a/i3bar/include/ipc.h
++++ b/i3bar/include/ipc.h
+@@ -11,6 +11,7 @@
+ #define IPC_H_
+ 
+ #include <stdint.h>
++#include <i3/ipc.h>
+ 
+ /*
+  * Initiate a connection to i3.
+diff --git a/i3bar/include/workspaces.h b/i3bar/include/workspaces.h
+index dfd93d9..5b4a603 100644
+--- a/i3bar/include/workspaces.h
++++ b/i3bar/include/workspaces.h
+@@ -23,6 +23,7 @@ TAILQ_HEAD(ws_head, i3_ws);
+  *
+  */
+ void parse_workspaces_json(char *json);
++void parse_workspaces_event_json(char *json);
+ 
+ /*
+  * free() all workspace data-structures
+diff --git a/i3bar/include/xcb.h b/i3bar/include/xcb.h
+index 9ed2149..c8c76ce 100644
+--- a/i3bar/include/xcb.h
++++ b/i3bar/include/xcb.h
+@@ -113,6 +113,13 @@ void reconfig_windows();
+ void draw_bars();
+ 
+ /*
++ * Hide/unhide bars
++ *
++ */
++void hide_bars();
++void unhide_bars();
++
++/*
+  * Redraw the bars, i.e. simply copy the buffer to the barwindow
+  *
+  */
+diff --git a/i3bar/src/ipc.c b/i3bar/src/ipc.c
+index 41b8e15..ff89e2a 100644
+--- a/i3bar/src/ipc.c
++++ b/i3bar/src/ipc.c
+@@ -15,7 +15,6 @@
+ #include <errno.h>
+ #include <sys/socket.h>
+ #include <sys/un.h>
+-#include <i3/ipc.h>
+ #include <ev.h>
+ 
+ #include "common.h"
+@@ -123,7 +122,7 @@ handler_t reply_handlers[] = {
+  */
+ void got_workspace_event(char *event) {
+     DLOG("Got Workspace Event!\n");
+-    i3_send_msg(I3_IPC_MESSAGE_TYPE_GET_WORKSPACES, NULL);
++    parse_workspaces_event_json(event);
+ }
+ 
+ /*
+diff --git a/i3bar/src/workspaces.c b/i3bar/src/workspaces.c
+index 5df1899..222f35a 100644
+--- a/i3bar/src/workspaces.c
++++ b/i3bar/src/workspaces.c
+@@ -24,6 +24,39 @@ struct workspaces_json_params {
+     char           *json;
+ };
+ 
++struct workspace_event_json_params {
++    i3_ws *workspace;
++    char *change;
++    int cur_key;
++};
++
++static int urgent_ws;
++static i3_ws *focused;
++static bool last_urgent_focused;
++
++static i3_ws *get_workspace_by_name(const char *name){
++    i3_output *outputs_walk;
++    SLIST_FOREACH(outputs_walk, outputs, slist) {
++        i3_ws *ws_walk;
++        TAILQ_FOREACH(ws_walk, outputs_walk->workspaces, tailq) {
++            if (strcmp(ws_walk->name, name) == 0)
++                return ws_walk;
++        }
++    }
++    return NULL;
++}
++
++static i3_ws *get_workspace_by_num(int val){
++    i3_output *outputs_walk;
++    SLIST_FOREACH(outputs_walk, outputs, slist) {
++        i3_ws *ws_walk;
++        TAILQ_FOREACH(ws_walk, outputs_walk->workspaces, tailq) {
++            if (ws_walk->num == val)
++                return ws_walk;
++        }
++    }
++    return NULL;
++}
+ /*
+  * Parse a boolean value (visible, focused, urgent)
+  *
+@@ -39,12 +72,16 @@ static int workspaces_boolean_cb(void *params_, int val) {
+ 
+     if (!strcmp(params->cur_key, "focused")) {
+         params->workspaces_walk->focused = val;
++        if (val)
++            focused = params->workspaces_walk;
+         FREE(params->cur_key);
+         return 1;
+     }
+ 
+     if (!strcmp(params->cur_key, "urgent")) {
+         params->workspaces_walk->urgent = val;
++        if (val)
++            urgent_ws++;
+         FREE(params->cur_key);
+         return 1;
+     }
+@@ -266,6 +303,160 @@ void parse_workspaces_json(char *json) {
+ }
+ 
+ /*
++ * Parse a string (name, change)
++ *
++ */
++#if YAJL_MAJOR >= 2
++static int workspaces_event_string_cb(void *params_, const unsigned char *val, size_t len) {
++#else
++static int workspaces_event_string_cb(void *params_, const unsigned char *val, unsigned int len) {
++#endif
++    struct workspace_event_json_params *param = params_;
++
++    if(param->cur_key == 2)
++        return 0;
++    if(param->cur_key == 0)
++        param->change = strndup((const char *)val, len);
++    else
++        param->workspace = get_workspace_by_name((const char *)val);
++    return 1;
++}
++
++/*
++ * Parse an integer (num of the workspace)
++ *
++ */
++#if YAJL_MAJOR >= 2
++static int workspaces_event_integer_cb(void *params_, long long val) {
++#else
++static int workspaces_event_integer_cb(void *params_, long val) {
++#endif
++    struct workspace_event_json_params *param = params_;
++
++    if(param->cur_key != 2)
++        return 0;
++    if (!param->workspace)
++        param->workspace = get_workspace_by_num(val);
++    return 1;
++}
++/*
++ * Parse a key.
++ *
++ * Essentially we just save it in the parsing-state
++ *
++ */
++#if YAJL_MAJOR >= 2
++static int workspaces_event_map_key_cb(void *params_, const unsigned char *keyVal, size_t keyLen) {
++#else
++static int workspaces_event_map_key_cb(void *params_, const unsigned char *keyVal, unsigned int keyLen) {
++#endif
++    struct workspace_event_json_params *param = (struct workspace_event_json_params *)params_;
++
++    if (strncmp((const char *)keyVal, "change", keyLen) == 0)
++        param->cur_key = 0;
++    else if (strncmp((const char *)keyVal, "name", keyLen) == 0)
++        param->cur_key = 1;
++    else if (strncmp((const char *)keyVal, "num", keyLen) == 0)
++        param->cur_key =2;
++    else
++        return 0;
++    return 1;
++}
++/* A datastructure to pass all these callbacks to yajl */
++yajl_callbacks workspaces_event_callbacks = {
++    NULL,
++    NULL,
++    &workspaces_event_integer_cb,
++    NULL,
++    NULL,
++    &workspaces_event_string_cb,
++    NULL,
++    &workspaces_event_map_key_cb,
++    NULL,
++    NULL,
++    NULL
++};
++void parse_workspaces_event_json(char *json) {
++    struct workspace_event_json_params param;
++    param.workspace = NULL;
++
++    yajl_handle handle;
++    yajl_status state;
++#if YAJL_MAJOR < 2
++    yajl_parser_config parse_conf = { 0, 0 };
++
++    handle = yajl_alloc(&workspaces_event_callbacks, &parse_conf, NULL, (void*) &param);
++#else
++    handle = yajl_alloc(&workspaces_event_callbacks, NULL, (void*) &param);
++#endif
++
++    state = yajl_parse(handle, (const unsigned char*) json, strlen(json));
++
++    /* FIXME: Propper errorhandling for JSON-parsing */
++    switch (state) {
++        case yajl_status_ok:
++            break;
++        case yajl_status_client_canceled:
++#if YAJL_MAJOR < 2
++        case yajl_status_insufficient_data:
++#endif
++        case yajl_status_error:
++            ELOG("Could not parse workspaces-event!\n");
++            exit(EXIT_FAILURE);
++            break;
++    }
++
++    yajl_free(handle);
++
++    if (0 == strcmp(param.change, "empty") || 0 == strcmp(param.change, "init")){
++        i3_send_msg(I3_IPC_MESSAGE_TYPE_GET_WORKSPACES, NULL);
++        return;
++    }
++
++    if(!param.workspace) return;
++    if (0 == strcmp(param.change, "urgent")) {
++        urgent_ws++;
++        unhide_bars();
++        param.workspace->urgent = true;
++
++        if (focused == param.workspace)
++            last_urgent_focused = true;
++        else
++            last_urgent_focused = false;
++
++        draw_bars();
++    } else if (0 == strcmp(param.change, "urgent_off")) {
++        param.workspace->urgent = false;
++        urgent_ws--;
++
++        if (0 == urgent_ws && last_urgent_focused)
++            hide_bars();
++
++        draw_bars();
++    } else if (0 == strcmp(param.change, "focus")) {
++        if (param.workspace == focused)
++            return;
++
++        if (focused)
++            focused->focused = false;
++        focused = param.workspace;
++        focused->focused = true;
++        focused->visible = true;
++        last_urgent_focused = false;
++        if (0 == urgent_ws)
++            hide_bars();
++
++        draw_bars();
++    } else if (0 == strcmp(param.change, "invisible")) {
++        param.workspace->visible = false;
++        draw_bars();
++    } else {
++        //Unhandled workspace event, send GET_WORKSPACES message to i3
++        i3_send_msg(I3_IPC_MESSAGE_TYPE_GET_WORKSPACES, NULL);
++    }
++}
++
++/*
+  * free() all workspace data-structures. Does not free() the heads of the tailqueues.
+  *
+  */
+@@ -285,4 +476,7 @@ void free_workspaces() {
+             FREE_TAILQ(outputs_walk->workspaces, i3_ws);
+         }
+     }
++
++    urgent_ws = 0;
++    focused = NULL;
+ }
+diff --git a/i3bar/src/xcb.c b/i3bar/src/xcb.c
+index 87926d3..038961c 100644
+--- a/i3bar/src/xcb.c
++++ b/i3bar/src/xcb.c
+@@ -161,7 +161,7 @@ void refresh_statusline() {
+  *
+  */
+ void hide_bars() {
+-    if (!config.hide_on_modifier) {
++    if (!config.hide_on_modifier || mod_pressed) {
+         return;
+     }
+ 
+@@ -796,12 +796,12 @@ void xkb_io_cb(struct ev_loop *loop, ev_io *watcher, int revents) {
+     } while (0)
+ 
+     if (modstate != mod_pressed) {
++        mod_pressed = modstate;
+         if (modstate == 0) {
+             DLOGMOD(config.modifier, released, hide_bars);
+         } else {
+             DLOGMOD(config.modifier, pressed, unhide_bars);
+         }
+-        mod_pressed = modstate;
+     }
+ 
+ #undef DLOGMOD
+@@ -1483,8 +1483,6 @@ void draw_bars() {
+                 fg_color = colors.urgent_ws_fg;
+                 bg_color = colors.urgent_ws_bg;
+                 border_color = colors.urgent_ws_border;
+-                /* The urgent-hint should get noticed, so we unhide the bars shortly */
+-                unhide_bars();
+             }
+             uint32_t mask = XCB_GC_FOREGROUND | XCB_GC_BACKGROUND;
+             uint32_t vals_border[] = { border_color, border_color };
+diff --git a/include/commands_parser.h b/include/commands_parser.h
+index 5a4472d..08d7b71 100644
+--- a/include/commands_parser.h
++++ b/include/commands_parser.h
+@@ -27,6 +27,10 @@ struct CommandResult {
+     bool needs_tree_render;
+ };
+ 
++#ifdef TEST_PARSER
+ struct CommandResult *parse_command(const char *input);
++#else
++void run_command(const char *input, int fd);
++#endif
+ 
+ #endif
+diff --git a/include/ipc.h b/include/ipc.h
+index af80fa4..16e3c6c 100644
+--- a/include/ipc.h
++++ b/include/ipc.h
+@@ -32,6 +32,12 @@ typedef struct ipc_client {
+         TAILQ_ENTRY(ipc_client) clients;
+ } ipc_client;
+ 
++typedef struct ipc_queue {
++    char *event, *payload;
++    uint32_t message_type;
++    SIMPLEQ_ENTRY(ipc_queue) items;
++} ipc_queue;
++
+ /*
+  * Callback type for the different message types.
+  *
+@@ -71,6 +77,8 @@ int ipc_create_socket(const char *filename);
+  * and subscribed to this kind of event.
+  *
+  */
++void ipc_unqueue_event();
++void ipc_queue_event();
+ void ipc_send_event(const char *event, uint32_t message_type, const char *payload);
+ 
+ /**
+diff --git a/src/assignments.c b/src/assignments.c
+index 09793c3..f68aa12 100644
+--- a/src/assignments.c
++++ b/src/assignments.c
+@@ -43,13 +43,8 @@ void run_assignments(i3Window *window) {
+             DLOG("execute command %s\n", current->dest.command);
+             char *full_command;
+             sasprintf(&full_command, "[id=\"%d\"] %s", window->id, current->dest.command);
+-            struct CommandResult *command_output = parse_command(full_command);
++            run_command(full_command, -1);
+             free(full_command);
+-
+-            if (command_output->needs_tree_render)
+-                needs_tree_render = true;
+-
+-            free(command_output->json_output);
+         }
+ 
+         /* Store that we ran this assignment to not execute it again */
+diff --git a/src/commands_parser.c b/src/commands_parser.c
+index d15fea3..122172e 100644
+--- a/src/commands_parser.c
++++ b/src/commands_parser.c
+@@ -408,6 +408,32 @@ struct CommandResult *parse_command(const char *input) {
+     return &command_output;
+ }
+ 
++#ifndef TEST_PARSER
++
++void run_command(const char *input, int fd) {
++    x_mask_event_mask(XCB_NONE);
++    ipc_queue_event();
++
++    struct CommandResult *cmd_output = parse_command(input);
++    if (cmd_output->needs_tree_render)
++        tree_render();
++    else
++        x_mask_event_mask(FRAME_EVENT_MASK);
++
++    if (fd >= 0) {
++        /* If no reply was provided, we just use the default success message */
++        ipc_send_message(fd, strlen(cmd_output->json_output),
++                         I3_IPC_REPLY_TYPE_COMMAND,
++                         (const uint8_t*)cmd_output->json_output);
++    }
++
++    ipc_unqueue_event();
++
++    free(cmd_output->json_output);
++}
++
++#endif
++
+ /*******************************************************************************
+  * Code for building the stand-alone binary test.commands_parser which is used
+  * by t/187-commands-parser.t.
+diff --git a/src/con.c b/src/con.c
+index c24a379..740c3d0 100644
+--- a/src/con.c
++++ b/src/con.c
+@@ -193,7 +193,7 @@ void con_focus(Con *con) {
+         con_focus(con->parent);
+ 
+     focused = con;
+-    if (con->urgent) {
++    if (con->urgent && con->type != CT_WORKSPACE) {
+         con->urgent = false;
+         workspace_update_urgent_flag(con_get_workspace(con));
+     }
+diff --git a/src/handlers.c b/src/handlers.c
+index 490bf6e..b0a49a1 100644
+--- a/src/handlers.c
++++ b/src/handlers.c
+@@ -80,7 +80,7 @@ bool event_is_ignored(const int sequence, const int response_type) {
+ 
+ /*
+  * There was a key press. We compare this key code with our bindings table and pass
+- * the bound action to parse_command().
++ * the bound action to run_command().
+  *
+  */
+ static void handle_key_press(xcb_key_press_event_t *event) {
+@@ -119,12 +119,7 @@ static void handle_key_press(xcb_key_press_event_t *event) {
+         }
+     }
+ 
+-    struct CommandResult *command_output = parse_command(bind->command);
+-
+-    if (command_output->needs_tree_render)
+-        tree_render();
+-
+-    free(command_output->json_output);
++    run_command(bind->command, -1);
+ }
+ 
+ /*
+diff --git a/src/ipc.c b/src/ipc.c
+index 5e91e21..539b7fb 100644
+--- a/src/ipc.c
++++ b/src/ipc.c
+@@ -19,12 +19,14 @@
+ #include <yajl/yajl_version.h>
+ 
+ char *current_socketpath = NULL;
++bool ipc_is_queued = false;
+ 
+ /* Shorter names for all those yajl_gen_* functions */
+ #define y(x, ...) yajl_gen_ ## x (gen, ##__VA_ARGS__)
+ #define ystr(str) yajl_gen_string(gen, (unsigned char*)str, strlen(str))
+ 
+ TAILQ_HEAD(ipc_client_head, ipc_client) all_clients = TAILQ_HEAD_INITIALIZER(all_clients);
++SIMPLEQ_HEAD(ipc_queue_head, ipc_queue) message_queue = SIMPLEQ_HEAD_INITIALIZER(message_queue);
+ 
+ /*
+  * Puts the given socket file descriptor into non-blocking mode or dies if
+@@ -68,13 +70,12 @@ static bool mkdirp(const char *path) {
+ 
+     return result;
+ }
+-
+ /*
+  * Sends the specified event to all IPC clients which are currently connected
+  * and subscribed to this kind of event.
+  *
+  */
+-void ipc_send_event(const char *event, uint32_t message_type, const char *payload) {
++static void ipc_send_event_unqueue(const char *event, uint32_t message_type, const char *payload) {
+     ipc_client *current;
+     TAILQ_FOREACH(current, &all_clients, clients) {
+         /* see if this client is interested in this event */
+@@ -91,8 +92,39 @@ void ipc_send_event(const char *event, uint32_t message_type, const char *payloa
+         ipc_send_message(current->fd, strlen(payload), message_type, (const uint8_t*)payload);
+     }
+ }
++static void ipc_enqueue_event(const char *event, uint32_t message_type, const char *payload) {
++    ipc_queue *new_msg = smalloc(sizeof(ipc_queue));
++    new_msg->event = sstrdup(event);
++    new_msg->message_type = message_type;
++    new_msg->payload = sstrdup(payload);
++    SIMPLEQ_INSERT_TAIL(&message_queue, new_msg, items);
++}
++static void ipc_drain_queue() {
++    ipc_queue *current;
++    while(!SIMPLEQ_EMPTY(&message_queue)){
++        current = SIMPLEQ_FIRST(&message_queue);
++        ipc_send_event_unqueue(current->event, current->message_type, current->payload);
++        free(current->event);
++        free(current->payload);
++        SIMPLEQ_REMOVE_HEAD(&message_queue, items);
++        free(current);
++    }
++}
++void ipc_queue_event() {
++    ipc_is_queued = true;
++}
++void ipc_unqueue_event() {
++    ipc_is_queued = false;
++    ipc_drain_queue();
++}
++void ipc_send_event(const char *event, uint32_t message_type, const char *payload) {
++    if (ipc_is_queued)
++        ipc_enqueue_event(event, message_type, payload);
++    else
++        ipc_send_event_unqueue(event, message_type, payload);
++}
+ 
+-/*
++/*const char *event, uint32_t message_type, const char *payload
+  * Calls shutdown() on each socket and closes it. This function to be called
+  * when exiting or restarting only!
+  *
+@@ -119,18 +151,8 @@ IPC_HANDLER(command) {
+     char *command = scalloc(message_size + 1);
+     strncpy(command, (const char*)message, message_size);
+     LOG("IPC: received: *%s*\n", command);
+-    struct CommandResult *command_output = parse_command((const char*)command);
++    run_command((const char*)command, fd);
+     free(command);
+-
+-    if (command_output->needs_tree_render)
+-        tree_render();
+-
+-    /* If no reply was provided, we just use the default success message */
+-    ipc_send_message(fd, strlen(command_output->json_output),
+-                     I3_IPC_REPLY_TYPE_COMMAND,
+-                     (const uint8_t*)command_output->json_output);
+-
+-    free(command_output->json_output);
+ }
+ 
+ static void dump_rect(yajl_gen gen, const char *name, Rect r) {
+diff --git a/src/workspace.c b/src/workspace.c
+index 44f32c2..82841af 100644
+--- a/src/workspace.c
++++ b/src/workspace.c
+@@ -14,6 +14,12 @@
+  * back-and-forth switching. */
+ static char *previous_workspace_name = NULL;
+ 
++static void send_workspace_event(const char *change, const Con* ws){
++    char *payload;
++    sasprintf(&payload, "{\"change\":\"%s\",\"name\":\"%s\",\"num\":%d}", change, ws->name, ws->num);
++    ipc_send_event("workspace", I3_IPC_EVENT_WORKSPACE, payload);
++    free(payload);
++}
+ /*
+  * Returns a pointer to the workspace with the given number (starting at 0),
+  * creating the workspace if necessary (by allocating the necessary amount of
+@@ -77,7 +83,7 @@ Con *workspace_get(const char *num, bool *created) {
+ 
+         con_attach(workspace, content, false);
+ 
+-        ipc_send_event("workspace", I3_IPC_EVENT_WORKSPACE, "{\"change\":\"init\"}");
++        send_workspace_event("init", workspace);
+         if (created != NULL)
+             *created = true;
+     }
+@@ -345,15 +351,22 @@ static void _workspace_show(Con *workspace, bool changed_num_workspaces) {
+         /* check if this workspace is currently visible */
+         if (!workspace_is_visible(old)) {
+             LOG("Closing old workspace (%p / %s), it is empty\n", old, old->name);
++            send_workspace_event("empty", old);
+             tree_close(old, DONT_KILL_WINDOW, false, false);
+-            ipc_send_event("workspace", I3_IPC_EVENT_WORKSPACE, "{\"change\":\"empty\"}");
+             changed_num_workspaces = true;
+         }
+-    }
++    } else if (!workspace_is_visible(old))
++        send_workspace_event("invisible", old);
+ 
+     /* Memorize current output */
+     Con *old_output = con_get_output(focused);
+ 
++    /* Update the EWMH hints */
++    ewmh_update_current_desktop();
++
++    /* Make sure the "focus" is sent before the "urgent_off" event */
++    send_workspace_event("focus", workspace);
++
+     con_focus(next);
+     workspace->fullscreen_mode = CF_OUTPUT;
+     LOG("focused now = %p / %s\n", focused, focused->name);
+@@ -363,11 +376,6 @@ static void _workspace_show(Con *workspace, bool changed_num_workspaces) {
+     if (old_output != new_output) {
+         x_set_warp_to(&next->rect);
+     }
+-
+-    /* Update the EWMH hints */
+-    ewmh_update_current_desktop();
+-
+-    ipc_send_event("workspace", I3_IPC_EVENT_WORKSPACE, "{\"change\":\"focus\"}");
+ }
+ 
+ /*
+@@ -679,8 +687,13 @@ void workspace_update_urgent_flag(Con *ws) {
+     ws->urgent = get_urgency_flag(ws);
+     DLOG("Workspace urgency flag changed from %d to %d\n", old_flag, ws->urgent);
+ 
+-    if (old_flag != ws->urgent)
+-        ipc_send_event("workspace", I3_IPC_EVENT_WORKSPACE, "{\"change\":\"urgent\"}");
++    if (old_flag != ws->urgent) {
++        if (ws->urgent)
++            send_workspace_event("urgent", ws);
++        else
++            send_workspace_event("urgent_off", ws);
++    }
++
+ }
+ 
+ /*
+diff --git a/src/x.c b/src/x.c
+index 08eb8fe..f54bcf1 100644
+--- a/src/x.c
++++ b/src/x.c
+@@ -809,6 +809,7 @@ static void x_push_node_unmaps(Con *con) {
+ void x_push_changes(Con *con) {
+     con_state *state;
+     xcb_query_pointer_cookie_t pointercookie;
++    uint32_t values[1];
+ 
+     /* If we need to warp later, we request the pointer position as soon as possible */
+     if (warp_to) {
+@@ -817,11 +818,7 @@ void x_push_changes(Con *con) {
+ 
+     DLOG("-- PUSHING WINDOW STACK --\n");
+     //DLOG("Disabling EnterNotify\n");
+-    uint32_t values[1] = { XCB_NONE };
+-    CIRCLEQ_FOREACH_REVERSE(state, &state_head, state) {
+-        if (state->mapped)
+-            xcb_change_window_attributes(conn, state->id, XCB_CW_EVENT_MASK, values);
+-    }
++    x_mask_event_mask(XCB_NONE);
+     //DLOG("Done, EnterNotify disabled\n");
+     bool order_changed = false;
+     bool stacking_changed = false;
+@@ -888,11 +885,7 @@ void x_push_changes(Con *con) {
+     }
+ 
+     //DLOG("Re-enabling EnterNotify\n");
+-    values[0] = FRAME_EVENT_MASK;
+-    CIRCLEQ_FOREACH_REVERSE(state, &state_head, state) {
+-        if (state->mapped)
+-            xcb_change_window_attributes(conn, state->id, XCB_CW_EVENT_MASK, values);
+-    }
++    x_mask_event_mask(FRAME_EVENT_MASK);
+     //DLOG("Done, EnterNotify re-enabled\n");
+ 
+     x_deco_recurse(con);
+@@ -1047,4 +1040,6 @@ void x_mask_event_mask(uint32_t mask) {
+         if (state->mapped)
+             xcb_change_window_attributes(conn, state->id, XCB_CW_EVENT_MASK, values);
+     }
++
++    xcb_flush(conn);
+ }
+-- 
+1.7.10
+

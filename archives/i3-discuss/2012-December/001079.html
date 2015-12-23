@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] RFC: i3-dmenu-desktop
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20RFC%3A%20i3-dmenu-desktop&In-Reply-To=%3Cx6r4mzqfur.fsf%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001078.html">
+   <LINK REL="Next"  HREF="001080.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] RFC: i3-dmenu-desktop</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20RFC%3A%20i3-dmenu-desktop&In-Reply-To=%3Cx6r4mzqfur.fsf%40midna.zekjur.net%3E"
+       TITLE="[i3] RFC: i3-dmenu-desktop">michael at i3wm.org
+       </A><BR>
+    <I>Sun Dec  9 18:45:32 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001078.html">[i3] RFC: i3-dmenu-desktop
+</A></li>
+        <LI>Next message: <A HREF="001080.html">[i3] RFC: i3-dmenu-desktop
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1079">[ date ]</a>
+              <a href="thread.html#1079">[ thread ]</a>
+              <a href="subject.html#1079">[ subject ]</a>
+              <a href="author.html#1079">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Quentin,
+
+Quentin Glidic &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">sardemff7+i3 at sardemff7.net</A>&gt; writes:
+&gt;<i> Too bad I didn&#8217;t work earlier on j4menu since it was the main use case
+</I>&gt;<i> for it. And I&#8217;m sad that you&#8217;re using &#8220;dmenu&#8221; everywhere while j4menu is
+</I>&gt;<i> on its way. :'(
+</I>As long as j4menu is not released _and in distributions_, I&#8217;m not gonna
+depend on it within i3. That is, it will take many months until we are
+there, even if you released a great version right now. The more
+important new dependency that I need to force upon users is a recent
+version of libxkbcommon.
+
+&gt;<i> You lack OnlyShowIn and NotShowIn support, at first sight. It might be
+</I>&gt;<i> worth to support them if we start having so much i3 XDG support. :-)
+</I>Yes, I just display all entries for simplicity.
+
+&gt;<i> Useful, sure, maybe a bit too limited for now (you can currently match
+</I>&gt;<i> the name only, and some names does not match the exec name: &#8220;GNOME
+</I>&gt;<i> Disks&#8221; vs &#8220;palimpsest&#8221;).
+</I>True. I thought about adding a flag which allows switching between (or
+using both) the &#8220;Name&#8221; and actual command. Does somebody else have an
+opinion on that?
+
+&gt;<i> For the startup-notification support, would it be easy to tell i3 a
+</I>&gt;<i> specific desktop on which you want to start the app, using e.g. &quot;exec
+</I>&gt;<i> --on 1:web&quot;? I know you can already use &quot;workspace 1:web;exec;worspace
+</I>&gt;<i> back_and_forth&quot;, but an alias might be enough (if it always works as
+</I>&gt;<i> expected).
+</I>Theoretically, that should be possible.
+
+&gt;<i> You would need to add a dep on dmenu then, or display some sort of
+</I>&gt;<i> warning (nagbar?) to inform the user that it needs dmenu, at runtime.
+</I>No, nothing changes in that regard. We currently ship with dmenu_run in
+our default config, and we have a Recommends: suckless-tools in
+Debian (which might translate into a dependency in other distributions).
+
+&gt;<i> And many users may find it&#8230; disappointing to change to default exec
+</I>&gt;<i> behavior. Some i3-config-wizard setting maybe?
+</I>No, i3-config-wizard&#8217;s purpose is not configuring i3 for you. It
+translates the keycodes to keysyms, and that&#8217;s it&#185;.
+
+Can you elaborate on why users may find it disappointing?
+
+&gt;<i> As a side note, I plan to push some j4menu useful code in January.
+</I>&gt;<i> I will probably hack a j4menu-specific equivalent, as j4menu would
+</I>&gt;<i> behave differently as dmenu.
+</I>&gt;<i> This j4menu specific util will use Name, GenericName, Comment, Exec,
+</I>&gt;<i> Keywords and maybe others to match the entry, and a tree menu based on
+</I>&gt;<i> Categories.
+</I>&gt;<i> In the hope that I&#8217;ll save you the maintenance time for this tool!
+</I>Looking forward to it. More choice is always good. I expect this to
+fully support UTF-8 so that we might switch to it instead of a
+dmenu-based solution.
+
+&#185; Yes, i3-config-wizard also allows modifier choice. I am not entirely
+  decided on whether this was a good idea or not, but we need to keep
+  &quot;Alt&quot; as the default modifier for people whose keyboards don&#8217;t have a
+  windows key. At the same time, we really want to use the windows key
+  to not clash with other keybindings. That&#8217;s the justification for
+  having this choice in i3-c-w.
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001078.html">[i3] RFC: i3-dmenu-desktop
+</A></li>
+	<LI>Next message: <A HREF="001080.html">[i3] RFC: i3-dmenu-desktop
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1079">[ date ]</a>
+              <a href="thread.html#1079">[ thread ]</a>
+              <a href="subject.html#1079">[ subject ]</a>
+              <a href="author.html#1079">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

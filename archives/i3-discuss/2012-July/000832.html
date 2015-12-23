@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Get list of workspaces
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Get%20list%20of%20workspaces&In-Reply-To=%3CCALzASJnCWd%3DiDq%2B6%3DTOOqDUpsfF%3DJcOMs8Dc5RBL%3D-oVWA%3DcDA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000821.html">
+   <LINK REL="Next"  HREF="000833.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Get list of workspaces</H1>
+    <B>Anders Bo Rasmussen</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Get%20list%20of%20workspaces&In-Reply-To=%3CCALzASJnCWd%3DiDq%2B6%3DTOOqDUpsfF%3DJcOMs8Dc5RBL%3D-oVWA%3DcDA%40mail.gmail.com%3E"
+       TITLE="[i3] Get list of workspaces">fuzz at fuzz.dk
+       </A><BR>
+    <I>Tue Jul 31 16:19:59 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000821.html">[i3] Get list of workspaces
+</A></li>
+        <LI>Next message: <A HREF="000833.html">[i3] Get list of workspaces
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#832">[ date ]</a>
+              <a href="thread.html#832">[ thread ]</a>
+              <a href="subject.html#832">[ subject ]</a>
+              <a href="author.html#832">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, Jul 25, 2012 at 3:40 PM, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt; wrote:
+&gt;&gt;<i> Is there a more easy way to do this?
+</I>&gt;<i> No, it&#8217;s the same way I would do it right now.
+</I>
+Hi. I've figured out to get the current workspace with AnyEvent::I3.
+I've also figured out to get a call back when the workspace changes.
+But when I combine it I get an error, as it seems like I can't call
+get_tree() while I'm in a call back. I've made a small script to show
+the problem:
+
+#!/usr/bin/perl
+
+use warnings;
+use strict;
+use AnyEvent::I3;
+
+my $i3=i3();
+$i3-&gt;connect();
+if ($i3-&gt;connect-&gt;recv) {
+  print &quot;Connected to i3\n&quot;;
+}
+my %callbacks = (
+  workspace =&gt; sub { i3-&gt;get_tree-&gt;recv}
+);
+
+while ($i3-&gt;subscribe(\%callbacks)-&gt;recv) {};
+
+
+Which give the following output (second line first when I switch workspace):
+
+Connected to i3
+AnyEvent::CondVar: recursive blocking wait attempted at
+/home/fuzz/perl5/lib/perl5/AnyEvent/I3.pm line 339
+
+Am I doing something wrong?
+
+/Anders
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000821.html">[i3] Get list of workspaces
+</A></li>
+	<LI>Next message: <A HREF="000833.html">[i3] Get list of workspaces
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#832">[ date ]</a>
+              <a href="thread.html#832">[ thread ]</a>
+              <a href="subject.html#832">[ subject ]</a>
+              <a href="author.html#832">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

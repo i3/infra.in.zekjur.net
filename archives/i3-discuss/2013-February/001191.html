@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3bar not showing on additional user's desktop
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3bar%20not%20showing%20on%20additional%20user%27s%20desktop&In-Reply-To=%3C54dce002423433317578608d566eeabd.squirrel%40webmail.strucktower.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001190.html">
+   <LINK REL="Next"  HREF="001192.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3bar not showing on additional user's desktop</H1>
+    <B>keitho at strucktower.com</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3bar%20not%20showing%20on%20additional%20user%27s%20desktop&In-Reply-To=%3C54dce002423433317578608d566eeabd.squirrel%40webmail.strucktower.com%3E"
+       TITLE="[i3] i3bar not showing on additional user's desktop">keitho at strucktower.com
+       </A><BR>
+    <I>Sat Feb 23 05:16:07 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001190.html">[i3] i3bar not showing on additional user's desktop
+</A></li>
+        <LI>Next message: <A HREF="001192.html">[i3] i3bar not showing on additional user's desktop
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1191">[ date ]</a>
+              <a href="thread.html#1191">[ thread ]</a>
+              <a href="subject.html#1191">[ subject ]</a>
+              <a href="author.html#1191">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Sorry, I've been busy with other priorities...
+
+It finally occurred to me to check the log...
+
+It appears that there is some type of problem with ALSA with Mary's
+account- my i3status.conf uses this paragraph:
+
+volume master {
+		format = &quot;sound: %volume&quot;
+		device = &quot;default&quot;
+		mixer = &quot;Master&quot;
+		mixer_idx = 0
+}
+
+Which works in my account, but in her account I get errors related to
+ALSA. Here is a snippet:
+
+i3status: trying to auto-detect output_format setting
+i3status: auto-detected &quot;i3bar&quot;
+i3status: ALSA: Cannot attach mixer to device: No such file or directory
+i3status: ALSA: Cannot attach mixer to device: No such file or directory
+Received SIGPIPE, exiting
+02/22/2013 09:16:16 AM - ERROR: X11 Error received! sequence 0x28a,
+error_code = 4
+02/22/2013 09:16:16 AM - ERROR: X11 Error received! sequence 0x28b,
+error_code = 13
+
+I haven't had time to look into it yet, just thought I'd give this further
+info. Feeling like I shouldn't have made my original post...since this has
+nothing to do with a problem with i3 itself. I apologize.
+
+Keith Ostertag
+
+***********************************
+Original Post:
+
+I've been using i3 for about a year on my personal laptop (single user).
+Recently I decided to use it on my new home computer (two users). Simple
+setup with only one display.
+
+The i3bar does not display on the second user's (Mary's) desktop. It does
+display on mine as expected. We use the same ~/.i3/config, which is the
+default with only one line added at the end to load a browser on startup.
+AFAIK, all the i3 commands work on both desktops.
+
+I'm using Debian, 3.2.0-4-amd6. I am using xdm with a few scripts to
+login, not sure if that complicates things, since it should be the same
+for both of us.
+
+We do have different privileges.
+
+Here is /etc/i3status.conf:
+
+keith at ada:/etc$ ls -ahl i3status.conf
+-rwxrwxrwx 1 root root 1.3K Feb 20 14:08 i3status.conf
+
+and
+
+keith at ada:/etc$ ls -ahl /usr/bin/i3bar
+-rwxr-xr-x 1 root root 60K Jan  1 12:37 /usr/bin/i3bar
+
+Both of our paths include /usr/bin
+
+A permissions issue? Not sure where else to look.
+
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001190.html">[i3] i3bar not showing on additional user's desktop
+</A></li>
+	<LI>Next message: <A HREF="001192.html">[i3] i3bar not showing on additional user's desktop
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1191">[ date ]</a>
+              <a href="thread.html#1191">[ thread ]</a>
+              <a href="subject.html#1191">[ subject ]</a>
+              <a href="author.html#1191">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

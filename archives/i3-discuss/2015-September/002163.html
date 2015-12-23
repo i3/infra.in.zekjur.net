@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] default kbd layout per window
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20default%20kbd%20layout%20per%20window&In-Reply-To=%3CCABmj%3DE4AnApJPb6ormCExMmnQs6YtUJUFbcuiTjKM8ZwoUR7ZA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+   <LINK REL="Next"  HREF="002164.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] default kbd layout per window</H1>
+    <B>Nokan Emiro</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20default%20kbd%20layout%20per%20window&In-Reply-To=%3CCABmj%3DE4AnApJPb6ormCExMmnQs6YtUJUFbcuiTjKM8ZwoUR7ZA%40mail.gmail.com%3E"
+       TITLE="[i3] default kbd layout per window">uzleepito at gmail.com
+       </A><BR>
+    <I>Tue Sep  1 17:07:01 CEST 2015</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="002164.html">[i3] default kbd layout per window
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2163">[ date ]</a>
+              <a href="thread.html#2163">[ thread ]</a>
+              <a href="subject.html#2163">[ subject ]</a>
+              <a href="author.html#2163">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi i3wm gurus,
+
+I use i3 with kbdd in order to have different keyboard layouts in different
+windows:
+
+exec_always --no-startup-id kbdd
+exec_always setxkbmap -layout de,us -option grp:shift_caps_toggle
+
+
+I figured out that the following command changes the current layout into
+the US version:
+
+$  dbus-send --dest=ru.gentoo.KbddService /ru/gentoo/KbddService
+ru.gentoo.kbdd.set_layout uint32:1
+
+...and replacing the uint32:1 with uint32:0 switches to the DE layout.
+
+
+Now, what I couldn't figure out is that how can I set up a default layout
+for certain types
+of windows.  New windows start with the DE version (I guess because that
+one comes
+first in the list with the 'setxkbmap -layout de,us' command).  So far, so
+go.  But on
+terminals I want to use the US layout.  I tried something like this in the
+i3wm config:
+
+for_window [window_role=&quot;terminal&quot;] exec dbus-send
+--dest=ru.gentoo.KbddService /ru/gentoo/KbddService
+ru.gentoo.kbdd.set_layout uint32:1
+
+Unfortunately this doesn't work.  Can you please tell me how can I do this
+kind of
+setup from the i3 config?  (Maybe I could run the dbus-send command from the
+bash_profile or something like that, but I hope this can be done with
+for_window
+in the i3 config somehow.)
+
+Thanks,
+Uz.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150901/180bcce2/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150901/180bcce2/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="002164.html">[i3] default kbd layout per window
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2163">[ date ]</a>
+              <a href="thread.html#2163">[ thread ]</a>
+              <a href="subject.html#2163">[ subject ]</a>
+              <a href="author.html#2163">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

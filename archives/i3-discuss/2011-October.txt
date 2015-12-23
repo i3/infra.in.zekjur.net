@@ -1,0 +1,331 @@
+From titan232 at gmail.com  Sat Oct  1 12:52:47 2011
+From: titan232 at gmail.com (ian)
+Date: Sat, 1 Oct 2011 11:52:47 +0100
+Subject: [i3] key for showing version
+Message-ID: <20111001115247.1b3883a3@sid>
+
+Is there a way of displaying the i3 version. I have looked through the
+docs and config files without luck.
+
+thanks.
+
+From michael+i3 at stapelberg.de  Sat Oct  1 13:00:19 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 01 Oct 2011 12:00:19 +0100
+Subject: [i3] key for showing version
+In-Reply-To: <20111001115247.1b3883a3@sid>
+References: <20111001115247.1b3883a3@sid>
+Message-ID: <1317466768-sup-3641@stapelberg.de>
+
+Hi ian,
+
+Excerpts from ian's message of 2011-10-01 11:52:47 +0100:
+> Is there a way of displaying the i3 version. I have looked through the
+> docs and config files without luck.
+You can run 'i3 --version' to get the version of the binary. Also, the version
+is logged to stdout when starting (also when restarting).
+
+The idea of implementing an IPC command to get the version has come up, but so
+far, nobody did it.
+
+Best regards,
+Michael
+
+From honza801 at gmail.com  Tue Oct 18 16:40:04 2011
+From: honza801 at gmail.com (Jan Krcmar)
+Date: Tue, 18 Oct 2011 16:40:04 +0200
+Subject: [i3] egde snapping for floating windows
+In-Reply-To: <1315241590-sup-1042@stapelberg.de>
+References: <AANLkTikqYCFPK2Y7ic3Aw+UP6j=6rbeLDtd_T1za2aY8@mail.gmail.com>
+	<1296209361-sup-851@midna.zekjur.net>
+	<BANLkTinfV0pfy5syM4Mo2uKyOJB6Hao06g@mail.gmail.com>
+	<BANLkTi=8gtHAaFU-aQW2KXyRsrknOafWdw@mail.gmail.com>
+	<BANLkTinMr4A3v66g-LcBSssOamTMF=gbYw@mail.gmail.com>
+	<BANLkTimP18j7XjbNNjXiixF3E-3FMr8dcQ@mail.gmail.com>
+	<BANLkTinWhzyq3nqimpHWARUJdJb5dT-Fng@mail.gmail.com>
+	<BANLkTikfgOR3t1MzgNQzsh1RUSgDM5Cp-A@mail.gmail.com>
+	<CAKneAX=1KweOtHS5+wtr5BrDt9wTM651z9O2Gt969Fjra+W3qQ@mail.gmail.com>
+	<1315241590-sup-1042@stapelberg.de>
+Message-ID: <CAKneAXma_6E-52zH6+m5mdYUSSGyPYsgdLi60v4SfF3Eftk8ZQ@mail.gmail.com>
+
+hi,
+
+oops, seems i've overlooked this mail
+
+> I tried your patch with the default snap_threshold of 10 pixels. I noticed
+> multiple issues:
+>
+> 1) I can?t seem to position my windows within the 10 pixels to every screen
+> ? edge (e.g. I cannot position them at x=6, y=3). It always snaps. That is a
+> ? serious usability problem, but I don?t see a good way to solve it within the
+> ? existing i3 codebase.
+>
+> ? A way that could work better (without having tried it): Signaling the user
+> ? that the window could snap. If you have ever used Apple Keynote or Xcode?s
+> ? User Interface Builder you know the helper lines they have to signal that
+> ? something can be aligned somewhere [1]. After signaling, the user could
+> ? either let the mouse button go (and the window would snap) or keep on
+> ? positioning and would be allowed to do it like he wants. As I said, I don?t
+> ? see how to implement this with i3?s codebase (in particular not without
+> ? using compositing).
+>
+> ? Another way would be to press a specific key while dragging, like Control.
+> ? Not sure if Control is a good choice for that, and also not sure if using it
+> ? together with the floating_modifier (which might already include Control
+> ? :-/) is a reasonable key combination to press.
+
+yes, this is the way the snapping should work. snaps window on
+specified threshold. i really don't like the way of 'signalling'
+something to the user, it seems pretty ugly to me. the user should use
+snapping or shouldn't. this is the way the most systems offer
+(actually i haven't seen another way).
+
+> 2) You don?t consider dock clients but always snap to the screen edges.
+
+hmm, i can observe different bahaviour. i'm running i3bar this way:
+i3bar -d bottom
+and all the windows are respecting this border. have you got some
+other informations about this?
+
+> 3) There are various little code style points which I?m omitting in this mail,
+> ? due to the reasons below.
+
+i'm sorry :)
+
+> Now that I saw how it looks and feels, I don?t think this is a good feature for
+> i3. It feels a little weird to use and frankly, I don?t think we need it.
+> Floating mode is mainly implemented for (modal) popup dialogs like password
+> prompts. i3 does not aim to become a good floating window manager.
+>
+> So, in conclusion: Thanks for your efforts, but I say no to this version of the
+> patch and probably also to further versions, unless you can convince me that
+> it?s really worth it and that you sorted out the usability problems.
+
+ok, this is the beauty of open source. i have my own branch including
+my patch and using/improving it (while trying to keep it in sync) and
+i really enjoy using i3 this way
+
+thanks for your hints ;)
+maybe i'll try it later
+jan
+
+From rakuco at FreeBSD.org  Tue Oct 25 05:07:56 2011
+From: rakuco at FreeBSD.org (Raphael Kubo da Costa)
+Date: Tue, 25 Oct 2011 01:07:56 -0200
+Subject: [i3] i3-discuss and i3-announce are now on Gmane too
+Message-ID: <87bot5hipf.fsf@FreeBSD.org>
+
+Hi there,
+
+If you prefer to follow mailing lists using a news reader, the i3-discuss and
+i3-announce mailing lists can now be tracked via Gmane.
+
+i3-discuss can be reached via gmane.comp.window-managers.i3.general and i3-
+announce can be reached via gmane.comp.window-managers.i3.announce (actually,
+the latter will be created when the next message is sent to it).
+
+Both groups are marked as non-public, which means anyone can receive messages,
+but one must be subscribed to the list to send messages.
+
+Cheers,
+Raphael
+
+From michael+i3 at stapelberg.de  Sun Oct 30 15:48:30 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 30 Oct 2011 14:48:30 +0000
+Subject: [i3] Please test i3lock from git
+Message-ID: <1319985773-sup-905@stapelberg.de>
+
+Hi,
+
+Recently, there have been two commits to i3lock which are rather important:
+
+a803ba931e74e6f99a478584e1280626c0c880e3
+    Bugfix: Don?t re-grab pointer/keyboard on MappingNotify (Thanks wilmer)
+
+8e153411b507b499e3bd12bbc1ca67e592cb4657
+    Correctly handle Mode_switch/ISO_Level3_Shift (Thanks bacardi55)
+
+The first one is security relevant (but not critical) and the second one might
+fix problems for you if you are using a keyboard layout that makes use of
+Mode_switch or ISO_Level3_Shift and you are using a character which requires
+one of these modifiers in your password.
+
+Regardless of whether you think the commits affect you, it would be great if
+you could install i3lock from git and check that it still works for you. Please
+send me a short email if it works and a more detailed one if it doesn?t :).
+
+Instructions for installing it from git:
+
+    $ git clone git://code.i3wm.org/i3lock
+    $ cd i3lock
+    $ make
+    $ sudo make install
+
+If you are using Debian, you can install the build dependencies using sudo
+apt-get build-dep i3lock.
+
+I am planning to release i3lock v2.2 in a few days (unless any new problems
+come up now).
+
+Thanks in advance,
+Best regards,
+Michael
+
+From daniel at steenfamilies.com  Mon Oct 31 02:58:15 2011
+From: daniel at steenfamilies.com (Daniel Steen)
+Date: Sun, 30 Oct 2011 21:58:15 -0400
+Subject: [i3] Please test i3lock from git
+In-Reply-To: <1319985773-sup-905@stapelberg.de>
+References: <1319985773-sup-905@stapelberg.de>
+Message-ID: <CAD9tV_HfH31MqS_mZHP3j_n4Zo6SQTTU+1JLbwszwR6C2h7QbA@mail.gmail.com>
+
+Hi Michael,
+
+It seems to work fine for me.   I do get the following:
+
+WARNING: unhandled event of type 19
+WARNING: unhandled event of type 12
+
+but nothing seems to be misbehaving.
+
+Thanks,
+Daniel Steen
+
+On Sun, Oct 30, 2011 at 10:48 AM, Michael Stapelberg <
+michael+i3 at stapelberg.de> wrote:
+
+> Hi,
+>
+> Recently, there have been two commits to i3lock which are rather important:
+>
+> a803ba931e74e6f99a478584e1280626c0c880e3
+>    Bugfix: Don?t re-grab pointer/keyboard on MappingNotify (Thanks wilmer)
+>
+> 8e153411b507b499e3bd12bbc1ca67e592cb4657
+>    Correctly handle Mode_switch/ISO_Level3_Shift (Thanks bacardi55)
+>
+> The first one is security relevant (but not critical) and the second one
+> might
+> fix problems for you if you are using a keyboard layout that makes use of
+> Mode_switch or ISO_Level3_Shift and you are using a character which
+> requires
+> one of these modifiers in your password.
+>
+> Regardless of whether you think the commits affect you, it would be great
+> if
+> you could install i3lock from git and check that it still works for you.
+> Please
+> send me a short email if it works and a more detailed one if it doesn?t :).
+>
+> Instructions for installing it from git:
+>
+>    $ git clone git://code.i3wm.org/i3lock
+>    $ cd i3lock
+>    $ make
+>    $ sudo make install
+>
+> If you are using Debian, you can install the build dependencies using sudo
+> apt-get build-dep i3lock.
+>
+> I am planning to release i3lock v2.2 in a few days (unless any new problems
+> come up now).
+>
+> Thanks in advance,
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20111030/50e5bc25/attachment.html>
+
+From atsutane at freethoughts.de  Mon Oct 31 09:59:19 2011
+From: atsutane at freethoughts.de (Thorsten =?ISO-8859-1?B?VPZwcGVy?=)
+Date: Mon, 31 Oct 2011 09:59:19 +0100
+Subject: [i3] Please test i3lock from git
+In-Reply-To: <1319985773-sup-905@stapelberg.de>
+References: <1319985773-sup-905@stapelberg.de>
+Message-ID: <20111031095919.3626db4a@hell>
+
+On Sun, 30 Oct 2011 14:48:30 +0000
+Michael Stapelberg <michael+i3 at stapelberg.de> wrote:
+
+> Hi,
+> 
+> Recently, there have been two commits to i3lock which are rather
+> important:
+> 
+> a803ba931e74e6f99a478584e1280626c0c880e3
+>     Bugfix: Don?t re-grab pointer/keyboard on MappingNotify (Thanks
+> wilmer)
+> 
+> 8e153411b507b499e3bd12bbc1ca67e592cb4657
+>     Correctly handle Mode_switch/ISO_Level3_Shift (Thanks bacardi55)
+> 
+> The first one is security relevant (but not critical) and the second
+> one might fix problems for you if you are using a keyboard layout
+> that makes use of Mode_switch or ISO_Level3_Shift and you are using a
+> character which requires one of these modifiers in your password.
+> 
+> Regardless of whether you think the commits affect you, it would be
+> great if you could install i3lock from git and check that it still
+> works for you. Please send me a short email if it works and a more
+> detailed one if it doesn?t :).
+> 
+> Instructions for installing it from git:
+> 
+>     $ git clone git://code.i3wm.org/i3lock
+>     $ cd i3lock
+>     $ make
+>     $ sudo make install
+> 
+> If you are using Debian, you can install the build dependencies using
+> sudo apt-get build-dep i3lock.
+> 
+> I am planning to release i3lock v2.2 in a few days (unless any new
+> problems come up now).
+> 
+> Thanks in advance,
+> Best regards,
+> Michael
+
+Hi,
+
+works fine with every of my Arch machines.
+
+Regards,
+Thorsten
+-- 
+Jabber: atsutane at freethoughts.de Blog: http://atsutane.freethoughts.de/
+Key: 295AFBF4     FP: 39F8 80E5 0E49 A4D1 1341 E8F9 39E4 F17F 295A FBF4
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 222 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20111031/926b63fc/attachment.pgp>
+
+From michael+i3 at stapelberg.de  Mon Oct 31 12:52:03 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Mon, 31 Oct 2011 11:52:03 +0000
+Subject: [i3] Please test i3lock from git
+In-Reply-To: <CAD9tV_HfH31MqS_mZHP3j_n4Zo6SQTTU+1JLbwszwR6C2h7QbA@mail.gmail.com>
+References: <1319985773-sup-905@stapelberg.de>
+ <CAD9tV_HfH31MqS_mZHP3j_n4Zo6SQTTU+1JLbwszwR6C2h7QbA@mail.gmail.com>
+Message-ID: <1320061906-sup-176@stapelberg.de>
+
+Hi Daniel,
+
+Excerpts from Daniel Steen's message of 2011-10-31 01:58:15 +0000:
+> It seems to work fine for me.   I do get the following:
+> 
+> WARNING: unhandled event of type 19
+> WARNING: unhandled event of type 12
+> 
+> but nothing seems to be misbehaving.
+Those are OK.
+
+Best regards,
+Michael
+

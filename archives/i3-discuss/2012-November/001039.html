@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH 2/5] Added &quot;focus&quot; IPC message/event.
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%202/5%5D%20Added%20%22focus%22%20IPC%20message/event.&In-Reply-To=%3C1353236215-32206-3-git-send-email-kemurphy.cmu%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001038.html">
+   <LINK REL="Next"  HREF="001048.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH 2/5] Added &quot;focus&quot; IPC message/event.</H1>
+    <B>Kevin Murphy</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%202/5%5D%20Added%20%22focus%22%20IPC%20message/event.&In-Reply-To=%3C1353236215-32206-3-git-send-email-kemurphy.cmu%40gmail.com%3E"
+       TITLE="[i3] [PATCH 2/5] Added &quot;focus&quot; IPC message/event.">kemurphy.cmu at gmail.com
+       </A><BR>
+    <I>Sun Nov 18 11:56:52 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001038.html">[i3] [PATCH 1/5] Fixes for true transparency.
+</A></li>
+        <LI>Next message: <A HREF="001048.html">[i3] [PATCH 2/5] Added &quot;focus&quot; IPC message/event.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1039">[ date ]</a>
+              <a href="thread.html#1039">[ thread ]</a>
+              <a href="subject.html#1039">[ subject ]</a>
+              <a href="author.html#1039">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>From: Kevin Murphy &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">kemurphy at andrew.cmu.edu</A>&gt;
+
+The IPC message is used to query the window ID and title of the focused
+window.  The event is used to notify subscribers when the currently
+focused window changes.
+---
+ include/i3/ipc.h |  9 +++++++++
+ src/con.c        |  1 +
+ src/handlers.c   |  3 +++
+ src/ipc.c        | 45 ++++++++++++++++++++++++++++++++++++++++++++-
+ 4 files changed, 57 insertions(+), 1 deletion(-)
+
+diff --git a/include/i3/ipc.h b/include/i3/ipc.h
+index 93b2ae8..04464f2 100644
+--- a/include/i3/ipc.h
++++ b/include/i3/ipc.h
+@@ -43,6 +43,9 @@
+ /** Request the i3 version */
+ #define I3_IPC_MESSAGE_TYPE_GET_VERSION         7
+ 
++/** Request the id and title of the focused window */
++#define I3_IPC_MESSAGE_TYPE_GET_FOCUS           8
++
+ /*
+  * Messages from i3 to clients
+  *
+@@ -72,6 +75,9 @@
+ /** i3 version reply type */
+ #define I3_IPC_REPLY_TYPE_VERSION               7
+ 
++/** Focus reply type */
++#define I3_IPC_REPLY_TYPE_FOCUS                 8
++
+ /*
+  * Events from i3 to clients. Events have the first bit set high.
+  *
+@@ -87,4 +93,7 @@
+ /* The output event will be triggered upon mode changes */
+ #define I3_IPC_EVENT_MODE                       (I3_IPC_EVENT_MASK | 2)
+ 
++/* The output event will be triggered upon change of active window focus */
++#define I3_IPC_EVENT_FOCUS                      (I3_IPC_EVENT_MASK | 3)
++
+ #endif
+diff --git a/src/con.c b/src/con.c
+index 5b5dce9..9ad7716 100644
+--- a/src/con.c
++++ b/src/con.c
+@@ -210,6 +210,7 @@ void con_focus(Con *con) {
+         con_focus(con-&gt;parent);
+ 
+     focused = con;
++    ipc_send_event(&quot;focus&quot;, I3_IPC_EVENT_FOCUS, &quot;{\&quot;change\&quot;:\&quot;window\&quot;}&quot;);
+     /* We can't blindly reset non-leaf containers since they might have
+      * other urgent children. Therefore we only reset leafs and propagate
+      * the changes upwards via con_update_parents_urgency() which does proper
+diff --git a/src/handlers.c b/src/handlers.c
+index 7fa29e1..0fc396e 100644
+--- a/src/handlers.c
++++ b/src/handlers.c
+@@ -521,6 +521,9 @@ static bool handle_windowname_change(void *data, xcb_connection_t *conn, uint8_t
+ 
+     window_update_name(con-&gt;window, prop, false);
+ 
++    if (con == focused)
++        ipc_send_event(&quot;focus&quot;, I3_IPC_EVENT_FOCUS, &quot;{\&quot;change\&quot;:\&quot;title\&quot;}&quot;);
++
+     x_push_changes(croot);
+ 
+     return true;
+diff --git a/src/ipc.c b/src/ipc.c
+index 17c15b9..ab45407 100644
+--- a/src/ipc.c
++++ b/src/ipc.c
+@@ -705,6 +705,48 @@ IPC_HANDLER(get_bar_config) {
+ }
+ 
+ /*
++ * Formats the reply message for a FOCUS request and sends it to the
++ * client
++ *
++ */
++IPC_HANDLER(focus) {
++#if YAJL_MAJOR &gt;= 2
++    yajl_gen gen = yajl_gen_alloc(NULL);
++#else
++    yajl_gen gen = yajl_gen_alloc(NULL, NULL);
++#endif
++    y(map_open);
++
++    ystr(&quot;id&quot;);
++    if (focused-&gt;window != NULL) {
++        y(integer, focused-&gt;window-&gt;id);
++    } else {
++        y(integer, focused-&gt;frame);
++    }
++
++    ystr(&quot;title&quot;);
++    if (focused-&gt;window &amp;&amp; focused-&gt;window-&gt;name)
++        ystr(i3string_as_utf8(focused-&gt;window-&gt;name));
++    else if (focused-&gt;type != CT_WORKSPACE &amp;&amp; focused-&gt;name)
++        ystr(focused-&gt;name);
++    else
++        ystr(&quot;&quot;);
++
++    y(map_close);
++
++    const unsigned char *payload;
++#if YAJL_MAJOR &gt;= 2
++    size_t length;
++#else
++    unsigned int length;
++#endif
++    y(get_buf, &amp;payload, &amp;length);
++
++    ipc_send_message(fd, length, I3_IPC_REPLY_TYPE_FOCUS, payload);
++    y(free);
++}
++
++/*
+  * Callback for the YAJL parser (will be called when a string is parsed).
+  *
+  */
+@@ -780,7 +822,7 @@ IPC_HANDLER(subscribe) {
+ 
+ /* The index of each callback function corresponds to the numeric
+  * value of the message type (see include/i3/ipc.h) */
+-handler_t handlers[8] = {
++handler_t handlers[9] = {
+     handle_command,
+     handle_get_workspaces,
+     handle_subscribe,
+@@ -789,6 +831,7 @@ handler_t handlers[8] = {
+     handle_get_marks,
+     handle_get_bar_config,
+     handle_get_version,
++    handle_focus,
+ };
+ 
+ /*
+-- 
+1.8.0
+
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001038.html">[i3] [PATCH 1/5] Fixes for true transparency.
+</A></li>
+	<LI>Next message: <A HREF="001048.html">[i3] [PATCH 2/5] Added &quot;focus&quot; IPC message/event.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1039">[ date ]</a>
+              <a href="thread.html#1039">[ thread ]</a>
+              <a href="subject.html#1039">[ subject ]</a>
+              <a href="author.html#1039">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

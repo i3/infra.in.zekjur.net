@@ -1,0 +1,368 @@
+From jeff at jibson.com  Wed Sep  1 01:03:10 2010
+From: jeff at jibson.com (Jeff Jibson)
+Date: Tue, 31 Aug 2010 17:03:10 -0600
+Subject: [i3] building on RHEL 6.0
+In-Reply-To: <1283284140-sup-8526@midna.zekjur.net>
+References: <AANLkTinJP4bjagPxRVOkeVBRgw4SQ3J=mvkQ6oF9HX0o@mail.gmail.com>
+	<1283284140-sup-8526@midna.zekjur.net>
+Message-ID: <AANLkTinhcEEeLm0LsVpH+H87y+cWtrcw+esxm20HfjyJ@mail.gmail.com>
+
+Running make I get:
+
+[root at phoenix i3-3.e-bf1]# make clean
+Makefile:16: Generating loglevels.h
+[root at phoenix i3-3.e-bf1]# make
+Makefile:16: Generating loglevels.h
+YACC src/cfgparse.y
+LEX src/cfgparse.l
+CC src/click.c
+CC src/client.c
+CC src/commands.c
+In file included from src/commands.c:36:
+include/ipc.h:15:16: error: ev.h: No such file or directory
+In file included from src/commands.c:36:
+include/ipc.h:54: error: expected ?)? before ?struct?
+make: *** [src/commands.o] Error 1
+
+Just in case, I deleted the directory and tried again with the same results.
+
+I ran it with make -j 1, to make sure there were no parallel builds.
+
+My CFLAGS are: -std=c99 -pipe -Wall -Wunused-value -Iinclude
+-I/usr/local/include -DI3_VERSION="3.e-bf1 (2010-06-09)" -D_GNU_SOURCE
+-gdwarf-2 -g3
+
+Thanks for your quick response.
+
+On Tue, Aug 31, 2010 at 13:49, Michael Stapelberg
+<michael+i3 at stapelberg.de> wrote:
+> Hi Jeff,
+>
+> Excerpts from Jeff Jibson's message of 2010-08-31 16:34:47 +0200:
+>> [root at phoenix i3-3.e-bf1]# make clean install
+>> Makefile:16: Generating loglevels.h
+>> awk: cmd. line:1: fatal: cannot open file `loglevels.tmp' for reading
+> Can you try running 'make' instead of 'make clean install'. Can you also make
+> sure there are no parallel builds (just for testing)?
+>
+> Best regards,
+> Michael
+>
+
+
+From michael+i3 at stapelberg.de  Wed Sep  1 02:07:44 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Wed, 01 Sep 2010 02:07:44 +0200
+Subject: [i3] building on RHEL 6.0
+In-Reply-To: <AANLkTinhcEEeLm0LsVpH+H87y+cWtrcw+esxm20HfjyJ@mail.gmail.com>
+References: <AANLkTinJP4bjagPxRVOkeVBRgw4SQ3J=mvkQ6oF9HX0o@mail.gmail.com>
+	<1283284140-sup-8526@midna.zekjur.net>
+	<AANLkTinhcEEeLm0LsVpH+H87y+cWtrcw+esxm20HfjyJ@mail.gmail.com>
+Message-ID: <1283299599-sup-6730@midna.zekjur.net>
+
+Hi Jeff,
+
+Excerpts from Jeff Jibson's message of 2010-09-01 01:03:10 +0200:
+> In file included from src/commands.c:36:
+> include/ipc.h:15:16: error: ev.h: No such file or directory
+Well, you should install libev-dev (or similar on RHEL)? See also
+http://code.stapelberg.de/git/i3/tree/DEPENDS
+
+Best regards,
+Michael
+
+
+From jeff at jibson.com  Wed Sep  1 17:06:10 2010
+From: jeff at jibson.com (Jeff Jibson)
+Date: Wed, 1 Sep 2010 09:06:10 -0600
+Subject: [i3] building on RHEL 6.0
+In-Reply-To: <1283299599-sup-6730@midna.zekjur.net>
+References: <AANLkTinJP4bjagPxRVOkeVBRgw4SQ3J=mvkQ6oF9HX0o@mail.gmail.com>
+	<1283284140-sup-8526@midna.zekjur.net>
+	<AANLkTinhcEEeLm0LsVpH+H87y+cWtrcw+esxm20HfjyJ@mail.gmail.com>
+	<1283299599-sup-6730@midna.zekjur.net>
+Message-ID: <AANLkTik52tPnZ-LBXUr1zdr6kbMjoE+UumT5KzEAu7Do@mail.gmail.com>
+
+Thanks.  I had incorrectly assumed that libev was the same as
+libevent.  RedHat often names their packages a little different than
+the tarballs.
+
+BTW: make clean install still gets errors, but make clean, then make,
+then make install worked without error.
+
+I now have a working i3 in RHEL6.  It will be nice once this is
+released and RPMs exist for this.
+
+Here are the steps that I used to get a working build of i3 and dmenu
+on RHEL 6 Beta 2:
+
+- Got to src
+
+   cd /usr/src/
+
+- Install required packages from the DVD
+
+   /media/RHEL_6.0 x86_64 Disc 1/Packages
+   rpm -Uvh libX11-devel-1.3-2.el6.x86_64.rpm
+libXau-devel-1.0.5-1.el6.x86_64.rpm
+libXdmcp-devel-1.0.3-1.el6.x86_64.rpm
+libxcb-devel-1.5-1.el6.x86_64.rpm
+xorg-x11-proto-devel-7.4-35.el6.noarch.rpm
+libXinerama-devel-1.1-1.el6.x86_64.rpm
+libXext-devel-1.1-2.el6.x86_64.rpm yajl-1.0.7-3.el6.x86_64.rpm
+
+- Install required packages available from YUM
+
+   yum install yajl-devel xcb-util-devel
+
+- Get sources not available in RPMs
+
+   wget http://dist.schmorp.de/libev/libev-3.9.tar.gz
+   wget http://dl.suckless.org/tools/dmenu-4.1.1.tar.gz
+   wget http://i3.zekjur.net/downloads/i3-3.e-bf1.tar.bz2
+
+   tar zxvf libev-3.9.tar.gz
+   tar zxvf dmenu-4.1.1.tar.gz
+   tar jxvf i3-3.e-bf1.tar.bz2
+
+- Make and install from sources
+
+   cd /usr/src/dmenu-4.1.1/
+   make clean install
+   cd /usr/src/libev-3.9/
+   ./configure
+   make
+   make install
+   echo '/usr/local/lib/' > /etc/ld.so.conf.d/libev.conf
+   ldconfig
+   cd /usr/src/i3-3.e-bf1/
+   make clean
+   make
+   make install
+
+
+Gentoo was so much easier to get this installed and working.
+
+On Tue, Aug 31, 2010 at 18:07, Michael Stapelberg
+<michael+i3 at stapelberg.de> wrote:
+> Hi Jeff,
+>
+> Excerpts from Jeff Jibson's message of 2010-09-01 01:03:10 +0200:
+>> In file included from src/commands.c:36:
+>> include/ipc.h:15:16: error: ev.h: No such file or directory
+> Well, you should install libev-dev (or similar on RHEL)? See also
+> http://code.stapelberg.de/git/i3/tree/DEPENDS
+>
+> Best regards,
+> Michael
+>
+
+
+From michael+i3 at stapelberg.de  Wed Sep  1 17:14:56 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Wed, 01 Sep 2010 17:14:56 +0200
+Subject: [i3] building on RHEL 6.0
+In-Reply-To: <AANLkTik52tPnZ-LBXUr1zdr6kbMjoE+UumT5KzEAu7Do@mail.gmail.com>
+References: <AANLkTinJP4bjagPxRVOkeVBRgw4SQ3J=mvkQ6oF9HX0o@mail.gmail.com>
+	<1283284140-sup-8526@midna.zekjur.net>
+	<AANLkTinhcEEeLm0LsVpH+H87y+cWtrcw+esxm20HfjyJ@mail.gmail.com>
+	<1283299599-sup-6730@midna.zekjur.net>
+	<AANLkTik52tPnZ-LBXUr1zdr6kbMjoE+UumT5KzEAu7Do@mail.gmail.com>
+Message-ID: <1283353929-sup-7486@midna.zekjur.net>
+
+Hi Jeff,
+
+Excerpts from Jeff Jibson's message of 2010-09-01 17:06:10 +0200:
+> I now have a working i3 in RHEL6.  It will be nice once this is
+> released and RPMs exist for this.
+I?m not so familiar with RPM-based distributions, but cassmodiah told me that
+his RPMs are usable in Fedora, RHEL and CentOS. Check 
+https://admin.fedoraproject.org/community/?package=i3#package_maintenance
+
+BTW: What do you mean with "once this is released"? i3 is released for quite
+some time.
+
+> Gentoo was so much easier to get this installed and working.
+Well, we?re still not in the official gentoo portage tree. The linux
+distributions which have a very easy installation of i3 are Debian and Arch
+Linux.
+
+Best regards,
+Michael
+
+
+From jirik at ganomi.com  Wed Sep  1 18:05:36 2010
+From: jirik at ganomi.com (Jiri Kanicky)
+Date: Thu, 02 Sep 2010 02:05:36 +1000
+Subject: [i3] menu with dzen
+Message-ID: <4C7E79D0.3060302@ganomi.com>
+
+Hi.
+
+I am trying to create menu, but unable to find a solution.
+I would like menu where after clicking with left button of the mouse on 
+dzen2 bar the menu is displayed. The following line does not work and I 
+am not what would be the correct format. All the example I found are 
+without using i3status...
+
+line in i3 config file:
+
+#exec i3status -c ~/.i3/i3status.conf | i3-wsbar -c "dzen2 -x %x -dock 
+-e 
+'onstart=exec:x-terminal-emulator:skype:x-www-browser;entertitle=uncollapse,grabkeys;enterslave=grabkeys;leaveslave=collapse,ungrabkeys;button1=menuexec;button2=togglestick;button3=exit:13;button4=scrollup;button5=scrolldown;key_Escape=ungrabkeys,exit' 
+-p -l 1 -m v < /home/user/.i3/dzenmenu1 "
+
+
+dzenmenu file:
+Internet:firefox
+
+
+Any suggestions or example of your menu?
+
+-- 
+
+Jiri
+
+
+
+From jeff at jibson.com  Thu Sep  2 07:08:17 2010
+From: jeff at jibson.com (Jeff Jibson)
+Date: Wed, 1 Sep 2010 23:08:17 -0600
+Subject: [i3] building on RHEL 6.0
+In-Reply-To: <1283353929-sup-7486@midna.zekjur.net>
+References: <AANLkTinJP4bjagPxRVOkeVBRgw4SQ3J=mvkQ6oF9HX0o@mail.gmail.com>
+	<1283284140-sup-8526@midna.zekjur.net>
+	<AANLkTinhcEEeLm0LsVpH+H87y+cWtrcw+esxm20HfjyJ@mail.gmail.com>
+	<1283299599-sup-6730@midna.zekjur.net>
+	<AANLkTik52tPnZ-LBXUr1zdr6kbMjoE+UumT5KzEAu7Do@mail.gmail.com>
+	<1283353929-sup-7486@midna.zekjur.net>
+Message-ID: <AANLkTi=3DirbZ_HNkk83BL5p3ABEyUfmgEy6mZU7Zbeh@mail.gmail.com>
+
+On Wed, Sep 1, 2010 at 09:14, Michael Stapelberg
+<michael+i3 at stapelberg.de> wrote:
+> Hi Jeff,
+>
+> Excerpts from Jeff Jibson's message of 2010-09-01 17:06:10 +0200:
+>> I now have a working i3 in RHEL6. ?It will be nice once this is
+>> released and RPMs exist for this.
+> I?m not so familiar with RPM-based distributions, but cassmodiah told me that
+> his RPMs are usable in Fedora, RHEL and CentOS. Check
+> https://admin.fedoraproject.org/community/?package=i3#package_maintenance
+>
+> BTW: What do you mean with "once this is released"? i3 is released for quite
+> some time.
+
+I meant RHEL 6 released.  Once it is released, other repos will start
+adding packages that RedHat doesn't, like fluxbox (what I was using
+recently) and rxvt-unicode.
+
+>
+>> Gentoo was so much easier to get this installed and working.
+> Well, we?re still not in the official gentoo portage tree. The linux
+> distributions which have a very easy installation of i3 are Debian and Arch
+> Linux.
+
+They are in overlays, which are pretty easy to add.  If I ever tire of
+Gentoo, I'd probably try Arch.
+
+>
+> Best regards,
+> Michael
+>
+
+Thanks again.
+
+
+From hugoruscitti at gmail.com  Sat Sep 11 04:32:27 2010
+From: hugoruscitti at gmail.com (Hugo Ruscitti)
+Date: Fri, 10 Sep 2010 23:32:27 -0300
+Subject: [i3] How to mark workspace as urgent?
+Message-ID: <AANLkTim2=yFp8BPw7M6szUCgOgDtO3RUrb6TBe=zc0yJ@mail.gmail.com>
+
+Hi, i want to create a simple notify system in my desktop, and
+by using i3 i see that exists a routine to mark workspaces
+with a red color [1] when a client?s urgency hint is made.
+
+Its any way to execute this routine with i3-msg? I want to
+execute a routine that marks a workspace in the status bar...
+
+
+[1] http://www.losersjuegos.com.ar/incoming/descargas/20100910/2010-09-10-215444_1366x768_scrot.png
+
+
+
+-- 
+Hugo Ruscitti
+www.losersjuegos.com.ar
+www.gcoop.com.ar
+
+
+From michael+i3 at stapelberg.de  Sat Sep 11 13:29:24 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 11 Sep 2010 13:29:24 +0200
+Subject: [i3] How to mark workspace as urgent?
+In-Reply-To: <AANLkTim2=yFp8BPw7M6szUCgOgDtO3RUrb6TBe=zc0yJ@mail.gmail.com>
+References: <AANLkTim2=yFp8BPw7M6szUCgOgDtO3RUrb6TBe=zc0yJ@mail.gmail.com>
+Message-ID: <1284204401-sup-7822@midna.zekjur.net>
+
+Hi Hugo,
+
+Excerpts from Hugo Ruscitti's message of 2010-09-11 04:32:27 +0200:
+> Its any way to execute this routine with i3-msg? I want to
+> execute a routine that marks a workspace in the status bar...
+No, that?s not implemented. You have two possibilities: Either you create a
+window on that workspace (or use an existing one) and set the urgent hint on
+it. Alternatively, you could implement a command to mark a workspace as urgent.
+It should be pretty easy.
+
+Best regards,
+Michael
+
+
+From hugoruscitti at gmail.com  Thu Sep 23 01:22:00 2010
+From: hugoruscitti at gmail.com (Hugo Ruscitti)
+Date: Wed, 22 Sep 2010 20:22:00 -0300
+Subject: [i3] How to mark workspace as urgent?
+In-Reply-To: <1284204401-sup-7822@midna.zekjur.net>
+References: <AANLkTim2=yFp8BPw7M6szUCgOgDtO3RUrb6TBe=zc0yJ@mail.gmail.com>
+	<1284204401-sup-7822@midna.zekjur.net>
+Message-ID: <AANLkTimxWJYjJVjW3sT1X+OHbY4vxBKS=JPOa=UmXSYY@mail.gmail.com>
+
+On Sat, Sep 11, 2010 at 8:29 AM, Michael Stapelberg
+<michael+i3 at stapelberg.de> wrote:
+> Hi Hugo,
+>
+> Excerpts from Hugo Ruscitti's message of 2010-09-11 04:32:27 +0200:
+>> Its any way to execute this routine with i3-msg? I want to
+>> execute a routine that marks a workspace in the status bar...
+> No, that?s not implemented. You have two possibilities: Either you create a
+> window on that workspace (or use an existing one) and set the urgent hint on
+> it. Alternatively, you could implement a command to mark a workspace as urgent.
+> It should be pretty easy.
+>
+> Best regards,
+> Michael
+
+
+Hi Michael, i make a command to mark a workspace as urgent in commands.c
+it's works fine but only if workspace exist.
+
+It can be called by i3-msg:
+
+    i3-msg urgent1
+
+Thanks for you reply.
+Bye.
+
+-- 
+Hugo Ruscitti
+www.losersjuegos.com.ar
+www.gcoop.com.ar
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: urgent_command.diff
+Type: text/x-patch
+Size: 996 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100922/7825bcd2/attachment.bin>
+

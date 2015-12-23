@@ -1,0 +1,321 @@
+From autonomy at tvk.rwth-aachen.de  Sat May 18 11:56:53 2013
+From: autonomy at tvk.rwth-aachen.de (autonomy)
+Date: Sat, 18 May 2013 11:56:53 +0200
+Subject: [i3] i3 neo layout messup on arch linux
+Message-ID: <98bf4c907b131c7ce24367ddb51573d8@tvk.rwth-aachen.de>
+
+Hi guys,
+
+	I just started using arch linux on my netbook and of course I wanted 
+my beloved i3 on it. So after installing the packages and putting an 
+"exec i3" in my .xinitrc it works just fine. Also I put an "setxkbmap de 
+neo -option" before the "exec i3" in my .xinitrc because I use neo 
+layout.
+	Now on my fedora desktop I am using neo layout as well and the 
+keybindings stay in the same location as in quertz. E.g. Mod+q closes a 
+window on neo layout as well (not Mod+p which is q in neo).This is 
+different in arch. The "location" changes with the layout.
+How can I change that and why is it that way?
+
+Greetings
+Lukas
+
+P.S. Sorry for sending two mails. My config was messed up. Couldn't get 
+the replies.
+
+From michael at i3wm.org  Sat May 18 14:17:16 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 18 May 2013 14:17:16 +0200
+Subject: [i3] i3 neo layout messup on arch linux
+In-Reply-To: <98bf4c907b131c7ce24367ddb51573d8@tvk.rwth-aachen.de>
+References: <98bf4c907b131c7ce24367ddb51573d8@tvk.rwth-aachen.de>
+Message-ID: <x6li7c8otv.fsf@midna.zekjur.net>
+
+Hi Lukas,
+
+See
+https://faq.i3wm.org/question/1676/shortcuts-not-working-on-non-english-layouts/
+
+Essentially, either use the keycode-based config file (default) or
+delete your config and re-run i3-config-wizard after changing your
+layout.
+
+-- 
+Best regards,
+Michael
+
+From florent at peterschmitt.fr  Sat May 18 14:20:00 2013
+From: florent at peterschmitt.fr (Florent Peterschmitt)
+Date: Sat, 18 May 2013 14:20:00 +0200
+Subject: [i3] i3 neo layout messup on arch linux
+In-Reply-To: <98bf4c907b131c7ce24367ddb51573d8@tvk.rwth-aachen.de>
+References: <98bf4c907b131c7ce24367ddb51573d8@tvk.rwth-aachen.de>
+Message-ID: <519771F0.6010304@peterschmitt.fr>
+
+Le 18/05/2013 11:56, autonomy a ?crit :
+> Hi guys,
+>
+>      I just started using arch linux on my netbook and of course I
+> wanted my beloved i3 on it. So after installing the packages and putting
+> an "exec i3" in my .xinitrc it works just fine. Also I put an "setxkbmap
+> de neo -option" before the "exec i3" in my .xinitrc because I use neo
+> layout.
+>      Now on my fedora desktop I am using neo layout as well and the
+> keybindings stay in the same location as in quertz. E.g. Mod+q closes a
+> window on neo layout as well (not Mod+p which is q in neo).This is
+> different in arch. The "location" changes with the layout.
+> How can I change that and why is it that way?
+>
+> Greetings
+> Lukas
+>
+> P.S. Sorry for sending two mails. My config was messed up. Couldn't get
+> the replies.
+If you use keycodes then the shortcuts are at the same place.
+
+Use full "text keys" in config file and it should be ok.
+
+From emikulic at gmail.com  Sun May 19 08:08:51 2013
+From: emikulic at gmail.com (Emil Mikulic)
+Date: Sun, 19 May 2013 16:08:51 +1000
+Subject: [i3] [PATCH] Additional GNOME integration.
+In-Reply-To: <x6ip6lpn2v.fsf@midna.zekjur.net>
+References: <CA+bNT6-+KT2b5zZa5-3fC__jyhozA8GRfYOYmnvNQ6S5Qh30pQ@mail.gmail.com>
+ <x6ip6lpn2v.fsf@midna.zekjur.net>
+Message-ID: <CA+bNT6_Cuid3Va8s4EfL-RgcWALJhLnwj8NeJpWuUe5ZDNPN9g@mail.gmail.com>
+
+On Fri, Jan 25, 2013 at 9:35 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+> Hi Emil,
+>
+> Emil Mikulic <emikulic at gmail.com> writes:
+>> This adds an "i3-gnome" session which is i3 but with a bunch of
+>> GNOME-isms like gnome-screensaver, the gnome session exit dialog with
+>> shutdown/restart options, and, most excitingly, laptop suspend and
+>> resume that Just Works(tm)
+>
+> The review takes place at http://cr.i3wm.org/patch/17
+
+>From the review:
+
+> I don?t really see what is the benefit of using all your changes instead of just launching gnome-settings-daemon in i3?
+
+By "just launching" do you mean adding "exec gnome-settings-daemon" to
+.i3/config
+
+The benefits of my changes, versus just the exec:
+- Ctrl+Alt+L locks the screen using gnome-screensaver, as opposed to
+doing nothing.
+- "xprop -root PULSE_SERVER" returns the correct result, as opposed to
+nothing at all.
+
+I'm comparing results on my desktop so I can't even comment on
+suspend+resume. :/
+
+What is gnome-settings-daemon supposed to do, without all the
+surrounding xsession stuff in my patch? (it turns out I don't know a
+whole lot about how gnome works)
+
+From sardemff7+i3 at sardemff7.net  Sun May 19 12:50:12 2013
+From: sardemff7+i3 at sardemff7.net (Quentin Glidic)
+Date: Sun, 19 May 2013 12:50:12 +0200
+Subject: [i3] [PATCH] Additional GNOME integration.
+In-Reply-To: <CA+bNT6_Cuid3Va8s4EfL-RgcWALJhLnwj8NeJpWuUe5ZDNPN9g@mail.gmail.com>
+References: <CA+bNT6-+KT2b5zZa5-3fC__jyhozA8GRfYOYmnvNQ6S5Qh30pQ@mail.gmail.com>
+ <x6ip6lpn2v.fsf@midna.zekjur.net>
+ <CA+bNT6_Cuid3Va8s4EfL-RgcWALJhLnwj8NeJpWuUe5ZDNPN9g@mail.gmail.com>
+Message-ID: <5198AE64.5020604@sardemff7.net>
+
+On 19/05/2013 08:08, Emil Mikulic wrote:
+> By "just launching" do you mean adding "exec gnome-settings-daemon"
+> to .i3/config
+
+Yes (with the full path since it?s often outside of $PATH for a good
+reason though).
+
+> The benefits of my changes, versus just the exec:
+>
+> - Ctrl+Alt+L locks the screen using gnome-screensaver, as opposed to
+> doing nothing.
+
+Yeah, you need gnome-session for that. But you can use gnome-session 
+locally in an easy way (see below).
+
+> - "xprop -root PULSE_SERVER" returns the correct result, as opposed
+> to nothing at all.
+
+This is just a PulseAudio module (see module-x11-publish and pax11publish).
+
+> I'm comparing results on my desktop so I can't even comment on
+> suspend+resume. :/
+>
+> What is gnome-settings-daemon supposed to do, without all the
+> surrounding xsession stuff in my patch? (it turns out I don't know a
+>  whole lot about how gnome works)
+
+The gnome-settings-daemon contains all the little magic things of GNOME.
+The only part left to gnome-session is the? session management (locking, 
+presence).
+
+
+The only real needed part of your patch is the i3.gnome.session file, 
+which you can put in the ~/.config/gnome-session/sessions directory.
+The "i3-gnome" script is not the good way to do it. Just put the 
+dbus-send command in the i3 config file (at the end, a simple "exec").
+
+Regarding the session script ("gnome-session-i3"), just use your 
+~/.xinitrc to exec that. :-)
+
+The "i3.applications.desktop" patch is not bad, may be the only thing to 
+include upstream, but not sure what are the implications.
+
+Cheers,
+
+-- 
+
+Quentin ?Sardem FF7? Glidic
+
+From fabiojrb at gmail.com  Fri May 24 15:15:42 2013
+From: fabiojrb at gmail.com (=?ISO-8859-1?Q?F=E1bio_Bertinatto?=)
+Date: Fri, 24 May 2013 10:15:42 -0300
+Subject: [i3] Containers
+Message-ID: <CAAAWjP3aKiNzE7dw-Ra0=oqLcGGX4MSn36uqYDzsD8KBOASdxA@mail.gmail.com>
+
+Hello,
+
+I'm using i3 for 6 months now and I love it. I even made a donation some
+time ago.
+
+However, there is a issue bothering me and I would like to know if there is
+a solution.
+
+Let's say I open 3 terminal windows:
+
+1) "Alt + Enter" opens the first;
+2) "Alt + Enter" opens the second horizontally (default);
+3) "Alt + v" and then "Alt + Enter" opens the third vertically;
+
+So until now I have the screen split in 2 columns: in the first column I
+have 1 window and in the second column I have 2 windows (1 above the other).
+
+So let's say I select the second opened window and close it. If I switch to
+tabbed mode, the third window is placed below/inside another window called
+T[urxvt].
+
+I know this occurs because of the containers thing, but I would like to
+know if I can have the tabbed mode of without that T[urxvt] window. When I
+open and close several windows and change the layout several times, a lot
+of these additional windows are opened.
+
+There is a way to solve this?
+
+
+-- 
+F. Bertinatto
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130524/da29e586/attachment.html>
+
+From old4 at o2.pl  Fri May 24 16:54:19 2013
+From: old4 at o2.pl (Mateusz Poszwa)
+Date: Fri, 24 May 2013 16:54:19 +0200
+Subject: [i3] Containers
+In-Reply-To: <CAAAWjP3aKiNzE7dw-Ra0=oqLcGGX4MSn36uqYDzsD8KBOASdxA@mail.gmail.com>
+References: <CAAAWjP3aKiNzE7dw-Ra0=oqLcGGX4MSn36uqYDzsD8KBOASdxA@mail.gmail.com>
+Message-ID: <20130524165419.4c23e5eb@debelianear>
+
+On Fri, 24 May 2013 10:15:42 -0300
+F?bio Bertinatto <fabiojrb at gmail.com> wrote:
+
+> Hello,
+
+Hello.
+
+> I'm using i3 for 6 months now and I love it. I even made a donation some
+> time ago.
+> 
+> However, there is a issue bothering me and I would like to know if there is
+> a solution.
+> 
+> Let's say I open 3 terminal windows:
+> 
+> 1) "Alt + Enter" opens the first;
+> 2) "Alt + Enter" opens the second horizontally (default);
+> 3) "Alt + v" and then "Alt + Enter" opens the third vertically;
+> 
+> So until now I have the screen split in 2 columns: in the first column I
+> have 1 window and in the second column I have 2 windows (1 above the other).
+> 
+> So let's say I select the second opened window and close it. If I switch to
+> tabbed mode, the third window is placed below/inside another window called
+> T[urxvt].
+
+It doesn't happen for me. Maybe it's a question of i3 version,
+or maybe I don't understand what to do to reproduce this behaviour.
+
+> I know this occurs because of the containers thing, but I would like to
+> know if I can have the tabbed mode of without that T[urxvt] window. When I
+> open and close several windows and change the layout several times, a lot
+> of these additional windows are opened.
+> 
+> There is a way to solve this?
+
+Whenever you want to get rid of a split container, you can just move
+all of its children out of it. When the last child leaves a container,
+the container is destroyed, e.g.:
+
+H[win1 T[win3]] # win3 focussed
+move left
+H[win1 win3 T[]] # intermediate step; a result of moving win3
+H[win1 win3] # the T container get destroyed because it is empty.
+
+This is how I understand it. I hope I was helpful.
+If not, feel free to ask for more explanations. 
+
+Best regards.
+
+-- 
+Mateusz Poszwa
+
+From michael at i3wm.org  Sat May 25 12:47:46 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 25 May 2013 12:47:46 +0200
+Subject: [i3] Containers
+In-Reply-To: <20130524165419.4c23e5eb@debelianear>
+References: <CAAAWjP3aKiNzE7dw-Ra0=oqLcGGX4MSn36uqYDzsD8KBOASdxA@mail.gmail.com>
+ <20130524165419.4c23e5eb@debelianear>
+Message-ID: <x6r4gv5oa5.fsf@midna.zekjur.net>
+
+Hi,
+
+There is also http://www.youtube.com/watch?v=AWA8Pl57UBY which helps
+with understanding containers.
+
+-- 
+Best regards,
+Michael
+
+From gour at atmarama.net  Sun May 26 07:27:04 2013
+From: gour at atmarama.net (Gour)
+Date: Sun, 26 May 2013 07:27:04 +0200
+Subject: [i3] Gmane test
+Message-ID: <20130526072704.2010f24c@atmarama.noip.me>
+
+Hello,
+
+got reply from Gmane admin stuff that now it should be possible to post to the
+list via Gmane, so just testing...
+
+
+Sincerely,
+Gour
+
+
+-- 
+A person is said to be elevated in yoga when, having renounced 
+all material desires, he neither acts for sense gratification 
+nor engages in fruitive activities.
+
+http://www.atmarama.net | Hlapicina (Croatia) | GPG: 52B5C810
+
+
+

@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] trying to build default layout at start
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20trying%20to%20build%20default%20layout%20at%20start&In-Reply-To=%3Cffb674a90a7a8df1db6f82ccc2f53368%40neutralite.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001610.html">
+   <LINK REL="Next"  HREF="001607.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] trying to build default layout at start</H1>
+    <B>berenger.morel at neutralite.org</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20trying%20to%20build%20default%20layout%20at%20start&In-Reply-To=%3Cffb674a90a7a8df1db6f82ccc2f53368%40neutralite.org%3E"
+       TITLE="[i3] trying to build default layout at start">berenger.morel at neutralite.org
+       </A><BR>
+    <I>Mon Mar  3 11:14:55 CET 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001610.html">[i3] Bind Alt+Shift in i3wm
+</A></li>
+        <LI>Next message: <A HREF="001607.html">[i3] trying to build default layout at start
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1606">[ date ]</a>
+              <a href="thread.html#1606">[ thread ]</a>
+              <a href="subject.html#1606">[ subject ]</a>
+              <a href="author.html#1606">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello.
+
+Since I always have the same layout ( basically, a horizontal layout 
+with 1 vertical layout containing --at start-- 1 terminal on a side, and 
+on the other one, 2 other terminals in a vertical layout: debugging and 
+editing of unit testing for 2nd vertical layout, source code edition on 
+first one ) on workspace 1, and start it every-time, I tried to do bind 
+that script:
+
+#!/bin/sh
+x-terminal-emulator &amp;
+x-terminal-emulator &amp;
+i3-msg 'split v' &amp;
+x-terminal-emulator &amp;
+
+to a key, but it does not work. Started from a terminal, all windows 
+appear, but only in a vertical layout, and the script writes 
+&quot;[{&quot;success&quot;:true}]&quot;. Since it is a problem of speed, I can do a small 
+workaround.
+
+But, binded to a key, nothing appears.
+
+So I tried another approach, which is to do that work only at i3's 
+start-up. Here are the lines I added:
+
+exect x-terminal-emulator
+exect x-terminal-emulator
+exec --no-startup-id i3-msg 'split v'
+exect x-terminal-emulator
+
+Again, no terminal is spawned. Right after those lines, I had a section 
+like this:
+
+assign [class=&quot;XOsview&quot; ] 10
+exec xosview
+
+assign [class=&quot;Claws-mail&quot; ] 10
+exec claws-mail
+
+exec --no-startup-id i3-msg 'workspace 10'
+exec --no-startup-id i3-msg 'workspace 1'
+
+Which basically starts both xosview and claws on the 10th workspace, 
+plus move each screen's starting workspace to 1 ( primary screen ) and 
+10 ( second one ).
+It worked fine, even with the added lines.
+Now, I thought that the assignations are not useful if correct 
+workspaces are selected before starting things. So I replaced those 
+lines with:
+
+exec --no-startup-id i3-msg 'workspace 10'
+exec xosview
+exec claws-mail
+exec --no-startup-id i3-msg 'workspace 1'
+
+which I thought would be ok, but the results are really strange:
+xosview is started on workspace 1, claws on workspace 7 ( see note 
+below ), and shown workspaces are correct with 1 and 10. If it would 
+only be speed, I suppose that both applications would be on workspace 1, 
+or one on workspace 10, or both on workspace 10 ( which is the desired 
+behavior, finally ), but one is spawn on workspace 7.
+I suppose that when i3 receives the command to switch to workspace 10 
+which is on the secondary screen, it starts by switching to second 
+screen, with the lowest possible workspace selected ( 7 in my case ), 
+then switch to desired workspace.
+Am I wrong? If I am, how could I work around that problem?
+
+Thanks in advance for any advice, opinion, or pointer you could give me 
+to fix and/or understand that problem.
+
+
+NOTES:
+Note 1:
+Each screen have some affected workspaces 1-4 are for primary screen, 
+5-6 are not affected, 7-10 are affected to secondary screen:
+
+workspace 1 output $prim_screen
+workspace 2 output $prim_screen
+workspace 3 output $prim_screen
+workspace 4 output $prim_screen
+
+workspace 7 output $sec_screen
+workspace 8 output $sec_screen
+workspace 9 output $sec_screen
+workspace 10 output $sec_screen
+
+Note 2:
+Using Debian (amd64) stable on some computers with some testing 
+packages including i3. Unstable on another one.
+x-terminal-emulator is used in my commands, and default terminal 
+emulator on my computer is lxterminal.
+
+PS:
+I already noticed some bugs probably related to slowness of something. 
+Often, at startup, I summon some terminals, switch to another workspace, 
+try to summon things, and they are summoned on workspace 1, even if I 
+started them when other workspace was shown.
+Boring, but not critical, and I never had the will to fix it. Now, this 
+layout problem is annoying enough for me to make me interesting in 
+understanding why it does not work.
+
+</PRE>
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001610.html">[i3] Bind Alt+Shift in i3wm
+</A></li>
+	<LI>Next message: <A HREF="001607.html">[i3] trying to build default layout at start
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1606">[ date ]</a>
+              <a href="thread.html#1606">[ thread ]</a>
+              <a href="subject.html#1606">[ subject ]</a>
+              <a href="author.html#1606">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

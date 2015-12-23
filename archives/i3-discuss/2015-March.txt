@@ -1,0 +1,2332 @@
+From eric at ericabrahamsen.net  Mon Mar  2 05:25:41 2015
+From: eric at ericabrahamsen.net (Eric Abrahamsen)
+Date: Mon, 02 Mar 2015 12:25:41 +0800
+Subject: [i3] advice on quick manipulation of splits
+Message-ID: <878ufgnhyy.fsf@ericabrahamsen.net>
+
+I moved from StumpWM to i3 a bit ago, and everything's basically fine,
+ie is a lot faster :)
+
+One usage issue I'm having trouble with:
+
+90% of the time I'm use the tabbed view, no splits, each window taking
+up the full screen. Occasionally, though, I want to see windows
+side-by-side. In StumpWM I could create and delete splits almost
+unconsciously, and I'm not quite getting there with i3.
+
+Mostly because I don't really understand how splits are removed. I often
+create them accidentally by hitting mod-h when I meant to hit mod-j. As
+far as I can tell, to get rid of that I have to move the window I'm in
+down with mod-shift-k, then back up with mod-shift-l, and that removes
+the split.
+
+But I just intentionally created a split so that I could see two of my
+three Emacs windows side-by-side. When I was done with that, I moved
+window three back into the same split as the other two (so now all three
+are tabbed in one split), but can't get rid of the split itself. Now
+I've got this:
+
+i3: T[emacs emacs emacs]
+
+And below that three tabbed windows. How do I get rid of that top split?
+
+I'm sure this is something very simple and obvious, but I've been poking
+at it for a while, and can't figure it out...
+
+Thanks,
+Eric
+
+
+From eric at ericabrahamsen.net  Mon Mar  2 05:46:01 2015
+From: eric at ericabrahamsen.net (Eric Abrahamsen)
+Date: Mon, 02 Mar 2015 12:46:01 +0800
+Subject: [i3] advice on quick manipulation of splits
+References: <878ufgnhyy.fsf@ericabrahamsen.net>
+Message-ID: <87wq30m2gm.fsf@ericabrahamsen.net>
+
+Eric Abrahamsen <eric at ericabrahamsen.net> writes:
+
+> I moved from StumpWM to i3 a bit ago, and everything's basically fine,
+> ie is a lot faster :)
+>
+> One usage issue I'm having trouble with:
+>
+> 90% of the time I'm use the tabbed view, no splits, each window taking
+> up the full screen. Occasionally, though, I want to see windows
+> side-by-side. In StumpWM I could create and delete splits almost
+> unconsciously, and I'm not quite getting there with i3.
+>
+> Mostly because I don't really understand how splits are removed. I often
+> create them accidentally by hitting mod-h when I meant to hit mod-j. As
+> far as I can tell, to get rid of that I have to move the window I'm in
+> down with mod-shift-k, then back up with mod-shift-l, and that removes
+> the split.
+>
+> But I just intentionally created a split so that I could see two of my
+> three Emacs windows side-by-side. When I was done with that, I moved
+> window three back into the same split as the other two (so now all three
+> are tabbed in one split), but can't get rid of the split itself. Now
+> I've got this:
+>
+> i3: T[emacs emacs emacs]
+>
+> And below that three tabbed windows. How do I get rid of that top split?
+
+On a whim I selected the parent, and hit mod-e. That removed the split,
+but I have *no* idea why. I suspect it's the "Implicit containers"
+section of the user guide that I'm not grokking. But I'm really not
+grokking it...
+
+> I'm sure this is something very simple and obvious, but I've been poking
+> at it for a while, and can't figure it out...
+>
+> Thanks,
+> Eric
+
+
+From michael at i3wm.org  Mon Mar  2 09:19:55 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 2 Mar 2015 09:19:55 +0100
+Subject: [i3] advice on quick manipulation of splits
+In-Reply-To: <87wq30m2gm.fsf@ericabrahamsen.net>
+References: <878ufgnhyy.fsf@ericabrahamsen.net>
+ <87wq30m2gm.fsf@ericabrahamsen.net>
+Message-ID: <CANnVG6nw_28ZcLz6fd0CF+VZrsGKOW95Gf9eUnt1un-ZfGs6vQ@mail.gmail.com>
+
+Did you watch http://www.youtube.com/watch?v=AWA8Pl57UBY yet?
+Typically people don’t have questions afterwards :).
+
+On Mon, Mar 2, 2015 at 5:46 AM, Eric Abrahamsen <eric at ericabrahamsen.net> wrote:
+> Eric Abrahamsen <eric at ericabrahamsen.net> writes:
+>
+>> I moved from StumpWM to i3 a bit ago, and everything's basically fine,
+>> ie is a lot faster :)
+>>
+>> One usage issue I'm having trouble with:
+>>
+>> 90% of the time I'm use the tabbed view, no splits, each window taking
+>> up the full screen. Occasionally, though, I want to see windows
+>> side-by-side. In StumpWM I could create and delete splits almost
+>> unconsciously, and I'm not quite getting there with i3.
+>>
+>> Mostly because I don't really understand how splits are removed. I often
+>> create them accidentally by hitting mod-h when I meant to hit mod-j. As
+>> far as I can tell, to get rid of that I have to move the window I'm in
+>> down with mod-shift-k, then back up with mod-shift-l, and that removes
+>> the split.
+>>
+>> But I just intentionally created a split so that I could see two of my
+>> three Emacs windows side-by-side. When I was done with that, I moved
+>> window three back into the same split as the other two (so now all three
+>> are tabbed in one split), but can't get rid of the split itself. Now
+>> I've got this:
+>>
+>> i3: T[emacs emacs emacs]
+>>
+>> And below that three tabbed windows. How do I get rid of that top split?
+>
+> On a whim I selected the parent, and hit mod-e. That removed the split,
+> but I have *no* idea why. I suspect it's the "Implicit containers"
+> section of the user guide that I'm not grokking. But I'm really not
+> grokking it...
+>
+>> I'm sure this is something very simple and obvious, but I've been poking
+>> at it for a while, and can't figure it out...
+>>
+>> Thanks,
+>> Eric
+>
+
+
+
+-- 
+Best regards,
+Michael
+
+From eric at ericabrahamsen.net  Tue Mar  3 10:18:03 2015
+From: eric at ericabrahamsen.net (Eric Abrahamsen)
+Date: Tue, 03 Mar 2015 17:18:03 +0800
+Subject: [i3] advice on quick manipulation of splits
+References: <878ufgnhyy.fsf@ericabrahamsen.net>
+ <87wq30m2gm.fsf@ericabrahamsen.net>
+ <CANnVG6nw_28ZcLz6fd0CF+VZrsGKOW95Gf9eUnt1un-ZfGs6vQ@mail.gmail.com>
+Message-ID: <8761ail9ro.fsf@ericabrahamsen.net>
+
+Michael Stapelberg <michael at i3wm.org> writes:
+
+> Did you watch http://www.youtube.com/watch?v=AWA8Pl57UBY yet?
+> Typically people don’t have questions afterwards :).
+
+Whoa, that was helpful. Thank you!
+
+I'm experimenting now, and think I'm close to getting it.
+
+One note, which might be close to a bug report. My interpretation of my
+last issue (where there was a horizontal split I couldn't get rid of) is
+this: in horiz/vert split situations, an empty split will disappear --
+as the video notes, that's how you "get rid of" split levels. What I
+think I was seeing, though, was that if the layout was in tabbed mode,
+the empty split didn't actually disappear. It only disappeared when I
+hit mod-e to change the layout to horiz/vert.
+
+If that's actually what I was seeing, doesn't that seem a bit wrong?
+Shouldn't an empty split disappear no matter what layout mode it's in?
+
+Anyway, my apologies if (as is likely) I'm still misinterpreting
+something.
+
+Thanks,
+Eric
+
+> On Mon, Mar 2, 2015 at 5:46 AM, Eric Abrahamsen <eric at ericabrahamsen.net> wrote:
+>> Eric Abrahamsen <eric at ericabrahamsen.net> writes:
+>>
+>>> I moved from StumpWM to i3 a bit ago, and everything's basically fine,
+>>> ie is a lot faster :)
+>>>
+>>> One usage issue I'm having trouble with:
+>>>
+>>> 90% of the time I'm use the tabbed view, no splits, each window taking
+>>> up the full screen. Occasionally, though, I want to see windows
+>>> side-by-side. In StumpWM I could create and delete splits almost
+>>> unconsciously, and I'm not quite getting there with i3.
+>>>
+>>> Mostly because I don't really understand how splits are removed. I often
+>>> create them accidentally by hitting mod-h when I meant to hit mod-j. As
+>>> far as I can tell, to get rid of that I have to move the window I'm in
+>>> down with mod-shift-k, then back up with mod-shift-l, and that removes
+>>> the split.
+>>>
+>>> But I just intentionally created a split so that I could see two of my
+>>> three Emacs windows side-by-side. When I was done with that, I moved
+>>> window three back into the same split as the other two (so now all three
+>>> are tabbed in one split), but can't get rid of the split itself. Now
+>>> I've got this:
+>>>
+>>> i3: T[emacs emacs emacs]
+>>>
+>>> And below that three tabbed windows. How do I get rid of that top split?
+>>
+>> On a whim I selected the parent, and hit mod-e. That removed the split,
+>> but I have *no* idea why. I suspect it's the "Implicit containers"
+>> section of the user guide that I'm not grokking. But I'm really not
+>> grokking it...
+>>
+>>> I'm sure this is something very simple and obvious, but I've been poking
+>>> at it for a while, and can't figure it out...
+>>>
+>>> Thanks,
+>>> Eric
+>>
+
+
+From bigby.james at dimthoughts.com  Wed Mar  4 05:26:51 2015
+From: bigby.james at dimthoughts.com (Bigby James)
+Date: Tue, 3 Mar 2015 22:26:51 -0600
+Subject: [i3] advice on quick manipulation of splits
+In-Reply-To: <8761ail9ro.fsf@ericabrahamsen.net>
+References: <878ufgnhyy.fsf@ericabrahamsen.net>
+ <87wq30m2gm.fsf@ericabrahamsen.net>
+ <CANnVG6nw_28ZcLz6fd0CF+VZrsGKOW95Gf9eUnt1un-ZfGs6vQ@mail.gmail.com>
+ <8761ail9ro.fsf@ericabrahamsen.net>
+Message-ID: <20150304042651.GA1266@WorkBox.Home>
+
+On 03/03, Eric Abrahamsen wrote:
+> One note, which might be close to a bug report. My interpretation of my
+> last issue (where there was a horizontal split I couldn't get rid of) is
+> this: in horiz/vert split situations, an empty split will disappear --
+> as the video notes, that's how you "get rid of" split levels. What I
+> think I was seeing, though, was that if the layout was in tabbed mode,
+> the empty split didn't actually disappear. It only disappeared when I
+> hit mod-e to change the layout to horiz/vert.
+
+If I'm understanding you correctly (I may not be :P ), what you're seeing isn't
+really an "empty split:" when an existing tab in a container container is split
+into a new layout, a new container is nested within it. That container is the
+child of the tabbed container it rests in, and is the parent of any windows you
+open within it. That nested container remains where it is until you take some
+action that removes it, such as changing the layout of the nested container's
+parent or moving the only open window in the nested container to a different
+container or just plain closing the window. i3 layouts adapt in different ways
+depending on the series of actions the *user* takes on individual windows and
+groups of windows; you'd have to have taken some action to do away with that
+nested container.
+
+My advice for getting a grasp on how i3 works is to use nested containers as
+rarely as possible, at least from the start. This keeps things managable---it
+avoids situations in which you end up with windows nested so deeply in a layout
+that doing anything to one window has effects on all of them. I tend to work
+using two or three top-level containers per workspace, and set those containers'
+internal layouts based on my needs.  For example, as I write this I'm taking a
+break from a research project, and my layout looks like this:
+
+1) One stacked container on the left half of the screen, containing a web browser and
+PDF reader
+
+2) One container on the right half, containing only a Vim session with my notes
+and taking up about 70% vertical space
+
+3) One tabbed container on the right half below the Vim window, containing a
+shell instance, file manager and music player, taking up the remaining ~30% of
+vertical space
+
+Arranged in that way, with six windows spread across three top-level containers,
+I can move, resize or close any one window, and while the parent containers
+would change size with the windows, the container properties would otherwise be
+unchanged. I could acheive the same thing by creating a series of splits, but I
+don't like mucking around with branch after branch in a complex data tree. I simply
+prefer to work at the container level, but I think if you wade into the shallow end
+of basic container management like this you can get a feel for how i3 handles
+windows before heading into the deep end. ;)
+
+-- 
+"A common mistake that people make when trying to design something completely
+foolproof is to underestimate the ingenuity of complete fools." - Douglas Adams
+
+
+From jeff at purple.com  Wed Mar  4 19:21:56 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Wed, 4 Mar 2015 19:21:56 +0100
+Subject: [i3] I3 and emacs
+In-Reply-To: <CANnVG6nQ-26obrQGJR6Q2ZQKksJUhuE=UZcMff38kft+VN-eyA@mail.gmail.com>
+References: <CAM4Y7zxsKHgTHnf3U2HwVUem=HZE9+7xdeBv8OX_utHLsPwSeg@mail.gmail.com>
+ <CANnVG6nQ-26obrQGJR6Q2ZQKksJUhuE=UZcMff38kft+VN-eyA@mail.gmail.com>
+Message-ID: <CAM4Y7zxci6JR9oTVEYT9CqjbKJGS1STcmL4ZgxXQ5BmWxa5NWw@mail.gmail.com>
+
+That's really great, thanks.  I think this solved what I want.  This leaves
+me with only a small question that I've half-answered below.
+
+So I say this in my config:
+
+bindsym $mod+Tab mode "I3"
+
+mode "I3" {
+    # start a terminal
+    bindsym c exec urxvt
+
+    ...
+    bindsym Escape mode "default"
+}
+
+And now I can type "$mod+Tab c" to open a new terminal, "$mod-Tab f" to go
+full screen, etc.  And, meanwhile, $mod-f does what I expect it to in emacs
+and bash, which is to go forward one word.
+
+One curiosity is that my I3 mode is, well, modal.  Sometimes I suppose this
+makes sense, if I'm going to issue quite a lot of commands to the window
+manager.  (This is the case with resize mode.)  But It would be nice to
+have a transient mode where any command within the mode is executed and
+then causes the mode to exit.  Is that possible?
+
+Let me half answer that question.  I've discovered it's possible if I ask
+for it with each command:
+
+    bindsym f fullscreen; mode "default"
+
+But it would be cool to be able to specify this about the mode rather than
+have to repeat myself throughout the mode's bindings.
+
+bindsym $mod+Tab transientmode "I3"
+
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only if I'm in the UK
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+
+On 21 February 2015 at 11:22, Michael Stapelberg <michael at i3wm.org> wrote:
+
+> See https://faq.i3wm.org/question/360/emacs-like-keybinding/
+>
+> On Sat, Feb 21, 2015 at 8:45 AM, Jeff Abrahamson <jeff at purple.com> wrote:
+> > I'd like to use I3 and emacs. I don't have a spare modifier key on my
+> > keyboard, so I'd like to use a prefix key. Maybe I missed it in the
+> docs, in
+> > which case, please accept my apologies. (I've only just begun to look at
+> the
+> > source.)
+> >
+> > 1. Is there support for this currently in I3?
+> >
+> > 2. If not, is there interest in a patch?
+> >
+> > Jeff Abrahamson
+> > +33 6 24 40 01 57
+> > +44 7920 594 255    <-- only if I'm in the UK
+> >
+> > http://jeff.purple.com/
+> > http://blog.purple.com/jeff/
+>
+>
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150304/100a5573/attachment.html>
+
+From michael at i3wm.org  Wed Mar  4 19:39:15 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 4 Mar 2015 19:39:15 +0100
+Subject: [i3] I3 and emacs
+In-Reply-To: <CAM4Y7zxci6JR9oTVEYT9CqjbKJGS1STcmL4ZgxXQ5BmWxa5NWw@mail.gmail.com>
+References: <CAM4Y7zxsKHgTHnf3U2HwVUem=HZE9+7xdeBv8OX_utHLsPwSeg@mail.gmail.com>
+ <CANnVG6nQ-26obrQGJR6Q2ZQKksJUhuE=UZcMff38kft+VN-eyA@mail.gmail.com>
+ <CAM4Y7zxci6JR9oTVEYT9CqjbKJGS1STcmL4ZgxXQ5BmWxa5NWw@mail.gmail.com>
+Message-ID: <CANnVG6k-YUjqR3u3QVuZXBQQE8k6C0HC8-sgyXHzOUwRdpEVvw@mail.gmail.com>
+
+On Wed, Mar 4, 2015 at 7:21 PM, Jeff Abrahamson <jeff at purple.com> wrote:
+> That's really great, thanks.  I think this solved what I want.  This leaves
+> me with only a small question that I've half-answered below.
+>
+> So I say this in my config:
+>
+> bindsym $mod+Tab mode "I3"
+>
+> mode "I3" {
+>     # start a terminal
+>     bindsym c exec urxvt
+>
+>     ...
+>     bindsym Escape mode "default"
+> }
+>
+> And now I can type "$mod+Tab c" to open a new terminal, "$mod-Tab f" to go
+> full screen, etc.  And, meanwhile, $mod-f does what I expect it to in emacs
+> and bash, which is to go forward one word.
+>
+> One curiosity is that my I3 mode is, well, modal.  Sometimes I suppose this
+> makes sense, if I'm going to issue quite a lot of commands to the window
+> manager.  (This is the case with resize mode.)  But It would be nice to have
+> a transient mode where any command within the mode is executed and then
+> causes the mode to exit.  Is that possible?
+>
+> Let me half answer that question.  I've discovered it's possible if I ask
+> for it with each command:
+>
+>     bindsym f fullscreen; mode "default"
+
+And this is what we recommend. Using modes this way is an edge case,
+and the config file should not get any more complex to support such
+edge cases. If you really feel strongly about this, you’re free to
+implement a preprocessor for your config file. See also
+https://faq.i3wm.org/question/1367/anyway-to-include-in-config-file/ —
+in general we want to keep complex features out of the config file.
+
+>
+> But it would be cool to be able to specify this about the mode rather than
+> have to repeat myself throughout the mode's bindings.
+>
+> bindsym $mod+Tab transientmode "I3"
+>
+>
+> Jeff Abrahamson
+> +33 6 24 40 01 57
+> +44 7920 594 255    <-- only if I'm in the UK
+>
+> http://jeff.purple.com/
+> http://blog.purple.com/jeff/
+>
+> On 21 February 2015 at 11:22, Michael Stapelberg <michael at i3wm.org> wrote:
+>>
+>> See https://faq.i3wm.org/question/360/emacs-like-keybinding/
+>>
+>> On Sat, Feb 21, 2015 at 8:45 AM, Jeff Abrahamson <jeff at purple.com> wrote:
+>> > I'd like to use I3 and emacs. I don't have a spare modifier key on my
+>> > keyboard, so I'd like to use a prefix key. Maybe I missed it in the
+>> > docs, in
+>> > which case, please accept my apologies. (I've only just begun to look at
+>> > the
+>> > source.)
+>> >
+>> > 1. Is there support for this currently in I3?
+>> >
+>> > 2. If not, is there interest in a patch?
+>> >
+>> > Jeff Abrahamson
+>> > +33 6 24 40 01 57
+>> > +44 7920 594 255    <-- only if I'm in the UK
+>> >
+>> > http://jeff.purple.com/
+>> > http://blog.purple.com/jeff/
+>>
+>>
+>>
+>> --
+>> Best regards,
+>> Michael
+>
+>
+
+
+
+-- 
+Best regards,
+Michael
+
+From jeff at purple.com  Thu Mar  5 09:38:15 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Thu, 5 Mar 2015 09:38:15 +0100
+Subject: [i3] workspaces and multiple monitors
+Message-ID: <CAM4Y7zyrSWW6WCGWd=1zRL97aOzjBNs1sgYUpn62QEFWtNhy=A@mail.gmail.com>
+
+On my laptop I find it quite nice that workspaces are bound to monitors
+(outputs).  My monitors have different sizes and often (presentations)
+different uses.
+
+On my desktop, I typically pair workspaces, and if I change the left one,
+I'm about to change the right one.
+
+Does i3 have native support for this?  (I don't see it?)  Or should I write
+a script that does both changes for me (not hard)?  Or is there a better
+way?
+
+Thanks.
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only if I'm in the UK
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150305/e1de08a4/attachment.html>
+
+From michael at i3wm.org  Thu Mar  5 09:58:55 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 5 Mar 2015 09:58:55 +0100
+Subject: [i3] workspaces and multiple monitors
+In-Reply-To: <CAM4Y7zyrSWW6WCGWd=1zRL97aOzjBNs1sgYUpn62QEFWtNhy=A@mail.gmail.com>
+References: <CAM4Y7zyrSWW6WCGWd=1zRL97aOzjBNs1sgYUpn62QEFWtNhy=A@mail.gmail.com>
+Message-ID: <CANnVG6nENnm1XtMq-GPMsJCiiM=QapaAM5qObfu8-2PH5DC0_Q@mail.gmail.com>
+
+https://faq.i3wm.org/question/949/dont-share-workspaces-between-monitors/
+
+On Thu, Mar 5, 2015 at 9:38 AM, Jeff Abrahamson <jeff at purple.com> wrote:
+> On my laptop I find it quite nice that workspaces are bound to monitors
+> (outputs).  My monitors have different sizes and often (presentations)
+> different uses.
+>
+> On my desktop, I typically pair workspaces, and if I change the left one,
+> I'm about to change the right one.
+>
+> Does i3 have native support for this?  (I don't see it?)  Or should I write
+> a script that does both changes for me (not hard)?  Or is there a better
+> way?
+>
+> Thanks.
+>
+> Jeff Abrahamson
+> +33 6 24 40 01 57
+> +44 7920 594 255    <-- only if I'm in the UK
+>
+> http://jeff.purple.com/
+> http://blog.purple.com/jeff/
+
+
+
+-- 
+Best regards,
+Michael
+
+From i3 at hunsicker.de  Thu Mar  5 10:14:18 2015
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Thu, 05 Mar 2015 10:14:18 +0100
+Subject: [i3] workspaces and multiple monitors
+In-Reply-To: <CAM4Y7zyrSWW6WCGWd=1zRL97aOzjBNs1sgYUpn62QEFWtNhy=A@mail.gmail.com>
+References: <CAM4Y7zyrSWW6WCGWd=1zRL97aOzjBNs1sgYUpn62QEFWtNhy=A@mail.gmail.com>
+Message-ID: <54F81E6A.6090901@hunsicker.de>
+
+Hello Jeff,
+
+> On my desktop, I typically pair workspaces, and if I change the left one,
+> I'm about to change the right one.
+>
+> Does i3 have native support for this?  (I don't see it?)  Or should I write
+> a script that does both changes for me (not hard)?  Or is there a better
+> way?
+
+There's another way: fake-outputs!
+
+https://faq.i3wm.org/question/1659/force-one-i3-instanceworkspace-across-multiple-monitors/
+
+It's not supported nor recommended by Michael and therefore goes 
+unmentioned in the docs (it only exists for the testsuite), but I 
+happily use it with a 3 monitor setup without issues. Your mileage may 
+vary of course, and Michael mentions possible shortcomings in this thread:
+
+http://infra.in.zekjur.net/pipermail/i3-discuss/2014-November/001948.html
+
+Cheers,
+   Marco
+
+
+From jeff at purple.com  Thu Mar  5 10:27:23 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Thu, 5 Mar 2015 10:27:23 +0100
+Subject: [i3] workspaces and multiple monitors
+In-Reply-To: <54F81E6A.6090901@hunsicker.de>
+References: <CAM4Y7zyrSWW6WCGWd=1zRL97aOzjBNs1sgYUpn62QEFWtNhy=A@mail.gmail.com>
+ <54F81E6A.6090901@hunsicker.de>
+Message-ID: <CAM4Y7zxMWW+O7KqwPxQt2hME0__Mwy0k2x+eqoEU9Nj9d-rLHg@mail.gmail.com>
+
+Thanks, Marco.  I had found that discussion before asking my question, in
+fact.  It's not quite the direction I want to go.
+
+I now have this working.  I do
+
+bindsym Shift+w  mode "workspace"
+
+and then
+
+mode "workspace" {
+    # Switch to workspace.
+    # This depends on my having set up odd workspaces on the left monitor
+    # and even workspaces on the right monitor.
+    bindsym a  workspace 1; workspace 2;  mode "default"
+    bindsym b  workspace 3; workspace 4;  mode "default"
+    bindsym c  workspace 5; workspace 6;  mode "default"
+    bindsym d  workspace 7; workspace 8;  mode "default"
+    bindsym e  workspace 9; workspace 10; mode "default"
+}
+
+(Interestingly, "W" does not work on bindsym while "Shift+w" does.)
+
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only if I'm in the UK
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+
+On 5 March 2015 at 10:14, Marco Hunsicker <i3 at hunsicker.de> wrote:
+
+> Hello Jeff,
+>
+>  On my desktop, I typically pair workspaces, and if I change the left one,
+>> I'm about to change the right one.
+>>
+>> Does i3 have native support for this?  (I don't see it?)  Or should I
+>> write
+>> a script that does both changes for me (not hard)?  Or is there a better
+>> way?
+>>
+>
+> There's another way: fake-outputs!
+>
+> https://faq.i3wm.org/question/1659/force-one-i3-instanceworkspace-across-
+> multiple-monitors/
+>
+> It's not supported nor recommended by Michael and therefore goes
+> unmentioned in the docs (it only exists for the testsuite), but I happily
+> use it with a 3 monitor setup without issues. Your mileage may vary of
+> course, and Michael mentions possible shortcomings in this thread:
+>
+> http://infra.in.zekjur.net/pipermail/i3-discuss/2014-November/001948.html
+>
+> Cheers,
+>   Marco
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150305/0dbd39d8/attachment-0001.html>
+
+From bigby.james at dimthoughts.com  Thu Mar  5 16:35:20 2015
+From: bigby.james at dimthoughts.com (Bigby James)
+Date: Thu, 5 Mar 2015 09:35:20 -0600
+Subject: [i3] workspaces and multiple monitors
+In-Reply-To: <CAM4Y7zxMWW+O7KqwPxQt2hME0__Mwy0k2x+eqoEU9Nj9d-rLHg@mail.gmail.com>
+References: <CAM4Y7zyrSWW6WCGWd=1zRL97aOzjBNs1sgYUpn62QEFWtNhy=A@mail.gmail.com>
+ <54F81E6A.6090901@hunsicker.de>
+ <CAM4Y7zxMWW+O7KqwPxQt2hME0__Mwy0k2x+eqoEU9Nj9d-rLHg@mail.gmail.com>
+Message-ID: <20150305153520.GA1370@WorkBox.Home>
+
+On 03/05, Jeff Abrahamson wrote:
+> I now have this working.  I do
+> 
+> bindsym Shift+w  mode "workspace"
+> 
+> and then
+> 
+> mode "workspace" {
+>     # Switch to workspace.
+>     # This depends on my having set up odd workspaces on the left monitor
+>     # and even workspaces on the right monitor.
+>     bindsym a  workspace 1; workspace 2;  mode "default"
+>     bindsym b  workspace 3; workspace 4;  mode "default"
+>     bindsym c  workspace 5; workspace 6;  mode "default"
+>     bindsym d  workspace 7; workspace 8;  mode "default"
+>     bindsym e  workspace 9; workspace 10; mode "default"
+> }
+
+You could just as well bind them all to $mod+<number key> to get the same
+effect.[1] If you're comfortable with the mode then that's cool, but using a mode
+to switch workspaces seems weird to me. :P
+
+[1]: https://faq.i3wm.org/question/4047/how-can-i-define-workspace-numbers-for-specific-monitors/#4048
+
+-- 
+"A common mistake that people make when trying to design something completely
+foolproof is to underestimate the ingenuity of complete fools." - Douglas Adams
+
+
+From sillettig at gmail.com  Thu Mar 12 23:21:25 2015
+From: sillettig at gmail.com (Giuseppe Silletti)
+Date: Thu, 12 Mar 2015 22:21:25 +0000
+Subject: [i3] Problems with some attributes in i3 bar config file
+Message-ID: <CABYV-pN2rcbxwTmAW0EavZAPyf9csF3QU_9cX8g47hmZJSr-ew@mail.gmail.com>
+
+Hi everyone! I'm new on i3 and I'm having some problems with some
+attributes in i3 bar config file. For example the volume section doesn't
+appear, even if I've put it in the config file. Also, some attributes like
+status_chr of battery section make my bar having an error and not showing.
+Can someone help me please?
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150312/3853e330/attachment.html>
+
+From c1b3rh4ck at gmail.com  Fri Mar 13 04:57:20 2015
+From: c1b3rh4ck at gmail.com (Hector)
+Date: Thu, 12 Mar 2015 22:57:20 -0500
+Subject: [i3] Problems with some attributes in i3 bar config file
+In-Reply-To: <CABYV-pN2rcbxwTmAW0EavZAPyf9csF3QU_9cX8g47hmZJSr-ew@mail.gmail.com>
+References: <CABYV-pN2rcbxwTmAW0EavZAPyf9csF3QU_9cX8g47hmZJSr-ew@mail.gmail.com>
+Message-ID: <20150313035720.GA4723@D3v1l.PereiraSecTeam>
+
+Hi you could check the documentation of i3status to see if it's there
+any problem check with the default options of i3[1] also to help you,
+you need to be more specific or visit[2].
+
+[1] http://i3wm.org/docs/userguide.html#_configuring_i3bar 
+[2] https://faq.i3wm.org/questions/
+Best Regards.
+On Thu, Mar 12, 2015 at 10:21:25PM +0000, Giuseppe Silletti wrote:
+> Hi everyone! I'm new on i3 and I'm having some problems with some
+> attributes in i3 bar config file. For example the volume section doesn't
+> appear, even if I've put it in the config file. Also, some attributes like
+> status_chr of battery section make my bar having an error and not showing.
+> Can someone help me please?
+
+From michael at i3wm.org  Fri Mar 13 08:35:38 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 13 Mar 2015 08:35:38 +0100
+Subject: [i3] Problems with some attributes in i3 bar config file
+In-Reply-To: <CABYV-pN2rcbxwTmAW0EavZAPyf9csF3QU_9cX8g47hmZJSr-ew@mail.gmail.com>
+References: <CABYV-pN2rcbxwTmAW0EavZAPyf9csF3QU_9cX8g47hmZJSr-ew@mail.gmail.com>
+Message-ID: <CANnVG6=RG0bO885U5NXmKn_zGNWvdcZEdizrEjDOKBOP=FFdjg@mail.gmail.com>
+
+My first guess would be that the version of i3status you are having is too old.
+
+On Thu, Mar 12, 2015 at 11:21 PM, Giuseppe Silletti <sillettig at gmail.com> wrote:
+> Hi everyone! I'm new on i3 and I'm having some problems with some attributes
+> in i3 bar config file. For example the volume section doesn't appear, even
+> if I've put it in the config file. Also, some attributes like status_chr of
+> battery section make my bar having an error and not showing. Can someone
+> help me please?
+
+
+
+-- 
+Best regards,
+Michael
+
+From sillettig at gmail.com  Fri Mar 13 13:00:22 2015
+From: sillettig at gmail.com (Giuseppe Silletti)
+Date: Fri, 13 Mar 2015 12:00:22 +0000
+Subject: [i3] i3-discuss Digest, Vol 59, Issue 6
+In-Reply-To: <mailman.3.1426244408.31530.i3-discuss@i3.zekjur.net>
+References: <mailman.3.1426244408.31530.i3-discuss@i3.zekjur.net>
+Message-ID: <CABYV-pP6opJZ9Nsyi0RW=UpATHmDi45m58upS5o5oPRKiSioOQ@mail.gmail.com>
+
+Thank you for answers! I've check my version and it is the last one. I'll
+try to be more precise: I want to put in the i3bar icons that tell when the
+battery is charging or not for example. If in the battery section of the
+i3status.conf file I put status_chr for example, if I restart i3 this
+message appears: "Error: status_command process exited unexpectedly (exit
+1)". That's it :)
+
+2015-03-13 11:00 GMT+00:00 <i3-discuss-request at i3.zekjur.net>:
+
+> Send i3-discuss mailing list submissions to
+>         i3-discuss at i3.zekjur.net
+>
+> To subscribe or unsubscribe via the World Wide Web, visit
+>         http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss
+> or, via email, send a message with subject or body 'help' to
+>         i3-discuss-request at i3.zekjur.net
+>
+> You can reach the person managing the list at
+>         i3-discuss-owner at i3.zekjur.net
+>
+> When replying, please edit your Subject line so it is more specific
+> than "Re: Contents of i3-discuss digest..."
+>
+>
+> Today's Topics:
+>
+>    1. Problems with some attributes in i3 bar config file
+>       (Giuseppe Silletti)
+>    2. Re: Problems with some attributes in i3 bar config file (Hector)
+>    3. Re: Problems with some attributes in i3 bar config file
+>       (Michael Stapelberg)
+>
+>
+> ----------------------------------------------------------------------
+>
+> Message: 1
+> Date: Thu, 12 Mar 2015 22:21:25 +0000
+> From: Giuseppe Silletti <sillettig at gmail.com>
+> To: i3-discuss at i3.zekjur.net
+> Subject: [i3] Problems with some attributes in i3 bar config file
+> Message-ID:
+>         <
+> CABYV-pN2rcbxwTmAW0EavZAPyf9csF3QU_9cX8g47hmZJSr-ew at mail.gmail.com>
+> Content-Type: text/plain; charset="utf-8"
+>
+> Hi everyone! I'm new on i3 and I'm having some problems with some
+> attributes in i3 bar config file. For example the volume section doesn't
+> appear, even if I've put it in the config file. Also, some attributes like
+> status_chr of battery section make my bar having an error and not showing.
+> Can someone help me please?
+> -------------- next part --------------
+> An HTML attachment was scrubbed...
+> URL: <
+> http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150312/3853e330/attachment-0001.html
+> >
+>
+> ------------------------------
+>
+> Message: 2
+> Date: Thu, 12 Mar 2015 22:57:20 -0500
+> From: Hector <c1b3rh4ck at gmail.com>
+> To: Discussions/Questions about the i3 window manager
+>         <i3-discuss at i3.zekjur.net>
+> Subject: Re: [i3] Problems with some attributes in i3 bar config file
+> Message-ID: <20150313035720.GA4723 at D3v1l.PereiraSecTeam>
+> Content-Type: text/plain; charset=us-ascii
+>
+> Hi you could check the documentation of i3status to see if it's there
+> any problem check with the default options of i3[1] also to help you,
+> you need to be more specific or visit[2].
+>
+> [1] http://i3wm.org/docs/userguide.html#_configuring_i3bar
+> [2] https://faq.i3wm.org/questions/
+> Best Regards.
+> On Thu, Mar 12, 2015 at 10:21:25PM +0000, Giuseppe Silletti wrote:
+> > Hi everyone! I'm new on i3 and I'm having some problems with some
+> > attributes in i3 bar config file. For example the volume section doesn't
+> > appear, even if I've put it in the config file. Also, some attributes
+> like
+> > status_chr of battery section make my bar having an error and not
+> showing.
+> > Can someone help me please?
+>
+>
+> ------------------------------
+>
+> Message: 3
+> Date: Fri, 13 Mar 2015 08:35:38 +0100
+> From: Michael Stapelberg <michael at i3wm.org>
+> To: "Discussions/Questions about the i3 window manager"
+>         <i3-discuss at i3.zekjur.net>
+> Subject: Re: [i3] Problems with some attributes in i3 bar config file
+> Message-ID:
+>         <CANnVG6=RG0bO885U5NXmKn_zGNWvdcZEdizrEjDOKBOP=
+> FFdjg at mail.gmail.com>
+> Content-Type: text/plain; charset=UTF-8
+>
+> My first guess would be that the version of i3status you are having is too
+> old.
+>
+> On Thu, Mar 12, 2015 at 11:21 PM, Giuseppe Silletti <sillettig at gmail.com>
+> wrote:
+> > Hi everyone! I'm new on i3 and I'm having some problems with some
+> attributes
+> > in i3 bar config file. For example the volume section doesn't appear,
+> even
+> > if I've put it in the config file. Also, some attributes like status_chr
+> of
+> > battery section make my bar having an error and not showing. Can someone
+> > help me please?
+>
+>
+>
+> --
+> Best regards,
+> Michael
+>
+>
+> ------------------------------
+>
+> Subject: Digest Footer
+>
+> _______________________________________________
+> i3-discuss mailing list
+> i3-discuss at i3.zekjur.net
+> http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss
+>
+>
+> ------------------------------
+>
+> End of i3-discuss Digest, Vol 59, Issue 6
+> *****************************************
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150313/bc396134/attachment.html>
+
+From michael at stapelberg.ch  Fri Mar 13 19:25:31 2015
+From: michael at stapelberg.ch (Michael Stapelberg)
+Date: Fri, 13 Mar 2015 19:25:31 +0100
+Subject: [i3] i3-discuss Digest, Vol 59, Issue 6
+In-Reply-To: <CABYV-pP6opJZ9Nsyi0RW=UpATHmDi45m58upS5o5oPRKiSioOQ@mail.gmail.com>
+References: <mailman.3.1426244408.31530.i3-discuss@i3.zekjur.net>
+ <CABYV-pP6opJZ9Nsyi0RW=UpATHmDi45m58upS5o5oPRKiSioOQ@mail.gmail.com>
+Message-ID: <CANnVG6n_yB4BA_2Wt88j8LkRFcFDjUZA1cdMOVbXFaXY4SLELg@mail.gmail.com>
+
+Please avoid using the digest mailing list feature, as it breaks
+threading, which is annoying for people who are trying to help you.
+
+Also, when talking about versions of software, _always_ include the
+copy&pasted output of what the program says, never say “latest”
+because that can mean a number of things (latest version available in
+your distribution, latest version announced on the website, latest
+version available in git, latest version in a specific branch…).
+
+status_chr has been introduced relatively recently and is not in any
+released version. I still think your version is not recent enough.
+
+On Fri, Mar 13, 2015 at 1:00 PM, Giuseppe Silletti <sillettig at gmail.com> wrote:
+> Thank you for answers! I've check my version and it is the last one. I'll
+> try to be more precise: I want to put in the i3bar icons that tell when the
+> battery is charging or not for example. If in the battery section of the
+> i3status.conf file I put status_chr for example, if I restart i3 this
+> message appears: "Error: status_command process exited unexpectedly (exit
+> 1)". That's it :)
+>
+> 2015-03-13 11:00 GMT+00:00 <i3-discuss-request at i3.zekjur.net>:
+>>
+>> Send i3-discuss mailing list submissions to
+>>         i3-discuss at i3.zekjur.net
+>>
+>> To subscribe or unsubscribe via the World Wide Web, visit
+>>         http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss
+>> or, via email, send a message with subject or body 'help' to
+>>         i3-discuss-request at i3.zekjur.net
+>>
+>> You can reach the person managing the list at
+>>         i3-discuss-owner at i3.zekjur.net
+>>
+>> When replying, please edit your Subject line so it is more specific
+>> than "Re: Contents of i3-discuss digest..."
+>>
+>>
+>> Today's Topics:
+>>
+>>    1. Problems with some attributes in i3 bar config file
+>>       (Giuseppe Silletti)
+>>    2. Re: Problems with some attributes in i3 bar config file (Hector)
+>>    3. Re: Problems with some attributes in i3 bar config file
+>>       (Michael Stapelberg)
+>>
+>>
+>> ----------------------------------------------------------------------
+>>
+>> Message: 1
+>> Date: Thu, 12 Mar 2015 22:21:25 +0000
+>> From: Giuseppe Silletti <sillettig at gmail.com>
+>> To: i3-discuss at i3.zekjur.net
+>> Subject: [i3] Problems with some attributes in i3 bar config file
+>> Message-ID:
+>>
+>> <CABYV-pN2rcbxwTmAW0EavZAPyf9csF3QU_9cX8g47hmZJSr-ew at mail.gmail.com>
+>> Content-Type: text/plain; charset="utf-8"
+>>
+>> Hi everyone! I'm new on i3 and I'm having some problems with some
+>> attributes in i3 bar config file. For example the volume section doesn't
+>> appear, even if I've put it in the config file. Also, some attributes like
+>> status_chr of battery section make my bar having an error and not showing.
+>> Can someone help me please?
+>> -------------- next part --------------
+>> An HTML attachment was scrubbed...
+>> URL:
+>> <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150312/3853e330/attachment-0001.html>
+>>
+>> ------------------------------
+>>
+>> Message: 2
+>> Date: Thu, 12 Mar 2015 22:57:20 -0500
+>> From: Hector <c1b3rh4ck at gmail.com>
+>> To: Discussions/Questions about the i3 window manager
+>>         <i3-discuss at i3.zekjur.net>
+>> Subject: Re: [i3] Problems with some attributes in i3 bar config file
+>> Message-ID: <20150313035720.GA4723 at D3v1l.PereiraSecTeam>
+>> Content-Type: text/plain; charset=us-ascii
+>>
+>> Hi you could check the documentation of i3status to see if it's there
+>> any problem check with the default options of i3[1] also to help you,
+>> you need to be more specific or visit[2].
+>>
+>> [1] http://i3wm.org/docs/userguide.html#_configuring_i3bar
+>> [2] https://faq.i3wm.org/questions/
+>> Best Regards.
+>> On Thu, Mar 12, 2015 at 10:21:25PM +0000, Giuseppe Silletti wrote:
+>> > Hi everyone! I'm new on i3 and I'm having some problems with some
+>> > attributes in i3 bar config file. For example the volume section doesn't
+>> > appear, even if I've put it in the config file. Also, some attributes
+>> > like
+>> > status_chr of battery section make my bar having an error and not
+>> > showing.
+>> > Can someone help me please?
+>>
+>>
+>> ------------------------------
+>>
+>> Message: 3
+>> Date: Fri, 13 Mar 2015 08:35:38 +0100
+>> From: Michael Stapelberg <michael at i3wm.org>
+>> To: "Discussions/Questions about the i3 window manager"
+>>         <i3-discuss at i3.zekjur.net>
+>> Subject: Re: [i3] Problems with some attributes in i3 bar config file
+>> Message-ID:
+>>
+>> <CANnVG6=RG0bO885U5NXmKn_zGNWvdcZEdizrEjDOKBOP=FFdjg at mail.gmail.com>
+>> Content-Type: text/plain; charset=UTF-8
+>>
+>> My first guess would be that the version of i3status you are having is too
+>> old.
+>>
+>> On Thu, Mar 12, 2015 at 11:21 PM, Giuseppe Silletti <sillettig at gmail.com>
+>> wrote:
+>> > Hi everyone! I'm new on i3 and I'm having some problems with some
+>> > attributes
+>> > in i3 bar config file. For example the volume section doesn't appear,
+>> > even
+>> > if I've put it in the config file. Also, some attributes like status_chr
+>> > of
+>> > battery section make my bar having an error and not showing. Can someone
+>> > help me please?
+>>
+>>
+>>
+>> --
+>> Best regards,
+>> Michael
+>>
+>>
+>> ------------------------------
+>>
+>> Subject: Digest Footer
+>>
+>> _______________________________________________
+>> i3-discuss mailing list
+>> i3-discuss at i3.zekjur.net
+>> http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss
+>>
+>>
+>> ------------------------------
+>>
+>> End of i3-discuss Digest, Vol 59, Issue 6
+>> *****************************************
+>
+>
+
+
+
+-- 
+Best regards,
+Michael
+
+From jeff at purple.com  Sat Mar 14 15:38:44 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Sat, 14 Mar 2015 15:38:44 +0100
+Subject: [i3] Thoughts on window sizing from a new(-ish) user
+Message-ID: <CAM4Y7zwX4UiiXMJFXXXne-W6wjHJ=YxcG-gd04O8ryoiatGR6g@mail.gmail.com>
+
+I've been using i3 for several weeks now on most of my machines [1].  It's
+very nice, many thanks to all who have made it work so well.
+
+I find one concept confusingly conflated, and I am curious how others see
+it, and if I am simply missing some bit of mental model.  It often happens
+that I open several windows, adjust their sizes (for example, some
+monitoring plots wide and short, an editor tall, etc.  But if I open a new
+window, it changes the sizes I've set. To get around this, I typically set
+up windows as I'd like them, then change each window in turn between
+vertical and horizontal mode to force creation of a new container, then put
+the window into tabbed mode so that new windows don't change its size. (If
+all windows are in tabbed mode, then new windows don't cause resizes.)
+This achieves what I want, but seems a bit long-winded.
+
+To my mind, this arises because i3 conflates frames with windows.  A frame
+is the thing that partitions screen space.  In a frame I can put one or
+more windows.  Of course, each frame might have precisely one window, the
+current behaviour.  But what I am doing is essentially creating frames and
+then expecting new windows to conform to those frames.
+
+Anyway, I'm curious how others see this.
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only if I'm in the UK
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+
+[1] One machine is still running ratpoison.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150314/b1d956b9/attachment.html>
+
+From dr.ghirlanda at gmail.com  Sat Mar 14 15:50:47 2015
+From: dr.ghirlanda at gmail.com (Stefano Ghirlanda)
+Date: Sat, 14 Mar 2015 10:50:47 -0400
+Subject: [i3] Thoughts on window sizing from a new(-ish) user
+In-Reply-To: <CAM4Y7zwX4UiiXMJFXXXne-W6wjHJ=YxcG-gd04O8ryoiatGR6g@mail.gmail.com>
+References: <CAM4Y7zwX4UiiXMJFXXXne-W6wjHJ=YxcG-gd04O8ryoiatGR6g@mail.gmail.com>
+Message-ID: <CAK_gY-QnQHbQt=1kfcq3Kih9Qrgx59vzzjJqSZYj1_2rHihiHw@mail.gmail.com>
+
+Hi Jeff,
+I think what you need is the concept of a container (what you call a
+frame). You can create a container before you create a window, e.g.,
+mod-H or mod-V for horizontal or vertical splits, and then add the
+window in there. The creation of the container is silent until you
+actually place a new window in it, but when you do that the new window
+only resizes those that already exist in the container, without
+affecting size or position of other containers.. I think this is
+explained in one of the videos.
+
+Best,
+S
+
+On Sat, Mar 14, 2015 at 10:38 AM, Jeff Abrahamson <jeff at purple.com> wrote:
+> I've been using i3 for several weeks now on most of my machines [1].  It's
+> very nice, many thanks to all who have made it work so well.
+>
+> I find one concept confusingly conflated, and I am curious how others see
+> it, and if I am simply missing some bit of mental model.  It often happens
+> that I open several windows, adjust their sizes (for example, some
+> monitoring plots wide and short, an editor tall, etc.  But if I open a new
+> window, it changes the sizes I've set. To get around this, I typically set
+> up windows as I'd like them, then change each window in turn between
+> vertical and horizontal mode to force creation of a new container, then put
+> the window into tabbed mode so that new windows don't change its size. (If
+> all windows are in tabbed mode, then new windows don't cause resizes.)  This
+> achieves what I want, but seems a bit long-winded.
+>
+> To my mind, this arises because i3 conflates frames with windows.  A frame
+> is the thing that partitions screen space.  In a frame I can put one or more
+> windows.  Of course, each frame might have precisely one window, the current
+> behaviour.  But what I am doing is essentially creating frames and then
+> expecting new windows to conform to those frames.
+>
+> Anyway, I'm curious how others see this.
+>
+> Jeff Abrahamson
+> +33 6 24 40 01 57
+> +44 7920 594 255    <-- only if I'm in the UK
+>
+> http://jeff.purple.com/
+> http://blog.purple.com/jeff/
+>
+> [1] One machine is still running ratpoison.
+
+
+
+-- 
+Stefano Ghirlanda - www.intercult.su.se/~stefano - drghirlanda.com
+Full Professor of Psychology, Biology, and Anthropology, Brooklyn College
+Founder and Fellow, Stockholm University Centre for the Study of
+Cultural Evolution
+
+From jeff at purple.com  Sat Mar 14 16:12:18 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Sat, 14 Mar 2015 16:12:18 +0100
+Subject: [i3] Thoughts on window sizing from a new(-ish) user
+In-Reply-To: <CAK_gY-QnQHbQt=1kfcq3Kih9Qrgx59vzzjJqSZYj1_2rHihiHw@mail.gmail.com>
+References: <CAM4Y7zwX4UiiXMJFXXXne-W6wjHJ=YxcG-gd04O8ryoiatGR6g@mail.gmail.com>
+ <CAK_gY-QnQHbQt=1kfcq3Kih9Qrgx59vzzjJqSZYj1_2rHihiHw@mail.gmail.com>
+Message-ID: <CAM4Y7zzvMqW1vauPkPsoEv4-a6F9qjU--qROUytotx6XUT7A2Q@mail.gmail.com>
+
+Hi, Stefano.
+
+I am using containers, I'm just asking the question if this is optimal (or
+if I'm missing something).
+
+You say I can create a container before I create a window.  Really?
+Imagine my screen is empty.  I'd like two side-by-side windows in their own
+containers, each container tabbed.  I think what I need to do is this:
+
+mod-H   # probably no-op most or all of the time
+mod-enter
+mod-enter
+# now I have my two windows
+mod-V
+mod-W
+# switch to other window
+mod-V
+mod-W
+
+In other words, I triggered container creation by changing split
+orientation.  If I just used mod-W, I'd put the two windows in two tabs in
+the same container.
+
+Meanwhile, if I for some reason focus the container and then create or move
+in another window, I'll change window sizes.  Bu to my mind creating a new
+window is different than creating a new frame.
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only if I'm in the UK
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+
+On 14 March 2015 at 15:50, Stefano Ghirlanda <dr.ghirlanda at gmail.com> wrote:
+
+> Hi Jeff,
+> I think what you need is the concept of a container (what you call a
+> frame). You can create a container before you create a window, e.g.,
+> mod-H or mod-V for horizontal or vertical splits, and then add the
+> window in there. The creation of the container is silent until you
+> actually place a new window in it, but when you do that the new window
+> only resizes those that already exist in the container, without
+> affecting size or position of other containers.. I think this is
+> explained in one of the videos.
+>
+> Best,
+> S
+>
+> On Sat, Mar 14, 2015 at 10:38 AM, Jeff Abrahamson <jeff at purple.com> wrote:
+> > I've been using i3 for several weeks now on most of my machines [1].
+> It's
+> > very nice, many thanks to all who have made it work so well.
+> >
+> > I find one concept confusingly conflated, and I am curious how others see
+> > it, and if I am simply missing some bit of mental model.  It often
+> happens
+> > that I open several windows, adjust their sizes (for example, some
+> > monitoring plots wide and short, an editor tall, etc.  But if I open a
+> new
+> > window, it changes the sizes I've set. To get around this, I typically
+> set
+> > up windows as I'd like them, then change each window in turn between
+> > vertical and horizontal mode to force creation of a new container, then
+> put
+> > the window into tabbed mode so that new windows don't change its size.
+> (If
+> > all windows are in tabbed mode, then new windows don't cause resizes.)
+> This
+> > achieves what I want, but seems a bit long-winded.
+> >
+> > To my mind, this arises because i3 conflates frames with windows.  A
+> frame
+> > is the thing that partitions screen space.  In a frame I can put one or
+> more
+> > windows.  Of course, each frame might have precisely one window, the
+> current
+> > behaviour.  But what I am doing is essentially creating frames and then
+> > expecting new windows to conform to those frames.
+> >
+> > Anyway, I'm curious how others see this.
+> >
+> > Jeff Abrahamson
+> > +33 6 24 40 01 57
+> > +44 7920 594 255    <-- only if I'm in the UK
+> >
+> > http://jeff.purple.com/
+> > http://blog.purple.com/jeff/
+> >
+> > [1] One machine is still running ratpoison.
+>
+>
+>
+> --
+> Stefano Ghirlanda - www.intercult.su.se/~stefano - drghirlanda.com
+> Full Professor of Psychology, Biology, and Anthropology, Brooklyn College
+> Founder and Fellow, Stockholm University Centre for the Study of
+> Cultural Evolution
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150314/24209986/attachment.html>
+
+From bigby.james at dimthoughts.com  Sat Mar 14 22:56:29 2015
+From: bigby.james at dimthoughts.com (Bigby James)
+Date: Sat, 14 Mar 2015 16:56:29 -0500
+Subject: [i3] Thoughts on window sizing from a new(-ish) user
+In-Reply-To: <CAM4Y7zzvMqW1vauPkPsoEv4-a6F9qjU--qROUytotx6XUT7A2Q@mail.gmail.com>
+References: <CAM4Y7zwX4UiiXMJFXXXne-W6wjHJ=YxcG-gd04O8ryoiatGR6g@mail.gmail.com>
+ <CAK_gY-QnQHbQt=1kfcq3Kih9Qrgx59vzzjJqSZYj1_2rHihiHw@mail.gmail.com>
+ <CAM4Y7zzvMqW1vauPkPsoEv4-a6F9qjU--qROUytotx6XUT7A2Q@mail.gmail.com>
+Message-ID: <20150314215629.GA1461@WorkBox.Home>
+
+On 03/14, Jeff Abrahamson wrote:
+> Hi, Stefano.
+> 
+> I am using containers, I'm just asking the question if this is optimal (or
+> if I'm missing something).
+> 
+> You say I can create a container before I create a window.  Really?
+
+Technically, maybe, but by all appearances, no. The container doesn't really
+seem to exist until the window occupies it. However, any time you create a split
+of some sort i3 will be primed to draw a container to the right of or below the
+newly split window and open a window within it.
+
+> Imagine my screen is empty.  I'd like two side-by-side windows in their own
+> containers, each container tabbed.  I think what I need to do is this:
+> 
+> mod-H   # probably no-op most or all of the time
+
+> <snip>
+
+I typically work with two or three separate containers per workspace, usually
+starting out stacked and changing the layout in each as necessary. Give this a
+try: 
+
+1. Open up your configuration file and add (or change) the setting
+   'workspace_layout tabbed'
+
+2. Reload, then start with an empty workspace.
+
+3. *Do not* hit mod-H, and instead just open two terminal windows. They'll be
+   tabbed in a single container by default.
+
+4. Now move one of them left or right, thereby moving it into its own container,
+   and start playing around. You should get a feel for how things are working
+   pretty quickly. Once you do, you can move into other realms.
+
+-- 
+"A common mistake that people make when trying to design something completely
+foolproof is to underestimate the ingenuity of complete fools." - Douglas Adams
+
+
+From martincigorraga at gmail.com  Sat Mar 14 23:20:39 2015
+From: martincigorraga at gmail.com (Martin Cigorraga)
+Date: Sat, 14 Mar 2015 19:20:39 -0300
+Subject: [i3] Thoughts on window sizing from a new(-ish) user
+In-Reply-To: <20150314215629.GA1461@WorkBox.Home>
+References: <CAM4Y7zwX4UiiXMJFXXXne-W6wjHJ=YxcG-gd04O8ryoiatGR6g@mail.gmail.com>
+ <CAK_gY-QnQHbQt=1kfcq3Kih9Qrgx59vzzjJqSZYj1_2rHihiHw@mail.gmail.com>
+ <CAM4Y7zzvMqW1vauPkPsoEv4-a6F9qjU--qROUytotx6XUT7A2Q@mail.gmail.com>
+ <20150314215629.GA1461@WorkBox.Home>
+Message-ID: <CAJLw8+Xk+bhg7pmFzwrVtPpwJfBZQCai+ptPPsMmS9B_5ozOWw@mail.gmail.com>
+
+Tabbed interface <3
+
+On Sat, Mar 14, 2015 at 6:56 PM, Bigby James <bigby.james at dimthoughts.com>
+wrote:
+
+> On 03/14, Jeff Abrahamson wrote:
+> > Hi, Stefano.
+> >
+> > I am using containers, I'm just asking the question if this is optimal
+> (or
+> > if I'm missing something).
+> >
+> > You say I can create a container before I create a window.  Really?
+>
+> Technically, maybe, but by all appearances, no. The container doesn't
+> really
+> seem to exist until the window occupies it. However, any time you create a
+> split
+> of some sort i3 will be primed to draw a container to the right of or
+> below the
+> newly split window and open a window within it.
+>
+> > Imagine my screen is empty.  I'd like two side-by-side windows in their
+> own
+> > containers, each container tabbed.  I think what I need to do is this:
+> >
+> > mod-H   # probably no-op most or all of the time
+>
+> > <snip>
+>
+> I typically work with two or three separate containers per workspace,
+> usually
+> starting out stacked and changing the layout in each as necessary. Give
+> this a
+> try:
+>
+> 1. Open up your configuration file and add (or change) the setting
+>    'workspace_layout tabbed'
+>
+> 2. Reload, then start with an empty workspace.
+>
+> 3. *Do not* hit mod-H, and instead just open two terminal windows. They'll
+> be
+>    tabbed in a single container by default.
+>
+> 4. Now move one of them left or right, thereby moving it into its own
+> container,
+>    and start playing around. You should get a feel for how things are
+> working
+>    pretty quickly. Once you do, you can move into other realms.
+>
+> --
+> "A common mistake that people make when trying to design something
+> completely
+> foolproof is to underestimate the ingenuity of complete fools." - Douglas
+> Adams
+>
+>
+
+
+-- 
+-Martin
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150314/dcf34c8f/attachment-0001.html>
+
+From jeff at purple.com  Sun Mar 15 20:28:21 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Sun, 15 Mar 2015 20:28:21 +0100
+Subject: [i3] Thoughts on window sizing from a new(-ish) user
+In-Reply-To: <20150314215629.GA1461@WorkBox.Home>
+References: <CAM4Y7zwX4UiiXMJFXXXne-W6wjHJ=YxcG-gd04O8ryoiatGR6g@mail.gmail.com>
+ <CAK_gY-QnQHbQt=1kfcq3Kih9Qrgx59vzzjJqSZYj1_2rHihiHw@mail.gmail.com>
+ <CAM4Y7zzvMqW1vauPkPsoEv4-a6F9qjU--qROUytotx6XUT7A2Q@mail.gmail.com>
+ <20150314215629.GA1461@WorkBox.Home>
+Message-ID: <CAM4Y7zwG0O1wG790fobO6VPJS=Xa2Qzq6+3yM0Hx+sc1TVsDGA@mail.gmail.com>
+
+workspace_layout tabbed is a cool feature.
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only if I'm in the UK
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+
+On 14 March 2015 at 22:56, Bigby James <bigby.james at dimthoughts.com> wrote:
+
+> On 03/14, Jeff Abrahamson wrote:
+> > Hi, Stefano.
+> >
+> > I am using containers, I'm just asking the question if this is optimal
+> (or
+> > if I'm missing something).
+> >
+> > You say I can create a container before I create a window.  Really?
+>
+> Technically, maybe, but by all appearances, no. The container doesn't
+> really
+> seem to exist until the window occupies it. However, any time you create a
+> split
+> of some sort i3 will be primed to draw a container to the right of or
+> below the
+> newly split window and open a window within it.
+>
+> > Imagine my screen is empty.  I'd like two side-by-side windows in their
+> own
+> > containers, each container tabbed.  I think what I need to do is this:
+> >
+> > mod-H   # probably no-op most or all of the time
+>
+> > <snip>
+>
+> I typically work with two or three separate containers per workspace,
+> usually
+> starting out stacked and changing the layout in each as necessary. Give
+> this a
+> try:
+>
+> 1. Open up your configuration file and add (or change) the setting
+>    'workspace_layout tabbed'
+>
+> 2. Reload, then start with an empty workspace.
+>
+> 3. *Do not* hit mod-H, and instead just open two terminal windows. They'll
+> be
+>    tabbed in a single container by default.
+>
+> 4. Now move one of them left or right, thereby moving it into its own
+> container,
+>    and start playing around. You should get a feel for how things are
+> working
+>    pretty quickly. Once you do, you can move into other realms.
+>
+> --
+> "A common mistake that people make when trying to design something
+> completely
+> foolproof is to underestimate the ingenuity of complete fools." - Douglas
+> Adams
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150315/68c6b0ee/attachment.html>
+
+From i3wm at rusu.info  Wed Mar 18 00:05:54 2015
+From: i3wm at rusu.info (Valentin Rusu)
+Date: Wed, 18 Mar 2015 00:05:54 +0100
+Subject: [i3] Announcing kwallet-dmenu
+Message-ID: <20150317230554.GA3247@sisif.rusu.info>
+
+Hello list,
+
+If you're using I3WM as the window manager for your KDE session, then
+this announcement might interest you.
+
+I just created a small utility that allows kwallet integration with
+dmenu. Please refer to this for more information:
+https://github.com/valir/kwallet-dmenu
+
+Any feedback well be much appreciated.
+
+Have fun!
+
+-- 
+Valentin Rusu
+IRC: valir
+
+From tmfink at umich.edu  Thu Mar 19 03:12:51 2015
+From: tmfink at umich.edu (Travis Finkenauer)
+Date: Wed, 18 Mar 2015 22:12:51 -0400
+Subject: [i3] Announcing New Workspace Switcher
+Message-ID: <CABmr-uiPGyrshuheVnMfosXEhK5aPVVw-UuyRirV71ATPHTqmQ@mail.gmail.com>
+
+I just made a script to switch workspaces in i3 in the manner of xmonad.
+
+Normally with i3, each workspace lives on a specific output. When
+switching to a workspace, the workspace will show on its assigned
+output, regardless of which output has focus.
+
+With xmonad, the output with focus will switch to the requested
+workspace. If the requested workspace was already showing on another
+output, then the other output and focused output will swap their
+workspaces.
+
+Please refer here for more information:
+Blog Post: https://travisf.net/i3-wk-switcher/
+Github: https://github.com/tmfink/i3-wk-switch
+
+Any feedback would be appreciated!
+
+(Also, I have not tested this on more than two monitors, and would
+appreciate it if anyone could help with testing)
+
+From eduncan911 at gmail.com  Fri Mar 20 17:01:30 2015
+From: eduncan911 at gmail.com (Eric Duncan)
+Date: Fri, 20 Mar 2015 12:01:30 -0400
+Subject: [i3] Split-Views in Tabs: Display Window Titles, not process name
+Message-ID: <CACaqnaSuYYa0-huAGRaSrvf5oGs3Ne=AMGvSZR+=cAtD9axDmg@mail.gmail.com>
+
+Hello!
+
+I've been using i3wm for a little over a year.  Recently I've been using
+the Tabs feature, grouping several terminal windows in different tabs
+(monitoring a dozen or so logs).  I have my .bash environment set the
+Window Title properly for terminals, and that works with single tabs -
+displaying the gnome-terminal's title in the Tab's title just like it
+should.
+
+"Single Tabs" meaning with only 1 process running within that tab, i3wm
+shows the Window Title of that one process.  E.g. my gnome-terminal's
+window title.
+
+This message is about tabs that have multiple processes running within the
+tab's i3wm container.  E.g. two or more terminal windows.  i3wm currently
+displays in the window title of the tab:
+
+    i3: H[gnome-terminal gnome-terminal]
+
+It is obviously showing the process name, and that I am split via Height.
+Cool, but I am missing the Window Title I have set in the terminals.
+Again, the Tab's Window Title normally displays the Window Title of the
+executing process.  It's when grouping multiple processes within a single
+tab.
+
+I think the "H" and "V" is fine. I get things like this:
+
+    i3: H[V[gnome-terminal gnome-terminal] V[gnome-terminal gnome-terminal]]
+
+That obviously says I have a 2x2 arrangement in that tab.  It would really
+nice if it showed the Window Title of those processes though.  For example,
+if the terminal has the current path set for Window Title, it would look
+like:
+
+    i3: H[V["~/code/sp-validator" "~/code/sp-juke"] V["~/go/src/
+github.com/eduncan911/go-mspec" "~/"]]
+
+Now, you'll notice I put in quotations. An additional tweak may be to put
+in some type of delimier for when titles have spaces - so we know the
+different in a title like this:
+
+    i3: H[Evolution Inbox ~/code/sp-validator:grep]
+
+^- That's two different apps running in horizonal split view.  Without
+quotes around "Evolution Inbox", it would hard to determine where the first
+one ends and second begins.
+
+Just a suggestion to an awesome window manager!
+
+Thanks!
+Eric
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150320/00c7a403/attachment.html>
+
+From dr.ghirlanda at gmail.com  Fri Mar 20 17:07:35 2015
+From: dr.ghirlanda at gmail.com (Stefano Ghirlanda)
+Date: Fri, 20 Mar 2015 12:07:35 -0400
+Subject: [i3] Split-Views in Tabs: Display Window Titles,
+	not process name
+In-Reply-To: <CACaqnaSuYYa0-huAGRaSrvf5oGs3Ne=AMGvSZR+=cAtD9axDmg@mail.gmail.com>
+References: <CACaqnaSuYYa0-huAGRaSrvf5oGs3Ne=AMGvSZR+=cAtD9axDmg@mail.gmail.com>
+Message-ID: <CAK_gY-RVZTyL3oCfyTLcXxwaVOmmgMUVaB-s0=wHh6UeVP088w@mail.gmail.com>
+
+I was also thinking the same thing a few days ago! It would be a useful
+feature.
+
+S
+
+On Fri, Mar 20, 2015 at 12:01 PM, Eric Duncan <eduncan911 at gmail.com> wrote:
+
+> Hello!
+>
+> I've been using i3wm for a little over a year.  Recently I've been using
+> the Tabs feature, grouping several terminal windows in different tabs
+> (monitoring a dozen or so logs).  I have my .bash environment set the
+> Window Title properly for terminals, and that works with single tabs -
+> displaying the gnome-terminal's title in the Tab's title just like it
+> should.
+>
+> "Single Tabs" meaning with only 1 process running within that tab, i3wm
+> shows the Window Title of that one process.  E.g. my gnome-terminal's
+> window title.
+>
+> This message is about tabs that have multiple processes running within the
+> tab's i3wm container.  E.g. two or more terminal windows.  i3wm currently
+> displays in the window title of the tab:
+>
+>     i3: H[gnome-terminal gnome-terminal]
+>
+> It is obviously showing the process name, and that I am split via Height.
+> Cool, but I am missing the Window Title I have set in the terminals.
+> Again, the Tab's Window Title normally displays the Window Title of the
+> executing process.  It's when grouping multiple processes within a single
+> tab.
+>
+> I think the "H" and "V" is fine. I get things like this:
+>
+>     i3: H[V[gnome-terminal gnome-terminal] V[gnome-terminal
+> gnome-terminal]]
+>
+> That obviously says I have a 2x2 arrangement in that tab.  It would really
+> nice if it showed the Window Title of those processes though.  For example,
+> if the terminal has the current path set for Window Title, it would look
+> like:
+>
+>     i3: H[V["~/code/sp-validator" "~/code/sp-juke"] V["~/go/src/
+> github.com/eduncan911/go-mspec" "~/"]]
+>
+> Now, you'll notice I put in quotations. An additional tweak may be to put
+> in some type of delimier for when titles have spaces - so we know the
+> different in a title like this:
+>
+>     i3: H[Evolution Inbox ~/code/sp-validator:grep]
+>
+> ^- That's two different apps running in horizonal split view.  Without
+> quotes around "Evolution Inbox", it would hard to determine where the first
+> one ends and second begins.
+>
+> Just a suggestion to an awesome window manager!
+>
+> Thanks!
+> Eric
+>
+>
+>
+>
+>
+>
+>
+>
+
+
+-- 
+Stefano Ghirlanda - www.intercult.su.se/~stefano - drghirlanda.com
+Full Professor of Psychology, Biology, and Anthropology, Brooklyn College
+Founder and Fellow, Stockholm University Centre for the Study of Cultural
+Evolution
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150320/903f991d/attachment.html>
+
+From ultrabug at ultrabug.net  Fri Mar 20 17:16:18 2015
+From: ultrabug at ultrabug.net (Ultrabug)
+Date: Fri, 20 Mar 2015 17:16:18 +0100
+Subject: [i3] Assign workspaces to outputs dynamically.
+In-Reply-To: <54EF2148.8080303@gmail.com>
+References: <54E3A391.1000401@gmail.com>
+ <CAEhzMJBAjr-DuAuA+wXgb-5zjsjb32FaGHksf5_2y=n12zHTtg@mail.gmail.com>
+ <CANnVG6mGRHaOqWCgQqLE_syhbOUPWurpE8xDm31JJuzhBo1aTg@mail.gmail.com>
+ <54E86236.1090603@gmail.com>
+ <CANnVG6natQYkCSmTfK=-cmaaGCd9QsGUm20ywUjTEkYiDObtyg@mail.gmail.com>
+ <54EF2148.8080303@gmail.com>
+Message-ID: <550C47D2.20308@ultrabug.net>
+
+As a side note if you're a py3status user or want to give it a try, one
+of the features of the *xrandr* module [1] allows you to automatically
+move a workspace to an output when it's activated.
+
+If I'm not mistaken, that's the behavior you were after.
+Quick doc abstract :
+
+This modules allows you to handle your screens outputs directly from your bar!
+    - Detect and propose every possible screen combinations
+    - Switch between combinations using click events and mouse scroll
+    - Activate the screen or screen combination on a single click
+    - It will detect any newly connected or removed screen automatically
+
+For convenience, this module also proposes some added features:
+    - Dynamic parameters for POSITION and WORKSPACES assignment (see below)
+    - Automatic fallback to a given screen or screen combination when no more
+        screen is available (handy for laptops)
+    - Automatically apply this screen combination on start: no need for xorg!
+    - Automatically move workspaces to screens when they are available
+
+
+Maybe it can be of interest to someone, cheers.
+
+[1]
+https://github.com/ultrabug/py3status/blob/master/py3status/modules/xrandr.py
+
+On 26/02/2015 14:36, Guillaume Maudoux (Layus) wrote:
+> Ok, reached a stable solution.
+> A restart is needed because otherwise the missing (i3)bars for the new
+> display are not started.
+>
+> If some are interested, here is the gist :
+> https://gist.github.com/layus/89a6bb8feebe6c1f96d2#file-postswitch
+>
+> Layus.
+>
+> PS : No bug yet with the "next" branch :)
+>
+> Le 21/02/15 12:05, Michael Stapelberg a écrit :
+>> Correct. I’m not sure if reload does the trick or if a restart is
+>> required. In case reload is not sufficient, I bet TonyC is interested
+>> in fixing that ;).
+>>
+>> On Sat, Feb 21, 2015 at 11:47 AM, Layus <layus.on at gmail.com> wrote:
+>>> @Michael,
+>>>
+>>> You mean that I should rewrite .i3/config and reload (restart?) i3
+>>> every
+>>> time I detect a monitor change, right ?
+>>>
+>>> This seems a bit overkill but might just work.
+>>> I will try that on Monday.
+>>>
+>>> Le 21/02/15 11:25, Michael Stapelberg a écrit :
+>>>
+>>>> For the level of customization you describe, you’ll need to create a
+>>>> simple script that generates/puts together your config file. See e.g.
+>>>> https://faq.i3wm.org/question/1367/anyway-to-include-in-config-file/
+>>>>
+>>>> On Tue, Feb 17, 2015 at 9:31 PM, Serge van Ginderachter
+>>>> <serge at vanginderachter.be> wrote:
+>>>>> fwiw, I use a script that detects things like which monitor is
+>>>>> connected,
+>>>>> and falls back to certain defaults, or can be forced to e.g. VGA
+>>>>> display
+>>>>> etc.
+>>>>>
+>>>>>       https://github.com/srvg/dotfiles/blob/master/bin/xdisp
+>>>>>
+>>>>> HTH,
+>>>>>
+>>>>>     Serge
+>>>>>
+>>>>> On 17 February 2015 at 21:24, Layus <layus.on at gmail.com> wrote:
+>>>>>> Hi,
+>>>>>>
+>>>>>> I use my laptop in three different environments with different randr
+>>>>>> outputs enabled.
+>>>>>> I often switch between environments, and could not configure i3
+>>>>>> to place
+>>>>>> my workspaces on the desired outputs.
+>>>>>> My randr configuration is updated automatically on udev drm change
+>>>>>> events
+>>>>>> with autorandr.
+>>>>>> Is there some way to specify dynamic output bindings ?
+>>>>>>
+>>>>>> My three environments are pretty simple :
+>>>>>>
+>>>>>> Nomad (undocked)
+>>>>>>
+>>>>>> eDP1 connected primary ← all workspaces
+>>>>>>
+>>>>>> Docked
+>>>>>>
+>>>>>> eDP1 connected ← workspace 0
+>>>>>> DP1-1 connected primary ← all other workspaces
+>>>>>>
+>>>>>> Presentation
+>>>>>>
+>>>>>> VGA1 connected ← workspace 0
+>>>>>> eDP1 connected primary ← all other workspaces
+>>>>>>
+>>>>>> My current config works for situation 1 and 2 :
+>>>>>>
+>>>>>> workspace 0 output eDP1
+>>>>>>
+>>>>>> workspace 1 output DP1-1
+>>>>>> workspace 2 output DP1-1
+>>>>>> workspace 3 output DP1-1
+>>>>>> workspace 4 output DP1-1
+>>>>>> workspace 5 output DP1-1
+>>>>>> workspace 6 output DP1-1
+>>>>>> workspace 7 output DP1-1
+>>>>>> workspace 8 output DP1-1
+>>>>>> workspace 9 output DP1-1
+>>>>>> workspace 10 output DP1-1
+>>>>>>
+>>>>>> This is already a hack because the configuration describes the
+>>>>>> Docked
+>>>>>> configuration.
+>>>>>> It incidentally works when Undocked because there is only one
+>>>>>> output,
+>>>>>> and
+>>>>>> all workspaces are mapped to it.
+>>>>>>
+>>>>>> It does not work at all for my presentation.
+>>>>>>
+>>>>>> One solution that would suit me would be to extend the workspace <x>
+>>>>>> output command to support multiple outputs in order of preference.
+>>>>>> for example, worspace 0 output(s) VGA1 eDP1 would place workspace
+>>>>>> 0 on
+>>>>>> the
+>>>>>> projector when available, and on eDP1 otherwise.
+>>>>>>
+>>>>>> Do you find this useful ?
+>>>>>>
+>>>>>> Layus.
+>>>>>
+>>>>
+>>
+>>
+>
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150320/f6b4b84e/attachment-0001.html>
+
+From eduncan911 at gmail.com  Fri Mar 20 17:38:00 2015
+From: eduncan911 at gmail.com (Eric Duncan)
+Date: Fri, 20 Mar 2015 12:38:00 -0400
+Subject: [i3] Assign workspaces to outputs dynamically.
+In-Reply-To: <550C47D2.20308@ultrabug.net>
+References: <54E3A391.1000401@gmail.com>
+ <CAEhzMJBAjr-DuAuA+wXgb-5zjsjb32FaGHksf5_2y=n12zHTtg@mail.gmail.com>
+ <CANnVG6mGRHaOqWCgQqLE_syhbOUPWurpE8xDm31JJuzhBo1aTg@mail.gmail.com>
+ <54E86236.1090603@gmail.com>
+ <CANnVG6natQYkCSmTfK=-cmaaGCd9QsGUm20ywUjTEkYiDObtyg@mail.gmail.com>
+ <54EF2148.8080303@gmail.com> <550C47D2.20308@ultrabug.net>
+Message-ID: <CACaqnaT7E1rr-GotNEH6kHDJ6QkaLYKgj_NWMa8ARZQRhm38bQ@mail.gmail.com>
+
+I too use a laptop and move between 3 different environments with 3
+different monitor setups (@ home has 3 external monitors, @ work has 2
+external + laptop's LCD, and @ work2 has 1 large monitor + laptop's LCD).
+
+I too was frustrated with managing environments every time I disconnect and
+move to another location (@ work with a nice arrangement, on train with
+only built-in LCD, back at home to continue working... argh, have to
+rearrange everything).
+
+What I ended up doing was binding a few keys to "move the entire workspace
+from one monitor to another monitor", keeping the exact arrangement:
+
+https://github.com/eduncan911/env-scripts/blob/master/.i3/config#L204-L208
+
+^- see highlighted lines starting with "bindsym $mod+Control+Shift+Left
+move workspace to output left"
+
+-E
+
+
+On Fri, Mar 20, 2015 at 12:16 PM, Ultrabug <ultrabug at ultrabug.net> wrote:
+
+>  As a side note if you're a py3status user or want to give it a try, one
+> of the features of the *xrandr* module [1] allows you to automatically
+> move a workspace to an output when it's activated.
+>
+> If I'm not mistaken, that's the behavior you were after.
+> Quick doc abstract :
+>
+> This modules allows you to handle your screens outputs directly from your bar!
+>     - Detect and propose every possible screen combinations
+>     - Switch between combinations using click events and mouse scroll
+>     - Activate the screen or screen combination on a single click
+>     - It will detect any newly connected or removed screen automatically
+>
+> For convenience, this module also proposes some added features:
+>     - Dynamic parameters for POSITION and WORKSPACES assignment (see below)
+>     - Automatic fallback to a given screen or screen combination when no more
+>         screen is available (handy for laptops)
+>     - Automatically apply this screen combination on start: no need for xorg!
+>     - Automatically move workspaces to screens when they are available
+>
+>
+> Maybe it can be of interest to someone, cheers.
+>
+> [1]
+> https://github.com/ultrabug/py3status/blob/master/py3status/modules/xrandr.py
+>
+> On 26/02/2015 14:36, Guillaume Maudoux (Layus) wrote:
+>
+> Ok, reached a stable solution.
+> A restart is needed because otherwise the missing (i3)bars for the new
+> display are not started.
+>
+> If some are interested, here is the gist :
+> https://gist.github.com/layus/89a6bb8feebe6c1f96d2#file-postswitch
+>
+> Layus.
+>
+> PS : No bug yet with the "next" branch :)
+>
+> Le 21/02/15 12:05, Michael Stapelberg a écrit :
+>
+> Correct. I’m not sure if reload does the trick or if a restart is
+> required. In case reload is not sufficient, I bet TonyC is interested
+> in fixing that ;).
+>
+> On Sat, Feb 21, 2015 at 11:47 AM, Layus <layus.on at gmail.com>
+> <layus.on at gmail.com> wrote:
+>
+> @Michael,
+>
+> You mean that I should rewrite .i3/config and reload (restart?) i3 every
+> time I detect a monitor change, right ?
+>
+> This seems a bit overkill but might just work.
+> I will try that on Monday.
+>
+> Le 21/02/15 11:25, Michael Stapelberg a écrit :
+>
+> For the level of customization you describe, you’ll need to create a
+> simple script that generates/puts together your config file. See e.g.
+> https://faq.i3wm.org/question/1367/anyway-to-include-in-config-file/
+>
+> On Tue, Feb 17, 2015 at 9:31 PM, Serge van Ginderachter
+> <serge at vanginderachter.be> <serge at vanginderachter.be> wrote:
+>
+> fwiw, I use a script that detects things like which monitor is connected,
+> and falls back to certain defaults, or can be forced to e.g. VGA display
+> etc.
+>
+>       https://github.com/srvg/dotfiles/blob/master/bin/xdisp
+>
+> HTH,
+>
+>     Serge
+>
+> On 17 February 2015 at 21:24, Layus <layus.on at gmail.com>
+> <layus.on at gmail.com> wrote:
+>
+> Hi,
+>
+> I use my laptop in three different environments with different randr
+> outputs enabled.
+> I often switch between environments, and could not configure i3 to place
+> my workspaces on the desired outputs.
+> My randr configuration is updated automatically on udev drm change
+> events
+> with autorandr.
+> Is there some way to specify dynamic output bindings ?
+>
+> My three environments are pretty simple :
+>
+> Nomad (undocked)
+>
+> eDP1 connected primary ← all workspaces
+>
+> Docked
+>
+> eDP1 connected ← workspace 0
+> DP1-1 connected primary ← all other workspaces
+>
+> Presentation
+>
+> VGA1 connected ← workspace 0
+> eDP1 connected primary ← all other workspaces
+>
+> My current config works for situation 1 and 2 :
+>
+> workspace 0 output eDP1
+>
+> workspace 1 output DP1-1
+> workspace 2 output DP1-1
+> workspace 3 output DP1-1
+> workspace 4 output DP1-1
+> workspace 5 output DP1-1
+> workspace 6 output DP1-1
+> workspace 7 output DP1-1
+> workspace 8 output DP1-1
+> workspace 9 output DP1-1
+> workspace 10 output DP1-1
+>
+> This is already a hack because the configuration describes the Docked
+> configuration.
+> It incidentally works when Undocked because there is only one output,
+> and
+> all workspaces are mapped to it.
+>
+> It does not work at all for my presentation.
+>
+> One solution that would suit me would be to extend the workspace <x>
+> output command to support multiple outputs in order of preference.
+> for example, worspace 0 output(s) VGA1 eDP1 would place workspace 0 on
+> the
+> projector when available, and on eDP1 otherwise.
+>
+> Do you find this useful ?
+>
+> Layus.
+>
+>
+>
+>
+>
+>
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150320/21559207/attachment.html>
+
+From michael at i3wm.org  Sat Mar 21 22:40:21 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 21 Mar 2015 22:40:21 +0100
+Subject: [i3] Split-Views in Tabs: Display Window Titles,
+	not process name
+In-Reply-To: <CAK_gY-RVZTyL3oCfyTLcXxwaVOmmgMUVaB-s0=wHh6UeVP088w@mail.gmail.com>
+References: <CACaqnaSuYYa0-huAGRaSrvf5oGs3Ne=AMGvSZR+=cAtD9axDmg@mail.gmail.com>
+ <CAK_gY-RVZTyL3oCfyTLcXxwaVOmmgMUVaB-s0=wHh6UeVP088w@mail.gmail.com>
+Message-ID: <CANnVG6kAjWPbRUVnVse3dBL_5dVOnd4wzXYRZnHKPfGqg7Lw6Q@mail.gmail.com>
+
+Technically, what you want is easily achieved. The relevant code is
+con_get_tree_representation() in src/con.c.
+
+However, I’m not convinced using the window titles makes sense. Titles
+very quickly exceed the screen space you have in a tabbed container,
+so keeping the description as short as possible makes it more useful.
+
+Personally, I am typically interested in the full window titles, which
+is why I use stacked mode instead of tabbed mode.
+
+On Fri, Mar 20, 2015 at 5:07 PM, Stefano Ghirlanda
+<dr.ghirlanda at gmail.com> wrote:
+> I was also thinking the same thing a few days ago! It would be a useful
+> feature.
+>
+> S
+>
+> On Fri, Mar 20, 2015 at 12:01 PM, Eric Duncan <eduncan911 at gmail.com> wrote:
+>>
+>> Hello!
+>>
+>> I've been using i3wm for a little over a year.  Recently I've been using
+>> the Tabs feature, grouping several terminal windows in different tabs
+>> (monitoring a dozen or so logs).  I have my .bash environment set the Window
+>> Title properly for terminals, and that works with single tabs - displaying
+>> the gnome-terminal's title in the Tab's title just like it should.
+>>
+>> "Single Tabs" meaning with only 1 process running within that tab, i3wm
+>> shows the Window Title of that one process.  E.g. my gnome-terminal's window
+>> title.
+>>
+>> This message is about tabs that have multiple processes running within the
+>> tab's i3wm container.  E.g. two or more terminal windows.  i3wm currently
+>> displays in the window title of the tab:
+>>
+>>     i3: H[gnome-terminal gnome-terminal]
+>>
+>> It is obviously showing the process name, and that I am split via Height.
+>> Cool, but I am missing the Window Title I have set in the terminals.  Again,
+>> the Tab's Window Title normally displays the Window Title of the executing
+>> process.  It's when grouping multiple processes within a single tab.
+>>
+>> I think the "H" and "V" is fine. I get things like this:
+>>
+>>     i3: H[V[gnome-terminal gnome-terminal] V[gnome-terminal
+>> gnome-terminal]]
+>>
+>> That obviously says I have a 2x2 arrangement in that tab.  It would really
+>> nice if it showed the Window Title of those processes though.  For example,
+>> if the terminal has the current path set for Window Title, it would look
+>> like:
+>>
+>>     i3: H[V["~/code/sp-validator" "~/code/sp-juke"]
+>> V["~/go/src/github.com/eduncan911/go-mspec" "~/"]]
+>>
+>> Now, you'll notice I put in quotations. An additional tweak may be to put
+>> in some type of delimier for when titles have spaces - so we know the
+>> different in a title like this:
+>>
+>>     i3: H[Evolution Inbox ~/code/sp-validator:grep]
+>>
+>> ^- That's two different apps running in horizonal split view.  Without
+>> quotes around "Evolution Inbox", it would hard to determine where the first
+>> one ends and second begins.
+>>
+>> Just a suggestion to an awesome window manager!
+>>
+>> Thanks!
+>> Eric
+>>
+>>
+>>
+>>
+>>
+>>
+>>
+>
+>
+>
+> --
+> Stefano Ghirlanda - www.intercult.su.se/~stefano - drghirlanda.com
+> Full Professor of Psychology, Biology, and Anthropology, Brooklyn College
+> Founder and Fellow, Stockholm University Centre for the Study of Cultural
+> Evolution
+
+
+
+-- 
+Best regards,
+Michael
+
+From jeff at purple.com  Mon Mar 23 13:41:39 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Mon, 23 Mar 2015 13:41:39 +0100
+Subject: [i3] Efficiently setting up screen layout
+Message-ID: <CAM4Y7zw_MjVpB0jQ_Wqae_LPU5nPXQ7GcehDy3bw-Aav5fY5jA@mail.gmail.com>
+
+I often want a layout in which I have two windows side by side, and under
+one of those windows I have one or two small windows.  I have
+
+workspace_layout tabbed
+
+set in my config.  Each time I want to set this up, I do the following:
+
+create window
+create window
+move right
+focus parent
+split v
+create    *(lower is focused)*
+split h    *(just to create new node)*
+layout tabbed
+
+And so now I have three windows frames showing and each is in tabbed mode
+so that new windows won't change the layout on me.  Great!
+
+But this feels cumbersome, so I'd like to automate it, but I think any
+automation is timing-dependent, since windows have to map in each step
+before the next.
+
+I'm I missing something?
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only if I'm in the UK
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150323/201aecc5/attachment.html>
+
+From bigby.james at dimthoughts.com  Mon Mar 23 17:05:45 2015
+From: bigby.james at dimthoughts.com (Bigby James)
+Date: Mon, 23 Mar 2015 11:05:45 -0500
+Subject: [i3] Efficiently setting up screen layout
+In-Reply-To: <CAM4Y7zw_MjVpB0jQ_Wqae_LPU5nPXQ7GcehDy3bw-Aav5fY5jA@mail.gmail.com>
+References: <CAM4Y7zw_MjVpB0jQ_Wqae_LPU5nPXQ7GcehDy3bw-Aav5fY5jA@mail.gmail.com>
+Message-ID: <20150323160545.GA4399@WorkBox.Home>
+
+On 03/23, Jeff Abrahamson wrote:
+> <snip>
+>
+> But this feels cumbersome, so I'd like to automate it, but I think any
+> automation is timing-dependent, since windows have to map in each step
+> before the next.
+>
+> <snip>
+
+http://i3wm.org/docs/layout-saving.html
+
+-- 
+"A common mistake that people make when trying to design something completely
+foolproof is to underestimate the ingenuity of complete fools." - Douglas Adams
+
+
+From jeff at purple.com  Mon Mar 23 21:04:44 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Mon, 23 Mar 2015 21:04:44 +0100
+Subject: [i3] Efficiently setting up screen layout
+In-Reply-To: <20150323160545.GA4399@WorkBox.Home>
+References: <CAM4Y7zw_MjVpB0jQ_Wqae_LPU5nPXQ7GcehDy3bw-Aav5fY5jA@mail.gmail.com>
+ <20150323160545.GA4399@WorkBox.Home>
+Message-ID: <CAM4Y7zxuEdVzsN1mH5cyHmb0Xa44Dn61-+Ciz6EnnCAMW6-eSw@mail.gmail.com>
+
+Oh, I missed that in the docs.  That's very nice and should fit the bill.
+Thanks!
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only if I'm in the UK
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+
+On 23 March 2015 at 17:05, Bigby James <bigby.james at dimthoughts.com> wrote:
+
+> On 03/23, Jeff Abrahamson wrote:
+> > <snip>
+> >
+> > But this feels cumbersome, so I'd like to automate it, but I think any
+> > automation is timing-dependent, since windows have to map in each step
+> > before the next.
+> >
+> > <snip>
+>
+> http://i3wm.org/docs/layout-saving.html
+>
+> --
+> "A common mistake that people make when trying to design something
+> completely
+> foolproof is to underestimate the ingenuity of complete fools." - Douglas
+> Adams
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150323/e21d85db/attachment.html>
+
+From yuri at sent.com  Tue Mar 24 18:26:19 2015
+From: yuri at sent.com (Yuri)
+Date: Tue, 24 Mar 2015 14:26:19 -0300
+Subject: [i3] I'm new to i3 and have some questions about configuration and
+	use
+Message-ID: <1427217979.889630.244653742.7445CAC4@webmail.messagingengine.com>
+
+I'm kinda new to Linux in general, and now I'm learning how to use Arch
+Linux. I installed i3 today and it's a very fun window manager. But I'm
+having some problems using it.
+
+1) When I use Mod4+a, the Parent Container is selected, and then I press
+it again and again and everything gets selected. How do I deselect
+everything and return to my previous window selection (right now I can
+only do that by creating a new window or changing workspace)?
+
+2) When I run startx, two terminal windows are automatically loaded into
+my screen. I looked into /etc/i3/config and ~/.i3/config and there's no
+"exec" there. I can't find a way to disable this and get a clean start.
+
+Sorry if these things are easy to fix, but I couldn't find it anywhere.
+Thanks.
+
+From jeff at purple.com  Tue Mar 24 18:30:44 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Tue, 24 Mar 2015 18:30:44 +0100
+Subject: [i3] I'm new to i3 and have some questions about configuration
+ and use
+In-Reply-To: <1427217979.889630.244653742.7445CAC4@webmail.messagingengine.com>
+References: <1427217979.889630.244653742.7445CAC4@webmail.messagingengine.com>
+Message-ID: <CAM4Y7zw=cvN0_bHRZZgCZj3zKyHjfaYvGJ-HdHEw_gJR_bU4FQ@mail.gmail.com>
+
+1.  Mod-d (for down)
+
+2.  Strange.  Do you have an ~/.xsessionrc?  See man xsession for too much
+inf.
+
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only if I'm in the UK
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+
+On 24 March 2015 at 18:26, Yuri <yuri at sent.com> wrote:
+
+> I'm kinda new to Linux in general, and now I'm learning how to use Arch
+> Linux. I installed i3 today and it's a very fun window manager. But I'm
+> having some problems using it.
+>
+> 1) When I use Mod4+a, the Parent Container is selected, and then I press
+> it again and again and everything gets selected. How do I deselect
+> everything and return to my previous window selection (right now I can
+> only do that by creating a new window or changing workspace)?
+>
+> 2) When I run startx, two terminal windows are automatically loaded into
+> my screen. I looked into /etc/i3/config and ~/.i3/config and there's no
+> "exec" there. I can't find a way to disable this and get a clean start.
+>
+> Sorry if these things are easy to fix, but I couldn't find it anywhere.
+> Thanks.
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150324/b9474950/attachment.html>
+
+From karkhaz at gmail.com  Tue Mar 24 18:32:24 2015
+From: karkhaz at gmail.com (Kareem)
+Date: Tue, 24 Mar 2015 17:32:24 +0000
+Subject: [i3] I'm new to i3 and have some questions about configuration
+ and use
+In-Reply-To: <1427217979.889630.244653742.7445CAC4@webmail.messagingengine.com>
+References: <1427217979.889630.244653742.7445CAC4@webmail.messagingengine.com>
+Message-ID: <20150324173224.GA9404@red_water.cs.ucl.ac.uk>
+
+On 2015-03-24 1426, Yuri wrote:
+> 2) When I run startx, two terminal windows are automatically loaded into
+> my screen. I looked into /etc/i3/config and ~/.i3/config and there's no
+> "exec" there. I can't find a way to disable this and get a clean start.
+
+Look also in the following files:
+~/.xinitrc              if it exists
+/etc/X11/xinit/xinitrc  otherwise
+
+-- 
+Kareem
+
+From yuri at sent.com  Tue Mar 24 20:27:52 2015
+From: yuri at sent.com (Yuri)
+Date: Tue, 24 Mar 2015 16:27:52 -0300
+Subject: [i3] I'm new to i3 and have some questions about configuration
+ and use
+In-Reply-To: <1427217979.889630.244653742.7445CAC4@webmail.messagingengine.com>
+References: <1427217979.889630.244653742.7445CAC4@webmail.messagingengine.com>
+Message-ID: <1427225272.918369.244713630.75EBD684@webmail.messagingengine.com>
+
+Ok guys, I got it. Thanks :D
+
+On Tue, Mar 24, 2015, at 14:26, Yuri wrote:
+> I'm kinda new to Linux in general, and now I'm learning how to use Arch
+> Linux. I installed i3 today and it's a very fun window manager. But I'm
+> having some problems using it.
+> 
+> 1) When I use Mod4+a, the Parent Container is selected, and then I press
+> it again and again and everything gets selected. How do I deselect
+> everything and return to my previous window selection (right now I can
+> only do that by creating a new window or changing workspace)?
+> 
+> 2) When I run startx, two terminal windows are automatically loaded into
+> my screen. I looked into /etc/i3/config and ~/.i3/config and there's no
+> "exec" there. I can't find a way to disable this and get a clean start.
+> 
+> Sorry if these things are easy to fix, but I couldn't find it anywhere.
+> Thanks.
+

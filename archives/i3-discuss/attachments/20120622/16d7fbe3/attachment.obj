@@ -1,0 +1,204 @@
+From 6d865098ce94a2008670a28f14e03bce7c3bc373 Mon Sep 17 00:00:00 2001
+From: darkraven <drdarkraven@gmail.com>
+Date: Fri, 22 Jun 2012 21:10:53 +0800
+Subject: [PATCH] Block outward events while processing commands.
+
+	Add facilities to queue outward ipc events. This will help sending
+	events with accurate timimg.
+---
+ include/ipc.h     |  8 +++++++
+ src/assignments.c |  5 +++++
+ src/handlers.c    |  4 ++++
+ src/ipc.c         | 62 ++++++++++++++++++++++++++++++++++++++++++++++++++++---
+ 4 files changed, 76 insertions(+), 3 deletions(-)
+
+diff --git a/include/ipc.h b/include/ipc.h
+index af80fa4..16e3c6c 100644
+--- a/include/ipc.h
++++ b/include/ipc.h
+@@ -32,6 +32,12 @@ typedef struct ipc_client {
+         TAILQ_ENTRY(ipc_client) clients;
+ } ipc_client;
+ 
++typedef struct ipc_queue {
++    char *event, *payload;
++    uint32_t message_type;
++    SIMPLEQ_ENTRY(ipc_queue) items;
++} ipc_queue;
++
+ /*
+  * Callback type for the different message types.
+  *
+@@ -71,6 +77,8 @@ int ipc_create_socket(const char *filename);
+  * and subscribed to this kind of event.
+  *
+  */
++void ipc_unqueue_event();
++void ipc_queue_event();
+ void ipc_send_event(const char *event, uint32_t message_type, const char *payload);
+ 
+ /**
+diff --git a/src/assignments.c b/src/assignments.c
+index ae4affa..5dfd39d 100644
+--- a/src/assignments.c
++++ b/src/assignments.c
+@@ -21,6 +21,9 @@ void run_assignments(i3Window *window) {
+ 
+     /* Check if any assignments match */
+     Assignment *current;
++
++    ipc_queue_event();
++
+     TAILQ_FOREACH(current, &assignments, assignments) {
+         if (!match_matches_window(&(current->match), window))
+             continue;
+@@ -61,6 +64,8 @@ void run_assignments(i3Window *window) {
+     /* If any of the commands required re-rendering, we will do that now. */
+     if (needs_tree_render)
+         tree_render();
++
++    ipc_unqueue_event();
+ }
+ 
+ /*
+diff --git a/src/handlers.c b/src/handlers.c
+index 148d633..eca3913 100644
+--- a/src/handlers.c
++++ b/src/handlers.c
+@@ -119,11 +119,15 @@ static void handle_key_press(xcb_key_press_event_t *event) {
+         }
+     }
+ 
++    ipc_queue_event();
++
+     struct CommandResult *command_output = parse_command(bind->command);
+ 
+     if (command_output->needs_tree_render)
+         tree_render();
+ 
++    ipc_unqueue_event();
++
+     yajl_gen_free(command_output->json_gen);
+ }
+ 
+diff --git a/src/ipc.c b/src/ipc.c
+index 60ce814..720763c 100644
+--- a/src/ipc.c
++++ b/src/ipc.c
+@@ -19,12 +19,14 @@
+ #include <yajl/yajl_version.h>
+ 
+ char *current_socketpath = NULL;
++bool ipc_is_queued = false;
+ 
+ /* Shorter names for all those yajl_gen_* functions */
+ #define y(x, ...) yajl_gen_ ## x (gen, ##__VA_ARGS__)
+ #define ystr(str) yajl_gen_string(gen, (unsigned char*)str, strlen(str))
+ 
+ TAILQ_HEAD(ipc_client_head, ipc_client) all_clients = TAILQ_HEAD_INITIALIZER(all_clients);
++SIMPLEQ_HEAD(ipc_queue_head, ipc_queue) message_queue = SIMPLEQ_HEAD_INITIALIZER(message_queue);
+ 
+ /*
+  * Puts the given socket file descriptor into non-blocking mode or dies if
+@@ -68,13 +70,12 @@ static bool mkdirp(const char *path) {
+ 
+     return result;
+ }
+-
+ /*
+  * Sends the specified event to all IPC clients which are currently connected
+  * and subscribed to this kind of event.
+  *
+  */
+-void ipc_send_event(const char *event, uint32_t message_type, const char *payload) {
++static void ipc_send_event_unqueue(const char *event, uint32_t message_type, const char *payload) {
+     ipc_client *current;
+     TAILQ_FOREACH(current, &all_clients, clients) {
+         /* see if this client is interested in this event */
+@@ -91,14 +92,64 @@ void ipc_send_event(const char *event, uint32_t message_type, const char *payloa
+         ipc_send_message(current->fd, strlen(payload), message_type, (const uint8_t*)payload);
+     }
+ }
+-
+ /*
++ * Add a event to the event queue
++ */
++static void ipc_enqueue_event(const char *event, uint32_t message_type, const char *payload) {
++    ipc_queue *new_msg = smalloc(sizeof(ipc_queue));
++    new_msg->event = sstrdup(event);
++    new_msg->message_type = message_type;
++    new_msg->payload = sstrdup(payload);
++    SIMPLEQ_INSERT_TAIL(&message_queue, new_msg, items);
++}
++/*
++ * Drain the event queue, sends all the queued event
++ */
++static void ipc_drain_queue() {
++    ipc_queue *current;
++    while(!SIMPLEQ_EMPTY(&message_queue)){
++        current = SIMPLEQ_FIRST(&message_queue);
++        ipc_send_event_unqueue(current->event, current->message_type, current->payload);
++        free(current->event);
++        free(current->payload);
++        SIMPLEQ_REMOVE_HEAD(&message_queue, items);
++        free(current);
++    }
++}
++/*
++ * Start queuing events
++ */
++void ipc_queue_event() {
++    ipc_is_queued = true;
++}
++/*
++ * Stop queuing events, and drain the queue
++ */
++void ipc_unqueue_event() {
++    if (ipc_is_queued)
++        ipc_drain_queue();
++    ipc_is_queued = false;
++}
++/*
++ * Sends or queues the event according to ipc_is_queued
++ */
++void ipc_send_event(const char *event, uint32_t message_type, const char *payload) {
++    if (ipc_is_queued)
++        ipc_enqueue_event(event, message_type, payload);
++    else
++        ipc_send_event_unqueue(event, message_type, payload);
++}
++
++/*const char *event, uint32_t message_type, const char *payload
+  * Calls shutdown() on each socket and closes it. This function to be called
+  * when exiting or restarting only!
+  *
+  */
+ void ipc_shutdown(void) {
+     ipc_client *current;
++
++    ipc_unqueue_event();
++
+     while (!TAILQ_EMPTY(&all_clients)) {
+         current = TAILQ_FIRST(&all_clients);
+         shutdown(current->fd, SHUT_RDWR);
+@@ -119,12 +170,17 @@ IPC_HANDLER(command) {
+     char *command = scalloc(message_size + 1);
+     strncpy(command, (const char*)message, message_size);
+     LOG("IPC: received: *%s*\n", command);
++
++    ipc_queue_event();
++
+     struct CommandResult *command_output = parse_command((const char*)command);
+     free(command);
+ 
+     if (command_output->needs_tree_render)
+         tree_render();
+ 
++    ipc_unqueue_event();
++
+     const unsigned char *reply;
+ #if YAJL_MAJOR >= 2
+     size_t length;
+-- 
+1.7.11
+

@@ -1,0 +1,397 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] i3status: implements a memory-usage-print
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20i3status%3A%20implements%20a%20memory-usage-print&In-Reply-To=%3C1330029068-20904-2-git-send-email-bebl%40mageta.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000498.html">
+   <LINK REL="Next"  HREF="000500.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] i3status: implements a memory-usage-print</H1>
+    <B>Benjamin Block</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20i3status%3A%20implements%20a%20memory-usage-print&In-Reply-To=%3C1330029068-20904-2-git-send-email-bebl%40mageta.org%3E"
+       TITLE="[i3] [PATCH] i3status: implements a memory-usage-print">bebl at mageta.org
+       </A><BR>
+    <I>Thu Feb 23 21:31:08 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000498.html">[i3] [RFC] [PATCH] i3status: memory-stats
+</A></li>
+        <LI>Next message: <A HREF="000500.html">[i3] [RFC] [PATCH] i3status: memory-stats
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#499">[ date ]</a>
+              <a href="thread.html#499">[ thread ]</a>
+              <a href="subject.html#499">[ subject ]</a>
+              <a href="author.html#499">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Adds a new output which can be used to display common memory-statistics,
+like top would do it.
+
+The current implementation supports only linux and reads /proc/meminfo.
+
+Signed-of-by: Benjamin Block &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">bebl at mageta.org</A>&gt;
+---
+ i3status.c            |   14 +++
+ include/i3status.h    |    1 +
+ man/i3status.man      |   27 ++++++
+ src/print_mem_usage.c |  210 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 252 insertions(+), 0 deletions(-)
+ create mode 100644 src/print_mem_usage.c
+
+diff --git a/i3status.c b/i3status.c
+index dd7d1e6..f86d0e6 100644
+--- a/i3status.c
++++ b/i3status.c
+@@ -234,6 +234,13 @@ int main(int argc, char *argv[]) {
+                 CFG_END()
+         };
+ 
++        cfg_opt_t mem_usage_opts[] = {
++                CFG_STR(&quot;format&quot;, &quot;%usage&quot;, CFGF_NONE),
++                CFG_INT(&quot;include_buffers&quot;, 0, CFGF_NONE),
++                CFG_INT(&quot;include_caches&quot;, 0, CFGF_NONE),
++                CFG_END()
++        };
++
+         cfg_opt_t temp_opts[] = {
+                 CFG_STR(&quot;format&quot;, &quot;%degrees C&quot;, CFGF_NONE),
+                 CFG_STR(&quot;path&quot;, NULL, CFGF_NONE),
+@@ -268,6 +275,7 @@ int main(int argc, char *argv[]) {
+                 CFG_SEC(&quot;ddate&quot;, ddate_opts, CFGF_NONE),
+                 CFG_SEC(&quot;load&quot;, load_opts, CFGF_NONE),
+                 CFG_SEC(&quot;cpu_usage&quot;, usage_opts, CFGF_NONE),
++                CFG_SEC(&quot;mem_usage&quot;, mem_usage_opts, CFGF_TITLE | CFGF_MULTI),
+                 CFG_END()
+         };
+ 
+@@ -410,6 +418,12 @@ int main(int argc, char *argv[]) {
+ 
+                         CASE_SEC(&quot;cpu_usage&quot;)
+                                 print_cpu_usage(cfg_getstr(sec, &quot;format&quot;));
++
++                        CASE_SEC_TITLE(&quot;mem_usage&quot;)
++                                print_mem_usage(title,
++                                                cfg_getstr(sec, &quot;format&quot;),
++                                                cfg_getint(sec, &quot;include_buffers&quot;),
++                                                cfg_getint(sec, &quot;include_caches&quot;));
+                 }
+                 if (output_format == O_I3BAR)
+                         printf(&quot;],&quot;);
+diff --git a/include/i3status.h b/include/i3status.h
+index e40003c..6afccdd 100644
+--- a/include/i3status.h
++++ b/include/i3status.h
+@@ -73,6 +73,7 @@ void print_wireless_info(const char *interface, const char *format_up, const cha
+ void print_run_watch(const char *title, const char *pidfile, const char *format);
+ void print_cpu_temperature_info(int zone, const char *path, const char *format);
+ void print_cpu_usage(const char *format);
++void print_mem_usage(const char *title, const char *format, int include_buffers, int include_caches);
+ void print_eth_info(const char *interface, const char *format_up, const char *format_down);
+ void print_load();
+ void print_volume(const char *fmt, const char *device, const char *mixer, int mixer_idx);
+diff --git a/man/i3status.man b/man/i3status.man
+index fb1bbf4..b14eaa6 100644
+--- a/man/i3status.man
++++ b/man/i3status.man
+@@ -136,6 +136,8 @@ managers like dwm, wmii and xmonad though it will work with any windowmanger
+ xmobar::
+ xmobar is a minimalistic, text based, status bar. It was designed to work
+ with the xmonad Window Manager.
++i3bar::
++the native status bar of i3.
+ none::
+ Does not use any color codes. Separates values by the pipe symbol. This should
+ be used with i3bar and can be used for custom scripts.
+@@ -220,6 +222,31 @@ Gets the percentual CPU usage from +/proc/stat+.
+ 
+ *Example format*: +%usage+
+ 
++=== Memory Usage
++
++Gets several memory-parameters from +/proc/meminfo+.
++
++*Example order*: +memory_usage phy_free+
++
++*Example config*:
++-------------------------------------------------------------
++memory_usage top {
++	format = &quot;Memory: %phytotal total, %phyused used, %phyfree
++		  free; Swap: %swaptotal total, %swapused used,
++		  %swapfree free&quot;
++	include_buffers = 0
++	include_caches = 0
++}
++-------------------------------------------------------------
++
++-------------------------------------------------------------
++memory_usage phy_free {
++	format = &quot;M: %phyfree&quot;
++	include_buffers = 0
++	include_caches = 0
++}
++-------------------------------------------------------------
++
+ === Load
+ 
+ Gets the system load (number of processes waiting for CPU time in the last
+diff --git a/src/print_mem_usage.c b/src/print_mem_usage.c
+new file mode 100644
+index 0000000..fed9f67
+--- /dev/null
++++ b/src/print_mem_usage.c
+@@ -0,0 +1,210 @@
++// vim:sw=8:sts=8:ts=8:expandtab
++#include &lt;stdlib.h&gt;
++#include &lt;limits.h&gt;
++#include &lt;stdio.h&gt;
++#include &lt;string.h&gt;
++#include &lt;errno.h&gt;
++
++#ifdef __FreeBSD__
++/* don't have any freebsd-systems .. */
++#endif
++
++#include &quot;i3status.h&quot;
++
++enum mem_usage_idx {
++        MEM_USAGE_MIN   = 0,
++        MEM_USAGE_TOTAL = 0,
++        MEM_USAGE_FREE   = 1,
++        MEM_USAGE_USED  = 2,
++        MEM_USAGE_MAX   = 3
++};
++
++/*
++ * shall provide a common way to express the amount of memory used and available
++ *
++ * the values are expected to be kByte-numbers
++ */
++struct mem_usage {
++        unsigned long phy[3];
++        unsigned long swap[3];
++};
++
++/* os-specific implementations provided at the bottom */
++int get_mem_usage(struct mem_usage * usage, int include_buffers,
++                int include_caches);
++
++void
++print_mem_usage(const char *title, const char *format, int include_buffers,
++                int include_caches)
++{
++        const char *walk;
++        struct mem_usage usage;
++
++        if (output_format == O_I3BAR)
++                printf(&quot;{\&quot;name\&quot;:\&quot;mem_usage\&quot;, \&quot;full_text\&quot;:\&quot;&quot;);
++
++        if(get_mem_usage(&amp;usage, include_buffers, include_caches))
++                goto err_out;
++
++/* matches the str against (walk + 1) */
++#define matchField(str) (strncmp(walk + 1, (str), sizeof((str)) - 1) == 0)
++
++        for (walk = format; *walk != '\0'; walk++) {
++                if (*walk != '%') {
++                        putchar(*walk);
++                        continue;
++                }
++
++                /* dispaly in MegaBytes */
++                if (matchField(&quot;phytotal&quot;)) {
++                        printf(&quot;%lumB&quot;, usage.phy[MEM_USAGE_TOTAL] &gt;&gt; 10);
++                        walk += sizeof(&quot;phytotal&quot;) - 1;
++                } else if (matchField(&quot;phyfree&quot;)) {
++                        printf(&quot;%lumB&quot;, usage.phy[MEM_USAGE_FREE] &gt;&gt; 10);
++                        walk += sizeof(&quot;phyfree&quot;) - 1;
++                } else if (matchField(&quot;phyused&quot;)) {
++                        printf(&quot;%lumB&quot;, usage.phy[MEM_USAGE_USED] &gt;&gt; 10);
++                        walk += sizeof(&quot;phyused&quot;) - 1;
++                } else if (matchField(&quot;swaptotal&quot;)) {
++                        printf(&quot;%lumB&quot;, usage.swap[MEM_USAGE_TOTAL] &gt;&gt; 10);
++                        walk += sizeof(&quot;swaptotal&quot;) - 1;
++                } else if (matchField(&quot;swapfree&quot;)) {
++                        printf(&quot;%lumB&quot;, usage.swap[MEM_USAGE_FREE] &gt;&gt; 10);
++                        walk += sizeof(&quot;swapfree&quot;) - 1;
++                } else if (matchField(&quot;swapused&quot;)) {
++                        printf(&quot;%lumB&quot;, usage.swap[MEM_USAGE_USED] &gt;&gt; 10);
++                        walk += sizeof(&quot;swapused&quot;) - 1;
++                }
++        }
++
++        if (output_format == O_I3BAR)
++                printf(&quot;\&quot;}&quot;);
++
++#undef  matchField
++
++        return;
++err_out:
++        (void) fputs(&quot;Cannot read mem-usage\n&quot;, stderr);
++}
++
++#if defined(LINUX)
++int
++to_ulong(char *c, unsigned long *ul)
++{
++        *ul = strtoul(c, NULL, 10);
++        if (errno == ERANGE || errno == EINVAL)
++                return 1;
++        return 0;
++}
++
++int
++get_mem_usage(struct mem_usage * usage, int include_buffers,
++                int include_caches)
++{
++        /*
++         * Documentation: $LINUX_HOME/Documentation/filesystems/proc.txt
++         * Implementation: $LINUX_HOME/fs/proc/meminfo.c
++         */
++        char * file = &quot;/proc/meminfo&quot;;
++        /*
++         * we actually need 6 lines:
++         * - MemTotal
++         * - MemFree
++         * - Buffers
++         * - Cached
++         * - SwapTotal
++         * - SwapFree
++         *
++         * SwapFree is the last of the necessary ones. So, if you
++         * look into the implementation, there are currently around
++         * 20 lines, each with 28 Bytes. Therefore we need to read
++         * at least 560 Bytes.
++         */
++        char buffer[1024]; /* should be plenty */
++        int read = 0; /* how many lines were found */
++
++        char *fn, *fv, *fl; /* the 3 line-tokens */
++        unsigned long tmp, caches, buffers;
++
++        if (!slurp(file, buffer, sizeof(buffer)))
++                goto err_out;
++
++        memset(usage, 0, sizeof(*usage));
++
++        /* working with strings is so much fun in C */
++
++/* matches the str against fn */
++#define matchField(str) (strncmp(fn, (str), sizeof((str)) - 1) == 0)
++/* try to get a value out of fv */
++#define getValue(val) (to_ulong(fv, &amp;(val)) == 0)
++
++        /* tokenize one line */
++        fn = strtok(buffer, &quot; &quot;); /* pointer to the field-name (and ':') */
++        fv = strtok(NULL, &quot; &quot;); /* pointer to the field-value */
++        fl = strtok(NULL, &quot;\n&quot;); /* should contain 'kB' */
++        while(fn &amp;&amp; fv &amp;&amp; fl) {
++                /*
++                 * try to find a important line and if one is found
++                 * try to convert the field-value-string into a usable
++                 */
++                if (matchField(&quot;MemTotal&quot;) &amp;&amp; getValue(tmp)) {
++                        usage-&gt;phy[MEM_USAGE_TOTAL] = tmp;
++                        read++;
++                } else if (matchField(&quot;MemFree&quot;) &amp;&amp; getValue(tmp)) {
++                        usage-&gt;phy[MEM_USAGE_FREE] = tmp;
++                        read++;
++                } else if (matchField(&quot;Buffers&quot;) &amp;&amp; getValue(tmp)) {
++                        buffers = tmp;
++                        read++;
++                } else if (matchField(&quot;Cached&quot;) &amp;&amp; getValue(tmp)) {
++                        caches = tmp;
++                        read++;
++                } else if (matchField(&quot;SwapTotal&quot;) &amp;&amp; getValue(tmp)) {
++                        usage-&gt;swap[MEM_USAGE_TOTAL] = tmp;
++                        read++;
++                } else if (matchField(&quot;SwapFree&quot;) &amp;&amp; getValue(tmp)) {
++                        usage-&gt;swap[MEM_USAGE_FREE] = tmp;
++                        read++;
++                }
++
++                if(read &gt;= 6)
++                        break;
++
++                /* try to tokenize an other line */
++                fn = strtok(NULL, &quot; &quot;);
++                fv = strtok(NULL, &quot; &quot;);
++                fl = strtok(NULL, &quot;\n&quot;);
++        }
++
++#undef getValue
++#undef matchField
++
++        if(read &lt; 6)
++                goto err_out;
++
++        usage-&gt;phy[MEM_USAGE_USED] = usage-&gt;phy[MEM_USAGE_TOTAL] -
++                usage-&gt;phy[MEM_USAGE_FREE];
++        usage-&gt;swap[MEM_USAGE_USED] = usage-&gt;swap[MEM_USAGE_TOTAL] -
++                usage-&gt;swap[MEM_USAGE_FREE];
++
++        if (include_buffers == 0) {
++                usage-&gt;phy[MEM_USAGE_FREE] += buffers;
++                usage-&gt;phy[MEM_USAGE_USED] -= buffers;
++        }
++
++        if (include_caches == 0) {
++                usage-&gt;phy[MEM_USAGE_FREE] += caches;
++                usage-&gt;phy[MEM_USAGE_USED] -= caches;
++        }
++
++        return 0;
++err_out:
++        return 1;
++}
++#else
++int
++get_mem_usage(struct mem_usage * usage)
++{
++        return 1;
++}
++#endif
+-- 
+1.7.3.4
+
+</PRE>
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000498.html">[i3] [RFC] [PATCH] i3status: memory-stats
+</A></li>
+	<LI>Next message: <A HREF="000500.html">[i3] [RFC] [PATCH] i3status: memory-stats
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#499">[ date ]</a>
+              <a href="thread.html#499">[ thread ]</a>
+              <a href="subject.html#499">[ subject ]</a>
+              <a href="author.html#499">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

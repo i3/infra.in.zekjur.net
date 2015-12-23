@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] Upward propagating urgency hints
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Upward%20propagating%20urgency%20hints&In-Reply-To=%3C20120818130734.GA2365%40ravendark.fritz.box%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000856.html">
+   <LINK REL="Next"  HREF="000869.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] Upward propagating urgency hints</H1>
+    <B>Sascha Kruse</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Upward%20propagating%20urgency%20hints&In-Reply-To=%3C20120818130734.GA2365%40ravendark.fritz.box%3E"
+       TITLE="[i3] [PATCH] Upward propagating urgency hints">knopwob at googlemail.com
+       </A><BR>
+    <I>Sat Aug 18 15:07:34 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000856.html">[i3] building i3 wm on os X
+</A></li>
+        <LI>Next message: <A HREF="000869.html">[i3] [PATCH] Upward propagating urgency hints
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#859">[ date ]</a>
+              <a href="thread.html#859">[ thread ]</a>
+              <a href="subject.html#859">[ subject ]</a>
+              <a href="author.html#859">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I've written a patch for ticket #719 [1]. At this point this is more or
+less just a prototype to see if this feature is usefull or not. So
+please let me know if this is a sane approach for this and what needs to
+be done to get accepted.
+
+greetings,
+Sascha Kruse
+
+[1] <A HREF="http://bugs.i3wm.org/report/ticket/719">http://bugs.i3wm.org/report/ticket/719</A>
+
+-------------- next part --------------
+&gt;<i>From 47292b73d755b22a3d103fedf67ecf609db05d29 Mon Sep 17 00:00:00 2001
+</I>From: Sascha Kruse &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">knopwob at googlemail.com</A>&gt;
+Date: Sat, 18 Aug 2012 13:58:22 +0200
+Subject: [PATCH] Make parents of urgent container also urgent
+
+---
+ include/con.h |  6 ++++++
+ src/con.c     | 20 ++++++++++++++++++++
+ src/x.c       | 11 +++++++++++
+ 3 files changed, 37 insertions(+)
+
+diff --git a/include/con.h b/include/con.h
+index b14c477..7f00986 100644
+--- a/include/con.h
++++ b/include/con.h
+@@ -86,6 +86,12 @@ Con *con_inside_floating(Con *con);
+ bool con_inside_focused(Con *con);
+ 
+ /**
++ * Checks if the given container has a urgent child.
++ *
++ */
++bool con_has_urgent_child(Con *con);
++
++/**
+  * Returns the container with the given client window ID or NULL if no such
+  * container exists.
+  *
+diff --git a/src/con.c b/src/con.c
+index c24a379..355b1a3 100644
+--- a/src/con.c
++++ b/src/con.c
+@@ -1132,3 +1132,23 @@ Rect con_minimum_size(Con *con) {
+          con-&gt;type, con-&gt;layout, con-&gt;orientation);
+     assert(false);
+ }
++
++/*
++ * Checks if the given container has a urgent child.
++ *
++ */
++
++bool con_has_urgent_child(Con *con) {
++    Con *child;
++
++    if (con_is_leaf(con))
++        return con-&gt;urgent;
++
++    TAILQ_FOREACH(child, &amp;(con-&gt;nodes_head), nodes) {
++        if (con_has_urgent_child(child)) {
++            return true;
++        }
++    }
++
++    return false;
++}
+diff --git a/src/x.c b/src/x.c
+index 08eb8fe..590b2f4 100644
+--- a/src/x.c
++++ b/src/x.c
+@@ -325,6 +325,16 @@ void x_draw_decoration(Con *con) {
+     /* 1: build deco_params and compare with cache */
+     struct deco_render_params *p = scalloc(sizeof(struct deco_render_params));
+ 
++    /* set urgent flag if container has urgent children */
++    bool urgency_changed = false;
++    if (!con_is_leaf(con)) {
++        bool has_urgent_child = con_has_urgent_child(con);
++        if (has_urgent_child != con-&gt;urgent) {
++            con-&gt;urgent = has_urgent_child;
++            urgency_changed = true;
++        }
++    }
++
+     /* find out which colors to use */
+     if (con-&gt;urgent)
+         p-&gt;color = &amp;config.client.urgent;
+@@ -349,6 +359,7 @@ void x_draw_decoration(Con *con) {
+         (con-&gt;window == NULL || !con-&gt;window-&gt;name_x_changed) &amp;&amp;
+         !parent-&gt;pixmap_recreated &amp;&amp;
+         !con-&gt;pixmap_recreated &amp;&amp;
++        !urgency_changed &amp;&amp;
+         memcmp(p, con-&gt;deco_render_params, sizeof(struct deco_render_params)) == 0) {
+         free(p);
+         goto copy_pixmaps;
+-- 
+1.7.11.5
+
+</PRE>
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000856.html">[i3] building i3 wm on os X
+</A></li>
+	<LI>Next message: <A HREF="000869.html">[i3] [PATCH] Upward propagating urgency hints
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#859">[ date ]</a>
+              <a href="thread.html#859">[ thread ]</a>
+              <a href="subject.html#859">[ subject ]</a>
+              <a href="author.html#859">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3-msg - move all/some workspaces to another output
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3-msg%20-%20move%20all/some%20workspaces%20to%20another%20output&In-Reply-To=%3CCANnVG6mcaiQWwLSEabDE%2BuEASYV0bx4%2B2pmfLzmURhRtJUQDLQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001914.html">
+   <LINK REL="Next"  HREF="001916.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3-msg - move all/some workspaces to another output</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3-msg%20-%20move%20all/some%20workspaces%20to%20another%20output&In-Reply-To=%3CCANnVG6mcaiQWwLSEabDE%2BuEASYV0bx4%2B2pmfLzmURhRtJUQDLQ%40mail.gmail.com%3E"
+       TITLE="[i3] i3-msg - move all/some workspaces to another output">michael at i3wm.org
+       </A><BR>
+    <I>Tue Oct 14 22:41:52 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001914.html">[i3] i3-msg - move all/some workspaces to another output
+</A></li>
+        <LI>Next message: <A HREF="001916.html">[i3] i3-msg - move all/some workspaces to another output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1915">[ date ]</a>
+              <a href="thread.html#1915">[ thread ]</a>
+              <a href="subject.html#1915">[ subject ]</a>
+              <a href="author.html#1915">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>No, but there’s a ticket for that: <A HREF="http://bugs.i3wm.org/report/ticket/555">http://bugs.i3wm.org/report/ticket/555</A>
+
+On Tue, Oct 14, 2014 at 9:11 PM, Fabian Raetz &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">fabian.raetz at gmail.com</A>&gt; wrote:
+&gt;<i> On Tue, Oct 14, 2014 at 08:53:17PM +0200, Michael Stapelberg wrote:
+</I>&gt;&gt;<i> Have you tried assigning the workspaces to VGA1? See
+</I>&gt;&gt;<i> <A HREF="http://i3wm.org/docs/userguide.html#workspace_screen.">http://i3wm.org/docs/userguide.html#workspace_screen.</A> When the output
+</I>&gt;&gt;<i> is unavailable, workspaces get moved to another output, which in your
+</I>&gt;&gt;<i> case is LVDS1.
+</I>&gt;<i>
+</I>&gt;<i> No, but i am using it right now and it works pretty well.
+</I>&gt;<i>
+</I>&gt;<i> Can i assign a workspace to two outputs like below?
+</I>&gt;<i> Just in case i will use my HDMI port some day :)
+</I>&gt;<i>
+</I>&gt;<i> workspace 2 output VGA1
+</I>&gt;<i> workspace 2 output HDMI1
+</I>&gt;<i>
+</I>&gt;<i> Anyway this solves my direct needs.  i3 rocks!!
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i> Fabian
+</I>&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Tue, Oct 14, 2014 at 8:34 PM, Fabian Raetz &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">fabian.raetz at gmail.com</A>&gt; wrote:
+</I>&gt;&gt;<i> &gt; On Tue, Oct 14, 2014 at 10:55:07AM -0500, Bigby James wrote:
+</I>&gt;&gt;<i> &gt;&gt; On 10/14, Fabian Raetz wrote:
+</I>&gt;&gt;<i> &gt;&gt; &gt; Hi all,
+</I>&gt;&gt;<i> &gt;&gt; &gt;
+</I>&gt;&gt;<i> &gt;&gt; &gt; i am looking for a way to move all (or some)
+</I>&gt;&gt;<i> &gt;&gt; &gt; of my workspaces to another output.
+</I>&gt;&gt;<i> &gt;&gt; &gt;
+</I>&gt;&gt;<i> &gt;&gt; &gt; Something like in the following shell script  would be nice:
+</I>&gt;&gt;<i> &gt;&gt; &gt;
+</I>&gt;&gt;<i> &gt;&gt; &gt; -------------------------
+</I>&gt;&gt;<i> &gt;&gt; &gt; #!/bin/sh
+</I>&gt;&gt;<i> &gt;&gt; &gt;
+</I>&gt;&gt;<i> &gt;&gt; &gt; WS=&quot;2 3 4 5 6&quot;
+</I>&gt;&gt;<i> &gt;&gt; &gt; OUTPUT=VGA1
+</I>&gt;&gt;<i> &gt;&gt; &gt;
+</I>&gt;&gt;<i> &gt;&gt; &gt; for W in $WS; do
+</I>&gt;&gt;<i> &gt;&gt; &gt;     i3-msg move workspace $W to output $OUTPUT
+</I>&gt;&gt;<i> &gt;&gt; &gt; done
+</I>&gt;&gt;<i> &gt;&gt; &gt; -------------------------
+</I>&gt;&gt;<i> &gt;&gt; &gt;
+</I>&gt;&gt;<i> &gt;&gt; &gt;
+</I>&gt;&gt;<i> &gt;&gt; &gt; Is there an easy solution i have overseen?
+</I>&gt;&gt;<i> &gt;&gt; &gt;
+</I>&gt;&gt;<i> &gt;&gt; &gt; Regards,
+</I>&gt;&gt;<i> &gt;&gt; &gt; Fabian
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; An active monitor *must* have a workspace on it, and a workspace only exists after
+</I>&gt;&gt;<i> &gt;&gt; being explicitly created. So you can't move all currently existing workspaces to
+</I>&gt;&gt;<i> &gt;&gt; another monitor simultaneously. You'd need to first create a new workspace on
+</I>&gt;&gt;<i> &gt;&gt; the current monitor, then move all the previously created ones to a new monitor.
+</I>&gt;&gt;<i> &gt;&gt; What you can also do is use xrandr to deactivate the current display, which (if you
+</I>&gt;&gt;<i> &gt;&gt; only have two monitors in total) will move all worskpaces to the only active
+</I>&gt;&gt;<i> &gt;&gt; monitor.
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; It's probably worth explaining exactly why you'd want to do this, though, since
+</I>&gt;&gt;<i> &gt;&gt; needing to move everything to another monitor all at once really sounds like a
+</I>&gt;&gt;<i> &gt;&gt; scenario that could be avoided with proper planning.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; Sure.
+</I>&gt;&gt;<i> &gt; I am using i3wm on my Notebook which has a small screen resolution
+</I>&gt;&gt;<i> &gt; (1366x768).  So it happens that i have most workspaces on a second
+</I>&gt;&gt;<i> &gt; output (VGA1). On the first output (LVDS1) is most of the time only
+</I>&gt;&gt;<i> &gt; workspace 1 and 10 active which shows xconsole/mutt/logs.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; Before i switch locations i detach the second output (VGA1) and all workspaces move
+</I>&gt;&gt;<i> &gt; to the first (LVDS1).  Then i suspend.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; So far, so good.  Now the problem i am trying to solve:
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; When i resume and plug in a second monitor, i have to manually move all
+</I>&gt;&gt;<i> &gt; workspaces back to the second output which is a bit frustrating.
+</I>&gt;&gt;<i> &gt; This happens multiple times a day.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; I run a script whenever an output changes via an external tool,
+</I>&gt;&gt;<i> &gt; so i thought i could use the above snippet or something else to move all
+</I>&gt;&gt;<i> &gt; existing workspaces except 1 and 10 to the second output (VGA1).
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; Any suggestions?
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; Thanks for your time,
+</I>&gt;&gt;<i> &gt; Fabian
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; --
+</I>&gt;&gt;<i> &gt;&gt; &quot;A common mistake that people make when trying to design something completely
+</I>&gt;&gt;<i> &gt;&gt; foolproof is to underestimate the ingenuity of complete fools.&quot; - Douglas Adams
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i> Best regards,
+</I>&gt;&gt;<i> Michael
+</I>
+
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001914.html">[i3] i3-msg - move all/some workspaces to another output
+</A></li>
+	<LI>Next message: <A HREF="001916.html">[i3] i3-msg - move all/some workspaces to another output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1915">[ date ]</a>
+              <a href="thread.html#1915">[ thread ]</a>
+              <a href="subject.html#1915">[ subject ]</a>
+              <a href="author.html#1915">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

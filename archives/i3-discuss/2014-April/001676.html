@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] IPC window close event
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20IPC%20window%20close%20event&In-Reply-To=%3C53491AD4.2020904%40hunsicker.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001669.html">
+   <LINK REL="Next"  HREF="001670.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] IPC window close event</H1>
+    <B>Marco Hunsicker</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20IPC%20window%20close%20event&In-Reply-To=%3C53491AD4.2020904%40hunsicker.de%3E"
+       TITLE="[i3] IPC window close event">i3 at hunsicker.de
+       </A><BR>
+    <I>Sat Apr 12 12:52:04 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001669.html">[i3] IPC window close event
+</A></li>
+        <LI>Next message: <A HREF="001670.html">[i3] monitor dependent workspaces
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1676">[ date ]</a>
+              <a href="thread.html#1676">[ thread ]</a>
+              <a href="subject.html#1676">[ subject ]</a>
+              <a href="author.html#1676">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Tony,
+
+thanks for your detailed explanation.
+
+
+ &gt; So this is very expressive, but a bit cryptic and not very well
+ &gt; documented outside of the testcases. It also plays to the primary
+ &gt; strength of the workspace reply object which is that no recursive
+ &gt; tree-parsing is required so it can be used with simple tools.
+
+The i3bar workspace parsing code still has to be adjusted because of its 
+very strict nature. I was quite surprised that there was no i3bar when I 
+first started i3 after my changes!
+
+
+ &gt; Would this implementation fit your use case?
+
+Yes, that would fit my use case perfectly well.
+
+I was essentially doing the same thing, just using nodes_head and 
+floating_head instead. But after adjusting the code to use focus_head, 
+several test cases fail.
+
+Problematic seems to be that I have to alter focus_head before the 
+window close event is send, in order to get the correct window count. It 
+worked just fine with the other mentioned data structures. I will try 
+and see whether I can get it working again. If I can't, I will still 
+post my working patch and we can go from there. Thanks.
+
+
+Cheers,
+   Marco
+</PRE>
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001669.html">[i3] IPC window close event
+</A></li>
+	<LI>Next message: <A HREF="001670.html">[i3] monitor dependent workspaces
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1676">[ date ]</a>
+              <a href="thread.html#1676">[ thread ]</a>
+              <a href="subject.html#1676">[ subject ]</a>
+              <a href="author.html#1676">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

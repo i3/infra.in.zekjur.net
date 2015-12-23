@@ -1,0 +1,35 @@
+<tt>
+&lt;div&nbsp;dir=&quot;ltr&quot;&gt;I&nbsp;will&nbsp;try&nbsp;to&nbsp;run&nbsp;this&nbsp;with&nbsp;strace&nbsp;and&nbsp;see&nbsp;how&nbsp;it&nbsp;goes...&nbsp;Let&nbsp;you&nbsp;know&nbsp;the&nbsp;results&nbsp;(if&nbsp;I&nbsp;can&nbsp;read&nbsp;them,&nbsp;lol)...&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&nbsp;style&gt;Cheers,&lt;/div&gt;&lt;/div&gt;&lt;div&nbsp;class=&quot;gmail_extra&quot;&gt;&lt;br&nbsp;clear=&quot;all&quot;&gt;&lt;div&gt;&lt;div&nbsp;dir=&quot;ltr&quot;&gt;<br>
+<br>
+&lt;br&gt;&lt;span&nbsp;style=&quot;font-family:courier&nbsp;new,monospace&quot;&gt;--&lt;/span&gt;&lt;br&nbsp;style=&quot;font-family:courier&nbsp;new,monospace&quot;&gt;&lt;b&nbsp;style=&quot;font-family:courier&nbsp;new,monospace&quot;&gt;Bruno&nbsp;Braga&lt;/b&gt;&lt;br&nbsp;style=&quot;font-family:courier&nbsp;new,monospace&quot;&gt;&lt;a&nbsp;style=&quot;font-family:courier&nbsp;new,monospace&quot;&nbsp;href=&quot;http://www.brunobraga.net&quot;&nbsp;target=&quot;_blank&quot;&gt;www.brunobraga.net&lt;/a&gt;&lt;br&nbsp;style=&quot;font-family:courier&nbsp;new,monospace&quot;&gt;<br>
+<br>
+&lt;a&nbsp;style=&quot;font-family:courier&nbsp;new,monospace&quot;&nbsp;href=&quot;mailto:bruno.braga@gmail.com&quot;&nbsp;target=&quot;_blank&quot;&gt;bruno.braga@gmail.com&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;<br>
+&lt;br&gt;&lt;br&gt;&lt;div&nbsp;class=&quot;gmail_quote&quot;&gt;On&nbsp;Sun,&nbsp;Apr&nbsp;14,&nbsp;2013&nbsp;at&nbsp;1:24&nbsp;AM,&nbsp;Giorgos&nbsp;Keramidas&nbsp;&lt;span&nbsp;dir=&quot;ltr&quot;&gt;&lt;&lt;a&nbsp;href=&quot;mailto:gkeramidas@gmail.com&quot;&nbsp;target=&quot;_blank&quot;&gt;gkeramidas@gmail.com&lt;/a&gt;&gt;&lt;/span&gt;&nbsp;wrote:&lt;br&gt;&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;<br>
+<br>
+&lt;div&nbsp;class=&quot;HOEnZb&quot;&gt;&lt;div&nbsp;class=&quot;h5&quot;&gt;On&nbsp;2013-04-13&nbsp;10:14,&nbsp;Michael&nbsp;Stapelberg&nbsp;&lt;&lt;a&nbsp;href=&quot;mailto:michael@i3wm.org&quot;&gt;michael@i3wm.org&lt;/a&gt;&gt;&nbsp;wrote:&lt;br&gt;<br>
+&gt;Giorgos&nbsp;Keramidas&nbsp;&lt;&lt;a&nbsp;href=&quot;mailto:gkeramidas@gmail.com&quot;&gt;gkeramidas@gmail.com&lt;/a&gt;&gt;&nbsp;writes:&lt;br&gt;<br>
+&gt;&gt;&nbsp;After&nbsp;ev_loop()&nbsp;is&nbsp;done,&nbsp;there&nbsp;is&nbsp;no&nbsp;return&nbsp;statement,&nbsp;so&nbsp;if&nbsp;ev_loop&lt;br&gt;<br>
+&gt;&gt;&nbsp;happens&nbsp;to&nbsp;return,&nbsp;main()&nbsp;is&nbsp;free&nbsp;to&nbsp;return&nbsp;a&nbsp;random&nbsp;value,&nbsp;e.g.&nbsp;the&lt;br&gt;<br>
+&gt;&gt;&nbsp;contents&nbsp;of&nbsp;a&nbsp;register&nbsp;or&nbsp;some&nbsp;random&nbsp;value&nbsp;from&nbsp;the&nbsp;stack.&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&nbsp;ev_loop&nbsp;never&nbsp;returns.&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&nbsp;i3lock&nbsp;exits&nbsp;with&nbsp;code&nbsp;0&nbsp;from&nbsp;here:&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp;if&nbsp;(pam_authenticate(pam_handle,&nbsp;0)&nbsp;==&nbsp;PAM_SUCCESS)&nbsp;{&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;DEBUG(&quot;successfully&nbsp;authenticated\n&quot;);&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;clear_password_memory();&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;exit(0);&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp;}&lt;br&gt;<br>
+&lt;br&gt;<br>
+&lt;/div&gt;&lt;/div&gt;Yeah,&nbsp;I&nbsp;noticed&nbsp;that&nbsp;ev_loop&nbsp;is&nbsp;not&nbsp;supposed&nbsp;to&nbsp;return&nbsp;a&nbsp;little&nbsp;after&lt;br&gt;<br>
+sending&nbsp;that&nbsp;email.&nbsp; I&nbsp;guess&nbsp;the&nbsp;only&nbsp;way&nbsp;to&nbsp;find&nbsp;out&nbsp;what&#39;s&nbsp;going&nbsp;on&lt;br&gt;<br>
+would&nbsp;be&nbsp;to&nbsp;run&nbsp;i3lock&nbsp;under&nbsp;strace&nbsp;and&nbsp;log&nbsp;that&nbsp;to&nbsp;a&nbsp;file.&lt;br&gt;<br>
+&lt;br&gt;<br>
+If&nbsp;ev_loop&nbsp;never&nbsp;returns,&nbsp;I&nbsp;don&#39;t&nbsp;see&nbsp;anything&nbsp;in&nbsp;i3lock.c&nbsp;that&nbsp;would&lt;br&gt;<br>
+cause&nbsp;it&nbsp;to&nbsp;return&nbsp;with&nbsp;a&nbsp;non-zero&nbsp;exit&nbsp;code.&nbsp; It&nbsp;must&nbsp;be&nbsp;something&lt;br&gt;<br>
+external&nbsp;to&nbsp;the&nbsp;program&nbsp;itself,&nbsp;e.g.&nbsp;a&nbsp;signal&nbsp;that&#39;s&nbsp;killing&nbsp;it.&lt;br&gt;<br>
+&lt;br&gt;<br>
+&lt;/blockquote&gt;&lt;/div&gt;&lt;br&gt;&lt;/div&gt;<br>
+
+</tt>

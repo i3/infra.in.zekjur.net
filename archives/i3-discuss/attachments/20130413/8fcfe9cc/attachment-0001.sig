@@ -1,0 +1,7 @@
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+iEUEARECAAYFAlFpmDEACgkQIYmwvSyMFCnjswCaAyw1U3HPrHpIw6FXK/J+oh8H
+9xYAmP8OT1ww76NTuLRi9JTYzm0Hy+U=
+=/wdw
+-----END PGP SIGNATURE-----

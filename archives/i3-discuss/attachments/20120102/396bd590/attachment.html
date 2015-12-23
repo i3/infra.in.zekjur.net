@@ -1,0 +1,37 @@
+<tt>
+&lt;div&gt;Hi&nbsp;John,&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;I&#39;d&nbsp;like&nbsp;to&nbsp;use&nbsp;this&nbsp;tool&nbsp;to&nbsp;send&nbsp;commands&nbsp;to&nbsp;i3&nbsp;(similar&nbsp;to&nbsp;i3-msg)&nbsp;and&nbsp;be&nbsp;able&nbsp;to&nbsp;get&nbsp;the&nbsp;commands&nbsp;and&nbsp;parameters&nbsp;completed.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Currently&nbsp;I&#39;m&nbsp;using&nbsp;dmenu&nbsp;+&nbsp;i3-msg&nbsp;to&nbsp;do&nbsp;this.&nbsp;Here&nbsp;is&nbsp;my&nbsp;key&nbsp;binding&nbsp;for&nbsp;this:&lt;/div&gt;<br>
+<br>
+&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;bindsym&nbsp;$mod+i&nbsp;exec&nbsp;--no-startup-id&nbsp;echo&nbsp;-e&nbsp;&#39;border\nexec\nexit\nfloating\nfocus\nfullscreen\nkill\nlayout\nmark\nmode\nmove\nnop\nopen\nreload\nresize\nrestart\nsplit\nworkspace&#39;&nbsp;|&nbsp;dmenu&nbsp;|&nbsp;xargs&nbsp;i3-msg&nbsp;|&nbsp;xargs&nbsp;-0&nbsp;-i&nbsp;notify-send&nbsp;-t&nbsp;3000&nbsp;&quot;{}&quot;&lt;/div&gt;<br>
+<br>
+&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;What&nbsp;I&nbsp;like&nbsp;most&nbsp;about&nbsp;dmenu&nbsp;is&nbsp;its&nbsp;flexibility.&nbsp;But&nbsp;I&nbsp;couldn&#39;t&nbsp;find&nbsp;a&nbsp;way&nbsp;to&nbsp;make&nbsp;this&nbsp;tool&nbsp;flexible&nbsp;enough&nbsp;to&nbsp;support&nbsp;$PATH&nbsp;completion,&nbsp;absolute&nbsp;path&nbsp;completion&nbsp;and&nbsp;i3&nbsp;command&nbsp;completion&nbsp;without&nbsp;turning&nbsp;it&nbsp;into&nbsp;a&nbsp;monster.&lt;/div&gt;<br>
+<br>
+&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;So&nbsp;unless&nbsp;someone&nbsp;else&nbsp;proposes&nbsp;a&nbsp;clean&nbsp;and&nbsp;flexible&nbsp;alternative,&nbsp;I&#39;ll&nbsp;follow&nbsp;with&nbsp;a&nbsp;simple&nbsp;application&nbsp;laucher&nbsp;and&nbsp;forget&nbsp;about&nbsp;i3&nbsp;integration&nbsp;for&nbsp;now.&nbsp;Later&nbsp;I&nbsp;can&nbsp;reuse&nbsp;some&nbsp;source&nbsp;code&nbsp;to&nbsp;make&nbsp;it.&lt;/div&gt;<br>
+<br>
+&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Regards,&lt;/div&gt;&lt;div&gt;Marcelo&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;div&nbsp;class=&quot;gmail_quote&quot;&gt;On&nbsp;Mon,&nbsp;Jan&nbsp;2,&nbsp;2012&nbsp;at&nbsp;11:49&nbsp;AM,&nbsp;John&nbsp;Haltiwanger&nbsp;&lt;span&nbsp;dir=&quot;ltr&quot;&gt;&lt;&lt;a&nbsp;href=&quot;mailto:john.haltiwanger@gmail.com&quot;&gt;john.haltiwanger@gmail.com&lt;/a&gt;&gt;&lt;/span&gt;&nbsp;wrote:&lt;br&gt;<br>
+<br>
+&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;&lt;div&nbsp;class=&quot;gmail_quote&quot;&gt;&lt;div&gt;&lt;div&nbsp;class=&quot;h5&quot;&gt;On&nbsp;Mon,&nbsp;Jan&nbsp;2,&nbsp;2012&nbsp;at&nbsp;2:44&nbsp;PM,&nbsp;Marcelo&nbsp;Cerri&nbsp;&lt;span&nbsp;dir=&quot;ltr&quot;&gt;&lt;&lt;a&nbsp;href=&quot;mailto:mhcerri@gmail.com&quot;&nbsp;target=&quot;_blank&quot;&gt;mhcerri@gmail.com&lt;/a&gt;&gt;&lt;/span&gt;&nbsp;wrote:&lt;br&gt;<br>
+<br>
+&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;<br>
+Hi,&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;I&#39;m&nbsp;using&nbsp;dmenu&nbsp;as&nbsp;my&nbsp;application&nbsp;launcher&nbsp;but&nbsp;I&#39;m&nbsp;a&nbsp;bit disappointed with&nbsp;it&nbsp;because&nbsp;of&nbsp;the&nbsp;lack&nbsp;of&nbsp;history&nbsp;and&nbsp;absolute&nbsp;path&nbsp;completion.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;I&#39;m&nbsp;thinking&nbsp;to&nbsp;create&nbsp;a&nbsp;new&nbsp;menu&nbsp;application&nbsp;(or&nbsp;maybe&nbsp;a&nbsp;proper&nbsp;launcher)&nbsp;that&nbsp;could&nbsp;fulfill&nbsp;the&nbsp;following&nbsp;goal:&lt;/div&gt;<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;blockquote&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;40px;border:none;padding:0px&quot;&gt;&lt;div&gt;1.&nbsp;Use&nbsp;XCB&nbsp;instead&nbsp;of&nbsp;Xlib.&lt;/div&gt;&lt;div&gt;2.&nbsp;Support&nbsp;command&nbsp;history.&lt;/div&gt;&lt;div&gt;3.&nbsp;Be&nbsp;able&nbsp;to&nbsp;complete&nbsp;an&nbsp;absolute&nbsp;path&nbsp;or&nbsp;at&nbsp;least&nbsp;provide&nbsp;a mechanism to&nbsp;do&nbsp;this.&lt;/div&gt;<br>
+<br>
+<br>
+<br>
+<br>
+&lt;div&gt;4.&nbsp;And&nbsp;maybe&nbsp;integrate&nbsp;with&nbsp;i3.&lt;/div&gt;<br>
+&lt;/blockquote&gt;&lt;br&gt;&lt;div&gt;I&#39;d&nbsp;like&nbsp;to&nbsp;receive&nbsp;some&nbsp;opinions&nbsp;about&nbsp;this.&nbsp;Do&nbsp;you&nbsp;think&nbsp;it&#39;d&nbsp;be&nbsp;worth&nbsp;it?&lt;/div&gt;&lt;/blockquote&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;I&nbsp;would&nbsp;personally&nbsp;be&nbsp;interested.&nbsp;The&nbsp;ability&nbsp;to&nbsp;run&nbsp;commands&nbsp;based&nbsp;on&nbsp;path&nbsp;(rather&nbsp;than&nbsp;having&nbsp;only&nbsp;binaries&nbsp;in&nbsp;$PATH)&nbsp;is&nbsp;probably&nbsp;my&nbsp;favorite&nbsp;feature&nbsp;you&nbsp;propose,&nbsp;though&nbsp;command&nbsp;history&nbsp;would&nbsp;also&nbsp;be&nbsp;great.&lt;/div&gt;<br>
+<br>
+<br>
+&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;What&nbsp;would&nbsp;you&nbsp;have&nbsp;in&nbsp;mind&nbsp;regarding&nbsp;i3&nbsp;integration? &lt;/div&gt;&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Regards,&lt;/div&gt;&lt;div&gt;<br>
+<br>
+<br>
+Marcelo&lt;/div&gt;<br>
+&lt;/blockquote&gt;&lt;/div&gt;&lt;br&gt;<br>
+&lt;/blockquote&gt;&lt;/div&gt;&lt;br&gt;&lt;/div&gt;<br>
+
+</tt>

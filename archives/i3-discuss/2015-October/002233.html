@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Weird keybinding issue after suspend
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Weird%20keybinding%20issue%20after%20suspend&In-Reply-To=%3CCAKV6X6wU04fFqnn%3DmQ_7V1PZJ9j0Lj60W0XT%3DpSKoQV_ym8DNA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002234.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Weird keybinding issue after suspend</H1>
+    <B>Benjamin Kaiser</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Weird%20keybinding%20issue%20after%20suspend&In-Reply-To=%3CCAKV6X6wU04fFqnn%3DmQ_7V1PZJ9j0Lj60W0XT%3DpSKoQV_ym8DNA%40mail.gmail.com%3E"
+       TITLE="[i3] Weird keybinding issue after suspend">benjaminjkaiser at gmail.com
+       </A><BR>
+    <I>Fri Oct 30 12:38:45 CET 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002234.html">[i3] Debugging techniques.
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2233">[ date ]</a>
+              <a href="thread.html#2233">[ thread ]</a>
+              <a href="subject.html#2233">[ subject ]</a>
+              <a href="author.html#2233">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I've got a really weird issue that's been bothering me for perhaps the last
+6 months (before then it worked fine, perhaps could have been around when I
+switched to using my keyboard to suspend). Sometimes when I resume from
+suspend (I have i3lock launching at the same time as when I suspend) I can
+unlock my computer, but then no more keyboard events work. The keyboard
+remains active (lights on) and I can switch to a TTY, but none of the i3
+events fire. The only way I can fix it is to use the mouse (which is still
+working) to click on a workspace in the statusbar and then the keyboard
+responds again.
+
+ As mentioned above, it only happens sometimes, and as a fellow dev it
+really annoys me to no end when something is unreproducible. Things I have
+tried to reproduce are just suspending, then detaching my keyboard and
+attaching it again before resuming from suspend, but that doesn't trigger
+the issue. Just about the only common thing I can find is time (after being
+suspended for a long time, 12hours+, it seems to happen more frequently).
+
+One idea I've had is that because I use a keyboard shortcut to suspend
+(`bindsym --release $mod+Control+Shift+s exec &quot;systemctl suspend; i3lock&quot;`
+in my config, the --release was me weeks ago trying to rectify the issue,
+but it still persisted) i3wm is somehow holding onto the keyboard before
+flushing, but then post-suspend, i3lock takes the keyboards focus, i3wm
+holds onto an old un-flushed pointer to the keyboard (not sure if that is
+how that works) and doesn't refresh it upon i3lock giving up focus.
+&gt;<i>From searching around in the i3 source code, seeing the line in
+</I>main.c:main() with the comment annotation
+    /* Grab the keyboard to get all input */
+    xcb_flush(conn);
+And that function also occuring in click.c:route_click() (i.e. when I click
+the workspaces in the status bar)
+    xcb_flush(conn);
+Maybe this is what is allowing the keyboard to work again. Is there some
+way this could be run upon i3lock giving up focus / i3wm resuming focus?
+
+Any help in solving this would be much appreciated!
+
+Here is some information about my system:
+Mouse: Razer Naga, (one with 12 buttons on side)
+Keyboard: ducky shine 3 with mini usb cable for connection (issue has
+occurred on my laptops internal keyboard also though)
+Distro: Arch Linux
+i3 Version: 4.11
+Kernel version: 4.2.3-1-ARCH
+
+Cheers,
+Ben Kaiser
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151030/7f50ed3d/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151030/7f50ed3d/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002234.html">[i3] Debugging techniques.
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2233">[ date ]</a>
+              <a href="thread.html#2233">[ thread ]</a>
+              <a href="subject.html#2233">[ subject ]</a>
+              <a href="author.html#2233">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

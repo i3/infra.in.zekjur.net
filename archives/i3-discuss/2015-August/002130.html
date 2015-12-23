@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Problems setting multi monitor
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Problems%20setting%20multi%20monitor&In-Reply-To=%3C3390004.382BWmSPyp%40asaru%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002129.html">
+   <LINK REL="Next"  HREF="002131.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Problems setting multi monitor</H1>
+    <B>Florian Lindner</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Problems%20setting%20multi%20monitor&In-Reply-To=%3C3390004.382BWmSPyp%40asaru%3E"
+       TITLE="[i3] Problems setting multi monitor">mailinglists at xgm.de
+       </A><BR>
+    <I>Mon Aug 10 15:48:36 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002129.html">[i3] IPC scripting with Ruby
+</A></li>
+        <LI>Next message: <A HREF="002131.html">[i3] Problems setting multi monitor
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2130">[ date ]</a>
+              <a href="thread.html#2130">[ thread ]</a>
+              <a href="subject.html#2130">[ subject ]</a>
+              <a href="author.html#2130">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+I try to launch an xrandr script to set the multi monitor configuration. The script works when called standalone after i3 startup, but not at startup
+
+#!env python
+
+import functools, subprocess, sys
+call = functools.partial(subprocess.check_call, shell=True)
+
+call(&quot;sleep 3&quot;)
+
+if sys.argv[1] == &quot;uni&quot;:
+    call(&quot;xrandr --output DP2-2 --auto --primary&quot;)
+    call(&quot;xrandr --output eDP1  --auto --left-of DP2-2&quot;)
+    call(&quot;xrandr --output HDMI1 --auto --right-of DP2-2&quot;)
+    
+
+The sleep 3 I put just to test, shouldn't be needed.
+
+It is launched as my first exec in my i3 config:
+
+exec --no-startup-id /home/florian/software/bin/screen_config uni
+
+but seems to have no effect at all, configuration is not changed.
+
+What can be the problem there?
+
+Thanks,
+Florian
+
+
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002129.html">[i3] IPC scripting with Ruby
+</A></li>
+	<LI>Next message: <A HREF="002131.html">[i3] Problems setting multi monitor
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2130">[ date ]</a>
+              <a href="thread.html#2130">[ thread ]</a>
+              <a href="subject.html#2130">[ subject ]</a>
+              <a href="author.html#2130">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

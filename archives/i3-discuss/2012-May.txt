@@ -1,0 +1,2806 @@
+From drdarkraven at gmail.com  Wed May  2 17:34:35 2012
+From: drdarkraven at gmail.com (DR)
+Date: Wed, 2 May 2012 23:34:35 +0800
+Subject: [i3] [PATCH 1/3] Enhance message sent with workspace event.
+In-Reply-To: <CAMJW5=0vr3xByO6bQ=0qnoobc8ZQXMUcN8NwH43DWdtBcQuvng@mail.gmail.com>
+References: <CAMJW5=1MuDx=-fi6QC2FGu90LPTm+p8=EEkRj5Z76+KN=Spm0g@mail.gmail.com>
+ <CAMJW5=2PHaxs535nCJ9rXkUxBs35Xdex4+xqw+AJqZrULK3ksw@mail.gmail.com>
+ <CAMJW5=0vr3xByO6bQ=0qnoobc8ZQXMUcN8NwH43DWdtBcQuvng@mail.gmail.com>
+Message-ID: <CAMJW5=1S-k-pfYBK-gmHK-ecx1oSRCzQ8AbC8guL8ZhtavwCDg@mail.gmail.com>
+
+This patch should fix previous problem.
+
+On Sat, Mar 31, 2012 at 10:53 PM, DR <drdarkraven at gmail.com> wrote:
+
+> On Sat, Mar 31, 2012 at 10:37 PM, DR <drdarkraven at gmail.com> wrote:
+> > [PATCH 2/3] Introduce run_command()
+> >
+> >    Use run_command() instead of parse_command(), which disable all
+> >    events before parse the command. This can avoid potential race
+> >    conditions.
+> No no. this still doesn't solve that problem...
+> That enter notify just comes out from no way...
+>
+> >
+> >
+> > On Sat, Mar 31, 2012 at 10:36 PM, DR <drdarkraven at gmail.com> wrote:
+> >> Add the name and num of the workspace triggers the event, to avoid
+> round trips.
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120502/79d3d502/attachment.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0004-Queue-outward-events-up-while-processing-command.patch
+Type: application/octet-stream
+Size: 4511 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120502/79d3d502/attachment.obj>
+
+From drdarkraven at gmail.com  Wed May  2 17:34:57 2012
+From: drdarkraven at gmail.com (DR)
+Date: Wed, 2 May 2012 23:34:57 +0800
+Subject: [i3] [PATCH 1/3] Enhance message sent with workspace event.
+In-Reply-To: <CAMJW5=1S-k-pfYBK-gmHK-ecx1oSRCzQ8AbC8guL8ZhtavwCDg@mail.gmail.com>
+References: <CAMJW5=1MuDx=-fi6QC2FGu90LPTm+p8=EEkRj5Z76+KN=Spm0g@mail.gmail.com>
+ <CAMJW5=2PHaxs535nCJ9rXkUxBs35Xdex4+xqw+AJqZrULK3ksw@mail.gmail.com>
+ <CAMJW5=0vr3xByO6bQ=0qnoobc8ZQXMUcN8NwH43DWdtBcQuvng@mail.gmail.com>
+ <CAMJW5=1S-k-pfYBK-gmHK-ecx1oSRCzQ8AbC8guL8ZhtavwCDg@mail.gmail.com>
+Message-ID: <CAMJW5=1p-VozO+xZnafKpjS5CJFTfbS3r19wL89i6Rhz11Oy5w@mail.gmail.com>
+
+This one is a small improvement.
+
+On Wed, May 2, 2012 at 11:34 PM, DR <drdarkraven at gmail.com> wrote:
+
+> This patch should fix previous problem.
+>
+>
+> On Sat, Mar 31, 2012 at 10:53 PM, DR <drdarkraven at gmail.com> wrote:
+>
+>> On Sat, Mar 31, 2012 at 10:37 PM, DR <drdarkraven at gmail.com> wrote:
+>> > [PATCH 2/3] Introduce run_command()
+>> >
+>> >    Use run_command() instead of parse_command(), which disable all
+>> >    events before parse the command. This can avoid potential race
+>> >    conditions.
+>> No no. this still doesn't solve that problem...
+>> That enter notify just comes out from no way...
+>>
+>> >
+>> >
+>> > On Sat, Mar 31, 2012 at 10:36 PM, DR <drdarkraven at gmail.com> wrote:
+>> >> Add the name and num of the workspace triggers the event, to avoid
+>> round trips.
+>>
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120502/358fe435/attachment.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0005-Improve-event-processing-a-bit.patch
+Type: application/octet-stream
+Size: 788 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120502/358fe435/attachment.obj>
+
+From drdarkraven at gmail.com  Wed May  2 19:20:39 2012
+From: drdarkraven at gmail.com (DR)
+Date: Thu, 3 May 2012 01:20:39 +0800
+Subject: [i3] [PATCH 1/3] Enhance message sent with workspace event.
+In-Reply-To: <CAMJW5=1p-VozO+xZnafKpjS5CJFTfbS3r19wL89i6Rhz11Oy5w@mail.gmail.com>
+References: <CAMJW5=1MuDx=-fi6QC2FGu90LPTm+p8=EEkRj5Z76+KN=Spm0g@mail.gmail.com>
+ <CAMJW5=2PHaxs535nCJ9rXkUxBs35Xdex4+xqw+AJqZrULK3ksw@mail.gmail.com>
+ <CAMJW5=0vr3xByO6bQ=0qnoobc8ZQXMUcN8NwH43DWdtBcQuvng@mail.gmail.com>
+ <CAMJW5=1S-k-pfYBK-gmHK-ecx1oSRCzQ8AbC8guL8ZhtavwCDg@mail.gmail.com>
+ <CAMJW5=1p-VozO+xZnafKpjS5CJFTfbS3r19wL89i6Rhz11Oy5w@mail.gmail.com>
+Message-ID: <CAMJW5=3H7+=YdLZeYOHzS8hYVRWM_-y5ZXofuDE0x+a-aHvXog@mail.gmail.com>
+
+All-in-one patch
+
+On Wed, May 2, 2012 at 11:34 PM, DR <drdarkraven at gmail.com> wrote:
+
+> This one is a small improvement.
+>
+>
+> On Wed, May 2, 2012 at 11:34 PM, DR <drdarkraven at gmail.com> wrote:
+>
+>> This patch should fix previous problem.
+>>
+>>
+>> On Sat, Mar 31, 2012 at 10:53 PM, DR <drdarkraven at gmail.com> wrote:
+>>
+>>> On Sat, Mar 31, 2012 at 10:37 PM, DR <drdarkraven at gmail.com> wrote:
+>>> > [PATCH 2/3] Introduce run_command()
+>>> >
+>>> >    Use run_command() instead of parse_command(), which disable all
+>>> >    events before parse the command. This can avoid potential race
+>>> >    conditions.
+>>> No no. this still doesn't solve that problem...
+>>> That enter notify just comes out from no way...
+>>>
+>>> >
+>>> >
+>>> > On Sat, Mar 31, 2012 at 10:36 PM, DR <drdarkraven at gmail.com> wrote:
+>>> >> Add the name and num of the workspace triggers the event, to avoid
+>>> round trips.
+>>>
+>>
+>>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120503/abdac7c5/attachment-0001.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Above-commits-squashed.patch
+Type: application/octet-stream
+Size: 22054 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120503/abdac7c5/attachment-0001.obj>
+
+From fernandotcl at i3wm.org  Sun May  6 00:48:19 2012
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Sat, 5 May 2012 19:48:19 -0300
+Subject: [i3] [PATCH 1/3] Enhance message sent with workspace event.
+In-Reply-To: <CAMJW5=3H7+=YdLZeYOHzS8hYVRWM_-y5ZXofuDE0x+a-aHvXog@mail.gmail.com>
+References: <CAMJW5=1MuDx=-fi6QC2FGu90LPTm+p8=EEkRj5Z76+KN=Spm0g@mail.gmail.com>
+ <CAMJW5=2PHaxs535nCJ9rXkUxBs35Xdex4+xqw+AJqZrULK3ksw@mail.gmail.com>
+ <CAMJW5=0vr3xByO6bQ=0qnoobc8ZQXMUcN8NwH43DWdtBcQuvng@mail.gmail.com>
+ <CAMJW5=1S-k-pfYBK-gmHK-ecx1oSRCzQ8AbC8guL8ZhtavwCDg@mail.gmail.com>
+ <CAMJW5=1p-VozO+xZnafKpjS5CJFTfbS3r19wL89i6Rhz11Oy5w@mail.gmail.com>
+ <CAMJW5=3H7+=YdLZeYOHzS8hYVRWM_-y5ZXofuDE0x+a-aHvXog@mail.gmail.com>
+Message-ID: <CANVYNa_SSUXcfivgzo0ZvdVArMdH95OS3c5XLy-6gvOqUJDPZA@mail.gmail.com>
+
+Hi,
+
+On Wed, May 2, 2012 at 2:20 PM, DR <drdarkraven at gmail.com> wrote:
+> All-in-one patch
+
+Cool, but this is rather confusing. First, your commit message is now
+"Above commits squashed", which makes no sense at all to someone
+reading the i3 history (if the patch gets merged).
+
+Second, it's not a trivial patch. Glancing over it, it looks like it
+changes the meaning of some functions, renames some stuff. It's not
+clear to me why those changes are being made.
+
+Please describe it better. With Git, we generally use a short
+description that really gets to the point. Then we skip a line and
+write a detailed description of the commit. Take a lookat the commit
+message for e114b3db, which introduces changes that need to be
+explained.
+
+If you're changing the IPC protocol, describe how you're changing it.
+What exactly is being changed in the protocol? Is the change backwards
+compatible? Why do we need it, i.e., what's the use case?
+
+If you're doing this to change the IPC protocol, why are you touching
+x.c? How does that change the way i3 works?
+
+Also, if you feel that the commit message is getting too big, maybe
+the patch needs to be split into smaller parts.
+
+Regards,
+
+From drdarkraven at gmail.com  Sun May  6 08:39:46 2012
+From: drdarkraven at gmail.com (DR)
+Date: Sun, 6 May 2012 14:39:46 +0800
+Subject: [i3] [PATCH 1/3] Enhance message sent with workspace event.
+In-Reply-To: <CANVYNa_SSUXcfivgzo0ZvdVArMdH95OS3c5XLy-6gvOqUJDPZA@mail.gmail.com>
+References: <CAMJW5=1MuDx=-fi6QC2FGu90LPTm+p8=EEkRj5Z76+KN=Spm0g@mail.gmail.com>
+ <CAMJW5=2PHaxs535nCJ9rXkUxBs35Xdex4+xqw+AJqZrULK3ksw@mail.gmail.com>
+ <CAMJW5=0vr3xByO6bQ=0qnoobc8ZQXMUcN8NwH43DWdtBcQuvng@mail.gmail.com>
+ <CAMJW5=1S-k-pfYBK-gmHK-ecx1oSRCzQ8AbC8guL8ZhtavwCDg@mail.gmail.com>
+ <CAMJW5=1p-VozO+xZnafKpjS5CJFTfbS3r19wL89i6Rhz11Oy5w@mail.gmail.com>
+ <CAMJW5=3H7+=YdLZeYOHzS8hYVRWM_-y5ZXofuDE0x+a-aHvXog@mail.gmail.com>
+ <CANVYNa_SSUXcfivgzo0ZvdVArMdH95OS3c5XLy-6gvOqUJDPZA@mail.gmail.com>
+Message-ID: <CAMJW5=1mYbgQZyU=5eMdyY3Zg2FuxEFJiJgHHhOWX9SZA4G9Aw@mail.gmail.com>
+
+On Sun, May 6, 2012 at 6:48 AM, Fernando Lemos <fernandotcl at i3wm.org> wrote:
+
+> Hi,
+>
+> On Wed, May 2, 2012 at 2:20 PM, DR <drdarkraven at gmail.com> wrote:
+> > All-in-one patch
+>
+> Cool, but this is rather confusing. First, your commit message is now
+> "Above commits squashed", which makes no sense at all to someone
+> reading the i3 history (if the patch gets merged).
+>
+> Second, it's not a trivial patch. Glancing over it, it looks like it
+> changes the meaning of some functions, renames some stuff. It's not
+> clear to me why those changes are being made.
+>
+> Please describe it better. With Git, we generally use a short
+> description that really gets to the point. Then we skip a line and
+> write a detailed description of the commit. Take a lookat the commit
+> message for e114b3db, which introduces changes that need to be
+> explained.
+>
+> If you're changing the IPC protocol, describe how you're changing it.
+> What exactly is being changed in the protocol? Is the change backwards
+> compatible? Why do we need it, i.e., what's the use case?
+>
+> If you're doing this to change the IPC protocol, why are you touching
+> x.c? How does that change the way i3 works?
+>
+> Also, if you feel that the commit message is getting too big, maybe
+> the patch needs to be split into smaller parts.
+>
+> Regards,
+>
+
+I thought the squashed patch is just for reviewing... The details about the
+change is described in those separated patches I sent before.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120506/1dfa2c9c/attachment.html>
+
+From fernandotcl at i3wm.org  Sun May  6 19:24:50 2012
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Sun, 6 May 2012 14:24:50 -0300
+Subject: [i3] [PATCH 1/3] Enhance message sent with workspace event.
+In-Reply-To: <CAMJW5=1mYbgQZyU=5eMdyY3Zg2FuxEFJiJgHHhOWX9SZA4G9Aw@mail.gmail.com>
+References: <CAMJW5=1MuDx=-fi6QC2FGu90LPTm+p8=EEkRj5Z76+KN=Spm0g@mail.gmail.com>
+ <CAMJW5=2PHaxs535nCJ9rXkUxBs35Xdex4+xqw+AJqZrULK3ksw@mail.gmail.com>
+ <CAMJW5=0vr3xByO6bQ=0qnoobc8ZQXMUcN8NwH43DWdtBcQuvng@mail.gmail.com>
+ <CAMJW5=1S-k-pfYBK-gmHK-ecx1oSRCzQ8AbC8guL8ZhtavwCDg@mail.gmail.com>
+ <CAMJW5=1p-VozO+xZnafKpjS5CJFTfbS3r19wL89i6Rhz11Oy5w@mail.gmail.com>
+ <CAMJW5=3H7+=YdLZeYOHzS8hYVRWM_-y5ZXofuDE0x+a-aHvXog@mail.gmail.com>
+ <CANVYNa_SSUXcfivgzo0ZvdVArMdH95OS3c5XLy-6gvOqUJDPZA@mail.gmail.com>
+ <CAMJW5=1mYbgQZyU=5eMdyY3Zg2FuxEFJiJgHHhOWX9SZA4G9Aw@mail.gmail.com>
+Message-ID: <CANVYNa9DT9UQQj_9zuq2jzC=t0fJrxXJpodg5dWARLQXC7a=xg@mail.gmail.com>
+
+Hi,
+
+On Sun, May 6, 2012 at 3:39 AM, DR <drdarkraven at gmail.com> wrote:
+> I thought the squashed patch is just for reviewing... The details about the
+> change is described in those separated patches I sent before.
+
+That does make a bit more sense, but it's still confusing. So your
+all-in-one patch is all patches in the 1-5 sequence? I'm assuming then
+that 1, 2 and 3 never got merged. Do you know why? Would it be better
+to merge them first?
+
+If some of those patches fixes something from some previous patch(es)
+and none of those got merged yet, please fix your history by rebasing
+interactively first, then post the patches. The patches should be
+self-contained in the sense that they do a coherent chunk of changes.
+
+As an example of why your commit messages are currently not good
+enough, consider this:
+
+* 4/5: Avoid potential race conditions <- In which case those race
+conditions occur?
+
+* 5/5: Improve event processing a bit <- What is being improved? It
+looks like the IPC interface is being changed.
+
+Again, if you're changing the IPC protocol, you've got to explain
+what's the use case and whether or not your change will break
+anything.
+
+Please consider the following: Rewrite your history, dividing the
+patches into self-contained chunks of code. Use individual threads for
+things that are not related. If the patches need to be applied in
+order, but aren't related, you might prefer to post the first
+patchset, wait for it to be reviewed and possibly merged, then post
+the second, and so on. And please use more detailed descriptions in
+the body of the commit message where necessary.
+
+I'm sorry if I'm being pedantic here, but this would make it much
+easier to review your patches.
+
+Regards,
+
+From michael at i3wm.org  Wed May  9 20:14:07 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 09 May 2012 20:14:07 +0200
+Subject: [i3] [PATCH 1/3] Enhance message sent with workspace event.
+In-Reply-To: <CANVYNa9DT9UQQj_9zuq2jzC=t0fJrxXJpodg5dWARLQXC7a=xg@mail.gmail.com>
+References: <CAMJW5=1MuDx=-fi6QC2FGu90LPTm+p8=EEkRj5Z76+KN=Spm0g@mail.gmail.com>
+ <CAMJW5=2PHaxs535nCJ9rXkUxBs35Xdex4+xqw+AJqZrULK3ksw@mail.gmail.com>
+ <CAMJW5=0vr3xByO6bQ=0qnoobc8ZQXMUcN8NwH43DWdtBcQuvng@mail.gmail.com>
+ <CAMJW5=1S-k-pfYBK-gmHK-ecx1oSRCzQ8AbC8guL8ZhtavwCDg@mail.gmail.com>
+ <CAMJW5=1p-VozO+xZnafKpjS5CJFTfbS3r19wL89i6Rhz11Oy5w@mail.gmail.com>
+ <CAMJW5=3H7+=YdLZeYOHzS8hYVRWM_-y5ZXofuDE0x+a-aHvXog@mail.gmail.com>
+ <CANVYNa_SSUXcfivgzo0ZvdVArMdH95OS3c5XLy-6gvOqUJDPZA@mail.gmail.com>
+ <CAMJW5=1mYbgQZyU=5eMdyY3Zg2FuxEFJiJgHHhOWX9SZA4G9Aw@mail.gmail.com>
+ <CANVYNa9DT9UQQj_9zuq2jzC=t0fJrxXJpodg5dWARLQXC7a=xg@mail.gmail.com>
+Message-ID: <20120509181407.10926.95465@midna.zekjur.net>
+
+Hey,
+
+Quoting Fernando Lemos (2012-05-06 19:24:50)
+> Please consider the following: Rewrite your history, dividing the
+> patches into self-contained chunks of code. Use individual threads for
+> things that are not related. If the patches need to be applied in
+> order, but aren't related, you might prefer to post the first
+> patchset, wait for it to be reviewed and possibly merged, then post
+> the second, and so on. And please use more detailed descriptions in
+> the body of the commit message where necessary.
+> 
+> I'm sorry if I'm being pedantic here, but this would make it much
+> easier to review your patches.
+Just for the record, I totally agree to what Fernando says.
+
+I will not look at this thread / its patches until you re-send them in a way
+which conforms to our general quality requirements. What those are has been
+outlined by Fernando, and since you got multiple patches pushed to i3 already,
+we can expect a reasonable level of quality in your patches by now :).
+
+Best regards,
+Michael
+
+From dcoppa at gmail.com  Thu May 10 12:49:22 2012
+From: dcoppa at gmail.com (David Coppa)
+Date: Thu, 10 May 2012 12:49:22 +0200
+Subject: [i3] [PATCH] Fix paste error in i3.config.keycodes
+Message-ID: <CABM=MFKSEFQOjdu38THdvE4yYm3LiPJcXBKBtTFGs7DrdvXiTw@mail.gmail.com>
+
+Hi all,
+
+I think there's a paste error into i3.config.keycodes:
+
+For mode "resize", there are some "bindsym" that should be "bindcode".
+
+The attached patch fixes these.
+
+cheers!
+David
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-i3_config_keycodes-fix-paste-error.patch
+Type: application/octet-stream
+Size: 901 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120510/01e14422/attachment.obj>
+
+From bruno.braga at gmail.com  Fri May 11 04:17:52 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Fri, 11 May 2012 12:17:52 +1000
+Subject: [i3] Gnome-less wm
+Message-ID: <CAAuVr73aKDnzyvpqMFCmDCX6ToRKmeCtBaY0=ptysy1gQFuhgw@mail.gmail.com>
+
+Hi i3 gurus,
+
+I am not sure if this question has popped up here before (if so,
+apologies). I have migrated from usual Ubuntu (Gnome/Unity) environment to
+i3-wm, and I am still facing some small issues... I mean, I want to get rid
+of the Gnome stuff and run a cleaner i3 environment.
+
+I guess my question is: how do you use the i3? I guess the i3 is not a
+complete X environment (as the name says it all: window manager), so which
+desktop environment should be the best to integrate with it? A simple Xorg?
+or Xfce? I am sure you guys don't use Gnome (lol)...
+
+Right now, I am still reluctant to do everything by hand (like configuring
+wifi network, setting up bluetooth, etc), so I prefer to use the
+applications available out there. For network management, I am using wicd,
+and liking it a lot.
+
+I think this is too broad question, but I was hoping I could get some
+insights on best ways to use the i3, without too much hassle of doing it
+all manually...
+
+For example, I am relying on gnome-settings-daemon (this one fixes
+keybindings for my mac, such as brightness and volume control, as well as
+terminal font, etc) and gnome-keyring-daemon (controls the password
+management for applications, specially used by network managers)... and I
+don't know how to get rid of them, if I want to (doing all the key mapping
+by myself is doable, but too much trouble, if there are packages out there
+solving this for me already).
+
+I would like to know how, in your experience, you get to solve such
+problems to run a i3 environment smoothly...
+
+Thanks!
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120511/eef3ab59/attachment.html>
+
+From mde at micahelliott.com  Fri May 11 09:22:36 2012
+From: mde at micahelliott.com (Micah Elliott)
+Date: Fri, 11 May 2012 00:22:36 -0700
+Subject: [i3] Gnome-less wm
+In-Reply-To: <CAAuVr73aKDnzyvpqMFCmDCX6ToRKmeCtBaY0=ptysy1gQFuhgw@mail.gmail.com>
+References: <CAAuVr73aKDnzyvpqMFCmDCX6ToRKmeCtBaY0=ptysy1gQFuhgw@mail.gmail.com>
+Message-ID: <CAELbujpHXv6pWgCgkcmMX8DTktUmiHUFECBM-jL=pz07OaNXfQ@mail.gmail.com>
+
+Hey Bruno -- I'm not a guru, but I'll share my story since I'm just a
+little ways ahead of you. And I've been wanting to pipe up and shower
+Michael et al with gratitude and praise for what so far looks like the
+biggest workflow improvement I've found in years. THANK YOU!!
+
+My suggestions:
+
+* Start by blowing away a toy machine and experiment there. Or I
+suppose you could be careful and just try to set up as a different
+user on your main machine. My i3/GNOME integration attempt didn't go
+well (but maybe it's commonly done). I'm enjoying having left GNOME
+behind now anyway. So i3/X is all that's needed!
+
+* Find someone's dotfiles online who's doing something similar. You
+probably just need .xinitrc and .i3/config, (and maybe .i3status) for
+starters. Mine have the bulk of the config (nm-applet, udiskie, font
+setting) in .i3/config
+(https://github.com/MicahElliott/dotfiles/blob/master/.i3/config) as I
+found some things didn't take by just putting into .xinitrc.
+
+* You can bind keys easily enough with xev, and xmodmap. I used to use
+a crazy xkeycaps (IIRC) generated xmodmap to map keys all over the
+place, but all you need is probably a few lines like in your .xinitrc:
+https://github.com/MicahElliott/dotfiles/blob/master/.xinitrc . All
+you absolutely need in it is: exec ck-launch-session dbus-launch i3 .
+But I've also manually mapped volume controls and pm-suspend. I also
+call keychain just before firing i3.
+
+* Ease into the User's Guide http://i3wm.org/docs/userguide.html, the
+one and only doc you really need. So nice. Work to memorize the
+bindings quickly.
+
+* Get familiarized with the non-GNOME tool set:
+https://wiki.archlinux.org/index.php/Common_Applications#Image_Viewers
+
+* Use lxappearance to change fonts (and theme if you like)
+
+* Rely on mod+r to quickly change things to your i3 config.
+
+* Decide a multi-monitor solution. i3 "just works" with zero config,
+but it's a little different. GNOME spreads a desktop across all
+monitors, but i3 treats each monitor as separate. I still haven't
+fully adjusted but have mapped even-numbered desktops to my top
+monitor and odds to laptop screen. This way I can hit ctrl-1-2 and
+later ctrl-3-4 to emulate the GNOME way. I'm mixing it up too, but
+still organize windows this way to large extent. I've bound mod+tab to
+quckly bounce from one desktop "back_and_forth" to the next. You can
+use arandr to config monitor settings and then export to a one-line
+xrandr script. I have 3 setups in ~/bin and can quickly change screens
+with ~/bin/xr1 (or xr2 or xr3).
+
+* Consider switching to Arch: rolling releases for bleeding edge of
+anything, easy to make your own packages, lots of light-weight package
+managers to choose from, have more control over what's on your
+machine, extensive and well curated wiki and forums, and seems to be a
+nice i3 cohort there. ArchBang was a decent install experience to get
+graphics, network, etc working OOTB (my head looked like yours after
+doing a vanilla Arch install :). And I stupidly let the installer
+choose my root partition at a small size and later tried to load big
+databases. So I'd recommend making / plenty big or just keeping /home
+on the same partition.
+
+* I couldn't give up my Alt key (not even close!), so mapped mod to
+Win key. (Right-Alt is my tilde/backtick, so esc is more reachable.)
+I'm mostly used to reaching for Win (Mod4) now, but I suppose
+conquering alt/win/ctrl/shift combos for everything is like mastering
+an instrument. I don't use arrow keys for anything (except stupid
+browsers and spreadsheets). And as a vim user I was COMPLETELY
+befuddled by the default jkl; mapping. i3 made it so easy to switch
+these things (how commonly do people change it to vim's hjkl?). And
+since I had to lose mod+h to the vim shift, I mapped mod+g to
+horizontal, which makes some sense being near the vertical v.
+
+* I use gimp often and i3's floating windows are working just fine for
+me. Get used to holding mod and using both mouse keys for quickly
+moving and resizing. Even non-floating windows benefit from
+mod+right-mouse.
+
+Superfluous background....
+
+I'd been using Ubuntu/GNOME for the last ~5 yrs, and using 10.04 LTS
+since its release. I'd done a lot of tweaking to the point that things
+were just getting too brittle (and stale). I figured I'd have to make
+a lot of changes to get going with Unity and now was as good a time as
+ever to simplify and reorganize. I decided to do the big-bang approach
+and change OS and WM all in one go. This has turned into a major time
+sink the last couple weeks but looking like it'll be worth it for
+another 5+ yrs of happiness (quite possibly on this same machine!).
+
+I started with xmonad and got it working pretty well on another Arch
+machine. Didn't even mind Haskell. Then put it on main system and hit
+a Haskell packaging problem, bloated my machine with ghc, got into a
+mess. And, was copying long recipes for xmonad/xmobar configs instead
+of doing simple things that i3 supports. Also had tried awesomewm and
+hit some bugs/surprises.
+
+Thanks to the simplicity and minimalism of i3 (and Arch) I can finally
+keep in my head where almost all my configs are and how to change
+things (well, my vim config is still a bit messy). I'm now on a small
+(and fast!) SSD and still have plenty of space. I can get new packages
+every day and all the tools I'm using are brand new. I love the tiny
+i3status and I've gone with the 1pixel window border that is working
+so nicely (mod+b is mapped to cycle *b*order modes; I like titles on
+some things like browsers). I've finally utilized every pixel, have
+custom tiny fonts on everything, and have reached WM nirvana. I could
+never get to this point of beautiful simplicity with GNOME.
+
+--
+twitter:@MicahElliott? |? email:mde at MicahElliott.com? |? http://membean.com
+Remember your words with Membean!
+
+From alex at ua2web.com  Fri May 11 12:17:01 2012
+From: alex at ua2web.com (Alex V. Koval)
+Date: Fri, 11 May 2012 13:17:01 +0300
+Subject: [i3] Gnome-less wm
+In-Reply-To: <CAAuVr73aKDnzyvpqMFCmDCX6ToRKmeCtBaY0=ptysy1gQFuhgw@mail.gmail.com>
+References: <CAAuVr73aKDnzyvpqMFCmDCX6ToRKmeCtBaY0=ptysy1gQFuhgw@mail.gmail.com>
+Message-ID: <20120511131701.180981eb@avk-v131.local>
+
+
+Hi Bruno,
+
+On Fri, 11 May 2012 12:17:52 +1000
+"BRAGA, Bruno" <bruno.braga at gmail.com> wrote:
+ 
+> Right now, I am still reluctant to do everything by hand (like
+> configuring wifi network, setting up bluetooth, etc)
+
+I am not limited by CPU resources, RAM or disk speed, so my preferences
+are mostly about the convenience of the environment.
+
+Usually due to different reasons I do install both Gnome & KDE with all
+their applications, but I only use a few of them at a time.
+
+Current setup:
+ 1. Chromium as a browser
+ 2. Claws-mail as primary mail client (99% of usage), and Apline as
+ backup. (also have Thunderbird installed but not much used at all)
+ 3. Wicd as network manager.
+ 4. Skype (just as is)
+ 5. Pidgin as a multi-client for all other IMs (a few Jabber , ICQ
+    accounts, MSN, Yahoo, AIM for talking with various customers)
+ 6. Dropbox
+ 7. Parcellite.
+ 8. Emacs (99%) or Kate as text editors.
+ 9. xterm as a main basic terminal. I do have Konsole (from KDE)
+    and gnome-terminal, but don't use them because they are both slow
+    to appear/work and also cluttered with a lot of unnecessary details.
+ 10. dmenu to run apps
+ 11. kde dialogs as a file-mime processor
+ 12. direct control of brightness from python script
+ 13. same about sound volume
+ 14. a set of programs to sleep, restore, add/remove external monitor
+ etc.
+ 15. htop
+ 16. iptraf - network stats
+
+
+Exactly:
+ 1) Chromium
+
+tied via key:
+bindsym Mod4+c exec /home/avk/bin/chromium
+
+ 2) I just run it via dmenu. typing 'cla' and RETURN
+
+ 3) wicd. I both start it in .xinitrc AND also have a hotkey
+    to run it in text terminal:
+
+bindsym Mod4+n exec xterm -e wicd-curses
+
+ 4,5,6,7) Skype just starts in ~/.xinitrc or manually
+
+#!/bin/bash
+
+for p in `cat ~/.tray-progs`
+do
+    if test -z "`ps axf|grep $p|grep -v grep`"
+	then
+	echo Starting $p ...
+	$p &
+	else
+	echo Skipping already started program: $p ...
+    fi
+done
+
+where: ~/.tray-progs are:
+wicd-client dropbox parcellite skype pidgin
+ 
+ 8) My emacs config: http://avk-emacs.hg.public.halogen-dg.com/
+
+ 9) xterm settings (in ~/.Xresources)
+
+xterm*geometry: 80x25
+xterm*faceName: dejavu sans mono
+xterm*faceSize: 11
+xterm*saveLines: 10000
+xterm*background: #0c2f35
+xterm*foreground:       #f5deb3
+
+ 10) dmenu
+bindsym Mod4+r exec dmenu_run -fn
+ '-xos4-*-bold-*-*-*-16-*-*-*-*-*-iso10646-1' -nb '#222222' -sf
+ '#00ff00' -sb '#050505' -nf "#ffffff"
+
+ 11) KDE dialogs, add this in ~/.xinitrc:
+export DE=kde
+ 12) 
+# monitor brightness
+bindsym XF86MonBrightnessUp   exec incr_brightness
+bindsym XF86MonBrightnessDown exec decr_brightness
+
+~/bin/incr_brightness:
+sudo ~/bin/_brightness.py -i
+
+.py:
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import optparse
+
+BR_FILE = '/sys/class/backlight/acpi_video0/brightness'
+BR_MAX = 10
+BR_MIN = 0
+
+
+def br_set(value):
+    open(BR_FILE,"w").write("%d\n" % value)
+
+
+def br_increase(current):
+    if current >= BR_MAX:
+        print "can not increase more then %d" % BR_MAX
+        return
+    br_set((current+1))
+
+def br_decrease(current):
+    if current <= BR_MIN:
+        print "can not decrease less then %d" % BR_MIN
+        return
+    br_set((current-1))
+
+
+def main():
+    p = optparse.OptionParser()
+    p.add_option("--increase", '-i', action='store_true')
+    p.add_option("--decrease", '-d', action='store_true')
+    p.add_option("--set", '-s')
+    options, arguments = p.parse_args()
+    current = int(open(BR_FILE).read())
+    if options.increase:
+        br_increase(current)
+    elif options.decrease:
+        br_decrease(current)
+    elif options.set:
+        br_set(int(options.set))
+
+
+if __name__ == '__main__':
+    main()
+
+
+ 13) sound:
+
+bindsym XF86AudioRaiseVolume exec amixer set Master 2dB+
+bindsym XF86AudioLowerVolume exec amixer set Master 2dB-
+bindsym XF86AudioMute exec amixer set Master toggle
+
+ 14) dwm_sleep:
+#!/bin/bash
+xlock &
+sudo ~avk/bin/sleep_mem
+
+sleep_mem:
+echo mem > /sys/power/state
+
+
+ 15) htop - nice program to see processlist
+
+bindsym Mod4+Escape exec xterm -e sudo htop
+
+ 16) iptraf - network stats
+
+bindsym Mod1+F1 exec xterm -e sudo iptraf
+
+Thats just a quick answer. If you have particular questions please ask
+me.
+
+Good luck with i3! 
+
+ WBR, Alex
+
+-- 
+UA2WEB - Ukrainian team developing Web sites & services 
+
+From fernandotcl at i3wm.org  Sat May 12 05:00:53 2012
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Sat, 12 May 2012 00:00:53 -0300
+Subject: [i3] Gnome-less wm
+In-Reply-To: <20120511131701.180981eb@avk-v131.local>
+References: <CAAuVr73aKDnzyvpqMFCmDCX6ToRKmeCtBaY0=ptysy1gQFuhgw@mail.gmail.com>
+ <20120511131701.180981eb@avk-v131.local>
+Message-ID: <CANVYNa_KaOTwZmPufAH86Lp43uu0tYyK7jKvXM7fsqkQm2mrvQ@mail.gmail.com>
+
+Hi,
+
+On Fri, May 11, 2012 at 7:17 AM, Alex V. Koval <alex at ua2web.com> wrote:
+<snip>
+
+Some alternatives that work well with i3:
+
+> ?3. Wicd as network manager.
+
+Gnome's NetworkManager also works great. Invoke nm-applet from the i3
+config and you'll get a tray icon (the same tray icon you get in
+Gnome). I think  wicd has a GUI too, but I never tried wicd.
+
+> ?7. Parcellite.
+
+This is great if you want to merge the X copy and paste buffer with
+the toolkit's ^C + ^V buffers (Windows-like, perhaps more familiar
+shortcuts). Clipboard history too.
+
+> ?12. direct control of brightness from python script
+
+Note that this is not required for all setups.
+
+> ?13. same about sound volume
+
+This can be done from scripts, or you can use a program like
+volumeicon-alsa. With volumeicon-alsa, you also get a tray icon.
+
+I'm totally biased here, but if you're running PulseAudio, I recommend
+pa-applet. As with volumeicon-alsa, you can control the volume with
+the multimedia keys in your keyboard or by interacting with the tray
+icon, and you can also use the tray icon to change the audio
+configuration. E.g., you can choose between HDMI or laptop speakers
+using the tray icon (no need to restart programs, thanks to
+PulseAudio's magic).
+
+> ?14. a set of programs to sleep, restore, add/remove external monitor
+
+I use a script for handling other outputs. I'm not entirely happy with
+it, but for the time being it works okay:
+
+http://pastebin.com/uiF1by2w
+
+I plan to come up with something more flexible eventually, perhaps in
+the form of another tray icon. If anybody knows of an existing
+solution, please let me know.
+
+Regards,
+
+From zeroxia at gmail.com  Sat May 12 05:21:36 2012
+From: zeroxia at gmail.com (zeroxia)
+Date: Sat, 12 May 2012 11:21:36 +0800
+Subject: [i3] Gnome-less wm
+In-Reply-To: <CAAuVr73aKDnzyvpqMFCmDCX6ToRKmeCtBaY0=ptysy1gQFuhgw@mail.gmail.com>
+References: <CAAuVr73aKDnzyvpqMFCmDCX6ToRKmeCtBaY0=ptysy1gQFuhgw@mail.gmail.com>
+Message-ID: <CAB+hAsUkT+v8eABen7RtfgCbuQ6ndpsZjKChFn2Kva=PrB+uUg@mail.gmail.com>
+
+Hi,
+
+There is no harm installing i3-wm beside your normal Ubuntu GNOME
+desktop environment. You can choose the i3 session at GDM login
+screen. And try out various applications, whatever it comes from.
+
+My initial i3 experience was on a laptop installed Xubuntu, that is
+Ubuntu with Xfce desktop environment, because I was heard that Ubuntu
+may have a wider support of different hardwares. Switching to a tiling
+window manager was very pleasant. Later I got a desktop computer to
+work with, and I installed Debian.
+
+For Debian, you can only install a base system, and reboot to your new
+system, then choose exactly those packages you need. Xorg + i3 will
+suffice, no GNOME, no KDE. But I installed "Thunar", the GUI file
+manager from Xfce, which can help me automatically mount a USB stick
+when it's plugged in.
+
+The point is you choose the appropriate application to your liking,
+e.g., wicd-curses or nm-applet to manage your network, or just use
+static network setup like I'm doing in my Debian system; and I like to
+use alsamixer to control the volumes in the terminal, but obviously
+there are a lot of different applets to achieve this same task.
+
+The other packages I installed including SLIM as the display manager,
+mrxvt & urxvt as terminal emulators, Iceweasel (the "Firefox" on
+Debian) & chromium as web browsers, and scim, the Chinese input
+method. Ocassionally I would use Icedove (the "Thunderbird" on Debian)
+and pidgin. Adding xscreensaver, these are almost the full list of X
+applications on my system now.
+
+Regards,
+Xia
+
+On Fri, May 11, 2012 at 10:17 AM, BRAGA, Bruno <bruno.braga at gmail.com> wrote:
+> Hi i3 gurus,
+>
+> I am not sure if this question has popped up here before (if so, apologies).
+> I have migrated from usual Ubuntu (Gnome/Unity) environment to i3-wm, and I
+> am still facing some small issues... I mean, I want to get rid of the Gnome
+> stuff and run a cleaner i3 environment.
+>
+> I guess my question is: how do you use the i3? I guess the i3 is not a
+> complete X environment (as the name says it all: window manager), so which
+> desktop environment should be the best to integrate with it? A simple Xorg?
+> or Xfce? I am sure you guys don't use Gnome (lol)...
+>
+> Right now, I am still reluctant to do everything by hand (like configuring
+> wifi network, setting up bluetooth, etc), so I prefer to use the
+> applications available out there. For network management, I am using wicd,
+> and liking it a lot.
+>
+> I think this is too broad question, but I was hoping I could get some
+> insights on best ways to use the i3, without too much hassle of doing it all
+> manually...
+>
+> For example, I am relying on gnome-settings-daemon (this one fixes
+> keybindings for my mac, such as brightness and volume control, as well as
+> terminal font, etc) and gnome-keyring-daemon (controls the password
+> management for applications, specially used by network managers)... and I
+> don't know how to get rid of them, if I want to (doing all the key mapping
+> by myself is doable, but too much trouble, if there are packages out there
+> solving this for me already).
+>
+> I would like to know how, in your experience, you get to solve such problems
+> to run a i3 environment smoothly...
+>
+> Thanks!
+>
+> --
+> Braga, Bruno
+> www.brunobraga.net
+> bruno.braga at gmail.com
+
+From bruno.braga at gmail.com  Sat May 12 15:19:04 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Sat, 12 May 2012 23:19:04 +1000
+Subject: [i3] Gnome-less wm
+In-Reply-To: <CAELbujpHXv6pWgCgkcmMX8DTktUmiHUFECBM-jL=pz07OaNXfQ@mail.gmail.com>
+References: <CAAuVr73aKDnzyvpqMFCmDCX6ToRKmeCtBaY0=ptysy1gQFuhgw@mail.gmail.com>
+ <CAELbujpHXv6pWgCgkcmMX8DTktUmiHUFECBM-jL=pz07OaNXfQ@mail.gmail.com>
+Message-ID: <CAAuVr70E+mQbCfOY0HSeH_2mEHp65Xo_=HGQk=3QNz4-DdGqrw@mail.gmail.com>
+
+Hi Elliott,
+
+Thanks a lot for you thorough insight! Specially the dotfiles are being
+very helpful to understand things I can do in the i3 config (which is not
+exactly documented in the site).
+
+I've been using i3 for a couple of months now, and I can say that it will
+be hard to like anything else ever again... I always had at my disposal
+large monitor space, so basically rearranging windows were my biggest pain.
+
+I did before some mapping myself with xmodmap, but since I installed the
+new Ubuntu and it just worked, I thought that I was kind of reinventing the
+wheel... but I see, from your experience that it is all about being in
+control of your machine. I get that... I think I will go in same direction.
+
+Arch has always caught my attention here because in most of my problems I
+end up reaching a blog of arch users, where I finally find my answer, so
+good advice as well. I think I just got too used to the aptitude and debian
+packages... I was thinking about going to debian, but since you've said it,
+I will take a more careful look into it. Thanks.
+
+The alt key was also one of the things that bothered me at first, specially
+because I am so used to use the alt key for other stuff, like for browser
+shortcuts.
+
+The Gimp for me was a bad experience, even with the floating windows and
+all, but the most recent updates that remove the floating menus, are a
+salvation for me in i3 environment... libre-office, however, leaves some of
+them out unless I dock them all, a bit weird... since I don't use that very
+often, I can survive as it is.
+
+Thanks again for your inputs. It was pretty helpful!
+
+Cheers,
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Fri, May 11, 2012 at 5:22 PM, Micah Elliott <mde at micahelliott.com> wrote:
+
+> Hey Bruno -- I'm not a guru, but I'll share my story since I'm just a
+> little ways ahead of you. And I've been wanting to pipe up and shower
+> Michael et al with gratitude and praise for what so far looks like the
+> biggest workflow improvement I've found in years. THANK YOU!!
+>
+> My suggestions:
+>
+> * Start by blowing away a toy machine and experiment there. Or I
+> suppose you could be careful and just try to set up as a different
+> user on your main machine. My i3/GNOME integration attempt didn't go
+> well (but maybe it's commonly done). I'm enjoying having left GNOME
+> behind now anyway. So i3/X is all that's needed!
+>
+> * Find someone's dotfiles online who's doing something similar. You
+> probably just need .xinitrc and .i3/config, (and maybe .i3status) for
+> starters. Mine have the bulk of the config (nm-applet, udiskie, font
+> setting) in .i3/config
+> (https://github.com/MicahElliott/dotfiles/blob/master/.i3/config) as I
+> found some things didn't take by just putting into .xinitrc.
+>
+> * You can bind keys easily enough with xev, and xmodmap. I used to use
+> a crazy xkeycaps (IIRC) generated xmodmap to map keys all over the
+> place, but all you need is probably a few lines like in your .xinitrc:
+> https://github.com/MicahElliott/dotfiles/blob/master/.xinitrc . All
+> you absolutely need in it is: exec ck-launch-session dbus-launch i3 .
+> But I've also manually mapped volume controls and pm-suspend. I also
+> call keychain just before firing i3.
+>
+> * Ease into the User's Guide http://i3wm.org/docs/userguide.html, the
+> one and only doc you really need. So nice. Work to memorize the
+> bindings quickly.
+>
+> * Get familiarized with the non-GNOME tool set:
+> https://wiki.archlinux.org/index.php/Common_Applications#Image_Viewers
+>
+> * Use lxappearance to change fonts (and theme if you like)
+>
+> * Rely on mod+r to quickly change things to your i3 config.
+>
+> * Decide a multi-monitor solution. i3 "just works" with zero config,
+> but it's a little different. GNOME spreads a desktop across all
+> monitors, but i3 treats each monitor as separate. I still haven't
+> fully adjusted but have mapped even-numbered desktops to my top
+> monitor and odds to laptop screen. This way I can hit ctrl-1-2 and
+> later ctrl-3-4 to emulate the GNOME way. I'm mixing it up too, but
+> still organize windows this way to large extent. I've bound mod+tab to
+> quckly bounce from one desktop "back_and_forth" to the next. You can
+> use arandr to config monitor settings and then export to a one-line
+> xrandr script. I have 3 setups in ~/bin and can quickly change screens
+> with ~/bin/xr1 (or xr2 or xr3).
+>
+> * Consider switching to Arch: rolling releases for bleeding edge of
+> anything, easy to make your own packages, lots of light-weight package
+> managers to choose from, have more control over what's on your
+> machine, extensive and well curated wiki and forums, and seems to be a
+> nice i3 cohort there. ArchBang was a decent install experience to get
+> graphics, network, etc working OOTB (my head looked like yours after
+> doing a vanilla Arch install :). And I stupidly let the installer
+> choose my root partition at a small size and later tried to load big
+> databases. So I'd recommend making / plenty big or just keeping /home
+> on the same partition.
+>
+> * I couldn't give up my Alt key (not even close!), so mapped mod to
+> Win key. (Right-Alt is my tilde/backtick, so esc is more reachable.)
+> I'm mostly used to reaching for Win (Mod4) now, but I suppose
+> conquering alt/win/ctrl/shift combos for everything is like mastering
+> an instrument. I don't use arrow keys for anything (except stupid
+> browsers and spreadsheets). And as a vim user I was COMPLETELY
+> befuddled by the default jkl; mapping. i3 made it so easy to switch
+> these things (how commonly do people change it to vim's hjkl?). And
+> since I had to lose mod+h to the vim shift, I mapped mod+g to
+> horizontal, which makes some sense being near the vertical v.
+>
+> * I use gimp often and i3's floating windows are working just fine for
+> me. Get used to holding mod and using both mouse keys for quickly
+> moving and resizing. Even non-floating windows benefit from
+> mod+right-mouse.
+>
+> Superfluous background....
+>
+> I'd been using Ubuntu/GNOME for the last ~5 yrs, and using 10.04 LTS
+> since its release. I'd done a lot of tweaking to the point that things
+> were just getting too brittle (and stale). I figured I'd have to make
+> a lot of changes to get going with Unity and now was as good a time as
+> ever to simplify and reorganize. I decided to do the big-bang approach
+> and change OS and WM all in one go. This has turned into a major time
+> sink the last couple weeks but looking like it'll be worth it for
+> another 5+ yrs of happiness (quite possibly on this same machine!).
+>
+> I started with xmonad and got it working pretty well on another Arch
+> machine. Didn't even mind Haskell. Then put it on main system and hit
+> a Haskell packaging problem, bloated my machine with ghc, got into a
+> mess. And, was copying long recipes for xmonad/xmobar configs instead
+> of doing simple things that i3 supports. Also had tried awesomewm and
+> hit some bugs/surprises.
+>
+> Thanks to the simplicity and minimalism of i3 (and Arch) I can finally
+> keep in my head where almost all my configs are and how to change
+> things (well, my vim config is still a bit messy). I'm now on a small
+> (and fast!) SSD and still have plenty of space. I can get new packages
+> every day and all the tools I'm using are brand new. I love the tiny
+> i3status and I've gone with the 1pixel window border that is working
+> so nicely (mod+b is mapped to cycle *b*order modes; I like titles on
+> some things like browsers). I've finally utilized every pixel, have
+> custom tiny fonts on everything, and have reached WM nirvana. I could
+> never get to this point of beautiful simplicity with GNOME.
+>
+> --
+> twitter:@MicahElliott  |  email:mde at MicahElliott.com  |
+> http://membean.com
+> Remember your words with Membean!
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120512/a145b1b8/attachment.html>
+
+From bruno.braga at gmail.com  Sat May 12 15:48:29 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Sat, 12 May 2012 23:48:29 +1000
+Subject: [i3] Gnome-less wm
+In-Reply-To: <20120511131701.180981eb@avk-v131.local>
+References: <CAAuVr73aKDnzyvpqMFCmDCX6ToRKmeCtBaY0=ptysy1gQFuhgw@mail.gmail.com>
+ <20120511131701.180981eb@avk-v131.local>
+Message-ID: <CAAuVr73pNpwUYHJG819xfoxR8ztD9Uv3T=y_eGDrzFY=qyHFZA@mail.gmail.com>
+
+Thanks for the input Alex...
+
+>From your comments and Elliott, I could have a better picture on how to
+improve my environment.
+
+I am currently running linux on a macbook pro machine, which makes
+everything a bit more challenging to get working, but I am almost there...
+surely, with these advises, I will be able to finish up the rest of stuff
+bothering me and ditch Ubuntu/Gnome as a desktop environment for good.
+
+Cheers,
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Fri, May 11, 2012 at 8:17 PM, Alex V. Koval <alex at ua2web.com> wrote:
+
+>
+> Hi Bruno,
+>
+> On Fri, 11 May 2012 12:17:52 +1000
+> "BRAGA, Bruno" <bruno.braga at gmail.com> wrote:
+>
+> > Right now, I am still reluctant to do everything by hand (like
+> > configuring wifi network, setting up bluetooth, etc)
+>
+> I am not limited by CPU resources, RAM or disk speed, so my preferences
+> are mostly about the convenience of the environment.
+>
+> Usually due to different reasons I do install both Gnome & KDE with all
+> their applications, but I only use a few of them at a time.
+>
+> Current setup:
+>  1. Chromium as a browser
+>  2. Claws-mail as primary mail client (99% of usage), and Apline as
+>  backup. (also have Thunderbird installed but not much used at all)
+>  3. Wicd as network manager.
+>  4. Skype (just as is)
+>  5. Pidgin as a multi-client for all other IMs (a few Jabber , ICQ
+>    accounts, MSN, Yahoo, AIM for talking with various customers)
+>  6. Dropbox
+>  7. Parcellite.
+>  8. Emacs (99%) or Kate as text editors.
+>  9. xterm as a main basic terminal. I do have Konsole (from KDE)
+>    and gnome-terminal, but don't use them because they are both slow
+>    to appear/work and also cluttered with a lot of unnecessary details.
+>  10. dmenu to run apps
+>  11. kde dialogs as a file-mime processor
+>  12. direct control of brightness from python script
+>  13. same about sound volume
+>  14. a set of programs to sleep, restore, add/remove external monitor
+>  etc.
+>  15. htop
+>  16. iptraf - network stats
+>
+>
+> Exactly:
+>  1) Chromium
+>
+> tied via key:
+> bindsym Mod4+c exec /home/avk/bin/chromium
+>
+>  2) I just run it via dmenu. typing 'cla' and RETURN
+>
+>  3) wicd. I both start it in .xinitrc AND also have a hotkey
+>    to run it in text terminal:
+>
+> bindsym Mod4+n exec xterm -e wicd-curses
+>
+>  4,5,6,7) Skype just starts in ~/.xinitrc or manually
+>
+> #!/bin/bash
+>
+> for p in `cat ~/.tray-progs`
+> do
+>    if test -z "`ps axf|grep $p|grep -v grep`"
+>        then
+>        echo Starting $p ...
+>        $p &
+>        else
+>        echo Skipping already started program: $p ...
+>    fi
+> done
+>
+> where: ~/.tray-progs are:
+> wicd-client dropbox parcellite skype pidgin
+>
+>  8) My emacs config: http://avk-emacs.hg.public.halogen-dg.com/
+>
+>  9) xterm settings (in ~/.Xresources)
+>
+> xterm*geometry: 80x25
+> xterm*faceName: dejavu sans mono
+> xterm*faceSize: 11
+> xterm*saveLines: 10000
+> xterm*background: #0c2f35
+> xterm*foreground:       #f5deb3
+>
+>  10) dmenu
+> bindsym Mod4+r exec dmenu_run -fn
+>  '-xos4-*-bold-*-*-*-16-*-*-*-*-*-iso10646-1' -nb '#222222' -sf
+>  '#00ff00' -sb '#050505' -nf "#ffffff"
+>
+>  11) KDE dialogs, add this in ~/.xinitrc:
+> export DE=kde
+>  12)
+> # monitor brightness
+> bindsym XF86MonBrightnessUp   exec incr_brightness
+> bindsym XF86MonBrightnessDown exec decr_brightness
+>
+> ~/bin/incr_brightness:
+> sudo ~/bin/_brightness.py -i
+>
+> .py:
+> #!/usr/bin/env python
+> # -*- coding: utf-8 -*-
+>
+> import optparse
+>
+> BR_FILE = '/sys/class/backlight/acpi_video0/brightness'
+> BR_MAX = 10
+> BR_MIN = 0
+>
+>
+> def br_set(value):
+>    open(BR_FILE,"w").write("%d\n" % value)
+>
+>
+> def br_increase(current):
+>    if current >= BR_MAX:
+>        print "can not increase more then %d" % BR_MAX
+>        return
+>    br_set((current+1))
+>
+> def br_decrease(current):
+>    if current <= BR_MIN:
+>        print "can not decrease less then %d" % BR_MIN
+>        return
+>    br_set((current-1))
+>
+>
+> def main():
+>    p = optparse.OptionParser()
+>    p.add_option("--increase", '-i', action='store_true')
+>    p.add_option("--decrease", '-d', action='store_true')
+>    p.add_option("--set", '-s')
+>    options, arguments = p.parse_args()
+>    current = int(open(BR_FILE).read())
+>    if options.increase:
+>        br_increase(current)
+>    elif options.decrease:
+>        br_decrease(current)
+>    elif options.set:
+>        br_set(int(options.set))
+>
+>
+> if __name__ == '__main__':
+>    main()
+>
+>
+>  13) sound:
+>
+> bindsym XF86AudioRaiseVolume exec amixer set Master 2dB+
+> bindsym XF86AudioLowerVolume exec amixer set Master 2dB-
+> bindsym XF86AudioMute exec amixer set Master toggle
+>
+>  14) dwm_sleep:
+> #!/bin/bash
+> xlock &
+> sudo ~avk/bin/sleep_mem
+>
+> sleep_mem:
+> echo mem > /sys/power/state
+>
+>
+>  15) htop - nice program to see processlist
+>
+> bindsym Mod4+Escape exec xterm -e sudo htop
+>
+>  16) iptraf - network stats
+>
+> bindsym Mod1+F1 exec xterm -e sudo iptraf
+>
+> Thats just a quick answer. If you have particular questions please ask
+> me.
+>
+> Good luck with i3!
+>
+>  WBR, Alex
+>
+> --
+> UA2WEB - Ukrainian team developing Web sites & services
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120512/dffff2ce/attachment-0001.html>
+
+From bruno.braga at gmail.com  Sat May 12 15:58:36 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Sat, 12 May 2012 23:58:36 +1000
+Subject: [i3] Gnome-less wm
+In-Reply-To: <CANVYNa_KaOTwZmPufAH86Lp43uu0tYyK7jKvXM7fsqkQm2mrvQ@mail.gmail.com>
+References: <CAAuVr73aKDnzyvpqMFCmDCX6ToRKmeCtBaY0=ptysy1gQFuhgw@mail.gmail.com>
+ <20120511131701.180981eb@avk-v131.local>
+ <CANVYNa_KaOTwZmPufAH86Lp43uu0tYyK7jKvXM7fsqkQm2mrvQ@mail.gmail.com>
+Message-ID: <CAAuVr70yLQsrMkz3zZDB2Xb-JgB66YPmavawGOY1N8ccjc+d_Q@mail.gmail.com>
+
+Hei Fernando,
+
+Thanks! Some comments in-line...
+
+On Sat, May 12, 2012 at 1:00 PM, Fernando Lemos <fernandotcl at i3wm.org>wrote:
+
+> Hi,
+>
+> On Fri, May 11, 2012 at 7:17 AM, Alex V. Koval <alex at ua2web.com> wrote:
+> <snip>
+>
+> Some alternatives that work well with i3:
+>
+> >  3. Wicd as network manager.
+>
+> Gnome's NetworkManager also works great. Invoke nm-applet from the i3
+> config and you'll get a tray icon (the same tray icon you get in
+> Gnome). I think  wicd has a GUI too, but I never tried wicd.
+>
+
+I had some issues with nm because of my drivers, and decided to give it a
+try to wicd... it is working great (you have more powerful stuff on it, and
+the freaking icon shows up in the i3 bar). But somehow, when the network is
+down, it leaves dirt in the ifconfig, so the i3status still thinks I am
+connected, until I force a ifconfig down... this is weird, but I haven't
+looked into it in details yet.
+
+
+>
+> >  7. Parcellite.
+>
+> This is great if you want to merge the X copy and paste buffer with
+> the toolkit's ^C + ^V buffers (Windows-like, perhaps more familiar
+> shortcuts). Clipboard history too.
+>
+
+The gnome-terminal accepts ctrl+shift+c/v, which is pretty handy (the
+original ctrl+c is used to break/stop scripts/programs)... do you know a
+mapping in xterm in similar way?
+
+
+>
+> >  12. direct control of brightness from python script
+>
+> Note that this is not required for all setups.
+>
+
+Yeah, it seems to be the way to do this... :S
+
+
+>
+> >  13. same about sound volume
+>
+> This can be done from scripts, or you can use a program like
+> volumeicon-alsa. With volumeicon-alsa, you also get a tray icon.
+>
+> I'm totally biased here, but if you're running PulseAudio, I recommend
+> pa-applet. As with volumeicon-alsa, you can control the volume with
+> the multimedia keys in your keyboard or by interacting with the tray
+> icon, and you can also use the tray icon to change the audio
+> configuration. E.g., you can choose between HDMI or laptop speakers
+> using the tray icon (no need to restart programs, thanks to
+> PulseAudio's magic).
+>
+
+I really liked it! the gnome-sound-applet also worked for me, but the icon
+size is too large for i3bar, so it would not show up (like nm-applet).
+This one here goes to my list of startup programs! :-)
+
+
+> >  14. a set of programs to sleep, restore, add/remove external monitor
+>
+> I use a script for handling other outputs. I'm not entirely happy with
+> it, but for the time being it works okay:
+>
+> http://pastebin.com/uiF1by2w
+>
+> I plan to come up with something more flexible eventually, perhaps in
+> the form of another tray icon. If anybody knows of an existing
+> solution, please let me know.
+>
+>
+This one here is still a bit fuzzy for me... I am just using the
+gnome-settings-daemon, and everything magically works... trying to do it
+manually ws a bit pain, but I got it working with the pm-suspend command
+(sudo required).
+
+Thanks for your input here!
+
+BRUNO
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120512/b5c6e9bc/attachment.html>
+
+From bruno.braga at gmail.com  Sat May 12 16:09:18 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Sun, 13 May 2012 00:09:18 +1000
+Subject: [i3] Gnome-less wm
+In-Reply-To: <CAB+hAsUkT+v8eABen7RtfgCbuQ6ndpsZjKChFn2Kva=PrB+uUg@mail.gmail.com>
+References: <CAAuVr73aKDnzyvpqMFCmDCX6ToRKmeCtBaY0=ptysy1gQFuhgw@mail.gmail.com>
+ <CAB+hAsUkT+v8eABen7RtfgCbuQ6ndpsZjKChFn2Kva=PrB+uUg@mail.gmail.com>
+Message-ID: <CAAuVr70bwLToK9S7yJz3y=pa-CRQKDwCX-qBdhd+st6dbtjtVg@mail.gmail.com>
+
+Hi Xia,
+
+Thanks for your feedback. Some comments in-line:
+
+On Sat, May 12, 2012 at 1:21 PM, zeroxia <zeroxia at gmail.com> wrote:
+
+> Hi,
+>
+> There is no harm installing i3-wm beside your normal Ubuntu GNOME
+> desktop environment. You can choose the i3 session at GDM login
+> screen. And try out various applications, whatever it comes from.
+>
+> My initial i3 experience was on a laptop installed Xubuntu, that is
+> Ubuntu with Xfce desktop environment, because I was heard that Ubuntu
+> may have a wider support of different hardwares. Switching to a tiling
+> window manager was very pleasant. Later I got a desktop computer to
+> work with, and I installed Debian.
+>
+> For Debian, you can only install a base system, and reboot to your new
+> system, then choose exactly those packages you need. Xorg + i3 will
+> suffice, no GNOME, no KDE. But I installed "Thunar", the GUI file
+> manager from Xfce, which can help me automatically mount a USB stick
+> when it's plugged in.
+>
+
+That's one of the ideas I had in mind... Debian or Arch, but I am more
+tended to Debian because I am so used to Aptitude and the deb packages...
+
+
+>
+> The point is you choose the appropriate application to your liking,
+> e.g., wicd-curses or nm-applet to manage your network, or just use
+> static network setup like I'm doing in my Debian system; and I like to
+> use alsamixer to control the volumes in the terminal, but obviously
+> there are a lot of different applets to achieve this same task.
+>
+
+I think you are totally right... as a newbie in the i3wm, I wanted to get
+everyone's opinion and experience with it, so I don't go through the
+hardest way of doing things... Just by reading everyone's comments here, I
+already found some issues on my own to solve.
+
+Do you have any issues with keyrings? No one commented about it, but, for
+example in my case, if I don't have the gnome-keyring-daemon running, other
+applications that store passwords simply don't work (eg. wicd, polly,
+empathy, pidgin, etc), well, they do work, but they do not store the
+password, so if you restart it, it will prompt all over again... So I was
+wondering what would be the keyring manager for i3...
+
+
+>
+> The other packages I installed including SLIM as the display manager,
+> mrxvt & urxvt as terminal emulators, Iceweasel (the "Firefox" on
+> Debian) & chromium as web browsers, and scim, the Chinese input
+> method. Ocassionally I would use Icedove (the "Thunderbird" on Debian)
+> and pidgin. Adding xscreensaver, these are almost the full list of X
+> applications on my system now.
+>
+
+This I am particularly interested, because I need to write Japanese,
+Portuguese and Chinese on my machine. I am currently using ibus, which is
+the default from Ubuntu, and it works in i3 as well, so I did not bother
+looking for better approaches. Is SLIM better?
+
+Thanks again!
+
+BRUNO
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120513/ecaca437/attachment.html>
+
+From michael at i3wm.org  Sat May 12 18:31:23 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 12 May 2012 18:31:23 +0200
+Subject: [i3] Gnome-less wm
+In-Reply-To: <CAAuVr70E+mQbCfOY0HSeH_2mEHp65Xo_=HGQk=3QNz4-DdGqrw@mail.gmail.com>
+References: <CAAuVr73aKDnzyvpqMFCmDCX6ToRKmeCtBaY0=ptysy1gQFuhgw@mail.gmail.com>
+ <CAELbujpHXv6pWgCgkcmMX8DTktUmiHUFECBM-jL=pz07OaNXfQ@mail.gmail.com>
+ <CAAuVr70E+mQbCfOY0HSeH_2mEHp65Xo_=HGQk=3QNz4-DdGqrw@mail.gmail.com>
+Message-ID: <20120512163123.16678.51941@midna.zekjur.net>
+
+Hey Bruno,
+
+Quoting BRAGA, Bruno (2012-05-12 15:19:04)
+> Thanks a lot for you thorough insight! Specially the dotfiles are being very
+> helpful to understand things I can do in the i3 config (which is not exactly
+> documented in the site).
+We are aware of that fact. In case anybody wants to help to get things going, a
+nice article about your setup with your config and additional programs (like
+the mailing list posts), possibly with a few screenshots, are a wonderful
+contribution.
+
+I?d then add these to the website as example setups.
+
+Best regards,
+Michael
+
+From jfstraeten at scarlet.be  Sat May 12 23:16:47 2012
+From: jfstraeten at scarlet.be (JF Straeten)
+Date: Sat, 12 May 2012 23:16:47 +0200
+Subject: [i3] Gnome-less wm
+In-Reply-To: <20120512163123.16678.51941@midna.zekjur.net>
+References: <CAAuVr73aKDnzyvpqMFCmDCX6ToRKmeCtBaY0=ptysy1gQFuhgw@mail.gmail.com>
+ <CAELbujpHXv6pWgCgkcmMX8DTktUmiHUFECBM-jL=pz07OaNXfQ@mail.gmail.com>
+ <CAAuVr70E+mQbCfOY0HSeH_2mEHp65Xo_=HGQk=3QNz4-DdGqrw@mail.gmail.com>
+ <20120512163123.16678.51941@midna.zekjur.net>
+Message-ID: <20120512211647.GA349@jones.jfs.dt>
+
+
+Hi Michael,
+
+On Sat, May 12, 2012 at 06:31:23PM +0200, Michael Stapelberg wrote:
+
+> We are aware of that fact. In case anybody wants to help to get
+> things going, a nice article about your setup with your config and
+> additional programs (like the mailing list posts), possibly with a
+> few screenshots, are a wonderful contribution.
+> 
+> I?d then add these to the website as example setups.
+
+Is English mandatory or do you also welcome an article in french ?
+(Quickier for me to write something in french, but english is
+possible.)
+
+And what about the desired format ? LaTeX/PDF is suitable ? Or do you
+prefer something else ? (Except of course Ms-Word ;-)
+
+Tia,
+
+
+-- 
+
+JFS.
+
+From michael at i3wm.org  Sun May 13 11:57:44 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 13 May 2012 11:57:44 +0200
+Subject: [i3] Gnome-less wm
+In-Reply-To: <20120512211647.GA349@jones.jfs.dt>
+References: <CAAuVr73aKDnzyvpqMFCmDCX6ToRKmeCtBaY0=ptysy1gQFuhgw@mail.gmail.com>
+ <CAELbujpHXv6pWgCgkcmMX8DTktUmiHUFECBM-jL=pz07OaNXfQ@mail.gmail.com>
+ <CAAuVr70E+mQbCfOY0HSeH_2mEHp65Xo_=HGQk=3QNz4-DdGqrw@mail.gmail.com>
+ <20120512163123.16678.51941@midna.zekjur.net>
+ <20120512211647.GA349@jones.jfs.dt>
+Message-ID: <20120513095744.20140.23651@midna.zekjur.net>
+
+Hey JFS,
+
+Quoting JF Straeten (2012-05-12 23:16:47)
+> Is English mandatory or do you also welcome an article in french ?
+> (Quickier for me to write something in french, but english is
+> possible.)
+Please do it in english.
+
+> And what about the desired format ? LaTeX/PDF is suitable ? Or do you
+> prefer something else ? (Except of course Ms-Word ;-)
+HTML. It will use the same (or a very similar) stylesheet as i3wm.org itself
+(being a subsection), so please don?t use custom styles.
+
+Best regards,
+Michael
+
+From bruno.braga at gmail.com  Sun May 13 12:47:35 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Sun, 13 May 2012 20:47:35 +1000
+Subject: [i3] Gnome-less wm
+In-Reply-To: <20120512163123.16678.51941@midna.zekjur.net>
+References: <CAAuVr73aKDnzyvpqMFCmDCX6ToRKmeCtBaY0=ptysy1gQFuhgw@mail.gmail.com>
+ <CAELbujpHXv6pWgCgkcmMX8DTktUmiHUFECBM-jL=pz07OaNXfQ@mail.gmail.com>
+ <CAAuVr70E+mQbCfOY0HSeH_2mEHp65Xo_=HGQk=3QNz4-DdGqrw@mail.gmail.com>
+ <20120512163123.16678.51941@midna.zekjur.net>
+Message-ID: <CAAuVr721efY+tgkPTNUa4RMdM0hOCMGLojgBBkHGyfdgYhERuQ@mail.gmail.com>
+
+Michael,
+
+I would gladly try to help on that. I will try to compile what I have
+gathered here (and from other sources) and suggest improvements to the
+documentation.
+
+I believe that having a thorough doc of the most used applications, in
+terms of best practices to put them working with i3, would be a great place
+to start.
+
+I will let you know as soon as I have something consistent and worthy of
+your review.
+
+Best Regards,
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Sun, May 13, 2012 at 2:31 AM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hey Bruno,
+>
+> Quoting BRAGA, Bruno (2012-05-12 15:19:04)
+> > Thanks a lot for you thorough insight! Specially the dotfiles are being
+> very
+> > helpful to understand things I can do in the i3 config (which is not
+> exactly
+> > documented in the site).
+> We are aware of that fact. In case anybody wants to help to get things
+> going, a
+> nice article about your setup with your config and additional programs
+> (like
+> the mailing list posts), possibly with a few screenshots, are a wonderful
+> contribution.
+>
+> I?d then add these to the website as example setups.
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120513/f50dca79/attachment.html>
+
+From jfstraeten at scarlet.be  Sun May 13 17:38:42 2012
+From: jfstraeten at scarlet.be (JF Straeten)
+Date: Sun, 13 May 2012 17:38:42 +0200
+Subject: [i3] Gnome-less wm
+In-Reply-To: <20120513095744.20140.23651@midna.zekjur.net>
+References: <CAAuVr73aKDnzyvpqMFCmDCX6ToRKmeCtBaY0=ptysy1gQFuhgw@mail.gmail.com>
+ <CAELbujpHXv6pWgCgkcmMX8DTktUmiHUFECBM-jL=pz07OaNXfQ@mail.gmail.com>
+ <CAAuVr70E+mQbCfOY0HSeH_2mEHp65Xo_=HGQk=3QNz4-DdGqrw@mail.gmail.com>
+ <20120512163123.16678.51941@midna.zekjur.net>
+ <20120512211647.GA349@jones.jfs.dt>
+ <20120513095744.20140.23651@midna.zekjur.net>
+Message-ID: <20120513153842.GA25305@jones.jfs.dt>
+
+
+Hi Michael,
+
+On Sun, May 13, 2012 at 11:57:44AM +0200, Michael Stapelberg wrote:
+
+> > Is English mandatory [...]
+> Please do it in english.
+
+Ok.
+
+
+> > And what about the desired format ? [...]
+> HTML. It will use the same (or a very similar) stylesheet as i3wm.org itself
+> (being a subsection), so please don?t use custom styles.
+
+Ok. I'm by no means an HTML ninja, but will see what I can do ;)
+
+I'll suppose that you can make something with a basic LibreOffice HTML
+document, without frills.
+
+
+A+
+
+-- 
+
+JFS.
+
+From pkordy at gmail.com  Sun May 13 20:22:33 2012
+From: pkordy at gmail.com (Piotr Kordy)
+Date: Sun, 13 May 2012 20:22:33 +0200
+Subject: [i3] Gnome-less wm
+In-Reply-To: <20120513153842.GA25305@jones.jfs.dt>
+References: <CAAuVr73aKDnzyvpqMFCmDCX6ToRKmeCtBaY0=ptysy1gQFuhgw@mail.gmail.com>
+ <CAELbujpHXv6pWgCgkcmMX8DTktUmiHUFECBM-jL=pz07OaNXfQ@mail.gmail.com>
+ <CAAuVr70E+mQbCfOY0HSeH_2mEHp65Xo_=HGQk=3QNz4-DdGqrw@mail.gmail.com>
+ <20120512163123.16678.51941@midna.zekjur.net>
+ <20120512211647.GA349@jones.jfs.dt>
+ <20120513095744.20140.23651@midna.zekjur.net>
+ <20120513153842.GA25305@jones.jfs.dt>
+Message-ID: <CAPNvPCPG-nNbH37Qu77=1k+3MLfc9G-MmqXUyia=1V7jkDM_VA@mail.gmail.com>
+
+Hi all,
+I use linux since 9 months so I am still learning new things about it
+I3 was my first choice after looking at quite some number of windows
+managers like ratpoison or musica etc.
+
+To exhance i3 I use conky with dzen2. I compiled my own latest
+versions (conky to avoid startup bug and dzen2 to support xft fonts).
+Here are my config files: conky - http://pastebin.com/DAbJkdTK  i3:
+http://pastebin.com/5a1bEehc and python script to notify about emails:
+http://pastebin.com/SA4UAeiU . Note that config is designed for dvorak
+for programmers keyboard layout.
+
+Here is short list of other programs that  I use in the order of frequency:
+urxvt-256color - a terminal customised to support copy-paste, link clicking etc
+    config file at http://pastebin.com/xCEPvC6f
+    By the way I find DejaVu Sans Mono to be the best fixed-width font
+with decent unicode support.
+firefox (actually iceweasel) with pentadactyl as main plugin to
+minimize mouse usage. Here is my pentadactyl
+config:http://pastebin.com/MSa7r8ve . Some more addons that I
+sometimes use (I have several profiles) Adblock, Gnome-keyring,
+FaviconizeTab, Noscript, DomainDetails, GreaseMonkey, Firebug,
+Wappalyzer, Lazarus, User Agent Switcher, View Dependencies and some
+other pentesting stuff.
+fbxkbd - for icon for changing keyboard layout
+vim - for java, latex, c++ etc (with heavy customisation) - more than
+40 kb of config files :P
+zsh for shell and other stuff is more common like pidgin, parcellite.
+
+The things I am still looking for are:
+- good  two panel file manager with key customization (vifm is so far
+the best I found but it is terminal based and it is impossible to bind
+some keys like shift tab)
+- lightweiht login manager - I use gdm at the moment.
+- good way to rebind keys - at the moment I am using xautomation
+package but what I failed to do with it is to unify the key to exit
+from applications. (like ctrl+q - but when I bind ctr+q to send ctrl+q
+using xev in i3 config, bad things happen). The only solution I see is
+to add window title/id bindings in i3. I have it in my todo list but
+it wil for sure not have time to do it for next 3 months.
+Those are my 3 cents...
+Cheers,
+Piotr
+
+From zeroxia at gmail.com  Mon May 14 07:06:44 2012
+From: zeroxia at gmail.com (zeroxia)
+Date: Mon, 14 May 2012 13:06:44 +0800
+Subject: [i3] Gnome-less wm
+In-Reply-To: <CAAuVr70bwLToK9S7yJz3y=pa-CRQKDwCX-qBdhd+st6dbtjtVg@mail.gmail.com>
+References: <CAAuVr73aKDnzyvpqMFCmDCX6ToRKmeCtBaY0=ptysy1gQFuhgw@mail.gmail.com>
+ <CAB+hAsUkT+v8eABen7RtfgCbuQ6ndpsZjKChFn2Kva=PrB+uUg@mail.gmail.com>
+ <CAAuVr70bwLToK9S7yJz3y=pa-CRQKDwCX-qBdhd+st6dbtjtVg@mail.gmail.com>
+Message-ID: <CAB+hAsXmB9F25tXHW6jFf2fZ-=rtoKRry9OvgMX_7t5SJtu1fQ@mail.gmail.com>
+
+Hi Bruno,
+
+I have never used the gnome-keyring, so I can't provide any comments.
+
+For me the SLIM can provide a login screen, and let me start my i3
+session, this is all I need, and a little better than typing "startx"
+from the terminal, so I use it. :-P
+
+Regards,
+Xia.
+
+On Sat, May 12, 2012 at 10:09 PM, BRAGA, Bruno <bruno.braga at gmail.com> wrote:
+> Hi Xia,
+>
+> Thanks for your feedback. Some comments in-line:
+>
+> On Sat, May 12, 2012 at 1:21 PM, zeroxia <zeroxia at gmail.com> wrote:
+>>
+>> Hi,
+>>
+>> There is no harm installing i3-wm beside your normal Ubuntu GNOME
+>> desktop environment. You can choose the i3 session at GDM login
+>> screen. And try out various applications, whatever it comes from.
+>>
+>> My initial i3 experience was on a laptop installed Xubuntu, that is
+>> Ubuntu with Xfce desktop environment, because I was heard that Ubuntu
+>> may have a wider support of different hardwares. Switching to a tiling
+>> window manager was very pleasant. Later I got a desktop computer to
+>> work with, and I installed Debian.
+>>
+>> For Debian, you can only install a base system, and reboot to your new
+>> system, then choose exactly those packages you need. Xorg + i3 will
+>> suffice, no GNOME, no KDE. But I installed "Thunar", the GUI file
+>> manager from Xfce, which can help me automatically mount a USB stick
+>> when it's plugged in.
+>
+>
+> That's one of the ideas I had in mind... Debian or Arch, but I am more
+> tended to Debian because I am so used to Aptitude and the deb packages...
+>
+>>
+>>
+>> The point is you choose the appropriate application to your liking,
+>> e.g., wicd-curses or nm-applet to manage your network, or just use
+>> static network setup like I'm doing in my Debian system; and I like to
+>> use alsamixer to control the volumes in the terminal, but obviously
+>> there are a lot of different applets to achieve this same task.
+>
+>
+> I think you are totally right... as a newbie in the i3wm, I wanted to get
+> everyone's opinion and experience with it, so I don't go through the hardest
+> way of doing things... Just by reading everyone's comments here, I already
+> found some issues on my own to solve.
+>
+> Do you have any issues with keyrings? No one commented about it, but, for
+> example in my case, if I don't have the gnome-keyring-daemon running, other
+> applications that store passwords simply don't work (eg. wicd, polly,
+> empathy, pidgin, etc), well, they do work, but they do not store the
+> password, so if you restart it, it will prompt all over again... So I was
+> wondering what would be the keyring manager for i3...
+>
+>>
+>>
+>> The other packages I installed including SLIM as the display manager,
+>> mrxvt & urxvt as terminal emulators, Iceweasel (the "Firefox" on
+>> Debian) & chromium as web browsers, and scim, the Chinese input
+>> method. Ocassionally I would use Icedove (the "Thunderbird" on Debian)
+>> and pidgin. Adding xscreensaver, these are almost the full list of X
+>> applications on my system now.
+>
+>
+> This I am particularly interested, because I need to write Japanese,
+> Portuguese and Chinese on my machine. I am currently using ibus, which is
+> the default from Ubuntu, and it works in i3 as well, so I did not bother
+> looking for better approaches. Is SLIM better?
+>
+> Thanks again!
+>
+> BRUNO
+
+
+
+-- 
+Regards,
+Xia Zuoling
+http://zeroxia.org/blog/
+
+QQ: 153570344
+MSN: zerox at live.com
+The world is beautiful for you.
+
+From bruno.braga at gmail.com  Sun May 13 13:45:19 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Sun, 13 May 2012 21:45:19 +1000
+Subject: [i3] I3-wm flash issue
+In-Reply-To: <E5BBB49C-2C3E-4FAA-B177-BF0FC862423E@gmail.com>
+References: <E5BBB49C-2C3E-4FAA-B177-BF0FC862423E@gmail.com>
+Message-ID: <CAAuVr70PFpoNEGWazYhx_QNY2ZzEeiVHOEOxwc_+VGpGU3Y1+Q@mail.gmail.com>
+
+Just wanted to ask if anyone has faced this problem before, and what you
+did about it.
+
+Every time I leave a tab in the browser with a flash running (eg. youtube),
+it also gets displayed on other workspaces (refer to attachment). The weird
+thing is that taking a screenshot of the window, nothing shows up, so I
+took a photo using my mobile...
+
+Thanks!
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120513/15bb36ec/attachment-0001.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: tn_photo.JPG
+Type: image/jpeg
+Size: 327628 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120513/15bb36ec/attachment-0001.jpe>
+
+From lobl.pavel at gmail.com  Mon May 14 11:08:40 2012
+From: lobl.pavel at gmail.com (Pavel =?iso-8859-1?Q?L=F6bl?=)
+Date: Mon, 14 May 2012 11:08:40 +0200
+Subject: [i3] I3-wm flash issue
+In-Reply-To: <CAAuVr70PFpoNEGWazYhx_QNY2ZzEeiVHOEOxwc_+VGpGU3Y1+Q@mail.gmail.com>
+References: <E5BBB49C-2C3E-4FAA-B177-BF0FC862423E@gmail.com>
+ <CAAuVr70PFpoNEGWazYhx_QNY2ZzEeiVHOEOxwc_+VGpGU3Y1+Q@mail.gmail.com>
+Message-ID: <20120514090840.GA4686@lenka.lan>
+
+Hi Bruno,
+
+I think this is common issue with Adobe Flash Player and nVidia
+proprietary drivers. I guess it can be solved by disabling hardware
+acceleration of flash. The system-wide settings is in /etc/adobe/mms.cfg
+but disabling it in there may not work. Probalby there is per user settings
+somewhere in your home (not sure where exactly). But you can right-click
+on a flash video go to settings and disable the hardware acceleration
+in there. Another issue is this internal flash menu is sometimes
+unclickable (it just ignores your mouse). Then you have to fullscreen
+the flash video at first (on youtube perhaps). Yeah. This is kinda funny
+and tricky. But if i remember it worked for me.
+
+Pavel
+
+On Sun, May 13, 2012 at 09:45:19PM +1000, BRAGA, Bruno wrote:
+>    Just wanted to ask if anyone has faced this problem before, and what you
+>    did about it.
+>    Every time I leave a tab in the browser with a flash running (eg.
+>    youtube), it also gets displayed on other workspaces (refer to
+>    attachment). The weird thing is that taking a screenshot of the window,
+>    nothing shows up, so I took a photo using my mobile...
+>    Thanks!
+> 
+>    --
+>    Braga, Bruno
+>    [1]www.brunobraga.net
+>    [2]bruno.braga at gmail.com
+> 
+> References
+> 
+>    Visible links
+>    1. http://www.brunobraga.net/
+>    2. mailto:bruno.braga at gmail.com
+
+
+
+From listmail at b79.net  Tue May 15 07:53:37 2012
+From: listmail at b79.net (John Magolske)
+Date: Mon, 14 May 2012 22:53:37 -0700
+Subject: [i3] Window decoration colors unexpectedly different after upgrade
+	to 4.2
+Message-ID: <20120515055337.GA18517@s70206.gridserver.com>
+
+Hi,
+
+After upgrading i3 to version 4.2 (from 3.x ...don't recall the
+exact version), the colors of the window decorations are unexpectedly
+different. For example, this will make a black background:
+    client.focused #4D4D4D #000000 #AACCBB
+
+and this will make a white background:
+    client.focused #4D4D4D #FFFFFF #AACCBB
+
+But now, with this:
+    client.focused #4D4D4D #555555 #AACCBB
+
+...the background looks quite turquoise. I'd expect #555555 to make
+for a shade of grey.
+
+Below is the color-related section from my ~/.i3/config file. All the
+#rrggbb values are making unexpected colors, biased towards shades of
+green. Is there some setting that might be affecting this?
+
+    #                        border      background  text
+    client.focused           #4D4D4D    #2C2D2E     #AACCBB
+    client.unfocused         #2C2D2E    #2C2D2E     #707678
+    client.focused_inactive  #2C2D2E    #2C2D2E     #AACCBB
+    client.urgent            #FEA63C    #4D4D4D     #FFE863
+
+    bar {
+        colors {
+            background #000000
+            statusline #ffffff
+            focused_workspace  #77AA99 #3D3D3D  #AACCBB
+            active_workspace   #77AA99 #3D3D3D  #AACCBB
+            inactive_workspace #2C2D2E #2C2D2E  #707678
+            urgent_workspace   #FEA63C #4D4D4D  #FFE863
+        }
+    }
+
+Thanks for any help,
+
+John
+
+-- 
+John Magolske
+http://B79.net/contact
+
+From tobisgd at yahoo.de  Tue May 15 18:59:36 2012
+From: tobisgd at yahoo.de (Tobias Eichmann)
+Date: Tue, 15 May 2012 18:59:36 +0200
+Subject: [i3] Problem with switching to named workspaces
+Message-ID: <4FB28B78.40301@yahoo.de>
+
+  On my never ending journey to find the optimal tiling WM I am 
+currently fiddling with i3 and til reallynow I like it.
+
+All is working fine, it is very configurable and easy to do that, thanks 
+for the great work.
+The only problem I have is that I can't switch to named workspaces that 
+begin with a number, like described in the manual.
+For example, I want to auto-start Firefox and also want it to launch 
+every time on the workspace named 1: Web, which is easily done with 
+these lines in the configuration file:
+
+exec firefox
+assign [class = "Firefox"] 1: Web
+
+There is no problem with that. The problem is that I can't switch to 
+workspaces named like that using the keyboard.
+I tried all of the following lines in my configuration file, but none 
+worked:
+
+bindsym Mod4+1 workspace 1
+bindsym Mod4+1 workspace 1: Web
+bindsym Mod4+1 workspace "1: Web"
+bindsym Mod4+1 workspace number 1
+
+Has anyone a clue what I am doing wrong? I simply can't figure it out.
+
+From michael at i3wm.org  Tue May 15 19:41:07 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 15 May 2012 19:41:07 +0200
+Subject: [i3] Problem with switching to named workspaces
+In-Reply-To: <4FB28B78.40301@yahoo.de>
+References: <4FB28B78.40301@yahoo.de>
+Message-ID: <20120515174107.30413.88807@midna.zekjur.net>
+
+Hi Tobias,
+
+Quoting Tobias Eichmann (2012-05-15 18:59:36)
+> exec firefox
+> assign [class = "Firefox"] 1: Web
+Make sure that you don?t have trailing whitespace, tabs, etc. here.
+
+> There is no problem with that. The problem is that I can't switch to 
+> workspaces named like that using the keyboard.
+> I tried all of the following lines in my configuration file, but none 
+> worked:
+> 
+> bindsym Mod4+1 workspace 1
+This will not work, it looks for "1".
+
+> bindsym Mod4+1 workspace 1: Web
+> bindsym Mod4+1 workspace "1: Web"
+Those should work, assuming you don?t have trailing whitespace etc. above.
+
+> bindsym Mod4+1 workspace number 1
+This has to work. At this point I suspect you are doing something very wrong,
+like having two keybindings for the same key. Or not actually pressing Mod4+1.
+Or modifying the wrong config file.
+
+In any case, make sure you use a recent version of i3 (you need 4.2 for the
+"workspace number" command), and provide us with i3 --version.
+
+Also, see http://i3wm.org/docs/debugging.html in case the problem persists and
+provide a compressed (!) logfile.
+
+Best regards,
+Michael
+
+From listmail at b79.net  Tue May 15 21:35:35 2012
+From: listmail at b79.net (John Magolske)
+Date: Tue, 15 May 2012 12:35:35 -0700
+Subject: [i3] Window decoration colors unexpectedly different after
+ upgrade to 4.2
+In-Reply-To: <20120515055337.GA18517@s70206.gridserver.com>
+References: <20120515055337.GA18517@s70206.gridserver.com>
+Message-ID: <20120515193535.GA22068@s70206.gridserver.com>
+
+* John Magolske <listmail at b79.net> [120514 22:58]:
+> After upgrading i3 to version 4.2 (from 3.x ...don't recall
+> the exact version), the colors of the window decorations are
+> unexpectedly different. [...] All the #rrggbb values are making
+> unexpected colors, biased towards shades of green.
+
+It turns out this has nothing to do with i3, but rather a setting
+in /etc/X11/xorg.conf. When upgrading i3, X was also upgraded and
+I regenerated my xorg.conf file. In this section:
+
+    Section "Screen"
+            Identifier "Screen0"
+            DefaultColorDepth 16
+
+Changing DefaultColorDepth from 16 to 24 fixed the problem, now all
+the colors are displayed properly.
+
+With apologies for the noise,
+
+John
+
+-- 
+John Magolske
+http://B79.net/contact
+
+From bruno.braga at gmail.com  Wed May 16 02:55:36 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Wed, 16 May 2012 10:55:36 +1000
+Subject: [i3] I3-wm flash issue
+In-Reply-To: <20120514090840.GA4686@lenka.lan>
+References: <E5BBB49C-2C3E-4FAA-B177-BF0FC862423E@gmail.com>
+ <CAAuVr70PFpoNEGWazYhx_QNY2ZzEeiVHOEOxwc_+VGpGU3Y1+Q@mail.gmail.com>
+ <20120514090840.GA4686@lenka.lan>
+Message-ID: <CAAuVr73nzfyJbPA=9-q=gvOX7svaz2VVecFcLiApNyxMZvJURQ@mail.gmail.com>
+
+Yep, that worked for me too! Thanks a bunch!
+
+Very tricky to get the menu back on fullscreen mode (I would never figure
+that out).
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Mon, May 14, 2012 at 7:08 PM, Pavel L?bl <lobl.pavel at gmail.com> wrote:
+
+> Hi Bruno,
+>
+> I think this is common issue with Adobe Flash Player and nVidia
+> proprietary drivers. I guess it can be solved by disabling hardware
+> acceleration of flash. The system-wide settings is in /etc/adobe/mms.cfg
+> but disabling it in there may not work. Probalby there is per user settings
+> somewhere in your home (not sure where exactly). But you can right-click
+> on a flash video go to settings and disable the hardware acceleration
+> in there. Another issue is this internal flash menu is sometimes
+> unclickable (it just ignores your mouse). Then you have to fullscreen
+> the flash video at first (on youtube perhaps). Yeah. This is kinda funny
+> and tricky. But if i remember it worked for me.
+>
+> Pavel
+>
+> On Sun, May 13, 2012 at 09:45:19PM +1000, BRAGA, Bruno wrote:
+> >    Just wanted to ask if anyone has faced this problem before, and what
+> you
+> >    did about it.
+> >    Every time I leave a tab in the browser with a flash running (eg.
+> >    youtube), it also gets displayed on other workspaces (refer to
+> >    attachment). The weird thing is that taking a screenshot of the
+> window,
+> >    nothing shows up, so I took a photo using my mobile...
+> >    Thanks!
+> >
+> >    --
+> >    Braga, Bruno
+> >    [1]www.brunobraga.net
+> >    [2]bruno.braga at gmail.com
+> >
+> > References
+> >
+> >    Visible links
+> >    1. http://www.brunobraga.net/
+> >    2. mailto:bruno.braga at gmail.com
+>
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120516/c0bc5bad/attachment.html>
+
+From lemaire.adrien at gmail.com  Wed May 16 03:59:34 2012
+From: lemaire.adrien at gmail.com (Adrien LEMAIRE)
+Date: Wed, 16 May 2012 10:59:34 +0900
+Subject: [i3] Problems rendering java applications
+In-Reply-To: <CALqn52MTbrScmAmG3iGFWYuPPdUwFn9Xve+J8Q_o80YqD4NRZg@mail.gmail.com>
+References: <CALqn52MTbrScmAmG3iGFWYuPPdUwFn9Xve+J8Q_o80YqD4NRZg@mail.gmail.com>
+Message-ID: <CALqn52OV__yu8pQX_4-hTNGCjzv7x+Ptc-O3mr+U_2_SZS=sLg@mail.gmail.com>
+
+After activating i3 logs, I've tracked the 1 second log after opening a
+window that didn't get drawn. Here are the logs:
+http://pastebin.com/djGdPiaA
+
+On 16 May 2012 07:53, Adrien LEMAIRE <lemaire.adrien at gmail.com> wrote:
+
+> Hi there,
+>
+> I've been using i3 for a while now, and really appreciate it.
+> There's only one thing that makes me crazy: I recently started to play go
+> again (some board game), and the application is written in java.
+> The issue is that very often, when opening a window, it won't be drawn,
+> I'll just get a gray window (see attached screenshot).
+> I can't play correctly with i3, and this is a i3 issue, I never got that
+> issue with xfce/e17 when I was playing that game 1+ year ago.
+>
+> My i3 version is 4.2 .  Couldn't find any log refering to that issue. Went
+> through the java manpage and tried the option -Xrs without success (Reduces
+> use of operating-system signals by the JVM).
+>
+> Does someone have a similar issue with java applications ? Any ideas on
+> how to solve it ?
+>
+> Thanks for your support :)
+>
+>
+> --
+> Cheers,
+> Adrien LEMAIRE
+> Engineer @Aquasys
+> Google+ <http://gplus.to/Fandekasp>  CV<http://vizualize.me/adrien.lemaire>
+>
+>
+>
+
+
+-- 
+Cheers,
+Adrien LEMAIRE
+Engineer @Aquasys
+Google+ <http://gplus.to/Fandekasp>  CV <http://vizualize.me/adrien.lemaire>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120516/a0492287/attachment.html>
+
+From michael at i3wm.org  Wed May 16 06:10:31 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 16 May 2012 06:10:31 +0200
+Subject: [i3] Problems rendering java applications
+In-Reply-To: <CALqn52OV__yu8pQX_4-hTNGCjzv7x+Ptc-O3mr+U_2_SZS=sLg@mail.gmail.com>
+References: <CALqn52MTbrScmAmG3iGFWYuPPdUwFn9Xve+J8Q_o80YqD4NRZg@mail.gmail.com>
+ <CALqn52OV__yu8pQX_4-hTNGCjzv7x+Ptc-O3mr+U_2_SZS=sLg@mail.gmail.com>
+Message-ID: <20120516041031.336.21970@midna.zekjur.net>
+
+Hi Adrien,
+
+Quoting Adrien LEMAIRE (2012-05-16 03:59:34)
+> After activating i3 logs, I've tracked the 1 second log after opening a window
+> that didn't get drawn. Here are the logs:?http://pastebin.com/djGdPiaA
+Truncated logfiles are useless. Please open a ticket at bugs.i3wm.org and
+attach the compressed complete logfile with detailed steps to reproduce.
+
+Best regards,
+Michael
+
+From lemaire.adrien at gmail.com  Wed May 16 00:53:52 2012
+From: lemaire.adrien at gmail.com (Adrien LEMAIRE)
+Date: Wed, 16 May 2012 07:53:52 +0900
+Subject: [i3]  Problems rendering java applications
+Message-ID: <CALqn52MTbrScmAmG3iGFWYuPPdUwFn9Xve+J8Q_o80YqD4NRZg@mail.gmail.com>
+
+Hi there,
+
+I've been using i3 for a while now, and really appreciate it.
+There's only one thing that makes me crazy: I recently started to play go
+again (some board game), and the application is written in java.
+The issue is that very often, when opening a window, it won't be drawn,
+I'll just get a gray window (see attached screenshot).
+I can't play correctly with i3, and this is a i3 issue, I never got that
+issue with xfce/e17 when I was playing that game 1+ year ago.
+
+My i3 version is 4.2 .  Couldn't find any log refering to that issue. Went
+through the java manpage and tried the option -Xrs without success (Reduces
+use of operating-system signals by the JVM).
+
+Does someone have a similar issue with java applications ? Any ideas on how
+to solve it ?
+
+Thanks for your support :)
+
+
+--
+Cheers,
+Adrien LEMAIRE
+Engineer @Aquasys
+Google+ <http://gplus.to/Fandekasp>  CV <http://vizualize.me/adrien.lemaire>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120516/7f4a70a0/attachment-0001.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: cgoban_issue_drawing.png
+Type: image/png
+Size: 990363 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120516/7f4a70a0/attachment-0003.png>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: cgoban_issue_drawing_2.png
+Type: image/png
+Size: 708001 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120516/7f4a70a0/attachment-0004.png>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: cgoban_issue_drawing_board.png
+Type: image/png
+Size: 420688 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120516/7f4a70a0/attachment-0005.png>
+
+From i3.thegrue at spamgourmet.com  Wed May 16 07:46:25 2012
+From: i3.thegrue at spamgourmet.com (i3.thegrue at spamgourmet.com)
+Date: Wed, 16 May 2012 07:46:25 +0200
+Subject: [i3] Problem with switching to named workspaces exclusive)
+In-Reply-To: <4FB28B78.40301@yahoo.de>
+References: <4FB28B78.40301@yahoo.de>
+Message-ID: <20120516074625.0b1af786@pc-cm-gru-virtlinux1>
+
+Hello Tobias,
+
+> The only problem I have is that I can't switch to named workspaces
+> that begin with a number, like described in the manual.
+
+I remember that I had problems with this function, too. One very
+simple idea helped me very much and I think all problems were gone:
+use variables for the workspace name!
+
+    set $mod Mod4
+
+    set $wsp1 1: WWW
+    set $wsp2 2
+    set $wsp3 3: EMACS
+    set $wsp4 4
+    set $wsp5 5
+    set $wsp6 6
+    set $wsp7 7
+    set $wsp8 8: MAIL
+    set $wsp9 9: IM
+
+    bindsym $mod+1 workspace $wsp1
+    bindsym $mod+Shift+exclam      move workspace $wsp1
+    assign [class="Iceweasel"] $wsp1
+
+This simplifies renaming and general handling of workspaces and you
+can be sure that you don't mess up your name with typos, whitespace
+and the like.
+
+BTW: I have to repeat that i3 is sooooo great :) Thanks to the developers!
+
+cu
+--
+Markus Grunwald                                 http://www.the-grue.de
+
+M?nnerchor Markt Kirchseeon               Registered Linux User 101577
+Notenwart und Webmaster                          http://counter.li.org
+http://www.maennerchor-kirchseeon.de           pgp/gpg key ID 15CEDD0A
+
+     Fragen zur Mail? http://www.the-grue.de/mail_und_co/
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 190 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120516/e2f4f91b/attachment.sig>
+
+From michael at i3wm.org  Wed May 16 21:32:03 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 16 May 2012 21:32:03 +0200
+Subject: [i3] [PATCH] Fix paste error in i3.config.keycodes
+In-Reply-To: <CABM=MFKSEFQOjdu38THdvE4yYm3LiPJcXBKBtTFGs7DrdvXiTw@mail.gmail.com>
+References: <CABM=MFKSEFQOjdu38THdvE4yYm3LiPJcXBKBtTFGs7DrdvXiTw@mail.gmail.com>
+Message-ID: <20120516193203.26254.75727@midna.zekjur.net>
+
+Hey David,
+
+Quoting David Coppa (2012-05-10 12:49:22)
+> I think there's a paste error into i3.config.keycodes:
+> For mode "resize", there are some "bindsym" that should be "bindcode".
+> The attached patch fixes these.
+Correct, thanks for that. Unfortunately, I cannot merge it, since you did not
+use 'git format-patch'. May I ask you to use it and resend the patch please?
+
+Best regards,
+Michael
+
+PS: No need to send the patch directly to me ? I got it, but just haven?t had
+the time to review it until now :).
+
+From dcoppa at gmail.com  Thu May 17 12:38:21 2012
+From: dcoppa at gmail.com (David Coppa)
+Date: Thu, 17 May 2012 12:38:21 +0200
+Subject: [i3] [PATCH] Fix paste error in i3.config.keycodes
+In-Reply-To: <20120516193203.26254.75727@midna.zekjur.net>
+References: <CABM=MFKSEFQOjdu38THdvE4yYm3LiPJcXBKBtTFGs7DrdvXiTw@mail.gmail.com>
+ <20120516193203.26254.75727@midna.zekjur.net>
+Message-ID: <CABM=MF+poBSJODCYrPgkks-UKGN7r0N8d_dwmvBNm6JU_9tH3A@mail.gmail.com>
+
+On Wed, May 16, 2012 at 9:32 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+> Hey David,
+>
+> Quoting David Coppa (2012-05-10 12:49:22)
+>> I think there's a paste error into i3.config.keycodes:
+>> For mode "resize", there are some "bindsym" that should be "bindcode".
+>> The attached patch fixes these.
+> Correct, thanks for that. Unfortunately, I cannot merge it, since you did not
+> use 'git format-patch'. May I ask you to use it and resend the patch please?
+
+This time I should have got it right.
+
+> PS: No need to send the patch directly to me ? I got it, but just haven?t had
+> the time to review it until now :).
+
+ok ;)
+
+Thanks,
+David
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: i3_config_keycodes-fix-errors.patch
+Type: application/octet-stream
+Size: 1137 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120517/b4e745ee/attachment.obj>
+
+From bruno.braga at gmail.com  Fri May 18 02:26:49 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Fri, 18 May 2012 10:26:49 +1000
+Subject: [i3] Unicode in Window Title
+In-Reply-To: <1334156117-sup-4499@stapelberg.de>
+References: <CAAuVr72gJpmzCrw0HsQW=9yqeJYDAKLYjwfxrOsBwHR15bEVxA@mail.gmail.com>
+ <1334156117-sup-4499@stapelberg.de>
+Message-ID: <CAAuVr70Tt-rLp7EdXpYCBzjUPLVk7Bnt=x3N1iDjEd6rtWeK0Q@mail.gmail.com>
+
+Hi Michael,
+
+Somehow I lost this message here. Sorry for the late reply.
+
+I just wondered that, because if the ISO10646, both Chinese or Japanese (or
+any other language character for that matter) could be properly rendered,
+the same way the browser is capable of doing it.
+
+It actually does not bother me that much, but it would be nice to solve
+this, which increases odds for more international adoption.
+
+What would be your suggestion to handle this? Any ideas?
+
+Regards,
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Thu, Apr 12, 2012 at 12:55 AM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Bruno,
+>
+> Excerpts from BRAGA, Bruno's message of 2012-04-11 16:53:11 +0200:
+> > # font for window titles. ISO 10646 = Unicode
+> > font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+> > Do you guys know what could I be missing?
+> Probably the font does not include these Japanese glyphs?
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120518/beb7778d/attachment.html>
+
+From fernandotcl at i3wm.org  Fri May 18 02:57:54 2012
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Thu, 17 May 2012 21:57:54 -0300
+Subject: [i3] Unicode in Window Title
+In-Reply-To: <CAAuVr70Tt-rLp7EdXpYCBzjUPLVk7Bnt=x3N1iDjEd6rtWeK0Q@mail.gmail.com>
+References: <CAAuVr72gJpmzCrw0HsQW=9yqeJYDAKLYjwfxrOsBwHR15bEVxA@mail.gmail.com>
+ <1334156117-sup-4499@stapelberg.de>
+ <CAAuVr70Tt-rLp7EdXpYCBzjUPLVk7Bnt=x3N1iDjEd6rtWeK0Q@mail.gmail.com>
+Message-ID: <CANVYNa-Nov_dbheNYeEHk3wjR-z9hOVktznNggpU4wXgVv7REw@mail.gmail.com>
+
+Hi,
+
+On Thu, May 17, 2012 at 9:26 PM, BRAGA, Bruno <bruno.braga at gmail.com> wrote:
+> I just wondered that, because if the ISO10646, both Chinese or Japanese (or
+> any other language character for that matter) could be properly rendered,
+> the same way the browser is capable of doing it.
+>
+> It actually does not bother me that much, but it would be nice to solve
+> this, which increases odds for more international adoption.
+>
+> What would be your suggestion to handle this? Any ideas?
+
+Note that i3 falls back to "fixed". So it might be that you aren't
+using the font that you have specified, but rather the fallback font.
+
+I mentioned this here before, but in any case, I have patches for
+Pango support in i3. Pango should render whatever you throw at it
+(provided that the font supports the scripts, of course) and allow RTL
+language support, besides other niceties such as antialiasing,
+subpixel rendering, hinting, etc. If you or anyone else is interested,
+please ping me.
+
+Regards,
+
+From zeroxia at gmail.com  Fri May 18 03:56:29 2012
+From: zeroxia at gmail.com (zeroxia)
+Date: Fri, 18 May 2012 09:56:29 +0800
+Subject: [i3] Unicode in Window Title
+In-Reply-To: <CAAuVr70Tt-rLp7EdXpYCBzjUPLVk7Bnt=x3N1iDjEd6rtWeK0Q@mail.gmail.com>
+References: <CAAuVr72gJpmzCrw0HsQW=9yqeJYDAKLYjwfxrOsBwHR15bEVxA@mail.gmail.com>
+ <1334156117-sup-4499@stapelberg.de>
+ <CAAuVr70Tt-rLp7EdXpYCBzjUPLVk7Bnt=x3N1iDjEd6rtWeK0Q@mail.gmail.com>
+Message-ID: <CAB+hAsUpAznXTK4M0YVoYt-QfD9tn-BdQrrs5o3dKYyQmsOxqA@mail.gmail.com>
+
+Hi,
+
+I use this settings for font in ~/.config/i3/config:
+font -wenquanyi-wenquanyi bitmap song-medium-r-normal--0-0-75-75-p-0-iso10646-1
+
+There is a snapshot, I grabbed some random Japanese text and made a
+directory, then cd into it to display the text in the window title:
+http://ww3.sinaimg.cn/large/61260048gw1dt28l6s221j.jpg
+
+The font should be installed from one of these packages, but I don't
+know exactly which, because I installed all of them:
+xfonts-intl-chinese-big - International fonts for X -- Chinese big
+xfonts-intl-chinese - International fonts for X -- Chinese
+ttf-wqy-microhei - A droid derived Sans-Seri style CJK font
+ttf-wqy-zenhei - "WenQuanYi Zen Hei" A Hei-Ti Style (sans-serif) Chinese font
+xfonts-wqy - WenQuanYi Bitmap Song CJK font for X
+
+By the way, the font setting for urxvt is as follows:
+URxvt.font:			-misc-fixed-medium-r-normal--15-140-75-75-c-90-iso10646-1,-wenquanyi-wenquanyi
+bitmap song-medium-r-normal--13-130-75-75-p-80-iso10646-1
+
+I think the "fixed" typeface may not have non-latin glyphs?
+
+Regards,
+Xia.
+
+On Fri, May 18, 2012 at 8:26 AM, BRAGA, Bruno <bruno.braga at gmail.com> wrote:
+> Hi Michael,
+>
+> Somehow I lost this message here. Sorry for the late reply.
+>
+> I just wondered that, because if the ISO10646, both Chinese or Japanese (or
+> any other language character for that matter) could be properly rendered,
+> the same way the browser is capable of doing it.
+>
+> It actually does not bother me that much, but it would be nice to solve
+> this, which increases odds for more international adoption.
+>
+> What would be your suggestion to handle this? Any ideas?
+>
+> Regards,
+>
+> --
+> Braga, Bruno
+> www.brunobraga.net
+> bruno.braga at gmail.com
+>
+>
+> On Thu, Apr 12, 2012 at 12:55 AM, Michael Stapelberg <michael at i3wm.org>
+> wrote:
+>>
+>> Hi Bruno,
+>>
+>> Excerpts from BRAGA, Bruno's message of 2012-04-11 16:53:11 +0200:
+>> > # font for window titles. ISO 10646 = Unicode
+>> > font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+>> > Do you guys know what could I be missing?
+>> Probably the font does not include these Japanese glyphs?
+>>
+>> Best regards,
+>> Michael
+>
+>
+
+
+
+-- 
+Regards,
+Xia Zuoling
+http://zeroxia.org/blog/
+
+QQ: 153570344
+MSN: zerox at live.com
+The world is beautiful for you.
+
+From michael at i3wm.org  Fri May 18 09:15:16 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 18 May 2012 09:15:16 +0200
+Subject: [i3] [PATCH] Fix paste error in i3.config.keycodes
+In-Reply-To: <CABM=MF+poBSJODCYrPgkks-UKGN7r0N8d_dwmvBNm6JU_9tH3A@mail.gmail.com>
+References: <CABM=MFKSEFQOjdu38THdvE4yYm3LiPJcXBKBtTFGs7DrdvXiTw@mail.gmail.com>
+ <20120516193203.26254.75727@midna.zekjur.net>
+ <CABM=MF+poBSJODCYrPgkks-UKGN7r0N8d_dwmvBNm6JU_9tH3A@mail.gmail.com>
+Message-ID: <20120518071516.11244.34450@midna.zekjur.net>
+
+Hi David,
+
+Quoting David Coppa (2012-05-17 12:38:21)
+> This time I should have got it right.
+Thanks, merged it.
+
+Best regards,
+Michael
+
+From bruno.braga at gmail.com  Fri May 18 16:42:57 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Sat, 19 May 2012 00:42:57 +1000
+Subject: [i3] Unicode in Window Title
+In-Reply-To: <CAB+hAsUpAznXTK4M0YVoYt-QfD9tn-BdQrrs5o3dKYyQmsOxqA@mail.gmail.com>
+References: <CAAuVr72gJpmzCrw0HsQW=9yqeJYDAKLYjwfxrOsBwHR15bEVxA@mail.gmail.com>
+ <1334156117-sup-4499@stapelberg.de>
+ <CAAuVr70Tt-rLp7EdXpYCBzjUPLVk7Bnt=x3N1iDjEd6rtWeK0Q@mail.gmail.com>
+ <CAB+hAsUpAznXTK4M0YVoYt-QfD9tn-BdQrrs5o3dKYyQmsOxqA@mail.gmail.com>
+Message-ID: <CAAuVr70ir2LHeWMpV8snGVn2B4XSPT4dbBDpeZ1vzEoYH+d3wQ@mail.gmail.com>
+
+Hei Xia,
+
+Thanks for the info... I guess you are right.
+
+I tried a combination of different fonts, but could not find one that fit
+Japanese and Chinese altogether.
+
+I installed the packages you advised but the font could not be loaded by
+i3, I guess it is because I could not find them in the xfontsel either...
+any thoughts on why are they not available as they were supposed to?
+
+Thanks again!
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Fri, May 18, 2012 at 11:56 AM, zeroxia <zeroxia at gmail.com> wrote:
+
+> Hi,
+>
+> I use this settings for font in ~/.config/i3/config:
+> font -wenquanyi-wenquanyi bitmap
+> song-medium-r-normal--0-0-75-75-p-0-iso10646-1
+>
+> There is a snapshot, I grabbed some random Japanese text and made a
+> directory, then cd into it to display the text in the window title:
+> http://ww3.sinaimg.cn/large/61260048gw1dt28l6s221j.jpg
+>
+> The font should be installed from one of these packages, but I don't
+> know exactly which, because I installed all of them:
+> xfonts-intl-chinese-big - International fonts for X -- Chinese big
+> xfonts-intl-chinese - International fonts for X -- Chinese
+> ttf-wqy-microhei - A droid derived Sans-Seri style CJK font
+> ttf-wqy-zenhei - "WenQuanYi Zen Hei" A Hei-Ti Style (sans-serif) Chinese
+> font
+> xfonts-wqy - WenQuanYi Bitmap Song CJK font for X
+>
+> By the way, the font setting for urxvt is as follows:
+> URxvt.font:
+> -misc-fixed-medium-r-normal--15-140-75-75-c-90-iso10646-1,-wenquanyi-wenquanyi
+> bitmap song-medium-r-normal--13-130-75-75-p-80-iso10646-1
+>
+> I think the "fixed" typeface may not have non-latin glyphs?
+>
+> Regards,
+> Xia.
+>
+> On Fri, May 18, 2012 at 8:26 AM, BRAGA, Bruno <bruno.braga at gmail.com>
+> wrote:
+> > Hi Michael,
+> >
+> > Somehow I lost this message here. Sorry for the late reply.
+> >
+> > I just wondered that, because if the ISO10646, both Chinese or Japanese
+> (or
+> > any other language character for that matter) could be properly rendered,
+> > the same way the browser is capable of doing it.
+> >
+> > It actually does not bother me that much, but it would be nice to solve
+> > this, which increases odds for more international adoption.
+> >
+> > What would be your suggestion to handle this? Any ideas?
+> >
+> > Regards,
+> >
+> > --
+> > Braga, Bruno
+> > www.brunobraga.net
+> > bruno.braga at gmail.com
+> >
+> >
+> > On Thu, Apr 12, 2012 at 12:55 AM, Michael Stapelberg <michael at i3wm.org>
+> > wrote:
+> >>
+> >> Hi Bruno,
+> >>
+> >> Excerpts from BRAGA, Bruno's message of 2012-04-11 16:53:11 +0200:
+> >> > # font for window titles. ISO 10646 = Unicode
+> >> > font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+> >> > Do you guys know what could I be missing?
+> >> Probably the font does not include these Japanese glyphs?
+> >>
+> >> Best regards,
+> >> Michael
+> >
+> >
+>
+>
+>
+> --
+> Regards,
+> Xia Zuoling
+> http://zeroxia.org/blog/
+>
+> QQ: 153570344
+> MSN: zerox at live.com
+> The world is beautiful for you.
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120519/1e52fde2/attachment.html>
+
+From zeroxia at gmail.com  Sat May 19 10:23:34 2012
+From: zeroxia at gmail.com (zeroxia)
+Date: Sat, 19 May 2012 16:23:34 +0800
+Subject: [i3] Unicode in Window Title
+In-Reply-To: <CAAuVr70ir2LHeWMpV8snGVn2B4XSPT4dbBDpeZ1vzEoYH+d3wQ@mail.gmail.com>
+References: <CAAuVr72gJpmzCrw0HsQW=9yqeJYDAKLYjwfxrOsBwHR15bEVxA@mail.gmail.com>
+ <1334156117-sup-4499@stapelberg.de>
+ <CAAuVr70Tt-rLp7EdXpYCBzjUPLVk7Bnt=x3N1iDjEd6rtWeK0Q@mail.gmail.com>
+ <CAB+hAsUpAznXTK4M0YVoYt-QfD9tn-BdQrrs5o3dKYyQmsOxqA@mail.gmail.com>
+ <CAAuVr70ir2LHeWMpV8snGVn2B4XSPT4dbBDpeZ1vzEoYH+d3wQ@mail.gmail.com>
+Message-ID: <CAB+hAsWLnRA9-nHSg-RS=RvTycH4D_0h20Cw8S==PLgWyhEL3Q@mail.gmail.com>
+
+Hi Bruno,
+
+I noted that the font is a "bitmap" font, I think the package should
+be "xfonts-wqy - WenQuanYi Bitmap Song CJK font for X" (at least for
+Debian squeeze).
+$ apt-cache search wqy
+ttf-wqy-microhei - A droid derived Sans-Seri style CJK font
+ttf-wqy-zenhei - "WenQuanYi Zen Hei" A Hei-Ti Style (sans-serif) Chinese font
+xfonts-wqy - WenQuanYi Bitmap Song CJK font for X
+
+I get the "font description" line from "xlsfonts" command, you may try
+this to get the font description line:
+
+$ xlsfonts | grep wenquanyi | grep 10646
+-wenquanyi-wenquanyi bitmap song-bold-r-normal--0-0-75-75-p-0-iso10646-1
+-wenquanyi-wenquanyi bitmap song-bold-r-normal--12-120-75-75-p-119-iso10646-1
+-wenquanyi-wenquanyi bitmap song-bold-r-normal--13-130-75-75-p-80-iso10646-1
+-wenquanyi-wenquanyi bitmap song-bold-r-normal--15-150-75-75-p-80-iso10646-1
+-wenquanyi-wenquanyi bitmap song-bold-r-normal--16-160-75-75-p-80-iso10646-1
+-wenquanyi-wenquanyi bitmap song-medium-r-normal--0-0-75-75-p-0-iso10646-1
+-wenquanyi-wenquanyi bitmap song-medium-r-normal--12-120-75-75-p-119-iso10646-1
+-wenquanyi-wenquanyi bitmap song-medium-r-normal--13-130-75-75-p-80-iso10646-1
+-wenquanyi-wenquanyi bitmap song-medium-r-normal--15-150-75-75-p-80-iso10646-1
+-wenquanyi-wenquanyi bitmap song-medium-r-normal--16-160-75-75-p-80-iso10646-1
+
+This font should contain Chinese and probably Japanese as I
+experimented before, but I find that it does not have Korean
+characters.
+
+I found using "xlsfonts" to try out different font configurations more
+reliable than using "xfontsel", though this is more cumbersome.
+
+If it's still not working, I suggest you may just try some other typefaces.
+
+Regards, Xia.
+
+On Fri, May 18, 2012 at 10:42 PM, BRAGA, Bruno <bruno.braga at gmail.com> wrote:
+> Hei Xia,
+>
+> Thanks for the info... I guess you are right.
+>
+> I tried a combination of different fonts, but could not find one that fit
+> Japanese and Chinese altogether.
+>
+> I installed the packages you advised but the font could not be loaded by i3,
+> I guess it is because I could not find them in the xfontsel either... any
+> thoughts on why are they not available as they were supposed to?
+>
+> Thanks again!
+>
+> --
+> Braga, Bruno
+> www.brunobraga.net
+> bruno.braga at gmail.com
+>
+>
+> On Fri, May 18, 2012 at 11:56 AM, zeroxia <zeroxia at gmail.com> wrote:
+>>
+>> Hi,
+>>
+>> I use this settings for font in ~/.config/i3/config:
+>> font -wenquanyi-wenquanyi bitmap
+>> song-medium-r-normal--0-0-75-75-p-0-iso10646-1
+>>
+>> There is a snapshot, I grabbed some random Japanese text and made a
+>> directory, then cd into it to display the text in the window title:
+>> http://ww3.sinaimg.cn/large/61260048gw1dt28l6s221j.jpg
+>>
+>> The font should be installed from one of these packages, but I don't
+>> know exactly which, because I installed all of them:
+>> xfonts-intl-chinese-big - International fonts for X -- Chinese big
+>> xfonts-intl-chinese - International fonts for X -- Chinese
+>> ttf-wqy-microhei - A droid derived Sans-Seri style CJK font
+>> ttf-wqy-zenhei - "WenQuanYi Zen Hei" A Hei-Ti Style (sans-serif) Chinese
+>> font
+>> xfonts-wqy - WenQuanYi Bitmap Song CJK font for X
+>>
+>> By the way, the font setting for urxvt is as follows:
+>> URxvt.font:
+>> -misc-fixed-medium-r-normal--15-140-75-75-c-90-iso10646-1,-wenquanyi-wenquanyi
+>> bitmap song-medium-r-normal--13-130-75-75-p-80-iso10646-1
+>>
+>> I think the "fixed" typeface may not have non-latin glyphs?
+>>
+>> Regards,
+>> Xia.
+>>
+>> On Fri, May 18, 2012 at 8:26 AM, BRAGA, Bruno <bruno.braga at gmail.com>
+>> wrote:
+>> > Hi Michael,
+>> >
+>> > Somehow I lost this message here. Sorry for the late reply.
+>> >
+>> > I just wondered that, because if the ISO10646, both Chinese or Japanese
+>> > (or
+>> > any other language character for that matter) could be properly
+>> > rendered,
+>> > the same way the browser is capable of doing it.
+>> >
+>> > It actually does not bother me that much, but it would be nice to solve
+>> > this, which increases odds for more international adoption.
+>> >
+>> > What would be your suggestion to handle this? Any ideas?
+>> >
+>> > Regards,
+>> >
+>> > --
+>> > Braga, Bruno
+>> > www.brunobraga.net
+>> > bruno.braga at gmail.com
+>> >
+>> >
+>> > On Thu, Apr 12, 2012 at 12:55 AM, Michael Stapelberg <michael at i3wm.org>
+>> > wrote:
+>> >>
+>> >> Hi Bruno,
+>> >>
+>> >> Excerpts from BRAGA, Bruno's message of 2012-04-11 16:53:11 +0200:
+>> >> > # font for window titles. ISO 10646 = Unicode
+>> >> > font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+>> >> > Do you guys know what could I be missing?
+>> >> Probably the font does not include these Japanese glyphs?
+>> >>
+>> >> Best regards,
+>> >> Michael
+>> >
+>> >
+>>
+>>
+>>
+>> --
+>> Regards,
+>> Xia Zuoling
+>> http://zeroxia.org/blog/
+>>
+>> QQ: 153570344
+>> MSN: zerox at live.com
+>> The world is beautiful for you.
+>
+>
+
+From dcoppa at gmail.com  Wed May 30 11:23:05 2012
+From: dcoppa at gmail.com (David Coppa)
+Date: Wed, 30 May 2012 11:23:05 +0200
+Subject: [i3] [PATCH] Replace deprecated XKeycodeToKeysym() with
+	XkbKeycodeToKeysym()
+Message-ID: <CABM=MFJrCjVA=wy7EUSgX1f4v0Y1fXcDpuNuezhGSRxFuoH+GA@mail.gmail.com>
+
+Hi All,
+
+The attached diff replaces the now deprecated XKeycodeToKeysym() with
+XkbKeycodeToKeysym() into i3-config-wizard/cfgparse.y
+
+Ok to merge?
+
+Best regards,
+David
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: xkeycodetokeysym_deprecated.diff
+Type: application/octet-stream
+Size: 993 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120530/7b2fd46b/attachment.obj>
+
+From michael at i3wm.org  Wed May 30 17:29:20 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 30 May 2012 17:29:20 +0200
+Subject: [i3] [PATCH] Replace deprecated XKeycodeToKeysym() with
+ XkbKeycodeToKeysym()
+In-Reply-To: <CABM=MFJrCjVA=wy7EUSgX1f4v0Y1fXcDpuNuezhGSRxFuoH+GA@mail.gmail.com>
+References: <CABM=MFJrCjVA=wy7EUSgX1f4v0Y1fXcDpuNuezhGSRxFuoH+GA@mail.gmail.com>
+Message-ID: <20120530152920.10695.88453@midna.zekjur.net>
+
+Hi David,
+
+Quoting David Coppa (2012-05-30 11:23:05)
+> The attached diff replaces the now deprecated XKeycodeToKeysym() with
+> XkbKeycodeToKeysym() into i3-config-wizard/cfgparse.y
+This is merged, thanks.
+
+Best regards,
+Michael
+

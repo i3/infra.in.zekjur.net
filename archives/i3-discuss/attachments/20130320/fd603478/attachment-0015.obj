@@ -1,0 +1,49 @@
+From 397695e36ff679225fac2a4f31624bf0dd54a7f5 Mon Sep 17 00:00:00 2001
+From: Marius Muja <mariusm@cs.ubc.ca>
+Date: Wed, 2 Jan 2013 02:27:52 -0800
+Subject: [PATCH 8/8] Fix for invisible borders after restart when composite
+ manager is running
+
+---
+ include/data.h |    1 +
+ src/x.c        |    5 +++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/include/data.h b/include/data.h
+index 1bf1d3f..e19b2aa 100644
+--- a/include/data.h
++++ b/include/data.h
+@@ -509,6 +509,7 @@ struct Con {
+     xcb_pixmap_t pixmap;
+     xcb_gcontext_t pm_gc;
+     bool pixmap_recreated;
++    uint16_t frame_depth;
+ 
+     /** Cache for the decoration rendering */
+     struct deco_render_params *deco_render_params;
+diff --git a/src/x.c b/src/x.c
+index 8b5c10f..fb70574 100644
+--- a/src/x.c
++++ b/src/x.c
+@@ -141,6 +141,7 @@ void x_con_init(Con *con, uint16_t depth) {
+ 
+     Rect dims = { -15, -15, 10, 10 };
+     con->frame = create_window(conn, dims, depth, visual, XCB_WINDOW_CLASS_INPUT_OUTPUT, XCURSOR_CURSOR_POINTER, false, mask, values);
++    con->frame_depth = depth;
+ 
+     if (win_colormap != XCB_NONE)
+         xcb_free_colormap(conn, win_colormap);
+@@ -757,8 +758,8 @@ void x_push_node(Con *con) {
+             }
+ 
+             uint16_t win_depth = root_depth;
+-            if (con->window)
+-                win_depth = con->window->depth;
++            if (con->frame_depth)
++                win_depth = con->frame_depth;
+ 
+             xcb_create_pixmap(conn, win_depth, con->pixmap, con->frame, rect.width, rect.height);
+ 
+-- 
+1.7.10.4
+

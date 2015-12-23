@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Problem with autologin
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Problem%20with%20autologin&In-Reply-To=%3CCANenyVPxktJ3aPUvz%3Dt%2Brqr5_etrYYw1b2VjgrQJAfgJrcos0A%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000712.html">
+   <LINK REL="Next"  HREF="000717.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Problem with autologin</H1>
+    <B>John Haltiwanger</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Problem%20with%20autologin&In-Reply-To=%3CCANenyVPxktJ3aPUvz%3Dt%2Brqr5_etrYYw1b2VjgrQJAfgJrcos0A%40mail.gmail.com%3E"
+       TITLE="[i3] Problem with autologin">john.haltiwanger at gmail.com
+       </A><BR>
+    <I>Fri Jun 15 16:25:35 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000712.html">[i3] Problem with autologin
+</A></li>
+        <LI>Next message: <A HREF="000717.html">[i3] Problem with autologin
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#713">[ date ]</a>
+              <a href="thread.html#713">[ thread ]</a>
+              <a href="subject.html#713">[ subject ]</a>
+              <a href="author.html#713">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, Jun 15, 2012 at 4:16 PM, Mateusz Loskot &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">mateusz at loskot.net</A>&gt; wrote:
+
+&gt;<i> On 15 June 2012 13:49, John Haltiwanger &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">john.haltiwanger at gmail.com</A>&gt;
+</I>&gt;<i> wrote:
+</I>&gt;<i> &gt; On Fri, Jun 15, 2012 at 2:39 PM, Lukas J&#252;nger &lt;
+</I>&gt;<i> <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">autonomy at tvk.rwth-aachen.de</A>&gt; wrote:
+</I>&gt;<i> &gt;&gt; Am 14.06.2012 15:46, schrieb Mateusz Loskot:
+</I>&gt;<i> &gt;&gt;&gt; On 14 June 2012 13:20, Lukas J&#252;nger&lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">autonomy at tvk.rwth-aachen.de</A>&gt;
+</I>&gt;<i>  wrote:
+</I>&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;&gt; I do it like this. I start opera from i3's config. Also i3 starts and
+</I>&gt;<i> &gt;&gt;&gt;&gt; shows
+</I>&gt;<i> &gt;&gt;&gt;&gt; the bar and everyhing. Typing in Opera works. But for example
+</I>&gt;<i> alt+enter,
+</I>&gt;<i> &gt;&gt;&gt;&gt; alt+3,... doesn't. Without autologin everything works fine.
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; Is it possible the XDM loops back to itself?
+</I>&gt;<i> &gt;&gt;&gt; Check this Wiki and see if it applies to your case:
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> <A HREF="https://wiki.archlinux.org/index.php/XDM#XDM_loops_back_to_itself_after_login">https://wiki.archlinux.org/index.php/XDM#XDM_loops_back_to_itself_after_login</A>
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; Instead of Opera, try to aurostart different application, for example,
+</I>&gt;<i> &gt;&gt;&gt; Firefox.
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; Also, it's a good idea to post your .xsession to make it easier to
+</I>&gt;<i> &gt;&gt;&gt; verify there are no other issues.
+</I>&gt;<i> &gt;&gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; Best regards,
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; As I said I am now using slim which starts i3. Is it possible that i3
+</I>&gt;<i> for
+</I>&gt;<i> &gt;&gt; some reason can't read the commands?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; slim starts i3 using .xsession (and/or .xinitrc IIRC).
+</I>&gt;<i>
+</I>&gt;<i> BTW, if slim expects config in ~/.xinitrc, is it still X11/freedesktop
+</I>&gt;<i> compatible?
+</I>&gt;<i> AFAIK, a DM should stick to ~/.xsession and stay away from ~/.xinitrc
+</I>&gt;<i> which is for exclusive use by xinit.
+</I>
+
+It's been a long time since I ran slim, and when I started using it I had
+been using xinit. Entirely possible that I had to ln -s .xinitrc .xsession
+and have since forgotten that step.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120615/1688953e/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120615/1688953e/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000712.html">[i3] Problem with autologin
+</A></li>
+	<LI>Next message: <A HREF="000717.html">[i3] Problem with autologin
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#713">[ date ]</a>
+              <a href="thread.html#713">[ thread ]</a>
+              <a href="subject.html#713">[ subject ]</a>
+              <a href="author.html#713">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,202 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Weird keybinding issue after suspend
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Weird%20keybinding%20issue%20after%20suspend&In-Reply-To=%3CCANnVG6mkD%2BvRaa19CkkXik-qF1Szs610O5gYCUgB0mWGE3gOMg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002253.html">
+   <LINK REL="Next"  HREF="002261.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Weird keybinding issue after suspend</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Weird%20keybinding%20issue%20after%20suspend&In-Reply-To=%3CCANnVG6mkD%2BvRaa19CkkXik-qF1Szs610O5gYCUgB0mWGE3gOMg%40mail.gmail.com%3E"
+       TITLE="[i3] Weird keybinding issue after suspend">michael at i3wm.org
+       </A><BR>
+    <I>Sun Nov  8 17:47:42 CET 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002253.html">[i3] Weird keybinding issue after suspend
+</A></li>
+        <LI>Next message: <A HREF="002261.html">[i3] Weird keybinding issue after suspend
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2257">[ date ]</a>
+              <a href="thread.html#2257">[ thread ]</a>
+              <a href="subject.html#2257">[ subject ]</a>
+              <a href="author.html#2257">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, Nov 8, 2015 at 6:01 AM, Benjamin Kaiser &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">benjaminjkaiser at gmail.com</A>&gt;
+wrote:
+
+&gt;<i> So the issue popped up again, these were the steps I did to debug it:
+</I>&gt;<i>
+</I>&gt;<i> - jump to TTY3
+</I>&gt;<i> - run: `DISAPLY=:1 setxkbmap | tee /tmp/setxkbmap.out` (not sure if I
+</I>&gt;<i> should have been passing any arguments specifically)
+</I>&gt;<i>
+</I>
+I meant using e.g. “setxkbmap de” to set the keyboard layout. Also, I think
+you meant DISPLAY.
+
+
+&gt;<i> - observe there was no output
+</I>&gt;<i> - jump back to TTY2, keyboard/keybindings still unresponsive in i3
+</I>&gt;<i> - jump back to TTY2
+</I>&gt;<i> - run `DISAPLY=:1 xev | tee /tmp/xev.out` (output starts spewing out, and
+</I>&gt;<i> also to the file)
+</I>&gt;<i> - jump back to TTY2, keyboard is now responsive to i3wm bindings
+</I>&gt;<i> - jump back to TTY3 and kill xev
+</I>&gt;<i>
+</I>&gt;<i> Output in `/tmp/xev.out`: <A HREF="http://p.nnev.de/7524">http://p.nnev.de/7524</A>
+</I>&gt;<i>
+</I>&gt;<i> Hope this helps with tracking down what could be causing this, as I still
+</I>&gt;<i> don't have much of a clue how to fix it.
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i> Ben Kaiser
+</I>&gt;<i>
+</I>&gt;<i> On Mon, 2 Nov 2015 at 20:54 Benjamin Kaiser &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">benjaminjkaiser at gmail.com</A>&gt;
+</I>&gt;<i> wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Thanks for the reply Michael,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I had the issue happen again yesterday and ran `sudo
+</I>&gt;&gt;<i> libinput-debug-events`, then changed back to i3, run a bunch of shortcuts
+</I>&gt;&gt;<i> and pressed a bunch of keys (all of which did nothing) then changed back to
+</I>&gt;&gt;<i> the tty only to see that it was registering those keys being pressed.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I'll try running `setxkbmap` and `xev` from a TTY next time the issue
+</I>&gt;&gt;<i> occurs to see if it fixes it / gives me any more information.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Also another small thing I noticed. To get out of the situation I click
+</I>&gt;&gt;<i> the workspaces, but the keyboard only works if I click a different
+</I>&gt;&gt;<i> workspace the the one I am currently in, it doesn't do anything (keyboard
+</I>&gt;&gt;<i> still won't register shortcuts) if I click the current workspace.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> modified my i3config to that (i3lock then systemctl suspend), I think it
+</I>&gt;&gt;<i> was that at some point and the issue still occurred, but I'll try it out
+</I>&gt;&gt;<i> let you know if the issue happens again.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Cheers,
+</I>&gt;&gt;<i> Ben Kaiser
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Mon, 2 Nov 2015 at 19:00 Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt; wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> When this situation happens:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> 1. Does running xev(1) still show keyboard events?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> 2. Does using setxkbmap to set your layout make the problem go away?
+</I>&gt;&gt;&gt;<i> That should force i3 to re-grab all keys.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> On Fri, Oct 30, 2015 at 12:38 PM, Benjamin Kaiser &lt;
+</I>&gt;&gt;&gt;<i> <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">benjaminjkaiser at gmail.com</A>&gt; wrote:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Hello,
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> I've got a really weird issue that's been bothering me for perhaps the
+</I>&gt;&gt;&gt;&gt;<i> last 6 months (before then it worked fine, perhaps could have been around
+</I>&gt;&gt;&gt;&gt;<i> when I switched to using my keyboard to suspend). Sometimes when I resume
+</I>&gt;&gt;&gt;&gt;<i> from suspend (I have i3lock launching at the same time as when I suspend) I
+</I>&gt;&gt;&gt;&gt;<i> can unlock my computer, but then no more keyboard events work. The keyboard
+</I>&gt;&gt;&gt;&gt;<i> remains active (lights on) and I can switch to a TTY, but none of the i3
+</I>&gt;&gt;&gt;&gt;<i> events fire. The only way I can fix it is to use the mouse (which is still
+</I>&gt;&gt;&gt;&gt;<i> working) to click on a workspace in the statusbar and then the keyboard
+</I>&gt;&gt;&gt;&gt;<i> responds again.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>  As mentioned above, it only happens sometimes, and as a fellow dev it
+</I>&gt;&gt;&gt;&gt;<i> really annoys me to no end when something is unreproducible. Things I have
+</I>&gt;&gt;&gt;&gt;<i> tried to reproduce are just suspending, then detaching my keyboard and
+</I>&gt;&gt;&gt;&gt;<i> attaching it again before resuming from suspend, but that doesn't trigger
+</I>&gt;&gt;&gt;&gt;<i> the issue. Just about the only common thing I can find is time (after being
+</I>&gt;&gt;&gt;&gt;<i> suspended for a long time, 12hours+, it seems to happen more frequently).
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> One idea I've had is that because I use a keyboard shortcut to suspend
+</I>&gt;&gt;&gt;&gt;<i> (`bindsym --release $mod+Control+Shift+s exec &quot;systemctl suspend; i3lock&quot;`
+</I>&gt;&gt;&gt;&gt;<i> in my config, the --
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> nit: you should i3lock first, then suspend. That way, your screen is
+</I>&gt;&gt;&gt;<i> guaranteed to be locked in a race-free way when you resume. “i3lock &amp;&amp;
+</I>&gt;&gt;&gt;<i> systemctl” suspend should work.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> release was me weeks ago trying to rectify the issue, but it still
+</I>&gt;&gt;&gt;&gt;<i> persisted) i3wm is somehow holding onto the keyboard before flushing, but
+</I>&gt;&gt;&gt;&gt;<i> then post-suspend, i3lock takes the keyboards focus, i3wm holds onto an old
+</I>&gt;&gt;&gt;&gt;<i> un-flushed pointer to the keyboard (not sure if that is how that works) and
+</I>&gt;&gt;&gt;&gt;<i> doesn't refresh it upon i3lock giving up focus.
+</I>&gt;&gt;&gt;&gt;<i> From searching around in the i3 source code, seeing the line in
+</I>&gt;&gt;&gt;&gt;<i> main.c:main() with the comment annotation
+</I>&gt;&gt;&gt;&gt;<i>     /* Grab the keyboard to get all input */
+</I>&gt;&gt;&gt;&gt;<i>     xcb_flush(conn);
+</I>&gt;&gt;&gt;&gt;<i> And that function also occuring in click.c:route_click() (i.e. when I
+</I>&gt;&gt;&gt;&gt;<i> click the workspaces in the status bar)
+</I>&gt;&gt;&gt;&gt;<i>     xcb_flush(conn);
+</I>&gt;&gt;&gt;&gt;<i> Maybe this is what is allowing the keyboard to work again. Is there
+</I>&gt;&gt;&gt;&gt;<i> some way this could be run upon i3lock giving up focus / i3wm resuming
+</I>&gt;&gt;&gt;&gt;<i> focus?
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Any help in solving this would be much appreciated!
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Here is some information about my system:
+</I>&gt;&gt;&gt;&gt;<i> Mouse: Razer Naga, (one with 12 buttons on side)
+</I>&gt;&gt;&gt;&gt;<i> Keyboard: ducky shine 3 with mini usb cable for connection (issue has
+</I>&gt;&gt;&gt;&gt;<i> occurred on my laptops internal keyboard also though)
+</I>&gt;&gt;&gt;&gt;<i> Distro: Arch Linux
+</I>&gt;&gt;&gt;&gt;<i> i3 Version: 4.11
+</I>&gt;&gt;&gt;&gt;<i> Kernel version: 4.2.3-1-ARCH
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Cheers,
+</I>&gt;&gt;&gt;&gt;<i> Ben Kaiser
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> --
+</I>&gt;&gt;&gt;<i> Best regards,
+</I>&gt;&gt;&gt;<i> Michael
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151108/a90ca5c9/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151108/a90ca5c9/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002253.html">[i3] Weird keybinding issue after suspend
+</A></li>
+	<LI>Next message: <A HREF="002261.html">[i3] Weird keybinding issue after suspend
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2257">[ date ]</a>
+              <a href="thread.html#2257">[ thread ]</a>
+              <a href="subject.html#2257">[ subject ]</a>
+              <a href="author.html#2257">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

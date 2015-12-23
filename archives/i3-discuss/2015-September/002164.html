@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] default kbd layout per window
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20default%20kbd%20layout%20per%20window&In-Reply-To=%3Cb10755f7-1119-46ca-b89f-7998a63b5a0c%40typeapp.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002163.html">
+   <LINK REL="Next"  HREF="002165.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] default kbd layout per window</H1>
+    <B>Ingo Bürk</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20default%20kbd%20layout%20per%20window&In-Reply-To=%3Cb10755f7-1119-46ca-b89f-7998a63b5a0c%40typeapp.com%3E"
+       TITLE="[i3] default kbd layout per window">admin at airblader.de
+       </A><BR>
+    <I>Tue Sep  1 17:13:25 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002163.html">[i3] default kbd layout per window
+</A></li>
+        <LI>Next message: <A HREF="002165.html">[i3] default kbd layout per window
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2164">[ date ]</a>
+              <a href="thread.html#2164">[ thread ]</a>
+              <a href="subject.html#2164">[ subject ]</a>
+              <a href="author.html#2164">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>For_window will only be run when the window is opened, not everytime it is focused. 
+
+What you need to do is hook into the focus event on the IPC, match the window there and execute the command. 
+
+Regards
+Ingo 
+
+Sent from TypeMail
+
+
+
+On Sep 1, 2015, 17:07, at 17:07, Nokan Emiro &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">uzleepito at gmail.com</A>&gt; wrote:
+&gt;<i>Hi i3wm gurus,
+</I>&gt;<i>
+</I>&gt;<i>I use i3 with kbdd in order to have different keyboard layouts in
+</I>&gt;<i>different
+</I>&gt;<i>windows:
+</I>&gt;<i>
+</I>&gt;<i>exec_always --no-startup-id kbdd
+</I>&gt;<i>exec_always setxkbmap -layout de,us -option grp:shift_caps_toggle
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>I figured out that the following command changes the current layout
+</I>&gt;<i>into
+</I>&gt;<i>the US version:
+</I>&gt;<i>
+</I>&gt;<i>$  dbus-send --dest=ru.gentoo.KbddService /ru/gentoo/KbddService
+</I>&gt;<i>ru.gentoo.kbdd.set_layout uint32:1
+</I>&gt;<i>
+</I>&gt;<i>...and replacing the uint32:1 with uint32:0 switches to the DE layout.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>Now, what I couldn't figure out is that how can I set up a default
+</I>&gt;<i>layout
+</I>&gt;<i>for certain types
+</I>&gt;<i>of windows.  New windows start with the DE version (I guess because
+</I>&gt;<i>that
+</I>&gt;<i>one comes
+</I>&gt;<i>first in the list with the 'setxkbmap -layout de,us' command).  So far,
+</I>&gt;<i>so
+</I>&gt;<i>go.  But on
+</I>&gt;<i>terminals I want to use the US layout.  I tried something like this in
+</I>&gt;<i>the
+</I>&gt;<i>i3wm config:
+</I>&gt;<i>
+</I>&gt;<i>for_window [window_role=&quot;terminal&quot;] exec dbus-send
+</I>&gt;<i>--dest=ru.gentoo.KbddService /ru/gentoo/KbddService
+</I>&gt;<i>ru.gentoo.kbdd.set_layout uint32:1
+</I>&gt;<i>
+</I>&gt;<i>Unfortunately this doesn't work.  Can you please tell me how can I do
+</I>&gt;<i>this
+</I>&gt;<i>kind of
+</I>&gt;<i>setup from the i3 config?  (Maybe I could run the dbus-send command
+</I>&gt;<i>from the
+</I>&gt;<i>bash_profile or something like that, but I hope this can be done with
+</I>&gt;<i>for_window
+</I>&gt;<i>in the i3 config somehow.)
+</I>&gt;<i>
+</I>&gt;<i>Thanks,
+</I>&gt;<i>Uz.
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150901/20d45678/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150901/20d45678/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002163.html">[i3] default kbd layout per window
+</A></li>
+	<LI>Next message: <A HREF="002165.html">[i3] default kbd layout per window
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2164">[ date ]</a>
+              <a href="thread.html#2164">[ thread ]</a>
+              <a href="subject.html#2164">[ subject ]</a>
+              <a href="author.html#2164">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

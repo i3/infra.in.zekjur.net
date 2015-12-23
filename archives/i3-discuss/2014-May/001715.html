@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3-save-tree
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3-save-tree&In-Reply-To=%3C5377DA7D.6030902%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001714.html">
+   <LINK REL="Next"  HREF="001716.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3-save-tree</H1>
+    <B>Marcin Herda</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3-save-tree&In-Reply-To=%3C5377DA7D.6030902%40gmail.com%3E"
+       TITLE="[i3] i3-save-tree">mherda at gmail.com
+       </A><BR>
+    <I>Sat May 17 23:54:05 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001714.html">[i3] i3-save-tree
+</A></li>
+        <LI>Next message: <A HREF="001716.html">[i3] i3-save-tree
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1715">[ date ]</a>
+              <a href="thread.html#1715">[ thread ]</a>
+              <a href="subject.html#1715">[ subject ]</a>
+              <a href="author.html#1715">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 17/05/14 17:57, Michael Stapelberg wrote:
+&gt;<i> [+cc i3-discuss]
+</I>&gt;<i>
+</I>&gt;<i> Hi Marcin,
+</I>&gt;<i>
+</I>&gt;<i> Marcin Herda&lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">mherda at slackword.net</A>&gt;  writes:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Hello Michael,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I'm playing with the new saving/restoring workspace layouts in i3wm 4.8.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I have and then edited the layout .json file. Afterwards I successfully
+</I>&gt;&gt;<i> loaded it into i3, which created a number of place holders (as expected).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Then if I try to fill a container with an appropriate application, it
+</I>&gt;&gt;<i> works fine. The application lands in the right place, eg:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> xterm -name foo
+</I>&gt;&gt;<i> xterm -name bar
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> If, however, I add the command to xterm to run a program, eg
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> xterm -name foo -e &quot;mc&quot;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> It 'opens' outside of the saved layout creating an additional container.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Did I miss something? Is it a wrong approach to the new feature?
+</I>&gt;<i> Your general approach seems correct.
+</I>&gt;<i>
+</I>&gt;<i> The placeholder containers tell you which criteria they look for, and if
+</I>&gt;<i> the new window does not match these criteria, it will not be swallowed
+</I>&gt;<i> by the placeholder container.
+</I>&gt;<i>
+</I>&gt;<i> In case manual introspection (i.e. comparing the xprop output for the
+</I>&gt;<i> affected window with the placeholder contents) is not enough, I suggest
+</I>&gt;<i> you check the logfile to see what i3 does:
+</I>&gt;<i> <A HREF="http://i3wm.org/docs/debugging.html">http://i3wm.org/docs/debugging.html</A>
+</I>&gt;<i>
+</I>&gt;<i> If you still cannot figure it out, feel free to follow up, but with a
+</I>&gt;<i> maximum debug level logfile please (compress it first before you send
+</I>&gt;<i> it).
+</I>&gt;<i>
+</I>&gt;<i> Thanks.
+</I>&gt;<i>
+</I>Thank you, Michael.
+
+I found the reason for it not working properly. I didn't specify a 
+correct 'title' variable in the json file:
+
+  &quot;swallows&quot;: [
+                {
+                 &quot;class&quot;: &quot;^XTerm$&quot;,
+                 &quot;instance&quot;: &quot;^bottomleft$&quot;,
+                 &quot;title&quot;: &quot;^mc$&quot;
+                }
+
+Previously, both the 'instance' and 'title' variable were assigned the 
+value 'bottomleft'.
+
+For the benefit of other people reading it: the above container will 
+swallow an instance of xterm running mc.
+
+xterm -name bottomleft -e 'mc'
+
+
+On a separate note, is it possible to run an i3-msg command from a 
+script (as opposed to via dmenu) or bind it to a key?
+It does not seem to be working for me:
+
+bindsym XF86Favorites exec /usr/bin/i3-msg 'workspace 1; append_layout 
+/home/sycamorex/ws_1-generic.json'
+
+It does not append the layout.
+
+I also have a script containing just one line:
+
+i3-msg 'workspace 1; append_layout /home/sycamorex/.i3/ws_1-generic.json'
+
+When I run it from a terminal, the only thing that happens is the output:
+
+[{&quot;success&quot;:true}]
+
+Thank you for your help.
+
+regards
+Marcin
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001714.html">[i3] i3-save-tree
+</A></li>
+	<LI>Next message: <A HREF="001716.html">[i3] i3-save-tree
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1715">[ date ]</a>
+              <a href="thread.html#1715">[ thread ]</a>
+              <a href="subject.html#1715">[ subject ]</a>
+              <a href="author.html#1715">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

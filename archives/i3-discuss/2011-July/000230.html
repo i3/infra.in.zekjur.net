@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] dzen2 on i3-3.e_bfl1
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20dzen2%20on%20i3-3.e_bfl1&In-Reply-To=%3C4E21E2BF.1030705%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000231.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] dzen2 on i3-3.e_bfl1</H1>
+    <B>Martin</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20dzen2%20on%20i3-3.e_bfl1&In-Reply-To=%3C4E21E2BF.1030705%40gmail.com%3E"
+       TITLE="[i3] dzen2 on i3-3.e_bfl1">mherda at gmail.com
+       </A><BR>
+    <I>Sat Jul 16 21:13:03 CEST 2011</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000231.html">[i3] dzen2 on i3-3.e_bfl1
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#230">[ date ]</a>
+              <a href="thread.html#230">[ thread ]</a>
+              <a href="subject.html#230">[ subject ]</a>
+              <a href="author.html#230">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi there,
+I'm using i3 on Slackware64 13.37 with dual head monitors (2x 1920x1200)
+
+Why do windows cover the status bar (dzen2) - in other words it's only 
+visible if I close all the windows.
+
+in the config file I disabled the workspace bar:
+workspace_bar no
+
+
+
+Here's my .xinitrc
+userresources=$HOME/.Xresources
+usermodmap=$HOME/.Xmodmap
+sysresources=/etc/X11/xinit/.Xresources
+sysmodmap=/etc/X11/xinit/.Xmodmap
+
+# Merge in defaults and keymaps
+[ -f $sysresources ] &amp;&amp; /usr/bin/xrdb -merge $sysresources
+[ -f $sysmodmap ] &amp;&amp; /usr/bin/xmodmap $sysmodmap
+[ -f $userresources ] &amp;&amp; /usr/bin/xrdb -merge $userresources
+[ -f $usermodmap ] &amp;&amp; /usr/bin/xmodmap $usermodmap
+
+# Start i3
+if [ -z &quot;$DESKTOP_SESSION&quot; -a -x /usr/bin/ck-launch-session ]; then
+         exec i3 --force-xinerama -V &gt;&gt;/home/martin/.i3/i3log 2&gt;&amp;1 &amp;
+         sh startup.sh
+#    exec ck-launch-session i3
+else
+     exec i3
+fi
+
+
+and dzen2 startup:
+
+while true
+do
+         DATE=$(date)
+         MEMINFO=$(sed -n -e '3d' -e '1,4p' /proc/meminfo | awk '{printf 
+&quot;%d &quot;, $2 }')
+         UPTIME=$(uptime | sed 's/.*://; s/,//g')
+         QUALITY=$(sed -e '1,2d' /proc/net/wireless | cut -d&quot; &quot; -f6,7)
+         UNAME=$(uname -a | cut -d&quot; &quot; -f1,2,3)
+         HD=$(df -h | awk '/root/ {print $4, $5}')
+         echo &quot;^fg(green)$DATE | $UNAME | T/F/C $MEMINFO | Wifi: 
+$QUALITY | Load Average: $UPTIME | Root: $HD&quot;
+         sleep 5
+
+done | dzen2 -y 1180 -bg black -fg grey -fn fixed
+
+
+
+
+
+thank you
+Martin
+
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000231.html">[i3] dzen2 on i3-3.e_bfl1
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#230">[ date ]</a>
+              <a href="thread.html#230">[ thread ]</a>
+              <a href="subject.html#230">[ subject ]</a>
+              <a href="author.html#230">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

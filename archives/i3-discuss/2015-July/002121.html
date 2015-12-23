@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Reloading i3wm and saving layout
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Reloading%20i3wm%20and%20saving%20layout&In-Reply-To=%3CCACaqnaRoYpTnVb%2Bk9hyV4peye7NWGJ81Ns5qRp46TpqKBJkD3A%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002120.html">
+   <LINK REL="Next"  HREF="002122.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Reloading i3wm and saving layout</H1>
+    <B>Eric Duncan</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Reloading%20i3wm%20and%20saving%20layout&In-Reply-To=%3CCACaqnaRoYpTnVb%2Bk9hyV4peye7NWGJ81Ns5qRp46TpqKBJkD3A%40mail.gmail.com%3E"
+       TITLE="[i3] Reloading i3wm and saving layout">eduncan911 at gmail.com
+       </A><BR>
+    <I>Sat Jul  4 06:34:08 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002120.html">[i3] Binding adventures between mappings
+</A></li>
+        <LI>Next message: <A HREF="002122.html">[i3] Reloading i3wm and saving layout
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2121">[ date ]</a>
+              <a href="thread.html#2121">[ thread ]</a>
+              <a href="subject.html#2121">[ subject ]</a>
+              <a href="author.html#2121">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>So, been using i3wm for a bit over a year across multiple distros (Debian6,
+7 and Testing; Ubuntu 14.04, 14.10 and 15.04; now Arch).
+
+When pressing MOD+R to reload i3wm, it's always annoyed me that it doesn't
+keep my terminal layouts (usually stacks them on the screen I am on).
+
+Today while monitoring journalctl, I noticed some interesting logs:
+
+Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: 07/04/2015 12:27:30
+AM - ERROR: mkdir(/run/user/1000/i3) failed: File exists
+Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: [libi3]
+libi3/font.c Using Pango font Segoe UI, size 10
+Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: [libi3]
+libi3/font.c X11 root window dictates 96.252632 DPI
+Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: Exiting due to
+signal.
+Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: 07/04/2015 12:27:30
+AM - ERROR: Could not create &quot;/run/user/1000/i3&quot; for storing the restart
+layout, layout will be lost.
+
+It says that this file exists:
+
+/run/user/1000/i3
+
+And indeed this directory does.
+
+Could this be the bane of my annoyances?
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150704/597e73e7/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150704/597e73e7/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002120.html">[i3] Binding adventures between mappings
+</A></li>
+	<LI>Next message: <A HREF="002122.html">[i3] Reloading i3wm and saving layout
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2121">[ date ]</a>
+              <a href="thread.html#2121">[ thread ]</a>
+              <a href="subject.html#2121">[ subject ]</a>
+              <a href="author.html#2121">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

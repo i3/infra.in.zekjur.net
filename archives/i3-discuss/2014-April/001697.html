@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Window resize issue
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Window%20resize%20issue&In-Reply-To=%3Cx6y4ysxt0o.fsf%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001696.html">
+   <LINK REL="Next"  HREF="001698.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Window resize issue</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Window%20resize%20issue&In-Reply-To=%3Cx6y4ysxt0o.fsf%40midna.zekjur.net%3E"
+       TITLE="[i3] Window resize issue">michael at i3wm.org
+       </A><BR>
+    <I>Sat Apr 26 12:52:07 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001696.html">[i3] Window resize issue
+</A></li>
+        <LI>Next message: <A HREF="001698.html">[i3] Documentation layout saving/restoring
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1697">[ date ]</a>
+              <a href="thread.html#1697">[ thread ]</a>
+              <a href="subject.html#1697">[ subject ]</a>
+              <a href="author.html#1697">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi avinash,
+
+avinash r &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">nashpapa at gmail.com</A>&gt; writes:
+&gt;<i> I was using Android Studio (AS) which has java awt based UI,
+</I>&gt;<i> In i3wm only[1], the dialog content appear like little box of 10-15px
+</I>&gt;<i> in size, or in partial size.
+</I>&gt;<i>
+</I>&gt;<i> As it doesn't appear in other WMs[1], the developers of AS, cannot be
+</I>&gt;<i> asked to find the cause of this.
+</I>&gt;<i>
+</I>&gt;<i> I don't know if it is an i3 bug even, as I haven't seen done by any
+</I>&gt;<i> other application using java awt (So I believe it may be the bug of
+</I>&gt;<i> toolkit).
+</I>&gt;<i>
+</I>&gt;<i> I am citing the image of working and error dialog and the result of
+</I>&gt;<i> xprop in both cases:
+</I>&gt;<i>
+</I>&gt;<i> dialog &quot;Update Info&quot;:
+</I>&gt;<i> -----------------------------
+</I>&gt;<i> * working src: <A HREF="http://goo.gl/WEKDUi">http://goo.gl/WEKDUi</A>
+</I>&gt;<i> * error scr: <A HREF="http://goo.gl/8wCg2H">http://goo.gl/8wCg2H</A>
+</I>&gt;<i> * working xprop: <A HREF="http://goo.gl/KuLpVE">http://goo.gl/KuLpVE</A>
+</I>&gt;<i> * error xprop: <A HREF="http://goo.gl/Izp6sj">http://goo.gl/Izp6sj</A>
+</I>&gt;<i>
+</I>&gt;<i> dialog &quot;Invalidate Cache&quot;:
+</I>&gt;<i> -------------------------------------
+</I>&gt;<i> * working scr: <A HREF="http://goo.gl/UmRrMI">http://goo.gl/UmRrMI</A>
+</I>&gt;<i> * error src: <A HREF="http://goo.gl/MYMC2m">http://goo.gl/MYMC2m</A>
+</I>&gt;<i> * working xprop: <A HREF="http://goo.gl/PDzJ4w">http://goo.gl/PDzJ4w</A>
+</I>&gt;<i> * error xprop: <A HREF="http://goo.gl/5tEhvJ">http://goo.gl/5tEhvJ</A>
+</I>&gt;<i>
+</I>&gt;<i> Hope someone will know what the issue maybe.
+</I>&gt;<i>
+</I>&gt;<i> [1]: not shown on xfce4/Gnome/awesome
+</I>I don’t see any significant difference in the xprop output, which is a
+bad sign. I suspect it’s another weird subtle protocol issue, where java
+relies on some subtlety that we don’t do.
+
+Please file a report at <A HREF="http://bugs.i3wm.org/.">http://bugs.i3wm.org/.</A> Also please try to
+reproduce it with the default i3 configuration file under a new user
+account. Bonus points if you can find something that is lighter-weight
+than Android Studio, but triggers the same bug.
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001696.html">[i3] Window resize issue
+</A></li>
+	<LI>Next message: <A HREF="001698.html">[i3] Documentation layout saving/restoring
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1697">[ date ]</a>
+              <a href="thread.html#1697">[ thread ]</a>
+              <a href="subject.html#1697">[ subject ]</a>
+              <a href="author.html#1697">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

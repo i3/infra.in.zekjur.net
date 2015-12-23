@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Problems getting Ubuntu repository working
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Problems%20getting%20Ubuntu%20repository%20working&In-Reply-To=%3CCACSEOCdDgUqc2fRbWKfKH5nhRwr_F%2BMjziA8uO59hihSt1CQsg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002216.html">
+   <LINK REL="Next"  HREF="002221.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Problems getting Ubuntu repository working</H1>
+    <B>Matt Ilacqua</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Problems%20getting%20Ubuntu%20repository%20working&In-Reply-To=%3CCACSEOCdDgUqc2fRbWKfKH5nhRwr_F%2BMjziA8uO59hihSt1CQsg%40mail.gmail.com%3E"
+       TITLE="[i3] Problems getting Ubuntu repository working">ilaq241 at gmail.com
+       </A><BR>
+    <I>Tue Oct 13 05:31:37 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002216.html">[i3] Killing a window's process
+</A></li>
+        <LI>Next message: <A HREF="002221.html">[i3] Problems getting Ubuntu repository working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2220">[ date ]</a>
+              <a href="thread.html#2220">[ thread ]</a>
+              <a href="subject.html#2220">[ subject ]</a>
+              <a href="author.html#2220">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Realized my version of i3 is 4.7.2 and that the sur5r repository wasn't
+working for me. I'm using xubuntu 14.04 LTS
+
+Here's what I see with apt-get update:
+
+Ign <A HREF="http://debian.sur5r.net">http://debian.sur5r.net</A> -c InRelease
+
+Ign <A HREF="http://debian.sur5r.net">http://debian.sur5r.net</A> -c Release.gpg
+Ign <A HREF="http://debian.sur5r.net">http://debian.sur5r.net</A> -c Release
+Err <A HREF="http://debian.sur5r.net">http://debian.sur5r.net</A> -c/-s) i386 Packages
+  404  Not Found [IP: 217.8.49.41 80]
+Err <A HREF="http://debian.sur5r.net">http://debian.sur5r.net</A> -c/universe i386 Packages
+  404  Not Found [IP: 217.8.49.41 80]
+Ign <A HREF="http://debian.sur5r.net">http://debian.sur5r.net</A> -c/-s) Translation-en_US
+Ign <A HREF="http://debian.sur5r.net">http://debian.sur5r.net</A> -c/-s) Translation-en
+Ign <A HREF="http://debian.sur5r.net">http://debian.sur5r.net</A> -c/universe Translation-en_US
+
+Ign <A HREF="http://debian.sur5r.net">http://debian.sur5r.net</A> -c/universe Translation-en
+
+W: Failed to fetch
+<A HREF="http://debian.sur5r.net/i3/dists/-c/-s">http://debian.sur5r.net/i3/dists/-c/-s</A>)/binary-i386/Packages  404  Not
+Found [IP: 217.8.49.41 80]
+
+W: Failed to fetch
+<A HREF="http://debian.sur5r.net/i3/dists/-c/universe/binary-i386/Packages">http://debian.sur5r.net/i3/dists/-c/universe/binary-i386/Packages</A>  404  Not
+Found [IP: 217.8.49.41 80]
+
+E: Some index files failed to download. They have been ignored, or old ones
+used instead.
+
+And in my /etc/apt/sources.list file I have:
+
+deb <A HREF="http://debian.sur5r.net/i3/">http://debian.sur5r.net/i3/</A>  -c -s) universe
+
+I also tried directly copying &quot;deb <A HREF="http://debian.sur5r.net/i3/">http://debian.sur5r.net/i3/</A> $(lsb_release
+-c -s) universe&quot; right into sources.list and am still getting 404's in my
+sudo apt-get update.
+
+Any info or suggestions would be appreciated. Thanks!
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151012/3dfff66e/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151012/3dfff66e/attachment.html</A>&gt;
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002216.html">[i3] Killing a window's process
+</A></li>
+	<LI>Next message: <A HREF="002221.html">[i3] Problems getting Ubuntu repository working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2220">[ date ]</a>
+              <a href="thread.html#2220">[ thread ]</a>
+              <a href="subject.html#2220">[ subject ]</a>
+              <a href="author.html#2220">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

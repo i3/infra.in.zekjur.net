@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3wm buttons
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3wm%20buttons&In-Reply-To=%3Cx61u0amiq6.fsf%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001533.html">
+   <LINK REL="Next"  HREF="001535.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3wm buttons</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3wm%20buttons&In-Reply-To=%3Cx61u0amiq6.fsf%40midna.zekjur.net%3E"
+       TITLE="[i3] i3wm buttons">michael at i3wm.org
+       </A><BR>
+    <I>Tue Jan 14 21:06:09 CET 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001533.html">[i3] libi3 and .xsession-errors
+</A></li>
+        <LI>Next message: <A HREF="001535.html">[i3] i3wm buttons
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1534">[ date ]</a>
+              <a href="thread.html#1534">[ thread ]</a>
+              <a href="subject.html#1534">[ subject ]</a>
+              <a href="author.html#1534">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi &#1043;&#1086;&#1083;&#1086;&#1074;&#1080;&#1085;,
+
+Thanks for your suggestion. I have CC'ed i3-discuss, where this should
+have been sent to in the first place.
+
+&#1043;&#1086;&#1083;&#1086;&#1074;&#1080;&#1085; &#1040;&#1085;&#1076;&#1088;&#1077;&#1081; &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ag-3d at yandex.ru</A>&gt; writes:
+
+&gt;<i> -----------
+</I>&gt;<i> i3 buttons.
+</I>&gt;<i> -----------
+</I>&gt;<i>
+</I>&gt;<i> idea: add buttons to i3wm
+</I>&gt;<i> Why:
+</I>&gt;<i> i3wm`s problem: it is aims only on geeks, not on usual users:
+</I>This is not a problem. i3 is a niche window manager and we are very
+aware of that. Most usual users have no interest in using a tiling
+window manager, and we have no interest in accomodating novice users.
+
+&gt;<i>  - user cant see, how to mnipulate i3wm, he need to learn i3 hotkeys.
+</I>Which is good, because then she knows the hotkeys, and they are very
+useful :).
+
+&gt;<i>  - i3wm need keybord for even simple things, like closing window, what
+</I>&gt;<i>  is not always userful.
+</I>Agreed. There is ticket #558 though, which is actively being worked on,
+to improve mouse usage of i3.
+
+&gt;<i>  - it can slow down users (launch applications is not so simple, and if program have a lot of hotkeys, like blender, user need to switch his mind form program to i3wm)
+</I>&gt;<i> What about users, already familiar to i3wm?:
+</I>&gt;<i>  - Of course, user can remove all buutons, he can easily #comment it in config.
+</I>&gt;<i>  - add to i3wm first launch(where is win-alt choise) &quot;show buttons&quot;,
+</I>&gt;<i> default answer sloud be yes(! becase new user usualy just click
+</I>&gt;<i> default, familiar have more attention and he easily choose)
+</I>We don&#8217;t want to make i3-config-wizard a configuration tool. The only
+reason it exists in the first place is because configs that are tailored
+to your keyboard layout _have to_ be generated at runtime. The reason it
+also offers you a choice between the alt and the windows key as a
+modifier is that we strongly prefer the windows key (due to less clashes
+with other applications), but not all laptops have it. Perhaps we can
+drop it in a couple of years.
+
+&gt;<i> just adding buttons to i3 can make avalibe this awesome tiling manager
+</I>&gt;<i> for every user, you can get more donates!
+</I>I don&#8217;t need more donations.
+
+I hope I have explained well enough why I don&#8217;t think adding buttons is
+a good idea, especially if it&#8217;s for catering to a group of users which
+we explicitly don&#8217;t want to have at all. By focusing on power users, we
+can make much better software for them, and the market for novice/light
+users is already saturated with programs like GNOME, KDE, Xfce, LXDE and
+others.
+
+I&#8217;ll leave the rest of the proposal in the mail for transparency:
+
+&gt;<i> Window buttons:
+</I>&gt;<i>   add buttons to title of window(left of right corner):
+</I>&gt;<i>     image:
+</I>&gt;<i>       (it can be just xbm for begining, but png would be better)
+</I>&gt;<i>       (for example, xbm color is color of title text)
+</I>&gt;<i>     click this image: this call command for current window:
+</I>&gt;<i>       for example 'kill'
+</I>&gt;<i>   image is in ~/.i3 
+</I>&gt;<i>     example: ~/.i3/close.xbm or ~/.i3/close.png
+</I>&gt;<i>   In config:
+</I>&gt;<i>
+</I>&gt;<i>     #button place image     command
+</I>&gt;<i>     button  left  close.png kill
+</I>&gt;<i>
+</I>&gt;<i>   (First button on left side is first button with &quot;left&quot; in config, second is second...)
+</I>&gt;<i>   examples:
+</I>&gt;<i>
+</I>&gt;<i>     #here .png can be .xbm if you now want to make only .xbm
+</I>&gt;<i>     #close button on right
+</I>&gt;<i>     button right close.png kill
+</I>&gt;<i>     #full scree on the left
+</I>&gt;<i>     button left full.png fullscreen
+</I>&gt;<i>     #floating mode (simular to maximaze button)
+</I>&gt;<i>     button left floating toggle
+</I>&gt;<i>     #split in horizontal orientation
+</I>&gt;<i>     button left splith.png split h
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Buttons for i3bar (panel of i3):
+</I>&gt;<i>   you can do it, because you did system tray
+</I>&gt;<i>   launch buttons - reson, why i use gnome-panel, not i3bar
+</I>&gt;<i>   add buttons to i3bar:
+</I>&gt;<i>   - left (from the left of workspace butons)
+</I>&gt;<i>   - right (from the right of tray)
+</I>&gt;<i>   - ?at center?
+</I>&gt;<i>   In config it is in &quot;bar&quot;:
+</I>&gt;<i>     
+</I>&gt;<i>     bar {
+</I>&gt;<i> 	    status_comand i3status
+</I>&gt;<i> 	    button right tabbed.png layout tabbed
+</I>&gt;<i> 	    button right splite.png layout toggle split
+</I>&gt;<i> 	    button left  /usr/pixmaps/firefox.png exec firefox
+</I>&gt;<i> 	}
+</I>&gt;<i>
+</I>
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001533.html">[i3] libi3 and .xsession-errors
+</A></li>
+	<LI>Next message: <A HREF="001535.html">[i3] i3wm buttons
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1534">[ date ]</a>
+              <a href="thread.html#1534">[ thread ]</a>
+              <a href="subject.html#1534">[ subject ]</a>
+              <a href="author.html#1534">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] GLFW_FLOATING window
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20GLFW_FLOATING%20window&In-Reply-To=%3CCANnVG6kVK_5ouF2LNDGy3mS6r27MYMGAO6M5Vpg2SGPvYbenyA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002150.html">
+   <LINK REL="Next"  HREF="002153.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] GLFW_FLOATING window</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20GLFW_FLOATING%20window&In-Reply-To=%3CCANnVG6kVK_5ouF2LNDGy3mS6r27MYMGAO6M5Vpg2SGPvYbenyA%40mail.gmail.com%3E"
+       TITLE="[i3] GLFW_FLOATING window">michael at i3wm.org
+       </A><BR>
+    <I>Tue Aug 25 17:40:00 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002150.html">[i3] GLFW_FLOATING window
+</A></li>
+        <LI>Next message: <A HREF="002153.html">[i3] GLFW_FLOATING window
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2151">[ date ]</a>
+              <a href="thread.html#2151">[ thread ]</a>
+              <a href="subject.html#2151">[ subject ]</a>
+              <a href="author.html#2151">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE><A HREF="http://standards.freedesktop.org/wm-spec/1.3/ar01s05.html">http://standards.freedesktop.org/wm-spec/1.3/ar01s05.html</A> contains:
+
+&quot;&quot;&quot;
+_NET_WM_STATE_ABOVE indicates that the window should be on top of most
+windows (see the section called “Stacking order” for details).
+
+_NET_WM_STATE_BELOW indicates that the window should be below most
+windows (see the section called “Stacking order” for details).
+
+_NET_WM_STATE_ABOVE and _NET_WM_STATE_BELOW are mainly meant for user
+preferences and should not be used by applications e.g. for drawing
+attention to their dialogs (the Urgency hint should be used in that
+case, see the section called “Urgency”).
+&quot;&quot;&quot;
+
+&gt;<i>From that, I don’t think using _NET_WM_STATE_ABOVE to make a window
+</I>floating is the correct way.
+
+Taking a step back, why does the window need to be floating at all? i3
+deliberately only makes dialog windows floating, and if your window is
+not a dialog window, it not being floating is working as intended.
+
+On Tue, Aug 25, 2015 at 5:21 PM, Kevin J &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jkevin1 at umbc.edu</A>&gt; wrote:
+&gt;<i> Hi everyone,
+</I>&gt;<i>
+</I>&gt;<i> GLFW has a window creation flag to make a window FLOATING, it uses
+</I>&gt;<i> _NET_WM_STATE_ABOVE to do this in x11_window.c.
+</I>&gt;<i>
+</I>&gt;<i> I have tried adding to the if statement in manage.c and the corresponding
+</I>&gt;<i> xmacro to atoms.xmacro, but it still doesn't open as a floating window.
+</I>&gt;<i> After adding this, GLFW's check in x11_init.c works, it didn't before, so it
+</I>&gt;<i> seems to be registered within i3 correctly, but the
+</I>&gt;<i> xcb_reply_contains_atom(state_reply, A__NET_WM_STATE_ABOVE) check still
+</I>&gt;<i> fails.  Any idea why this could be happening?
+</I>&gt;<i>
+</I>&gt;<i> Additionally, if I do get it working, would this be something worthy of
+</I>&gt;<i> submitting? or should GLFW be changed to use something other than the
+</I>&gt;<i> WM_STATE_ABOVE atom to make floating windows?  ...although none of the tests
+</I>&gt;<i> used by i3 seem to be the right fit.
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i> Kevin
+</I>
+
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002150.html">[i3] GLFW_FLOATING window
+</A></li>
+	<LI>Next message: <A HREF="002153.html">[i3] GLFW_FLOATING window
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2151">[ date ]</a>
+              <a href="thread.html#2151">[ thread ]</a>
+              <a href="subject.html#2151">[ subject ]</a>
+              <a href="author.html#2151">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

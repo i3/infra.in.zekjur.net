@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Proposal for default config
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Proposal%20for%20default%20config&In-Reply-To=%3CCABCpq7DfhV11P9V4r3FPdSyP_d9C95L%3DdrRMQZwrgvhoV_0c8Q%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001403.html">
+   <LINK REL="Next"  HREF="001405.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Proposal for default config</H1>
+    <B>Julio Molina Soler</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Proposal%20for%20default%20config&In-Reply-To=%3CCABCpq7DfhV11P9V4r3FPdSyP_d9C95L%3DdrRMQZwrgvhoV_0c8Q%40mail.gmail.com%3E"
+       TITLE="[i3] Proposal for default config">jmolinaso at gmail.com
+       </A><BR>
+    <I>Fri Aug 16 10:02:22 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001403.html">[i3] floating window without border
+</A></li>
+        <LI>Next message: <A HREF="001405.html">[i3] Proposal for default config
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1404">[ date ]</a>
+              <a href="thread.html#1404">[ thread ]</a>
+              <a href="subject.html#1404">[ subject ]</a>
+              <a href="author.html#1404">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+I just joined your community as I'm few months working productively with
+i3wm, I want to give back what I get from this project.
+I've being improving i3 configuration since the day 1 to match with my
+laptop needs, I must say, it gets the 80% of everything. But I always
+missed the fact that the volume keys are not working out of the box, and
+turns out it is quite simple to achieve that, so I wonder if it can be
+added to the initial config script, as it can help users to don't bother
+about that small useful feature.
+
+I added in my config the option to raise and low the volume with amixer,
+I'm sure there must be a better way to do that, so if anyone knows better
+... share it!
+
+# Section to control the Master output
+bindSym XF86AudioRaiseVolume exec amixer set Master 1%+
+bindSym XF86AudioLowerVolume exec amixer set Master 1%-
+bindSym XF86AudioMute exec amixer -D pulse set Master 1+ toggle
+
+#Section to control the Capture (mic)
+bindSym Shift+XF86AudioRaiseVolume exec amixer set Capture 1%+
+bindSym Shift+XF86AudioLowerVolume exec amixer set Capture 1%-
+bindSym Shift+XF86AudioMute exec amixer set Capture 1+ toggle
+
+Hope easy the search from other people. I was planning to add a blog
+entrance, but I think is better that gets linked to the community.
+
+-- 
+Saludos Digitales,
+Julio Molina Soler
+
+<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jmolinaso at gmail.com</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130816/a4887b84/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130816/a4887b84/attachment.html</A>&gt;
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001403.html">[i3] floating window without border
+</A></li>
+	<LI>Next message: <A HREF="001405.html">[i3] Proposal for default config
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1404">[ date ]</a>
+              <a href="thread.html#1404">[ thread ]</a>
+              <a href="subject.html#1404">[ subject ]</a>
+              <a href="author.html#1404">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

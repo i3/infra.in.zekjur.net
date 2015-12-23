@@ -1,0 +1,366 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3 new user experiences summary
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%20new%20user%20experiences%20summary&In-Reply-To=%3CCANnVG6%3DuSrccvjNx_7%2B%3DZejTx1CkmzrB_5LkKp1iSwPasYqVpA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002230.html">
+   <LINK REL="Next"  HREF="002227.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3 new user experiences summary</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%20new%20user%20experiences%20summary&In-Reply-To=%3CCANnVG6%3DuSrccvjNx_7%2B%3DZejTx1CkmzrB_5LkKp1iSwPasYqVpA%40mail.gmail.com%3E"
+       TITLE="[i3] i3 new user experiences summary">michael at i3wm.org
+       </A><BR>
+    <I>Fri Oct 16 20:08:28 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002230.html">[i3] i3 new user experiences summary
+</A></li>
+        <LI>Next message: <A HREF="002227.html">[i3] Error: status_command process exited unexpectedly (exit 1)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2229">[ date ]</a>
+              <a href="thread.html#2229">[ thread ]</a>
+              <a href="subject.html#2229">[ subject ]</a>
+              <a href="author.html#2229">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thanks for taking the time to follow up. I hope my reply makes things more
+clear.
+
+On Fri, Oct 16, 2015 at 11:33 AM, &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">frederik at ofb.net</A>&gt; wrote:
+
+&gt;<i> Hi Michael,
+</I>&gt;<i>
+</I>&gt;<i> Thanks again for the great piece of software.
+</I>&gt;<i>
+</I>&gt;<i> I'm replying off-list because I didn't want to get into a public
+</I>&gt;<i>
+</I>
+I’m adding the list to CC again because I think the clarifications might be
+useful not only for you, but also for other people interested in the
+thread. I hope you don’t mind.
+
+
+&gt;<i> argument - at first I thought you were a troll, and then I saw that
+</I>&gt;<i> you're the author of i3wm! :) Maybe I'm not realizing something about
+</I>&gt;<i> my suggestions, but here is some more clarification in response to
+</I>&gt;<i> your comments:
+</I>&gt;<i>
+</I>&gt;<i> (regarding i3-config-wizard)
+</I>&gt;<i>
+</I>&gt;<i> &gt; The key _positions_ make some sense, the key mnemonics likely don’t.
+</I>&gt;<i> &gt; I don’t think this is a big problem, as users are very likely to
+</I>&gt;<i> &gt; change their config file anyway. Also, you’re free to use/not use
+</I>&gt;<i> &gt; the wizard as you see fit — for most users, using the wizard seems
+</I>&gt;<i> &gt; to be the best solution, which is why it’s started by default.
+</I>&gt;<i>
+</I>&gt;<i> If I recall, the wizard runs (or offers to run) by default, and
+</I>&gt;<i> doesn't explain what it's doing, so new Dvorak users don't have a
+</I>&gt;<i> warning of why the config file bindings look so strange - nor do they
+</I>&gt;<i> have any indication that another option is available for obtaining a
+</I>&gt;<i> default config. I don't know why you say it seems to be the best
+</I>&gt;<i> solution for most users - obviously, most users are Qwerty users, for
+</I>&gt;<i> whom the config wizard does almost nothing, it just queries the user
+</I>&gt;<i> for a modifier key, IIRC.
+</I>&gt;<i>
+</I>
+It asks for the modifier key and creates the config file. Both of that
+could be achieved by using “sed 's/$mod Mod1/$mod Mod4/g' /etc/i3/config &gt;
+~/.i3/config”, yes.
+
+The main point why the wizard starts by default is that the default config
+file has to use Mod1 (Alt by default) because there are computers which
+don’t have a physical Mod4 (Windows by default) key. We strongly want to
+encourage people to use Mod4 as a modifier, because that avoids clashes
+with key combinations that other software uses. At the same time, we cannot
+make the default config use Mod4, because then i3 would just not work on
+computers which lack the Windows key.
+
+
+&gt;<i>
+</I>&gt;<i> I think we both understand the rationale of the config wizard: it
+</I>&gt;<i> makes the navigation keys match up - but all the other keys become
+</I>&gt;<i> wrong, which means that 95% (rough estimate) of the config file is
+</I>&gt;<i>
+</I>
+13 lines out of 69 lines in the i3 default config are bindings that use
+keys whose positions typically change depending on the layout — that’s not
+even 20% :).
+
+Regardless of the numbers, I think it boils down to personal preference: i3
+currently goes the route where the positions make some sense (navigation
+keys first and foremost, but also how the remaining keys are positioned).
+Some people might prefer the mnemonics to make sense. It’s impossible to
+please both crowds.
+
+
+&gt;<i> wrong. On my system, /etc/i3/config already has variable aliases for
+</I>&gt;<i> the navigation keys, which seems like a much better solution (didn't
+</I>&gt;<i> check whether this is part of the Arch package or your i3wm
+</I>&gt;<i> distribution)
+</I>&gt;<i>
+</I>&gt;<i>     set $up l
+</I>&gt;<i>     set $down k
+</I>&gt;<i>     set $left j
+</I>&gt;<i>     set $right semicolon
+</I>&gt;<i>
+</I>&gt;<i> Why would anyone not prefer to just have a copy of this file in ~/.i3/
+</I>&gt;<i> to start out with?
+</I>&gt;<i>
+</I>&gt;<i> I'm not sure but it seems like Layus was also agreeing with me in his
+</I>&gt;<i> reply: &quot;Also, it is easier to have the same bindings on all
+</I>&gt;<i> installations, even if misplaced. This way, the tutorials can assume
+</I>&gt;<i> that the users all have Mod+p [sic] for restart.&quot;
+</I>&gt;<i>
+</I>&gt;<i> &gt; Does “workspace_layout tabbed” do what you want?
+</I>&gt;<i>
+</I>&gt;<i> Yes, thank you!
+</I>&gt;<i>
+</I>&gt;<i> &gt; Can you please send a pull request for <A HREF="https://github.com/i3/i3">https://github.com/i3/i3</A>
+</I>&gt;<i> &gt; which adds an explanation where you think it makes sense?
+</I>&gt;<i>
+</I>&gt;<i> I'm not familiar with git but I'll give you a human-readable patch. In
+</I>&gt;<i> the i3 man page, after:
+</I>&gt;<i>
+</I>&gt;<i>     Window
+</I>&gt;<i>
+</I>&gt;<i>         An X11 window, like the Firefox browser window or a terminal
+</I>&gt;<i>         emulator.
+</I>&gt;<i>
+</I>&gt;<i> I would insert
+</I>&gt;<i>
+</I>&gt;<i>     Floating Window
+</I>&gt;<i>
+</I>&gt;<i>         A window which &quot;floats&quot; on top of other windows. This style is
+</I>&gt;<i>         used by i3 to display X11 windows with type &quot;dialog&quot;, such as
+</I>&gt;<i>         the &quot;Print&quot; or &quot;Open File&quot; dialog boxes in many GUI
+</I>&gt;<i>         applications. Use of floating windows can be fine-tuned with
+</I>&gt;<i>         the for_window command (see HTML userguide).
+</I>&gt;<i>
+</I>&gt;<i> I think that should be more than enough - I originally became
+</I>&gt;<i> frustrated when not finding the word &quot;dialog&quot; in the man page. I hope
+</I>&gt;<i> the last sentence isn't out of place. If you want an actual patch for
+</I>&gt;<i> that text, let me know.
+</I>&gt;<i>
+</I>
+<A HREF="https://github.com/i3/i3/commit/d56264e00185023d433a913ef468428d345a3c7a">https://github.com/i3/i3/commit/d56264e00185023d433a913ef468428d345a3c7a</A>
+
+
+&gt;<i>
+</I>&gt;<i> &gt; &gt; - Even after learning the &quot;floating toggle&quot; binding it sometimes
+</I>&gt;<i> &gt; &gt;   becomes annoying or confusing to have to press it each time -
+</I>&gt;<i> &gt; &gt;   for instance if I have to print a lot of stuff in Firefox, but I
+</I>&gt;<i> &gt; &gt;   sometimes want to navigate to other windows when the print
+</I>&gt;<i> &gt; &gt;   dialog is open. I also sometimes accidentally turn Firefox into
+</I>&gt;<i> &gt; &gt;   a floating window when I'm doing this, and then I wonder where
+</I>&gt;<i> &gt; &gt;   all the other windows went.... I would appreciate an option to
+</I>&gt;<i> &gt; &gt;   have dialogs always come up as windows by default.
+</I>&gt;<i>
+</I>&gt;<i> &gt; If the print dialog is clearly meant to be floating, Firefox should
+</I>&gt;<i> &gt; set the appropriate window hints. Since you describe you have to
+</I>&gt;<i> &gt; manually make it floating, apparently Firefox doesn’t. You should
+</I>&gt;<i> &gt; file a Firefox bug, but you can work around this with a for_window
+</I>&gt;<i> &gt; rule, see
+</I>&gt;<i> &gt;
+</I>&gt;<i> <A HREF="http://i3wm.org/docs/userguide.html#_arbitrary_commands_for_specific_windows_for_window">http://i3wm.org/docs/userguide.html#_arbitrary_commands_for_specific_windows_for_window</A>
+</I>&gt;<i>
+</I>&gt;<i> You misunderstood, sorry - I was intending to describe manually making
+</I>&gt;<i> windows unfloating. I used the suggestion of Layus,
+</I>&gt;<i>
+</I>
+Ah, sorry, should have read more carefully.
+
+
+&gt;<i>
+</I>&gt;<i> for_window [title=&quot;.*&quot;] floating disable
+</I>&gt;<i>
+</I>&gt;<i> which works great. If I were you I might put a commented-out copy of
+</I>&gt;<i> this line in the default config file, but then if I were you I
+</I>&gt;<i>
+</I>
+The default config file is intentionally kept rather short so as to not
+overwhelm users. I’m aware of software which goes the opposite route, e.g.
+the dovecot config file, which is a reference in which you can remove the
+comment sign in front of lots of examples. Again, this is just a matter of
+preference.
+
+While the use-case you have is certainly valid, consider that there are
+hundreds of equally valid use-cases. I don’t think listing them all in the
+default config file is a good idea.
+
+
+&gt;<i> wouldn't have written the floating window support, not to mention the
+</I>&gt;<i> rest of the window manager. :)
+</I>&gt;<i>
+</I>&gt;<i> &gt; &gt; - &quot;focus right&quot; is not always the reverse of &quot;focus left&quot;. For
+</I>&gt;<i> &gt; &gt;   instance, if the rightmost tab is split horizontally, then one
+</I>&gt;<i> &gt; &gt;   command will cycle through all the windows, but the other will
+</I>&gt;<i> &gt; &gt;   get stuck cycling through the children of the tab which has been
+</I>&gt;<i> &gt; &gt;   split. Same with &quot;focus up&quot; and &quot;focus down&quot; in the stacking
+</I>&gt;<i> &gt; &gt;   layout, when a child is split vertically. It seems it would be
+</I>&gt;<i> &gt; &gt;   cleaner to have these pairs be strict opposites.
+</I>&gt;<i>
+</I>&gt;<i> &gt; There are several places where the directional commands don’t
+</I>&gt;<i> &gt; strictly operate on the tree and hence focus left/right are not
+</I>&gt;<i> &gt; always direct opposites. We believe that bottomline, this makes it
+</I>&gt;<i> &gt; easier for users. Even if it didn’t make it easier for users,
+</I>&gt;<i> &gt; changing it now would be very disruptive to existing users, so I
+</I>&gt;<i> &gt; don’t think we can do much about it. If you feel strongly, you might
+</I>&gt;<i> &gt; be able to implement your own logic using the IPC interface:
+</I>&gt;<i> &gt; <A HREF="http://i3wm.org/docs/ipc.html">http://i3wm.org/docs/ipc.html</A>
+</I>&gt;<i>
+</I>&gt;<i> I'm not sure if you tried out my example. It seems quite weird that
+</I>&gt;<i>
+</I>
+I didn’t try it at the time, both because I’m usually very pressed on time,
+and also because I’m not good at understanding what people mean when they
+talk about window hierarchies. I tend to ask for specific commands to
+reproduce layouts.
+
+I take it you used &lt;open window&gt;, “layout tabbed”, &lt;open window&gt;, “splith”,
+&lt;open window&gt;.
+
+Note that in such a situation, you can use “focus parent” to get out of
+being stuck.
+
+
+&gt;<i> navigating the focus to the right gets stuck in a container only if
+</I>&gt;<i> the container is (1) at the far right, and (2) has multiple child
+</I>&gt;<i> windows. If the container is in the middle, or has only one child
+</I>&gt;<i> window, then we can move out of it with 'focus right', but otherwise
+</I>&gt;<i> we get stuck. Why? When you said &quot;We believe that bottomline, this
+</I>&gt;<i> makes it easier for users&quot;, I thought he's just trolling or being
+</I>&gt;<i>
+</I>
+To clarify, I didn’t mean to say “this specific behavior is easy for
+users”. What I was trying to convey is that the logic which the directional
+focus commands use is made such that many use-cases are intuitive (notably
+these which plenty of users reported as confusing). The price for that is
+that in some other situations, the logic is not ideal.
+
+
+&gt;<i> defensive or something. Also, the assertion that &quot;changing it now
+</I>&gt;<i> would be very disruptive to existing users&quot; seems highly questionable
+</I>&gt;<i> (&quot;very&quot;?). But maybe I'm just not smart enough to figure out the use
+</I>&gt;<i>
+</I>
+Empirically, we have enough users that almost every change which is not an
+addition of new behavior will affect existing users. Most of these changes
+affect edge cases, but changes to the focus command have a much bigger
+chance of being disruptive, just because every single i3 user uses the
+focus command. In addition, the focus command is not something about which
+you think before using it; it quickly goes into your muscle memory. I think
+it deserves special attention.
+
+i3’s take on backwards compatibility is rather strong. We try really hard
+to not break configuration files or existing workflows.
+
+
+&gt;<i> cases you have in mind. You don't have to waste your time explaining
+</I>&gt;<i> it to me, I'm just communicating my reaction to you in case you wanted
+</I>&gt;<i> to know.
+</I>&gt;<i>
+</I>&gt;<i> (regarding i3-nagbar)
+</I>&gt;<i>
+</I>&gt;<i> &gt; It’s designed to nag you, so this is working as intended :).
+</I>&gt;<i>
+</I>&gt;<i> Are you really saying that your software is intended to be annoying?
+</I>&gt;<i>
+</I>
+In general, my software should be the opposite of annoying. In the case of
+i3-nagbar specifically, though, yes, it absolutely should be annoying. The
+reason depends on the occasion on which you get to see i3-nagbar:
+
+1. You have an error in your configfile: i3-nagbar nags you so that you
+don’t nag us. Historically, before we had i3-nagbar, a very frequent
+bugreport we’d get was caused by users who had a configuration file error
+and did not know about the logfile which i3 writes. Introducing i3-nagbar
+reduced these sorts of reports significantly.
+
+In case you were just editing your configfile and made a mistake, note that
+you don’t have to reach to your mouse: just fix your configfile, reload i3,
+i3-nagbar will be gone.
+
+2. Your config file is really old (i3 v3) and we’ve tried to migrate it to
+a v4 config file but couldn’t ensure that every directive you’ve had before
+could be successfully converted. This is a more debatable case. Our opinion
+is that you should be alerted prominently until your config file is in a
+working state again. Since you’ll see this message when you start up i3
+(not during your work), we think it’s better to spend a minute fixing the
+config file instead of realizing a feature doesn’t work while you are
+getting your actual work done.
+
+3. You use the default config file and pressed the keybinding to exit i3.
+People were occasionally hitting the keybinding by accident and were really
+disappointed by losing their entire session. Having i3-nagbar in here with
+its annoying confirmation fixes the problem — you have to be really unlucky
+or very sure to exit i3. If you dislike this behavior, please change your
+configfile to not use i3-nagbar.
+
+
+&gt;<i> You have so many enthusiastic users, I bet someone would be willing to
+</I>&gt;<i> modify &quot;move focus up&quot; to focus the nagbar... but first you'd have to
+</I>&gt;<i> solicit such a patch, of course...
+</I>&gt;<i>
+</I>&gt;<i> I noticed that in this FAQ entry
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="https://faq.i3wm.org/question/1977/why-is-the-i3-irc-channel-not-on-freenode/">https://faq.i3wm.org/question/1977/why-is-the-i3-irc-channel-not-on-freenode/</A>
+</I>&gt;<i>
+</I>&gt;<i> you said &quot;By using a separate server, we separate the wheat from the
+</I>&gt;<i> chaff: people who just join the channel easily to ask a troll question
+</I>&gt;<i> don’t bother.&quot; - I guess this kind of device is potentially important
+</I>&gt;<i> in all areas of a project, especially a free software project - so
+</I>&gt;<i> perhaps some of i3's rough edges are serving the same purpose of
+</I>&gt;<i> filtering out particular users, who would otherwise be a burden to
+</I>&gt;<i> you. If that's necessary, so be it. Accepting that possibility, is
+</I>&gt;<i> another reason why I replied off list to your comments.
+</I>&gt;<i>
+</I>&gt;<i> Take care,
+</I>&gt;<i>
+</I>&gt;<i> Frederick
+</I>&gt;<i>
+</I>
+
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151016/65825ad5/attachment-0001.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151016/65825ad5/attachment-0001.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002230.html">[i3] i3 new user experiences summary
+</A></li>
+	<LI>Next message: <A HREF="002227.html">[i3] Error: status_command process exited unexpectedly (exit 1)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2229">[ date ]</a>
+              <a href="thread.html#2229">[ thread ]</a>
+              <a href="subject.html#2229">[ subject ]</a>
+              <a href="author.html#2229">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,1878 @@
+From pedro.e.pinto at gmail.com  Fri Dec  6 20:11:53 2013
+From: pedro.e.pinto at gmail.com (Pedro Pinto)
+Date: Fri, 6 Dec 2013 19:11:53 +0000 (UTC)
+Subject: [i3] decent kde integration with i3?
+References: <20130316191653.GA1274@anton>
+ <CAEFYCXP2WzDP1ar5LuNpK-tbnk77ok6VruKBfO3Kqqs_6aUHOw@mail.gmail.com>
+ <20130320193825.GA579@anton>
+ <CAEFYCXOfuM6iadwt=4OTO4+Krc62mA_W5-0A96nqHNUm8HVzWg@mail.gmail.com>
+ <20130320224351.GB579@anton>
+Message-ID: <loom.20131206T201055-890@post.gmane.org>
+
+
+Hi guys, I was just wondering if these patches made their way upstream?
+
+-pp
+
+
+
+From oliver at first.in-berlin.de  Wed Dec 11 14:24:37 2013
+From: oliver at first.in-berlin.de (oliver)
+Date: Wed, 11 Dec 2013 14:24:37 +0100
+Subject: [i3] Multiwindow-Apps (Gnome, Inkscape, xchat and others) in i3
+Message-ID: <20131211132436.GA2745@siouxsie>
+
+Hello,
+
+yesterday I tried to use Inkscape under i3.
+When opening "object properties", the window
+filled the whole screen, and my worksheet,
+the main-window of the app was not visible anymore.
+
+Similar problems did I have with other apps that use multiple windows.
+An example would be Gimp in multi-window-mode, xchat (after channel search),
+and there will be many more.
+
+A program that - as counter-example - behaves well under i3 is
+R. When doing a plot, a window opens and shows the plot,
+and the window is opened in the same mode, in which I
+set i3 (horizontal or vertical).
+
+But the other apps, mentioned above, just open the windows somewhere, and
+seemingly not predictable, and it makes these programs being
+unconformtable or even unusable.
+
+Possibly these apps open any window in "floating mode" (?).
+
+A while ago, when I used wmii (before switching to i3),
+I asked the Gimp-developers about this problem, and
+how to solve it.
+The answer was, that nearly nobody would use things like wmii,
+so they will not support this, it's my problem, not theirs.
+
+The single-window-mode then helped using Gimp on i3 also,
+but with inkscape for example, the problem stays there.
+
+Any ideas, on how to use such applications in i3?
+Can i3 be set up in a way to handle these problems,
+or would it need the applications to be changed?
+
+
+Ciao,
+   Oliver
+
+From public at enkore.de  Wed Dec 11 14:32:39 2013
+From: public at enkore.de (mabe)
+Date: Wed, 11 Dec 2013 14:32:39 +0100
+Subject: [i3] Multiwindow-Apps (Gnome, Inkscape, xchat and others) in i3
+In-Reply-To: <20131211132436.GA2745@siouxsie>
+References: <20131211132436.GA2745@siouxsie>
+Message-ID: <52A86977.6000304@enkore.de>
+
+Hi,
+
+try to create for_window rules that force the mentioned windows to tiled
+mode (floating disable), like:
+
+for_window[title="GNU Image*"] floating disable
+
+Greetings
+
+On 12/11/2013 02:24 PM, oliver wrote:
+> Hello,
+> 
+> yesterday I tried to use Inkscape under i3.
+> When opening "object properties", the window
+> filled the whole screen, and my worksheet,
+> the main-window of the app was not visible anymore.
+> 
+> Similar problems did I have with other apps that use multiple windows.
+> An example would be Gimp in multi-window-mode, xchat (after channel search),
+> and there will be many more.
+> 
+> A program that - as counter-example - behaves well under i3 is
+> R. When doing a plot, a window opens and shows the plot,
+> and the window is opened in the same mode, in which I
+> set i3 (horizontal or vertical).
+> 
+> But the other apps, mentioned above, just open the windows somewhere, and
+> seemingly not predictable, and it makes these programs being
+> unconformtable or even unusable.
+> 
+> Possibly these apps open any window in "floating mode" (?).
+> 
+> A while ago, when I used wmii (before switching to i3),
+> I asked the Gimp-developers about this problem, and
+> how to solve it.
+> The answer was, that nearly nobody would use things like wmii,
+> so they will not support this, it's my problem, not theirs.
+> 
+> The single-window-mode then helped using Gimp on i3 also,
+> but with inkscape for example, the problem stays there.
+> 
+> Any ideas, on how to use such applications in i3?
+> Can i3 be set up in a way to handle these problems,
+> or would it need the applications to be changed?
+> 
+> 
+> Ciao,
+>    Oliver
+> 
+
+
+From alexander at plaimi.net  Wed Dec 11 14:33:39 2013
+From: alexander at plaimi.net (Alexander Berntsen)
+Date: Wed, 11 Dec 2013 14:33:39 +0100
+Subject: [i3] Multiwindow-Apps (Gnome, Inkscape, xchat and others) in i3
+In-Reply-To: <20131211132436.GA2745@siouxsie>
+References: <20131211132436.GA2745@siouxsie>
+Message-ID: <52A869B3.3020009@plaimi.net>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+On 11/12/13 14:24, oliver wrote:
+> Any ideas, on how to use such applications in i3? Can i3 be set up 
+> in a way to handle these problems, or would it need the
+> applications to be changed?
+The best solution, in my opinion, is to let i3 float these windows.
+
+This is done with for_window[0].
+
+As an example, my i3 defaults the message composing window of
+Thunderbird to floating mode with:
+
+for_window [class="^Thunderbird$" instance="^Msgcompose$"] floating enable
+
+[0]
+<http://i3wm.org/docs/userguide.html#_arbitrary_commands_for_specific_windows_for_window>
+
+- -- 
+Alexander
+alexander at plaimi.net
+http://plaimi.net/~alexander
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+
+iF4EAREIAAYFAlKoabMACgkQRtClrXBQc7U2zQEAnu54+2sCG5pSHNjoAKQMEPf8
++jV7gYCzOEXXXJiMdjYBAJfE70yjABX3R86oswyTkBH/WDCatOo3fanGslrkLZk0
+=IidY
+-----END PGP SIGNATURE-----
+
+From nashpapa at gmail.com  Wed Dec 11 14:54:06 2013
+From: nashpapa at gmail.com (avinash r)
+Date: Wed, 11 Dec 2013 19:24:06 +0530
+Subject: [i3] Swapping of windows in full screen mode
+In-Reply-To: <CAHCiste9bGqQf06sM0nPm+UsEsvKrRCSKnfdSC4dx7=m-S0n8Q@mail.gmail.com>
+References: <CAHCiste9bGqQf06sM0nPm+UsEsvKrRCSKnfdSC4dx7=m-S0n8Q@mail.gmail.com>
+Message-ID: <CAHCistdQD-TMCZXy3nrCKSJBa3oUvxL85xgq8FVTDUYZnon7xw@mail.gmail.com>
+
+HI,
+
+I have configured all of my chat windows to go to a different workspace
+(say "chat" workspace) using for_window and floating enabled.
+
+when A movie is watched in another workspace (say "personal" workspace),
+and suddenly a chat window appears - I'm using chrome hangouts plugin,
+which open separate window for each conversation - and vlc is swapped to
+the chat workspace and the new popup in the current workspace.
+
+This is a bug, isn't it?
+
+this is the configuration:
+
+for_window [class="Google-chrome"
+instance="crx_nckgahadagoaajjgafhacjanaoiihapd"] floating enable; move
+container to workspace chat
+--
+Avinash R
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20131211/1f3549c6/attachment.html>
+
+From guevel.emanuel at gmail.com  Wed Dec 11 15:26:20 2013
+From: guevel.emanuel at gmail.com (Emanuel =?UTF-8?B?R3XDqXZlbA==?=)
+Date: Wed, 11 Dec 2013 15:26:20 +0100
+Subject: [i3] Multiwindow-Apps (Gnome, Inkscape, xchat and others) in i3
+In-Reply-To: <52A86977.6000304@enkore.de>
+References: <20131211132436.GA2745@siouxsie>
+	<52A86977.6000304@enkore.de>
+Message-ID: <20131211152620.3eb9b27b@gmail.com>
+
+Hi,
+
+> try to create for_window rules that force the mentioned windows to
+> tiled mode (floating disable), like:
+> 
+> for_window[title="GNU Image*"] floating disable
+
+You can use xprop to help you doing this:
+
+1. Run `xprop|grep WM_CLASS` in a terminal and click the
+target window.
+
+2. This would give, for example:
+WM_CLASS(STRING) = "inkscape", "Inkscape"
+
+3. Then add a line to your i3 config file:
+for_window[instance="^inkscape$" class="^Inkscape$"] floating disable
+
+for_window use command criteria, you can get more details here:
+http://i3-wm.org/docs/userguide.html#command_criteria
+
+> > Possibly these apps open any window in "floating mode" (?).
+
+Yup. Explanations: http://i3-wm.org/docs/userguide.html#_floating
+
+--
+Emanuel
+
+From michael at i3wm.org  Wed Dec 11 19:47:52 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 11 Dec 2013 19:47:52 +0100
+Subject: [i3] Swapping of windows in full screen mode
+In-Reply-To: <CAHCistdQD-TMCZXy3nrCKSJBa3oUvxL85xgq8FVTDUYZnon7xw@mail.gmail.com>
+References: <CAHCiste9bGqQf06sM0nPm+UsEsvKrRCSKnfdSC4dx7=m-S0n8Q@mail.gmail.com>
+ <CAHCistdQD-TMCZXy3nrCKSJBa3oUvxL85xgq8FVTDUYZnon7xw@mail.gmail.com>
+Message-ID: <x64n6fdy1z.fsf@midna.zekjur.net>
+
+Hi avinash,
+
+avinash r <nashpapa at gmail.com> writes:
+> I have configured all of my chat windows to go to a different workspace
+> (say "chat" workspace) using for_window and floating enabled.
+>
+> when A movie is watched in another workspace (say "personal" workspace),
+> and suddenly a chat window appears - I'm using chrome hangouts plugin,
+> which open separate window for each conversation - and vlc is swapped to
+> the chat workspace and the new popup in the current workspace.
+>
+> This is a bug, isn't it?
+>
+> this is the configuration:
+>
+> for_window [class="Google-chrome"
+> instance="crx_nckgahadagoaajjgafhacjanaoiihapd"] floating enable; move
+> container to workspace chat
+There is a subtle mistake in your configuration: you should use a comma,
+not a semicolon, to separate these commands:
+
+for_window [class="Google-chrome" instance="crx_nckgahadagoaajjgafhacjanaoiihapd"] floating enable, move container to workspace chat
+
+I realized that this is not covered in the userguide, so I just added
+this section:
+
+When using multiple commands, separate them by using a +,+ (a comma) instead of
+a semicolon. Criteria apply only until the next semicolon, so if you use a
+semicolon to separate commands, only the first one will be executed for the
+matched window(s).
+
+-- 
+Best regards,
+Michael
+
+From oliver at first.in-berlin.de  Wed Dec 11 20:02:14 2013
+From: oliver at first.in-berlin.de (oliver)
+Date: Wed, 11 Dec 2013 20:02:14 +0100
+Subject: [i3] Multiwindow-Apps (Gnome, Inkscape, xchat and others) in i3
+In-Reply-To: <20131211152620.3eb9b27b@gmail.com>
+References: <20131211132436.GA2745@siouxsie> <52A86977.6000304@enkore.de>
+ <20131211152620.3eb9b27b@gmail.com>
+Message-ID: <20131211190214.GB3175@siouxsie>
+
+Hey,
+
+
+On Wed, Dec 11, 2013 at 03:26:20PM +0100, Emanuel Gu?vel wrote:
+> Hi,
+> 
+> > try to create for_window rules that force the mentioned windows to
+> > tiled mode (floating disable), like:
+> > 
+> > for_window[title="GNU Image*"] floating disable
+> 
+> You can use xprop to help you doing this:
+> 
+> 1. Run `xprop|grep WM_CLASS` in a terminal and click the
+> target window.
+> 
+> 2. This would give, for example:
+> WM_CLASS(STRING) = "inkscape", "Inkscape"
+> 
+> 3. Then add a line to your i3 config file:
+> for_window[instance="^inkscape$" class="^Inkscape$"] floating disable
+[...]
+
+
+Yes, that works :-)
+
+Thanks so much :-)
+
+Now the new window is opened as a tile.
+I can see my original window, and possibly switch
+the opened tile to a seperate workspace :-)
+
+If I understand correctly, it should be possible to do even that
+by using the i3-config....
+
+Ciao,
+   Oliver
+
+
+
+From nashpapa at gmail.com  Thu Dec 12 06:24:39 2013
+From: nashpapa at gmail.com (avinash r)
+Date: Thu, 12 Dec 2013 10:54:39 +0530
+Subject: [i3] Swapping of windows in full screen mode
+In-Reply-To: <x64n6fdy1z.fsf@midna.zekjur.net>
+References: <CAHCiste9bGqQf06sM0nPm+UsEsvKrRCSKnfdSC4dx7=m-S0n8Q@mail.gmail.com>
+ <CAHCistdQD-TMCZXy3nrCKSJBa3oUvxL85xgq8FVTDUYZnon7xw@mail.gmail.com>
+ <x64n6fdy1z.fsf@midna.zekjur.net>
+Message-ID: <CAHCistcCgGCDKbj751iHJ7PoGSLYbenCtBPdcBWQ880yq4z9TA@mail.gmail.com>
+
+Hi Michael,
+
+> There is a subtle mistake in your configuration: you should use a comma,
+not a semicolon, to separate these commands
+
+That fixed this.
+
+--
+Thank you for your time,
+Avinash R
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20131212/deff82e6/attachment.html>
+
+From michael at i3wm.org  Sun Dec 15 22:11:26 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 15 Dec 2013 22:11:26 +0100
+Subject: [i3] Layout saving/restoring (PREVIEW)
+Message-ID: <x6y53lbz0h.fsf@midna.zekjur.net>
+
+Hi,
+
+I have been working on layout/session saving/restoring this
+weekend. The title is a mouthful, but what it?s about is saving parts of
+your layout (say, an entire workspace) to a JSON file and later loading
+that into i3.
+
+This is useful for multiple things:
+
+1) Restoring a certain layout when starting up your x session.
+   People used to do this with shell scripts and hacks such as
+   i3-exec-wait until now.
+
+2) Defining a more elaborate default layout for certain workspaces. As
+   an example, on my big screen I like to have three columns of stacked
+   containers with terminals in them, where the middle one is larger
+   than the left and right ones.
+
+I uploaded a video to demonstrate how it looks:
+http://youtu.be/CaDOfwxXc9g
+
+To save a layout, there is i3-save-tree(1), which requires the Perl
+modules AnyEvent::I3? and JSON::XS?. i3-save-tree --workspace=1 prints
+workspace 1?s layout to stdout. You are expected to edit that layout
+file briefly, especially the ?swallows? sections of each container. The
+criteria should be familiar to you, e.g. from for_window.
+
+Once you have done that, you can use the append_layout command to load a
+layout file.
+
+As for the code, I just pushed the branch ?session-saving?, which you
+can build and use right now. It?s stable enough that I?m using it on my
+main machine. But, since this is a very new feature, be prepared to
+encounter some stability issues (e.g. layout files that could crash
+i3). You have been warned! :)
+
+Also note that I reserve the right to break this feature in any way that
+I deem necessary, and you have no right to complain about layout file or
+new command breakage :).
+
+As for the release plan: I intend to release i3 4.7 soonish (maybe in a
+week or so). After that is done, I?ll merge the session-saving branch
+into the ?next? branch, i.e. the earliest i3 release that can possibly
+have this feature will be 4.8.
+
+? http://michael.stapelberg.de/cpan/#AnyEvent::I3
+? http://michael.stapelberg.de/cpan/#JSON::XS
+
+-- 
+Best regards,
+Michael
+
+From techlivezheng at gmail.com  Mon Dec 16 05:27:27 2013
+From: techlivezheng at gmail.com (=?UTF-8?B?6YOR5paH6L6JKFRlY2hsaXZlIFpoZW5nKQ==?=)
+Date: Mon, 16 Dec 2013 12:27:27 +0800
+Subject: [i3] Layout saving/restoring (PREVIEW)
+In-Reply-To: <x6y53lbz0h.fsf@midna.zekjur.net>
+References: <x6y53lbz0h.fsf@midna.zekjur.net>
+Message-ID: <CAPYzjrRJkjwNY-pjSZ5g3jaCbBqi6WhX-O47jPZdujbyouvZeA@mail.gmail.com>
+
+2013/12/16 Michael Stapelberg <michael at i3wm.org>:
+> Hi,
+>
+> I have been working on layout/session saving/restoring this
+> weekend. The title is a mouthful, but what it?s about is saving parts of
+> your layout (say, an entire workspace) to a JSON file and later loading
+> that into i3.
+>
+> This is useful for multiple things:
+>
+> 1) Restoring a certain layout when starting up your x session.
+>    People used to do this with shell scripts and hacks such as
+>    i3-exec-wait until now.
+>
+> 2) Defining a more elaborate default layout for certain workspaces. As
+>    an example, on my big screen I like to have three columns of stacked
+>    containers with terminals in them, where the middle one is larger
+>    than the left and right ones.
+>
+> I uploaded a video to demonstrate how it looks:
+> http://youtu.be/CaDOfwxXc9g
+>
+> To save a layout, there is i3-save-tree(1), which requires the Perl
+> modules AnyEvent::I3? and JSON::XS?. i3-save-tree --workspace=1 prints
+> workspace 1?s layout to stdout. You are expected to edit that layout
+> file briefly, especially the ?swallows? sections of each container. The
+> criteria should be familiar to you, e.g. from for_window.
+>
+> Once you have done that, you can use the append_layout command to load a
+> layout file.
+>
+> As for the code, I just pushed the branch ?session-saving?, which you
+> can build and use right now. It?s stable enough that I?m using it on my
+> main machine. But, since this is a very new feature, be prepared to
+> encounter some stability issues (e.g. layout files that could crash
+> i3). You have been warned! :)
+>
+> Also note that I reserve the right to break this feature in any way that
+> I deem necessary, and you have no right to complain about layout file or
+> new command breakage :).
+>
+> As for the release plan: I intend to release i3 4.7 soonish (maybe in a
+> week or so). After that is done, I?ll merge the session-saving branch
+> into the ?next? branch, i.e. the earliest i3 release that can possibly
+> have this feature will be 4.8.
+>
+> ? http://michael.stapelberg.de/cpan/#AnyEvent::I3
+> ? http://michael.stapelberg.de/cpan/#JSON::XS
+>
+> --
+> Best regards,
+> Michael
+
+It is more like a session manager, have you ever considered to
+implement a simple flexible session manager for i3 wm.
+
+Regards,
+Techlive
+
+From michael at i3wm.org  Mon Dec 16 08:01:02 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 16 Dec 2013 08:01:02 +0100
+Subject: [i3] Layout saving/restoring (PREVIEW)
+In-Reply-To: <CAPYzjrRJkjwNY-pjSZ5g3jaCbBqi6WhX-O47jPZdujbyouvZeA@mail.gmail.com>
+References: <x6y53lbz0h.fsf@midna.zekjur.net>
+ <CAPYzjrRJkjwNY-pjSZ5g3jaCbBqi6WhX-O47jPZdujbyouvZeA@mail.gmail.com>
+Message-ID: <x6vbypb7pt.fsf@midna.zekjur.net>
+
+Hi ???,
+
+"???(Techlive Zheng)" <techlivezheng at gmail.com> writes:
+> It is more like a session manager, have you ever considered to
+> implement a simple flexible session manager for i3 wm.
+I don?t understand your message. Can you elaborate?
+
+-- 
+Best regards,
+Michael
+
+From techlivezheng at gmail.com  Mon Dec 16 10:15:54 2013
+From: techlivezheng at gmail.com (Techlive Zheng)
+Date: Mon, 16 Dec 2013 09:23:54 +0008
+Subject: [i3] Layout saving/restoring (PREVIEW)
+In-Reply-To: <x6vbypb7pt.fsf@midna.zekjur.net>
+References: <x6y53lbz0h.fsf@midna.zekjur.net> <
+ CAPYzjrRJkjwNY-pjSZ5g3jaCbBqi6WhX-O47jPZdujbyouvZeA@mail.gmail.com> <
+ x6vbypb7pt.fsf@midna.zekjur.net>
+Message-ID: <52aec743.4a1d450a.2568.ffff9c14@mx.google.com>
+
+
+
+?2013?12?16??? 3:01?Michael Stapelberg <michael at i3wm.org> 
+???
+> Hi ???,
+> 
+> "???(Techlive Zheng)" <techlivezheng at gmail.com> writes:
+>>  It is more like a session manager, have you ever considered to
+>>  implement a simple flexible session manager for i3 wm.
+>> 
+> I don?t understand your message. Can you elaborate?
+> 
+> -- 
+> Best regards,
+> Michael
+> 
+ From http://en.wikipedia.org/wiki/X_session_manager, what you are 
+doing is actually fall into the concept of a X session manager for 
+i3-wm, it might be better to be called as i3-sm which is short for i3 
+session manager.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20131216/b57d73dd/attachment.html>
+
+From michael at i3wm.org  Mon Dec 16 23:51:13 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 16 Dec 2013 23:51:13 +0100
+Subject: [i3] Layout saving/restoring (PREVIEW)
+In-Reply-To: <52aec743.4a1d450a.2568.ffff9c14@mx.google.com>
+References: <x6y53lbz0h.fsf@midna.zekjur.net>
+ <52aec743.4a1d450a.2568.ffff9c14@mx.google.com>
+Message-ID: <x6ppowbeam.fsf@midna.zekjur.net>
+
+Hi,
+
+Techlive Zheng <techlivezheng at gmail.com> writes:
+>  From http://en.wikipedia.org/wiki/X_session_manager, what you are 
+> doing is actually fall into the concept of a X session manager for 
+> i3-wm, it might be better to be called as i3-sm which is short for i3 
+> session manager.
+So you are saying it should be a separate project? I disagree. The
+support for that needs to be tightly integrated into i3, and defining an
+interface for that is more trouble than it?s worth. Furthermore, if you
+look at the actual implementation, the only _new_ code (apart from bug
+fixes) is the handling of placeholder windows. i3-save-tree is an
+external Perl script.
+
+In conclusion, I still don?t know what you are trying to argue for. I
+also don?t think it?s worth pursuing that part of the discussion, so
+unless you have really strong feelings and can make a case for whatever
+it is that you are trying to say, I?m inclined to not answer anymore
+:). Thanks for understanding.
+
+-- 
+Best regards,
+Michael
+
+From techlivezheng at gmail.com  Tue Dec 17 08:49:44 2013
+From: techlivezheng at gmail.com (=?UTF-8?B?6YOR5paH6L6JKFRlY2hsaXZlIFpoZW5nKQ==?=)
+Date: Tue, 17 Dec 2013 15:49:44 +0800
+Subject: [i3] Layout saving/restoring (PREVIEW)
+In-Reply-To: <x6ppowbeam.fsf@midna.zekjur.net>
+References: <x6y53lbz0h.fsf@midna.zekjur.net>
+ <52aec743.4a1d450a.2568.ffff9c14@mx.google.com>
+ <x6ppowbeam.fsf@midna.zekjur.net>
+Message-ID: <CAPYzjrRR0k4V8p6UCcQ60+fSSBE1mR_UnBYnCaj6GhPGs4T87w@mail.gmail.com>
+
+2013/12/17 Michael Stapelberg <michael at i3wm.org>:
+> Hi,
+>
+> Techlive Zheng <techlivezheng at gmail.com> writes:
+>>  From http://en.wikipedia.org/wiki/X_session_manager, what you are
+>> doing is actually fall into the concept of a X session manager for
+>> i3-wm, it might be better to be called as i3-sm which is short for i3
+>> session manager.
+> So you are saying it should be a separate project? I disagree. The
+> support for that needs to be tightly integrated into i3, and defining an
+> interface for that is more trouble than it?s worth. Furthermore, if you
+> look at the actual implementation, the only _new_ code (apart from bug
+> fixes) is the handling of placeholder windows. i3-save-tree is an
+> external Perl script.
+>
+> In conclusion, I still don?t know what you are trying to argue for. I
+
+Actually, I am not trying to argue anything, it is just a thought.
+
+> also don?t think it?s worth pursuing that part of the discussion, so
+> unless you have really strong feelings and can make a case for whatever
+> it is that you are trying to say, I?m inclined to not answer anymore
+> :). Thanks for understanding.
+
+Yes, I understand, thank you.
+
+>
+> --
+> Best regards,
+> Michael
+
+From michael at i3wm.org  Sun Dec 22 21:56:40 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 22 Dec 2013 21:56:40 +0100
+Subject: [i3] Layout saving/restoring (PREVIEW)
+In-Reply-To: <x6y53lbz0h.fsf@midna.zekjur.net>
+References: <x6y53lbz0h.fsf@midna.zekjur.net>
+Message-ID: <x6ppoosiyf.fsf@midna.zekjur.net>
+
+Hi,
+
+Michael Stapelberg <michael at i3wm.org> writes:
+> As for the code, I just pushed the branch ?session-saving?, which you
+> can build and use right now. It?s stable enough that I?m using it on my
+> main machine. But, since this is a very new feature, be prepared to
+> encounter some stability issues (e.g. layout files that could crash
+> i3). You have been warned! :)
+FYI: I just merged the session-saving branch into the ?next? branch, so
+it?s on track for a release in i3 v4.8. Please help by testing it and
+sending feedback!
+
+(To be very explicit: this means you should switch back to ?next? now,
+ since the ?session-saving? branch will not see any updates and will be
+ deleted soon.)
+
+-- 
+Best regards,
+Michael
+
+From mherda at gmail.com  Tue Dec 24 14:12:51 2013
+From: mherda at gmail.com (Marcin Herda)
+Date: Tue, 24 Dec 2013 13:12:51 +0000
+Subject: [i3] Layout saving/restoring (PREVIEW)
+In-Reply-To: <x6ppoosiyf.fsf@midna.zekjur.net>
+References: <x6y53lbz0h.fsf@midna.zekjur.net> <x6ppoosiyf.fsf@midna.zekjur.net>
+Message-ID: <52B98853.8090205@gmail.com>
+
+
+On 22/12/13 20:56, Michael Stapelberg wrote:
+> Hi,
+>
+> Michael Stapelberg <michael at i3wm.org> writes:
+>> As for the code, I just pushed the branch ?session-saving?, which you
+>> can build and use right now. It?s stable enough that I?m using it on my
+>> main machine. But, since this is a very new feature, be prepared to
+>> encounter some stability issues (e.g. layout files that could crash
+>> i3). You have been warned! :)
+> FYI: I just merged the session-saving branch into the ?next? branch, so
+> it?s on track for a release in i3 v4.8. Please help by testing it and
+> sending feedback!
+>
+> (To be very explicit: this means you should switch back to ?next? now,
+>   since the ?session-saving? branch will not see any updates and will be
+>   deleted soon.)
+>
+
+Hi
+Thank you for introducing this feature. It's going to be another great 
+feature of an already great window manager.
+Does that mean that the 2 perl modules are likely to become i3 
+dependencies in the future?
+
+I'm trying to build the 'next' branch without luck. I mean it builds 
+find but I can't seem to find the i3-save-tree command in the 
+installation directory. I've installed the additional perl modules, 
+cloned the git repo, switched to the next branch, double checked that 
+the i3-save tree exists in the directory (see the pastebin link), make, 
+make install DESTDIR=install_dir but the i3-save-tree script is nowhere 
+to be seen in the install directory (install_dir). Would I be incorrect 
+thinking that it should be with other scripts in usr/bin/? Please advise.
+
+http://pastebin.com/h25JgXS6
+
+Thank you
+Marcin
+
+From michael at i3wm.org  Tue Dec 24 16:16:05 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 24 Dec 2013 16:16:05 +0100
+Subject: [i3] Layout saving/restoring (PREVIEW)
+In-Reply-To: <52B98853.8090205@gmail.com>
+References: <x6y53lbz0h.fsf@midna.zekjur.net>
+ <x6ppoosiyf.fsf@midna.zekjur.net> <52B98853.8090205@gmail.com>
+Message-ID: <x67gaul1oq.fsf@midna.zekjur.net>
+
+Hi Marcin,
+
+Marcin Herda <mherda at gmail.com> writes:
+> Does that mean that the 2 perl modules are likely to become i3 
+> dependencies in the future?
+Quote from DEPENDS:
+
+> i3-save-tree is also implemented in Perl and needs AnyEvent::I3 and
+> JSON::XS.  While i3-save-tree is not required for running i3 itself,
+> it is strongly recommended to provide it in distribution packages.
+In Debian, this translates into a Recommends:, not a Depends:. For other
+distributions, this may mean a dependency, yeah.
+
+> I'm trying to build the 'next' branch without luck. I mean it builds 
+> find but I can't seem to find the i3-save-tree command in the 
+> installation directory. I've installed the additional perl modules, 
+> cloned the git repo, switched to the next branch, double checked that 
+> the i3-save tree exists in the directory (see the pastebin link), make, 
+> make install DESTDIR=install_dir but the i3-save-tree script is nowhere 
+> to be seen in the install directory (install_dir). Would I be incorrect 
+> thinking that it should be with other scripts in usr/bin/? Please advise.
+>
+> http://pastebin.com/h25JgXS6
+Thanks, this is fixed with http://c.i3wm.org/c3ff365
+
+-- 
+Best regards,
+Michael
+
+From mherda at gmail.com  Tue Dec 24 16:38:17 2013
+From: mherda at gmail.com (Marcin Herda)
+Date: Tue, 24 Dec 2013 15:38:17 +0000
+Subject: [i3] Layout saving/restoring (PREVIEW)
+In-Reply-To: <x67gaul1oq.fsf@midna.zekjur.net>
+References: <x6y53lbz0h.fsf@midna.zekjur.net>
+ <x6ppoosiyf.fsf@midna.zekjur.net> <52B98853.8090205@gmail.com>
+ <x67gaul1oq.fsf@midna.zekjur.net>
+Message-ID: <52B9AA69.7090702@gmail.com>
+
+
+On 24/12/13 15:16, Michael Stapelberg wrote:
+> Hi Marcin,
+>
+> Marcin Herda <mherda at gmail.com> writes:
+>> Does that mean that the 2 perl modules are likely to become i3
+>> dependencies in the future?
+> Quote from DEPENDS:
+>
+>> i3-save-tree is also implemented in Perl and needs AnyEvent::I3 and
+>> JSON::XS.  While i3-save-tree is not required for running i3 itself,
+>> it is strongly recommended to provide it in distribution packages.
+> In Debian, this translates into a Recommends:, not a Depends:. For other
+> distributions, this may mean a dependency, yeah.
+>
+>> I'm trying to build the 'next' branch without luck. I mean it builds
+>> find but I can't seem to find the i3-save-tree command in the
+>> installation directory. I've installed the additional perl modules,
+>> cloned the git repo, switched to the next branch, double checked that
+>> the i3-save tree exists in the directory (see the pastebin link), make,
+>> make install DESTDIR=install_dir but the i3-save-tree script is nowhere
+>> to be seen in the install directory (install_dir). Would I be incorrect
+>> thinking that it should be with other scripts in usr/bin/? Please advise.
+>>
+>> http://pastebin.com/h25JgXS6
+> Thanks, this is fixed with http://c.i3wm.org/c3ff365
+>
+Thank you very much.
+regards
+Marcin
+
+From ultrabug at ultrabug.net  Thu Dec 26 18:53:03 2013
+From: ultrabug at ultrabug.net (Ultrabug)
+Date: Thu, 26 Dec 2013 18:53:03 +0100
+Subject: [i3] py3status v1.1 released
+Message-ID: <52BC6CFF.4000303@ultrabug.net>
+
+Dear list,
+
+After the initial release in January and the v1.0 in August, I'm glad to 
+announce the latest and feature rich version of py3status v1.1.
+
+What is py3status ?
+-------------------------
+It is a user-contributed project which gives you an easy and flexible 
+way to display your own stuff in your i3barby wrapping your current 
+i3status configuration. See [2] for more info.
+
+New major features since release v1.0 [1]
+-----------------------------------------------------
+- Support for i3bar click events on your own modules (need i3 v4.6)
+- You can now take action on clicks made on your i3status modules thanks 
+to py3status ![3]
+
+Enhancements / bug fixes
+---------------------------------
+- Overall responsiveness of modules and py3status output management
+- Totally asynchronous processing of i3status and user modules
+- More intuitive module output ordering in your i3bar
+- Respect user's locale for time transformation
+- Allow float on refresh interval option for high speed refresh of your 
+bar while still keeping low I/O footprint thanks to the integrated 
+py3status caching
+
+Example modules
+-----------------------
+- the new i3bar_click_events.py module allows you to implement some 
+actions when clicking on your i3bar modules
+- the pomodoro example has been rewritten to use click events
+- new whoami module to show your current login name on your bar
+
+Fancy a chat or need help ?
+-----------------------------------
+Feel free to join the #py3status IRC channel on FreeNode to get help or 
+share your ideas !
+
+Thanks
+---------
+For their issues ranging from #15 to #20 with feedback, proposals and 
+pull requests !
+
+@alethiophile
+@Edholm
+@ifschleife
+@lathan
+@patrickshan
+@ShadowPrince
+
+
+I hope some of you will enjoy it :)
+
+[1] http://www.ultrabug.fr/py3status-v1-1/
+[2] https://github.com/ultrabug/py3status/wiki
+[3] 
+https://github.com/ultrabug/py3status/wiki/handle-i3status-and-i3bar-click-events
+
+Ultrabug
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20131226/bc36a6d7/attachment.html>
+
+From ekari at iki.fi  Sun Dec 29 00:33:09 2013
+From: ekari at iki.fi (Eero Kari)
+Date: Sun, 29 Dec 2013 01:33:09 +0200
+Subject: [i3] Feature request: ion3-style "float split"
+Message-ID: <20131228233309.GA9711@senco>
+
+Hi,
+
+the upcoming i3 layout restore feature almost completes my wishlist. The only
+thing lacking is the "float split" that ion3 had. I fired up notion just to make
+this 2-frame gif-animation showing the feature in action:
+
+https://dl.dropboxusercontent.com/u/20179139/ion3-float-split.gif 
+
+With the float split you could make two[1] containers overlap each other. The
+amount of overlap was controlled similarly as you would resize a window. And the
+layout stayed that way until changed it again.
+
+I used to have firefox with docs on one side, and vim on the other. It worked
+wonders for my productivity and I miss it sorely. With that implemented i3 would
+be complete :)
+
+So, I accept the feature either as built-in, or as a working script[2]. Either
+way is fine ;)
+
+Thanks for the great wm!
+
+ - Eero
+
+[1] or maybe even more, but I only ever used two.
+[2] note that the containers overlap; a scripter couldn't get away with just
+resizing two side-by-size containers since it would trigger a redraw on the
+clients and that would mess things up. A possible solution could be using two
+floaters and switching back and forth between them...
+
+
+From sylvain.benner at gmail.com  Sun Dec 29 00:52:07 2013
+From: sylvain.benner at gmail.com (Sylvain Benner)
+Date: Sat, 28 Dec 2013 18:52:07 -0500
+Subject: [i3] Feature request: ion3-style "float split"
+In-Reply-To: <20131228233309.GA9711@senco>
+References: <20131228233309.GA9711@senco>
+Message-ID: <CAGb_FfYQ=dZ8RMDRcmeKvSGJJsWcqmCNLfnP1F-WJtcSL+WSag@mail.gmail.com>
+
+Hi Eero,
+
+Why not use an horizontal layout and switch to full screen as needed ?
+
+Your use case feels weird to me, i3 is a windows tiling manager.
+
+
+
+Le samedi 28 d?cembre 2013, Eero Kari a ?crit :
+
+> Hi,
+>
+> the upcoming i3 layout restore feature almost completes my wishlist. The
+> only
+> thing lacking is the "float split" that ion3 had. I fired up notion just
+> to make
+> this 2-frame gif-animation showing the feature in action:
+>
+> https://dl.dropboxusercontent.com/u/20179139/ion3-float-split.gif
+>
+> With the float split you could make two[1] containers overlap each other.
+> The
+> amount of overlap was controlled similarly as you would resize a window.
+> And the
+> layout stayed that way until changed it again.
+>
+> I used to have firefox with docs on one side, and vim on the other. It
+> worked
+> wonders for my productivity and I miss it sorely. With that implemented i3
+> would
+> be complete :)
+>
+> So, I accept the feature either as built-in, or as a working script[2].
+> Either
+> way is fine ;)
+>
+> Thanks for the great wm!
+>
+>  - Eero
+>
+> [1] or maybe even more, but I only ever used two.
+> [2] note that the containers overlap; a scripter couldn't get away with
+> just
+> resizing two side-by-size containers since it would trigger a redraw on the
+> clients and that would mess things up. A possible solution could be using
+> two
+> floaters and switching back and forth between them...
+>
+>
+
+-- 
+-syl20bnr-
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20131228/21d83647/attachment.html>
+
+From ekari at iki.fi  Sun Dec 29 13:01:24 2013
+From: ekari at iki.fi (Eero Kari)
+Date: Sun, 29 Dec 2013 14:01:24 +0200
+Subject: [i3] Feature request: ion3-style "float split"
+In-Reply-To: <CAGb_FfYQ=dZ8RMDRcmeKvSGJJsWcqmCNLfnP1F-WJtcSL+WSag@mail.gmail.com>
+References: <20131228233309.GA9711@senco>
+ <CAGb_FfYQ=dZ8RMDRcmeKvSGJJsWcqmCNLfnP1F-WJtcSL+WSag@mail.gmail.com>
+Message-ID: <20131229120124.GA6631@senco>
+
+Hi Sylvain,
+
+On Sat, Dec 28, 2013 at 06:52:07PM -0500, Sylvain Benner wrote:
+> Hi Eero,
+> 
+> Why not use an horizontal layout and switch to full screen as needed ?
+> 
+Because that usually causes the browser to rerender it's content. It may not
+seem like a big deal, but when you're writing code with million things in your
+head at once, and your split-second what-was-that-functions-third-keyword
+-glance turns into where-the-hell-is-that-function and again
+what-was-i-even-doing.
+
+Here's an interactive demo of the phenomenon; point your browser to
+http://docs.python.org/3/library/zipfile.html#zipfile.ZipFile.extract , start
+resizing your browser back and forth and see how the lines fly to who knows
+where :)
+
+Another point in keeping your browser to a certain width instead of fullscreen,
+is that text is easier to read if the page is narrower.
+
+As my 1440x900 screen is too narrow to keep a browser and a terminal
+side-by-side, and too wide to keep them both at fullscreen, the natural thing to
+do here would be to make them overlap a bit so that they both feel just the
+right size :)
+
+> Your use case feels weird to me, i3 is a windows tiling manager.
+> 
+> 
+> 
+> Le samedi 28 d?cembre 2013, Eero Kari a ?crit :
+> 
+> > Hi,
+> >
+> > the upcoming i3 layout restore feature almost completes my wishlist. The
+> > only
+> > thing lacking is the "float split" that ion3 had. I fired up notion just
+> > to make
+> > this 2-frame gif-animation showing the feature in action:
+> >
+> > https://dl.dropboxusercontent.com/u/20179139/ion3-float-split.gif
+> >
+> > With the float split you could make two[1] containers overlap each other.
+> > The
+> > amount of overlap was controlled similarly as you would resize a window.
+> > And the
+> > layout stayed that way until changed it again.
+> >
+> > I used to have firefox with docs on one side, and vim on the other. It
+> > worked
+> > wonders for my productivity and I miss it sorely. With that implemented i3
+> > would
+> > be complete :)
+> >
+> > So, I accept the feature either as built-in, or as a working script[2].
+> > Either
+> > way is fine ;)
+> >
+> > Thanks for the great wm!
+> >
+> >  - Eero
+> >
+> > [1] or maybe even more, but I only ever used two.
+> > [2] note that the containers overlap; a scripter couldn't get away with
+> > just
+> > resizing two side-by-size containers since it would trigger a redraw on the
+> > clients and that would mess things up. A possible solution could be using
+> > two
+> > floaters and switching back and forth between them...
+> >
+> >
+> 
+> -- 
+> -syl20bnr-
+
+From sylvain.benner at gmail.com  Sun Dec 29 14:40:12 2013
+From: sylvain.benner at gmail.com (Sylvain Benner)
+Date: Sun, 29 Dec 2013 08:40:12 -0500
+Subject: [i3] Feature request: ion3-style "float split"
+In-Reply-To: <20131229120124.GA6631@senco>
+References: <20131228233309.GA9711@senco>
+ <CAGb_FfYQ=dZ8RMDRcmeKvSGJJsWcqmCNLfnP1F-WJtcSL+WSag@mail.gmail.com>
+ <20131229120124.GA6631@senco>
+Message-ID: <CAGb_FfYxNH+ctayWSaZczf4Aw3M6GkdbdTAxkGKsyfSm4p8tyw@mail.gmail.com>
+
+Hi Eero,
+
+Thank you for the explanation.
+
+Did you try to send the browser window to the scratchpad ? What's your
+experience with it ?
+
+Le dimanche 29 d?cembre 2013, Eero Kari a ?crit :
+
+> Hi Sylvain,
+>
+> On Sat, Dec 28, 2013 at 06:52:07PM -0500, Sylvain Benner wrote:
+> > Hi Eero,
+> >
+> > Why not use an horizontal layout and switch to full screen as needed ?
+> >
+> Because that usually causes the browser to rerender it's content. It may
+> not
+> seem like a big deal, but when you're writing code with million things in
+> your
+> head at once, and your split-second what-was-that-functions-third-keyword
+> -glance turns into where-the-hell-is-that-function and again
+> what-was-i-even-doing.
+>
+> Here's an interactive demo of the phenomenon; point your browser to
+> http://docs.python.org/3/library/zipfile.html#zipfile.ZipFile.extract ,
+> start
+> resizing your browser back and forth and see how the lines fly to who knows
+> where :)
+>
+> Another point in keeping your browser to a certain width instead of
+> fullscreen,
+> is that text is easier to read if the page is narrower.
+>
+> As my 1440x900 screen is too narrow to keep a browser and a terminal
+> side-by-side, and too wide to keep them both at fullscreen, the natural
+> thing to
+> do here would be to make them overlap a bit so that they both feel just the
+> right size :)
+>
+> > Your use case feels weird to me, i3 is a windows tiling manager.
+> >
+> >
+> >
+> > Le samedi 28 d?cembre 2013, Eero Kari a ?crit :
+> >
+> > > Hi,
+> > >
+> > > the upcoming i3 layout restore feature almost completes my wishlist.
+> The
+> > > only
+> > > thing lacking is the "float split" that ion3 had. I fired up notion
+> just
+> > > to make
+> > > this 2-frame gif-animation showing the feature in action:
+> > >
+> > > https://dl.dropboxusercontent.com/u/20179139/ion3-float-split.gif
+> > >
+> > > With the float split you could make two[1] containers overlap each
+> other.
+> > > The
+> > > amount of overlap was controlled similarly as you would resize a
+> window.
+> > > And the
+> > > layout stayed that way until changed it again.
+> > >
+> > > I used to have firefox with docs on one side, and vim on the other. It
+> > > worked
+> > > wonders for my productivity and I miss it sorely. With that
+> implemented i3
+> > > would
+> > > be complete :)
+> > >
+> > > So, I accept the feature either as built-in, or as a working script[2].
+> > > Either
+> > > way is fine ;)
+> > >
+> > > Thanks for the great wm!
+> > >
+> > >  - Eero
+> > >
+> > > [1] or maybe even more, but I only ever used two.
+> > > [2] note that the containers overlap; a scripter couldn't get away with
+> > > just
+> > > resizing two side-by-size containers since it would trigger a redraw
+> on the
+> > > clients and that would mess things up. A possible solution could be
+> using
+> > > two
+> > > floaters and switching back and forth between them...
+> > >
+> > >
+> >
+> > --
+> > -syl20bnr-
+>
+
+
+-- 
+-syl20bnr-
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20131229/94417f9c/attachment.html>
+
+From ekari at iki.fi  Sun Dec 29 15:10:03 2013
+From: ekari at iki.fi (Eero Kari)
+Date: Sun, 29 Dec 2013 16:10:03 +0200
+Subject: [i3] Feature request: ion3-style "float split"
+In-Reply-To: <CAGb_FfYxNH+ctayWSaZczf4Aw3M6GkdbdTAxkGKsyfSm4p8tyw@mail.gmail.com>
+References: <20131228233309.GA9711@senco>
+ <CAGb_FfYQ=dZ8RMDRcmeKvSGJJsWcqmCNLfnP1F-WJtcSL+WSag@mail.gmail.com>
+ <20131229120124.GA6631@senco>
+ <CAGb_FfYxNH+ctayWSaZczf4Aw3M6GkdbdTAxkGKsyfSm4p8tyw@mail.gmail.com>
+Message-ID: <20131229141003.GA10637@senco>
+
+On Sun, Dec 29, 2013 at 08:40:12AM -0500, Sylvain Benner wrote:
+> Hi Eero,
+> 
+> Thank you for the explanation.
+> 
+> Did you try to send the browser window to the scratchpad ? What's your
+> experience with it ?
+
+I tried even that, but it doesn't work too good.
+
+I currently mimic the functionality shown it the gif by having a narrow terminal
+beside the browser just for padding, and keep a terminal with tmux on the
+scratchpad. It works well enough.
+
+I hope that Michael runs out of ideas and implements this feature out of
+boredom, if nothing else ;)
+
+> 
+> Le dimanche 29 d?cembre 2013, Eero Kari a ?crit :
+> 
+> > Hi Sylvain,
+> >
+> > On Sat, Dec 28, 2013 at 06:52:07PM -0500, Sylvain Benner wrote:
+> > > Hi Eero,
+> > >
+> > > Why not use an horizontal layout and switch to full screen as needed ?
+> > >
+> > Because that usually causes the browser to rerender it's content. It may
+> > not
+> > seem like a big deal, but when you're writing code with million things in
+> > your
+> > head at once, and your split-second what-was-that-functions-third-keyword
+> > -glance turns into where-the-hell-is-that-function and again
+> > what-was-i-even-doing.
+> >
+> > Here's an interactive demo of the phenomenon; point your browser to
+> > http://docs.python.org/3/library/zipfile.html#zipfile.ZipFile.extract ,
+> > start
+> > resizing your browser back and forth and see how the lines fly to who knows
+> > where :)
+> >
+> > Another point in keeping your browser to a certain width instead of
+> > fullscreen,
+> > is that text is easier to read if the page is narrower.
+> >
+> > As my 1440x900 screen is too narrow to keep a browser and a terminal
+> > side-by-side, and too wide to keep them both at fullscreen, the natural
+> > thing to
+> > do here would be to make them overlap a bit so that they both feel just the
+> > right size :)
+> >
+> > > Your use case feels weird to me, i3 is a windows tiling manager.
+> > >
+> > >
+> > >
+> > > Le samedi 28 d?cembre 2013, Eero Kari a ?crit :
+> > >
+> > > > Hi,
+> > > >
+> > > > the upcoming i3 layout restore feature almost completes my wishlist.
+> > The
+> > > > only
+> > > > thing lacking is the "float split" that ion3 had. I fired up notion
+> > just
+> > > > to make
+> > > > this 2-frame gif-animation showing the feature in action:
+> > > >
+> > > > https://dl.dropboxusercontent.com/u/20179139/ion3-float-split.gif
+> > > >
+> > > > With the float split you could make two[1] containers overlap each
+> > other.
+> > > > The
+> > > > amount of overlap was controlled similarly as you would resize a
+> > window.
+> > > > And the
+> > > > layout stayed that way until changed it again.
+> > > >
+> > > > I used to have firefox with docs on one side, and vim on the other. It
+> > > > worked
+> > > > wonders for my productivity and I miss it sorely. With that
+> > implemented i3
+> > > > would
+> > > > be complete :)
+> > > >
+> > > > So, I accept the feature either as built-in, or as a working script[2].
+> > > > Either
+> > > > way is fine ;)
+> > > >
+> > > > Thanks for the great wm!
+> > > >
+> > > >  - Eero
+> > > >
+> > > > [1] or maybe even more, but I only ever used two.
+> > > > [2] note that the containers overlap; a scripter couldn't get away with
+> > > > just
+> > > > resizing two side-by-size containers since it would trigger a redraw
+> > on the
+> > > > clients and that would mess things up. A possible solution could be
+> > using
+> > > > two
+> > > > floaters and switching back and forth between them...
+> > > >
+> > > >
+> > >
+> > > --
+> > > -syl20bnr-
+> >
+> 
+> 
+> -- 
+> -syl20bnr-
+
+From mail at profpatsch.de  Sun Dec 29 19:14:52 2013
+From: mail at profpatsch.de (Profpatsch)
+Date: Sun, 29 Dec 2013 19:14:52 +0100
+Subject: [i3] Feature request: ion3-style "float split"
+In-Reply-To: <20131229120124.GA6631@senco>
+References: <20131228233309.GA9711@senco>
+ <CAGb_FfYQ=dZ8RMDRcmeKvSGJJsWcqmCNLfnP1F-WJtcSL+WSag@mail.gmail.com>
+ <20131229120124.GA6631@senco>
+Message-ID: <20131229181452.GA19447@nyx>
+
+On 13-12-29 02:01pm, Eero Kari wrote:
+> Hi Sylvain,
+> 
+> On Sat, Dec 28, 2013 at 06:52:07PM -0500, Sylvain Benner wrote:
+> > Hi Eero,
+> > 
+> > Why not use an horizontal layout and switch to full screen as needed ?
+> > 
+> Because that usually causes the browser to rerender it's content. It may not
+> seem like a big deal, but when you're writing code with million things in your
+> head at once, and your split-second what-was-that-functions-third-keyword
+> -glance turns into where-the-hell-is-that-function and again
+> what-was-i-even-doing.
+
+That?s actually what I encounter frequently.
+So I?m all for this feature. Would make coding without a second screen a
+much, *much* more pleasant experience.
+
+-- 
+Proudly written in Mutt with Vim on Archlinux.
+Q: Why is this email five sentences or less?
+A: http://five.sentenc.es
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 836 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20131229/05f41f15/attachment.sig>
+
+From techlivezheng at gmail.com  Mon Dec 30 05:34:25 2013
+From: techlivezheng at gmail.com (=?UTF-8?B?6YOR5paH6L6JKFRlY2hsaXZlIFpoZW5nKQ==?=)
+Date: Mon, 30 Dec 2013 12:34:25 +0800
+Subject: [i3] Feature request: ion3-style "float split"
+In-Reply-To: <20131228233309.GA9711@senco>
+References: <20131228233309.GA9711@senco>
+Message-ID: <CAPYzjrSiW_CbD3dh1UEyRC45JO9=eS0JEWcUXTbGa+j0VorjxQ@mail.gmail.com>
+
+2013/12/29 Eero Kari <ekari at iki.fi>:
+> Hi,
+>
+> the upcoming i3 layout restore feature almost completes my wishlist. The only
+> thing lacking is the "float split" that ion3 had. I fired up notion just to make
+> this 2-frame gif-animation showing the feature in action:
+>
+> https://dl.dropboxusercontent.com/u/20179139/ion3-float-split.gif
+>
+> With the float split you could make two[1] containers overlap each other. The
+> amount of overlap was controlled similarly as you would resize a window. And the
+> layout stayed that way until changed it again.
+>
+> I used to have firefox with docs on one side, and vim on the other. It worked
+> wonders for my productivity and I miss it sorely. With that implemented i3 would
+> be complete :)
+>
+> So, I accept the feature either as built-in, or as a working script[2]. Either
+> way is fine ;)
+>
+> Thanks for the great wm!
+>
+>  - Eero
+>
+> [1] or maybe even more, but I only ever used two.
+> [2] note that the containers overlap; a scripter couldn't get away with just
+> resizing two side-by-size containers since it would trigger a redraw on the
+> clients and that would mess things up. A possible solution could be using two
+> floaters and switching back and forth between them...
+>
+
+I believe this feature actually should be called 'focus
+back_and_forth', and also
+promote the focused container to the top of the screen.
+
+Currently, with two floating container placed as you desired, no
+keybinding could
+change the focus between them, only mouse clicking could do.
+
+From mail at profpatsch.de  Mon Dec 30 12:45:52 2013
+From: mail at profpatsch.de (Profpatsch)
+Date: Mon, 30 Dec 2013 12:45:52 +0100
+Subject: [i3] Feature request: ion3-style "float split"
+In-Reply-To: <CAPYzjrSiW_CbD3dh1UEyRC45JO9=eS0JEWcUXTbGa+j0VorjxQ@mail.gmail.com>
+References: <20131228233309.GA9711@senco>
+ <CAPYzjrSiW_CbD3dh1UEyRC45JO9=eS0JEWcUXTbGa+j0VorjxQ@mail.gmail.com>
+Message-ID: <20131230114552.GE19447@nyx>
+
+On 13-12-30 12:34pm, ???(Techlive Zheng) wrote:
+> I believe this feature actually should be called 'focus
+> back_and_forth', and also
+> promote the focused container to the top of the screen.
+> 
+> Currently, with two floating container placed as you desired, no
+> keybinding could
+> change the focus between them, only mouse clicking could do.
+
+Huh? Of course the normal bindings would work, since the overlapping
+containers are only partly overlapping and an order is still defined.
+
+-- 
+Proudly written in Mutt with Vim on Archlinux.
+Q: Why is this email five sentences or less?
+A: http://five.sentenc.es
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 836 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20131230/b190ccb0/attachment.sig>
+
+From michael at i3wm.org  Tue Dec 31 07:20:28 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 31 Dec 2013 07:20:28 +0100
+Subject: [i3] Feature request: ion3-style "float split"
+In-Reply-To: <20131228233309.GA9711@senco>
+References: <20131228233309.GA9711@senco>
+Message-ID: <x661q5sfrn.fsf@midna.zekjur.net>
+
+Hi Eero,
+
+Eero Kari <ekari at iki.fi> writes:
+> the upcoming i3 layout restore feature almost completes my wishlist. The only
+> thing lacking is the "float split" that ion3 had. I fired up notion just to make
+> this 2-frame gif-animation showing the feature in action:
+>
+> https://dl.dropboxusercontent.com/u/20179139/ion3-float-split.gif 
+>
+> With the float split you could make two[1] containers overlap each other. The
+> amount of overlap was controlled similarly as you would resize a window. And the
+> layout stayed that way until changed it again.
+Thanks for the explanation.
+
+> So, I accept the feature either as built-in, or as a working script[2]. Either
+> way is fine ;)
+I don?t care what you people do in third-party scripts (that?s what they
+are there for, right? :)), but I consider it very unlikely that this
+feature will be merged into core i3. It does not seem worth it to me to
+add yet another weird special case, especially since it uses overlapping
+windows. Ugh. As others have pointed out, i3 is primarily a tiling
+window manager, and while other window managers may implement these
+kinds of layouts, I am not convinced it?s a good idea in i3.
+
+-- 
+Best regards,
+Michael
+
+From ekari at iki.fi  Tue Dec 31 10:29:31 2013
+From: ekari at iki.fi (Eero Kari)
+Date: Tue, 31 Dec 2013 11:29:31 +0200
+Subject: [i3] Feature request: ion3-style "float split"
+In-Reply-To: <x661q5sfrn.fsf@midna.zekjur.net>
+References: <20131228233309.GA9711@senco>
+ <x661q5sfrn.fsf@midna.zekjur.net>
+Message-ID: <20131231092931.GB3116@senco>
+
+On Tue, Dec 31, 2013 at 07:20:28AM +0100, Michael Stapelberg wrote:
+> Hi Eero,
+> 
+> Eero Kari <ekari at iki.fi> writes:
+> > the upcoming i3 layout restore feature almost completes my wishlist. The only
+> > thing lacking is the "float split" that ion3 had. I fired up notion just to make
+> > this 2-frame gif-animation showing the feature in action:
+> >
+> > https://dl.dropboxusercontent.com/u/20179139/ion3-float-split.gif 
+> >
+> > With the float split you could make two[1] containers overlap each other. The
+> > amount of overlap was controlled similarly as you would resize a window. And the
+> > layout stayed that way until changed it again.
+> Thanks for the explanation.
+> 
+> > So, I accept the feature either as built-in, or as a working script[2]. Either
+> > way is fine ;)
+> I don?t care what you people do in third-party scripts (that?s what they
+> are there for, right? :)), but I consider it very unlikely that this
+> feature will be merged into core i3. It does not seem worth it to me to
+> add yet another weird special case, especially since it uses overlapping
+> windows. Ugh. As others have pointed out, i3 is primarily a tiling
+> window manager, and while other window managers may implement these
+> kinds of layouts, I am not convinced it?s a good idea in i3.
+> 
+...aaand replying to the mailing list also after messing up and replying just to
+Michael :) The original message below.
+
+
+Hi Michael,
+
+Likewise, thanks for the explanation.
+
+I'll just drop what I had in mind in here in case someone else is interested to
+whip up the script before I can get on with it.
+
+I imagine that the script would have to handle two floating windows in order to
+avoid further resizing after the initial setup. It should just basically move
+and resize the windows to their places and bind a key to toggle them.
+
+ - Eero
+
+From techlivezheng at gmail.com  Tue Dec 31 10:41:52 2013
+From: techlivezheng at gmail.com (=?UTF-8?B?6YOR5paH6L6JKFRlY2hsaXZlIFpoZW5nKQ==?=)
+Date: Tue, 31 Dec 2013 17:41:52 +0800
+Subject: [i3] Feature request: ion3-style "float split"
+In-Reply-To: <20131231092931.GB3116@senco>
+References: <20131228233309.GA9711@senco> <x661q5sfrn.fsf@midna.zekjur.net>
+ <20131231092931.GB3116@senco>
+Message-ID: <CAPYzjrQN3go0BHg6Wdm6-8N-g_Q+-X0LgJpXyEzOKzPhJ6a+fg@mail.gmail.com>
+
+2013/12/31 Eero Kari <ekari at iki.fi>:
+> On Tue, Dec 31, 2013 at 07:20:28AM +0100, Michael Stapelberg wrote:
+>> Hi Eero,
+>>
+>> Eero Kari <ekari at iki.fi> writes:
+>> > the upcoming i3 layout restore feature almost completes my wishlist. The only
+>> > thing lacking is the "float split" that ion3 had. I fired up notion just to make
+>> > this 2-frame gif-animation showing the feature in action:
+>> >
+>> > https://dl.dropboxusercontent.com/u/20179139/ion3-float-split.gif
+>> >
+>> > With the float split you could make two[1] containers overlap each other. The
+>> > amount of overlap was controlled similarly as you would resize a window. And the
+>> > layout stayed that way until changed it again.
+>> Thanks for the explanation.
+>>
+>> > So, I accept the feature either as built-in, or as a working script[2]. Either
+>> > way is fine ;)
+>> I don?t care what you people do in third-party scripts (that?s what they
+>> are there for, right? :)), but I consider it very unlikely that this
+>> feature will be merged into core i3. It does not seem worth it to me to
+>> add yet another weird special case, especially since it uses overlapping
+>> windows. Ugh. As others have pointed out, i3 is primarily a tiling
+>> window manager, and while other window managers may implement these
+>> kinds of layouts, I am not convinced it?s a good idea in i3.
+>>
+> ...aaand replying to the mailing list also after messing up and replying just to
+> Michael :) The original message below.
+>
+>
+> Hi Michael,
+>
+> Likewise, thanks for the explanation.
+>
+> I'll just drop what I had in mind in here in case someone else is interested to
+> whip up the script before I can get on with it.
+>
+> I imagine that the script would have to handle two floating windows in order to
+> avoid further resizing after the initial setup. It should just basically move
+> and resize the windows to their places and bind a key to toggle them.
+>
+>  - Eero
+
+Hi, Eero,
+
+I see the only thing missing here is a command for switching forcus
+back_and_forth between containers. With this command, you can bind the
+command to a key and manually make two floating windows overlapping,
+then just using the keybinding to switch between them.
+
+So here I am asking Michael, is it possible to add a command 'focus
+back_and_forth' just like the existing 'workspace back_and_forth', so
+that  what Eero is asking for is doable withouth scripting.
+
+Of course, this command should promote the window to the top of the
+screen, if it is floating. Currently, use keybing focusing a floating
+window does not promote it to the top of the screen.
+
+Regards,
+Techlive
+
+From ekari at iki.fi  Tue Dec 31 12:14:42 2013
+From: ekari at iki.fi (Eero Kari)
+Date: Tue, 31 Dec 2013 13:14:42 +0200
+Subject: [i3] Feature request: ion3-style "float split"
+In-Reply-To: <CAPYzjrQN3go0BHg6Wdm6-8N-g_Q+-X0LgJpXyEzOKzPhJ6a+fg@mail.gmail.com>
+References: <20131228233309.GA9711@senco> <x661q5sfrn.fsf@midna.zekjur.net>
+ <20131231092931.GB3116@senco>
+ <CAPYzjrQN3go0BHg6Wdm6-8N-g_Q+-X0LgJpXyEzOKzPhJ6a+fg@mail.gmail.com>
+Message-ID: <20131231111442.GA6168@senco>
+
+On Tue, Dec 31, 2013 at 05:41:52PM +0800, ???(Techlive Zheng) wrote:
+> 2013/12/31 Eero Kari <ekari at iki.fi>:
+> > On Tue, Dec 31, 2013 at 07:20:28AM +0100, Michael Stapelberg wrote:
+> >> Hi Eero,
+> >>
+> >> Eero Kari <ekari at iki.fi> writes:
+> >> > the upcoming i3 layout restore feature almost completes my wishlist. The only
+> >> > thing lacking is the "float split" that ion3 had. I fired up notion just to make
+> >> > this 2-frame gif-animation showing the feature in action:
+> >> >
+> >> > https://dl.dropboxusercontent.com/u/20179139/ion3-float-split.gif
+> >> >
+> >> > With the float split you could make two[1] containers overlap each other. The
+> >> > amount of overlap was controlled similarly as you would resize a window. And the
+> >> > layout stayed that way until changed it again.
+> >> Thanks for the explanation.
+> >>
+> >> > So, I accept the feature either as built-in, or as a working script[2]. Either
+> >> > way is fine ;)
+> >> I don?t care what you people do in third-party scripts (that?s what they
+> >> are there for, right? :)), but I consider it very unlikely that this
+> >> feature will be merged into core i3. It does not seem worth it to me to
+> >> add yet another weird special case, especially since it uses overlapping
+> >> windows. Ugh. As others have pointed out, i3 is primarily a tiling
+> >> window manager, and while other window managers may implement these
+> >> kinds of layouts, I am not convinced it?s a good idea in i3.
+> >>
+> > ...aaand replying to the mailing list also after messing up and replying just to
+> > Michael :) The original message below.
+> >
+> >
+> > Hi Michael,
+> >
+> > Likewise, thanks for the explanation.
+> >
+> > I'll just drop what I had in mind in here in case someone else is interested to
+> > whip up the script before I can get on with it.
+> >
+> > I imagine that the script would have to handle two floating windows in order to
+> > avoid further resizing after the initial setup. It should just basically move
+> > and resize the windows to their places and bind a key to toggle them.
+> >
+> >  - Eero
+> 
+> Hi, Eero,
+> 
+> I see the only thing missing here is a command for switching forcus
+> back_and_forth between containers. With this command, you can bind the
+> command to a key and manually make two floating windows overlapping,
+> then just using the keybinding to switch between them.
+> 
+> So here I am asking Michael, is it possible to add a command 'focus
+> back_and_forth' just like the existing 'workspace back_and_forth', so
+> that  what Eero is asking for is doable withouth scripting.
+> 
+> Of course, this command should promote the window to the top of the
+> screen, if it is floating. Currently, use keybing focusing a floating
+> window does not promote it to the top of the screen.
+> 
+Hi Techlive,
+
+"focus back_and_forth" could have it's uses, but I suspect that it would be
+a bit more involved to implement. I would be happy for just the focused floating
+window to be promoted to the top of the screen.
+
+Everything I want almost works already; I can have a floating terminal and
+a floating browser and "focus left" or "focus right" switches nicely between
+them. The only thing missing is bringing the focused window on top.
+
+ - Eero
+
+From marcos at anue.biz  Tue Dec 31 13:12:37 2013
+From: marcos at anue.biz (Marcos Moyano)
+Date: Tue, 31 Dec 2013 10:12:37 -0200
+Subject: [i3] Feature request: ion3-style "float split"
+In-Reply-To: <20131231111442.GA6168@senco>
+References: <20131228233309.GA9711@senco> <x661q5sfrn.fsf@midna.zekjur.net>
+ <20131231092931.GB3116@senco>
+ <CAPYzjrQN3go0BHg6Wdm6-8N-g_Q+-X0LgJpXyEzOKzPhJ6a+fg@mail.gmail.com>
+ <20131231111442.GA6168@senco>
+Message-ID: <CANxNxiDM4zj0jDUTGEs4DSa7zQa4Jmp+5_uR4+rgXtHURJ1vnw@mail.gmail.com>
+
+See this thread:
+http://www.mail-archive.com/i3-discuss at i3.zekjur.net/msg00742.html
+Can't remember exactly what happened to that patch. I'm sure Michael had a
+good argument for reverting the commit.
+Still, this may be (or not) a good starting point for a new patch that can
+get into (and stay) in i3's core.
+
+Happy new year!
+
+Best,
+Marcos
+
+
+On Tue, Dec 31, 2013 at 8:14 AM, Eero Kari <ekari at iki.fi> wrote:
+
+> On Tue, Dec 31, 2013 at 05:41:52PM +0800, ???(Techlive Zheng) wrote:
+> > 2013/12/31 Eero Kari <ekari at iki.fi>:
+> > > On Tue, Dec 31, 2013 at 07:20:28AM +0100, Michael Stapelberg wrote:
+> > >> Hi Eero,
+> > >>
+> > >> Eero Kari <ekari at iki.fi> writes:
+> > >> > the upcoming i3 layout restore feature almost completes my
+> wishlist. The only
+> > >> > thing lacking is the "float split" that ion3 had. I fired up notion
+> just to make
+> > >> > this 2-frame gif-animation showing the feature in action:
+> > >> >
+> > >> > https://dl.dropboxusercontent.com/u/20179139/ion3-float-split.gif
+> > >> >
+> > >> > With the float split you could make two[1] containers overlap each
+> other. The
+> > >> > amount of overlap was controlled similarly as you would resize a
+> window. And the
+> > >> > layout stayed that way until changed it again.
+> > >> Thanks for the explanation.
+> > >>
+> > >> > So, I accept the feature either as built-in, or as a working
+> script[2]. Either
+> > >> > way is fine ;)
+> > >> I don?t care what you people do in third-party scripts (that?s what
+> they
+> > >> are there for, right? :)), but I consider it very unlikely that this
+> > >> feature will be merged into core i3. It does not seem worth it to me
+> to
+> > >> add yet another weird special case, especially since it uses
+> overlapping
+> > >> windows. Ugh. As others have pointed out, i3 is primarily a tiling
+> > >> window manager, and while other window managers may implement these
+> > >> kinds of layouts, I am not convinced it?s a good idea in i3.
+> > >>
+> > > ...aaand replying to the mailing list also after messing up and
+> replying just to
+> > > Michael :) The original message below.
+> > >
+> > >
+> > > Hi Michael,
+> > >
+> > > Likewise, thanks for the explanation.
+> > >
+> > > I'll just drop what I had in mind in here in case someone else is
+> interested to
+> > > whip up the script before I can get on with it.
+> > >
+> > > I imagine that the script would have to handle two floating windows in
+> order to
+> > > avoid further resizing after the initial setup. It should just
+> basically move
+> > > and resize the windows to their places and bind a key to toggle them.
+> > >
+> > >  - Eero
+> >
+> > Hi, Eero,
+> >
+> > I see the only thing missing here is a command for switching forcus
+> > back_and_forth between containers. With this command, you can bind the
+> > command to a key and manually make two floating windows overlapping,
+> > then just using the keybinding to switch between them.
+> >
+> > So here I am asking Michael, is it possible to add a command 'focus
+> > back_and_forth' just like the existing 'workspace back_and_forth', so
+> > that  what Eero is asking for is doable withouth scripting.
+> >
+> > Of course, this command should promote the window to the top of the
+> > screen, if it is floating. Currently, use keybing focusing a floating
+> > window does not promote it to the top of the screen.
+> >
+> Hi Techlive,
+>
+> "focus back_and_forth" could have it's uses, but I suspect that it would be
+> a bit more involved to implement. I would be happy for just the focused
+> floating
+> window to be promoted to the top of the screen.
+>
+> Everything I want almost works already; I can have a floating terminal and
+> a floating browser and "focus left" or "focus right" switches nicely
+> between
+> them. The only thing missing is bringing the focused window on top.
+>
+>  - Eero
+>
+
+
+
+-- 
+Marcos Moyano
+Co-Founder of Anue
+Skype: marcosmoyano
+http://www.anue.biz/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20131231/928aa0d4/attachment.html>
+
+From ekari at iki.fi  Tue Dec 31 13:39:13 2013
+From: ekari at iki.fi (Eero Kari)
+Date: Tue, 31 Dec 2013 14:39:13 +0200
+Subject: [i3] Feature request: ion3-style "float split"
+In-Reply-To: <CANxNxiDM4zj0jDUTGEs4DSa7zQa4Jmp+5_uR4+rgXtHURJ1vnw@mail.gmail.com>
+References: <20131228233309.GA9711@senco> <x661q5sfrn.fsf@midna.zekjur.net>
+ <20131231092931.GB3116@senco>
+ <CAPYzjrQN3go0BHg6Wdm6-8N-g_Q+-X0LgJpXyEzOKzPhJ6a+fg@mail.gmail.com>
+ <20131231111442.GA6168@senco>
+ <CANxNxiDM4zj0jDUTGEs4DSa7zQa4Jmp+5_uR4+rgXtHURJ1vnw@mail.gmail.com>
+Message-ID: <20131231123913.GA469@senco>
+
+On Tue, Dec 31, 2013 at 10:12:37AM -0200, Marcos Moyano wrote:
+> See this thread:
+> http://www.mail-archive.com/i3-discuss at i3.zekjur.net/msg00742.html
+> Can't remember exactly what happened to that patch. I'm sure Michael had a
+> good argument for reverting the commit.
+> Still, this may be (or not) a good starting point for a new patch that can
+> get into (and stay) in i3's core.
+> 
+> Happy new year!
+> 
+> Best,
+> Marcos
+>
+Thanks for the info Marcos. I did skim through the mail archives, but somehow
+missed that thread.
+
+Unfortunately at the moment I'm too busy (read: my C is too rusty) to dive into
+the i3 sources.
+
+Merry new years to you too!
+
+ - Eero
+> 
+> On Tue, Dec 31, 2013 at 8:14 AM, Eero Kari <ekari at iki.fi> wrote:
+> 
+> > On Tue, Dec 31, 2013 at 05:41:52PM +0800, ???(Techlive Zheng) wrote:
+> > > 2013/12/31 Eero Kari <ekari at iki.fi>:
+> > > > On Tue, Dec 31, 2013 at 07:20:28AM +0100, Michael Stapelberg wrote:
+> > > >> Hi Eero,
+> > > >>
+> > > >> Eero Kari <ekari at iki.fi> writes:
+> > > >> > the upcoming i3 layout restore feature almost completes my
+> > wishlist. The only
+> > > >> > thing lacking is the "float split" that ion3 had. I fired up notion
+> > just to make
+> > > >> > this 2-frame gif-animation showing the feature in action:
+> > > >> >
+> > > >> > https://dl.dropboxusercontent.com/u/20179139/ion3-float-split.gif
+> > > >> >
+> > > >> > With the float split you could make two[1] containers overlap each
+> > other. The
+> > > >> > amount of overlap was controlled similarly as you would resize a
+> > window. And the
+> > > >> > layout stayed that way until changed it again.
+> > > >> Thanks for the explanation.
+> > > >>
+> > > >> > So, I accept the feature either as built-in, or as a working
+> > script[2]. Either
+> > > >> > way is fine ;)
+> > > >> I don?t care what you people do in third-party scripts (that?s what
+> > they
+> > > >> are there for, right? :)), but I consider it very unlikely that this
+> > > >> feature will be merged into core i3. It does not seem worth it to me
+> > to
+> > > >> add yet another weird special case, especially since it uses
+> > overlapping
+> > > >> windows. Ugh. As others have pointed out, i3 is primarily a tiling
+> > > >> window manager, and while other window managers may implement these
+> > > >> kinds of layouts, I am not convinced it?s a good idea in i3.
+> > > >>
+> > > > ...aaand replying to the mailing list also after messing up and
+> > replying just to
+> > > > Michael :) The original message below.
+> > > >
+> > > >
+> > > > Hi Michael,
+> > > >
+> > > > Likewise, thanks for the explanation.
+> > > >
+> > > > I'll just drop what I had in mind in here in case someone else is
+> > interested to
+> > > > whip up the script before I can get on with it.
+> > > >
+> > > > I imagine that the script would have to handle two floating windows in
+> > order to
+> > > > avoid further resizing after the initial setup. It should just
+> > basically move
+> > > > and resize the windows to their places and bind a key to toggle them.
+> > > >
+> > > >  - Eero
+> > >
+> > > Hi, Eero,
+> > >
+> > > I see the only thing missing here is a command for switching forcus
+> > > back_and_forth between containers. With this command, you can bind the
+> > > command to a key and manually make two floating windows overlapping,
+> > > then just using the keybinding to switch between them.
+> > >
+> > > So here I am asking Michael, is it possible to add a command 'focus
+> > > back_and_forth' just like the existing 'workspace back_and_forth', so
+> > > that  what Eero is asking for is doable withouth scripting.
+> > >
+> > > Of course, this command should promote the window to the top of the
+> > > screen, if it is floating. Currently, use keybing focusing a floating
+> > > window does not promote it to the top of the screen.
+> > >
+> > Hi Techlive,
+> >
+> > "focus back_and_forth" could have it's uses, but I suspect that it would be
+> > a bit more involved to implement. I would be happy for just the focused
+> > floating
+> > window to be promoted to the top of the screen.
+> >
+> > Everything I want almost works already; I can have a floating terminal and
+> > a floating browser and "focus left" or "focus right" switches nicely
+> > between
+> > them. The only thing missing is bringing the focused window on top.
+> >
+> >  - Eero
+> >
+> 
+> 
+> 
+> -- 
+> Marcos Moyano
+> Co-Founder of Anue
+> Skype: marcosmoyano
+> http://www.anue.biz/
+
+From michael at i3wm.org  Tue Dec 31 14:56:25 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 31 Dec 2013 14:56:25 +0100
+Subject: [i3] Feature request: ion3-style "float split"
+In-Reply-To: <20131231123913.GA469@senco>
+References: <20131228233309.GA9711@senco> <x661q5sfrn.fsf@midna.zekjur.net>
+ <20131231092931.GB3116@senco>
+ <CAPYzjrQN3go0BHg6Wdm6-8N-g_Q+-X0LgJpXyEzOKzPhJ6a+fg@mail.gmail.com>
+ <20131231111442.GA6168@senco>
+ <CANxNxiDM4zj0jDUTGEs4DSa7zQa4Jmp+5_uR4+rgXtHURJ1vnw@mail.gmail.com>
+ <20131231123913.GA469@senco>
+Message-ID: <x6txdpqg3a.fsf@midna.zekjur.net>
+
+Please see http://bugs.i3wm.org/report/ticket/838 for ?back and forth
+for focus?. tl;dr: not going to happen within i3 (but possibly in IPC
+scripts once somebody does the work).
+
+-- 
+Best regards,
+Michael
+

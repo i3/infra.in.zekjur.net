@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [Xcb] Problem with dock windows and libxcb-icccm
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BXcb%5D%20Problem%20with%20dock%20windows%20and%20libxcb-icccm&In-Reply-To=%3C20100310114925.GA20909%40cl0311500093650%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000050.html">
+   <LINK REL="Next"  HREF="000051.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [Xcb] Problem with dock windows and libxcb-icccm</H1>
+    <B>David Coppa</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BXcb%5D%20Problem%20with%20dock%20windows%20and%20libxcb-icccm&In-Reply-To=%3C20100310114925.GA20909%40cl0311500093650%3E"
+       TITLE="[i3] [Xcb] Problem with dock windows and libxcb-icccm">dcoppa at gmail.com
+       </A><BR>
+    <I>Wed Mar 10 12:49:25 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000050.html">[i3] [Xcb] Problem with dock windows and libxcb-icccm
+</A></li>
+        <LI>Next message: <A HREF="000051.html">[i3] I3 - next build on RHEL 5.4 seg fault.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#48">[ date ]</a>
+              <a href="thread.html#48">[ thread ]</a>
+              <a href="subject.html#48">[ subject ]</a>
+              <a href="author.html#48">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, 10 Mar 2010, Michael Stapelberg wrote:
+
+&gt;<i> Hi David,
+</I>&gt;<i> Are you using the latest versions of xcb and xcb-util? Please double-check.
+</I>&gt;<i> We&#8217;ve had a similar bug before:
+</I>&gt;<i> <A HREF="http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=531310">http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=531310</A>
+</I>
+Hi Michael,
+thanks for your reply.
+
+On OpenBSD we have libxcb 1.4 and xcb-util 0.3.6, but latter is patched 
+to fix the problems highligthed here:
+
+<A HREF="http://cgit.freedesktop.org/xcb/util/commit/?id=d5b5d682465bd3196105df86d6df9fcde9518e6c">http://cgit.freedesktop.org/xcb/util/commit/?id=d5b5d682465bd3196105df86d6df9fcde9518e6c</A>
+
+<A HREF="http://archive.netbsd.se/view_attachment.php?id=12115870.183264">http://archive.netbsd.se/view_attachment.php?id=12115870.183264</A>
+
+This is the commit:
+
+<A HREF="http://www.openbsd.org/cgi-bin/cvsweb/xenocara/dist/xcb-util/icccm/icccm.c.diff?r1=1.4;r2=1.5">http://www.openbsd.org/cgi-bin/cvsweb/xenocara/dist/xcb-util/icccm/icccm.c.diff?r1=1.4;r2=1.5</A>
+
+
+Can this new bug be due to stricter checks in OpenBSD's libc?
+
+cheers,
+david
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000050.html">[i3] [Xcb] Problem with dock windows and libxcb-icccm
+</A></li>
+	<LI>Next message: <A HREF="000051.html">[i3] I3 - next build on RHEL 5.4 seg fault.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#48">[ date ]</a>
+              <a href="thread.html#48">[ thread ]</a>
+              <a href="subject.html#48">[ subject ]</a>
+              <a href="author.html#48">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

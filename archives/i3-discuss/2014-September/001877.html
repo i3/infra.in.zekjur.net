@@ -1,0 +1,489 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] layout file causes i3 to hang
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20layout%20file%20causes%20i3%20to%20hang&In-Reply-To=%3C85EA6F68AC24DA48B220EBEA7A8C08B81B51A521%40corpmail01.corp.sensis.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001876.html">
+   <LINK REL="Next"  HREF="001878.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] layout file causes i3 to hang</H1>
+    <B>Sargrad, Dave</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20layout%20file%20causes%20i3%20to%20hang&In-Reply-To=%3C85EA6F68AC24DA48B220EBEA7A8C08B81B51A521%40corpmail01.corp.sensis.com%3E"
+       TITLE="[i3] layout file causes i3 to hang">Dave.Sargrad at saabsensis.com
+       </A><BR>
+    <I>Mon Sep 29 15:00:31 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001876.html">[i3] Some workspaces not showing when undocked
+</A></li>
+        <LI>Next message: <A HREF="001878.html">[i3] layout file causes i3 to hang
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1877">[ date ]</a>
+              <a href="thread.html#1877">[ thread ]</a>
+              <a href="subject.html#1877">[ subject ]</a>
+              <a href="author.html#1877">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I've got a layout file that cause i3 (version 4.8) to hang 100% consistently.
+
+I use the i3-msg append_layout command to cause this. I've used it with other layout files just fine.
+
+What is it about this file that causes i3 to hang?
+
+I've included the layout file below:
+
+{
+    &quot;border&quot;: &quot;normal&quot;, 
+    &quot;floating&quot;: &quot;auto_off&quot;, 
+    &quot;floating_nodes&quot;: [
+        {
+            &quot;border&quot;: &quot;normal&quot;, 
+            &quot;current_border_width&quot;: -1, 
+            &quot;floating&quot;: &quot;auto_off&quot;, 
+            &quot;floating_nodes&quot;: [], 
+            &quot;focus&quot;: [
+                29940496
+            ], 
+            &quot;focused&quot;: false, 
+            &quot;fullscreen_mode&quot;: 0, 
+            &quot;geometry&quot;: {
+                &quot;height&quot;: 0, 
+                &quot;width&quot;: 0, 
+                &quot;x&quot;: 0, 
+                &quot;y&quot;: 0
+            }, 
+            &quot;id&quot;: 29940864, 
+            &quot;last_split_layout&quot;: &quot;splith&quot;, 
+            &quot;layout&quot;: &quot;splith&quot;, 
+            &quot;name&quot;: &quot;#0000aa&quot;, 
+            &quot;nodes&quot;: [
+                {
+                    &quot;border&quot;: &quot;normal&quot;, 
+                    &quot;current_border_width&quot;: -1, 
+                    &quot;floating&quot;: &quot;user_on&quot;, 
+                    &quot;floating_nodes&quot;: [], 
+                    &quot;focus&quot;: [], 
+                    &quot;focused&quot;: false, 
+                    &quot;fullscreen_mode&quot;: 0, 
+                    &quot;geometry&quot;: {
+                        &quot;height&quot;: 820, 
+                        &quot;width&quot;: 170, 
+                        &quot;x&quot;: 0, 
+                        &quot;y&quot;: 0
+                    }, 
+                    &quot;id&quot;: 29940496, 
+                    &quot;last_split_layout&quot;: &quot;splith&quot;, 
+                    &quot;layout&quot;: &quot;splith&quot;, 
+                    &quot;name&quot;: &quot;Toolbox - Tool Options&quot;, 
+                    &quot;nodes&quot;: [], 
+                    &quot;orientation&quot;: &quot;none&quot;, 
+                    &quot;percent&quot;: 1.0, 
+                    &quot;rect&quot;: {
+                        &quot;height&quot;: 822, 
+                        &quot;width&quot;: 164, 
+                        &quot;x&quot;: 753, 
+                        &quot;y&quot;: 95
+                    }, 
+                    &quot;scratchpad_state&quot;: &quot;none&quot;, 
+                    &quot;swallows&quot;: [], 
+                    &quot;type&quot;: &quot;con&quot;, 
+                    &quot;urgent&quot;: false, 
+                    &quot;window&quot;: 37748871, 
+                    &quot;window_properties&quot;: {
+                        &quot;class&quot;: &quot;Gimp&quot;, 
+                        &quot;instance&quot;: &quot;gimp&quot;, 
+                        &quot;title&quot;: &quot;Toolbox - Tool Options&quot;, 
+                        &quot;window_role&quot;: &quot;gimp-toolbox&quot;
+                    }, 
+                    &quot;window_rect&quot;: {
+                        &quot;height&quot;: 820, 
+                        &quot;width&quot;: 160, 
+                        &quot;x&quot;: 2, 
+                        &quot;y&quot;: 0
+                    }, 
+                    &quot;workspace_layout&quot;: &quot;default&quot;
+                }
+            ], 
+            &quot;orientation&quot;: &quot;horizontal&quot;, 
+            &quot;percent&quot;: null, 
+            &quot;rect&quot;: {
+                &quot;height&quot;: 840, 
+                &quot;width&quot;: 164, 
+                &quot;x&quot;: 753, 
+                &quot;y&quot;: 77
+            }, 
+            &quot;scratchpad_state&quot;: &quot;none&quot;, 
+            &quot;swallows&quot;: [], 
+            &quot;type&quot;: &quot;floating_con&quot;, 
+            &quot;urgent&quot;: false, 
+            &quot;window&quot;: null, 
+            &quot;window_rect&quot;: {
+                &quot;height&quot;: 0, 
+                &quot;width&quot;: 0, 
+                &quot;x&quot;: 0, 
+                &quot;y&quot;: 0
+            }, 
+            &quot;workspace_layout&quot;: &quot;default&quot;
+        }, 
+        {
+            &quot;border&quot;: &quot;normal&quot;, 
+            &quot;current_border_width&quot;: -1, 
+            &quot;floating&quot;: &quot;auto_off&quot;, 
+            &quot;floating_nodes&quot;: [], 
+            &quot;focus&quot;: [
+                29637472
+            ], 
+            &quot;focused&quot;: false, 
+            &quot;fullscreen_mode&quot;: 0, 
+            &quot;geometry&quot;: {
+                &quot;height&quot;: 0, 
+                &quot;width&quot;: 0, 
+                &quot;x&quot;: 0, 
+                &quot;y&quot;: 0
+            }, 
+            &quot;id&quot;: 29639104, 
+            &quot;last_split_layout&quot;: &quot;splith&quot;, 
+            &quot;layout&quot;: &quot;splith&quot;, 
+            &quot;name&quot;: &quot;#ff0000&quot;, 
+            &quot;nodes&quot;: [
+                {
+                    &quot;border&quot;: &quot;normal&quot;, 
+                    &quot;current_border_width&quot;: -1, 
+                    &quot;floating&quot;: &quot;user_on&quot;, 
+                    &quot;floating_nodes&quot;: [], 
+                    &quot;focus&quot;: [], 
+                    &quot;focused&quot;: false, 
+                    &quot;fullscreen_mode&quot;: 0, 
+                    &quot;geometry&quot;: {
+                        &quot;height&quot;: 820, 
+                        &quot;width&quot;: 210, 
+                        &quot;x&quot;: 1679, 
+                        &quot;y&quot;: 0
+                    }, 
+                    &quot;id&quot;: 29637472, 
+                    &quot;last_split_layout&quot;: &quot;splith&quot;, 
+                    &quot;layout&quot;: &quot;splith&quot;, 
+                    &quot;name&quot;: &quot;Layers - Brushes&quot;, 
+                    &quot;nodes&quot;: [], 
+                    &quot;orientation&quot;: &quot;none&quot;, 
+                    &quot;percent&quot;: 1.0, 
+                    &quot;rect&quot;: {
+                        &quot;height&quot;: 822, 
+                        &quot;width&quot;: 214, 
+                        &quot;x&quot;: 733, 
+                        &quot;y&quot;: 113
+                    }, 
+                    &quot;scratchpad_state&quot;: &quot;none&quot;, 
+                    &quot;swallows&quot;: [], 
+                    &quot;type&quot;: &quot;con&quot;, 
+                    &quot;urgent&quot;: false, 
+                    &quot;window&quot;: 37748887, 
+                    &quot;window_properties&quot;: {
+                        &quot;class&quot;: &quot;Gimp&quot;, 
+                        &quot;instance&quot;: &quot;gimp&quot;, 
+                        &quot;title&quot;: &quot;Layers - Brushes&quot;, 
+                        &quot;window_role&quot;: &quot;gimp-dock&quot;
+                    }, 
+                    &quot;window_rect&quot;: {
+                        &quot;height&quot;: 820, 
+                        &quot;width&quot;: 210, 
+                        &quot;x&quot;: 2, 
+                        &quot;y&quot;: 0
+                    }, 
+                    &quot;workspace_layout&quot;: &quot;default&quot;
+                }
+            ], 
+            &quot;orientation&quot;: &quot;horizontal&quot;, 
+            &quot;percent&quot;: null, 
+            &quot;rect&quot;: {
+                &quot;height&quot;: 840, 
+                &quot;width&quot;: 214, 
+                &quot;x&quot;: 733, 
+                &quot;y&quot;: 95
+            }, 
+            &quot;scratchpad_state&quot;: &quot;none&quot;, 
+            &quot;swallows&quot;: [], 
+            &quot;type&quot;: &quot;floating_con&quot;, 
+            &quot;urgent&quot;: false, 
+            &quot;window&quot;: null, 
+            &quot;window_rect&quot;: {
+                &quot;height&quot;: 0, 
+                &quot;width&quot;: 0, 
+                &quot;x&quot;: 0, 
+                &quot;y&quot;: 0
+            }, 
+            &quot;workspace_layout&quot;: &quot;default&quot;
+        }
+    ], 
+    &quot;fullscreen_mode&quot;: 1, 
+    &quot;layout&quot;: &quot;splitv&quot;, 
+    &quot;nodes&quot;: [
+        {
+            &quot;border&quot;: &quot;normal&quot;, 
+            &quot;floating&quot;: &quot;auto_off&quot;, 
+            &quot;layout&quot;: &quot;splith&quot;, 
+            &quot;nodes&quot;: [
+                {
+                    &quot;border&quot;: &quot;normal&quot;, 
+                    &quot;floating&quot;: &quot;auto_off&quot;, 
+                    &quot;geometry&quot;: {
+                        &quot;height&quot;: 200, 
+                        &quot;width&quot;: 620, 
+                        &quot;x&quot;: 410, 
+                        &quot;y&quot;: 370
+                    }, 
+                    &quot;layout&quot;: &quot;splith&quot;, 
+                    &quot;name&quot;: &quot;GNU Image Manipulation Program&quot;, 
+                    &quot;percent&quot;: 0.5, 
+                    &quot;swallows&quot;: [
+                        {
+                            &quot;class&quot;: &quot;^Gimp$&quot;
+                        }
+                    ], 
+                    &quot;type&quot;: &quot;con&quot;
+                }, 
+                {
+                    &quot;border&quot;: &quot;normal&quot;, 
+                    &quot;floating&quot;: &quot;auto_off&quot;, 
+                    &quot;geometry&quot;: {
+                        &quot;height&quot;: 622, 
+                        &quot;width&quot;: 672, 
+                        &quot;x&quot;: 0, 
+                        &quot;y&quot;: 0
+                    }, 
+                    &quot;layout&quot;: &quot;splith&quot;, 
+                    &quot;name&quot;: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">emacs at sensis-90025-2.corp.sensis.com</A>&quot;, 
+                    &quot;percent&quot;: 0.5, 
+                    &quot;swallows&quot;: [
+                        {
+                            &quot;class&quot;: &quot;^Emacs23$&quot;
+                        }
+                    ], 
+                    &quot;type&quot;: &quot;con&quot;
+                }
+            ], 
+            &quot;percent&quot;: 0.5, 
+            &quot;type&quot;: &quot;con&quot;
+        }, 
+        {
+            &quot;border&quot;: &quot;normal&quot;, 
+            &quot;floating&quot;: &quot;auto_off&quot;, 
+            &quot;layout&quot;: &quot;splitv&quot;, 
+            &quot;nodes&quot;: [
+                {
+                    &quot;border&quot;: &quot;normal&quot;, 
+                    &quot;floating&quot;: &quot;auto_off&quot;, 
+                    &quot;geometry&quot;: {
+                        &quot;height&quot;: 316, 
+                        &quot;width&quot;: 484, 
+                        &quot;x&quot;: 0, 
+                        &quot;y&quot;: 0
+                    }, 
+                    &quot;layout&quot;: &quot;splith&quot;, 
+                    &quot;name&quot;: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at sensis-90025-2</A>: ~&quot;, 
+                    &quot;percent&quot;: 0.5, 
+                    &quot;swallows&quot;: [
+                        {
+                            &quot;class&quot;: &quot;^XTerm$&quot;
+                        }
+                    ], 
+                    &quot;type&quot;: &quot;con&quot;
+                }, 
+                {
+                    &quot;border&quot;: &quot;normal&quot;, 
+                    &quot;floating&quot;: &quot;auto_off&quot;, 
+                    &quot;layout&quot;: &quot;splith&quot;, 
+                    &quot;nodes&quot;: [
+                        {
+                            &quot;border&quot;: &quot;normal&quot;, 
+                            &quot;floating&quot;: &quot;auto_off&quot;, 
+                            &quot;geometry&quot;: {
+                                &quot;height&quot;: 316, 
+                                &quot;width&quot;: 484, 
+                                &quot;x&quot;: 0, 
+                                &quot;y&quot;: 0
+                            }, 
+                            &quot;layout&quot;: &quot;splith&quot;, 
+                            &quot;name&quot;: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at sensis-90025-2</A>: ~&quot;, 
+                            &quot;percent&quot;: 0.5, 
+                            &quot;swallows&quot;: [
+                                {
+                                    &quot;class&quot;: &quot;^XTerm$&quot;
+                                }
+                            ], 
+                            &quot;type&quot;: &quot;con&quot;
+                        }, 
+                        {
+                            &quot;border&quot;: &quot;normal&quot;, 
+                            &quot;floating&quot;: &quot;auto_off&quot;, 
+                            &quot;geometry&quot;: {
+                                &quot;height&quot;: 316, 
+                                &quot;width&quot;: 484, 
+                                &quot;x&quot;: 0, 
+                                &quot;y&quot;: 0
+                            }, 
+                            &quot;layout&quot;: &quot;splith&quot;, 
+                            &quot;name&quot;: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at sensis-90025-2</A>: ~&quot;, 
+                            &quot;percent&quot;: 0.5, 
+                            &quot;swallows&quot;: [
+                                {
+                                    &quot;class&quot;: &quot;^XTerm$&quot;
+                                }
+                            ], 
+                            &quot;type&quot;: &quot;con&quot;
+                        }
+                    ], 
+                    &quot;percent&quot;: 0.5, 
+                    &quot;type&quot;: &quot;con&quot;
+                }
+            ], 
+            &quot;percent&quot;: 0.5, 
+            &quot;type&quot;: &quot;con&quot;
+        }
+    ], 
+    &quot;percent&quot;: null, 
+    &quot;type&quot;: &quot;workspace&quot;
+}
+
+-----Original Message-----
+From: i3-discuss [mailto:<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss-bounces at i3.zekjur.net</A>] On Behalf Of <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss-request at i3.zekjur.net</A>
+Sent: Monday, September 29, 2014 6:01 AM
+To: <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>
+Subject: i3-discuss Digest, Vol 53, Issue 15
+
+Send i3-discuss mailing list submissions to
+	<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>
+
+To subscribe or unsubscribe via the World Wide Web, visit
+	<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss</A>
+or, via email, send a message with subject or body 'help' to
+	<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss-request at i3.zekjur.net</A>
+
+You can reach the person managing the list at
+	<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss-owner at i3.zekjur.net</A>
+
+When replying, please edit your Subject line so it is more specific than &quot;Re: Contents of i3-discuss digest...&quot;
+
+
+Today's Topics:
+
+   1. Re: Some workspaces not showing when undocked (Michael Stapelberg)
+
+
+----------------------------------------------------------------------
+
+Message: 1
+Date: Sun, 28 Sep 2014 17:05:20 +0200
+From: Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt;
+To: &quot;Discussions/Questions about the i3 window manager&quot;
+	&lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>&gt;
+Subject: Re: [i3] Some workspaces not showing when undocked
+Message-ID:
+	&lt;CANnVG6n+gR=1eUMq683FAUCM_UnfVvF_2qwC+Z=<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">48t97yh7nFw at mail.gmail.com</A>&gt;
+Content-Type: text/plain; charset=UTF-8
+
+My guess is that something goes wrong when setting your display settings on undock.
+
+I’d start by logging a confirmation line to a file in your undock-script so that you know it gets executed.
+
+Also, I’d check the i3 log, see <A HREF="http://i3wm.org/docs/debugging.html,">http://i3wm.org/docs/debugging.html,</A>
+and check whether the randr settings are as you expect them after undocking.
+
+Instead of logging out and in again, try changing your settings using xrandr.
+
+On Sun, Sep 28, 2014 at 11:12 AM, Danny Jonstrup Krøger &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">mailinglist at kroeger.dk</A>&gt; wrote:
+&gt;<i> Hi.
+</I>&gt;<i>
+</I>&gt;<i> I'm using a laptop, which is connected to two other screens when 
+</I>&gt;<i> docked. I have assigned the workspaces to the following screens:
+</I>&gt;<i> # eDP1 = laptop
+</I>&gt;<i> # DP2 &amp; DP1 = external screens.
+</I>&gt;<i> workspace 1 output DP2
+</I>&gt;<i> workspace 2 output DP2
+</I>&gt;<i> workspace 3 output DP2
+</I>&gt;<i> workspace 4 output DP1
+</I>&gt;<i> workspace 5 output DP1
+</I>&gt;<i> workspace 6 output DP1
+</I>&gt;<i> workspace 7 output eDP1
+</I>&gt;<i>
+</I>&gt;<i> When undocking I run the following randr command to switch off the 
+</I>&gt;<i> other
+</I>&gt;<i> screens:
+</I>&gt;<i> $xrandr --output VIRTUAL1 --off --output eDP1 --mode 1920x1080 --pos 
+</I>&gt;<i> 0x0 --rotate normal --output DP1 --off --output ↪HDMI2 --off --output 
+</I>&gt;<i> HDMI1 --off --output DP2 --off
+</I>&gt;<i>
+</I>&gt;<i> However I often experience that I'm unable to go to other workspaces 
+</I>&gt;<i> than 1 &amp; 7 when undocked. Sometimes 2-6 works, but it seems to be 
+</I>&gt;<i> working quite randomly. It doesn't help either if I log out and in again.
+</I>&gt;<i>
+</I>&gt;<i> When searching for people having the same issue it seems that i3 
+</I>&gt;<i> should be handling this scenario without issues, so I'm sure there is 
+</I>&gt;<i> something I have overlooked.
+</I>&gt;<i>
+</I>&gt;<i> Any ideas on how to get this working properly?
+</I>&gt;<i>
+</I>&gt;<i> Best Regards
+</I>&gt;<i> Danny Jonstrup Krøger
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+
+--
+Best regards,
+Michael
+
+
+------------------------------
+
+Subject: Digest Footer
+
+_______________________________________________
+i3-discuss mailing list
+<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>
+<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss</A>
+
+
+------------------------------
+
+End of i3-discuss Digest, Vol 53, Issue 15
+******************************************
+-
+This message is intended only for the addressee and may contain information that is company confidential or privileged.  Any technical data in this message may be exported only in accordance with the U.S. International Traffic in Arms Regulations (22 CFR Parts 120-130) or the Export Administration Regulations (15 CFR Parts 730-774). Unauthorized use is strictly prohibited and may be unlawful. If you are not the intended recipient, or the person responsible for delivering to the intended recipient, you should not read, copy, disclose or otherwise use this message. If you have received this email in error, please delete it, and advise the sender immediately. 
+-          
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001876.html">[i3] Some workspaces not showing when undocked
+</A></li>
+	<LI>Next message: <A HREF="001878.html">[i3] layout file causes i3 to hang
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1877">[ date ]</a>
+              <a href="thread.html#1877">[ thread ]</a>
+              <a href="subject.html#1877">[ subject ]</a>
+              <a href="author.html#1877">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

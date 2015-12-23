@@ -1,0 +1,101 @@
+From 035686aa74465e66ce1c791fb6a7573b7eb1f8d8 Mon Sep 17 00:00:00 2001
+From: Marcos Moyano <marcos@anue.biz>
+Date: Wed, 26 Sep 2012 14:10:39 -0300
+Subject: [PATCH 1/1] Add a new configuration option to disable/enable
+ floating windows to raise above other floating windows
+ upon mouse focus. This behaviour is the default one.
+
+---
+ include/config.h |  6 ++++++
+ src/cfgparse.l   |  1 +
+ src/cfgparse.y   | 10 ++++++++++
+ src/handlers.c   |  9 +++++++++
+ 4 files changed, 26 insertions(+)
+
+diff --git a/include/config.h b/include/config.h
+index 1a48016..87d1561 100644
+--- a/include/config.h
++++ b/include/config.h
+@@ -108,6 +108,12 @@ struct Config {
+      * It is not planned to add any different focus models. */
+     bool disable_focus_follows_mouse;
+ 
++    /** By default, focus follows mouse. Even more, when moving between two
++     * floating containers, we raise the focused container. If the user
++     * explicitly wants to turn this off, we allow him to do this with this
++     * relatively special option. */
++    bool disable_raise_on_focus;
++
+     /** Remove borders if they are adjacent to the screen edge.
+      * This is useful if you are reaching scrollbar on the edge of the
+      * screen or do not want to waste a single pixel of displayspace.
+diff --git a/src/cfgparse.l b/src/cfgparse.l
+index 8ee2a1d..99f9929 100644
+--- a/src/cfgparse.l
++++ b/src/cfgparse.l
+@@ -206,6 +206,7 @@ none                            { return TOK_NONE; }
+ hide_edge_borders               { return TOK_HIDE_EDGE_BORDERS; }
+ both                            { return TOK_BOTH; }
+ focus_follows_mouse             { return TOKFOCUSFOLLOWSMOUSE; }
++raise_on_focus                  { return TOKRAISEONFOCUS; }
+ force_focus_wrapping            { return TOK_FORCE_FOCUS_WRAPPING; }
+ force_xinerama                  { return TOK_FORCE_XINERAMA; }
+ force-xinerama                  { return TOK_FORCE_XINERAMA; }
+diff --git a/src/cfgparse.y b/src/cfgparse.y
+index 29c519f..6685ec6 100644
+--- a/src/cfgparse.y
++++ b/src/cfgparse.y
+@@ -742,6 +742,7 @@ void parse_file(const char *f) {
+ %token                  TOK_HIDE_EDGE_BORDERS       "hide_edge_borders"
+ %token                  TOK_BOTH                    "both"
+ %token                  TOKFOCUSFOLLOWSMOUSE        "focus_follows_mouse"
++%token                  TOKRAISEONFOCUS             "raise_on_focus"
+ %token                  TOK_FORCE_FOCUS_WRAPPING    "force_focus_wrapping"
+ %token                  TOK_FORCE_XINERAMA          "force_xinerama"
+ %token                  TOK_FAKE_OUTPUTS            "fake_outputs"
+@@ -845,6 +846,7 @@ line:
+     | new_float
+     | hide_edge_borders
+     | focus_follows_mouse
++    | raise_on_focus
+     | force_focus_wrapping
+     | force_xinerama
+     | fake_outputs
+@@ -1516,6 +1518,14 @@ focus_follows_mouse:
+     }
+     ;
+ 
++raise_on_focus:
++    TOKRAISEONFOCUS bool
++    {
++        DLOG("focus raise = %d\n", $2);
++        config.disable_raise_on_focus = !($2);
++    }
++    ;
++
+ force_focus_wrapping:
+     TOK_FORCE_FOCUS_WRAPPING bool
+     {
+diff --git a/src/handlers.c b/src/handlers.c
+index 21a8734..9afee69 100644
+--- a/src/handlers.c
++++ b/src/handlers.c
+@@ -189,6 +189,15 @@ static void handle_enter_notify(xcb_enter_notify_event_t *event) {
+     if (ws != con_get_workspace(focused))
+         workspace_show(ws);
+ 
++    /* See if we moved to a floating container */
++    if(con_is_floating(con)) {
++      /* If the user didn't disable focus raise floating, we have to raise the container */
++      if(!config.disable_raise_on_focus) {
++        Con *floatingcon = con_inside_floating(con);
++        floating_raise_con(floatingcon);
++      }
++    }
++
+     focused_id = XCB_NONE;
+     con_focus(con_descend_focused(con));
+     tree_render();
+-- 
+1.7.12.1
+

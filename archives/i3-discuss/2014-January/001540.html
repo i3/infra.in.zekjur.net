@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Call for testing: i3lock&#8217;s xcb-xkb branch
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%3D%3Futf-8%3Fq%3FCall_for_testing%3D3A_i3lock%3DE2%3D80%3D99s_xcb-xkb_branc%3F%3D%0A%09%3D%3Futf-8%3Fq%3Fh%3F%3D&In-Reply-To=%3Cx6ppnphwhp.fsf%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001539.html">
+   <LINK REL="Next"  HREF="001541.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Call for testing: i3lock&#8217;s xcb-xkb branch</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%3D%3Futf-8%3Fq%3FCall_for_testing%3D3A_i3lock%3DE2%3D80%3D99s_xcb-xkb_branc%3F%3D%0A%09%3D%3Futf-8%3Fq%3Fh%3F%3D&In-Reply-To=%3Cx6ppnphwhp.fsf%40midna.zekjur.net%3E"
+       TITLE="[i3] Call for testing: i3lock&#8217;s xcb-xkb branch">michael at i3wm.org
+       </A><BR>
+    <I>Sat Jan 18 21:21:22 CET 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001539.html">[i3] i3wm buttons
+</A></li>
+        <LI>Next message: <A HREF="001541.html">[i3] IPC window focus change event
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1540">[ date ]</a>
+              <a href="thread.html#1540">[ thread ]</a>
+              <a href="subject.html#1540">[ subject ]</a>
+              <a href="author.html#1540">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Ran Benita (CC'ed) has been working on libxkbcommon-x11, a library that
+handles the last few bits of tedious details in getting input handling
+right. In i3lock, we have been using a mixture of libX11&#8217;s XKB functions
+and libxkbcommon until now, but with the most recent release, xcb has
+xcb-xkb enabled by default, so we can start using that. The advantage is
+that i3lock will be XCB-only and more of the input handling code goes
+into libxkbcommon, where bugs can be addressed without us having to
+update our code.
+
+Anyway, there is a new i3lock branch which contains a number of commits
+to use libxkbcommon-x11 and xcb-xkb; you can get it using
+
+   git clone -b xcb-xkb <A HREF="git://code.i3wm.org/i3lock">git://code.i3wm.org/i3lock</A>
+
+To compile it, you&#8217;ll need libxcb-xkb and libxkbcommon-x11. The latter
+is only available via git:
+
+   git clone -b xcb-wip <A HREF="https://github.com/xkbcommon/libxkbcommon.git">https://github.com/xkbcommon/libxkbcommon.git</A>
+
+Be sure to pass --enable-x11 when compiling libxkbcommon.
+
+It would be great if as many of you as possible could build libxkbcommon
+by hand, compile the i3lock branch and use the new i3lock code in your
+day to day work. To verify that you are using the new code, watch out
+for &#8220;process_xkb_event&#8221; messages when i3lock was started with --debug
+and you press the shift key (or any other modifier).
+
+The code has been tested with the US and NEO2 keyboard layouts. I&#8217;d be
+especially interested to hear about success in layouts other than
+those two. Please just reply to this email and keep Ran CC'ed.
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001539.html">[i3] i3wm buttons
+</A></li>
+	<LI>Next message: <A HREF="001541.html">[i3] IPC window focus change event
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1540">[ date ]</a>
+              <a href="thread.html#1540">[ thread ]</a>
+              <a href="subject.html#1540">[ subject ]</a>
+              <a href="author.html#1540">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

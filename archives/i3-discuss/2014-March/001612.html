@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3blocks
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3blocks&In-Reply-To=%3CCAJ2J69iNVtBzU-xSwg4K%2B3UD1ZUv5YCUf10TbPv4BUpoigKT%3Dw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001604.html">
+   <LINK REL="Next"  HREF="001602.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3blocks</H1>
+    <B>Vivien Didelot</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3blocks&In-Reply-To=%3CCAJ2J69iNVtBzU-xSwg4K%2B3UD1ZUv5YCUf10TbPv4BUpoigKT%3Dw%40mail.gmail.com%3E"
+       TITLE="[i3] i3blocks">vivien.didelot at gmail.com
+       </A><BR>
+    <I>Mon Mar  3 16:02:14 CET 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001604.html">[i3] i3blocks
+</A></li>
+        <LI>Next message: <A HREF="001602.html">[i3] Layout saving/restoring (PREVIEW)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1612">[ date ]</a>
+              <a href="thread.html#1612">[ thread ]</a>
+              <a href="subject.html#1612">[ subject ]</a>
+              <a href="author.html#1612">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>btw, i3blocks does handle events.
+If you set for instance signal=10 to a block, it will be updated when
+i3blocks receives a SIGUSR1 (you can take a look at the default &quot;volume&quot;
+block, and try &quot;amixer -q set Master 2dB+ unmute &amp;&amp; killall -USR1
+i3blocks&quot;).
+Also, if your script does not check the BLOCK_BUTTON env variable, clicking
+on the block will result in re-updating it (it's particulary useful for the
+network block, when connecting to a SSID or (un)plugging ethernet and want
+to have the IP update right away).
+
+Cheers,
+Vivien
+
+
+On Mon, Mar 3, 2014 at 3:58 AM, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt; wrote:
+
+&gt;<i> Hi Marco,
+</I>&gt;<i>
+</I>&gt;<i> Marco Hunsicker &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3 at hunsicker.de</A>&gt; writes:
+</I>&gt;<i> &gt; @Michael: as you tout i3status as being sensitive regarding resource
+</I>&gt;<i> &gt; usage, what about adding a caching mechanism to i3status to support
+</I>&gt;<i> &gt; distinct update time intervals for the different blocks as well?
+</I>&gt;<i> It's a bit rude to hijack this thread, so let's keep it brief: instead
+</I>&gt;<i> of caching, I'd rather see event-based updates, but that requires a huge
+</I>&gt;<i> refactoring with very very little gain, so I'm not going to do it (and
+</I>&gt;<i> probably not going to accept patches for it either). I think SardemFF7's
+</I>&gt;<i> j4status has an architecture that is event-based, but I have never used
+</I>&gt;<i> it.
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Michael
+</I>&gt;<i>
+</I>
+
+
+--
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140303/e44967d1/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140303/e44967d1/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001604.html">[i3] i3blocks
+</A></li>
+	<LI>Next message: <A HREF="001602.html">[i3] Layout saving/restoring (PREVIEW)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1612">[ date ]</a>
+              <a href="thread.html#1612">[ thread ]</a>
+              <a href="subject.html#1612">[ subject ]</a>
+              <a href="author.html#1612">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

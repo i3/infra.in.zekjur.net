@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Killing a window's process
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Killing%20a%20window%27s%20process&In-Reply-To=%3CCAM4Y7zyDk7i%3Dde0GxYNQZvDFw_nGCE5vOu374zhN__-bacWPMw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002215.html">
+   <LINK REL="Next"  HREF="002220.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Killing a window's process</H1>
+    <B>Jeff Abrahamson</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Killing%20a%20window%27s%20process&In-Reply-To=%3CCAM4Y7zyDk7i%3Dde0GxYNQZvDFw_nGCE5vOu374zhN__-bacWPMw%40mail.gmail.com%3E"
+       TITLE="[i3] Killing a window's process">jeff at purple.com
+       </A><BR>
+    <I>Fri Oct  2 11:28:24 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002215.html">[i3] Killing a window's process
+</A></li>
+        <LI>Next message: <A HREF="002220.html">[i3] Problems getting Ubuntu repository working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2216">[ date ]</a>
+              <a href="thread.html#2216">[ thread ]</a>
+              <a href="subject.html#2216">[ subject ]</a>
+              <a href="author.html#2216">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ah, why, yes, that would have worked.  Thanks.
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    &lt;-- only when I'm in the UK
+
+*<A HREF="http://www.ml-week.com/fr/*">http://www.ml-week.com/fr/*</A> &lt;<A HREF="http://www.ml-week.com/fr/">http://www.ml-week.com/fr/</A>&gt;*     2-5 novembre
+2015*
+
+<A HREF="http://jeff.purple.com/">http://jeff.purple.com/</A>
+<A HREF="http://blog.purple.com/jeff/">http://blog.purple.com/jeff/</A>
+
+On 2 October 2015 at 11:18, Ingo Bürk &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">admin at airblader.de</A>&gt; wrote:
+
+&gt;<i> xkill?
+</I>&gt;<i>
+</I>&gt;<i> On 10/02/2015 11:12 AM, Jeff Abrahamson wrote:
+</I>&gt;<i> &gt; I have a window whose process is not responding.  No problem, i3 lets me
+</I>&gt;<i> &gt; kill windows, so I type that key combination.  Usually it works, but this
+</I>&gt;<i> &gt; time it doesn't.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; My work-around is to use wininfo to find the window id of the dead but
+</I>&gt;<i> &gt; mapped thing, bc to convert to decimal, use &quot;ps aeww | grep&quot; to find the
+</I>&gt;<i> &gt; process with that window id in its environment, then send it a kill -15
+</I>&gt;<i> &gt; (does nothing visible) and then a kill -9 (still mapped, but process now
+</I>&gt;<i> &gt; shows as defunct).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; So the* problem* (obviously not critical, since I have a work-around) is
+</I>&gt;<i> &gt; how could I have avoided the wininfo -&gt; ps -&gt; bc -&gt; kill thing.  Looking
+</I>&gt;<i> at
+</I>&gt;<i> &gt; the code, it looks like i3's kill window is cmd_kill
+</I>&gt;<i> &gt; &lt;<A HREF="https://github.com/i3/i3/blob/next/src/commands.c#L1298">https://github.com/i3/i3/blob/next/src/commands.c#L1298</A>&gt;() in
+</I>&gt;<i> commands.c.
+</I>&gt;<i> &gt; (How can that get called with kill_mode_str == &quot;client&quot;?)  The chain is
+</I>&gt;<i> &gt; then to call tree_close_con
+</I>&gt;<i> &gt; &lt;<A HREF="https://github.com/i3/i3/blob/next/src/tree.c#L369">https://github.com/i3/i3/blob/next/src/tree.c#L369</A>&gt;() -&gt; tree_close
+</I>&gt;<i> &gt; &lt;<A HREF="https://github.com/i3/i3/blob/next/src/tree.c#L192">https://github.com/i3/i3/blob/next/src/tree.c#L192</A>&gt;() -&gt; x_window_kill
+</I>&gt;<i> &gt; &lt;<A HREF="https://github.com/i3/i3/blob/next/src/x.c#L283">https://github.com/i3/i3/blob/next/src/x.c#L283</A>&gt;() -&gt; one_of {
+</I>&gt;<i> &gt; xcb_destroy_window
+</I>&gt;<i> &gt; &lt;
+</I>&gt;<i> <A HREF="http://www.x.org/archive/current/doc/man/man3/xcb_destroy_window.3.xhtml">http://www.x.org/archive/current/doc/man/man3/xcb_destroy_window.3.xhtml</A>
+</I>&gt;<i> &gt;(),
+</I>&gt;<i> &gt; xcb_kill_client
+</I>&gt;<i> &gt; &lt;<A HREF="http://www.x.org/archive/current/doc/man/man3/xcb_kill_client.3.xhtml">http://www.x.org/archive/current/doc/man/man3/xcb_kill_client.3.xhtml</A>&gt;()
+</I>&gt;<i> }.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I think to answer that I'l have to run i3 with logging so I can see which
+</I>&gt;<i> &gt; path it's taking at the end.  And wait for an appropriately hung process.
+</I>&gt;<i> &gt; My initial hypothesis is that the window supports WM_DELETE_WINDOW but,
+</I>&gt;<i> &gt; since the proc is hung, it never processes it.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Anyway, thanks for any insights.  Clearly this is as much about me
+</I>&gt;<i> learning
+</I>&gt;<i> &gt; as anything else.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Jeff Abrahamson
+</I>&gt;<i> &gt; +33 6 24 40 01 57
+</I>&gt;<i> &gt; +44 7920 594 255    &lt;-- only when I'm in the UK
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; *<A HREF="http://www.ml-week.com/fr/*">http://www.ml-week.com/fr/*</A> &lt;<A HREF="http://www.ml-week.com/fr/">http://www.ml-week.com/fr/</A>&gt;*     2-5
+</I>&gt;<i> novembre
+</I>&gt;<i> &gt; 2015*
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; <A HREF="http://jeff.purple.com/">http://jeff.purple.com/</A>
+</I>&gt;<i> &gt; <A HREF="http://blog.purple.com/jeff/">http://blog.purple.com/jeff/</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151002/fec517aa/attachment-0001.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151002/fec517aa/attachment-0001.html</A>&gt;
+</PRE>
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002215.html">[i3] Killing a window's process
+</A></li>
+	<LI>Next message: <A HREF="002220.html">[i3] Problems getting Ubuntu repository working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2216">[ date ]</a>
+              <a href="thread.html#2216">[ thread ]</a>
+              <a href="subject.html#2216">[ subject ]</a>
+              <a href="author.html#2216">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

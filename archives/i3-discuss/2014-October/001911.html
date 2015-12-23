@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3-msg - move all/some workspaces to another output
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3-msg%20-%20move%20all/some%20workspaces%20to%20another%20output&In-Reply-To=%3C20141014155507.GA2846%40workmachine.Home%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001910.html">
+   <LINK REL="Next"  HREF="001912.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3-msg - move all/some workspaces to another output</H1>
+    <B>Bigby James</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3-msg%20-%20move%20all/some%20workspaces%20to%20another%20output&In-Reply-To=%3C20141014155507.GA2846%40workmachine.Home%3E"
+       TITLE="[i3] i3-msg - move all/some workspaces to another output">bigby.james at crepcran.com
+       </A><BR>
+    <I>Tue Oct 14 17:55:07 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001910.html">[i3] i3-msg - move all/some workspaces to another output
+</A></li>
+        <LI>Next message: <A HREF="001912.html">[i3] i3-msg - move all/some workspaces to another output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1911">[ date ]</a>
+              <a href="thread.html#1911">[ thread ]</a>
+              <a href="subject.html#1911">[ subject ]</a>
+              <a href="author.html#1911">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 10/14, Fabian Raetz wrote:
+&gt;<i> Hi all,
+</I>&gt;<i> 
+</I>&gt;<i> i am looking for a way to move all (or some)
+</I>&gt;<i> of my workspaces to another output.
+</I>&gt;<i> 
+</I>&gt;<i> Something like in the following shell script  would be nice:
+</I>&gt;<i> 
+</I>&gt;<i> -------------------------
+</I>&gt;<i> #!/bin/sh
+</I>&gt;<i> 
+</I>&gt;<i> WS=&quot;2 3 4 5 6&quot;
+</I>&gt;<i> OUTPUT=VGA1
+</I>&gt;<i> 
+</I>&gt;<i> for W in $WS; do
+</I>&gt;<i> 	i3-msg move workspace $W to output $OUTPUT
+</I>&gt;<i> done
+</I>&gt;<i> -------------------------
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Is there an easy solution i have overseen?
+</I>&gt;<i> 
+</I>&gt;<i> Regards,
+</I>&gt;<i> Fabian
+</I>
+An active monitor *must* have a workspace on it, and a workspace only exists after
+being explicitly created. So you can't move all currently existing workspaces to
+another monitor simultaneously. You'd need to first create a new workspace on
+the current monitor, then move all the previously created ones to a new monitor.
+What you can also do is use xrandr to deactivate the current display, which (if you
+only have two monitors in total) will move all worskpaces to the only active
+monitor.
+
+It's probably worth explaining exactly why you'd want to do this, though, since
+needing to move everything to another monitor all at once really sounds like a
+scenario that could be avoided with proper planning.
+
+-- 
+&quot;A common mistake that people make when trying to design something completely
+foolproof is to underestimate the ingenuity of complete fools.&quot; - Douglas Adams
+
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001910.html">[i3] i3-msg - move all/some workspaces to another output
+</A></li>
+	<LI>Next message: <A HREF="001912.html">[i3] i3-msg - move all/some workspaces to another output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1911">[ date ]</a>
+              <a href="thread.html#1911">[ thread ]</a>
+              <a href="subject.html#1911">[ subject ]</a>
+              <a href="author.html#1911">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

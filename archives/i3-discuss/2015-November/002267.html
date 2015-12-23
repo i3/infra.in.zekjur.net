@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] full screencapture with xwd not working only in i3
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20full%20screencapture%20with%20xwd%20not%20working%20only%20in%20i3&In-Reply-To=%3CCACuV5sB3MJ9ioUK5Yv_id%3DHurNswrxvw7-nfLX75Qfa2TSM5PA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002266.html">
+   <LINK REL="Next"  HREF="002269.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] full screencapture with xwd not working only in i3</H1>
+    <B>Zenny</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20full%20screencapture%20with%20xwd%20not%20working%20only%20in%20i3&In-Reply-To=%3CCACuV5sB3MJ9ioUK5Yv_id%3DHurNswrxvw7-nfLX75Qfa2TSM5PA%40mail.gmail.com%3E"
+       TITLE="[i3] full screencapture with xwd not working only in i3">garbytrash at gmail.com
+       </A><BR>
+    <I>Sun Nov 15 14:11:18 CET 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002266.html">[i3] full screencapture with xwd not working only in i3
+</A></li>
+        <LI>Next message: <A HREF="002269.html">[i3] [meta] Migrating mailing lists to freelists.org
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2267">[ date ]</a>
+              <a href="thread.html#2267">[ thread ]</a>
+              <a href="subject.html#2267">[ subject ]</a>
+              <a href="author.html#2267">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 11/15/15, Ingo Bürk &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">admin at airblader.de</A>&gt; wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> the command works fine for me. What version if i3 are you running?
+</I>ii  i3
+1:201510302301+git36-minos~ubuntu14.04.1                    amd64
+  metapackage (i3 window manager, screen locker, menu, statusbar)
+ii  i3-wm
+1:201510302301+git36-minos~ubuntu14.04.1                    amd64
+  improved dynamic tiling window manager
+ii  i3lock
+1:201502121131+git3-minos~ubuntu14.04.1                     amd64
+  improved screen locker
+ii  i3status                                    2.9-2~~trusty1
+                                     amd64        Generates a status
+line for dzen2, xmobar or i3bar
+
+&gt;<i> Is
+</I>&gt;<i> your Xorg up to date?
+</I>
+For Ubuntu 14.04, yes!
+
+ii  xserver-xorg                                1:7.7+1ubuntu8.1
+                                     amd64        X.Org X server
+
+&gt;<i> Also, judging from the xwd source code, maybe you can try adding
+</I>&gt;<i> &quot;-icmap&quot; to the arguments.
+</I>
+I shall try with that flag. however it works fine with other WMs except i3.
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Ingo
+</I>&gt;<i>
+</I>&gt;<i> On 11/15/2015 09:47 AM, Zenny wrote:
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I am having problem to take screenshot with xwd*** only in a full
+</I>&gt;&gt;<i> screenshot mode (but selective screenshot works). This only happens
+</I>&gt;&gt;<i> with i3, but not with other window managers. Please find the log
+</I>&gt;&gt;<i> below, fyi.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> ***PS: I am aware of other tools like scrot, maim and what not, but I
+</I>&gt;&gt;<i> need this specific xwd to capture a virtual screen running in a
+</I>&gt;&gt;<i> frambuffer with xvfb which others do not support, if you have any
+</I>&gt;&gt;<i> tools that can screencapture a virtual x server, let me know.
+</I>&gt;&gt;<i> Apprexciate that.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">USER at MACHINE</A>:~/Downloads/xwd$ xwd -root -out i3screenshot_xwd.xwd
+</I>&gt;&gt;<i> X Error of failed request:  BadColor (invalid Colormap parameter)
+</I>&gt;&gt;<i>   Major opcode of failed request:  91 (X_QueryColors)
+</I>&gt;&gt;<i>   Resource id in failed request:  0x0
+</I>&gt;&gt;<i>   Serial number of failed request:  166
+</I>&gt;&gt;<i>   Current serial number in output stream:  166
+</I>&gt;&gt;<i> <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">USER at MACHINE</A>:~/Downloads/xwd$ xwd &gt; i3screenshot_xwd_frame.xwd
+</I>&gt;&gt;<i> <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">USER at MACHINE</A>:~/Downloads/xwd$ ls -la i3screenshot*.xwd
+</I>&gt;&gt;<i> -rw-rw-r-- 1 USER USER 3995469 Nov 15 08:33 i3screenshot_xwd_frame.xwd
+</I>&gt;&gt;<i> -rw-rw-r-- 1 USER USER       0 Nov 15 08:33 i3screenshot_xwd.xwd
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Any inputs appreciated!
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Cheers.
+</I>&gt;&gt;<i> /z
+</I>&gt;<i>
+</I>&gt;<i>
+</I></PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002266.html">[i3] full screencapture with xwd not working only in i3
+</A></li>
+	<LI>Next message: <A HREF="002269.html">[i3] [meta] Migrating mailing lists to freelists.org
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2267">[ date ]</a>
+              <a href="thread.html#2267">[ thread ]</a>
+              <a href="subject.html#2267">[ subject ]</a>
+              <a href="author.html#2267">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,1265 @@
+From vojtech at aschenbrenner.cz  Thu Nov  3 14:06:09 2011
+From: vojtech at aschenbrenner.cz (=?utf-8?q?Vojt=C4=9Bch_Aschenbrenner?=)
+Date: Thu, 03 Nov 2011 14:06:09 +0100
+Subject: [i3] Java focus problem
+Message-ID: <1320325388-sup-6613@asch>
+
+Hi,
+
+I have problem with java applications in i3 4.0.2. When I run java app,
+everything is ok, but when I switch to another window and return back to
+java app I can't write text into it. I tried tricks like change wmname
+or use openjdk with nonreparenting wm setting. Nothing helps. Is there
+chance to run java app with i3 properly?
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 490 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20111103/07c46adb/attachment.pgp>
+
+From brian.grossman at gmail.com  Thu Nov 10 20:50:02 2011
+From: brian.grossman at gmail.com (Brian Grossman)
+Date: Thu, 10 Nov 2011 12:50:02 -0700
+Subject: [i3] build.i3wm.org down?
+Message-ID: <CAPUwkJ+qXyqc7Z4K=V6E0wq3y8-7Kx2gDMMOHYngKv=iROhGdg@mail.gmail.com>
+
+Is build.i3wm.org down on purpose?
+
+Brian
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20111110/f82be993/attachment.html>
+
+From michael+i3 at stapelberg.de  Thu Nov 10 21:00:34 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Thu, 10 Nov 2011 20:00:34 +0000
+Subject: [i3] build.i3wm.org down?
+In-Reply-To: <CAPUwkJ+qXyqc7Z4K=V6E0wq3y8-7Kx2gDMMOHYngKv=iROhGdg@mail.gmail.com>
+References: <CAPUwkJ+qXyqc7Z4K=V6E0wq3y8-7Kx2gDMMOHYngKv=iROhGdg@mail.gmail.com>
+Message-ID: <1320955115-sup-8052@stapelberg.de>
+
+Hi Brian,
+
+Excerpts from Brian Grossman's message of 2011-11-10 19:50:02 +0000:
+> Is build.i3wm.org down on purpose?
+No. Until it?s back up again you can use buildbot.i3wm.org (same URL). Be aware
+that you might need to explicitly use apt-get install i3 i3-wm since the
+version is "lower" than on build.i3wm.org. We plan to fix this once 4.1 is
+released.
+
+Best regards,
+Michael
+
+From titan232 at gmail.com  Sat Nov 12 11:10:36 2011
+From: titan232 at gmail.com (ian)
+Date: Sat, 12 Nov 2011 10:10:36 +0000
+Subject: [i3] Issues with 4.1-1
+Message-ID: <20111112101036.4bd32246@sid>
+
+I just upgraded today on Debian Sid and have a couple of issues I can't
+resolve. First is the mouse pointer is indicating that 13 is still
+loading for one minute after starting. Opening a terminal during this
+time pointer returns to arrow.  This happens with or without wallpaper. 
+Second is I can't see how to put i-bar at the top of my screen with the
+new config. Docs still refer to previous method.
+
+Thanks
+
+Ian
+
+From michael+i3 at stapelberg.de  Sat Nov 12 11:22:39 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 12 Nov 2011 10:22:39 +0000
+Subject: [i3] Issues with 4.1-1
+In-Reply-To: <20111112101036.4bd32246@sid>
+References: <20111112101036.4bd32246@sid>
+Message-ID: <1321093288-sup-394@stapelberg.de>
+
+Hi ian,
+
+Excerpts from ian's message of 2011-11-12 10:10:36 +0000:
+> I just upgraded today on Debian Sid and have a couple of issues I can't
+> resolve. First is the mouse pointer is indicating that 13 is still
+> loading for one minute after starting. Opening a terminal during this
+> time pointer returns to arrow.  This happens with or without wallpaper. 
+Quote from the release notes:
+
+i3 now supports startup notifications, meaning that during an application
+starts up, the mouse cursor will change to 'watch' on the root window. Also,
+the application window will appear on the workspace on which it was launched
+(not on the currently focused workspace). Some applications don?t support
+startup notifications. If the cursor change bothers you, turn it off by using
+the --no-startup-id flag (see the userguide).
+
+> Second is I can't see how to put i-bar at the top of my screen with the
+> new config. Docs still refer to previous method.
+Press reload in your browser: http://i3wm.org/docs/userguide.html#_position
+
+Best regards,
+Michael
+
+From titan232 at gmail.com  Sat Nov 12 13:18:38 2011
+From: titan232 at gmail.com (ian)
+Date: Sat, 12 Nov 2011 12:18:38 +0000
+Subject: [i3] Issues with 4.1-1
+In-Reply-To: <1321093288-sup-394@stapelberg.de>
+References: <20111112101036.4bd32246@sid>
+	<1321093288-sup-394@stapelberg.de>
+Message-ID: <20111112121838.4bf18f1c@sid>
+
+On Sat, 12 Nov 2011 10:22:39 +0000
+Michael Stapelberg <michael+i3 at stapelberg.de> wrote:
+
+> Hi ian,
+> 
+> Excerpts from ian's message of 2011-11-12 10:10:36 +0000:
+> > I just upgraded today on Debian Sid and have a couple of issues I
+> > can't resolve. First is the mouse pointer is indicating that 13 is
+> > still loading for one minute after starting. Opening a terminal
+> > during this time pointer returns to arrow.  This happens with or
+> > without wallpaper. 
+> Quote from the release notes:
+> 
+> i3 now supports startup notifications, meaning that during an
+> application starts up, the mouse cursor will change to 'watch' on the
+> root window. Also, the application window will appear on the
+> workspace on which it was launched (not on the currently focused
+> workspace). Some applications don?t support startup notifications. If
+> the cursor change bothers you, turn it off by using the
+> --no-startup-id flag (see the userguide).
+> 
+> > Second is I can't see how to put i-bar at the top of my screen with
+> > the new config. Docs still refer to previous method.
+> Press reload in your browser:
+> http://i3wm.org/docs/userguide.html#_position
+> 
+> Best regards,
+> Michael
+
+
+Hi Michael.
+
+That has sorted the i-bar position thank you. I have looked
+at the docs and config file and just cannot see where to insert the no
+startup flag. I have tried a few places but just get the config error
+each time, a bit more help would be welcome.
+
+Thanks
+
+Ian
+
+From michael+i3 at stapelberg.de  Sat Nov 12 13:25:45 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 12 Nov 2011 12:25:45 +0000
+Subject: [i3] Issues with 4.1-1
+In-Reply-To: <20111112121838.4bf18f1c@sid>
+References: <20111112101036.4bd32246@sid> <1321093288-sup-394@stapelberg.de>
+ <20111112121838.4bf18f1c@sid>
+Message-ID: <1321100590-sup-6432@stapelberg.de>
+
+Hi ian,
+
+Excerpts from ian's message of 2011-11-12 12:18:38 +0000:
+> That has sorted the i-bar position thank you. I have looked
+> at the docs and config file and just cannot see where to insert the no
+> startup flag. I have tried a few places but just get the config error
+> each time, a bit more help would be welcome.
+Well, depends on what your config looks like. My guess is that you have some
+exec or exec_always lines in your config which are executed on startup:
+
+    exec ~/.bin/my_script.sh
+
+If the applications you start do not support startup notifications (commandline
+apps do not), use:
+
+    exec --no-startup-id ~/.bin/my_script.sh
+
+This is documented here:
+http://i3wm.org/docs/userguide.html#_automatically_starting_applications_on_i3_startup
+
+If you still have trouble with that, please attach your configfile and the
+modified configfile which leads to errors.
+
+Best regards,
+Michael
+
+From titan232 at gmail.com  Sat Nov 12 13:38:55 2011
+From: titan232 at gmail.com (ian)
+Date: Sat, 12 Nov 2011 12:38:55 +0000
+Subject: [i3] Issues with 4.1-1
+In-Reply-To: <1321100590-sup-6432@stapelberg.de>
+References: <20111112101036.4bd32246@sid> <1321093288-sup-394@stapelberg.de>
+ <20111112121838.4bf18f1c@sid> <1321100590-sup-6432@stapelberg.de>
+Message-ID: <20111112123855.25605678@sid>
+
+On Sat, 12 Nov 2011 12:25:45 +0000
+Michael Stapelberg <michael+i3 at stapelberg.de> wrote:
+
+> Hi ian,
+> 
+> Excerpts from ian's message of 2011-11-12 12:18:38 +0000:
+> > That has sorted the i-bar position thank you. I have looked
+> > at the docs and config file and just cannot see where to insert the
+> > no startup flag. I have tried a few places but just get the config
+> > error each time, a bit more help would be welcome.
+> Well, depends on what your config looks like. My guess is that you
+> have some exec or exec_always lines in your config which are executed
+> on startup:
+> 
+>     exec ~/.bin/my_script.sh
+> 
+> If the applications you start do not support startup notifications
+> (commandline apps do not), use:
+> 
+>     exec --no-startup-id ~/.bin/my_script.sh
+> 
+> This is documented here:
+> http://i3wm.org/docs/userguide.html#_automatically_starting_applications_on_i3_startup
+> 
+> If you still have trouble with that, please attach your configfile
+> and the modified configfile which leads to errors.
+> 
+> Best regards,
+> Michael
+
+Hi Michael,
+
+Thanks again, now I understand, it is Feh ( for my wallpaper) causing
+the issue, problem solved.
+
+Ian
+
+From dagnimcphee at gmail.com  Mon Nov 14 15:13:22 2011
+From: dagnimcphee at gmail.com (Dagni McPhee)
+Date: Mon, 14 Nov 2011 09:13:22 -0500
+Subject: [i3] mouse bindings
+Message-ID: <CAKoNmS9OgONbNAUgyLWrvOHTBLz87qAJQ+GNUPDmai9rx1jJsQ@mail.gmail.com>
+
+Is there anyway to add mouse bindings/gestures to the configuration?
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20111114/ad75ef58/attachment.html>
+
+From titan232 at gmail.com  Mon Nov 14 18:55:20 2011
+From: titan232 at gmail.com (ian)
+Date: Mon, 14 Nov 2011 17:55:20 +0000
+Subject: [i3] Issues with 4.1-1
+In-Reply-To: <1321093288-sup-394@stapelberg.de>
+References: <20111112101036.4bd32246@sid>
+	<1321093288-sup-394@stapelberg.de>
+Message-ID: <20111114175520.177f706e@sid>
+
+On Sat, 12 Nov 2011 10:22:39 +0000
+Michael Stapelberg <michael+i3 at stapelberg.de> wrote:
+
+
+> 
+> i3 now supports startup notifications, meaning that during an
+> application starts up, the mouse cursor will change to 'watch' on the
+> root window.
+
+Michael, 
+
+I am probably missing something but why does 13 need startup
+notifications. 
+
+Thank you for your help resolving my previous issue with
+this new feature but I now see the default terminal is called
+"i3-sensible-terminal" which for me starts Konsole, I can change this
+to xterm but the "watch" symbol returns when the terminal is closed,
+Using the "no-startup-id" again resolves this but for a wm where I
+suspect terminal use is higher than with other wm .It seems there
+needs to be a few workarounds  to accommodate a questionable new
+feature.
+
+Ian
+
+From michael+i3 at stapelberg.de  Mon Nov 14 19:24:33 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Mon, 14 Nov 2011 18:24:33 +0000
+Subject: [i3] Issues with 4.1-1
+In-Reply-To: <20111114175520.177f706e@sid>
+References: <20111112101036.4bd32246@sid> <1321093288-sup-394@stapelberg.de>
+ <20111114175520.177f706e@sid>
+Message-ID: <1321294766-sup-8205@stapelberg.de>
+
+Hi ian,
+
+Excerpts from ian's message of 2011-11-14 17:55:20 +0000:
+> I am probably missing something but why does 13 need startup
+> notifications. 
+I quote the release notes:
+
+i3 now supports startup notifications, meaning that during an application
+starts up, the mouse cursor will change to 'watch' on the root window. Also,
+the application window will appear on the workspace on which it was launched
+(not on the currently focused workspace). Some applications don?t support
+startup notifications. If the cursor change bothers you, turn it off by using
+the --no-startup-id flag (see the userguide).
+
+> Thank you for your help resolving my previous issue with
+> this new feature but I now see the default terminal is called
+> "i3-sensible-terminal" which for me starts Konsole, I can change this
+i3-sensible-terminal is not a terminal. I quote the manpage
+i3-sensible-terminal(1):
+
+i3?sensible?terminal is invoked in the i3 default config to start
+a terminal. This wrapper script is necessary since there is no
+distribution?independent terminal launcher (but for example De?
+bian has x?terminal?emulator). Distribution packagers are re?
+sponsible for shipping this script in a way which is appropriate
+for the distribution.
+
+
+> to xterm but the "watch" symbol returns when the terminal is closed,
+Fix xterm, then. You can use my patch at
+http://lists.schmorp.de/pipermail/rxvt-unicode/2011q4/001444.html
+for an example on how to do that.
+
+Remember: i3?s target audience are advanced users and developers. Of course I
+agree that it?s better to have things just work, but instead of not using
+startup notifications by default and never getting sufficient support anywhere,
+I?d like to encourage people to write patches for the programs they care. The
+result will be working startup notifications for everyone out of the box. If
+the minimum amount of suffering (I mean, :%s/exec/exec --no-startup-id/g is
+really not that hard) is really too much for your taste, I can?t help you :).
+
+Best regards,
+Michael
+
+From michael+i3 at stapelberg.de  Mon Nov 14 19:29:03 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Mon, 14 Nov 2011 18:29:03 +0000
+Subject: [i3] mouse bindings
+In-Reply-To: <CAKoNmS9OgONbNAUgyLWrvOHTBLz87qAJQ+GNUPDmai9rx1jJsQ@mail.gmail.com>
+References: <CAKoNmS9OgONbNAUgyLWrvOHTBLz87qAJQ+GNUPDmai9rx1jJsQ@mail.gmail.com>
+Message-ID: <1321295201-sup-3815@stapelberg.de>
+
+Hi Dagni,
+
+Excerpts from Dagni McPhee's message of 2011-11-14 14:13:22 +0000:
+> Is there anyway to add mouse bindings/gestures to the configuration?
+At the moment, there is no mouse related configuration except for the
+floating_modifier setting [1].
+
+The userguide is authoritive. Anything which is not documented in there is
+either not (properly) implemented or not yet ready for prime time.
+
+Some configuration for mouse buttons is planned, but not yet done. Mouse
+gestures are very unlikely to appear.
+
+Best regards,
+Michael
+
+[1] http://i3wm.org/docs/userguide.html#floating_modifier
+
+From titan232 at gmail.com  Mon Nov 14 20:37:14 2011
+From: titan232 at gmail.com (ian)
+Date: Mon, 14 Nov 2011 19:37:14 +0000
+Subject: [i3] Issues with 4.1-1
+In-Reply-To: <1321294766-sup-8205@stapelberg.de>
+References: <20111112101036.4bd32246@sid> <1321093288-sup-394@stapelberg.de>
+ <20111114175520.177f706e@sid> <1321294766-sup-8205@stapelberg.de>
+Message-ID: <20111114193714.08e009a6@sid>
+
+On Mon, 14 Nov 2011 18:24:33 +0000
+Michael Stapelberg <michael+i3 at stapelberg.de> wrote:
+
+
+> 
+> Remember: i3?s target audience are advanced users and developers. Of
+> course I agree that it?s better to have things just work, but instead
+> of not using startup notifications by default and never getting
+> sufficient support anywhere, I?d like to encourage people to write
+> patches for the programs they care. The result will be working
+> startup notifications for everyone out of the box. If the minimum
+> amount of suffering (I mean, :%s/exec/exec --no-startup-id/g is
+> really not that hard) is really too much for your taste, I can?t help
+> you :).
+> 
+> Best regards,
+> Michael
+
+
+Michael,
+
+i3 is very much to my taste, I love the simplicity, changing the config
+is not a problem, I am just asking what is the point of startup
+notification on a wm who's target audience are advanced users and
+developers, fine in KDE or Gnome.
+
+It is not meant to be a criticism just asking the question.
+
+Thanks
+
+Ian
+
+
+From michael+i3 at stapelberg.de  Mon Nov 14 20:54:54 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Mon, 14 Nov 2011 19:54:54 +0000
+Subject: [i3] Issues with 4.1-1
+In-Reply-To: <20111114193714.08e009a6@sid>
+References: <20111112101036.4bd32246@sid> <1321093288-sup-394@stapelberg.de>
+ <20111114175520.177f706e@sid> <1321294766-sup-8205@stapelberg.de>
+ <20111114193714.08e009a6@sid>
+Message-ID: <1321300158-sup-9191@stapelberg.de>
+
+Hi ian,
+
+Excerpts from ian's message of 2011-11-14 19:37:14 +0000:
+> is not a problem, I am just asking what is the point of startup
+> notification on a wm who's target audience are advanced users and
+> developers, fine in KDE or Gnome.
+I thought quoting the release notes is sufficient to answer that question. Let
+me first quote again, then elaborate:
+
+i3 now supports startup notifications, meaning that during an application
+starts up, the mouse cursor will change to 'watch' on the root window. Also,
+the application window will appear on the workspace on which it was launched
+(not on the currently focused workspace). Some applications don?t support
+startup notifications. If the cursor change bothers you, turn it off by using
+the --no-startup-id flag (see the userguide).
+
+This means two things:
+1) We solve the following long-standing bug:
+   Start something, switch to a different workspace, the window opens on the
+   new workspace instead of where you intended it to be.
+2) We display a progress indicator. This is important (and especially so when
+   using dmenu, our current recommendation, with its poor feedback) to know
+   that your computer is actually doing something (starting an application).
+   It is one step closer to making the user being in control, not wondering
+   what is currently going on. Previously, you just pressed some key and
+   *hoped* that a window would show up soon. Progress indication and
+   acknowledgement of user input are fundamental things in good user
+   interfaces.
+
+Best regards,
+Michael
+
+From mcbeth at broggs.org  Mon Nov 14 23:07:09 2011
+From: mcbeth at broggs.org (Jeffrey Brent McBeth)
+Date: Mon, 14 Nov 2011 17:07:09 -0500
+Subject: [i3] Issues with 4.1-1
+In-Reply-To: <1321300158-sup-9191@stapelberg.de>
+References: <20111112101036.4bd32246@sid> <1321093288-sup-394@stapelberg.de>
+ <20111114175520.177f706e@sid> <1321294766-sup-8205@stapelberg.de>
+ <20111114193714.08e009a6@sid> <1321300158-sup-9191@stapelberg.de>
+Message-ID: <20111114220709.GB2613@broggs.org>
+
+On Mon, Nov 14, 2011 at 07:54:54PM +0000, Michael Stapelberg wrote:
+> 
+> This means two things:
+> 1) We solve the following long-standing bug:
+>    Start something, switch to a different workspace, the window opens on the
+>    new workspace instead of where you intended it to be.
+
+For me, this is the killer app.
+
+-- 
+"The man who does not read good books has no advantage over 
+ the man who cannot read them."
+ -- Mark Twain
+
+From s.nikhilesh at gmail.com  Fri Nov 18 22:29:33 2011
+From: s.nikhilesh at gmail.com (Nikhilesh Sigatapu)
+Date: Fri, 18 Nov 2011 16:29:33 -0500
+Subject: [i3] dzen2 on top of fullscreen windows
+Message-ID: <4EC6CE3D.5020705@gmail.com>
+
+Hello!
+
+For my bottom bar I use i3bar for the workspace list and 'conky-cli' (a 
+build of conky that outputs text to stdout) piped to dzen2 for some info.
+
+I use the following line (it's a single line but wrapped in this email) 
+to call dzen2 in my config. The relevant variables have been defined before.
+
+exec conky-cli -c ~/.i3/dzonky | dzen2 -x $dzen_left -w $dzen_width -y 
+$dzen_top -h $dzen_height -ta r -fn "$font" -bg "$bbg" -fg "$bntext"
+
+It looks like the picture http://i.imgur.com/Kxl2j.png
+
+But when I run (for example) mplayer in fullscreen mode, or fullscreen a 
+window with i3's fullscreen command, dzen2 appears on top of the window. 
+Is there a way to ensure dzen2 is behind fullscreen windows?
+
+Thanks,
+
+-- 
+Nikhilesh S
+http://www.nikhilesh.info
+
+From michael+i3 at stapelberg.de  Mon Nov 21 22:01:28 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Mon, 21 Nov 2011 21:01:28 +0000
+Subject: [i3] dzen2 on top of fullscreen windows
+In-Reply-To: <4EC6CE3D.5020705@gmail.com>
+References: <4EC6CE3D.5020705@gmail.com>
+Message-ID: <1321908867-sup-3199@stapelberg.de>
+
+Hi Nikhilesh,
+
+Excerpts from Nikhilesh Sigatapu's message of 2011-11-18 21:29:33 +0000:
+> exec conky-cli -c ~/.i3/dzonky | dzen2 -x $dzen_left -w $dzen_width -y 
+> $dzen_top -h $dzen_height -ta r -fn "$font" -bg "$bbg" -fg "$bntext"
+> But when I run (for example) mplayer in fullscreen mode, or fullscreen a 
+> window with i3's fullscreen command, dzen2 appears on top of the window. 
+This is because i3 only cares about the windows it actually manages. When you
+start dzen2 without -dock it is not managed by a window manager (due to setting
+override_redirect=1). Fullscreen windows are only set fullscreen in relation to
+other managed windows, that?s why.
+
+> Is there a way to ensure dzen2 is behind fullscreen windows?
+Not right now. I?ll see if I can change the code so that fullscreen windows are
+also raised above *all* X11 windows, not only managed windows.
+
+Best regards,
+Michael
+
+From s.nikhilesh at gmail.com  Mon Nov 21 23:16:34 2011
+From: s.nikhilesh at gmail.com (Nikhilesh Sigatapu)
+Date: Mon, 21 Nov 2011 17:16:34 -0500
+Subject: [i3] dzen2 on top of fullscreen windows
+In-Reply-To: <1321908867-sup-3199@stapelberg.de>
+References: <4EC6CE3D.5020705@gmail.com> <1321908867-sup-3199@stapelberg.de>
+Message-ID: <4ECACDC2.2060308@gmail.com>
+
+On 11/21/2011 04:01 PM, Michael Stapelberg wrote:
+> Hi Nikhilesh,
+>
+> Excerpts from Nikhilesh Sigatapu's message of 2011-11-18 21:29:33 +0000:
+>> exec conky-cli -c ~/.i3/dzonky | dzen2 -x $dzen_left -w $dzen_width -y
+>> $dzen_top -h $dzen_height -ta r -fn "$font" -bg "$bbg" -fg "$bntext"
+>> But when I run (for example) mplayer in fullscreen mode, or fullscreen a
+>> window with i3's fullscreen command, dzen2 appears on top of the window.
+> This is because i3 only cares about the windows it actually manages. When you
+> start dzen2 without -dock it is not managed by a window manager (due to setting
+> override_redirect=1). Fullscreen windows are only set fullscreen in relation to
+> other managed windows, that?s why.
+
+If I start dzen2 with -dock, i3 puts it in a weird position (unless 
+there's a way to specify dock positions in i3... ).
+
+I once patched old i3 to get docks where I wanted them:
+http://aur.archlinux.org/packages.php?ID=48754
+
+>
+>> Is there a way to ensure dzen2 is behind fullscreen windows?
+> Not right now. I?ll see if I can change the code so that fullscreen windows are
+> also raised above *all* X11 windows, not only managed windows.
+
+I guess that would make sense in most cases, yeah? I mean fullscreen 
+means 'I only want to see this window', at least to me.
+
+-- 
+Nikhilesh S
+http://www.nikhilesh.info
+
+From michael+i3 at stapelberg.de  Tue Nov 22 00:48:59 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Mon, 21 Nov 2011 23:48:59 +0000
+Subject: [i3] dzen2 on top of fullscreen windows
+In-Reply-To: <4ECACDC2.2060308@gmail.com>
+References: <4EC6CE3D.5020705@gmail.com> <1321908867-sup-3199@stapelberg.de>
+ <4ECACDC2.2060308@gmail.com>
+Message-ID: <1321919280-sup-9630@stapelberg.de>
+
+Hi Nikhilesh,
+
+Excerpts from Nikhilesh Sigatapu's message of 2011-11-21 22:16:34 +0000:
+> I guess that would make sense in most cases, yeah? I mean fullscreen 
+> means 'I only want to see this window', at least to me.
+Yeah. I?m running out of time for today, so I created a ticket at [1] to track
+progress on this issue.
+
+Best regards,
+Michael
+
+[1] http://bugs.i3wm.org/569
+
+From s.nikhilesh at gmail.com  Tue Nov 22 05:07:44 2011
+From: s.nikhilesh at gmail.com (Nikhilesh Sigatapu)
+Date: Mon, 21 Nov 2011 23:07:44 -0500
+Subject: [i3] dzen2 on top of fullscreen windows
+In-Reply-To: <1321919280-sup-9630@stapelberg.de>
+References: <4EC6CE3D.5020705@gmail.com> <1321908867-sup-3199@stapelberg.de>
+ <4ECACDC2.2060308@gmail.com> <1321919280-sup-9630@stapelberg.de>
+Message-ID: <4ECB2010.1040809@gmail.com>
+
+On 11/21/2011 06:48 PM, Michael Stapelberg wrote:
+> Yeah. I?m running out of time for today, so I created a ticket at [1] to track
+> progress on this issue.
+>
+ > ...
+>
+> [1] http://bugs.i3wm.org/569
+
+Thanks a lot!
+
+-- 
+Nikhilesh S
+http://www.nikhilesh.info
+
+From michael+i3 at stapelberg.de  Tue Nov 22 23:10:31 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Tue, 22 Nov 2011 22:10:31 +0000
+Subject: [i3] [PATCH] i3: remove compiler warning about
+	xcursor_set_root_cursor()
+In-Reply-To: <20111122182959.GA29254@kroah.com>
+References: <20111122182959.GA29254@kroah.com>
+Message-ID: <1321999780-sup-3512@stapelberg.de>
+
+Hi Greg,
+
+Excerpts from Greg Kroah-Hartman's message of 2011-11-22 18:29:59 +0000:
+> This patch removes the compiler warning:
+> 
+> src/main.c: In function ?main?:
+> src/main.c:503:9: warning: call to function ?xcursor_set_root_cursor? without a real prototype [-Wunprototyped-calls]
+> include/xcursor.h:38:6: note: ?xcursor_set_root_cursor? was declared here
+Thanks, I merged it.
+
+I did not get this warning when compiling (with gcc 4.6.1). Which
+compiler/version are you using? Or did you explicitly enable that warning?
+
+Best regards,
+Michael
+
+From gregkh at suse.de  Tue Nov 22 19:29:59 2011
+From: gregkh at suse.de (Greg Kroah-Hartman)
+Date: Tue, 22 Nov 2011 10:29:59 -0800
+Subject: [i3] [PATCH] i3: remove compiler warning about
+	xcursor_set_root_cursor()
+Message-ID: <20111122182959.GA29254@kroah.com>
+
+This patch removes the compiler warning:
+
+src/main.c: In function ?main?:
+src/main.c:503:9: warning: call to function ?xcursor_set_root_cursor? without a real prototype [-Wunprototyped-calls]
+include/xcursor.h:38:6: note: ?xcursor_set_root_cursor? was declared here
+
+---
+ xcursor.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/xcursor.h b/include/xcursor.h
+index b512ca2..2a67bcb 100644
+--- a/include/xcursor.h
++++ b/include/xcursor.h
+@@ -35,6 +35,6 @@ int xcursor_get_xcb_cursor(enum xcursor_cursor_t c);
+  * races might occur (even though we flush the Xlib connection).
+  *
+  */
+-void xcursor_set_root_cursor();
++void xcursor_set_root_cursor(int cursor_id);
+ 
+ #endif
+
+From jonas at geiregat.org  Wed Nov 23 01:03:02 2011
+From: jonas at geiregat.org (Jonas Geiregat)
+Date: Wed, 23 Nov 2011 01:03:02 +0100
+Subject: [i3] i3status won't startup
+Message-ID: <20111123000302.GA3587@ares.home>
+
+Hello,
+
+I'm really starting to like i3! 
+
+But I'm having an issue using i3status.
+I startup i3 using the slim display manager.
+
+I've got the following in my .xinitrc file.
+
+exec i3&
+i3status | dzen2 -y 750 -x 100 -bg black -ta r&
+
+
+
+-------
+jonas at geiregat.org
+
+
+From gregkh at suse.de  Tue Nov 22 23:37:53 2011
+From: gregkh at suse.de (Greg KH)
+Date: Tue, 22 Nov 2011 14:37:53 -0800
+Subject: [i3] [PATCH] i3: remove compiler warning about
+ xcursor_set_root_cursor()
+In-Reply-To: <1321999780-sup-3512@stapelberg.de>
+References: <20111122182959.GA29254@kroah.com>
+ <1321999780-sup-3512@stapelberg.de>
+Message-ID: <20111122223753.GA25180@suse.de>
+
+On Tue, Nov 22, 2011 at 10:10:31PM +0000, Michael Stapelberg wrote:
+> Hi Greg,
+> 
+> Excerpts from Greg Kroah-Hartman's message of 2011-11-22 18:29:59 +0000:
+> > This patch removes the compiler warning:
+> > 
+> > src/main.c: In function ?main?:
+> > src/main.c:503:9: warning: call to function ?xcursor_set_root_cursor? without a real prototype [-Wunprototyped-calls]
+> > include/xcursor.h:38:6: note: ?xcursor_set_root_cursor? was declared here
+> Thanks, I merged it.
+
+Wonderful.
+
+> I did not get this warning when compiling (with gcc 4.6.1). Which
+> compiler/version are you using? Or did you explicitly enable that warning?
+
+No, I'm using gcc 4.6.2 on openSUSE 12.1 and noticed it as I was
+packaging i3 up for the distro and my personal use.  I guess that option
+is enabled by default in that release.
+
+thanks,
+
+greg k-h
+
+From mail at fernandotcl.com  Wed Nov 23 00:16:51 2011
+From: mail at fernandotcl.com (Fernando Lemos)
+Date: Tue, 22 Nov 2011 21:16:51 -0200
+Subject: [i3] i3status won't startup
+In-Reply-To: <20111123000302.GA3587@ares.home>
+References: <20111123000302.GA3587@ares.home>
+Message-ID: <CANVYNa_h5GZcNSBDFGGPFy3UThh9kNjih9u=fkm8SrXeVcDqTA@mail.gmail.com>
+
+On Tue, Nov 22, 2011 at 10:03 PM, Jonas Geiregat <jonas at geiregat.org> wrote:
+> Hello,
+>
+> I'm really starting to like i3!
+>
+> But I'm having an issue using i3status.
+> I startup i3 using the slim display manager.
+>
+> I've got the following in my .xinitrc file.
+>
+> exec i3&
+> i3status | dzen2 -y 750 -x 100 -bg black -ta r&
+
+Try:
+
+i3status | dzen2 -y 750 -x 100 -bg black -ta r&
+exec i3
+
+And that goes into your .xsession, not .xinitrc. .xinitrc is for
+startx, .xsession is for DMs. Make sure you use the default X session,
+not the distribution-specific i3 X session, which wouldn't execute
+.xsession.
+
+Another option would be using exec in the i3 config (check the
+userguide), then using whatever you want to launch i3.
+
+And please, next time describe exactly *what* isn't working.
+
+Regards,
+
+From michael+i3 at stapelberg.de  Wed Nov 23 00:23:13 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Tue, 22 Nov 2011 23:23:13 +0000
+Subject: [i3] [PATCH] i3: remove compiler warning about
+	xcursor_set_root_cursor()
+In-Reply-To: <20111122223753.GA25180@suse.de>
+References: <20111122182959.GA29254@kroah.com>
+ <1321999780-sup-3512@stapelberg.de> <20111122223753.GA25180@suse.de>
+Message-ID: <1322003785-sup-2523@stapelberg.de>
+
+Hi Greg,
+
+Excerpts from Greg KH's message of 2011-11-22 22:37:53 +0000:
+> No, I'm using gcc 4.6.2 on openSUSE 12.1 and noticed it as I was
+> packaging i3 up for the distro and my personal use.  I guess that option
+> is enabled by default in that release.
+Ah, alright. I would have added that flag, but it seems like it is
+SuSE-specific? At least I can only find it in the SuSE-changelogs for gcc.
+
+By the way: I would be glad to put a link to SuSE on the downloads page of i3
+once your package is done. Which one would be appropriate? Is there something
+comparable to packages.debian.org?
+
+Best regards,
+Michael
+
+From michael+i3 at stapelberg.de  Wed Nov 23 00:26:29 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Tue, 22 Nov 2011 23:26:29 +0000
+Subject: [i3] i3status won't startup
+In-Reply-To: <20111123000302.GA3587@ares.home>
+References: <20111123000302.GA3587@ares.home>
+Message-ID: <1322004200-sup-6986@stapelberg.de>
+
+Hi Jonas,
+
+Excerpts from Jonas Geiregat's message of 2011-11-23 00:03:02 +0000:
+> But I'm having an issue using i3status.
+> I startup i3 using the slim display manager.
+> 
+> I've got the following in my .xinitrc file.
+> 
+> exec i3&
+> i3status | dzen2 -y 750 -x 100 -bg black -ta r&
+Yes, that?s all really great, but what exactly is the problem?
+
+By the way, using exec together with & defeats its purpose. Also, the last
+command of your .xinitrc should use exec (otherwise you?ll end up having a
+useless shell process hanging around).
+
+A wild guess is that you are facing issue http://bugs.i3wm.org/569. In that
+case, using dzen2?s -dock option is a workaround [1].
+
+Best regards,
+Michael
+
+[1] Yes, you need an SVN checkout of dzen2. Why not use i3bar instead? It?s
+    great and works out of the box.
+
+From gregkh at suse.de  Wed Nov 23 00:50:52 2011
+From: gregkh at suse.de (Greg KH)
+Date: Tue, 22 Nov 2011 15:50:52 -0800
+Subject: [i3] [PATCH] i3: remove compiler warning about
+ xcursor_set_root_cursor()
+In-Reply-To: <1322003785-sup-2523@stapelberg.de>
+References: <20111122182959.GA29254@kroah.com>
+ <1321999780-sup-3512@stapelberg.de>
+ <20111122223753.GA25180@suse.de>
+ <1322003785-sup-2523@stapelberg.de>
+Message-ID: <20111122235052.GA19816@suse.de>
+
+On Tue, Nov 22, 2011 at 11:23:13PM +0000, Michael Stapelberg wrote:
+> Hi Greg,
+> 
+> Excerpts from Greg KH's message of 2011-11-22 22:37:53 +0000:
+> > No, I'm using gcc 4.6.2 on openSUSE 12.1 and noticed it as I was
+> > packaging i3 up for the distro and my personal use.  I guess that option
+> > is enabled by default in that release.
+> Ah, alright. I would have added that flag, but it seems like it is
+> SuSE-specific? At least I can only find it in the SuSE-changelogs for gcc.
+
+I think it's an upstream gcc option flag, especially as SUSE's gcc
+developers are all upstream developers :)
+
+> By the way: I would be glad to put a link to SuSE on the downloads page of i3
+> once your package is done. Which one would be appropriate? Is there something
+> comparable to packages.debian.org?
+
+Yes, I've submitted it to the "real" portion of the build.opensuse.org
+site, I'll send you a link when it gets accepted in a few days.
+
+thanks,
+
+greg k-h
+
+From mlmichael70 at gmail.com  Thu Nov 24 13:24:32 2011
+From: mlmichael70 at gmail.com (Michael)
+Date: Thu, 24 Nov 2011 12:24:32 +0000
+Subject: [i3] dzen2 on top of fullscreen windows
+In-Reply-To: <1321919280-sup-9630@stapelberg.de>
+References: <4EC6CE3D.5020705@gmail.com> <1321908867-sup-3199@stapelberg.de>
+ <4ECACDC2.2060308@gmail.com> <1321919280-sup-9630@stapelberg.de>
+Message-ID: <4ECE3780.8020109@gmail.com>
+
+On 21/11/2011 23:48, Michael Stapelberg wrote:
+> Hi Nikhilesh,
+>
+> Excerpts from Nikhilesh Sigatapu's message of 2011-11-21 22:16:34 +0000:
+>> I guess that would make sense in most cases, yeah? I mean fullscreen
+>> means 'I only want to see this window', at least to me.
+> Yeah. I?m running out of time for today, so I created a ticket at [1] to track
+> progress on this issue.
+
+I think it's not only fullscreen windows that are affected. For example:
+
+Status bar on the bottom. Workspace buttons (on the left) and dzen2 (on 
+the right) in it.
+One Firefox window in stacking mode. When I want to download something 
+then a new window "Save as" pops up. That new window is horizontally 
+centered and vertically stretched (height starts almost on top and ends 
+on bottom of the screen).
+
+Now the left part of status bar (workspace buttons) is under the "Save 
+as" window, but right part (dzen2) is on top of that window. That was 
+not the case in 3.x version.
+
+The problem is that in most cases (like firefox, thunderbird) bottom 
+right part of the window is where the buttons are displayed (for example 
+"Cancel" "Save") so in effect I can't see them because they are covered 
+by dzen2 and I have to manually move/resize that window.
+
+Does it make sense or should I send a screenshot? And how can I fix it?
+
+Thank you in advance, Mick
+
+From s.nikhilesh at gmail.com  Fri Nov 25 02:20:39 2011
+From: s.nikhilesh at gmail.com (Nikhilesh Sigatapu)
+Date: Thu, 24 Nov 2011 18:20:39 -0700
+Subject: [i3] dzen2 on top of fullscreen windows
+In-Reply-To: <4ECE3780.8020109@gmail.com>
+References: <4EC6CE3D.5020705@gmail.com> <1321908867-sup-3199@stapelberg.de>
+ <4ECACDC2.2060308@gmail.com> <1321919280-sup-9630@stapelberg.de>
+ <4ECE3780.8020109@gmail.com>
+Message-ID: <4ECEED67.1070601@gmail.com>
+
+On 11/24/2011 05:24 AM, Michael wrote:
+> Now the left part of status bar (workspace buttons) is under the "Save
+> as" window, but right part (dzen2) is on top of that window. That was
+> not the case in 3.x version.
+
+That's strange... For me both 'parts' of the bar are under the window.
+
+-- 
+Nikhilesh S
+http://www.nikhilesh.info
+
+From jonas at geiregat.org  Fri Nov 25 07:13:29 2011
+From: jonas at geiregat.org (Jonas Geiregat)
+Date: Fri, 25 Nov 2011 07:13:29 +0100
+Subject: [i3] Java focus problem
+In-Reply-To: <1320325388-sup-6613@asch>
+References: <1320325388-sup-6613@asch>
+Message-ID: <A341C7E8-F1FC-4824-BF92-F53A9FD4C231@geiregat.org>
+
+
+> 
+> Nothing helps. Is there
+> chance to run java app with i3 properly?
+
+I know this doesn't help much but I encountered something similar yesterday.
+When running a Java application, after some time, i3 stopped responding to my keyboard actions but my mouse was fine.
+
+
+From jonas at geiregat.org  Fri Nov 25 07:13:29 2011
+From: jonas at geiregat.org (Jonas Geiregat)
+Date: Fri, 25 Nov 2011 07:13:29 +0100
+Subject: [i3] Java focus problem
+In-Reply-To: <1320325388-sup-6613@asch>
+References: <1320325388-sup-6613@asch>
+Message-ID: <C84651F4-76A1-4E7D-8C5E-A1D3FB5FE3EF@geiregat.org>
+
+
+> 
+> Nothing helps. Is there
+> chance to run java app with i3 properly?
+
+I know this doesn't help much but I encountered something similar yesterday.
+When running a Java application, after some time, i3 stopped responding to my keyboard actions but my mouse was fine.
+
+
+From xiaqqaix at gmail.com  Sat Nov 26 12:31:22 2011
+From: xiaqqaix at gmail.com (CheerXiao)
+Date: Sat, 26 Nov 2011 19:31:22 +0800
+Subject: [i3] Preventing OSD notification from stealing focus
+Message-ID: <CAD+eWSXumQGcT29b1gCcqDzRg6JBLaOf1rWhwdNkFZFXTx5atg@mail.gmail.com>
+
+Hi all,
+
+I discovered i3 a week ago and now I'm quite happy with it. But I'm
+using an OSD daemon (xfce4-notifyd) which pops up sometimes. I was
+able to fix its appearance with
+
+for_window [class="Xfce4-notifyd"] floating enable; border none
+
+in my ~/.i3/config. But I don't know how to prevent it from stealing
+focus. Any hints?
+
+-- 
+Regards,
+Cheer Xiao aka. xiaq
+
+From michael+i3 at stapelberg.de  Sat Nov 26 12:36:06 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 26 Nov 2011 11:36:06 +0000
+Subject: [i3] Preventing OSD notification from stealing focus
+In-Reply-To: <CAD+eWSXumQGcT29b1gCcqDzRg6JBLaOf1rWhwdNkFZFXTx5atg@mail.gmail.com>
+References: <CAD+eWSXumQGcT29b1gCcqDzRg6JBLaOf1rWhwdNkFZFXTx5atg@mail.gmail.com>
+Message-ID: <1322307325-sup-7587@stapelberg.de>
+
+Hi CheerXiao,
+
+Excerpts from CheerXiao's message of 2011-11-26 11:31:22 +0000:
+> I discovered i3 a week ago and now I'm quite happy with it. But I'm
+> using an OSD daemon (xfce4-notifyd) which pops up sometimes. I was
+> able to fix its appearance with
+> 
+> for_window [class="Xfce4-notifyd"] floating enable; border none
+> 
+> in my ~/.i3/config. But I don't know how to prevent it from stealing
+> focus. Any hints?
+Why does it even create managed windows? The "standard" libnotify thing does
+create unmanaged windows which do not change focus.
+
+Best regards,
+Michael
+
+From old4 at o2.pl  Sat Nov 26 13:40:59 2011
+From: old4 at o2.pl (Mateusz Poszwa)
+Date: Sat, 26 Nov 2011 13:40:59 +0100
+Subject: [i3] Preventing OSD notification from stealing focus
+In-Reply-To: <1322307325-sup-7587@stapelberg.de>
+References: <CAD+eWSXumQGcT29b1gCcqDzRg6JBLaOf1rWhwdNkFZFXTx5atg@mail.gmail.com>
+ <1322307325-sup-7587@stapelberg.de>
+Message-ID: <20111126134059.2902a0e6@debelianear>
+
+Hello.
+
+On Sat, 26 Nov 2011 11:36:06 +0000
+Michael Stapelberg <michael+i3 at stapelberg.de> wrote:
+
+> Hi CheerXiao,
+> 
+> Excerpts from CheerXiao's message of 2011-11-26 11:31:22 +0000:
+> > I discovered i3 a week ago and now I'm quite happy with it. But I'm
+> > using an OSD daemon (xfce4-notifyd) which pops up sometimes. I was
+> > able to fix its appearance with
+> > 
+> > for_window [class="Xfce4-notifyd"] floating enable; border none
+> > 
+> > in my ~/.i3/config. But I don't know how to prevent it from stealing
+> > focus. Any hints?
+
+I had the same problem with xfce4-notifyd.
+As a workaround I have the following line in my ~/.i3/config:
+
+for_window [class="^Xfce4-notifyd$"] floating enable; border none; focus mode_toggle
+
+It's not perfect as it changes focus if popup occurs when floating
+window is focused. What is more, it steals focus for a short moment,
+so when xfce4-notifyd pops up during typing an address
+into Midori's address bar, the input is interrupted. :-(
+
+> Why does it even create managed windows? The "standard" libnotify thing does
+> create unmanaged windows which do not change focus.
+
+I guess xfce4-notifyd could be changed to resemble notify-daemon's
+standard behaviour, but it would not be desired in Xfce desktop,
+as xfwm4 can be configured to be a compositing window manager
+and it would not be able to apply transparency to xfce4-notifyd's popups.
+
+Managing xfce4-notifyd's windows can be useful ? it allows you
+to use your keyboard to press buttons on the popups.
+
+I think having an option to exclude windows from being managed
+or from being able to steal focus would be nice.
+
+What do you think?
+
+
+Best regards.
+
+-- 
+Mateusz Poszwa
+
+From xiaqqaix at gmail.com  Sat Nov 26 18:59:38 2011
+From: xiaqqaix at gmail.com (CheerXiao)
+Date: Sun, 27 Nov 2011 01:59:38 +0800
+Subject: [i3] Preventing OSD notification from stealing focus
+In-Reply-To: <1322307325-sup-7587@stapelberg.de>
+References: <CAD+eWSXumQGcT29b1gCcqDzRg6JBLaOf1rWhwdNkFZFXTx5atg@mail.gmail.com>
+ <1322307325-sup-7587@stapelberg.de>
+Message-ID: <CAD+eWSUhM9HV6-PbHd=ie11tVNVqWfPwYBUg+qoGTtR3jT+JGw@mail.gmail.com>
+
+2011/11/26 Michael Stapelberg <michael+i3 at stapelberg.de>:
+> Hi CheerXiao,
+>
+> Excerpts from CheerXiao's message of 2011-11-26 11:31:22 +0000:
+>> I discovered i3 a week ago and now I'm quite happy with it. But I'm
+>> using an OSD daemon (xfce4-notifyd) which pops up sometimes. I was
+>> able to fix its appearance with
+>>
+>> for_window [class="Xfce4-notifyd"] floating enable; border none
+>>
+>> in my ~/.i3/config. But I don't know how to prevent it from stealing
+>> focus. Any hints?
+> Why does it even create managed windows? The "standard" libnotify thing does
+> create unmanaged windows which do not change focus.
+
+I may be missing something, but the "standard" libnotify thing you say
+seems to refer to [1]. But I see no mention of the window being
+managed or not.
+
+1. http://www.galago-project.org/specs/notification/0.9/notification-spec-0.9.txt
+
+-- 
+Regards,
+Cheer Xiao aka. xiaq
+
+From mail at fernandotcl.com  Sat Nov 26 19:05:06 2011
+From: mail at fernandotcl.com (Fernando Lemos)
+Date: Sat, 26 Nov 2011 16:05:06 -0200
+Subject: [i3] Preventing OSD notification from stealing focus
+In-Reply-To: <CAD+eWSUhM9HV6-PbHd=ie11tVNVqWfPwYBUg+qoGTtR3jT+JGw@mail.gmail.com>
+References: <CAD+eWSXumQGcT29b1gCcqDzRg6JBLaOf1rWhwdNkFZFXTx5atg@mail.gmail.com>
+ <1322307325-sup-7587@stapelberg.de>
+ <CAD+eWSUhM9HV6-PbHd=ie11tVNVqWfPwYBUg+qoGTtR3jT+JGw@mail.gmail.com>
+Message-ID: <CANVYNa8WVgng_UNr80PidGEKVQxvhMvu1bJHyO+g5juOE8caeA@mail.gmail.com>
+
+On Sat, Nov 26, 2011 at 3:59 PM, CheerXiao <xiaqqaix at gmail.com> wrote:
+> 2011/11/26 Michael Stapelberg <michael+i3 at stapelberg.de>:
+>> Hi CheerXiao,
+>>
+>> Excerpts from CheerXiao's message of 2011-11-26 11:31:22 +0000:
+>>> I discovered i3 a week ago and now I'm quite happy with it. But I'm
+>>> using an OSD daemon (xfce4-notifyd) which pops up sometimes. I was
+>>> able to fix its appearance with
+>>>
+>>> for_window [class="Xfce4-notifyd"] floating enable; border none
+>>>
+>>> in my ~/.i3/config. But I don't know how to prevent it from stealing
+>>> focus. Any hints?
+>> Why does it even create managed windows? The "standard" libnotify thing does
+>> create unmanaged windows which do not change focus.
+>
+> I may be missing something, but the "standard" libnotify thing you say
+> seems to refer to [1]. But I see no mention of the window being
+> managed or not.
+>
+> 1. http://www.galago-project.org/specs/notification/0.9/notification-spec-0.9.txt
+
+I think what Michael was referring to is the original implementation
+of libnotify (shipped in libnotify-bin in Debian). By the way,
+notify-osd (from Ubuntu, packaged in Debian) also works great. Looks
+like a pretty serious bug in xfce4-notifyd to me.
+
+Regards,
+
+From xiaqqaix at gmail.com  Sat Nov 26 19:11:11 2011
+From: xiaqqaix at gmail.com (CheerXiao)
+Date: Sun, 27 Nov 2011 02:11:11 +0800
+Subject: [i3] Preventing OSD notification from stealing focus
+In-Reply-To: <20111126134059.2902a0e6@debelianear>
+References: <CAD+eWSXumQGcT29b1gCcqDzRg6JBLaOf1rWhwdNkFZFXTx5atg@mail.gmail.com>
+ <1322307325-sup-7587@stapelberg.de> <20111126134059.2902a0e6@debelianear>
+Message-ID: <CAD+eWSUkLkuNx=LmiNjfxUsqwexiqGtkKQ289Hk8urABpQtc8Q@mail.gmail.com>
+
+2011/11/26 Mateusz Poszwa <old4 at o2.pl>:
+> Hello.
+>
+> On Sat, 26 Nov 2011 11:36:06 +0000
+> Michael Stapelberg <michael+i3 at stapelberg.de> wrote:
+>
+>> Hi CheerXiao,
+>>
+>> Excerpts from CheerXiao's message of 2011-11-26 11:31:22 +0000:
+>> > I discovered i3 a week ago and now I'm quite happy with it. But I'm
+>> > using an OSD daemon (xfce4-notifyd) which pops up sometimes. I was
+>> > able to fix its appearance with
+>> >
+>> > for_window [class="Xfce4-notifyd"] floating enable; border none
+>> >
+>> > in my ~/.i3/config. But I don't know how to prevent it from stealing
+>> > focus. Any hints?
+>
+> I had the same problem with xfce4-notifyd.
+> As a workaround I have the following line in my ~/.i3/config:
+>
+> for_window [class="^Xfce4-notifyd$"] floating enable; border none; focus mode_toggle
+>
+> It's not perfect as it changes focus if popup occurs when floating
+> window is focused. What is more, it steals focus for a short moment,
+> so when xfce4-notifyd pops up during typing an address
+> into Midori's address bar, the input is interrupted. :-(
+>
+
+I have thought of this approach, but gave it up due to the exact
+reason you give.
+
+>> Why does it even create managed windows? The "standard" libnotify thing does
+>> create unmanaged windows which do not change focus.
+>
+> I guess xfce4-notifyd could be changed to resemble notify-daemon's
+> standard behaviour, but it would not be desired in Xfce desktop,
+> as xfwm4 can be configured to be a compositing window manager
+> and it would not be able to apply transparency to xfce4-notifyd's popups.
+>
+> Managing xfce4-notifyd's windows can be useful ? it allows you
+> to use your keyboard to press buttons on the popups.
+>
+> I think having an option to exclude windows from being managed
+> or from being able to steal focus would be nice.
+>
+> What do you think?
+>
+
+I suppose the WM hint things could be more complex than expected...
+I have captured the results of xprop upon notification-daemon and
+xfce4-notifyd and put them in attachments.
+
+>
+> Best regards.
+>
+> --
+> Mateusz Poszwa
+>
+
+
+
+-- 
+Regards,
+Cheer Xiao aka. xiaq
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: notification-daemon.xprop
+Type: application/octet-stream
+Size: 1013 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20111127/89f5cbbd/attachment.obj>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: xfce4-notifyd.xprop
+Type: application/octet-stream
+Size: 1242 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20111127/89f5cbbd/attachment-0001.obj>
+
+From xiaqqaix at gmail.com  Sat Nov 26 19:17:15 2011
+From: xiaqqaix at gmail.com (CheerXiao)
+Date: Sun, 27 Nov 2011 02:17:15 +0800
+Subject: [i3] Preventing OSD notification from stealing focus
+In-Reply-To: <CANVYNa8WVgng_UNr80PidGEKVQxvhMvu1bJHyO+g5juOE8caeA@mail.gmail.com>
+References: <CAD+eWSXumQGcT29b1gCcqDzRg6JBLaOf1rWhwdNkFZFXTx5atg@mail.gmail.com>
+ <1322307325-sup-7587@stapelberg.de>
+ <CAD+eWSUhM9HV6-PbHd=ie11tVNVqWfPwYBUg+qoGTtR3jT+JGw@mail.gmail.com>
+ <CANVYNa8WVgng_UNr80PidGEKVQxvhMvu1bJHyO+g5juOE8caeA@mail.gmail.com>
+Message-ID: <CAD+eWSVqX+zr-9QFi6hoK-gx9trH5P8_MzLRLNHOSY1HiV_MQw@mail.gmail.com>
+
+2011/11/27 Fernando Lemos <mail at fernandotcl.com>:
+> On Sat, Nov 26, 2011 at 3:59 PM, CheerXiao <xiaqqaix at gmail.com> wrote:
+>> 2011/11/26 Michael Stapelberg <michael+i3 at stapelberg.de>:
+>>> Hi CheerXiao,
+>>>
+>>> Excerpts from CheerXiao's message of 2011-11-26 11:31:22 +0000:
+>>>> I discovered i3 a week ago and now I'm quite happy with it. But I'm
+>>>> using an OSD daemon (xfce4-notifyd) which pops up sometimes. I was
+>>>> able to fix its appearance with
+>>>>
+>>>> for_window [class="Xfce4-notifyd"] floating enable; border none
+>>>>
+>>>> in my ~/.i3/config. But I don't know how to prevent it from stealing
+>>>> focus. Any hints?
+>>> Why does it even create managed windows? The "standard" libnotify thing does
+>>> create unmanaged windows which do not change focus.
+>>
+>> I may be missing something, but the "standard" libnotify thing you say
+>> seems to refer to [1]. But I see no mention of the window being
+>> managed or not.
+>>
+>> 1. http://www.galago-project.org/specs/notification/0.9/notification-spec-0.9.txt
+>
+> I think what Michael was referring to is the original implementation
+> of libnotify (shipped in libnotify-bin in Debian). By the way,
+> notify-osd (from Ubuntu, packaged in Debian) also works great. Looks
+> like a pretty serious bug in xfce4-notifyd to me.
+>
+
+Just checked out notify-osd and it feels good (looks better, doesn't
+steal focus). I thought it was something with lots of Ayatana
+dependencies...
+
+> Regards,
+>
+
+
+
+-- 
+Regards,
+Cheer Xiao aka. xiaq
+

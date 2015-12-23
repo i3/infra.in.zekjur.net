@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] idea on default layout orientation: complete binary tree	model
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20idea%20on%20default%20layout%20orientation%3A%20complete%20binary%20tree%0A%09model&In-Reply-To=%3C87libmmipp.fsf%40kobe.laptop%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001153.html">
+   <LINK REL="Next"  HREF="001155.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] idea on default layout orientation: complete binary tree	model</H1>
+    <B>Giorgos Keramidas</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20idea%20on%20default%20layout%20orientation%3A%20complete%20binary%20tree%0A%09model&In-Reply-To=%3C87libmmipp.fsf%40kobe.laptop%3E"
+       TITLE="[i3] idea on default layout orientation: complete binary tree	model">keramida at ceid.upatras.gr
+       </A><BR>
+    <I>Mon Jan 21 20:36:34 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001153.html">[i3] idea on default layout orientation: complete binary tree	model
+</A></li>
+        <LI>Next message: <A HREF="001155.html">[i3] idea on default layout orientation: complete binary tree	model
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1154">[ date ]</a>
+              <a href="thread.html#1154">[ thread ]</a>
+              <a href="subject.html#1154">[ subject ]</a>
+              <a href="author.html#1154">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, 21 Jan 2013 18:17:27 +0100,
+Gereon Kremer &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">gereon.kremer at rwth-aachen.de</A>&gt; wrote:
+&gt;<i> I also thought about presets, as &quot;presets for workspace layouts&quot; is
+</I>&gt;<i> one feature I really miss in i3. What I'd like to have is the
+</I>&gt;<i> following: My workspace 1 always contains pidgin (left, ~20%) and
+</I>&gt;<i> thunderbird (right, rest of screen). I have not yet been able to
+</I>&gt;<i> create a config such that when I start those programs (in arbitrary
+</I>&gt;<i> order) they are placed as described.
+</I>&gt;<i>
+</I>&gt;<i> I guess it'd need some kind of &quot;want have&quot;-size, such that when a
+</I>&gt;<i> container has the possibility to resize (because a new container
+</I>&gt;<i> appeared), it resizes to the &quot;want have&quot;-size (or some intermediate
+</I>&gt;<i> values, if multiple &quot;want have&quot;-sizes do not allow for an &quot;optimal&quot;
+</I>&gt;<i> placement.  Maybe, we should fork this thread? :-)
+</I>
+That sounds like an interesting idea. We do call our client-window
+buckets 'containers', so there's nothing that stops someone from going
+off and implementing something like CSS width/height specifiers with
+values that are either (a) a percentage of the screen size, or (b) a
+percentage of the parent container size.
+
+Then an appropriately written for_window rule would be able to apply
+startup size hints on a per-application basis, e.g.:
+
+    # Start pidgin windows at 20% of parent container width and full
+    # screen height, if possible.
+    for_window [class=&quot;Pidgin&quot;] width='0.20' screen_height=&quot;100%&quot;
+
+Implementing the full blown layout specifications possible with CSS
+would probably be overkill, but I am guessing we can go a very long way
+without _all_ the bells and whistles.  Even with just _one_ size-related
+hint, that depends on parent container size, we can do a lot of stuff.
+
+</PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001153.html">[i3] idea on default layout orientation: complete binary tree	model
+</A></li>
+	<LI>Next message: <A HREF="001155.html">[i3] idea on default layout orientation: complete binary tree	model
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1154">[ date ]</a>
+              <a href="thread.html#1154">[ thread ]</a>
+              <a href="subject.html#1154">[ subject ]</a>
+              <a href="author.html#1154">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

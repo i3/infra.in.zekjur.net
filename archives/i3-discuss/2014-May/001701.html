@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Title bar on bottom of window
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Title%20bar%20on%20bottom%20of%20window&In-Reply-To=%3C20140503170442.GB23863%40katrina%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+   <LINK REL="Next"  HREF="001705.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Title bar on bottom of window</H1>
+    <B>Kareem</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Title%20bar%20on%20bottom%20of%20window&In-Reply-To=%3C20140503170442.GB23863%40katrina%3E"
+       TITLE="[i3] Title bar on bottom of window">karkhaz at gmail.com
+       </A><BR>
+    <I>Sat May  3 19:04:42 CEST 2014</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="001705.html">[i3] Title bar on bottom of window
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1701">[ date ]</a>
+              <a href="thread.html#1701">[ thread ]</a>
+              <a href="subject.html#1701">[ subject ]</a>
+              <a href="author.html#1701">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi there,
+
+I am wondering (as a feature request) about an option to have the
+title bar of a window at the bottom of the window, instead of as the
+top.
+
+If this isn't suitable for being included in i3, I was wondering about
+patching it for my own copy. I have looked in the x_draw_decoration
+function in src/x.c, but I'm not sure how to proceed. In particular,
+I'm not sure how to get the correct dimensions to draw the bar when
+initialising the xcb_rectangle_t---currently it looks like this:
+  xcb_rectangle_t drect = { con-&gt;deco_rect.x, con-&gt;deco_rect.y,
+    con-&gt;deco_rect.width, con-&gt;deco_rect.height };
+  cb_poly_fill_rectangle(conn, parent-&gt;pixmap, parent-&gt;pm_gc, 1, &amp;drect);
+
+In case you're wondering why I want to do such a strange thing...I
+like to set the title of my xterm to contain ephemeral information,
+such as hostname, git status, and various other things. I dislike long
+and complicated prompts, so I put this information in the title
+instead. But, the title is at the top of the screen, whereas the
+prompt of my xterm is at the bottom. I'd like to have the title bar
+just underneath my prompt, i.e. at the bottom of the window.
+
+cheers
+
+-- 
+Kareem
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="001705.html">[i3] Title bar on bottom of window
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1701">[ date ]</a>
+              <a href="thread.html#1701">[ thread ]</a>
+              <a href="subject.html#1701">[ subject ]</a>
+              <a href="author.html#1701">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,221 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] decent kde integration with i3?
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20decent%20kde%20integration%20with%20i3%3F&In-Reply-To=%3CCAEFYCXP2WzDP1ar5LuNpK-tbnk77ok6VruKBfO3Kqqs_6aUHOw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001221.html">
+   <LINK REL="Next"  HREF="001223.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] decent kde integration with i3?</H1>
+    <B>Marius Muja</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20decent%20kde%20integration%20with%20i3%3F&In-Reply-To=%3CCAEFYCXP2WzDP1ar5LuNpK-tbnk77ok6VruKBfO3Kqqs_6aUHOw%40mail.gmail.com%3E"
+       TITLE="[i3] decent kde integration with i3?">mariusmuja at gmail.com
+       </A><BR>
+    <I>Wed Mar 20 18:56:40 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001221.html">[i3] decent kde integration with i3?
+</A></li>
+        <LI>Next message: <A HREF="001223.html">[i3] decent kde integration with i3?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1222">[ date ]</a>
+              <a href="thread.html#1222">[ thread ]</a>
+              <a href="subject.html#1222">[ subject ]</a>
+              <a href="author.html#1222">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I'm running kde with i3 as window manager and it's working very well. I did
+have to make a few changes to i3 to make them play nicely together, which
+I'll describe below.
+
+First of all to tell kde to use i3 instead of kwin I used the KDEWM
+environment variable which is set inside the .kde/env/set_window_manager.sh
+shell script.
+
+Inside i3's config file I have added the following commands to prevent
+various kde pop-ups from being decorated/tiled:
+
+for_window [class=&quot;Plasma-desktop&quot;] border none
+for_window [class=&quot;krunner&quot;] border none
+for_window [class=&quot;Kmix&quot;] floating enable;
+for_window [class=&quot;Plasmoidviewer&quot;] floating enable;
+for_window [class=&quot;Klipper&quot;] floating enable; border none
+
+Lastly, I have a set of patches on top of the i3 next branch (they should
+apply fine on top of 4.5 as well), which I'm attaching to this email. Not
+all are needed for kde/i3 integration, I'm including all of them here
+because I don't have time to check if they apply cleanly when some are
+missing.
+
+0001-Fix-crash-in-some-situations.patch
+This should fix the krunner crash.
+
+0002-Added-support-for-window-icons-_NET_WM_ICON-property.patch
+This adds support for displaying the window icons (_NET_WM_ICON) on the
+window's title. I find that when I have many windows in tabbed/stacked mode
+it's much quicker to find some window if there are icons next to the window
+titles. Not needed for kde/i3 integration.
+
+0003-Close-window-s-on-middle-click.patch
+This added support for closing a window by middle clicking on it's title.
+Not needed for kde/i3 integration.
+
+0004-Don-t-manage-desktop-type-windows-only-map-them.patch
+This adds &quot;support&quot; for desktop windows(_NET_WM_WINDOW_TYPE_DESKTOP) by
+just mapping them instead of managing them.
+
+0005-Handling-_NET_WM_STATE_STAYS_ON_TOP-window-state-use.patch
+Implements support for _NET_WM_STATE_STAYS_ON_TOP window states (useful for
+most KDE4 popups).
+
+0006-Allow-focusing-to-change-to-worskpaces-that-are-not-.patch
+Allows focus change to workspaces that are not visible. Not needed for
+kde/i3 integration.
+
+0007-Workaround-for-resize-to-work-while-krunner-is-start.patch
+Window resizing using the mouse doesn't work while krunner is started. This
+patch is a workaround to fix that.
+
+0008-Fix-for-invisible-borders-after-restart-when-composi.patch
+I using a compositor, after restarting i3 some window borders become
+invisible. This patch is a workaround to fix that, not needed for kde/i3
+integration.
+
+
+Hope this helps,
+Marius
+
+
+
+
+&gt;<i> Basically, I'd like to just use i3wm for its window-handling
+</I>&gt;<i> and management, but I'd like to use as much of kde and
+</I>&gt;<i> kde-integration as possible.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> So I guess I can list this another way - what I'd like to
+</I>&gt;<i> be able to do:
+</I>&gt;<i>
+</I>&gt;<i> * access system-tray stuff either via a kde panel, or via
+</I>&gt;<i>   i3bar/i3status.
+</I>&gt;<i>
+</I>&gt;<i> * execute krunner without crashes, possibly use krunner
+</I>&gt;<i>   in lieue of dmenu if possible.
+</I>&gt;<i>
+</I>&gt;<i> * be able to properly exit/logout-of the kde session
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Anyone else using i3 as an alternative to kwin in a mostly
+</I>&gt;<i> kde environment, primarily for i3's tiling window management
+</I>&gt;<i> features?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Thanks for any assistance, much appreciated! I did spend
+</I>&gt;<i> quite a bit of time last night experimenting and hunting
+</I>&gt;<i> google and forums for solutions, but to no avail.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0001.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0001.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Fix-crash-in-some-situations.patch
+Type: application/octet-stream
+Size: 754 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0008.obj">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0008.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0002-Added-support-for-window-icons-_NET_WM_ICON-property.patch
+Type: application/octet-stream
+Size: 10949 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0009.obj">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0009.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0003-Close-window-s-on-middle-click.patch
+Type: application/octet-stream
+Size: 975 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0010.obj">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0010.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0004-Don-t-manage-desktop-type-windows-only-map-them.patch
+Type: application/octet-stream
+Size: 1654 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0011.obj">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0011.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0005-Handling-_NET_WM_STATE_STAYS_ON_TOP-window-state-use.patch
+Type: application/octet-stream
+Size: 2714 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0012.obj">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0012.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0006-Allow-focusing-to-change-to-worskpaces-that-are-not-.patch
+Type: application/octet-stream
+Size: 1597 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0013.obj">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0013.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0007-Workaround-for-resize-to-work-while-krunner-is-start.patch
+Type: application/octet-stream
+Size: 1672 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0014.obj">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0014.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0008-Fix-for-invisible-borders-after-restart-when-composi.patch
+Type: application/octet-stream
+Size: 1547 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0015.obj">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0015.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: set_window_manager.sh
+Type: application/x-sh
+Size: 25 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0001.sh">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0001.sh</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001221.html">[i3] decent kde integration with i3?
+</A></li>
+	<LI>Next message: <A HREF="001223.html">[i3] decent kde integration with i3?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1222">[ date ]</a>
+              <a href="thread.html#1222">[ thread ]</a>
+              <a href="subject.html#1222">[ subject ]</a>
+              <a href="author.html#1222">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

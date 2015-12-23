@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3bar POC: workspace button with focused window name
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3bar%20POC%3A%20workspace%20button%20with%20focused%20window%20name&In-Reply-To=%3CCABgc4wQgNVYAJZD_52jTMhNii6B0Co4b0PSok70ekZjt_xrfiQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001225.html">
+   <LINK REL="Next"  HREF="001227.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3bar POC: workspace button with focused window name</H1>
+    <B>Fam Zheng</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3bar%20POC%3A%20workspace%20button%20with%20focused%20window%20name&In-Reply-To=%3CCABgc4wQgNVYAJZD_52jTMhNii6B0Co4b0PSok70ekZjt_xrfiQ%40mail.gmail.com%3E"
+       TITLE="[i3] i3bar POC: workspace button with focused window name">famcool at gmail.com
+       </A><BR>
+    <I>Thu Mar 21 04:16:32 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001225.html">[i3] decent kde integration with i3?
+</A></li>
+        <LI>Next message: <A HREF="001227.html">[i3] i3bar POC: workspace button with focused window name
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1226">[ date ]</a>
+              <a href="thread.html#1226">[ thread ]</a>
+              <a href="subject.html#1226">[ subject ]</a>
+              <a href="author.html#1226">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+I'm a new user to i3 and just got some thought on the i3bar ws area.
+
+I always forget what window I put into which workspace. It will be
+very helpful if I can see something without switching to it to check
+out. Tmux is the example here, where I can rename the current window
+to mark what's the topic of the contained windows.
+
+For i3, a static title is easily achieved by mapping key
+Mod-{1,2,3...} to a name.
+    bindsym $mod+1 workspace 1 - terminal
+    bindsym $mod+1 workspace 2 - web
+
+So I can get workspaces as &quot;1 - terminal&quot;, &quot;2 - web&quot;... However this
+is not flexible at all, what if I want another combination and
+workspace type?
+
+The behavior of i3bar could be modified to include the currently
+focused window title on each ws button. Such that when I run urxvt in
+ws 1 and chrome in ws 2, I'll get two ws buttons like:
+
+[ 1: <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">fam at localhost</A>:~ ] [ 2: Wikipedia - Google Chrome ]
+
+Of course a bar option can be added too to enable/disable this
+feature. Or even give some sophisticated format option for the title,
+and also enable user to manually rename it. Would this feature be
+useful?
+
+To do this we need to add a few new events trigger and maybe a &quot;title&quot;
+field in get_workspace msg. I already have a demo modification for you
+to test how it feels, based on master. Now my life with many
+workspaces is much easier. :)
+
+<A HREF="https://github.com/famousz/i3/tree/i3bar-ws">https://github.com/famousz/i3/tree/i3bar-ws</A>
+
+Welcome to give any feedback!
+
+Best regards!
+Fam Zheng
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001225.html">[i3] decent kde integration with i3?
+</A></li>
+	<LI>Next message: <A HREF="001227.html">[i3] i3bar POC: workspace button with focused window name
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1226">[ date ]</a>
+              <a href="thread.html#1226">[ thread ]</a>
+              <a href="subject.html#1226">[ subject ]</a>
+              <a href="author.html#1226">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

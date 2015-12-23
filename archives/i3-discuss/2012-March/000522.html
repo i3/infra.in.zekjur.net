@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] Use ev_break() rather than exit() in i3bar.
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Use%20ev_break%28%29%20rather%20than%20exit%28%29%20in%20i3bar.&In-Reply-To=%3CCAMJW5%3D1iGV9FROVpggd-OT-7ORzQCBnBfnzEmJMBJywTYx9wJA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000521.html">
+   <LINK REL="Next"  HREF="000523.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] Use ev_break() rather than exit() in i3bar.</H1>
+    <B>DR</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Use%20ev_break%28%29%20rather%20than%20exit%28%29%20in%20i3bar.&In-Reply-To=%3CCAMJW5%3D1iGV9FROVpggd-OT-7ORzQCBnBfnzEmJMBJywTYx9wJA%40mail.gmail.com%3E"
+       TITLE="[i3] [PATCH] Use ev_break() rather than exit() in i3bar.">drdarkraven at gmail.com
+       </A><BR>
+    <I>Sat Mar  3 13:47:29 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000521.html">[i3] [PATCH] Use ev_break() rather than exit() in i3bar.
+</A></li>
+        <LI>Next message: <A HREF="000523.html">[i3] [PATCH] Use ev_break() rather than exit() in i3bar.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#522">[ date ]</a>
+              <a href="thread.html#522">[ thread ]</a>
+              <a href="subject.html#522">[ subject ]</a>
+              <a href="author.html#522">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, Mar 3, 2012 at 8:29 PM, DR &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">drdarkraven at gmail.com</A>&gt; wrote:
+&gt;<i> If i3bar is running in hide mode, when i3wm exit, i3bar will exit
+</I>&gt;<i> without killing its child process, leaving a couple of processes in
+</I>&gt;<i> 'T' mode (i.e. Stopped).
+</I>&gt;<i>
+</I>&gt;<i> With this patch, when i3bar needs to quit, it will call ev_break()
+</I>&gt;<i> rather than exit(), thus gives the code after ev_loop() a chance to
+</I>&gt;<i> clean things up.
+</I>&gt;<i>
+</I>&gt;<i> I'm not very sure I've done things right. I might change some exit()s
+</I>&gt;<i> called before ev_loop() into ev_break(), or leave some exit()s
+</I>&gt;<i> unconverted. Someone please review this patch.
+</I>
+Sorry, sorry. I made a mistake, I leave out a file in this patch.
+
+New patch attached.
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Convert-exit-to-ev_break-so-i3bar-could-exit-cleanly.patch
+Type: text/x-patch
+Size: 7921 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120303/35f4057e/attachment.bin">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120303/35f4057e/attachment.bin</A>&gt;
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000521.html">[i3] [PATCH] Use ev_break() rather than exit() in i3bar.
+</A></li>
+	<LI>Next message: <A HREF="000523.html">[i3] [PATCH] Use ev_break() rather than exit() in i3bar.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#522">[ date ]</a>
+              <a href="thread.html#522">[ thread ]</a>
+              <a href="subject.html#522">[ subject ]</a>
+              <a href="author.html#522">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

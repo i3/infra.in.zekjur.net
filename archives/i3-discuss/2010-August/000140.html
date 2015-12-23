@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Shutdown computer
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Shutdown%20computer&In-Reply-To=%3C4C762368.2080708%40ganomi.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000139.html">
+   <LINK REL="Next"  HREF="000141.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Shutdown computer</H1>
+    <B>Jiri Kanicky</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Shutdown%20computer&In-Reply-To=%3C4C762368.2080708%40ganomi.com%3E"
+       TITLE="[i3] Shutdown computer">jirik at ganomi.com
+       </A><BR>
+    <I>Thu Aug 26 10:18:48 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000139.html">[i3] Shutdown computer
+</A></li>
+        <LI>Next message: <A HREF="000141.html">[i3] building on RHEL 6.0
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#140">[ date ]</a>
+              <a href="thread.html#140">[ thread ]</a>
+              <a href="subject.html#140">[ subject ]</a>
+              <a href="author.html#140">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 26/08/10 17:24, <A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">uli.armbruster at googlemail.com</A> wrote:
+&gt;<i> * Jiri Kanicky&lt;<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jirik at ganomi.com</A>&gt;  [26.08.2010 09:05]:
+</I>&gt;<i>    
+</I>&gt;&gt;<i> Hi.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Is there any way how to shutdown the computer as user? Key combination,
+</I>&gt;&gt;<i> adding menu button, etc...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I could not find anything related, only i3 exit.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thanks
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -- 
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Jiri
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>      
+</I>&gt;<i> You could create a script in your $PATH with the following entry
+</I>&gt;<i>
+</I>&gt;<i> #!/bin/bash
+</I>&gt;<i> dbus-send --system --print-reply --dest=&quot;org.freedesktop.ConsoleKit&quot; /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Stop
+</I>&gt;<i>
+</I>&gt;<i> This requires you to run a consolekit session (exec ck-launch-session i3 in the ~/.xinitrc in case you start X with startx)
+</I>&gt;<i>
+</I>&gt;<i> Then add a key combination in the ~/.i3/config to launch this script
+</I>&gt;<i>
+</I>&gt;<i> Btw, for a restart you need
+</I>&gt;<i>
+</I>&gt;<i> dbus-send --system --print-reply --dest=&quot;org.freedesktop.ConsoleKit&quot; /org/freedesktop/ConsoleKit/Manager org.freedesktop.ConsoleKit.Manager.Restart
+</I>&gt;<i>
+</I>&gt;<i> There are similar line which use HAL to do the job, but since HAL is being deprecated, I'd stick with the lines above.
+</I>&gt;<i>
+</I>&gt;<i> In case you don't run a consolekit session (like I do), you can do this with sudo
+</I>&gt;<i>
+</I>&gt;<i> Edit the sudoers file, so you can run the commands you chose as root without being asked for a password
+</I>&gt;<i>
+</I>&gt;<i> army Archlinux=NOPASSWD: /sbin/halt
+</I>&gt;<i> army Archlinux=NOPASSWD: /sbin/reboot
+</I>&gt;<i>
+</I>&gt;<i> and then put something like
+</I>&gt;<i>
+</I>&gt;<i> sudo halt
+</I>&gt;<i>
+</I>&gt;<i> into your shutdown script. Of course you can also let the command &quot;shutdown&quot; do the job, that's up to you.
+</I>&gt;<i>
+</I>&gt;<i>    
+</I>
+Thanks for the tip!
+
+Jiri
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000139.html">[i3] Shutdown computer
+</A></li>
+	<LI>Next message: <A HREF="000141.html">[i3] building on RHEL 6.0
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#140">[ date ]</a>
+              <a href="thread.html#140">[ thread ]</a>
+              <a href="subject.html#140">[ subject ]</a>
+              <a href="author.html#140">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

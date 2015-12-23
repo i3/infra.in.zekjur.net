@@ -1,0 +1,1263 @@
+From berenger.morel at neutralite.org  Mon Jul  7 16:43:43 2014
+From: berenger.morel at neutralite.org (berenger.morel at neutralite.org)
+Date: Mon, 07 Jul 2014 16:43:43 +0200
+Subject: [i3] application tiling vs environment/wm tiling
+In-Reply-To: <20140629100034.GA17149@katrina>
+References: <lokal5$ce$1@ger.gmane.org> <20140629100034.GA17149@katrina>
+Message-ID: <2a664d9119ca01d28128d9deafda4c47@neutralite.org>
+
+
+
+Le 29.06.2014 12:00, Kareem a écrit :
+> On 2014-06-27 1746, C. Thomas Stover wrote:
+>> The observation I'm blabbing about now is that so many applications
+>> leverage in-application tiling as a UI paradigm, yet ironically
+>> would actually be better of being (or at least supporting)
+>> multi-window UIs so as to keep uniform tiling semantics across all
+>> running applications.
+>
+> Amen. I am constantly frustrated by the fact that so many apps try to
+> reimplement a window manager---each with their own esoteric key
+> bindings. I really shouldn't have to use Ctrl-Tab to switch tabs in
+> firefox, Ctrl-W Ctrl-J for windows in Vim, ..., when I have a
+> perfectly good WM like i3 that is set up exactly the way I want it.
+>
+> Sometimes the solution is to change apps (from Firefox to dwb for
+> example), but there isn't really an alternative to vim :( (I know
+> emacs has a server mode, so you can run several emacs clients in
+> different terms; I wish vim had this).
+>
+> Unfortunately, most people use OSes with a baked-in floating window
+> manager that they can't change. For such an OS, the app *needs* its
+> own internal WM because the OS WM is ineffective. So while MS Windows
+> and Mac OS X have the market share, you can look forward to Mozilla
+> targeting its UI to users of those OSes.
+
+Well, about vim, I have the same feeling. I'm quite happy to read 
+someone saying that vim does too many things.
+Now, I really would like a text editor... no, a code editor with the 
+same philosophy (ESPECIALLY for configuration btw!) as i3, but there are 
+some issues I guess.
+For example, accessing a file from multiple instances of the editor, 
+which is quite common in an IDE (at least, open that file in multiple 
+tabs) will probably pulls problems when we spoke about syncing the 
+changes.
+The only solution I can think to solve it is the mpd way: a daemon to 
+handle a particular file, and clients just connect to that daemon, so 
+the sync problem can be managed.
+But you have to think about one fact, when you speak about vim 
+reimplementing a wm (which is true, sadly): it was written in 1991, as a 
+console application. I am not sure how gnu screen or other text window 
+managers were at that time?
+
+There is another problem which make me thinking that an i3 environment 
+is not completely usable as an IDE: a multiple window application can't 
+ask the wm to place windows in a specific scheme, in the space the wm 
+would have allocated to it.
+However, in the next version of i3, there will be layouts, so this 
+might be worked around.
+
+By the way, I have to admit that several years ago, I was not able to 
+admit that it was possible to program without a real IDE (and someone 
+mentioned me cube as a counter-example, but I never checked if it was 
+really written without an IDE, which would anyway not be provable), now 
+I have even removed any file manager from my system.
+Many thanks to i3 developers, which have reduced a lot the pain of 
+using computers for me. Sadly, now when people take a look at my 
+screens, they see me like if I am some kind of E.T. ...
+
+I'm even thinking that it would be very nice to build a DE based on a 
+tiling wm, plus softwares which are twm friendly... but I do not think I 
+master the thing enough for now, I still have a lot to learn, and trying 
+to create a meta-package for that is... well, it made me think a lot 
+about what, exactly, would be a minimal DE, since it would be damn 
+stupid to reproduce the errors other DEs have, imho, done (I will never 
+understand why DEs' meta-packages have hard-dependencies on softwares, 
+instead of simply recommending them).
+
+From mattator at gmail.com  Mon Jul  7 17:01:30 2014
+From: mattator at gmail.com (Teto)
+Date: Mon, 7 Jul 2014 17:01:30 +0200
+Subject: [i3] application tiling vs environment/wm tiling
+In-Reply-To: <2a664d9119ca01d28128d9deafda4c47@neutralite.org>
+References: <lokal5$ce$1@ger.gmane.org> <20140629100034.GA17149@katrina>
+ <2a664d9119ca01d28128d9deafda4c47@neutralite.org>
+Message-ID: <CADHp1Nxi4hdtJkVL4g440BTrnWKadz5CNY36M4HZ1sGy7DzqmQ@mail.gmail.com>
+
+I am also very annoyed by this behavior of vim (and other things) but
+I have good hope in the neovim project which intends to solve most of
+vim's shortages (www.neovim.org).
+
+As for firefox, you can configure it so that it doesn't tabs.
+
+2014-07-07 16:43 GMT+02:00  <berenger.morel at neutralite.org>:
+>
+>
+> Le 29.06.2014 12:00, Kareem a écrit :
+>
+>> On 2014-06-27 1746, C. Thomas Stover wrote:
+>>>
+>>> The observation I'm blabbing about now is that so many applications
+>>> leverage in-application tiling as a UI paradigm, yet ironically
+>>> would actually be better of being (or at least supporting)
+>>> multi-window UIs so as to keep uniform tiling semantics across all
+>>> running applications.
+>>
+>>
+>> Amen. I am constantly frustrated by the fact that so many apps try to
+>> reimplement a window manager---each with their own esoteric key
+>> bindings. I really shouldn't have to use Ctrl-Tab to switch tabs in
+>> firefox, Ctrl-W Ctrl-J for windows in Vim, ..., when I have a
+>> perfectly good WM like i3 that is set up exactly the way I want it.
+>>
+>> Sometimes the solution is to change apps (from Firefox to dwb for
+>> example), but there isn't really an alternative to vim :( (I know
+>> emacs has a server mode, so you can run several emacs clients in
+>> different terms; I wish vim had this).
+>>
+>> Unfortunately, most people use OSes with a baked-in floating window
+>> manager that they can't change. For such an OS, the app *needs* its
+>> own internal WM because the OS WM is ineffective. So while MS Windows
+>> and Mac OS X have the market share, you can look forward to Mozilla
+>> targeting its UI to users of those OSes.
+>
+>
+> Well, about vim, I have the same feeling. I'm quite happy to read someone
+> saying that vim does too many things.
+> Now, I really would like a text editor... no, a code editor with the same
+> philosophy (ESPECIALLY for configuration btw!) as i3, but there are some
+> issues I guess.
+> For example, accessing a file from multiple instances of the editor, which
+> is quite common in an IDE (at least, open that file in multiple tabs) will
+> probably pulls problems when we spoke about syncing the changes.
+> The only solution I can think to solve it is the mpd way: a daemon to handle
+> a particular file, and clients just connect to that daemon, so the sync
+> problem can be managed.
+> But you have to think about one fact, when you speak about vim
+> reimplementing a wm (which is true, sadly): it was written in 1991, as a
+> console application. I am not sure how gnu screen or other text window
+> managers were at that time?
+>
+> There is another problem which make me thinking that an i3 environment is
+> not completely usable as an IDE: a multiple window application can't ask the
+> wm to place windows in a specific scheme, in the space the wm would have
+> allocated to it.
+> However, in the next version of i3, there will be layouts, so this might be
+> worked around.
+>
+> By the way, I have to admit that several years ago, I was not able to admit
+> that it was possible to program without a real IDE (and someone mentioned me
+> cube as a counter-example, but I never checked if it was really written
+> without an IDE, which would anyway not be provable), now I have even removed
+> any file manager from my system.
+> Many thanks to i3 developers, which have reduced a lot the pain of using
+> computers for me. Sadly, now when people take a look at my screens, they see
+> me like if I am some kind of E.T. ...
+>
+> I'm even thinking that it would be very nice to build a DE based on a tiling
+> wm, plus softwares which are twm friendly... but I do not think I master the
+> thing enough for now, I still have a lot to learn, and trying to create a
+> meta-package for that is... well, it made me think a lot about what,
+> exactly, would be a minimal DE, since it would be damn stupid to reproduce
+> the errors other DEs have, imho, done (I will never understand why DEs'
+> meta-packages have hard-dependencies on softwares, instead of simply
+> recommending them).
+
+From bigby.james at crepcran.com  Mon Jul  7 22:20:25 2014
+From: bigby.james at crepcran.com (Bigby James)
+Date: Mon, 7 Jul 2014 15:20:25 -0500
+Subject: [i3] application tiling vs environment/wm tiling
+In-Reply-To: <2a664d9119ca01d28128d9deafda4c47@neutralite.org>
+References: <lokal5$ce$1@ger.gmane.org> <20140629100034.GA17149@katrina>
+ <2a664d9119ca01d28128d9deafda4c47@neutralite.org>
+Message-ID: <20140707202025.GA20845@zoho.com>
+
+ 
+On 2014-06-27 1746, C. Thomas Stover wrote:
+
+> (I know emacs has a server mode, so you can run several emacs clients in
+> different terms; I wish vim had this).
+
+:help remote
+
+Near as I can tell, this is enabled when Vim is built with a "normal" or "huge"
+feature set, as it is in most Linux and BSD distributions. Here's a blog post on some
+basic usage:
+
+http://ajayfromiiit.wordpress.com/2009/10/21/server-and-client-mode-in-vim/
+
+-- 
+"A common mistake that people make when trying to design something completely
+foolproof is to underestimate the ingenuity of complete fools." - Douglas Adams
+
+
+From alexander at plaimi.net  Tue Jul  8 10:14:43 2014
+From: alexander at plaimi.net (Alexander Berntsen)
+Date: Tue, 08 Jul 2014 10:14:43 +0200
+Subject: [i3] application tiling vs environment/wm tiling
+In-Reply-To: <CADHp1Nxi4hdtJkVL4g440BTrnWKadz5CNY36M4HZ1sGy7DzqmQ@mail.gmail.com>
+References: <lokal5$ce$1@ger.gmane.org> <20140629100034.GA17149@katrina>
+ <2a664d9119ca01d28128d9deafda4c47@neutralite.org>
+ <CADHp1Nxi4hdtJkVL4g440BTrnWKadz5CNY36M4HZ1sGy7DzqmQ@mail.gmail.com>
+Message-ID: <53BBA873.7040700@plaimi.net>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+On 07/07/14 17:01, Teto wrote:
+> As for firefox, you can configure it so that it doesn't tabs.
+How does this work with that feature that makes sure Fx only loads
+activated tabs on start? I.e. if you start Fx, it will load the page
+in the tab you're in when starting. Then whenever you happen to visit
+a tab, it will load the page in it. Without this behaviour, Fx would
+be unpleasant at best to use for me. I probably have around 1000 tabs
+open in 5 instances of Fx or so.
+
+- -- 
+Alexander
+alexander at plaimi.net
+https://secure.plaimi.net/~alexander
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+
+iF4EAREIAAYFAlO7qHMACgkQRtClrXBQc7XFswEAkvzEswhxjFaLXVIe2vn720Ao
+D5KQbVi1h3ZdcLslOFIA/3nxA1tSXBdFLXc2Kgl035QMRV7O+G3WZlJoqc2BakPL
+=mXTx
+-----END PGP SIGNATURE-----
+
+From lists at mehrzweckraum.com  Tue Jul 15 17:41:26 2014
+From: lists at mehrzweckraum.com (grubernd)
+Date: Tue, 15 Jul 2014 17:41:26 +0200
+Subject: [i3] window focus with pidgin-im
+Message-ID: <53C54BA6.5090208@mehrzweckraum.com>
+
+hi..
+
+new i3 user here, first journey into tiling country. i guess 
+single-tiled MS-DOS back then doesnt count. ;)
+
+currently running i3 on a manjaro-netbook (my testing enviroment) and a 
+xubuntu-thinkpad with second screen attached which is the work machine.
+for a newbie some things are weird, but i like how i3 works.
+
+the app i am currently struggling the most is pidgin.
+
+when pidgin is set to using it's own tabbed interface then only the 
+first chat makes i3 shift focus to that window. any subsequent chat 
+doesnt. which in turn leads to new chats in auto-opened mode do not get 
+raised to attention.
+if there are any hints how i can help to catch that secret signal pidgin 
+might be sending or not, i am happy to follow along.
+
+another issue is that if i dont use pidgin-tabs but let i3 resolve that, 
+a new chat window will get immediate attention, no matter where i am 
+else. which is actually worse than no attention, because this will have 
+me typing any wild commands into a chat and very likely hitting enter..
+
+from my ~/.i3/config
+
+for_window [class="Pidgin"] floating enable, move container to workspace 1
+
+
+grateful for any hints,
+cheers,
+grubernd
+--
+http://bilder.grubernd.at
+
+From mail at merovius.de  Tue Jul 15 17:57:17 2014
+From: mail at merovius.de (Axel Wagner)
+Date: Tue, 15 Jul 2014 17:57:17 +0200
+Subject: [i3] window focus with pidgin-im
+In-Reply-To: <53C54BA6.5090208@mehrzweckraum.com>
+References: <53C54BA6.5090208@mehrzweckraum.com>
+Message-ID: <8738e2lin6.fsf@rincewind.i-did-not-set--mail-host-address--so-tickle-me>
+
+Hi,
+
+> which in turn leads to new chats in auto-opened mode do not get raised
+> to attention.  if there are any hints how i can help to catch that
+> secret signal pidgin might be sending or not, i am happy to follow
+> along.
+
+I use the "message notification" plugin (comes per default, I think) and
+have it configured to set the URGENT hint. This will highlight the
+chatwindow (and the workspace it's on in i3bar) whenever you get a new
+message.
+
+Best,
+
+Merovius
+
+From lists at mehrzweckraum.com  Sun Jul 20 20:19:51 2014
+From: lists at mehrzweckraum.com (grubernd)
+Date: Sun, 20 Jul 2014 20:19:51 +0200
+Subject: [i3] having trouble installing stable on ubuntu
+In-Reply-To: <53C54BA6.5090208@mehrzweckraum.com>
+References: <53C54BA6.5090208@mehrzweckraum.com>
+Message-ID: <53CC0847.4040702@mehrzweckraum.com>
+
+hi..
+
+xubuntu 13.04 raring is my base-system.
+currently from the official repos i have i3 4.2 installed.
+trying to upgrade to a newer version with the commands from the help 
+page, yields various errors i cannot get past.
+
+http://i3wm.org/docs/repositories.html
+
+in the end it boils down to this one:
+
+ > The following packages have been kept back:
+ >  i3 i3-wm
+
+neither apt-get update, nor with --fix-missing nor any other googly 
+answer i found related to this worked.
+
+and the visual update-manager refuses to upgrade from un-authenticated 
+sources.
+
+any hints how i can get a better i3?
+
+thanks in advance,
+grubernd
+
+From nashpapa at gmail.com  Sun Jul 20 22:10:37 2014
+From: nashpapa at gmail.com (avinash r)
+Date: Mon, 21 Jul 2014 01:40:37 +0530
+Subject: [i3] having trouble installing stable on ubuntu
+In-Reply-To: <53CC0847.4040702@mehrzweckraum.com>
+References: <53C54BA6.5090208@mehrzweckraum.com>
+ <53CC0847.4040702@mehrzweckraum.com>
+Message-ID: <CAHCistf1jgLb9ZOKiOXc-zjrCCVv7aSj48ub_jr1wvWkaUMjzA@mail.gmail.com>
+
+To me, the Ubuntu repos are usually PITA.
+
+I am building it myself, really easier to manage.
+On 20-Jul-2014 11:50 pm, "grubernd" <lists at mehrzweckraum.com> wrote:
+
+> hi..
+>
+> xubuntu 13.04 raring is my base-system.
+> currently from the official repos i have i3 4.2 installed.
+> trying to upgrade to a newer version with the commands from the help page,
+> yields various errors i cannot get past.
+>
+> http://i3wm.org/docs/repositories.html
+>
+> in the end it boils down to this one:
+>
+> > The following packages have been kept back:
+> >  i3 i3-wm
+>
+> neither apt-get update, nor with --fix-missing nor any other googly answer
+> i found related to this worked.
+>
+> and the visual update-manager refuses to upgrade from un-authenticated
+> sources.
+>
+> any hints how i can get a better i3?
+>
+> thanks in advance,
+> grubernd
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140721/289d5794/attachment.html>
+
+From lists at mehrzweckraum.com  Sun Jul 20 23:20:49 2014
+From: lists at mehrzweckraum.com (grubernd)
+Date: Sun, 20 Jul 2014 23:20:49 +0200
+Subject: [i3] having trouble installing stable on ubuntu
+In-Reply-To: <CAHCistf1jgLb9ZOKiOXc-zjrCCVv7aSj48ub_jr1wvWkaUMjzA@mail.gmail.com>
+References: <53C54BA6.5090208@mehrzweckraum.com>
+ <53CC0847.4040702@mehrzweckraum.com>
+ <CAHCistf1jgLb9ZOKiOXc-zjrCCVv7aSj48ub_jr1wvWkaUMjzA@mail.gmail.com>
+Message-ID: <53CC32B1.8050908@mehrzweckraum.com>
+
+On 2014-07-20 22:10, avinash r wrote:
+> To me, the Ubuntu repos are usually PITA.
+
+sadly, as usual. one of the reasons i am planning to fully switch to 
+arch linux (rolling releases, user repository) asap. i am using it for 
+embedded machines already and quite happy. also manjaro looks pretty 
+usable out of the box.
+
+> I am building it myself, really easier to manage.
+
+might try that. not much of a self-compiler, though.
+
+--
+grubernd
+
+From michael at i3wm.org  Sun Jul 20 23:25:45 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 20 Jul 2014 23:25:45 +0200
+Subject: [i3] having trouble installing stable on ubuntu
+In-Reply-To: <53CC0847.4040702@mehrzweckraum.com>
+References: <53C54BA6.5090208@mehrzweckraum.com>
+ <53CC0847.4040702@mehrzweckraum.com>
+Message-ID: <x6egxfracm.fsf@midna.zekjur.net>
+
+Hi grubernd,
+
+grubernd <lists at mehrzweckraum.com> writes:
+>  > The following packages have been kept back:
+>  >  i3 i3-wm
+What does “apt-cache policy i3-wm” say?
+
+> and the visual update-manager refuses to upgrade from un-authenticated 
+> sources.
+Why is the source unauthenticated? Did you not follow the instructions
+about installing the sur5r-keyring package?
+
+-- 
+Best regards,
+Michael
+
+From jk at zognet.com  Sun Jul 20 23:29:06 2014
+From: jk at zognet.com (Gerald Klein)
+Date: Sun, 20 Jul 2014 16:29:06 -0500
+Subject: [i3] having trouble installing stable on ubuntu
+In-Reply-To: <53CC32B1.8050908@mehrzweckraum.com>
+References: <53C54BA6.5090208@mehrzweckraum.com>
+ <53CC0847.4040702@mehrzweckraum.com>
+ <CAHCistf1jgLb9ZOKiOXc-zjrCCVv7aSj48ub_jr1wvWkaUMjzA@mail.gmail.com>
+ <53CC32B1.8050908@mehrzweckraum.com>
+Message-ID: <CAP8NtCwtmztFPgbY2+MEAWx9-e6RkLmnf5fsBpM1OK_3mCBHeg@mail.gmail.com>
+
+The arch suggestion is a good one, I use i3 on arch and it is awesome and
+yes an alternative to Arch el natural is Manjaro.
+
+
+On Sun, Jul 20, 2014 at 4:20 PM, grubernd <lists at mehrzweckraum.com> wrote:
+
+> On 2014-07-20 22:10, avinash r wrote:
+>
+>> To me, the Ubuntu repos are usually PITA.
+>>
+>
+> sadly, as usual. one of the reasons i am planning to fully switch to arch
+> linux (rolling releases, user repository) asap. i am using it for embedded
+> machines already and quite happy. also manjaro looks pretty usable out of
+> the box.
+>
+>  I am building it myself, really easier to manage.
+>>
+>
+> might try that. not much of a self-compiler, though.
+>
+> --
+> grubernd
+>
+
+
+
+-- 
+
+Gerald Klein DBA
+
+ContactMe at geraldklein.com
+
+www.geraldklein.com <http://geraldklein.com/>
+
+geraldklein.wordpress.com
+
+jk at zognet.com
+
+708-599-0352
+
+
+Arch, Gentoo I3, Ranger & Vim the coding triple threat.
+
+Linux registered user #548580
+
+Brought to you by the Amish Mafia
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140720/9dd50ded/attachment.html>
+
+From michael at i3wm.org  Mon Jul 21 00:10:45 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 21 Jul 2014 00:10:45 +0200
+Subject: [i3] having trouble installing stable on ubuntu
+In-Reply-To: <53CC3CAA.1070004@mehrzweckraum.com>
+References: <53C54BA6.5090208@mehrzweckraum.com>
+ <53CC0847.4040702@mehrzweckraum.com> <x6egxfracm.fsf@midna.zekjur.net>
+ <53CC3CAA.1070004@mehrzweckraum.com>
+Message-ID: <x6bnsjr89m.fsf@midna.zekjur.net>
+
+[please don’t drop i3-discuss from cc when replying]
+
+Hi grubernd,
+
+grubernd <lists at mehrzweckraum.com> writes:
+> i3-wm:
+>    Installed: 4.2-2
+>    Candidate: 4.8-1raring1
+That looks reasonable to me.
+
+>    Version table:
+>       4.8-1raring1 0
+>          500 http://debian.sur5r.net/i3/ raring/universe amd64 Packages
+>   *** 4.2-2 0
+>          500 http://at.archive.ubuntu.com/ubuntu/ raring/universe amd64 
+> Packages
+>          100 /var/lib/dpkg/status>
+>
+>> Why is the source unauthenticated? Did you not follow the instructions
+>> about installing the sur5r-keyring package?
+>
+> i did, i followed the instructions by the letter. maybe because 4.2 was 
+> installed *before* i did that?
+That should not matter.
+
+What’s the output of “apt-get install i3-wm i3”? Also, what’s the output
+of “apt-get install i3-wm=4.8-1raring1”?
+
+-- 
+Best regards,
+Michael
+
+From lists at mehrzweckraum.com  Mon Jul 21 10:58:59 2014
+From: lists at mehrzweckraum.com (grubernd)
+Date: Mon, 21 Jul 2014 10:58:59 +0200
+Subject: [i3] having trouble installing stable on ubuntu
+In-Reply-To: <x6bnsjr89m.fsf@midna.zekjur.net>
+References: <53C54BA6.5090208@mehrzweckraum.com>
+ <53CC0847.4040702@mehrzweckraum.com> <x6egxfracm.fsf@midna.zekjur.net>
+ <53CC3CAA.1070004@mehrzweckraum.com> <x6bnsjr89m.fsf@midna.zekjur.net>
+Message-ID: <53CCD653.7070004@mehrzweckraum.com>
+
+On 2014-07-21 00:10, Michael Stapelberg wrote:
+> [please don’t drop i3-discuss from cc when replying]
+
+i didnt drop it, thunderbird did. ;)
+
+which is weird, because on some other lists it rather keeps the address 
+of the sender besides the list-address. maybe because you are the admin 
+there is something different in your reply-to settings?
+i had to add i3-discuss manually now. my replies to other list-members 
+before worked, as expected.
+
+> What’s the output of “apt-get install i3-wm i3”? Also, what’s the output
+> of “apt-get install i3-wm=4.8-1raring1”?
+
+
+the output is the same, see below. i tried various things like adding a 
+nameserver to the resolv.conf but to be honest: i dont have a clue how 
+that ubuntu-package-server thingie really works, couldnt find any 
+instructions free of myths or wild speculations. it's supposed to be 
+automatic, isnt it? ;)
+
+
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following extra packages will be installed:
+   dunst libanyevent-i3-perl libanyevent-perl libcommon-sense-perl 
+libjson-xs-perl libxcb-cursor0 libxcb-render-util0 libxdg-basedir1
+Suggested packages:
+   libasync-interrupt-perl libev-perl libevent-perl libguard-perl 
+libio-async-perl libpoe-perl libtask-weaken-perl perl-tk
+Recommended packages:
+   fonts-dejavu-core
+The following NEW packages will be installed:
+   dunst libanyevent-i3-perl libanyevent-perl libcommon-sense-perl 
+libjson-xs-perl libxcb-cursor0 libxcb-render-util0 libxdg-basedir1
+The following packages will be upgraded:
+   i3 i3-wm
+2 upgraded, 8 newly installed, 0 to remove and 0 not upgraded.
+Need to get 535 kB/1.433 kB of archives.
+After this operation, 1.636 kB of additional disk space will be used.
+Do you want to continue [Y/n]?
+WARNING: The following packages cannot be authenticated!
+   libxcb-render-util0 libanyevent-perl libcommon-sense-perl 
+libjson-xs-perl libanyevent-i3-perl libxdg-basedir1 dunst
+Install these packages without verification [y/N]? y
+Err http://at.archive.ubuntu.com/ubuntu/ raring/universe 
+libanyevent-perl all 7.040-1
+   404  Not Found [IP: 83.164.133.196 80]
+Err http://at.archive.ubuntu.com/ubuntu/ raring/main libjson-xs-perl 
+amd64 2.330-1
+   404  Not Found [IP: 83.164.133.196 80]
+Err http://at.archive.ubuntu.com/ubuntu/ raring/universe 
+libanyevent-i3-perl all 0.12-1
+   404  Not Found [IP: 83.164.133.196 80]
+Err http://at.archive.ubuntu.com/ubuntu/ raring/universe dunst amd64 0.2.0-3
+   404  Not Found [IP: 83.164.133.196 80]
+Failed to fetch 
+http://at.archive.ubuntu.com/ubuntu/pool/universe/liba/libanyevent-perl/libanyevent-perl_7.040-1_all.deb 
+  404  Not Found [IP: 83.164.133.196 80]
+Failed to fetch 
+http://at.archive.ubuntu.com/ubuntu/pool/main/libj/libjson-xs-perl/libjson-xs-perl_2.330-1_amd64.deb 
+  404  Not Found [IP: 83.164.133.196 80]
+Failed to fetch 
+http://at.archive.ubuntu.com/ubuntu/pool/universe/liba/libanyevent-i3-perl/libanyevent-i3-perl_0.12-1_all.deb 
+  404  Not Found [IP: 83.164.133.196 80]
+Failed to fetch 
+http://at.archive.ubuntu.com/ubuntu/pool/universe/d/dunst/dunst_0.2.0-3_amd64.deb 
+  404  Not Found [IP: 83.164.133.196 80]
+E: Unable to fetch some archives, maybe run apt-get update or try with 
+--fix-missing?
+
+From michael at i3wm.org  Tue Jul 22 09:19:25 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 22 Jul 2014 09:19:25 +0200
+Subject: [i3] having trouble installing stable on ubuntu
+In-Reply-To: <53CCD653.7070004@mehrzweckraum.com>
+References: <53C54BA6.5090208@mehrzweckraum.com>
+ <53CC0847.4040702@mehrzweckraum.com> <x6egxfracm.fsf@midna.zekjur.net>
+ <53CC3CAA.1070004@mehrzweckraum.com> <x6bnsjr89m.fsf@midna.zekjur.net>
+ <53CCD653.7070004@mehrzweckraum.com>
+Message-ID: <x61ttdj1xe.fsf@midna.zekjur.net>
+
+Hi grubernd,
+
+grubernd <lists at mehrzweckraum.com> writes:
+> Reading package lists... Done
+> Building dependency tree
+> Reading state information... Done
+> The following extra packages will be installed:
+>    dunst libanyevent-i3-perl libanyevent-perl libcommon-sense-perl 
+> libjson-xs-perl libxcb-cursor0 libxcb-render-util0 libxdg-basedir1
+> Suggested packages:
+>    libasync-interrupt-perl libev-perl libevent-perl libguard-perl 
+> libio-async-perl libpoe-perl libtask-weaken-perl perl-tk
+> Recommended packages:
+>    fonts-dejavu-core
+> The following NEW packages will be installed:
+>    dunst libanyevent-i3-perl libanyevent-perl libcommon-sense-perl 
+> libjson-xs-perl libxcb-cursor0 libxcb-render-util0 libxdg-basedir1
+> The following packages will be upgraded:
+>    i3 i3-wm
+> 2 upgraded, 8 newly installed, 0 to remove and 0 not upgraded.
+> Need to get 535 kB/1.433 kB of archives.
+> After this operation, 1.636 kB of additional disk space will be used.
+> Do you want to continue [Y/n]?
+> WARNING: The following packages cannot be authenticated!
+>    libxcb-render-util0 libanyevent-perl libcommon-sense-perl 
+> libjson-xs-perl libanyevent-i3-perl libxdg-basedir1 dunst
+> Install these packages without verification [y/N]? y
+> Err http://at.archive.ubuntu.com/ubuntu/ raring/universe 
+> libanyevent-perl all 7.040-1
+>    404  Not Found [IP: 83.164.133.196 80]
+> Err http://at.archive.ubuntu.com/ubuntu/ raring/main libjson-xs-perl 
+> amd64 2.330-1
+>    404  Not Found [IP: 83.164.133.196 80]
+> Err http://at.archive.ubuntu.com/ubuntu/ raring/universe 
+> libanyevent-i3-perl all 0.12-1
+>    404  Not Found [IP: 83.164.133.196 80]
+> Err http://at.archive.ubuntu.com/ubuntu/ raring/universe dunst amd64 0.2.0-3
+>    404  Not Found [IP: 83.164.133.196 80]
+> Failed to fetch 
+> http://at.archive.ubuntu.com/ubuntu/pool/universe/liba/libanyevent-perl/libanyevent-perl_7.040-1_all.deb 
+>   404  Not Found [IP: 83.164.133.196 80]
+> Failed to fetch 
+> http://at.archive.ubuntu.com/ubuntu/pool/main/libj/libjson-xs-perl/libjson-xs-perl_2.330-1_amd64.deb 
+>   404  Not Found [IP: 83.164.133.196 80]
+> Failed to fetch 
+> http://at.archive.ubuntu.com/ubuntu/pool/universe/liba/libanyevent-i3-perl/libanyevent-i3-perl_0.12-1_all.deb 
+>   404  Not Found [IP: 83.164.133.196 80]
+> Failed to fetch 
+> http://at.archive.ubuntu.com/ubuntu/pool/universe/d/dunst/dunst_0.2.0-3_amd64.deb 
+>   404  Not Found [IP: 83.164.133.196 80]
+> E: Unable to fetch some archives, maybe run apt-get update or try with 
+> --fix-missing?
+That’s odd. Your system seems to be lacking the signing keys for the
+Ubuntu package sources. In addition (perhaps caused by that), your
+package lists seem outdated (which is why you get the 404s). I’d suggest
+deleting /var/lib/apt/lists/*, followed by apt-get update. If apt-get
+update complains, fix the signature problem. Get help about how to do
+that elsewhere please since that’s not an i3 problem.
+
+Afterwards, it should just work.
+
+-- 
+Best regards,
+Michael
+
+From lists at mehrzweckraum.com  Mon Jul 28 16:14:44 2014
+From: lists at mehrzweckraum.com (grubernd)
+Date: Mon, 28 Jul 2014 16:14:44 +0200
+Subject: [i3] having trouble installing stable on ubuntu
+Message-ID: <53D65AD4.106@mehrzweckraum.com>
+
+On 2014-07-22 09:19, Michael Stapelberg wrote:
+ > That’s odd. Your system seems to be lacking the signing keys for the
+ > Ubuntu package sources. In addition (perhaps caused by that), your
+ > package lists seem outdated (which is why you get the 404s). I’d suggest
+ > deleting /var/lib/apt/lists/*, followed by apt-get update. If apt-get
+ > update complains, fix the signature problem. Get help about how to do
+ > that elsewhere please since that’s not an i3 problem.
+ >
+ > Afterwards, it should just work.
+
+a follow-up. apparently x/ubuntu 13.04 has really reached its EOL (end 
+of life) and the servers for raring were taken offline in austria. well.
+
+after almost three hours munching through more than 2k packages for the 
+dist-upgrade to 14.04 LTS everything is up and running, including i3 4.8.
+
+maybe using ubuntu raring (13.04) isnt the ideal choice for the 
+development version anymore - unless the website is outdated:
+http://i3wm.org/docs/repositories.html
+
+ > Development versions are only available for the latest version of 
+Ubuntu, which is raring at the moment.
+
+because that line was the reason i thought the update inside 13.04 would 
+work in the first place.
+
+
+cheers,
+grubernd
+
+PS: damn, reply-to still not working automatically.
+
+From michael at i3wm.org  Tue Jul 29 09:21:40 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 29 Jul 2014 09:21:40 +0200
+Subject: [i3] having trouble installing stable on ubuntu
+In-Reply-To: <53D65AD4.106@mehrzweckraum.com>
+References: <53D65AD4.106@mehrzweckraum.com>
+Message-ID: <x6vbqgk4u3.fsf@midna.zekjur.net>
+
+Hi grubernd,
+
+grubernd <lists at mehrzweckraum.com> writes:
+> maybe using ubuntu raring (13.04) isnt the ideal choice for the 
+> development version anymore - unless the website is outdated:
+> http://i3wm.org/docs/repositories.html
+Updated it. Ubuntu releases too often, it’s impossible to keep up :p.
+
+>  > Development versions are only available for the latest version of 
+> Ubuntu, which is raring at the moment.
+>
+> because that line was the reason i thought the update inside 13.04 would 
+> work in the first place.
+Note that the version you are using is _not_ the development
+version. You’re installing stable. Not sure why you read a paragraph
+about the development version and then deduce anything related to stable
+from that :).
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Tue Jul 29 09:23:34 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 29 Jul 2014 09:23:34 +0200
+Subject: [i3] i3 wm problem.
+In-Reply-To: <CAD9s4Uk-eQq9u+_N-yUL40LB+oY+46D38Q_0VJVuGw6eETgR2A@mail.gmail.com>
+References: <CAD9s4Uk-eQq9u+_N-yUL40LB+oY+46D38Q_0VJVuGw6eETgR2A@mail.gmail.com>
+Message-ID: <x6silkk4qx.fsf@midna.zekjur.net>
+
+Hi lee,
+
+"lee.changhan " <changhanlee at gmail.com> writes:
+> Hi, I have been installing the apt package for ubuntu (i3 version 4.7.2)
+> but this version always has a problem with window resizing. mod+r gives me
+> the resize label, but I cannot resize with the default bindings. I wonder
+> if this is a bug with the current version packaged for debian?
+As you can see in the Debian bug tracker, there are no known bugs with
+the version packaged for Debian. Also note that we have 4.8 in Debian,
+while you are using Ubuntu.
+
+Please don’t try to get support by directly mailing random maintainers.
+I’ve cc'ed i3-discuss@ which is the appropriate place to ask questions.
+
+If you have a reproducible bug, the appropriate place to report it is
+http://bugs.i3wm.org/
+
+-- 
+Best regards,
+Michael
+
+From veljko3 at gmail.com  Tue Jul 29 11:01:40 2014
+From: veljko3 at gmail.com (Veljko)
+Date: Tue, 29 Jul 2014 11:01:40 +0200
+Subject: [i3] Backported version [Was: Re:  i3 wm problem.]
+In-Reply-To: <x6silkk4qx.fsf@midna.zekjur.net>
+References: <CAD9s4Uk-eQq9u+_N-yUL40LB+oY+46D38Q_0VJVuGw6eETgR2A@mail.gmail.com>
+ <x6silkk4qx.fsf@midna.zekjur.net>
+Message-ID: <20140729090139.GA8319@angelina.example.com>
+
+On 2014-Jul-29 09:23, Michael Stapelberg wrote:
+> Also note that we have 4.8 in Debian,
+
+In Debian stable there is 4.2, but I'm using backported 4.7.2. Will 4.8
+be available in backports repository?
+
+Regards,
+Veljko
+
+From RLAdams at AdamsInfoServ.Com  Tue Jul 29 14:17:18 2014
+From: RLAdams at AdamsInfoServ.Com (Russell Adams)
+Date: Tue, 29 Jul 2014 07:17:18 -0500
+Subject: [i3] Multidimensional spatial tiling
+Message-ID: <20140729121718.GP15171@cardamom.adamsinfoserv.com>
+
+I've been able to port over my workspace management from Awesome to i3
+using IPC, the config is attached.
+
+The concept was discussed frequently on IRC. Imagine instead of using
+workspaces as tags, they are just elements in an array. If you
+represent a workspace as a cell on a piece of graph paper, and then
+use another piece of paper with one or more cells cut out as a mask to
+slide around and view the underlying layer it would be a fair analogy.
+
+Down to the issue I've found. I'm not sure if I'm outracing the IPC
+interface, but frequently IPC commands to make the workspaces change
+are failing while returning success. So I'll have a monitor where the
+workspace is still a scratch one (ie: by output name) instead of it
+changing to the workspace intended. No crashing, and often repeating
+the operation will make it work.
+
+Second I've run into an issue where Gkrellm cannot dock on the left or
+right side of the screen because left/right docking WM hints haven't
+been implemented yet. Is this a pending feature?
+
+Thanks.
+
+
+
+------------------------------------------------------------------
+Russell Adams                            RLAdams at AdamsInfoServ.com
+
+PGP Key ID:     0x1160DCB3           http://www.adamsinfoserv.com/
+
+Fingerprint:    1723 D8CA 4280 1EC9 557F  66E8 1154 E018 1160 DCB3
+-------------- next part --------------
+set $mod Mod4
+font pango:DejaVu Sans Mono 8
+mouse_warping none
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# start a terminal, I use xbindkeys
+#bindsym $mod+Shift+Return exec urxvt
+
+
+# class                 border  backgr. text    indicator
+client.focused          #888888 #888888 #000000 #2e9ef4
+client.focused_inactive #333333 #222222 #888888 #292d2e
+client.unfocused        #333333 #222222 #888888 #292d2e
+client.urgent           #2f343a #900000 #ffffff #900000
+
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+q exit
+
+# Inter-workspace navigation, panning around the 2d plane
+bindsym Control+Left  exec --no-startup-id ~/.i3/workspaces.py  -1   0  0
+bindsym Control+Right exec --no-startup-id ~/.i3/workspaces.py   1   0  0
+bindsym Control+Up    exec --no-startup-id ~/.i3/workspaces.py   0  -1  0
+bindsym Control+Down  exec --no-startup-id ~/.i3/workspaces.py   0   1  0
+
+# Inter-workspace navigation, swap planes on third dimension
+bindsym Control+Shift+Left  exec --no-startup-id ~/.i3/workspaces.py  0  0 -1
+bindsym Control+Shift+Right exec --no-startup-id ~/.i3/workspaces.py  0  0  1
+
+# Intra-workspace navigation
+# change focus
+bindsym Shift+Left  focus left
+bindsym Shift+Down  focus down
+bindsym Shift+Up    focus up
+bindsym Shift+Right focus right
+
+# Move the window column
+bindsym $mod+Shift+Left  move left
+bindsym $mod+Shift+Down  move down
+bindsym $mod+Shift+Up    move up
+bindsym $mod+Shift+Right move right
+
+# split in horizontal orientation
+bindsym $mod+Shift+h split h
+
+# split in vertical orientation
+bindsym $mod+Shift+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+space fullscreen
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+Shift+s layout stacking
+bindsym $mod+Shift+w layout tabbed
+bindsym $mod+Shift+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# resize window (you can also use the mouse for that)
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym j resize shrink width 10 px or 10 ppt
+        bindsym k resize grow height 10 px or 10 ppt
+        bindsym l resize shrink height 10 px or 10 ppt
+        bindsym semicolon resize grow width 10 px or 10 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+        status_command i3status
+}
+
+# Set defaults
+workspace  0_0_0 output LVDS1
+workspace -1_0_0 output DVI-D-2
+workspace  0_0_0 output DVI-I-1
+workspace  1_0_0 output DVI-D-1
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: workspaces.py
+Type: text/x-python
+Size: 4525 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140729/c5e8f175/attachment.py>
+
+From lists at mehrzweckraum.com  Tue Jul 29 17:46:22 2014
+From: lists at mehrzweckraum.com (grubernd)
+Date: Tue, 29 Jul 2014 17:46:22 +0200
+Subject: [i3] having trouble installing stable on ubuntu
+In-Reply-To: <x6vbqgk4u3.fsf@midna.zekjur.net>
+References: <53D65AD4.106@mehrzweckraum.com> <x6vbqgk4u3.fsf@midna.zekjur.net>
+Message-ID: <53D7C1CE.60408@mehrzweckraum.com>
+
+On 2014-07-29 09:21, Michael Stapelberg wrote:
+> Updated it. Ubuntu releases too often, it’s impossible to keep up :p.
+
+=)
+
+> Note that the version you are using is _not_ the development
+> version. You’re installing stable. Not sure why you read a paragraph
+> about the development version and then deduce anything related to stable
+> from that :).
+
+i know i am using stable right now. but since i am not too scared about 
+running one or the other app in their dev-version even on my production 
+machine i thought i'd try that since the last version for ubuntu 13.04 
+was 4.2.
+once i have i3 figured out better i might move to the dev-releases, a 
+man needs a hobby.
+
+anyway.. after fixing some ubuntu upgrade stuff everything looks pretty 
+pretty now.
+
+cheers,
+grubernd
+--
+http://grubernd.tumblr.com
+
+
+From i3 at stranner.org  Tue Jul 29 19:44:39 2014
+From: i3 at stranner.org (Heimo Stranner)
+Date: Tue, 29 Jul 2014 19:44:39 +0200
+Subject: [i3] Lowest empty Workspace
+Message-ID: <53D7DD87.8030107@stranner.org>
+
+I want to switch to the lowest workspace that doesn't have any windows on it quite often. Because I use multiple monitors it is not always obvious and quick to see which workspaces are currently in use. So i wrote a little script that switches (or moves a window) to the lowest empty workspace.
+
+#!/bin/bash
+for i in {1..100}
+do
+	res=$(i3-save-tree --workspace $i | grep -v "^//")
+	if [ -z "$res" ]; then
+		if [ $1 = "m" ]; then
+			i3-msg move workspace $i
+		fi
+		if [ $1 = "n" ]; then
+			i3-msg workspace $i
+		fi
+		break
+	fi
+done
+
+It works pretty well but is kinda hackish and could be faster. I am not aware of any native support for this use case. Does anyone know about a better way of addressing this use case?
+
+Thanks.
+
+Heimo
+
+From ziphilt at gmail.com  Tue Jul 29 22:05:41 2014
+From: ziphilt at gmail.com (Caleb Stepanian)
+Date: Tue, 29 Jul 2014 20:05:41 +0000
+Subject: [i3] Lowest empty Workspace
+In-Reply-To: <53D7DD87.8030107@stranner.org>
+References: <53D7DD87.8030107@stranner.org>
+Message-ID: <20140729200541.GB1592@xekri.jan-hus-haus.ssb.net>
+
+Heimo Stranner <i3 at stranner.org> 2014-07-29 17:44 UTC:
+>I want to switch to the lowest workspace that doesn't have any windows 
+>on it quite often. Because I use multiple monitors it is not always 
+>obvious and quick to see which workspaces are currently in use. So i 
+>wrote a little script that switches (or moves a window) to the lowest 
+>empty workspace.
+
+>It works pretty well but is kinda hackish and could be faster. I am not 
+>aware of any native support for this use case. Does anyone know about a 
+>better way of addressing this use case?
+>
+>Thanks.
+>
+>Heimo
+
+Quickswitch for i3 (https://github.com/proxypoke/quickswitch-for-i3) 
+does what you want.  Call it with `quickswitch.py --empty`.
+
+Cal
+
+From i3 at stranner.org  Wed Jul 30 10:15:58 2014
+From: i3 at stranner.org (Heimo Stranner)
+Date: Wed, 30 Jul 2014 10:15:58 +0200
+Subject: [i3] Lowest empty Workspace
+In-Reply-To: <20140729200541.GB1592@xekri.jan-hus-haus.ssb.net>
+References: <53D7DD87.8030107@stranner.org>
+ <20140729200541.GB1592@xekri.jan-hus-haus.ssb.net>
+Message-ID: <53D8A9BE.9000504@stranner.org>
+
+On 2014-07-29 22:05, Caleb Stepanian wrote:
+> Heimo Stranner <i3 at stranner.org> 2014-07-29 17:44 UTC:
+>> I want to switch to the lowest workspace that doesn't have any windows on it quite often. Because I use multiple monitors it is not always obvious and quick to see which workspaces are currently in use. So i wrote a little script that switches (or moves a window) to the lowest empty workspace.
+> 
+>> It works pretty well but is kinda hackish and could be faster. I am not aware of any native support for this use case. Does anyone know about a better way of addressing this use case?
+>>
+>> Thanks.
+>>
+>> Heimo
+> 
+> Quickswitch for i3 (https://github.com/proxypoke/quickswitch-for-i3) does what you want.  Call it with `quickswitch.py --empty`.
+> 
+> Cal
+
+Thank you very much. This adds even more great stuff that I didn't knew I needed.
+
+From ziphilt at gmail.com  Wed Jul 30 10:33:56 2014
+From: ziphilt at gmail.com (Caleb Stepanian)
+Date: Wed, 30 Jul 2014 08:33:56 +0000
+Subject: [i3] Lowest empty Workspace
+In-Reply-To: <53D8A9BE.9000504@stranner.org>
+References: <53D7DD87.8030107@stranner.org>
+ <20140729200541.GB1592@xekri.jan-hus-haus.ssb.net>
+ <53D8A9BE.9000504@stranner.org>
+Message-ID: <20140730083356.GD1592@xekri.jan-hus-haus.ssb.net>
+
+Heimo Stranner <i3 at stranner.org> 2014-07-30 08:15 UTC:
+>Thank you very much. This adds even more great stuff that I didn't knew 
+>I needed.
+
+You're very welcome.  Might I also suggest you take a look at my pending 
+pull request, which adds support to jump directly to the first window 
+(in any workspace) whose urgency hint is set.  I find this incredibly 
+useful.
+
+Cal
+
+From michael at i3wm.org  Thu Jul 31 16:50:13 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 31 Jul 2014 16:50:13 +0200
+Subject: [i3] Multidimensional spatial tiling
+In-Reply-To: <20140729121718.GP15171@cardamom.adamsinfoserv.com>
+References: <20140729121718.GP15171@cardamom.adamsinfoserv.com>
+Message-ID: <x6oaw5lh0a.fsf@midna.zekjur.net>
+
+Hi Russell,
+
+Russell Adams <RLAdams at AdamsInfoServ.Com> writes:
+> I've been able to port over my workspace management from Awesome to i3
+> using IPC, the config is attached.
+Once you get this stabilized, may I ask you to contribute this
+configuration to the “user-contributed documentation” section on
+i3wm.org?
+
+> Down to the issue I've found. I'm not sure if I'm outracing the IPC
+> interface, but frequently IPC commands to make the workspaces change
+> are failing while returning success. So I'll have a monitor where the
+> workspace is still a scratch one (ie: by output name) instead of it
+> changing to the workspace intended. No crashing, and often repeating
+> the operation will make it work.
+Sounds like a race condition. The i3 logfile will be helpful, see
+http://i3wm.org/docs/debugging.html
+
+> Second I've run into an issue where Gkrellm cannot dock on the left or
+> right side of the screen because left/right docking WM hints haven't
+> been implemented yet. Is this a pending feature?
+See http://bugs.i3wm.org/report/ticket/1129
+
+> #!/usr/bin/python3
+>
+> import struct
+> import json
+> import subprocess
+> import socket
+> import argparse
+> import time
+>
+> # Workspaces in the format of 1:2:3, with negative integers ok.
+>
+> # List of monitors, with x/y offset from center
+> centerScreen = "DVI-I-1"
+> monitors = { "DVI-D-2": (-1, 0), # Left at dock
+>              "DVI-I-1": ( 0, 0), # Center for docking station
+>              "DVI-D-1": ( 1, 0), # Right at dock
+> }
+>
+> ipcheader = b'i3-ipc'
+> ipccmds = { 'COMMAND':        0,
+>             'GET_WORKSPACES': 1,
+>             'GET_OUTPUTS':    3,
+>             }
+>
+> # Obtain socket
+> socketfile = subprocess.Popen(['/usr/bin/i3','--get-socket'],
+>                               stdout=subprocess.PIPE).communicate()[0].rstrip()
+>
+> def socketCommand(mode, command=''):
+>
+>     i3socket = socket.socket(socket.AF_UNIX)
+>     i3socket.connect(socketfile)
+>     i3socket.send( struct.pack("=6sLL" + str(len(command)) + "s", b'i3-ipc', len(command), ipccmds[mode], command.encode()) )
+>     reply = i3socket.recv(8192)
+>
+>     data = struct.unpack('=ccccccLL',reply[:14])
+>     assert b''.join(data[0:6]) == b'i3-ipc'
+>     size = data[6]
+>
+>     payload = struct.unpack("=ccccccLL" + str(size) + "s", reply)[8]
+>
+>     i3socket.close()
+>
+>     print(command)
+>     print(json.loads(payload.decode()))
+>     return json.loads(payload.decode())
+
+Ugh, why do you re-implement all the IPC interface code? There’s
+libraries for that :). I hear https://github.com/acrisci/i3ipc-python is
+the most maintained and up to date one.
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Thu Jul 31 16:57:11 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 31 Jul 2014 16:57:11 +0200
+Subject: [i3] Backported version [Was: Re:  i3 wm problem.]
+In-Reply-To: <20140729090139.GA8319@angelina.example.com>
+References: <CAD9s4Uk-eQq9u+_N-yUL40LB+oY+46D38Q_0VJVuGw6eETgR2A@mail.gmail.com>
+ <x6silkk4qx.fsf@midna.zekjur.net>
+ <20140729090139.GA8319@angelina.example.com>
+Message-ID: <x6zjfplgoo.fsf@midna.zekjur.net>
+
+Hi Veljko,
+
+Veljko <veljko3 at gmail.com> writes:
+
+> On 2014-Jul-29 09:23, Michael Stapelberg wrote:
+>> Also note that we have 4.8 in Debian,
+>
+> In Debian stable there is 4.2, but I'm using backported 4.7.2. Will 4.8
+> be available in backports repository?
+I just uploaded 4.8 to wheezy-backports. It should be available within a
+couple of hours.
+
+-- 
+Best regards,
+Michael
+
+From RLAdams at AdamsInfoServ.Com  Thu Jul 31 17:32:52 2014
+From: RLAdams at AdamsInfoServ.Com (Russell Adams)
+Date: Thu, 31 Jul 2014 10:32:52 -0500
+Subject: [i3] Multidimensional spatial tiling
+In-Reply-To: <x6oaw5lh0a.fsf@midna.zekjur.net>
+References: <20140729121718.GP15171@cardamom.adamsinfoserv.com>
+ <x6oaw5lh0a.fsf@midna.zekjur.net>
+Message-ID: <20140731153252.GF15171@cardamom.adamsinfoserv.com>
+
+On Thu, Jul 31, 2014 at 04:50:13PM +0200, Michael Stapelberg wrote:
+> Hi Russell,
+>
+> Russell Adams <RLAdams at AdamsInfoServ.Com> writes:
+> > I've been able to port over my workspace management from Awesome to i3
+> > using IPC, the config is attached.
+> Once you get this stabilized, may I ask you to contribute this
+> configuration to the “user-contributed documentation” section on
+> i3wm.org?
+
+I would encourage it to be shared. Whether I can write some form of
+contribution may vary, time permitting. I'm certainly a strong
+advocate of virtual screen space over tagging.
+
+> > Down to the issue I've found. I'm not sure if I'm outracing the IPC
+> > interface, but frequently IPC commands to make the workspaces change
+> > are failing while returning success. So I'll have a monitor where the
+> > workspace is still a scratch one (ie: by output name) instead of it
+> > changing to the workspace intended. No crashing, and often repeating
+> > the operation will make it work.
+> Sounds like a race condition. The i3 logfile will be helpful, see
+> http://i3wm.org/docs/debugging.html
+
+I will give that a try!
+
+> > Second I've run into an issue where Gkrellm cannot dock on the left or
+> > right side of the screen because left/right docking WM hints haven't
+> > been implemented yet. Is this a pending feature?
+> See http://bugs.i3wm.org/report/ticket/1129
+
+That's a shame that it seems so difficult. It appears that the docking
+support was hardcoded with only i3bar in mind. I'm trying to use
+Gkrellm again, and unfortunately I may have to revert to awesome if I
+can't. I am very keen to see this supported. Gkrellm and i3bar provide
+completely different functionality and on a tiny laptop I can spare
+space on the left due to the wide screen craze. Every line of vertical
+space is precious. I'd rather do without i3bar.
+
+> > #!/usr/bin/python3
+> >
+> > import struct
+> > ...
+> >     return json.loads(payload.decode())
+>
+> Ugh, why do you re-implement all the IPC interface code? There’s
+> libraries for that :). I hear https://github.com/acrisci/i3ipc-python is
+> the most maintained and up to date one.
+
+I spoke with one of the authors of one of the libraries along the way
+too. It's trivial code to create for my use case, and my version of
+Ubuntu didn't meet the prerequisites of the best of the Python i3 IPC
+libraries. I think autotools was out of date. To sum up: I tried to
+use the lib, and wrote a few lines myself instead of upgrading.
+
+Thanks.
+
+------------------------------------------------------------------
+Russell Adams                            RLAdams at AdamsInfoServ.com
+
+PGP Key ID:     0x1160DCB3           http://www.adamsinfoserv.com/
+
+Fingerprint:    1723 D8CA 4280 1EC9 557F  66E8 1154 E018 1160 DCB3
+

@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3-input command building
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3-input%20command%20building&In-Reply-To=%3C1314970528-sup-6653%40stapelberg.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000285.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3-input command building</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3-input%20command%20building&In-Reply-To=%3C1314970528-sup-6653%40stapelberg.de%3E"
+       TITLE="[i3] i3-input command building">michael+i3 at stapelberg.de
+       </A><BR>
+    <I>Fri Sep  2 15:38:13 CEST 2011</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000285.html">[i3] pan icon in display
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#284">[ date ]</a>
+              <a href="thread.html#284">[ thread ]</a>
+              <a href="subject.html#284">[ subject ]</a>
+              <a href="author.html#284">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Henryk,
+
+Sorry I did not reply earlier.
+
+Excerpts from Henryk Hecht's message of 2011-08-28 03:50:28 +0200:
+&gt;<i> I discovered i3 a day or so ago, and have a number of questions that don't 
+</I>&gt;<i> seem to be covered in the documentation.  I don't know if the readers of 
+</I>&gt;<i> the list would prefer one email per question or otherwise, so I'll just 
+</I>&gt;<i> start with the most immediate:
+</I>Yes, please post one email per question. If you want to, you could also come to
+IRC and get a more rapid response (hopefully) :).
+
+&gt;<i> i3-input accepts a -p argument as a prefix to a command, but does not seem 
+</I>&gt;<i> to allow one to have a suffix to what is read; is this correct?  The 
+</I>&gt;<i> motivation is to build a goto-by-class binding:
+</I>&gt;<i> i3-input -p '[class=' -P 'Goto :' '] focus'
+</I>Yeah, the goto command was just 'goto' in previous versions (and I think of
+re-introducing an alias), so that was never an issue there ;).
+
+&gt;<i> but it seems that it ignores anything in argv not in the getopt loop, 
+</I>&gt;<i> leaving no way to build a command where the &quot;interesting&quot; part does not 
+</I>&gt;<i> occur at the end.  An equivalent example is found in section 5.7 of the 
+</I>&gt;<i> user guide (&quot;VIM-like marks (mark/goto)&quot;): there appears to be no way to 
+</I>&gt;<i> actually implement this functionality with i3-input, which is recommended 
+</I>&gt;<i> for the task.  One could, of course, enter the whole command with 
+</I>&gt;<i> i3-input, or just append &quot;] focus&quot; oneself, but this seems unnecessarily 
+</I>&gt;<i> tedious: hardly a timesaver.
+</I>Yep.
+
+&gt;<i> Is it better to just ignore i3-input and write a shell script around 
+</I>&gt;<i> i3-msg and xdialog?
+</I>The best way of course would be to fix i3-input, probably accepting a format
+string and replacing %c for command.
+
+For the readers of this mailing list, there is a ticket which includes a patch:
+<A HREF="http://bugs.i3wm.org/ticket/512">http://bugs.i3wm.org/ticket/512</A>
+
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000285.html">[i3] pan icon in display
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#284">[ date ]</a>
+              <a href="thread.html#284">[ thread ]</a>
+              <a href="subject.html#284">[ subject ]</a>
+              <a href="author.html#284">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

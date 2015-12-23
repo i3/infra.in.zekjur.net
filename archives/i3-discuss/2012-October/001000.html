@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Fix i3-dump-log on OS X
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Fix%20i3-dump-log%20on%20OS%20X&In-Reply-To=%3Cx6zk429sxu.fsf%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000997.html">
+   <LINK REL="Next"  HREF="001001.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Fix i3-dump-log on OS X</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Fix%20i3-dump-log%20on%20OS%20X&In-Reply-To=%3Cx6zk429sxu.fsf%40midna.zekjur.net%3E"
+       TITLE="[i3] Fix i3-dump-log on OS X">michael at i3wm.org
+       </A><BR>
+    <I>Thu Oct  4 17:07:41 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000997.html">[i3] Fix i3-dump-log on OS X
+</A></li>
+        <LI>Next message: <A HREF="001001.html">[i3] firefox stealing focus on startup
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1000">[ date ]</a>
+              <a href="thread.html#1000">[ thread ]</a>
+              <a href="subject.html#1000">[ subject ]</a>
+              <a href="author.html#1000">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Marcus,
+
+I fixed this by just removing the O_TRUNC flag entirely. Since we
+truncate and memset afterwards anyways, there is no reason to use
+O_TRUNC.
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000997.html">[i3] Fix i3-dump-log on OS X
+</A></li>
+	<LI>Next message: <A HREF="001001.html">[i3] firefox stealing focus on startup
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1000">[ date ]</a>
+              <a href="thread.html#1000">[ thread ]</a>
+              <a href="subject.html#1000">[ subject ]</a>
+              <a href="author.html#1000">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

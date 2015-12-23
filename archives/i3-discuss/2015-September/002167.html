@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] default kbd layout per window
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20default%20kbd%20layout%20per%20window&In-Reply-To=%3CCABmj%3DE7HOXzvme3tCQPh4NStHF%3DRFTcHX0AA%3DY2Yg3F4yksUuw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002166.html">
+   <LINK REL="Next"  HREF="002168.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] default kbd layout per window</H1>
+    <B>Nokan Emiro</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20default%20kbd%20layout%20per%20window&In-Reply-To=%3CCABmj%3DE7HOXzvme3tCQPh4NStHF%3DRFTcHX0AA%3DY2Yg3F4yksUuw%40mail.gmail.com%3E"
+       TITLE="[i3] default kbd layout per window">uzleepito at gmail.com
+       </A><BR>
+    <I>Tue Sep  1 21:27:20 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002166.html">[i3] default kbd layout per window
+</A></li>
+        <LI>Next message: <A HREF="002168.html">[i3] default kbd layout per window
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2167">[ date ]</a>
+              <a href="thread.html#2167">[ thread ]</a>
+              <a href="subject.html#2167">[ subject ]</a>
+              <a href="author.html#2167">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Yes, the &quot;terminal&quot; role is a-okay.  For example
+
+for_window [window_role=&quot;terminal&quot;]  border pixel 22
+
+works fine.  And the dbus-send command also works if it's run from the
+terminal.  But
+if I start a new terminal with $mod+Enter, it comes up with the wrong
+layout.
+
+For testing, I did this (the same dbus-send command bound to $mod+o):
+
+bindsym $mod+o exec --no-startup-id dbus-send --dest=ru.gentoo.KbddService
+/ru/gentoo/KbddService ru.gentoo.kbdd.set_layout uint32:1
+
+and pressing $mod+o in the new terminal changes the layout to US, as I
+expected.
+
+My guess is that the switching to the US layout happens too early.  Maybe
+kbdd kicks in on the
+new window just a bit after the US layout was set and kbdd overwrites it
+with the default.
+
+
+This didn't work either:
+
+xte 'keydown Shift_L' 'keydown Caps_Lock' 'keyup Caps_Lock' 'keyup Shift_L'
+
+but this one (that sleeps 0.5 sec before simulating the keypresses) did:
+
+xte 'usleep 500000' 'keydown Shift_L' 'keydown Caps_Lock' 'keyup Caps_Lock'
+'keyup Shift_L'
+
+So, this seems to be some stupied timing issue.  I'm sorry about
+bothering...
+
+Uz.
+
+
+On Tue, Sep 1, 2015 at 5:23 PM, Ingo Bürk &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">admin at airblader.de</A>&gt; wrote:
+
+&gt;<i> Then I think it should work, assuming your terminal actually has the
+</I>&gt;<i> window role &quot;terminal&quot;.
+</I>&gt;<i>
+</I>&gt;<i> Can you be more specific on how it doesn't work? Can you figure out if the
+</I>&gt;<i> command is run on the wrong window? Also, a log file would be helpful to
+</I>&gt;<i> see how the command is being executed.
+</I>&gt;<i>
+</I>&gt;<i> You probably also want to add --no-startup-id to the exec call. I doubt
+</I>&gt;<i> dbus-send does anything with startup notifications.
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i> Ingo
+</I>&gt;<i>
+</I>&gt;<i> Sent from TypeMail &lt;<A HREF="http://www.typeapp.com/r">http://www.typeapp.com/r</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i> On Sep 1, 2015, at 17:19, Nokan Emiro &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">uzleepito at gmail.com</A>&gt; wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> That's not a problem.  If the layout is once set for that particular
+</I>&gt;&gt;<i> window,  kbdd will
+</I>&gt;&gt;<i> take care of the focus changes and activate the proper layout if the
+</I>&gt;&gt;<i> focus moves.  All
+</I>&gt;&gt;<i> I want is to set the initial layout to US on the terminal windows and
+</I>&gt;&gt;<i> leave the other
+</I>&gt;&gt;<i> layout as the default for all the rest.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Tue, Sep 1, 2015 at 5:13 PM, Ingo Bürk &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">admin at airblader.de</A>&gt; wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> For_window will only be run when the window is opened, not everytime it
+</I>&gt;&gt;&gt;<i> is focused.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150901/7f977b68/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150901/7f977b68/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002166.html">[i3] default kbd layout per window
+</A></li>
+	<LI>Next message: <A HREF="002168.html">[i3] default kbd layout per window
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2167">[ date ]</a>
+              <a href="thread.html#2167">[ thread ]</a>
+              <a href="subject.html#2167">[ subject ]</a>
+              <a href="author.html#2167">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

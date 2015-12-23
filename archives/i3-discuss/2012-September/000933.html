@@ -1,0 +1,174 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] build problem after git archive
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20build%20problem%20after%20git%20archive&In-Reply-To=%3CCAKneAXndL4GVOC9RuDhXLmnvgm6N-J5mOuCWa1RuYuAsfrLnfQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000932.html">
+   <LINK REL="Next"  HREF="000934.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] build problem after git archive</H1>
+    <B>Jan Krcmar</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20build%20problem%20after%20git%20archive&In-Reply-To=%3CCAKneAXndL4GVOC9RuDhXLmnvgm6N-J5mOuCWa1RuYuAsfrLnfQ%40mail.gmail.com%3E"
+       TITLE="[i3] build problem after git archive">honza801 at gmail.com
+       </A><BR>
+    <I>Wed Sep 19 23:26:36 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000932.html">[i3] i3 roadmap
+</A></li>
+        <LI>Next message: <A HREF="000934.html">[i3] build problem after git archive
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#933">[ date ]</a>
+              <a href="thread.html#933">[ thread ]</a>
+              <a href="subject.html#933">[ subject ]</a>
+              <a href="author.html#933">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>hi,
+
+i've pulled the latest git commit 9c3ece56d20db392610ae3106d570ee47c5831e8
+
+after doing 'git archive master' build fails on
+
+<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">honza801 at fousatko</A> ~/src/i3-archive/src $ make
+fatal: Not a git repository (or any parent up to mount point /home)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+fatal: Not a git repository (or any parent up to mount point /home)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+fatal: Not a git repository (or any parent up to mount point /home)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+fatal: Not a git repository (or any parent up to mount point /home)
+Stopping at filesystem boundary (GIT_DISCOVERY_ACROSS_FILESYSTEM not set).
+[libi3] CC libi3/safewrappers.c
+[libi3] CC libi3/root_atom_contents.c
+[libi3] CC libi3/is_debug_build.c
+[libi3] CC libi3/get_mod_mask.c
+[libi3] CC libi3/string.c
+[libi3] CC libi3/ipc_connect.c
+[libi3] CC libi3/ucs2_conversion.c
+[libi3] CC libi3/font.c
+[libi3] CC libi3/get_colorpixel.c
+[libi3] CC libi3/strndup.c
+[libi3] CC libi3/fake_configure_notify.c
+[libi3] CC libi3/ipc_send_message.c
+[libi3] CC libi3/get_visualtype.c
+[libi3] CC libi3/ipc_recv_message.c
+[libi3] AR libi3.a
+[i3] YACC src/cfgparse.y
+[i3] CC src/cfgparse.tab.c
+[i3] LEX src/cfgparse.l
+[i3] CC src/cfgparse.yy.c
+[i3] CC src/assignments.c
+[i3] CC src/resize.c
+[i3] CC src/log.c
+[i3] CC src/handlers.c
+[i3] CC src/ewmh.c
+[i3] CC src/regex.c
+[i3] CC src/config.c
+[i3] CC src/manage.c
+[i3] CC src/con.c
+[i3] CC src/xinerama.c
+[i3] CC src/scratchpad.c
+[i3] CC src/commands.c
+[i3] CC src/window.c
+[i3] CC src/x.c
+[i3] CC src/key_press.c
+[i3] CC src/load_layout.c
+[i3] CC src/output.c
+[i3] CC src/floating.c
+[i3] CC src/xcb.c
+[i3] CC src/ipc.c
+../src/src/ipc.c: In function 'handle_get_version':
+../src/src/ipc.c:571:5: error: expected expression before ')' token
+../src/src/ipc.c:574:5: error: expected expression before ')' token
+make: *** [src/ipc.o] Error 1
+
+
+also note that the error (fatal: Not a git repository...)  was not
+fatal previously
+
+
+what is the correct way to archive/export sources from git so it
+compiles correctly (without .git and .gitignore)
+
+i'm using
+
+Linux fousatko 3.5.4-1-ARCH #1 SMP PREEMPT Sat Sep 15 13:04:04 UTC
+2012 i686 GNU/Linux
+Using built-in specs.
+COLLECT_GCC=gcc
+COLLECT_LTO_WRAPPER=/usr/lib/gcc/i686-pc-linux-gnu/4.7.1/lto-wrapper
+Target: i686-pc-linux-gnu
+Configured with: /build/src/gcc-4.7-20120721/configure --prefix=/usr
+--libdir=/usr/lib --libexecdir=/usr/lib --mandir=/usr/share/man
+--infodir=/usr/share/info --with-bugurl=<A HREF="https://bugs.archlinux.org/">https://bugs.archlinux.org/</A>
+--enable-languages=c,c++,ada,fortran,go,lto,objc,obj-c++
+--enable-shared --enable-threads=posix --with-system-zlib
+--enable-__cxa_atexit --disable-libunwind-exceptions
+--enable-clocale=gnu --disable-libstdcxx-pch --enable-libstdcxx-time
+--enable-gnu-unique-object --enable-linker-build-id --with-ppl
+--enable-cloog-backend=isl --disable-ppl-version-check
+--disable-cloog-version-check --enable-lto --enable-gold
+--enable-ld=default --enable-plugin --with-plugin-ld=ld.gold
+--with-linker-hash-style=gnu --disable-multilib --disable-libssp
+--disable-build-with-cxx --disable-build-poststage1-with-cxx
+--enable-checking=release
+Thread model: posix
+gcc version 4.7.1 20120721 (prerelease) (GCC)
+
+thanks
+
+fous
+</PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000932.html">[i3] i3 roadmap
+</A></li>
+	<LI>Next message: <A HREF="000934.html">[i3] build problem after git archive
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#933">[ date ]</a>
+              <a href="thread.html#933">[ thread ]</a>
+              <a href="subject.html#933">[ subject ]</a>
+              <a href="author.html#933">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

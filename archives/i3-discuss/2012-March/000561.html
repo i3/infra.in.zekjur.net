@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Network throughput bash script (usable with i3status)
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Network%20throughput%20bash%20script%20%28usable%20with%20i3status%29&In-Reply-To=%3C4F661C61.9040000%40uni-hd.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000589.html">
+   <LINK REL="Next"  HREF="000562.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Network throughput bash script (usable with i3status)</H1>
+    <B>Stefan Breunig</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Network%20throughput%20bash%20script%20%28usable%20with%20i3status%29&In-Reply-To=%3C4F661C61.9040000%40uni-hd.de%3E"
+       TITLE="[i3] Network throughput bash script (usable with i3status)">breunig at uni-hd.de
+       </A><BR>
+    <I>Sun Mar 18 18:33:21 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000589.html">[i3] tray_output for primary display
+</A></li>
+        <LI>Next message: <A HREF="000562.html">[i3] Network throughput bash script (usable with i3status)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#561">[ date ]</a>
+              <a href="thread.html#561">[ thread ]</a>
+              <a href="subject.html#561">[ subject ]</a>
+              <a href="author.html#561">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+the attached bash script calculates the transfer rate in a time
+interval. While it works if called manually, the intended use is in
+addition to i3status.
+
+The script is very simple and only displays the combined rate for all
+given adapters, but adjusting it to show every adapter should be simple
+enough. That being said, to get the script running you likely need to
+adjust the paths to your computer (find /sys -name &quot;statistics&quot; works
+nicely).
+
+Have a look at i3status&#8217; man page on how to combine the output. While it
+should be possible to source the script, i3bar crashes for me (reported
+the bug already). Running the script in a subshell and having a single
+echo like written in the man page works, though.
+
+License is WTFPL.
+
+--Stefan
+-------------- next part --------------
+#!/bin/bash
+
+# path to store the old results in
+path=&quot;/dev/shm/measure-net-speed&quot;
+
+# grabbing data
+eth0=&quot;/sys/devices/pci0000:00/0000:00:19.0/net/eth0/statistics&quot;
+wlan0=&quot;/sys/devices/pci0000:00/0000:00:1c.1/0000:03:00.0/net/wlan0/statistics&quot;
+read eth0_rx &lt; &quot;${eth0}/rx_bytes&quot;
+read eth0_tx &lt; &quot;${eth0}/tx_bytes&quot;
+read wlan0_rx &lt; &quot;${wlan0}/rx_bytes&quot;
+read wlan0_tx &lt; &quot;${wlan0}/tx_bytes&quot;
+
+# get time and sum of rx/tx for combined display
+time=$(date +%s)
+rx=$(( $eth0_rx + $wlan0_rx ))
+tx=$(( $eth0_tx + $wlan0_tx ))
+
+# write current data if file does not exist. Do not exit, this will cause
+# problems if this file is sourced instead of executed as another process.
+if ! [[ -f &quot;${path}&quot; ]]; then
+  echo &quot;${time} ${rx} ${tx}&quot; &gt; &quot;${path}&quot;
+  chmod 0666 &quot;${path}&quot;
+fi
+
+# read previous state and update data storage
+read old &lt; &quot;${path}&quot;
+echo &quot;${time} ${rx} ${tx}&quot; &gt; &quot;${path}&quot;
+
+# parse old data and calc time passed
+old=(${old//;/ })
+time_diff=$(( $time - ${old[0]} ))
+
+# sanity check: has a positive amount of time passed
+if [[ &quot;${time_diff}&quot; -gt 0 ]]; then
+  # calc bytes transferred, and their rate in byte/s
+  rx_diff=$(( $rx - ${old[1]} ))
+  tx_diff=$(( $tx - ${old[2]} ))
+  rx_rate=$(( $rx_diff / $time_diff ))
+  tx_rate=$(( $tx_diff / $time_diff ))
+
+  # shift by 10 bytes to get KiB/s and by 20 for MiB/s
+  # and print the more human readable value.
+  # 1024^2 = 1048576
+
+  # incoming
+  if [[ &quot;$rx_mib&quot; -gt 1048576 ]]; then
+    rx_mib=$(( $rx_rate &gt;&gt; 20 ))
+    echo -n &quot;${rx_mib} M&#8595;&quot;
+  else
+    rx_kib=$(( $rx_rate &gt;&gt; 10 ))
+    echo -n &quot;${rx_kib} K&#8595;&quot;
+  fi
+
+  echo -n &quot;  &quot;
+
+  # outgoing
+  if [[ &quot;$tx_mib&quot; -gt 1048576 ]]; then
+    tx_mib=$(( $tx_rate &gt;&gt; 20 ))
+    echo -n &quot;${tx_mib} M&#8593;&quot;
+  else
+    tx_kib=$(( $tx_rate &gt;&gt; 10 ))
+    echo -n &quot;${tx_kib} K&#8593;&quot;
+  fi
+else
+  echo -n &quot; ? &quot;
+fi
+</PRE>
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000589.html">[i3] tray_output for primary display
+</A></li>
+	<LI>Next message: <A HREF="000562.html">[i3] Network throughput bash script (usable with i3status)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#561">[ date ]</a>
+              <a href="thread.html#561">[ thread ]</a>
+              <a href="subject.html#561">[ subject ]</a>
+              <a href="author.html#561">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

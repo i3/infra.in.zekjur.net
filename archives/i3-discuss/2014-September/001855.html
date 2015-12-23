@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3 save/restore bug
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%20save/restore%20bug&In-Reply-To=%3CCANnVG6miWsK-WO0uJga%2BRLAkoyf1tt2cx6HzsB2DFAizBDgF4Q%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001853.html">
+   <LINK REL="Next"  HREF="001856.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3 save/restore bug</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%20save/restore%20bug&In-Reply-To=%3CCANnVG6miWsK-WO0uJga%2BRLAkoyf1tt2cx6HzsB2DFAizBDgF4Q%40mail.gmail.com%3E"
+       TITLE="[i3] i3 save/restore bug">michael at i3wm.org
+       </A><BR>
+    <I>Wed Sep 17 07:18:41 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001853.html">[i3] i3 save/restore bug
+</A></li>
+        <LI>Next message: <A HREF="001856.html">[i3] Re-tiling a bunch of windows?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1855">[ date ]</a>
+              <a href="thread.html#1855">[ thread ]</a>
+              <a href="subject.html#1855">[ subject ]</a>
+              <a href="author.html#1855">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>This is a duplicate of <A HREF="http://bugs.i3wm.org/report/ticket/1297">http://bugs.i3wm.org/report/ticket/1297</A>
+
+On Tue, Sep 16, 2014 at 5:49 PM, Sargrad, Dave
+&lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">Dave.Sargrad at saabsensis.com</A>&gt; wrote:
+&gt;<i> Ok. I've dug further, and am sure that this is a problem with i3-save-tree.
+</I>&gt;<i>
+</I>&gt;<i> The containing workspace (container type = &quot;workspace&quot;) has some critical information that is stripped away by i3-save-tree. Specifically the workspace container structure (including the &quot;splitv layout&quot;) is lost as part of the pruning process.
+</I>&gt;<i>
+</I>&gt;<i> I can provide the entire &quot;tree&quot; associated with the workspace if that would help. But I think perhaps I've given enough detail to understand the issue.
+</I>&gt;<i>
+</I>&gt;<i> Please let me know if I should provide additional diagnostics.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -----Original Message-----
+</I>&gt;<i> From: Sargrad, Dave
+</I>&gt;<i> Sent: Tuesday, September 16, 2014 11:09 AM
+</I>&gt;<i> To: <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>
+</I>&gt;<i> Subject: i3 save/restore bug
+</I>&gt;<i>
+</I>&gt;<i> I've found a bug with the i3 save/restore mechanism
+</I>&gt;<i>
+</I>&gt;<i> In general the save/load works fine (I've tried a number of layouts that work fine), however I have found a simple configuration that fails to save/load correctly. I'm not sure yet if this is a problem with i3, or with i3-save-tree.
+</I>&gt;<i>
+</I>&gt;<i> I opened three windows in a workspace (and then saved using i3-save-tree --workspace test &gt; /home/ubuntu/.i3/spec)
+</I>&gt;<i> 2 xterms side-by-side in top row
+</I>&gt;<i> 1 emacs in bottom row (I used the mod-shift-k to move emacs down)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Correct Layout (the layout I saved with i3-save-tree) _________________________________________________
+</I>&gt;<i> |                        |                       |
+</I>&gt;<i> |                        |                       |
+</I>&gt;<i> |                        |                       |
+</I>&gt;<i> |      xterm             |     xterm             |
+</I>&gt;<i> |                        |                       |
+</I>&gt;<i> |                        |                       |
+</I>&gt;<i> |                        |                       |
+</I>&gt;<i> |                        |                       |
+</I>&gt;<i> -------------------------------------------------
+</I>&gt;<i> |                                                |
+</I>&gt;<i> |                                                |
+</I>&gt;<i> |                                                |
+</I>&gt;<i> |                      emacs                     |
+</I>&gt;<i> |                                                |
+</I>&gt;<i> |                                                |
+</I>&gt;<i> |                                                |
+</I>&gt;<i> |                                                |
+</I>&gt;<i> _________________________________________________
+</I>&gt;<i>
+</I>&gt;<i> I then appended using i3-msg (i3-msg &quot;workspace new; append_layout /home/ubuntu/.i3/spec&quot;
+</I>&gt;<i> After Append Layout (Incorrect Result)
+</I>&gt;<i> _________________________________________________
+</I>&gt;<i> |        |         |                             |
+</I>&gt;<i> |        |         |                             |
+</I>&gt;<i> |        |         |                             |
+</I>&gt;<i> | xterm  | xterm   |           emacs             |
+</I>&gt;<i> |        |         |                             |
+</I>&gt;<i> |        |         |                             |
+</I>&gt;<i> |        |         |                             |
+</I>&gt;<i> |        |         |                             |
+</I>&gt;<i> |        |         |                             |
+</I>&gt;<i> |        |         |                             |
+</I>&gt;<i> |        |         |                             |
+</I>&gt;<i> _________________________________________________
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> This is the spec generated by i3-save-tree:
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> // vim:ts=4:sw=4:et
+</I>&gt;<i> {
+</I>&gt;<i>     // splith split container with 2 children
+</I>&gt;<i>     &quot;border&quot;: &quot;normal&quot;,
+</I>&gt;<i>     &quot;floating&quot;: &quot;auto_off&quot;,
+</I>&gt;<i>     &quot;layout&quot;: &quot;splith&quot;,
+</I>&gt;<i>     &quot;percent&quot;: 0.232604373757455,
+</I>&gt;<i>     &quot;type&quot;: &quot;con&quot;,
+</I>&gt;<i>     &quot;nodes&quot;: [
+</I>&gt;<i>         {
+</I>&gt;<i>             &quot;border&quot;: &quot;normal&quot;,
+</I>&gt;<i>             &quot;floating&quot;: &quot;auto_off&quot;,
+</I>&gt;<i>             &quot;geometry&quot;: {
+</I>&gt;<i>                &quot;height&quot;: 316,
+</I>&gt;<i>                &quot;width&quot;: 484,
+</I>&gt;<i>                &quot;x&quot;: 0,
+</I>&gt;<i>                &quot;y&quot;: 0
+</I>&gt;<i>             },
+</I>&gt;<i>             &quot;name&quot;: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at sensis-8930</A>: ~&quot;,
+</I>&gt;<i>             &quot;percent&quot;: 0.5,
+</I>&gt;<i>             &quot;swallows&quot;: [
+</I>&gt;<i>                {
+</I>&gt;<i>                &quot;class&quot;: &quot;^XTerm$&quot;
+</I>&gt;<i>                }
+</I>&gt;<i>             ],
+</I>&gt;<i>             &quot;type&quot;: &quot;con&quot;
+</I>&gt;<i>         },
+</I>&gt;<i>         {
+</I>&gt;<i>             &quot;border&quot;: &quot;normal&quot;,
+</I>&gt;<i>             &quot;floating&quot;: &quot;auto_off&quot;,
+</I>&gt;<i>             &quot;geometry&quot;: {
+</I>&gt;<i>                &quot;height&quot;: 316,
+</I>&gt;<i>                &quot;width&quot;: 484,
+</I>&gt;<i>                &quot;x&quot;: 0,
+</I>&gt;<i>                &quot;y&quot;: 0
+</I>&gt;<i>             },
+</I>&gt;<i>             &quot;name&quot;: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at sensis-8930</A>: ~&quot;,
+</I>&gt;<i>             &quot;percent&quot;: 0.5,
+</I>&gt;<i>             &quot;swallows&quot;: [
+</I>&gt;<i>                {
+</I>&gt;<i>                &quot;class&quot;: &quot;^XTerm$&quot;
+</I>&gt;<i>                }
+</I>&gt;<i>             ],
+</I>&gt;<i>             &quot;type&quot;: &quot;con&quot;
+</I>&gt;<i>         }
+</I>&gt;<i>     ]
+</I>&gt;<i> }
+</I>&gt;<i>
+</I>&gt;<i> {
+</I>&gt;<i>     &quot;border&quot;: &quot;normal&quot;,
+</I>&gt;<i>     &quot;floating&quot;: &quot;auto_off&quot;,
+</I>&gt;<i>     &quot;geometry&quot;: {
+</I>&gt;<i>        &quot;height&quot;: 550,
+</I>&gt;<i>        &quot;width&quot;: 602,
+</I>&gt;<i>        &quot;x&quot;: 0,
+</I>&gt;<i>        &quot;y&quot;: 0
+</I>&gt;<i>     },
+</I>&gt;<i>     &quot;name&quot;: &quot;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">emacs at example.com</A>&quot;,
+</I>&gt;<i>     &quot;percent&quot;: 0.767395626242545,
+</I>&gt;<i>     &quot;swallows&quot;: [
+</I>&gt;<i>        {
+</I>&gt;<i>        &quot;class&quot;: &quot;^Emacs23$&quot;
+</I>&gt;<i>        }
+</I>&gt;<i>     ],
+</I>&gt;<i>     &quot;type&quot;: &quot;con&quot;
+</I>&gt;<i> }
+</I>&gt;<i> -
+</I>&gt;<i> This message is intended only for the addressee and may contain information that is company confidential or privileged.  Any technical data in this message may be exported only in accordance with the U.S. International Traffic in Arms Regulations (22 CFR Parts 120-130) or the Export Administration Regulations (15 CFR Parts 730-774). Unauthorized use is strictly prohibited and may be unlawful. If you are not the intended recipient, or the person responsible for delivering to the intended recipient, you should not read, copy, disclose or otherwise use this message. If you have received this email in error, please delete it, and advise the sender immediately.
+</I>&gt;<i> -
+</I>
+
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001853.html">[i3] i3 save/restore bug
+</A></li>
+	<LI>Next message: <A HREF="001856.html">[i3] Re-tiling a bunch of windows?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1855">[ date ]</a>
+              <a href="thread.html#1855">[ thread ]</a>
+              <a href="subject.html#1855">[ subject ]</a>
+              <a href="author.html#1855">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

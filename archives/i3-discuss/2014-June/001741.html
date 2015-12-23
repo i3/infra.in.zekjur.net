@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Retina/HiDPI: Querying DPI
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Retina/HiDPI%3A%20Querying%20DPI&In-Reply-To=%3Cx61tv2z3ng.fsf%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001740.html">
+   <LINK REL="Next"  HREF="001742.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Retina/HiDPI: Querying DPI</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Retina/HiDPI%3A%20Querying%20DPI&In-Reply-To=%3Cx61tv2z3ng.fsf%40midna.zekjur.net%3E"
+       TITLE="[i3] Retina/HiDPI: Querying DPI">michael at i3wm.org
+       </A><BR>
+    <I>Fri Jun  6 13:19:31 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001740.html">[i3] Retina/HiDPI: Querying DPI
+</A></li>
+        <LI>Next message: <A HREF="001742.html">[i3] Retina/HiDPI: Querying DPI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1741">[ date ]</a>
+              <a href="thread.html#1741">[ thread ]</a>
+              <a href="subject.html#1741">[ subject ]</a>
+              <a href="author.html#1741">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Alexander,
+
+Alexander Berntsen &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">alexander at plaimi.net</A>&gt; writes:
+&gt;&gt;<i> the next release of i3 should behave correctly on Retina/HiDPI 
+</I>&gt;&gt;<i> displays.
+</I>&gt;<i> It isn't already? Works fine here. What's wrong? I don't understand
+</I>&gt;<i> why i3 should care about PPI.
+</I>No, it doesn’t work correctly in 4.7.2, the latest stable version:
+All pixel values, such as paddings, borders, etc., are designed for
+96dpi displays and are not scaled up. E.g., for a 2 px window border,
+you need 5 px on a retina display to achieve the same physical width.
+
+I think the effect is very very easy to spot when comparing 4.7.2 with a
+build from the “next” branch. Once you restart into the new version,
+you’ll see how it just feels right again :).
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001740.html">[i3] Retina/HiDPI: Querying DPI
+</A></li>
+	<LI>Next message: <A HREF="001742.html">[i3] Retina/HiDPI: Querying DPI
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1741">[ date ]</a>
+              <a href="thread.html#1741">[ thread ]</a>
+              <a href="subject.html#1741">[ subject ]</a>
+              <a href="author.html#1741">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,825 @@
+From michael+i3 at stapelberg.de  Fri Dec  2 00:55:13 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Thu, 01 Dec 2011 23:55:13 +0000
+Subject: [i3] Ubuntu development repository; packages now signed
+Message-ID: <1322783539-sup-2854@stapelberg.de>
+
+Hi,
+
+There are two changes to our repositories [1]:
+
+1) Our autobuilder now also provides Ubuntu (oneiric) packages. If you are
+   running i3 from the git 'next' branch, save yourself some time and CPU
+   cycles, just use our repository.
+
+2) All packages are now signed. You can get the key by installing the
+   i3-autobuild-keyring package:
+
+   # apt-get update
+   # apt-get --allow-unauthenticated install i3-autobuild-keyring
+   # apt-get update
+
+The website has been updated accordingly.
+
+Best regards,
+Michael
+
+[1] http://i3wm.org/docs/repositories.html
+
+From miguel.deval at gmail.com  Sun Dec 11 17:18:43 2011
+From: miguel.deval at gmail.com (Miguel de Val-Borro)
+Date: Sun, 11 Dec 2011 17:18:43 +0100
+Subject: [i3] i3status CPU temperature
+Message-ID: <20111211161843.GA14556@poincare.pc.linmpi.mpg.de>
+
+Hi,
+
+When the CPU temperature module is used by i3status I get the following
+error message:
+Could not open "/sys/class/thermal/thermal_zone0/temp"
+
+I have an Intel Core 2 Duo processor and the CONFIG_THERMAL and
+CONFIG_ACPI_THERMAL options are enabled in the kernel configuration.
+
+Thanks,
+Miguel
+
+From dcoppa at gmail.com  Sun Dec 11 17:43:12 2011
+From: dcoppa at gmail.com (David Coppa)
+Date: Sun, 11 Dec 2011 17:43:12 +0100
+Subject: [i3] i3status CPU temperature
+In-Reply-To: <20111211161843.GA14556@poincare.pc.linmpi.mpg.de>
+References: <20111211161843.GA14556@poincare.pc.linmpi.mpg.de>
+Message-ID: <20111211164312.GA21129@leo.dacolab.dom>
+
+On Sun, 11 Dec 2011, Miguel de Val-Borro wrote:
+
+> Hi,
+> 
+> When the CPU temperature module is used by i3status I get the following
+> error message:
+> Could not open "/sys/class/thermal/thermal_zone0/temp"
+> 
+> I have an Intel Core 2 Duo processor and the CONFIG_THERMAL and
+> CONFIG_ACPI_THERMAL options are enabled in the kernel configuration.
+
+I think you need the 'coretemp' kernel module:
+
+Device Drivers  --->
+    Hardware Monitoring support  --->
+        <M> Hardware Monitoring support
+        <M> Intel Core (2) Duo/Solo temperature sensor
+
+
+ciao,
+David
+
+From miguel.deval at gmail.com  Sun Dec 11 18:25:23 2011
+From: miguel.deval at gmail.com (Miguel de Val-Borro)
+Date: Sun, 11 Dec 2011 18:25:23 +0100
+Subject: [i3] i3status CPU temperature
+In-Reply-To: <20111211164312.GA21129@leo.dacolab.dom>
+References: <20111211161843.GA14556@poincare.pc.linmpi.mpg.de>
+ <20111211164312.GA21129@leo.dacolab.dom>
+Message-ID: <20111211172522.GA2679@poincare.pc.linmpi.mpg.de>
+
+On Sun, Dec 11, 2011 at 05:43:12PM +0100, David Coppa wrote:
+> On Sun, 11 Dec 2011, Miguel de Val-Borro wrote:
+> 
+> > Hi,
+> > 
+> > When the CPU temperature module is used by i3status I get the following
+> > error message:
+> > Could not open "/sys/class/thermal/thermal_zone0/temp"
+> > 
+> > I have an Intel Core 2 Duo processor and the CONFIG_THERMAL and
+> > CONFIG_ACPI_THERMAL options are enabled in the kernel configuration.
+> 
+> I think you need the 'coretemp' kernel module:
+> 
+> Device Drivers  --->
+>     Hardware Monitoring support  --->
+>         <M> Hardware Monitoring support
+>         <M> Intel Core (2) Duo/Solo temperature sensor
+
+I have selected the coretemp module and made sure that it is loaded
+but still get the same error:
+Could not open "/sys/class/thermal/thermal_zone0/temp"
+
+Device Drivers  --->
+    Hardware Monitoring support  --->
+        <M> Intel Core/Core2/Atom temperature sensor
+
+I could not find <M> Hardware Monitoring support on kernel 3.0.6.
+
+Cheers,
+Miguel
+
+From michael+i3 at stapelberg.de  Sun Dec 11 18:29:22 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 11 Dec 2011 17:29:22 +0000
+Subject: [i3] i3status CPU temperature
+In-Reply-To: <20111211172522.GA2679@poincare.pc.linmpi.mpg.de>
+References: <20111211161843.GA14556@poincare.pc.linmpi.mpg.de>
+ <20111211164312.GA21129@leo.dacolab.dom>
+ <20111211172522.GA2679@poincare.pc.linmpi.mpg.de>
+Message-ID: <1323624532-sup-1596@stapelberg.de>
+
+Hi Miguel,
+
+Excerpts from Miguel de Val-Borro's message of 2011-12-11 17:25:23 +0000:
+> I have selected the coretemp module and made sure that it is loaded
+> but still get the same error:
+> Could not open "/sys/class/thermal/thermal_zone0/temp"
+Please provide the output of ls -Rl /sys/class/thermal
+
+Best regards,
+Michael
+
+From miguel.deval at gmail.com  Sun Dec 11 18:35:40 2011
+From: miguel.deval at gmail.com (Miguel de Val-Borro)
+Date: Sun, 11 Dec 2011 18:35:40 +0100
+Subject: [i3] i3status CPU temperature
+In-Reply-To: <1323624532-sup-1596@stapelberg.de>
+References: <20111211161843.GA14556@poincare.pc.linmpi.mpg.de>
+ <20111211164312.GA21129@leo.dacolab.dom>
+ <20111211172522.GA2679@poincare.pc.linmpi.mpg.de>
+ <1323624532-sup-1596@stapelberg.de>
+Message-ID: <20111211173540.GB2679@poincare.pc.linmpi.mpg.de>
+
+Hi Michael,
+
+On Sun, Dec 11, 2011 at 05:29:22PM +0000, Michael Stapelberg wrote:
+> > I have selected the coretemp module and made sure that it is loaded
+> > but still get the same error:
+> > Could not open "/sys/class/thermal/thermal_zone0/temp"
+> Please provide the output of ls -Rl /sys/class/thermal
+
+$ ls -Rl /sys/class/thermal/
+/sys/class/thermal/:
+total 0
+lrwxrwxrwx 1 root root 0 Dec 11 18:15 cooling_device0 -> ../../devices/virtual/thermal/cooling_device0
+lrwxrwxrwx 1 root root 0 Dec 11 18:15 cooling_device1 -> ../../devices/virtual/thermal/cooling_device1
+
+$ ls -Rl /sys/class/thermal/cooling_device0/
+/sys/class/thermal/cooling_device0/:
+total 0
+-rw-r--r-- 1 root root 4096 Dec 11 18:33 cur_state
+lrwxrwxrwx 1 root root    0 Dec 11 18:33 device ->
+../../../LNXSYSTM:00/LNXCPU:00
+-r--r--r-- 1 root root 4096 Dec 11 18:33 max_state
+drwxr-xr-x 2 root root    0 Dec 11 18:33 power
+lrwxrwxrwx 1 root root    0 Dec 11 18:15 subsystem ->
+../../../../class/thermal
+-r--r--r-- 1 root root 4096 Dec 11 18:33 type
+-rw-r--r-- 1 root root 4096 Dec 11 18:15 uevent
+
+/sys/class/thermal/cooling_device0/power:
+total 0
+
+$ ls -Rl /sys/class/thermal/cooling_device1/
+/sys/class/thermal/cooling_device1/:
+total 0
+-rw-r--r-- 1 root root 4096 Dec 11 18:33 cur_state
+lrwxrwxrwx 1 root root    0 Dec 11 18:33 device ->
+../../../LNXSYSTM:00/LNXCPU:01
+-r--r--r-- 1 root root 4096 Dec 11 18:33 max_state
+drwxr-xr-x 2 root root    0 Dec 11 18:33 power
+lrwxrwxrwx 1 root root    0 Dec 11 18:15 subsystem ->
+../../../../class/thermal
+-r--r--r-- 1 root root 4096 Dec 11 18:33 type
+-rw-r--r-- 1 root root 4096 Dec 11 18:15 uevent
+
+/sys/class/thermal/cooling_device1/power:
+total 0
+
+Regards,
+Miguel
+
+From michael+i3 at stapelberg.de  Sun Dec 11 18:43:57 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 11 Dec 2011 17:43:57 +0000
+Subject: [i3] i3status CPU temperature
+In-Reply-To: <20111211173540.GB2679@poincare.pc.linmpi.mpg.de>
+References: <20111211161843.GA14556@poincare.pc.linmpi.mpg.de>
+ <20111211164312.GA21129@leo.dacolab.dom>
+ <20111211172522.GA2679@poincare.pc.linmpi.mpg.de>
+ <1323624532-sup-1596@stapelberg.de>
+ <20111211173540.GB2679@poincare.pc.linmpi.mpg.de>
+Message-ID: <1323625353-sup-389@stapelberg.de>
+
+Hi Miguel,
+
+Excerpts from Miguel de Val-Borro's message of 2011-12-11 17:35:40 +0000:
+> $ ls -Rl /sys/class/thermal/
+> /sys/class/thermal/:
+> total 0
+> lrwxrwxrwx 1 root root 0 Dec 11 18:15 cooling_device0 -> ../../devices/virtual/thermal/cooling_device0
+> lrwxrwxrwx 1 root root 0 Dec 11 18:15 cooling_device1 -> ../../devices/virtual/thermal/cooling_device1
+Hm, no clue then. In retrospect, we should probably have never added CPU
+temperature to i3status, it doesn?t fit its philosophy. You should not care
+about your CPU temperature. Virtually all computers turn off if they get too
+hot, which is enough indication of a problem there. If they are not too hot,
+why bother with the temperature at all?
+
+Best regards,
+Michael
+
+From matthew at theleachfamily.co.uk  Sun Dec 11 18:50:13 2011
+From: matthew at theleachfamily.co.uk (Matthew Leach)
+Date: Sun, 11 Dec 2011 17:50:13 +0000
+Subject: [i3] small i3 status patch
+Message-ID: <4EE4ED55.50300@theleachfamily.co.uk>
+
+Hi there,
+
+I have added a small patch to i3 status to allow the output from 
+commands to be shown on the bar (eg, I use it for showing which song MPD 
+is currently playing).
+
+If you find this useful please let me know and I'll post the patch.
+
+Matt
+
+From miguel.deval at gmail.com  Sun Dec 11 18:55:11 2011
+From: miguel.deval at gmail.com (Miguel de Val-Borro)
+Date: Sun, 11 Dec 2011 18:55:11 +0100
+Subject: [i3] i3status CPU temperature
+In-Reply-To: <1323625353-sup-389@stapelberg.de>
+References: <20111211161843.GA14556@poincare.pc.linmpi.mpg.de>
+ <20111211164312.GA21129@leo.dacolab.dom>
+ <20111211172522.GA2679@poincare.pc.linmpi.mpg.de>
+ <1323624532-sup-1596@stapelberg.de>
+ <20111211173540.GB2679@poincare.pc.linmpi.mpg.de>
+ <1323625353-sup-389@stapelberg.de>
+Message-ID: <20111211175511.GC2679@poincare.pc.linmpi.mpg.de>
+
+Hi Michael,
+
+On Sun, Dec 11, 2011 at 05:43:57PM +0000, Michael Stapelberg wrote:
+> Excerpts from Miguel de Val-Borro's message of 2011-12-11 17:35:40 +0000:
+> > $ ls -Rl /sys/class/thermal/
+> > /sys/class/thermal/:
+> > total 0
+> > lrwxrwxrwx 1 root root 0 Dec 11 18:15 cooling_device0 -> ../../devices/virtual/thermal/cooling_device0
+> > lrwxrwxrwx 1 root root 0 Dec 11 18:15 cooling_device1 -> ../../devices/virtual/thermal/cooling_device1
+> Hm, no clue then. In retrospect, we should probably have never added CPU
+> temperature to i3status, it doesn?t fit its philosophy. You should not care
+> about your CPU temperature. Virtually all computers turn off if they get too
+> hot, which is enough indication of a problem there. If they are not too hot,
+> why bother with the temperature at all?
+
+I will just remove the corresponding line for the CPU temperature in
+i3status config file to avoid the error message.
+
+Thanks,
+Miguel
+
+From michael+i3 at stapelberg.de  Sun Dec 11 18:57:04 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 11 Dec 2011 17:57:04 +0000
+Subject: [i3] small i3 status patch
+In-Reply-To: <4EE4ED55.50300@theleachfamily.co.uk>
+References: <4EE4ED55.50300@theleachfamily.co.uk>
+Message-ID: <1323626156-sup-9766@stapelberg.de>
+
+Hi Matthew,
+
+Excerpts from Matthew Leach's message of 2011-12-11 17:50:13 +0000:
+> I have added a small patch to i3 status to allow the output from 
+> commands to be shown on the bar (eg, I use it for showing which song MPD 
+> is currently playing).
+> 
+> If you find this useful please let me know and I'll post the patch.
+No, such a patch will not get merged. See
+http://i3wm.org/i3status/manpage.html#_external_scripts_programs_with_i3status
+for the rationale. Sorry for your wasted effort.
+
+Best regards,
+Michael
+
+From john.haltiwanger at gmail.com  Sun Dec 11 19:13:14 2011
+From: john.haltiwanger at gmail.com (John Haltiwanger)
+Date: Sun, 11 Dec 2011 19:13:14 +0100
+Subject: [i3] i3status CPU temperature
+In-Reply-To: <1323625353-sup-389@stapelberg.de>
+References: <20111211161843.GA14556@poincare.pc.linmpi.mpg.de>
+ <20111211164312.GA21129@leo.dacolab.dom>
+ <20111211172522.GA2679@poincare.pc.linmpi.mpg.de>
+ <1323624532-sup-1596@stapelberg.de>
+ <20111211173540.GB2679@poincare.pc.linmpi.mpg.de>
+ <1323625353-sup-389@stapelberg.de>
+Message-ID: <CANenyVO4-faaCddinZgHSr5cyW369xB3n+KXZN4urh03YDSyDQ@mail.gmail.com>
+
+On Sun, Dec 11, 2011 at 6:43 PM, Michael Stapelberg <
+michael+i3 at stapelberg.de> wrote:
+
+> Hi Miguel,
+>
+> Excerpts from Miguel de Val-Borro's message of 2011-12-11 17:35:40 +0000:
+> > $ ls -Rl /sys/class/thermal/
+> > /sys/class/thermal/:
+> > total 0
+> > lrwxrwxrwx 1 root root 0 Dec 11 18:15 cooling_device0 ->
+> ../../devices/virtual/thermal/cooling_device0
+> > lrwxrwxrwx 1 root root 0 Dec 11 18:15 cooling_device1 ->
+> ../../devices/virtual/thermal/cooling_device1
+> Hm, no clue then. In retrospect, we should probably have never added CPU
+> temperature to i3status, it doesn?t fit its philosophy. You should not care
+> about your CPU temperature. Virtually all computers turn off if they get
+> too
+> hot, which is enough indication of a problem there. If they are not too
+> hot,
+> why bother with the temperature at all?
+>
+
+In fact my laptop runs quite hot, and I find the CPU temp to be a blessing
+for knowing when I'm reaching the 'red line'. As you can imagine, a temp
+related shutdown often happens at points of peak activity, lots of apps
+open and doing things. Staying on top of the save functions in each of
+these programs is not always easy, but if I see the temp creeping up I can
+take countermeasures.
+
+Not to say that it should stay in the default, only thought I should
+contribute this real world use case for CPU temp monitoring.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20111211/719b5ac3/attachment-0001.html>
+
+From michael+i3 at stapelberg.de  Sun Dec 11 19:18:36 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 11 Dec 2011 18:18:36 +0000
+Subject: [i3] i3status CPU temperature
+In-Reply-To: <CANenyVO4-faaCddinZgHSr5cyW369xB3n+KXZN4urh03YDSyDQ@mail.gmail.com>
+References: <20111211161843.GA14556@poincare.pc.linmpi.mpg.de>
+ <20111211164312.GA21129@leo.dacolab.dom>
+ <20111211172522.GA2679@poincare.pc.linmpi.mpg.de>
+ <1323624532-sup-1596@stapelberg.de>
+ <20111211173540.GB2679@poincare.pc.linmpi.mpg.de>
+ <1323625353-sup-389@stapelberg.de>
+ <CANenyVO4-faaCddinZgHSr5cyW369xB3n+KXZN4urh03YDSyDQ@mail.gmail.com>
+Message-ID: <1323627419-sup-1183@stapelberg.de>
+
+Hi John,
+
+Excerpts from John Haltiwanger's message of 2011-12-11 18:13:14 +0000:
+> In fact my laptop runs quite hot, and I find the CPU temp to be a blessing
+> for knowing when I'm reaching the 'red line'. As you can imagine, a temp
+You should try:
+1) Cleaning your fan.
+2) Re-applying thermal grease to your CPU/fan.
+3) If both don?t help, run a program such as thinkfan to control your fan
+   depending on CPU temperature.
+
+> these programs is not always easy, but if I see the temp creeping up I can
+> take countermeasures.
+The thing is, you shouldn?t. That?s what computers are for :).
+
+Best regards,
+Michael
+
+From thohtor at gmail.com  Sun Dec 11 19:51:36 2011
+From: thohtor at gmail.com (thomas torp)
+Date: Sun, 11 Dec 2011 19:51:36 +0100
+Subject: [i3] Focus to follow application
+Message-ID: <CACGPyeKMhKc+03O1bF9g2bR_Mi1dGvO_GQvX4aSyworo2AeCMw@mail.gmail.com>
+
+I have set up my mediaplayer to open in workspace nr 2. Problem is when i
+open for example an video file from workspace nr 1, the file opens in WS nr
+2 but focus stays in the current workspace. Is there an option to have
+focus follow the application also when this means switching workspace.
+
+regards
+thomas
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20111211/ec523b5d/attachment.html>
+
+From ciprian.craciun at gmail.com  Tue Dec 13 09:22:41 2011
+From: ciprian.craciun at gmail.com (Ciprian Dorin Craciun)
+Date: Tue, 13 Dec 2011 10:22:41 +0200
+Subject: [i3] Eclipse strange behaviour (dialog windows, popups, etc.)
+Message-ID: <CA+Tk8fzg5JrVhor0GsEy5ab2R=Jy04uudSykaVtD1-CG3M2-EA@mail.gmail.com>
+
+    Hello all!
+
+    After installing i3wm v4 (actually anything not v3) (on
+ArchLinux), Eclipse (3.6.2) started behaving quite strange:
+    * after starting Eclipse, all popups are not visible (I think they
+have 0 height / weight), and all dialog boxes are so small that only
+the icon (inside the dialog) is visible; (I start it on workspace 1 --
+VGA;)
+    * after moving Eclipse to workspace 2 (LVDS), dialogs and popups
+have proper dimensions and work perfectly;
+    * after moving Eclipse back to workspace 1 (VGA), dialogs and
+popus have proper dimensions but are displayed on the wrong workspace
+(1 -- VGA);
+
+    Also Firefox behaves very strangely (regardless of version,
+actually from 4 onwards):
+    * if I don't have a monitor attached and I start Firefox on an
+empty workspace it either shows a white window, or it doesn't show at
+all (the process is running);
+    * if I want to start it in a workspace with another window
+existing I get the same behaviour;
+    * if I open a terminal and switch to an empty workspace it works;
+
+    Does someone have the same problems?
+
+    My (old v3) config regarding workspaces is:
+~~~~
+workspace 1 output HDMI2
+workspace 2 output LVDS1
+~~~~
+
+    My `xrandr` output is:
+~~~~
+Screen 0: minimum 320 x 200, current 3286 x 1080, maximum 8192 x 8192
+LVDS1 connected 1366x768+1920+0 (normal left inverted right x axis y
+axis) 293mm x 165mm
+   1366x768       60.0*+
+   1024x768       60.0
+   800x600        60.3     56.2
+   640x480        59.9
+VGA1 disconnected (normal left inverted right x axis y axis)
+HDMI1 disconnected (normal left inverted right x axis y axis)
+DP1 disconnected (normal left inverted right x axis y axis)
+HDMI2 connected 1920x1080+0+0 (normal left inverted right x axis y
+axis) 477mm x 268mm
+   1920x1080      60.0*+
+   1680x1050      60.0
+   1600x900       60.0
+   1280x1024      75.0     60.0
+   1280x960       60.0
+   1280x800       59.8
+   1152x864       75.0
+   1280x720       60.0
+   1024x768       75.1     60.0
+   1024x576       60.0
+   832x624        74.6
+   800x600        75.0     60.3
+   640x480        75.0     60.0
+   720x400        70.1
+DP2 disconnected (normal left inverted right x axis y axis)
+~~~~
+
+    Thanks,
+    Ciprian.
+
+From michael+i3 at stapelberg.de  Tue Dec 13 19:21:42 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Tue, 13 Dec 2011 18:21:42 +0000
+Subject: [i3] Eclipse strange behaviour (dialog windows, popups, etc.)
+In-Reply-To: <CA+Tk8fzg5JrVhor0GsEy5ab2R=Jy04uudSykaVtD1-CG3M2-EA@mail.gmail.com>
+References: <CA+Tk8fzg5JrVhor0GsEy5ab2R=Jy04uudSykaVtD1-CG3M2-EA@mail.gmail.com>
+Message-ID: <1323800447-sup-6999@stapelberg.de>
+
+Hi Ciprian,
+
+please upgrade to latest git, this might be the problem described at
+http://bugs.i3wm.org/511
+
+Best regards,
+Michael
+
+From f.mathias at zignar.net  Wed Dec 14 21:16:23 2011
+From: f.mathias at zignar.net (Mathias =?UTF-8?B?RnXDn2VuZWdnZXI=?=)
+Date: Wed, 14 Dec 2011 21:16:23 +0100
+Subject: [i3] i3status CPU temperature
+In-Reply-To: <20111211173540.GB2679@poincare.pc.linmpi.mpg.de>
+Message-ID: <20111214211623.536106ea@zignar.net>
+
+Hi Miguel,
+
+you could try 
+
+cpu_temperature 0 {
+    format = "T: %degrees ?C"
+    path = "/sys/devices/platform/coretemp.0/temp1_input"
+}
+
+Regards,
+Mathias
+
+From miguel.deval at gmail.com  Thu Dec 15 11:07:21 2011
+From: miguel.deval at gmail.com (Miguel de Val-Borro)
+Date: Thu, 15 Dec 2011 11:07:21 +0100
+Subject: [i3] i3status CPU temperature
+In-Reply-To: <20111214211623.536106ea@zignar.net>
+References: <20111211173540.GB2679@poincare.pc.linmpi.mpg.de>
+ <20111214211623.536106ea@zignar.net>
+Message-ID: <20111215100721.GA2497@poincare.pc.linmpi.mpg.de>
+
+Hi Mathias,
+
+On Wed, Dec 14, 2011 at 09:16:23PM +0100, Mathias Fu?enegger wrote:
+> you could try 
+> 
+> cpu_temperature 0 {
+>     format = "T: %degrees ?C"
+>     path = "/sys/devices/platform/coretemp.0/temp1_input"
+> }
+
+I have temp2_input and temp3_input in that directory on a dual core
+machine. The temperature in those files is 27?C when the system is
+idle, which seems very cool but it may be right.
+
+Thanks,
+Miguel
+
+From miguel.deval at gmail.com  Thu Dec 15 16:33:30 2011
+From: miguel.deval at gmail.com (Miguel de Val-Borro)
+Date: Thu, 15 Dec 2011 16:33:30 +0100
+Subject: [i3] assign app to floating container
+Message-ID: <20111215153330.GC6903@poincare.pc.linmpi.mpg.de>
+
+Hi,
+
+In a previous version of i3 I could assing an application to start 
+in floating mode with:
+
+assign [class="Display"] ~
+
+This creates a workspace named "~" in v4.1, how could I start some
+applications in floating mode in the current workspace?
+
+Regards,
+Miguel
+
+From honza801 at gmail.com  Thu Dec 15 16:43:19 2011
+From: honza801 at gmail.com (Jan Krcmar)
+Date: Thu, 15 Dec 2011 16:43:19 +0100
+Subject: [i3] assign app to floating container
+In-Reply-To: <20111215153330.GC6903@poincare.pc.linmpi.mpg.de>
+References: <20111215153330.GC6903@poincare.pc.linmpi.mpg.de>
+Message-ID: <CAKneAXkxuu_LRDdxmYa4O06Bx06GxLxXZrSNaXHhQVQvXbtGUw@mail.gmail.com>
+
+hi,
+
+i'm using this kind of configuration:
+for_window [class="psi"] floating enable
+
+works fine
+jan
+
+2011/12/15 Miguel de Val-Borro <miguel.deval at gmail.com>:
+> Hi,
+>
+> In a previous version of i3 I could assing an application to start
+> in floating mode with:
+>
+> assign [class="Display"] ~
+>
+> This creates a workspace named "~" in v4.1, how could I start some
+> applications in floating mode in the current workspace?
+>
+> Regards,
+> Miguel
+
+From miguel.deval at gmail.com  Thu Dec 15 16:56:06 2011
+From: miguel.deval at gmail.com (Miguel de Val-Borro)
+Date: Thu, 15 Dec 2011 16:56:06 +0100
+Subject: [i3] assign app to floating container
+In-Reply-To: <CAKneAXkxuu_LRDdxmYa4O06Bx06GxLxXZrSNaXHhQVQvXbtGUw@mail.gmail.com>
+References: <20111215153330.GC6903@poincare.pc.linmpi.mpg.de>
+ <CAKneAXkxuu_LRDdxmYa4O06Bx06GxLxXZrSNaXHhQVQvXbtGUw@mail.gmail.com>
+Message-ID: <20111215155606.GD6903@poincare.pc.linmpi.mpg.de>
+
+On Thu, Dec 15, 2011 at 04:43:19PM +0100, Jan Krcmar wrote:
+> hi,
+> 
+> i'm using this kind of configuration:
+> for_window [class="psi"] floating enable
+
+That worked.
+
+Thanks a lot,
+Miguel
+
+From basilio at gmx.com  Thu Dec 15 18:56:12 2011
+From: basilio at gmx.com (basilio)
+Date: Thu, 15 Dec 2011 19:56:12 +0200
+Subject: [i3] workspace 4 doesn't work
+Message-ID: <4EEA34BC.1090804@gmx.com>
+
+I cannot make work following binding in my conf file:
+
+bindsym $mod+4 workspace 4
+
+meantime,
+
+bindsym $mod+1 workspace 1
+thru
+bindsym $mod+0 workspace 0
+work OK.
+
+And I can send a window to workplace 4 either. When I substitute $mod+4
+for $mod+y , for example, I got working keybinding. By the way, I use
+Mod4 (windows) key as a mod, conf file was generated by i3 wizard, i3
+4-1.1 from Debian testing repo.
+
+Is that expected behavior?
+
+Thanks ahead.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20111215/05afe125/attachment.html>
+
+From michael+i3 at stapelberg.de  Thu Dec 15 21:41:22 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Thu, 15 Dec 2011 20:41:22 +0000
+Subject: [i3] workspace 4 doesn't work
+In-Reply-To: <4EEA34BC.1090804@gmx.com>
+References: <4EEA34BC.1090804@gmx.com>
+Message-ID: <1323981620-sup-6953@stapelberg.de>
+
+Hi basilio,
+
+Excerpts from basilio's message of 2011-12-15 17:56:12 +0000:
+> Is that expected behavior?
+Of course not.
+
+File a ticket, attach a full debug loglevel logfile, see
+http://i3wm.org/docs/debugging.html. Also attach the output of xmodmap -pke
+
+Best regards,
+Michael
+
+From raphael at khaiat.org  Fri Dec 16 09:31:54 2011
+From: raphael at khaiat.org (Raphael Khaiat)
+Date: Fri, 16 Dec 2011 09:31:54 +0100 (CET)
+Subject: [i3] workspace 4 doesn't work
+In-Reply-To: <4EEA34BC.1090804@gmx.com>
+Message-ID: <27746476.12.1324024314788.JavaMail.root@ks353733.kimsufi.com>
+
+Hi,
+
+I am also using debian testing + i3 4-1.1 + mod4 as a key mod 
+and it works properly here.
+Are you using a qwerty or azerty keyboard layout ? (or smth else)
+Here is my keybind in case of a azerty keyboard
+bindsym $mod+apostrophe workspace 4
+
+Hope that helps :)
+--
+bacardi55
+
+----- Mail original -----
+> De: "basilio" <basilio at gmx.com>
+> ?: i3-discuss at i3.zekjur.net
+> Envoy?: Jeudi 15 D?cembre 2011 18:56:12
+> Objet: [i3] workspace 4 doesn't work
+> I cannot make work following binding in my conf file:
+> 
+> bindsym $mod+4 workspace 4
+> 
+> meantime,
+> 
+> bindsym $mod+1 workspace 1
+> thru
+> bindsym $mod+0 workspace 0
+> work OK.
+> 
+> And I can send a window to workplace 4 either. When I substitute
+> $mod+4 for $mod+y , for example, I got working keybinding. By the way,
+> I use Mod4 (windows) key as a mod, conf file was generated by i3
+> wizard, i3 4-1.1 from Debian testing repo.
+> 
+> Is that expected behavior?
+> 
+> Thanks ahead.
+
+From skeept at gmail.com  Tue Dec 27 06:51:38 2011
+From: skeept at gmail.com (jorge rodrigues)
+Date: Tue, 27 Dec 2011 00:51:38 -0500
+Subject: [i3] Exchangin Mod1 and Mod3 in config file
+Message-ID: <CALvSa=SLoXqca_r9LGM5i=Q_WbyQLGkzv0HNad+sJ4b06e9gKA@mail.gmail.com>
+
+Hi,
+
+sorry if this is a very basic question, I searched the archives but
+didn't find it there.
+I would like to use the windows key as the main key. So what I do is
+switch in the config file
+Mod1 and Mod3.
+After I do this none of the shortcuts seems to work.
+I would not like to simply exchange the windows key and the alt-key
+using xmodmap since I would like to use the alt-key for other
+purposes.
+
+Thank you.
+
+From mail at merovius.de  Tue Dec 27 07:54:36 2011
+From: mail at merovius.de (Axel Wagner)
+Date: Tue, 27 Dec 2011 07:54:36 +0100
+Subject: [i3] Exchangin Mod1 and Mod3 in config file
+In-Reply-To: <CALvSa=SLoXqca_r9LGM5i=Q_WbyQLGkzv0HNad+sJ4b06e9gKA@mail.gmail.com>
+References: <CALvSa=SLoXqca_r9LGM5i=Q_WbyQLGkzv0HNad+sJ4b06e9gKA@mail.gmail.com>
+Message-ID: <1324968656-sup-433@merovius.de>
+
+Hello jorge,
+
+are you sure, that the windows key is Mod3? It's Mod4 on most systems I
+saw. Try looking for "Super_L" in the output of xmodmap to be sure.
+
+Kind regards,
+
+Axel
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 198 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20111227/05918fbb/attachment.pgp>
+
+From skeept at gmail.com  Tue Dec 27 09:04:35 2011
+From: skeept at gmail.com (jorge rodrigues)
+Date: Tue, 27 Dec 2011 03:04:35 -0500
+Subject: [i3] Exchangin Mod1 and Mod3 in config file
+In-Reply-To: <1324968656-sup-433@merovius.de>
+References: <CALvSa=SLoXqca_r9LGM5i=Q_WbyQLGkzv0HNad+sJ4b06e9gKA@mail.gmail.com>
+ <1324968656-sup-433@merovius.de>
+Message-ID: <CALvSa=Q+khdt=26CohAk3tJCDoJrudP_Zd5kUWp0n5jQSM2_PQ@mail.gmail.com>
+
+Yes,
+
+that is it!
+
+Thank you very much for the quick reply!
+
+On Tue, Dec 27, 2011 at 1:54 AM, Axel Wagner <mail at merovius.de> wrote:
+> Hello jorge,
+>
+> are you sure, that the windows key is Mod3? It's Mod4 on most systems I
+> saw. Try looking for "Super_L" in the output of xmodmap to be sure.
+>
+> Kind regards,
+>
+> Axel
+
+From basilio at gmx.com  Tue Dec 27 22:51:17 2011
+From: basilio at gmx.com (basilio)
+Date: Tue, 27 Dec 2011 23:51:17 +0200
+Subject: [i3] Events, others than keybindings
+Message-ID: <4EFA3DD5.9030702@gmx.com>
+
+Hi to all!
+Just wandering, is there a way to configure i3 to catch events others
+than key presses (couldn't find that in documentation)? For example -
+opportunity to catch a dbus message would be very useful for triggering
+some script to update keyboard layout indicator. And many other things
+would be possible either.
+
+Thanks ahead.
+
+From fernandotcl at gmail.com  Thu Dec 29 22:27:58 2011
+From: fernandotcl at gmail.com (Fernando Lemos)
+Date: Thu, 29 Dec 2011 19:27:58 -0200
+Subject: [i3] Events, others than keybindings
+In-Reply-To: <4EFA3DD5.9030702@gmx.com>
+References: <4EFA3DD5.9030702@gmx.com>
+Message-ID: <CANVYNa94DqFuKiA4xa6-Qj_fNBdWUBG4i+968t=A+n22K=5LJw@mail.gmail.com>
+
+Hi,
+
+On Tue, Dec 27, 2011 at 7:51 PM, basilio <basilio at gmx.com> wrote:
+> Just wandering, is there a way to configure i3 to catch events others
+> than key presses (couldn't find that in documentation)? For example -
+> opportunity to catch a dbus message would be very useful for triggering
+> some script to update keyboard layout indicator. And many other things
+> would be possible either.
+
+Nope, sorry. i3 doesn't use DBus at all. It wouldn't make much sense
+to do what you're describing within i3. Also, a generic DBus monitor
+is often impossible as some APIs require you to keep some state to
+present meaningful information (take a look at the udisks-glue code).
+
+Regards,
+
+From michael+i3 at stapelberg.de  Fri Dec 30 00:34:54 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Fri, 30 Dec 2011 00:34:54 +0100
+Subject: [i3] Events, others than keybindings
+In-Reply-To: <CANVYNa94DqFuKiA4xa6-Qj_fNBdWUBG4i+968t=A+n22K=5LJw@mail.gmail.com>
+References: <4EFA3DD5.9030702@gmx.com>
+ <CANVYNa94DqFuKiA4xa6-Qj_fNBdWUBG4i+968t=A+n22K=5LJw@mail.gmail.com>
+Message-ID: <1325201622-sup-3310@stapelberg.de>
+
+Hi,
+
+Excerpts from Fernando Lemos's message of 2011-12-29 22:27:58 +0100:
+> > Just wandering, is there a way to configure i3 to catch events others
+> > than key presses (couldn't find that in documentation)? For example -
+> > opportunity to catch a dbus message would be very useful for triggering
+> > some script to update keyboard layout indicator. And many other things
+> > would be possible either.
+> Nope, sorry. i3 doesn't use DBus at all. It wouldn't make much sense
+> to do what you're describing within i3. Also, a generic DBus monitor
+Precisely ? what you describe sounds more like the job of a desktop
+environment, which i3 clearly is not. i3 is just a window manager. If you need
+the features you describe, you have to build them yourself.
+
+Best regards,
+Michael
+

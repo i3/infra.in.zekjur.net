@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Debugging techniques.
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Debugging%20techniques.&In-Reply-To=%3C562F83C6.2050204%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002228.html">
+   <LINK REL="Next"  HREF="002232.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Debugging techniques.</H1>
+    <B>Guillaume Maudoux (Layus)</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Debugging%20techniques.&In-Reply-To=%3C562F83C6.2050204%40gmail.com%3E"
+       TITLE="[i3] Debugging techniques.">layus.on at gmail.com
+       </A><BR>
+    <I>Tue Oct 27 15:01:42 CET 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002228.html">[i3] Error: status_command process exited unexpectedly (exit 1)
+</A></li>
+        <LI>Next message: <A HREF="002232.html">[i3] Debugging techniques.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2231">[ date ]</a>
+              <a href="thread.html#2231">[ thread ]</a>
+              <a href="subject.html#2231">[ subject ]</a>
+              <a href="author.html#2231">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello world!
+
+I am trying to enable debugging in i3, and I am confused by the number 
+of different options to do this.
+
+    command line          config option
+-- --------------------  -----------------------------
+1 i3 --shmlog-size=X shmlog on|off|toggle|&lt;size&gt;
+2  i3 -V ?
+3  i3 -d all             ?
+4  ? debuglog on|off|toggle
+
+So my question are:
+
+Which one is the recommended way ?
+Does `shmlog on` imply  `debuglog on` ?
+Does `-d all` imply `-V` ?
+What size do you recommend for the shmlog size ?
+May I assume that the config options cannot be used to debug issues 
+prior to loading the configuration file (nor issues while loading the 
+configuration file) ?
+Which of these options provide enough information for a bug report ? Is 
+-V enough ?
+
+It seems that shm logging is better in the sense that it does not 
+increase a log file size, but not as nice as it locks some memory space.
+What is the reason behind shm logging, instead of the usual logging to 
+file + logrotate ?
+
+Best regards,
+Layus.
+
+--
+PS: Some references
+<A HREF="http://i3wm.org/docs/debugging.html">http://i3wm.org/docs/debugging.html</A> (--shmlog)
+<A HREF="http://i3wm.org/docs/debugging-release-version.html">http://i3wm.org/docs/debugging-release-version.html</A> (-V, -d all)
+<A HREF="http://i3wm.org/docs/userguide.html#_enabling_debug_logging">http://i3wm.org/docs/userguide.html#_enabling_debug_logging</A> (debuglog, 
+shmlog)
+
+
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002228.html">[i3] Error: status_command process exited unexpectedly (exit 1)
+</A></li>
+	<LI>Next message: <A HREF="002232.html">[i3] Debugging techniques.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2231">[ date ]</a>
+              <a href="thread.html#2231">[ thread ]</a>
+              <a href="subject.html#2231">[ subject ]</a>
+              <a href="author.html#2231">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

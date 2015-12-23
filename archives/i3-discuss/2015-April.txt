@@ -1,0 +1,3807 @@
+From faorg-lists at yahoo.co.uk  Wed Apr  1 18:38:54 2015
+From: faorg-lists at yahoo.co.uk (Rob)
+Date: Wed, 1 Apr 2015 17:38:54 +0100
+Subject: [i3] memory information in i3status
+Message-ID: <1427906334.40858.YahooMailBasic@web171305.mail.ir2.yahoo.com>
+
+Hi,
+
+This is something have found useful in other window managers, and further to the comments in the i3status man page:
+
+> It is hard to measure memory in a way which is accurate or meaningful
+
+I find MemAvailable from /proc/meminfo most useful, assuming I understand it correctly.  MemTotal-MemAvailable would be even better.
+
+> One reason for that is that I have not run out of memory in the last few years
+
+Unfortunately I do reasonably often.  Either because other users are running programs on the machine, or particular processes are memory intensive (eg. virtual machines, CAE applications)
+
+> Memory has become so cheap that even in my 4 year old notebook, I have 8 GiB of RAM.
+
+I have 12GiB but it is not cost effective to replace this before replacing the machine.  Some programs/data sets have their memory requirements increased as hardware specs improve.
+
+> Another reason is that your operating system will do the right thing anyway
+
+It tends to thrash the swap space because all the running processes can't fit into physical RAM.  Sometimes the situation is so bad I have to reboot the machine.  'limit vmemoryuse' can help in some situations but not all.  A quick way of checking memory usage would help.
+
+> you are probably better off with a script doing that, which pops up an alert when your RAM usage reaches a certain threshold
+
+Maybe, but it would be nice if the option was built in anyway.  I don't suppose there is any way to add it as a user configuration?
+
+thanks,
+Rob
+
+From johannes.lange at rwth-aachen.de  Wed Apr  1 19:02:26 2015
+From: johannes.lange at rwth-aachen.de (Johannes Lange)
+Date: Wed, 1 Apr 2015 19:02:26 +0200
+Subject: [i3] memory information in i3status
+In-Reply-To: <1427906334.40858.YahooMailBasic@web171305.mail.ir2.yahoo.com>
+References: <1427906334.40858.YahooMailBasic@web171305.mail.ir2.yahoo.com>
+Message-ID: <551C24A2.3040408@rwth-aachen.de>
+
+Hi,
+
+On 01/04/15 18:38, Rob wrote:
+>> you are probably better off with a script doing that, which pops up an alert when your RAM usage reaches a certain threshold
+> Maybe, but it would be nice if the option was built in anyway.  I don't suppose there is any way to add it as a user configuration?
+You can (more or less) easily pipe i3status through a wrapper script
+(see [1] and example wrappers [2]) that you can use to add functionality
+as you like.
+You might also be interested in i3blocks [3] as a replacement for
+i3status. This makes adding new scripts more straight-forward and even
+has example MEM/CPU scripts included (I did not follow the whole
+discussion here, so I don't know if these fit your needs).
+
+Cheers,
+Johannes
+
+[1]
+http://i3wm.org/i3status/manpage.html#_external_scripts_programs_with_i3status
+[2] http://code.zekjur.net/git/i3status/tree/contrib
+[3] https://github.com/vivien/i3blocks
+
+From c1b3rh4ck at gmail.com  Sun Apr  5 00:14:31 2015
+From: c1b3rh4ck at gmail.com (Hector)
+Date: Sat, 4 Apr 2015 17:14:31 -0500
+Subject: [i3] i3wm exit session
+Message-ID: <20150404221431.GA2526@D3v1l.PereiraSecTeam>
+
+Dear I3wm list ,
+
+Recently I was using my laptop with i3wm,  my version is 4.8
+(2014-06-15, branch "4.8") I run  debian testing,  I couldn't say that I
+haven't fallen in love with it,but checking the option to exit from
+my current session if I press once, I get the normal message set
+by the default configuration, but if I press many times
+$mod+Shift+e  I get something like in the attached picture.
+
+Is there any way to add some snipe of code to solve it if I press many
+times?.
+
+Can anybody confirm  this behavior maybe I'm wrong and it just
+happend to me.
+
+Best Regards,
+Hector.
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: manytimes.png
+Type: image/png
+Size: 45051 bytes
+Desc: Send innadecuate behavior of log out i3wm
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150404/a2b948a7/attachment-0001.png>
+
+From michael at i3wm.org  Sun Apr  5 09:18:54 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 5 Apr 2015 09:18:54 +0200
+Subject: [i3] i3wm exit session
+In-Reply-To: <20150404221431.GA2526@D3v1l.PereiraSecTeam>
+References: <20150404221431.GA2526@D3v1l.PereiraSecTeam>
+Message-ID: <CANnVG6nXb8BogQcfj1rYRhrEBh1vG2kR9M4rjJtcAcdoTnPhig@mail.gmail.com>
+
+What’s the problem with this behavior?
+
+It surely is technically possible to avoid it, but why bother?
+
+On Sun, Apr 5, 2015 at 12:14 AM, Hector <c1b3rh4ck at gmail.com> wrote:
+> Dear I3wm list ,
+>
+> Recently I was using my laptop with i3wm,  my version is 4.8
+> (2014-06-15, branch "4.8") I run  debian testing,  I couldn't say that I
+> haven't fallen in love with it,but checking the option to exit from
+> my current session if I press once, I get the normal message set
+> by the default configuration, but if I press many times
+> $mod+Shift+e  I get something like in the attached picture.
+>
+> Is there any way to add some snipe of code to solve it if I press many
+> times?.
+>
+> Can anybody confirm  this behavior maybe I'm wrong and it just
+> happend to me.
+>
+> Best Regards,
+> Hector.
+>
+
+
+
+-- 
+Best regards,
+Michael
+
+From jeff at purple.com  Sun Apr  5 09:22:46 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Sun, 5 Apr 2015 09:22:46 +0200
+Subject: [i3] Bug: Window fails to focus after closing matplotlib plot
+Message-ID: <CAM4Y7zwW-JPhGYjUxNr91P6nAobudSjSv6293uaf8xv_oU3ndg@mail.gmail.com>
+
+I run ipython3, plot something using matplotlib and the Tk backend (default
+backend, I think), the plot displays.  This is normal python.  I type C-w
+to close the plot window, it closes, but the window now displayed
+(correctly) does not have the focus.  Worse, i3 doesn't notice me either.
+
+Clicking in the window I think should be active or moving the mouse to
+trigger a crossing event focuses a window and all is back to normal.
+
+This doesn't happen with other windows/programs.
+
+I am using i3 4.8.
+
+[S-20]jeff at nantes:~ $ i3 --version
+i3 version 4.8 (2014-06-15, branch "4.8") © 2009-2014 Michael Stapelberg
+and contributors
+[S-20]jeff at nantes:~ $
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only if I'm in the UK
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150405/2aa39873/attachment.html>
+
+From michael at i3wm.org  Sun Apr  5 09:24:39 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 5 Apr 2015 09:24:39 +0200
+Subject: [i3] Bug: Window fails to focus after closing matplotlib plot
+In-Reply-To: <CAM4Y7zwW-JPhGYjUxNr91P6nAobudSjSv6293uaf8xv_oU3ndg@mail.gmail.com>
+References: <CAM4Y7zwW-JPhGYjUxNr91P6nAobudSjSv6293uaf8xv_oU3ndg@mail.gmail.com>
+Message-ID: <CANnVG6nuJgqBVKUwvsxXGRi6O6HWJN4OYdYp-gx9xF-TKPe-WQ@mail.gmail.com>
+
+The mailing list is not a bugtracker. Please report an issue at
+https://github.com/i3/i3/issues. And upgrade to v4.10.1 first, as we
+only support the latest major release.
+
+On Sun, Apr 5, 2015 at 9:22 AM, Jeff Abrahamson <jeff at purple.com> wrote:
+> I run ipython3, plot something using matplotlib and the Tk backend (default
+> backend, I think), the plot displays.  This is normal python.  I type C-w to
+> close the plot window, it closes, but the window now displayed (correctly)
+> does not have the focus.  Worse, i3 doesn't notice me either.
+>
+> Clicking in the window I think should be active or moving the mouse to
+> trigger a crossing event focuses a window and all is back to normal.
+>
+> This doesn't happen with other windows/programs.
+>
+> I am using i3 4.8.
+>
+> [S-20]jeff at nantes:~ $ i3 --version
+> i3 version 4.8 (2014-06-15, branch "4.8") © 2009-2014 Michael Stapelberg and
+> contributors
+> [S-20]jeff at nantes:~ $
+>
+> Jeff Abrahamson
+> +33 6 24 40 01 57
+> +44 7920 594 255    <-- only if I'm in the UK
+>
+> http://jeff.purple.com/
+> http://blog.purple.com/jeff/
+
+
+
+-- 
+Best regards,
+Michael
+
+From jeff at purple.com  Sun Apr  5 09:30:53 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Sun, 5 Apr 2015 09:30:53 +0200
+Subject: [i3] i3wm exit session
+In-Reply-To: <CANnVG6nXb8BogQcfj1rYRhrEBh1vG2kR9M4rjJtcAcdoTnPhig@mail.gmail.com>
+References: <20150404221431.GA2526@D3v1l.PereiraSecTeam>
+ <CANnVG6nXb8BogQcfj1rYRhrEBh1vG2kR9M4rjJtcAcdoTnPhig@mail.gmail.com>
+Message-ID: <CAM4Y7zzSZcyFU8O0aLcJZMX0M=bp12t3jO_tfwPrKgR+oOA3wg@mail.gmail.com>
+
+Wait, that's not a very empathetic response.  I agree with you, Michael,
+that this isn't a huge problem functionally, but it *looks* ugly and it
+*looks* like unintended behavior.  And that's reason enough for the OP to
+raise the issue, in case no one had noticed.
+
+>From there, it's certainly reasonable if you want to say that it's not your
+priority to fix.  And to invite a patch, whether or not you want to offer
+tips on how it might be patched.
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only if I'm in the UK
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+
+On 5 April 2015 at 09:18, Michael Stapelberg <michael at i3wm.org> wrote:
+
+> What’s the problem with this behavior?
+>
+> It surely is technically possible to avoid it, but why bother?
+>
+> On Sun, Apr 5, 2015 at 12:14 AM, Hector <c1b3rh4ck at gmail.com> wrote:
+> > Dear I3wm list ,
+> >
+> > Recently I was using my laptop with i3wm,  my version is 4.8
+> > (2014-06-15, branch "4.8") I run  debian testing,  I couldn't say that I
+> > haven't fallen in love with it,but checking the option to exit from
+> > my current session if I press once, I get the normal message set
+> > by the default configuration, but if I press many times
+> > $mod+Shift+e  I get something like in the attached picture.
+> >
+> > Is there any way to add some snipe of code to solve it if I press many
+> > times?.
+> >
+> > Can anybody confirm  this behavior maybe I'm wrong and it just
+> > happend to me.
+> >
+> > Best Regards,
+> > Hector.
+> >
+>
+>
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150405/547724cb/attachment.html>
+
+From jeff at purple.com  Sun Apr  5 09:39:49 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Sun, 5 Apr 2015 09:39:49 +0200
+Subject: [i3] i3wm exit session
+In-Reply-To: <CAM4Y7zzSZcyFU8O0aLcJZMX0M=bp12t3jO_tfwPrKgR+oOA3wg@mail.gmail.com>
+References: <20150404221431.GA2526@D3v1l.PereiraSecTeam>
+ <CANnVG6nXb8BogQcfj1rYRhrEBh1vG2kR9M4rjJtcAcdoTnPhig@mail.gmail.com>
+ <CAM4Y7zzSZcyFU8O0aLcJZMX0M=bp12t3jO_tfwPrKgR+oOA3wg@mail.gmail.com>
+Message-ID: <CAM4Y7zzTOm8sRqVQUWF4UScQexNR3W0dUH_2Higv5UXDQN1y7A@mail.gmail.com>
+
+(To be clear and before anyone has a chance to remark on it: that was meant
+in support of the OP of the question, not meant as a chastisement of
+Michael.  Sorry if it read a bit as the latter.)
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only if I'm in the UK
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+
+On 5 April 2015 at 09:30, Jeff Abrahamson <jeff at purple.com> wrote:
+
+> Wait, that's not a very empathetic response.  I agree with you, Michael,
+> that this isn't a huge problem functionally, but it *looks* ugly and it
+> *looks* like unintended behavior.  And that's reason enough for the OP to
+> raise the issue, in case no one had noticed.
+>
+> From there, it's certainly reasonable if you want to say that it's not
+> your priority to fix.  And to invite a patch, whether or not you want to
+> offer tips on how it might be patched.
+>
+> Jeff Abrahamson
+> +33 6 24 40 01 57
+> +44 7920 594 255    <-- only if I'm in the UK
+>
+> http://jeff.purple.com/
+> http://blog.purple.com/jeff/
+>
+> On 5 April 2015 at 09:18, Michael Stapelberg <michael at i3wm.org> wrote:
+>
+>> What’s the problem with this behavior?
+>>
+>> It surely is technically possible to avoid it, but why bother?
+>>
+>> On Sun, Apr 5, 2015 at 12:14 AM, Hector <c1b3rh4ck at gmail.com> wrote:
+>> > Dear I3wm list ,
+>> >
+>> > Recently I was using my laptop with i3wm,  my version is 4.8
+>> > (2014-06-15, branch "4.8") I run  debian testing,  I couldn't say that I
+>> > haven't fallen in love with it,but checking the option to exit from
+>> > my current session if I press once, I get the normal message set
+>> > by the default configuration, but if I press many times
+>> > $mod+Shift+e  I get something like in the attached picture.
+>> >
+>> > Is there any way to add some snipe of code to solve it if I press many
+>> > times?.
+>> >
+>> > Can anybody confirm  this behavior maybe I'm wrong and it just
+>> > happend to me.
+>> >
+>> > Best Regards,
+>> > Hector.
+>> >
+>>
+>>
+>>
+>> --
+>> Best regards,
+>> Michael
+>>
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150405/9e3850de/attachment.html>
+
+From tony at dubstepdish.com  Sun Apr  5 09:49:55 2015
+From: tony at dubstepdish.com (Tony Crisci)
+Date: Sun, 05 Apr 2015 03:49:55 -0400
+Subject: [i3] i3wm exit session
+In-Reply-To: <CAM4Y7zzSZcyFU8O0aLcJZMX0M=bp12t3jO_tfwPrKgR+oOA3wg@mail.gmail.com>
+References: <20150404221431.GA2526@D3v1l.PereiraSecTeam>
+ <CANnVG6nXb8BogQcfj1rYRhrEBh1vG2kR9M4rjJtcAcdoTnPhig@mail.gmail.com>
+ <CAM4Y7zzSZcyFU8O0aLcJZMX0M=bp12t3jO_tfwPrKgR+oOA3wg@mail.gmail.com>
+Message-ID: <5520E923.3080005@dubstepdish.com>
+
+> Is there any way to add some snipe of code to solve it if I press many
+times?
+
+Change the binding to this
+
+bindsym Mod1+Shift+e exec "pidof i3-nagbar || i3-nagbar -t warning -m
+'You pressed the exit shortcut. Do you really want to exit i3? This will
+end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+> Wait, that's not a very empathetic response.
+
+Please try not to shut down the discussion of new features for i3-nagbar
+on the mailing list.
+
+On 04/05/2015 03:30 AM, Jeff Abrahamson wrote:
+> Wait, that's not a very empathetic response.  I agree with you, Michael,
+> that this isn't a huge problem functionally, but it *looks* ugly and it
+> *looks* like unintended behavior.  And that's reason enough for the OP to
+> raise the issue, in case no one had noticed.
+> 
+> From there, it's certainly reasonable if you want to say that it's not your
+> priority to fix.  And to invite a patch, whether or not you want to offer
+> tips on how it might be patched.
+> 
+> Jeff Abrahamson
+> +33 6 24 40 01 57
+> +44 7920 594 255    <-- only if I'm in the UK
+> 
+> http://jeff.purple.com/
+> http://blog.purple.com/jeff/
+> 
+> On 5 April 2015 at 09:18, Michael Stapelberg <michael at i3wm.org> wrote:
+> 
+>> What’s the problem with this behavior?
+>>
+>> It surely is technically possible to avoid it, but why bother?
+>>
+>> On Sun, Apr 5, 2015 at 12:14 AM, Hector <c1b3rh4ck at gmail.com> wrote:
+>>> Dear I3wm list ,
+>>>
+>>> Recently I was using my laptop with i3wm,  my version is 4.8
+>>> (2014-06-15, branch "4.8") I run  debian testing,  I couldn't say that I
+>>> haven't fallen in love with it,but checking the option to exit from
+>>> my current session if I press once, I get the normal message set
+>>> by the default configuration, but if I press many times
+>>> $mod+Shift+e  I get something like in the attached picture.
+>>>
+>>> Is there any way to add some snipe of code to solve it if I press many
+>>> times?.
+>>>
+>>> Can anybody confirm  this behavior maybe I'm wrong and it just
+>>> happend to me.
+>>>
+>>> Best Regards,
+>>> Hector.
+>>>
+>>
+>>
+>>
+>> --
+>> Best regards,
+>> Michael
+>>
+> 
+
+From mimosinnet at gmail.com  Sun Apr  5 11:58:47 2015
+From: mimosinnet at gmail.com (mimosinnet at gmail.com)
+Date: Sun, 5 Apr 2015 11:58:47 +0200
+Subject: [i3] New to i3wm
+Message-ID: <CAC3XPqL+965gHzTcv9TSAdoNfw8M0fR8jcUqs2+U1RfqwKd3tQ@mail.gmail.com>
+
+Oh dear...! I have had the misfortune of meeting  i3 on my Easter holidays
+[?].
+
+I have been a happy bunny playing with the configuration
+<https://github.com/mimosinnet/i3wm_config> so it maps my (not so
+different) FVWM config and contributed to i3tree
+<https://github.com/mimosinnet/i3tree> (it did not work for me), after reading
+on it in the list
+<http://comments.gmane.org/gmane.comp.window-managers.i3.general/469>. I
+must say I am very impressed and very much agree with the underlying
+principles guiding I3.
+
+Thanks for this great piece of software!
+
+Cheers!
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150405/58e8878f/attachment.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 35D.gif
+Type: image/gif
+Size: 2012 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150405/58e8878f/attachment.gif>
+
+From donaldcallen at gmail.com  Sun Apr  5 13:04:46 2015
+From: donaldcallen at gmail.com (Donald Allen)
+Date: Sun, 5 Apr 2015 07:04:46 -0400
+Subject: [i3] i3wm exit session
+In-Reply-To: <CAM4Y7zzTOm8sRqVQUWF4UScQexNR3W0dUH_2Higv5UXDQN1y7A@mail.gmail.com>
+References: <20150404221431.GA2526@D3v1l.PereiraSecTeam>
+ <CANnVG6nXb8BogQcfj1rYRhrEBh1vG2kR9M4rjJtcAcdoTnPhig@mail.gmail.com>
+ <CAM4Y7zzSZcyFU8O0aLcJZMX0M=bp12t3jO_tfwPrKgR+oOA3wg@mail.gmail.com>
+ <CAM4Y7zzTOm8sRqVQUWF4UScQexNR3W0dUH_2Higv5UXDQN1y7A@mail.gmail.com>
+Message-ID: <CAPsTYbwX3of2or0MtLRZ2pfd2dgPP+Amc0uGOhvtVdj3vUN18g@mail.gmail.com>
+
+On Sun, Apr 5, 2015 at 3:39 AM, Jeff Abrahamson <jeff at purple.com> wrote:
+> (To be clear and before anyone has a chance to remark on it: that was meant
+> in support of the OP of the question, not meant as a chastisement of
+> Michael.  Sorry if it read a bit as the latter.)
+
+Yes, it did read that way, pretty clearly. It's good that you realized
+it yourself and sent the above.
+
+While I think you are correct that it's unintended behavior -- a bug
+-- but not important functionally, I think Michael's response is
+perfectly reasonable, as the developer of good software for which we
+must all remember he is giving us free of charge. I don't know
+Michael, but I have seen indications that he's a busy guy. As someone
+who had a 45-year career in software development, I can tell you that
+just continuing development of i3 and providing the level of support
+he does is a big job. And that's in addition to whatever he does to
+earn his living and have a life. So, without trying to speak for him,
+I'm guessing his response came from that perspective. It was also a
+bit like the old joke about he fellow who says to the doctor "Doctor,
+when I do this, it hurts". To which the doctor responded "Don't do
+that".
+
+I would also add that we are living in an open source world. Part of
+the point of open source is that we can all contribute to the
+development of a piece of software. Read or listen to any of Richard
+Stallman's descriptions of his issue with a laser printer many years
+ago that resulted in his leading us in this direction and you see that
+collaboration between users and developers as at the core of the open
+source movement. The original poster expressed a concern about a
+certain behavior in i3, Michael essentially said "I have more
+important things to work on, from which you will benefit, so just
+avoid provoking that behavior", and then Tony Crisci suggested a fix
+that doesn't require Michael's involvement. This is the way it's
+supposed to work. Read the OpenBSD mailing lists. While the tone is
+too nasty for my taste, especially when Theo de Raadt gets involved,
+he and they have a point: don't complain, send a patch!
+
+/Don Allen
+
+>
+> Jeff Abrahamson
+> +33 6 24 40 01 57
+> +44 7920 594 255    <-- only if I'm in the UK
+>
+> http://jeff.purple.com/
+> http://blog.purple.com/jeff/
+>
+> On 5 April 2015 at 09:30, Jeff Abrahamson <jeff at purple.com> wrote:
+>>
+>> Wait, that's not a very empathetic response.  I agree with you, Michael,
+>> that this isn't a huge problem functionally, but it *looks* ugly and it
+>> *looks* like unintended behavior.  And that's reason enough for the OP to
+>> raise the issue, in case no one had noticed.
+>>
+>> From there, it's certainly reasonable if you want to say that it's not
+>> your priority to fix.  And to invite a patch, whether or not you want to
+>> offer tips on how it might be patched.
+>>
+>> Jeff Abrahamson
+>> +33 6 24 40 01 57
+>> +44 7920 594 255    <-- only if I'm in the UK
+>>
+>> http://jeff.purple.com/
+>> http://blog.purple.com/jeff/
+>>
+>> On 5 April 2015 at 09:18, Michael Stapelberg <michael at i3wm.org> wrote:
+>>>
+>>> What’s the problem with this behavior?
+>>>
+>>> It surely is technically possible to avoid it, but why bother?
+>>>
+>>> On Sun, Apr 5, 2015 at 12:14 AM, Hector <c1b3rh4ck at gmail.com> wrote:
+>>> > Dear I3wm list ,
+>>> >
+>>> > Recently I was using my laptop with i3wm,  my version is 4.8
+>>> > (2014-06-15, branch "4.8") I run  debian testing,  I couldn't say that
+>>> > I
+>>> > haven't fallen in love with it,but checking the option to exit from
+>>> > my current session if I press once, I get the normal message set
+>>> > by the default configuration, but if I press many times
+>>> > $mod+Shift+e  I get something like in the attached picture.
+>>> >
+>>> > Is there any way to add some snipe of code to solve it if I press many
+>>> > times?.
+>>> >
+>>> > Can anybody confirm  this behavior maybe I'm wrong and it just
+>>> > happend to me.
+>>> >
+>>> > Best Regards,
+>>> > Hector.
+>>> >
+>>>
+>>>
+>>>
+>>> --
+>>> Best regards,
+>>> Michael
+>>
+>>
+>
+
+From admin at airblader.de  Sun Apr  5 13:15:11 2015
+From: admin at airblader.de (=?UTF-8?B?SW5nbyBCw7xyaw==?=)
+Date: Sun, 05 Apr 2015 13:15:11 +0200
+Subject: [i3] i3wm exit session
+In-Reply-To: <CAPsTYbwX3of2or0MtLRZ2pfd2dgPP+Amc0uGOhvtVdj3vUN18g@mail.gmail.com>
+References: <20150404221431.GA2526@D3v1l.PereiraSecTeam>
+ <CANnVG6nXb8BogQcfj1rYRhrEBh1vG2kR9M4rjJtcAcdoTnPhig@mail.gmail.com>
+ <CAM4Y7zzSZcyFU8O0aLcJZMX0M=bp12t3jO_tfwPrKgR+oOA3wg@mail.gmail.com>
+ <CAM4Y7zzTOm8sRqVQUWF4UScQexNR3W0dUH_2Higv5UXDQN1y7A@mail.gmail.com>
+ <CAPsTYbwX3of2or0MtLRZ2pfd2dgPP+Amc0uGOhvtVdj3vUN18g@mail.gmail.com>
+Message-ID: <5521193F.4030309@airblader.de>
+
+This is getting meta, but (in a general sense) this:
+
+> don't complain, send a patch
+
+is a pretty unhelpful reaction in my eyes. So we can't open bugs if we
+don't provide the fix as well? We can't ask for features without
+implementing it? Most of us are busy and to be honest, I don't have the
+time to dig into the source code of *every* application I'm using if I
+feel that an improvement can be made. I wouldn't find time to eat, sleep
+or earn my living anymore. Of course it's a good thing if someone does;
+I just argue it shouldn't be a requirement.
+
+That being said, I didn't think any of this was dramatic and I didn't
+think Michael's or Jeff's responses were in any way "unreasonable".
+Someone asked a question, Michael made his stance, Tony provided a
+reasonable solution.
+
+
+Ingo
+
+
+On 04/05/2015 01:04 PM, Donald Allen wrote:
+> On Sun, Apr 5, 2015 at 3:39 AM, Jeff Abrahamson <jeff at purple.com> wrote:
+>> (To be clear and before anyone has a chance to remark on it: that was meant
+>> in support of the OP of the question, not meant as a chastisement of
+>> Michael.  Sorry if it read a bit as the latter.)
+> Yes, it did read that way, pretty clearly. It's good that you realized
+> it yourself and sent the above.
+>
+> While I think you are correct that it's unintended behavior -- a bug
+> -- but not important functionally, I think Michael's response is
+> perfectly reasonable, as the developer of good software for which we
+> must all remember he is giving us free of charge. I don't know
+> Michael, but I have seen indications that he's a busy guy. As someone
+> who had a 45-year career in software development, I can tell you that
+> just continuing development of i3 and providing the level of support
+> he does is a big job. And that's in addition to whatever he does to
+> earn his living and have a life. So, without trying to speak for him,
+> I'm guessing his response came from that perspective. It was also a
+> bit like the old joke about he fellow who says to the doctor "Doctor,
+> when I do this, it hurts". To which the doctor responded "Don't do
+> that".
+>
+> I would also add that we are living in an open source world. Part of
+> the point of open source is that we can all contribute to the
+> development of a piece of software. Read or listen to any of Richard
+> Stallman's descriptions of his issue with a laser printer many years
+> ago that resulted in his leading us in this direction and you see that
+> collaboration between users and developers as at the core of the open
+> source movement. The original poster expressed a concern about a
+> certain behavior in i3, Michael essentially said "I have more
+> important things to work on, from which you will benefit, so just
+> avoid provoking that behavior", and then Tony Crisci suggested a fix
+> that doesn't require Michael's involvement. This is the way it's
+> supposed to work. Read the OpenBSD mailing lists. While the tone is
+> too nasty for my taste, especially when Theo de Raadt gets involved,
+> he and they have a point: don't complain, send a patch!
+>
+> /Don Allen
+>
+>> Jeff Abrahamson
+>> +33 6 24 40 01 57
+>> +44 7920 594 255    <-- only if I'm in the UK
+>>
+>> http://jeff.purple.com/
+>> http://blog.purple.com/jeff/
+>>
+>> On 5 April 2015 at 09:30, Jeff Abrahamson <jeff at purple.com> wrote:
+>>> Wait, that's not a very empathetic response.  I agree with you, Michael,
+>>> that this isn't a huge problem functionally, but it *looks* ugly and it
+>>> *looks* like unintended behavior.  And that's reason enough for the OP to
+>>> raise the issue, in case no one had noticed.
+>>>
+>>> From there, it's certainly reasonable if you want to say that it's not
+>>> your priority to fix.  And to invite a patch, whether or not you want to
+>>> offer tips on how it might be patched.
+>>>
+>>> Jeff Abrahamson
+>>> +33 6 24 40 01 57
+>>> +44 7920 594 255    <-- only if I'm in the UK
+>>>
+>>> http://jeff.purple.com/
+>>> http://blog.purple.com/jeff/
+>>>
+>>> On 5 April 2015 at 09:18, Michael Stapelberg <michael at i3wm.org> wrote:
+>>>> What’s the problem with this behavior?
+>>>>
+>>>> It surely is technically possible to avoid it, but why bother?
+>>>>
+>>>> On Sun, Apr 5, 2015 at 12:14 AM, Hector <c1b3rh4ck at gmail.com> wrote:
+>>>>> Dear I3wm list ,
+>>>>>
+>>>>> Recently I was using my laptop with i3wm,  my version is 4.8
+>>>>> (2014-06-15, branch "4.8") I run  debian testing,  I couldn't say that
+>>>>> I
+>>>>> haven't fallen in love with it,but checking the option to exit from
+>>>>> my current session if I press once, I get the normal message set
+>>>>> by the default configuration, but if I press many times
+>>>>> $mod+Shift+e  I get something like in the attached picture.
+>>>>>
+>>>>> Is there any way to add some snipe of code to solve it if I press many
+>>>>> times?.
+>>>>>
+>>>>> Can anybody confirm  this behavior maybe I'm wrong and it just
+>>>>> happend to me.
+>>>>>
+>>>>> Best Regards,
+>>>>> Hector.
+>>>>>
+>>>>
+>>>>
+>>>> --
+>>>> Best regards,
+>>>> Michael
+>>>
+
+
+From donaldcallen at gmail.com  Sun Apr  5 13:25:45 2015
+From: donaldcallen at gmail.com (Donald Allen)
+Date: Sun, 5 Apr 2015 07:25:45 -0400
+Subject: [i3] i3wm exit session
+In-Reply-To: <5521193F.4030309@airblader.de>
+References: <20150404221431.GA2526@D3v1l.PereiraSecTeam>
+ <CANnVG6nXb8BogQcfj1rYRhrEBh1vG2kR9M4rjJtcAcdoTnPhig@mail.gmail.com>
+ <CAM4Y7zzSZcyFU8O0aLcJZMX0M=bp12t3jO_tfwPrKgR+oOA3wg@mail.gmail.com>
+ <CAM4Y7zzTOm8sRqVQUWF4UScQexNR3W0dUH_2Higv5UXDQN1y7A@mail.gmail.com>
+ <CAPsTYbwX3of2or0MtLRZ2pfd2dgPP+Amc0uGOhvtVdj3vUN18g@mail.gmail.com>
+ <5521193F.4030309@airblader.de>
+Message-ID: <CAPsTYbxCBu3yg19yVg5y1Wp9czci2RM5Xz2UrMbh2zmHGWaDTw@mail.gmail.com>
+
+On Sun, Apr 5, 2015 at 7:15 AM, Ingo Bürk <admin at airblader.de> wrote:
+> This is getting meta, but (in a general sense) this:
+>
+>> don't complain, send a patch
+>
+> is a pretty unhelpful reaction in my eyes. So we can't open bugs if we
+> don't provide the fix as well? We can't ask for features without
+> implementing it? Most of us are busy and to be honest, I don't have the
+> time to dig into the source code of *every* application I'm using if I
+> feel that an improvement can be made. I wouldn't find time to eat, sleep
+> or earn my living anymore. Of course it's a good thing if someone does;
+> I just argue it shouldn't be a requirement.
+
+You don't need to. Even in the extreme world of OpenBSD, no one argues
+that it's a *requirement*;  the developers fix bugs reported by users
+who don't offer patches. "Don't complain, send a patch" is their
+(less-than-diplomatic) way of encouraging people to contribute. My
+point, perhaps not expressed clearly enough, was that open source
+gives us all the option of making contributions, as Tony Crisci did,
+so this was an example of how open source encourages teamwork,
+communities.
+
+>
+> That being said, I didn't think any of this was dramatic and I didn't
+> think Michael's or Jeff's responses were in any way "unreasonable".
+> Someone asked a question, Michael made his stance, Tony provided a
+> reasonable solution.
+>
+>
+> Ingo
+>
+>
+> On 04/05/2015 01:04 PM, Donald Allen wrote:
+>> On Sun, Apr 5, 2015 at 3:39 AM, Jeff Abrahamson <jeff at purple.com> wrote:
+>>> (To be clear and before anyone has a chance to remark on it: that was meant
+>>> in support of the OP of the question, not meant as a chastisement of
+>>> Michael.  Sorry if it read a bit as the latter.)
+>> Yes, it did read that way, pretty clearly. It's good that you realized
+>> it yourself and sent the above.
+>>
+>> While I think you are correct that it's unintended behavior -- a bug
+>> -- but not important functionally, I think Michael's response is
+>> perfectly reasonable, as the developer of good software for which we
+>> must all remember he is giving us free of charge. I don't know
+>> Michael, but I have seen indications that he's a busy guy. As someone
+>> who had a 45-year career in software development, I can tell you that
+>> just continuing development of i3 and providing the level of support
+>> he does is a big job. And that's in addition to whatever he does to
+>> earn his living and have a life. So, without trying to speak for him,
+>> I'm guessing his response came from that perspective. It was also a
+>> bit like the old joke about he fellow who says to the doctor "Doctor,
+>> when I do this, it hurts". To which the doctor responded "Don't do
+>> that".
+>>
+>> I would also add that we are living in an open source world. Part of
+>> the point of open source is that we can all contribute to the
+>> development of a piece of software. Read or listen to any of Richard
+>> Stallman's descriptions of his issue with a laser printer many years
+>> ago that resulted in his leading us in this direction and you see that
+>> collaboration between users and developers as at the core of the open
+>> source movement. The original poster expressed a concern about a
+>> certain behavior in i3, Michael essentially said "I have more
+>> important things to work on, from which you will benefit, so just
+>> avoid provoking that behavior", and then Tony Crisci suggested a fix
+>> that doesn't require Michael's involvement. This is the way it's
+>> supposed to work. Read the OpenBSD mailing lists. While the tone is
+>> too nasty for my taste, especially when Theo de Raadt gets involved,
+>> he and they have a point: don't complain, send a patch!
+>>
+>> /Don Allen
+>>
+>>> Jeff Abrahamson
+>>> +33 6 24 40 01 57
+>>> +44 7920 594 255    <-- only if I'm in the UK
+>>>
+>>> http://jeff.purple.com/
+>>> http://blog.purple.com/jeff/
+>>>
+>>> On 5 April 2015 at 09:30, Jeff Abrahamson <jeff at purple.com> wrote:
+>>>> Wait, that's not a very empathetic response.  I agree with you, Michael,
+>>>> that this isn't a huge problem functionally, but it *looks* ugly and it
+>>>> *looks* like unintended behavior.  And that's reason enough for the OP to
+>>>> raise the issue, in case no one had noticed.
+>>>>
+>>>> From there, it's certainly reasonable if you want to say that it's not
+>>>> your priority to fix.  And to invite a patch, whether or not you want to
+>>>> offer tips on how it might be patched.
+>>>>
+>>>> Jeff Abrahamson
+>>>> +33 6 24 40 01 57
+>>>> +44 7920 594 255    <-- only if I'm in the UK
+>>>>
+>>>> http://jeff.purple.com/
+>>>> http://blog.purple.com/jeff/
+>>>>
+>>>> On 5 April 2015 at 09:18, Michael Stapelberg <michael at i3wm.org> wrote:
+>>>>> What’s the problem with this behavior?
+>>>>>
+>>>>> It surely is technically possible to avoid it, but why bother?
+>>>>>
+>>>>> On Sun, Apr 5, 2015 at 12:14 AM, Hector <c1b3rh4ck at gmail.com> wrote:
+>>>>>> Dear I3wm list ,
+>>>>>>
+>>>>>> Recently I was using my laptop with i3wm,  my version is 4.8
+>>>>>> (2014-06-15, branch "4.8") I run  debian testing,  I couldn't say that
+>>>>>> I
+>>>>>> haven't fallen in love with it,but checking the option to exit from
+>>>>>> my current session if I press once, I get the normal message set
+>>>>>> by the default configuration, but if I press many times
+>>>>>> $mod+Shift+e  I get something like in the attached picture.
+>>>>>>
+>>>>>> Is there any way to add some snipe of code to solve it if I press many
+>>>>>> times?.
+>>>>>>
+>>>>>> Can anybody confirm  this behavior maybe I'm wrong and it just
+>>>>>> happend to me.
+>>>>>>
+>>>>>> Best Regards,
+>>>>>> Hector.
+>>>>>>
+>>>>>
+>>>>>
+>>>>> --
+>>>>> Best regards,
+>>>>> Michael
+>>>>
+>
+
+From admin at airblader.de  Sun Apr  5 13:33:48 2015
+From: admin at airblader.de (=?UTF-8?B?SW5nbyBCw7xyaw==?=)
+Date: Sun, 05 Apr 2015 13:33:48 +0200
+Subject: [i3] i3wm exit session
+In-Reply-To: <CAPsTYbxCBu3yg19yVg5y1Wp9czci2RM5Xz2UrMbh2zmHGWaDTw@mail.gmail.com>
+References: <20150404221431.GA2526@D3v1l.PereiraSecTeam>
+ <CANnVG6nXb8BogQcfj1rYRhrEBh1vG2kR9M4rjJtcAcdoTnPhig@mail.gmail.com>
+ <CAM4Y7zzSZcyFU8O0aLcJZMX0M=bp12t3jO_tfwPrKgR+oOA3wg@mail.gmail.com>
+ <CAM4Y7zzTOm8sRqVQUWF4UScQexNR3W0dUH_2Higv5UXDQN1y7A@mail.gmail.com>
+ <CAPsTYbwX3of2or0MtLRZ2pfd2dgPP+Amc0uGOhvtVdj3vUN18g@mail.gmail.com>
+ <5521193F.4030309@airblader.de>
+ <CAPsTYbxCBu3yg19yVg5y1Wp9czci2RM5Xz2UrMbh2zmHGWaDTw@mail.gmail.com>
+Message-ID: <55211D9C.7010701@airblader.de>
+
+@Don
+
+Alright, then this was a misunderstanding. My apologies.
+
+
+Ingo
+
+On 04/05/2015 01:25 PM, Donald Allen wrote:
+> On Sun, Apr 5, 2015 at 7:15 AM, Ingo Bürk <admin at airblader.de> wrote:
+>> This is getting meta, but (in a general sense) this:
+>>
+>>> don't complain, send a patch
+>> is a pretty unhelpful reaction in my eyes. So we can't open bugs if we
+>> don't provide the fix as well? We can't ask for features without
+>> implementing it? Most of us are busy and to be honest, I don't have the
+>> time to dig into the source code of *every* application I'm using if I
+>> feel that an improvement can be made. I wouldn't find time to eat, sleep
+>> or earn my living anymore. Of course it's a good thing if someone does;
+>> I just argue it shouldn't be a requirement.
+> You don't need to. Even in the extreme world of OpenBSD, no one argues
+> that it's a *requirement*;  the developers fix bugs reported by users
+> who don't offer patches. "Don't complain, send a patch" is their
+> (less-than-diplomatic) way of encouraging people to contribute. My
+> point, perhaps not expressed clearly enough, was that open source
+> gives us all the option of making contributions, as Tony Crisci did,
+> so this was an example of how open source encourages teamwork,
+> communities.
+>
+>> That being said, I didn't think any of this was dramatic and I didn't
+>> think Michael's or Jeff's responses were in any way "unreasonable".
+>> Someone asked a question, Michael made his stance, Tony provided a
+>> reasonable solution.
+>>
+>>
+>> Ingo
+>>
+>>
+>> On 04/05/2015 01:04 PM, Donald Allen wrote:
+>>> On Sun, Apr 5, 2015 at 3:39 AM, Jeff Abrahamson <jeff at purple.com> wrote:
+>>>> (To be clear and before anyone has a chance to remark on it: that was meant
+>>>> in support of the OP of the question, not meant as a chastisement of
+>>>> Michael.  Sorry if it read a bit as the latter.)
+>>> Yes, it did read that way, pretty clearly. It's good that you realized
+>>> it yourself and sent the above.
+>>>
+>>> While I think you are correct that it's unintended behavior -- a bug
+>>> -- but not important functionally, I think Michael's response is
+>>> perfectly reasonable, as the developer of good software for which we
+>>> must all remember he is giving us free of charge. I don't know
+>>> Michael, but I have seen indications that he's a busy guy. As someone
+>>> who had a 45-year career in software development, I can tell you that
+>>> just continuing development of i3 and providing the level of support
+>>> he does is a big job. And that's in addition to whatever he does to
+>>> earn his living and have a life. So, without trying to speak for him,
+>>> I'm guessing his response came from that perspective. It was also a
+>>> bit like the old joke about he fellow who says to the doctor "Doctor,
+>>> when I do this, it hurts". To which the doctor responded "Don't do
+>>> that".
+>>>
+>>> I would also add that we are living in an open source world. Part of
+>>> the point of open source is that we can all contribute to the
+>>> development of a piece of software. Read or listen to any of Richard
+>>> Stallman's descriptions of his issue with a laser printer many years
+>>> ago that resulted in his leading us in this direction and you see that
+>>> collaboration between users and developers as at the core of the open
+>>> source movement. The original poster expressed a concern about a
+>>> certain behavior in i3, Michael essentially said "I have more
+>>> important things to work on, from which you will benefit, so just
+>>> avoid provoking that behavior", and then Tony Crisci suggested a fix
+>>> that doesn't require Michael's involvement. This is the way it's
+>>> supposed to work. Read the OpenBSD mailing lists. While the tone is
+>>> too nasty for my taste, especially when Theo de Raadt gets involved,
+>>> he and they have a point: don't complain, send a patch!
+>>>
+>>> /Don Allen
+>>>
+>>>> Jeff Abrahamson
+>>>> +33 6 24 40 01 57
+>>>> +44 7920 594 255    <-- only if I'm in the UK
+>>>>
+>>>> http://jeff.purple.com/
+>>>> http://blog.purple.com/jeff/
+>>>>
+>>>> On 5 April 2015 at 09:30, Jeff Abrahamson <jeff at purple.com> wrote:
+>>>>> Wait, that's not a very empathetic response.  I agree with you, Michael,
+>>>>> that this isn't a huge problem functionally, but it *looks* ugly and it
+>>>>> *looks* like unintended behavior.  And that's reason enough for the OP to
+>>>>> raise the issue, in case no one had noticed.
+>>>>>
+>>>>> From there, it's certainly reasonable if you want to say that it's not
+>>>>> your priority to fix.  And to invite a patch, whether or not you want to
+>>>>> offer tips on how it might be patched.
+>>>>>
+>>>>> Jeff Abrahamson
+>>>>> +33 6 24 40 01 57
+>>>>> +44 7920 594 255    <-- only if I'm in the UK
+>>>>>
+>>>>> http://jeff.purple.com/
+>>>>> http://blog.purple.com/jeff/
+>>>>>
+>>>>> On 5 April 2015 at 09:18, Michael Stapelberg <michael at i3wm.org> wrote:
+>>>>>> What’s the problem with this behavior?
+>>>>>>
+>>>>>> It surely is technically possible to avoid it, but why bother?
+>>>>>>
+>>>>>> On Sun, Apr 5, 2015 at 12:14 AM, Hector <c1b3rh4ck at gmail.com> wrote:
+>>>>>>> Dear I3wm list ,
+>>>>>>>
+>>>>>>> Recently I was using my laptop with i3wm,  my version is 4.8
+>>>>>>> (2014-06-15, branch "4.8") I run  debian testing,  I couldn't say that
+>>>>>>> I
+>>>>>>> haven't fallen in love with it,but checking the option to exit from
+>>>>>>> my current session if I press once, I get the normal message set
+>>>>>>> by the default configuration, but if I press many times
+>>>>>>> $mod+Shift+e  I get something like in the attached picture.
+>>>>>>>
+>>>>>>> Is there any way to add some snipe of code to solve it if I press many
+>>>>>>> times?.
+>>>>>>>
+>>>>>>> Can anybody confirm  this behavior maybe I'm wrong and it just
+>>>>>>> happend to me.
+>>>>>>>
+>>>>>>> Best Regards,
+>>>>>>> Hector.
+>>>>>>>
+>>>>>>
+>>>>>> --
+>>>>>> Best regards,
+>>>>>> Michael
+
+
+From donaldcallen at gmail.com  Sun Apr  5 13:37:06 2015
+From: donaldcallen at gmail.com (Donald Allen)
+Date: Sun, 5 Apr 2015 07:37:06 -0400
+Subject: [i3] i3wm exit session
+In-Reply-To: <55211D9C.7010701@airblader.de>
+References: <20150404221431.GA2526@D3v1l.PereiraSecTeam>
+ <CANnVG6nXb8BogQcfj1rYRhrEBh1vG2kR9M4rjJtcAcdoTnPhig@mail.gmail.com>
+ <CAM4Y7zzSZcyFU8O0aLcJZMX0M=bp12t3jO_tfwPrKgR+oOA3wg@mail.gmail.com>
+ <CAM4Y7zzTOm8sRqVQUWF4UScQexNR3W0dUH_2Higv5UXDQN1y7A@mail.gmail.com>
+ <CAPsTYbwX3of2or0MtLRZ2pfd2dgPP+Amc0uGOhvtVdj3vUN18g@mail.gmail.com>
+ <5521193F.4030309@airblader.de>
+ <CAPsTYbxCBu3yg19yVg5y1Wp9czci2RM5Xz2UrMbh2zmHGWaDTw@mail.gmail.com>
+ <55211D9C.7010701@airblader.de>
+Message-ID: <CAPsTYbwQUVYgvb8fyCtsd+0Wu0Xe-Yd3F=t0Q70_UrFe+2fCdQ@mail.gmail.com>
+
+On Sun, Apr 5, 2015 at 7:33 AM, Ingo Bürk <admin at airblader.de> wrote:
+> @Don
+>
+> Alright, then this was a misunderstanding. My apologies.
+
+Apology not necessary! Misunderstandings can happen due to problems on
+the output and/or input sides. Reading my message, I can see how you
+might
+have interpreted it as you did.
+
+/Don
+
+>
+>
+> Ingo
+>
+> On 04/05/2015 01:25 PM, Donald Allen wrote:
+>> On Sun, Apr 5, 2015 at 7:15 AM, Ingo Bürk <admin at airblader.de> wrote:
+>>> This is getting meta, but (in a general sense) this:
+>>>
+>>>> don't complain, send a patch
+>>> is a pretty unhelpful reaction in my eyes. So we can't open bugs if we
+>>> don't provide the fix as well? We can't ask for features without
+>>> implementing it? Most of us are busy and to be honest, I don't have the
+>>> time to dig into the source code of *every* application I'm using if I
+>>> feel that an improvement can be made. I wouldn't find time to eat, sleep
+>>> or earn my living anymore. Of course it's a good thing if someone does;
+>>> I just argue it shouldn't be a requirement.
+>> You don't need to. Even in the extreme world of OpenBSD, no one argues
+>> that it's a *requirement*;  the developers fix bugs reported by users
+>> who don't offer patches. "Don't complain, send a patch" is their
+>> (less-than-diplomatic) way of encouraging people to contribute. My
+>> point, perhaps not expressed clearly enough, was that open source
+>> gives us all the option of making contributions, as Tony Crisci did,
+>> so this was an example of how open source encourages teamwork,
+>> communities.
+>>
+>>> That being said, I didn't think any of this was dramatic and I didn't
+>>> think Michael's or Jeff's responses were in any way "unreasonable".
+>>> Someone asked a question, Michael made his stance, Tony provided a
+>>> reasonable solution.
+>>>
+>>>
+>>> Ingo
+>>>
+>>>
+>>> On 04/05/2015 01:04 PM, Donald Allen wrote:
+>>>> On Sun, Apr 5, 2015 at 3:39 AM, Jeff Abrahamson <jeff at purple.com> wrote:
+>>>>> (To be clear and before anyone has a chance to remark on it: that was meant
+>>>>> in support of the OP of the question, not meant as a chastisement of
+>>>>> Michael.  Sorry if it read a bit as the latter.)
+>>>> Yes, it did read that way, pretty clearly. It's good that you realized
+>>>> it yourself and sent the above.
+>>>>
+>>>> While I think you are correct that it's unintended behavior -- a bug
+>>>> -- but not important functionally, I think Michael's response is
+>>>> perfectly reasonable, as the developer of good software for which we
+>>>> must all remember he is giving us free of charge. I don't know
+>>>> Michael, but I have seen indications that he's a busy guy. As someone
+>>>> who had a 45-year career in software development, I can tell you that
+>>>> just continuing development of i3 and providing the level of support
+>>>> he does is a big job. And that's in addition to whatever he does to
+>>>> earn his living and have a life. So, without trying to speak for him,
+>>>> I'm guessing his response came from that perspective. It was also a
+>>>> bit like the old joke about he fellow who says to the doctor "Doctor,
+>>>> when I do this, it hurts". To which the doctor responded "Don't do
+>>>> that".
+>>>>
+>>>> I would also add that we are living in an open source world. Part of
+>>>> the point of open source is that we can all contribute to the
+>>>> development of a piece of software. Read or listen to any of Richard
+>>>> Stallman's descriptions of his issue with a laser printer many years
+>>>> ago that resulted in his leading us in this direction and you see that
+>>>> collaboration between users and developers as at the core of the open
+>>>> source movement. The original poster expressed a concern about a
+>>>> certain behavior in i3, Michael essentially said "I have more
+>>>> important things to work on, from which you will benefit, so just
+>>>> avoid provoking that behavior", and then Tony Crisci suggested a fix
+>>>> that doesn't require Michael's involvement. This is the way it's
+>>>> supposed to work. Read the OpenBSD mailing lists. While the tone is
+>>>> too nasty for my taste, especially when Theo de Raadt gets involved,
+>>>> he and they have a point: don't complain, send a patch!
+>>>>
+>>>> /Don Allen
+>>>>
+>>>>> Jeff Abrahamson
+>>>>> +33 6 24 40 01 57
+>>>>> +44 7920 594 255    <-- only if I'm in the UK
+>>>>>
+>>>>> http://jeff.purple.com/
+>>>>> http://blog.purple.com/jeff/
+>>>>>
+>>>>> On 5 April 2015 at 09:30, Jeff Abrahamson <jeff at purple.com> wrote:
+>>>>>> Wait, that's not a very empathetic response.  I agree with you, Michael,
+>>>>>> that this isn't a huge problem functionally, but it *looks* ugly and it
+>>>>>> *looks* like unintended behavior.  And that's reason enough for the OP to
+>>>>>> raise the issue, in case no one had noticed.
+>>>>>>
+>>>>>> From there, it's certainly reasonable if you want to say that it's not
+>>>>>> your priority to fix.  And to invite a patch, whether or not you want to
+>>>>>> offer tips on how it might be patched.
+>>>>>>
+>>>>>> Jeff Abrahamson
+>>>>>> +33 6 24 40 01 57
+>>>>>> +44 7920 594 255    <-- only if I'm in the UK
+>>>>>>
+>>>>>> http://jeff.purple.com/
+>>>>>> http://blog.purple.com/jeff/
+>>>>>>
+>>>>>> On 5 April 2015 at 09:18, Michael Stapelberg <michael at i3wm.org> wrote:
+>>>>>>> What’s the problem with this behavior?
+>>>>>>>
+>>>>>>> It surely is technically possible to avoid it, but why bother?
+>>>>>>>
+>>>>>>> On Sun, Apr 5, 2015 at 12:14 AM, Hector <c1b3rh4ck at gmail.com> wrote:
+>>>>>>>> Dear I3wm list ,
+>>>>>>>>
+>>>>>>>> Recently I was using my laptop with i3wm,  my version is 4.8
+>>>>>>>> (2014-06-15, branch "4.8") I run  debian testing,  I couldn't say that
+>>>>>>>> I
+>>>>>>>> haven't fallen in love with it,but checking the option to exit from
+>>>>>>>> my current session if I press once, I get the normal message set
+>>>>>>>> by the default configuration, but if I press many times
+>>>>>>>> $mod+Shift+e  I get something like in the attached picture.
+>>>>>>>>
+>>>>>>>> Is there any way to add some snipe of code to solve it if I press many
+>>>>>>>> times?.
+>>>>>>>>
+>>>>>>>> Can anybody confirm  this behavior maybe I'm wrong and it just
+>>>>>>>> happend to me.
+>>>>>>>>
+>>>>>>>> Best Regards,
+>>>>>>>> Hector.
+>>>>>>>>
+>>>>>>>
+>>>>>>> --
+>>>>>>> Best regards,
+>>>>>>> Michael
+>
+
+From bigby.james at dimthoughts.com  Sun Apr  5 16:23:16 2015
+From: bigby.james at dimthoughts.com (Bigby James)
+Date: Sun, 5 Apr 2015 09:23:16 -0500
+Subject: [i3] i3wm exit session
+In-Reply-To: <5520E923.3080005@dubstepdish.com>
+References: <20150404221431.GA2526@D3v1l.PereiraSecTeam>
+ <CANnVG6nXb8BogQcfj1rYRhrEBh1vG2kR9M4rjJtcAcdoTnPhig@mail.gmail.com>
+ <CAM4Y7zzSZcyFU8O0aLcJZMX0M=bp12t3jO_tfwPrKgR+oOA3wg@mail.gmail.com>
+ <5520E923.3080005@dubstepdish.com>
+Message-ID: <20150405142316.GA2423@WorkBox.Home>
+
+On 04/05, Tony Crisci wrote:
+> > Is there any way to add some snipe of code to solve it if I press many
+> times?
+> 
+> Change the binding to this
+> 
+> bindsym Mod1+Shift+e exec "pidof i3-nagbar || i3-nagbar -t warning -m
+> 'You pressed the exit shortcut. Do you really want to exit i3? This will
+> end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+More often than not, the simplest solution to a problem is the preferrable one.
+You can hit several dozen keystrokes writing code to "correct" this "problem,"
+or you can just hit one keystroke and train yourself to not compulsively do the
+same thing over and over and over when there's no reason to. Incidentally, that
+ugly yellow thing is called "i3-nagbar," emphasis on "nag." If it's annoying
+you, it's doing its job. Personally I (and, I suspect, many other users) just
+remove all mention of i3-nagbar from the configuration.
+
+This whole thread reminds me of that old joke:
+
+> PATIENT: Doctor, it hurts when I do this...
+> DOCTOR: Then don't do that.
+
+-- 
+"A common mistake that people make when trying to design something completely
+foolproof is to underestimate the ingenuity of complete fools." - Douglas Adams
+
+
+From michael at i3wm.org  Sun Apr  5 18:50:38 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 5 Apr 2015 18:50:38 +0200
+Subject: [i3] i3wm exit session
+In-Reply-To: <20150405142316.GA2423@WorkBox.Home>
+References: <20150404221431.GA2526@D3v1l.PereiraSecTeam>
+ <CANnVG6nXb8BogQcfj1rYRhrEBh1vG2kR9M4rjJtcAcdoTnPhig@mail.gmail.com>
+ <CAM4Y7zzSZcyFU8O0aLcJZMX0M=bp12t3jO_tfwPrKgR+oOA3wg@mail.gmail.com>
+ <5520E923.3080005@dubstepdish.com> <20150405142316.GA2423@WorkBox.Home>
+Message-ID: <CANnVG6=HSYDy4xWsQ48MEAy2HufGAFaHNLLOYc--toDkFfZryw@mail.gmail.com>
+
+To expand a bit on my original post: I thought about the pidof
+solution, but that will fail on multi-user systems or when you have a
+hanging/broken instance of i3-nagbar sticking around.
+
+Making this more robust is not as simple as one might think, and
+that’s why I wanted to clarify what the real problem here is. If it’s
+merely the dialog showing up more than once (and I _think_ this is
+what the question is about), I think not fixing it outweighs the
+complexity of fixing it. But it could be that I missed something,
+which is why I asked…
+
+On Sun, Apr 5, 2015 at 4:23 PM, Bigby James <bigby.james at dimthoughts.com> wrote:
+> On 04/05, Tony Crisci wrote:
+>> > Is there any way to add some snipe of code to solve it if I press many
+>> times?
+>>
+>> Change the binding to this
+>>
+>> bindsym Mod1+Shift+e exec "pidof i3-nagbar || i3-nagbar -t warning -m
+>> 'You pressed the exit shortcut. Do you really want to exit i3? This will
+>> end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+>
+> More often than not, the simplest solution to a problem is the preferrable one.
+> You can hit several dozen keystrokes writing code to "correct" this "problem,"
+> or you can just hit one keystroke and train yourself to not compulsively do the
+> same thing over and over and over when there's no reason to. Incidentally, that
+> ugly yellow thing is called "i3-nagbar," emphasis on "nag." If it's annoying
+> you, it's doing its job. Personally I (and, I suspect, many other users) just
+> remove all mention of i3-nagbar from the configuration.
+>
+> This whole thread reminds me of that old joke:
+>
+>> PATIENT: Doctor, it hurts when I do this...
+>> DOCTOR: Then don't do that.
+>
+> --
+> "A common mistake that people make when trying to design something completely
+> foolproof is to underestimate the ingenuity of complete fools." - Douglas Adams
+>
+
+
+
+-- 
+Best regards,
+Michael
+
+From admin at airblader.de  Sun Apr  5 19:00:45 2015
+From: admin at airblader.de (=?UTF-8?B?SW5nbyBCw7xyaw==?=)
+Date: Sun, 05 Apr 2015 19:00:45 +0200
+Subject: [i3] i3wm exit session
+In-Reply-To: <CANnVG6=HSYDy4xWsQ48MEAy2HufGAFaHNLLOYc--toDkFfZryw@mail.gmail.com>
+References: <20150404221431.GA2526@D3v1l.PereiraSecTeam>
+ <CANnVG6nXb8BogQcfj1rYRhrEBh1vG2kR9M4rjJtcAcdoTnPhig@mail.gmail.com>
+ <CAM4Y7zzSZcyFU8O0aLcJZMX0M=bp12t3jO_tfwPrKgR+oOA3wg@mail.gmail.com>
+ <5520E923.3080005@dubstepdish.com> <20150405142316.GA2423@WorkBox.Home>
+ <CANnVG6=HSYDy4xWsQ48MEAy2HufGAFaHNLLOYc--toDkFfZryw@mail.gmail.com>
+Message-ID: <55216A3D.6090905@airblader.de>
+
+The pidof solution also completely disregards the possibility of
+i3-nagbar being open for a completely different reason, e.g., a
+configuration error. In that case displaying both makes total sense.
+
+On 04/05/2015 06:50 PM, Michael Stapelberg wrote:
+> To expand a bit on my original post: I thought about the pidof
+> solution, but that will fail on multi-user systems or when you have a
+> hanging/broken instance of i3-nagbar sticking around.
+>
+> Making this more robust is not as simple as one might think, and
+> that’s why I wanted to clarify what the real problem here is. If it’s
+> merely the dialog showing up more than once (and I _think_ this is
+> what the question is about), I think not fixing it outweighs the
+> complexity of fixing it. But it could be that I missed something,
+> which is why I asked…
+>
+> On Sun, Apr 5, 2015 at 4:23 PM, Bigby James <bigby.james at dimthoughts.com> wrote:
+>> On 04/05, Tony Crisci wrote:
+>>>> Is there any way to add some snipe of code to solve it if I press many
+>>> times?
+>>>
+>>> Change the binding to this
+>>>
+>>> bindsym Mod1+Shift+e exec "pidof i3-nagbar || i3-nagbar -t warning -m
+>>> 'You pressed the exit shortcut. Do you really want to exit i3? This will
+>>> end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+>> More often than not, the simplest solution to a problem is the preferrable one.
+>> You can hit several dozen keystrokes writing code to "correct" this "problem,"
+>> or you can just hit one keystroke and train yourself to not compulsively do the
+>> same thing over and over and over when there's no reason to. Incidentally, that
+>> ugly yellow thing is called "i3-nagbar," emphasis on "nag." If it's annoying
+>> you, it's doing its job. Personally I (and, I suspect, many other users) just
+>> remove all mention of i3-nagbar from the configuration.
+>>
+>> This whole thread reminds me of that old joke:
+>>
+>>> PATIENT: Doctor, it hurts when I do this...
+>>> DOCTOR: Then don't do that.
+>> --
+>> "A common mistake that people make when trying to design something completely
+>> foolproof is to underestimate the ingenuity of complete fools." - Douglas Adams
+>>
+>
+>
+
+
+From tony at dubstepdish.com  Sun Apr  5 19:37:47 2015
+From: tony at dubstepdish.com (Tony Crisci)
+Date: Sun, 05 Apr 2015 13:37:47 -0400
+Subject: [i3] i3wm exit session
+In-Reply-To: <55216A3D.6090905@airblader.de>
+References: <20150404221431.GA2526@D3v1l.PereiraSecTeam>
+ <CANnVG6nXb8BogQcfj1rYRhrEBh1vG2kR9M4rjJtcAcdoTnPhig@mail.gmail.com>
+ <CAM4Y7zzSZcyFU8O0aLcJZMX0M=bp12t3jO_tfwPrKgR+oOA3wg@mail.gmail.com>
+ <5520E923.3080005@dubstepdish.com> <20150405142316.GA2423@WorkBox.Home>
+ <CANnVG6=HSYDy4xWsQ48MEAy2HufGAFaHNLLOYc--toDkFfZryw@mail.gmail.com>
+ <55216A3D.6090905@airblader.de>
+Message-ID: <552172EB.7070107@dubstepdish.com>
+
+This works
+
+bindsym Mod1+Shift+e exec "test -f /tmp/i3-nagbar$DISPLAY.lock || (touch
+/tmp/i3-nagbar$DISPLAY.lock && i3-nagbar -t warning -m 'You pressed the
+exit shortcut. Do you really want to exit i3? This will end your X
+session.' -b 'Yes, exit i3' 'i3-msg exit' && rm
+/tmp/i3-nagbar$DISPLAY.lock)"
+
+
+On 04/05/2015 01:00 PM, Ingo Bürk wrote:
+> The pidof solution also completely disregards the possibility of
+> i3-nagbar being open for a completely different reason, e.g., a
+> configuration error. In that case displaying both makes total sense.
+> 
+> On 04/05/2015 06:50 PM, Michael Stapelberg wrote:
+>> To expand a bit on my original post: I thought about the pidof
+>> solution, but that will fail on multi-user systems or when you have a
+>> hanging/broken instance of i3-nagbar sticking around.
+>>
+>> Making this more robust is not as simple as one might think, and
+>> that’s why I wanted to clarify what the real problem here is. If it’s
+>> merely the dialog showing up more than once (and I _think_ this is
+>> what the question is about), I think not fixing it outweighs the
+>> complexity of fixing it. But it could be that I missed something,
+>> which is why I asked…
+>>
+>> On Sun, Apr 5, 2015 at 4:23 PM, Bigby James <bigby.james at dimthoughts.com> wrote:
+>>> On 04/05, Tony Crisci wrote:
+>>>>> Is there any way to add some snipe of code to solve it if I press many
+>>>> times?
+>>>>
+>>>> Change the binding to this
+>>>>
+>>>> bindsym Mod1+Shift+e exec "pidof i3-nagbar || i3-nagbar -t warning -m
+>>>> 'You pressed the exit shortcut. Do you really want to exit i3? This will
+>>>> end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+>>> More often than not, the simplest solution to a problem is the preferrable one.
+>>> You can hit several dozen keystrokes writing code to "correct" this "problem,"
+>>> or you can just hit one keystroke and train yourself to not compulsively do the
+>>> same thing over and over and over when there's no reason to. Incidentally, that
+>>> ugly yellow thing is called "i3-nagbar," emphasis on "nag." If it's annoying
+>>> you, it's doing its job. Personally I (and, I suspect, many other users) just
+>>> remove all mention of i3-nagbar from the configuration.
+>>>
+>>> This whole thread reminds me of that old joke:
+>>>
+>>>> PATIENT: Doctor, it hurts when I do this...
+>>>> DOCTOR: Then don't do that.
+>>> --
+>>> "A common mistake that people make when trying to design something completely
+>>> foolproof is to underestimate the ingenuity of complete fools." - Douglas Adams
+>>>
+>>
+>>
+> 
+
+From c1b3rh4ck at gmail.com  Sun Apr  5 20:38:51 2015
+From: c1b3rh4ck at gmail.com (Hector)
+Date: Sun, 5 Apr 2015 13:38:51 -0500
+Subject: [i3] i3wm exit session
+In-Reply-To: <CANnVG6nXb8BogQcfj1rYRhrEBh1vG2kR9M4rjJtcAcdoTnPhig@mail.gmail.com>
+References: <20150404221431.GA2526@D3v1l.PereiraSecTeam>
+ <CANnVG6nXb8BogQcfj1rYRhrEBh1vG2kR9M4rjJtcAcdoTnPhig@mail.gmail.com>
+Message-ID: <20150405183851.GA5582@D3v1l.PereiraSecTeam>
+
+Hi list, 
+
+I just reported this issue not just because it bothers me, this was
+because in my daily usage I've never seen that behavior sorry if this
+issue is annoying for some developers, apologies. I think that i3wm is
+really a great piece of software that I've used in my everyday. I
+would like to contribute a patch but it could take me some time to
+read all the source code and create a practical solution, however my
+time is very limited to apply it and the only thing is report the
+issue that could improve i3wm not substancially but it will in some or
+other way. 
+
+
+> PATIENT: Doctor, it hurts when I do this...
+> DOCTOR: Then don't do that.
+
+This joke doesn't apply here, we are talking of a great piece of software[1], off
+course I didn't want to disturb to any of you,  i3wm is great for my
+usage and this answer is unacceptable here.
+
+>bindsym $mod+Shift+e exec "pidof i3-nagbar || i3-nagbar -t warning
+>-m'You pressed the exit shortcut. Do you really want to exit i3? This
+>will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+that being said I would like to say thank you Tony your quick solution
+just worked for me.
+
+
+[1]http://en.wikipedia.org/wiki/Software_qualit w
+Best Regards , 
+Hector F. 
+
+On Sun, Apr 05, 2015 at 09:18:54AM +0200, Michael Stapelberg wrote:
+> What’s the problem with this behavior?
+> 
+> It surely is technically possible to avoid it, but why bother?
+> 
+> On Sun, Apr 5, 2015 at 12:14 AM, Hector <c1b3rh4ck at gmail.com> wrote:
+> > Dear I3wm list ,
+> >
+> > Recently I was using my laptop with i3wm,  my version is 4.8
+> > (2014-06-15, branch "4.8") I run  debian testing,  I couldn't say that I
+> > haven't fallen in love with it,but checking the option to exit from
+> > my current session if I press once, I get the normal message set
+> > by the default configuration, but if I press many times
+> > $mod+Shift+e  I get something like in the attached picture.
+> >
+> > Is there any way to add some snipe of code to solve it if I press many
+> > times?.
+> >
+> > Can anybody confirm  this behavior maybe I'm wrong and it just
+> > happend to me.
+> >
+> > Best Regards,
+> > Hector.
+> >
+> 
+> 
+> 
+> -- 
+> Best regards,
+> Michael
+
+From martincigorraga at gmail.com  Sun Apr  5 22:15:20 2015
+From: martincigorraga at gmail.com (Martin Cigorraga)
+Date: Sun, 5 Apr 2015 17:15:20 -0300
+Subject: [i3] New to i3wm
+In-Reply-To: <CAC3XPqL+965gHzTcv9TSAdoNfw8M0fR8jcUqs2+U1RfqwKd3tQ@mail.gmail.com>
+References: <CAC3XPqL+965gHzTcv9TSAdoNfw8M0fR8jcUqs2+U1RfqwKd3tQ@mail.gmail.com>
+Message-ID: <CAJLw8+UcgdRWpkaHS33mZ5WaRReLr1LRF_akW199fBW-UpCeoA@mail.gmail.com>
+
+Bienvenido!
+
+You might be as well interested in these projects too as they bring
+extended usability to this babe:
+[0] j4-dmenu-desktop: only shows applications that have a .destkop file;
+also it is almost several times faster than traditional dmenu (pops out
+almost instantly);
+[1] lifebar: a neat, ready to use status bar replacement. Please note that
+at the moment it lacks support for the system tray;
+[2] quickswitch-i3: super practical tool that lets you quickly locate and
+switch to any window in all your desktops;
+[3] i3blocks: a nimble status bar replacement, allows for deep
+customization and extendability. It has a built-in system tray.
+
+Now you do have something to play with this Sunday :)
+-Martin
+
+[0] https://github.com/msx/j4-dmenu-desktop
+[1] https://github.com/lynks--/lifebar
+[2] https://github.com/proxypoke/quickswitch-for-i3
+[3] https://github.com/vivien/i3blocks
+
+On Sun, Apr 5, 2015 at 6:58 AM, <mimosinnet at gmail.com> wrote:
+
+> Oh dear...! I have had the misfortune of meeting  i3 on my Easter holidays
+> [?].
+>
+> I have been a happy bunny playing with the configuration
+> <https://github.com/mimosinnet/i3wm_config> so it maps my (not so
+> different) FVWM config and contributed to i3tree
+> <https://github.com/mimosinnet/i3tree> (it did not work for me), after reading
+> on it in the list
+> <http://comments.gmane.org/gmane.comp.window-managers.i3.general/469>. I
+> must say I am very impressed and very much agree with the underlying
+> principles guiding I3.
+>
+> Thanks for this great piece of software!
+>
+> Cheers!
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150405/1c2ca632/attachment-0001.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 35D.gif
+Type: image/gif
+Size: 2012 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150405/1c2ca632/attachment-0001.gif>
+
+From admin at airblader.de  Sun Apr  5 22:22:58 2015
+From: admin at airblader.de (=?UTF-8?B?SW5nbyBCw7xyaw==?=)
+Date: Sun, 05 Apr 2015 22:22:58 +0200
+Subject: [i3] New to i3wm
+In-Reply-To: <CAJLw8+UcgdRWpkaHS33mZ5WaRReLr1LRF_akW199fBW-UpCeoA@mail.gmail.com>
+References: <CAC3XPqL+965gHzTcv9TSAdoNfw8M0fR8jcUqs2+U1RfqwKd3tQ@mail.gmail.com>
+ <CAJLw8+UcgdRWpkaHS33mZ5WaRReLr1LRF_akW199fBW-UpCeoA@mail.gmail.com>
+Message-ID: <552199A2.5060907@airblader.de>
+
+@Martin
+
+You're confusing a few things here. lifebar is a standalone bar.
+i3blocks, however, is not a bar, but just a data provider for i3bar (so
+it replaces i3status, not i3bar). This also means that "i3blocks has
+tray support" doesn't really make sense, because the tray support comes
+from i3bar, not i3blocks.
+
+Also, lifebar seems like a really early-stage project from the looks of
+it. There are plenty other bars which are more widespread, such as dzen2
+or lemonbar.
+
+
+Ingo
+
+On 04/05/2015 10:15 PM, Martin Cigorraga wrote:
+> Bienvenido!
+>
+> You might be as well interested in these projects too as they bring
+> extended usability to this babe:
+> [0] j4-dmenu-desktop: only shows applications that have a .destkop file;
+> also it is almost several times faster than traditional dmenu (pops out
+> almost instantly);
+> [1] lifebar: a neat, ready to use status bar replacement. Please note that
+> at the moment it lacks support for the system tray;
+> [2] quickswitch-i3: super practical tool that lets you quickly locate and
+> switch to any window in all your desktops;
+> [3] i3blocks: a nimble status bar replacement, allows for deep
+> customization and extendability. It has a built-in system tray.
+>
+> Now you do have something to play with this Sunday :)
+> -Martin
+>
+> [0] https://github.com/msx/j4-dmenu-desktop
+> [1] https://github.com/lynks--/lifebar
+> [2] https://github.com/proxypoke/quickswitch-for-i3
+> [3] https://github.com/vivien/i3blocks
+>
+> On Sun, Apr 5, 2015 at 6:58 AM, <mimosinnet at gmail.com> wrote:
+>
+>> Oh dear...! I have had the misfortune of meeting  i3 on my Easter holidays
+>> [?].
+>>
+>> I have been a happy bunny playing with the configuration
+>> <https://github.com/mimosinnet/i3wm_config> so it maps my (not so
+>> different) FVWM config and contributed to i3tree
+>> <https://github.com/mimosinnet/i3tree> (it did not work for me), after reading
+>> on it in the list
+>> <http://comments.gmane.org/gmane.comp.window-managers.i3.general/469>. I
+>> must say I am very impressed and very much agree with the underlying
+>> principles guiding I3.
+>>
+>> Thanks for this great piece of software!
+>>
+>> Cheers!
+>>
+
+
+From martincigorraga at gmail.com  Sun Apr  5 23:17:14 2015
+From: martincigorraga at gmail.com (Martin Cigorraga)
+Date: Sun, 5 Apr 2015 18:17:14 -0300
+Subject: [i3] New to i3wm
+In-Reply-To: <552199A2.5060907@airblader.de>
+References: <CAC3XPqL+965gHzTcv9TSAdoNfw8M0fR8jcUqs2+U1RfqwKd3tQ@mail.gmail.com>
+ <CAJLw8+UcgdRWpkaHS33mZ5WaRReLr1LRF_akW199fBW-UpCeoA@mail.gmail.com>
+ <552199A2.5060907@airblader.de>
+Message-ID: <CAJLw8+VvKrz5V2NPbQwx3b34gUyRK+0eTM2FjJF=5a93Ow-1uw@mail.gmail.com>
+
+On Sun, Apr 5, 2015 at 5:22 PM, Ingo Bürk <admin at airblader.de> wrote:
+>
+> @Martin
+>
+> You're confusing a few things here. lifebar is a standalone bar.
+> i3blocks, however, is not a bar, but just a data provider for i3bar (so
+> it replaces i3status, not i3bar). This also means that "i3blocks has
+> tray support" doesn't really make sense, because the tray support comes
+> from i3bar, not i3blocks.
+>
+> Also, lifebar seems like a really early-stage project from the looks of
+> it. There are plenty other bars which are more widespread, such as dzen2
+> or lemonbar.
+>
+>
+> Ingo
+>
+
+Thank you for clarifying that @Ingo.
+
+About lifebar yes, it is in its early-stages but so far it provides a lot of
+information in an elegant way with its default setup.
+However lacking a system tray (I had to use tint2) was ultimately a
+show-stopper to me so after searching for a while I fell in love with i3blocks:
+https://github.com/vivien/i3blocks/issues/98
+
+Best!
+
+From mimosinnet at gmail.com  Mon Apr  6 01:22:29 2015
+From: mimosinnet at gmail.com (mimosinnet at gmail.com)
+Date: Mon, 6 Apr 2015 01:22:29 +0200
+Subject: [i3] New to i3wm
+In-Reply-To: <CAJLw8+UcgdRWpkaHS33mZ5WaRReLr1LRF_akW199fBW-UpCeoA@mail.gmail.com>
+References: <CAC3XPqL+965gHzTcv9TSAdoNfw8M0fR8jcUqs2+U1RfqwKd3tQ@mail.gmail.com>
+ <CAJLw8+UcgdRWpkaHS33mZ5WaRReLr1LRF_akW199fBW-UpCeoA@mail.gmail.com>
+Message-ID: <CAC3XPqL+6WzJqG7P+_0BBtucijtyS7m03HFNNSgrDQMzJs-FzQ@mail.gmail.com>
+
+2015-04-05 22:15 GMT+02:00 Martin Cigorraga <martincigorraga at gmail.com>:
+
+> Bienvenido!
+>
+> You might be as well interested in these projects too as they bring
+> extended usability to this babe:
+> [0] j4-dmenu-desktop: only shows applications that have a .destkop file;
+> also it is almost several times faster than traditional dmenu (pops out
+> almost instantly);
+> [1] lifebar: a neat, ready to use status bar replacement. Please note that
+> at the moment it lacks support for the system tray;
+> [2] quickswitch-i3: super practical tool that lets you quickly locate and
+> switch to any window in all your desktops;
+> [3] i3blocks: a nimble status bar replacement, allows for deep
+> customization and extendability. It has a built-in system tray.
+>
+> Now you do have something to play with this Sunday :)
+> -Martin
+>
+> [0] https://github.com/msx/j4-dmenu-desktop
+> [1] https://github.com/lynks--/lifebar
+> [2] https://github.com/proxypoke/quickswitch-for-i3
+> [3] https://github.com/vivien/i3blocks
+>
+>
+Martin!
+
+Muchas gracias! :) :D  I will try the j4-dmenu-desktop as my AMD E1-2100
+has issues with the i3-dmenu-desktop! Thanks a lot for the links...!!! I
+see I will have a lot to play wiith...!!! :D ;)
+
+
+
+> On Sun, Apr 5, 2015 at 6:58 AM, <mimosinnet at gmail.com> wrote:
+>
+>> Oh dear...! I have had the misfortune of meeting  i3 on my Easter
+>> holidays [?].
+>>
+>> I have been a happy bunny playing with the configuration
+>> <https://github.com/mimosinnet/i3wm_config> so it maps my (not so
+>> different) FVWM config and contributed to i3tree
+>> <https://github.com/mimosinnet/i3tree> (it did not work for me), after reading
+>> on it in the list
+>> <http://comments.gmane.org/gmane.comp.window-managers.i3.general/469>. I
+>> must say I am very impressed and very much agree with the underlying
+>> principles guiding I3.
+>>
+>> Thanks for this great piece of software!
+>>
+>> Cheers!
+>>
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150406/28c0bdcb/attachment.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 35D.gif
+Type: image/gif
+Size: 2012 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150406/28c0bdcb/attachment.gif>
+
+From mimosinnet at gmail.com  Mon Apr  6 01:24:26 2015
+From: mimosinnet at gmail.com (mimosinnet at gmail.com)
+Date: Mon, 6 Apr 2015 01:24:26 +0200
+Subject: [i3] New to i3wm
+In-Reply-To: <CAJLw8+VvKrz5V2NPbQwx3b34gUyRK+0eTM2FjJF=5a93Ow-1uw@mail.gmail.com>
+References: <CAC3XPqL+965gHzTcv9TSAdoNfw8M0fR8jcUqs2+U1RfqwKd3tQ@mail.gmail.com>
+ <CAJLw8+UcgdRWpkaHS33mZ5WaRReLr1LRF_akW199fBW-UpCeoA@mail.gmail.com>
+ <552199A2.5060907@airblader.de>
+ <CAJLw8+VvKrz5V2NPbQwx3b34gUyRK+0eTM2FjJF=5a93Ow-1uw@mail.gmail.com>
+Message-ID: <CAC3XPqLHxGnvNki0b8eRtE1_JaFMXaqxrBrpJC+Mec7EmLnbBA@mail.gmail.com>
+
+Martin, Ingo,
+
+Thanks for the suggestions, clarifications and welcoming! Cheers!
+
+2015-04-05 23:17 GMT+02:00 Martin Cigorraga <martincigorraga at gmail.com>:
+
+> On Sun, Apr 5, 2015 at 5:22 PM, Ingo Bürk <admin at airblader.de> wrote:
+> >
+> > @Martin
+> >
+> > You're confusing a few things here. lifebar is a standalone bar.
+> > i3blocks, however, is not a bar, but just a data provider for i3bar (so
+> > it replaces i3status, not i3bar). This also means that "i3blocks has
+> > tray support" doesn't really make sense, because the tray support comes
+> > from i3bar, not i3blocks.
+> >
+> > Also, lifebar seems like a really early-stage project from the looks of
+> > it. There are plenty other bars which are more widespread, such as dzen2
+> > or lemonbar.
+> >
+> >
+> > Ingo
+> >
+>
+> Thank you for clarifying that @Ingo.
+>
+> About lifebar yes, it is in its early-stages but so far it provides a lot
+> of
+> information in an elegant way with its default setup.
+> However lacking a system tray (I had to use tint2) was ultimately a
+> show-stopper to me so after searching for a while I fell in love with
+> i3blocks:
+> https://github.com/vivien/i3blocks/issues/98
+>
+> Best!
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150406/2175cc45/attachment.html>
+
+From jeff at purple.com  Fri Apr 17 09:04:11 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Fri, 17 Apr 2015 09:04:11 +0200
+Subject: [i3] Detecting screen locked
+Message-ID: <CAM4Y7zxpUEjhSZ3paq=EvszdKbc_cdUBmZ-YvDuxHe63UQQY1A@mail.gmail.com>
+
+I have a maintenance function that ought not bother spinning the CPU if the
+screen is locked.  It checks this thus:
+
+if pidof i3lock >/dev/null; then
+    ...
+
+This is i3-specific, which is sad, but not a huge problem.  What is a
+problem is that i3lock sometimes hangs around even though I think it should
+exit on unlock.  And, indeed, most of the time it does exit on unlock.
+Once in a while, I find I have one or even several i3lock processes hanging
+around.
+
+I either lock my screen explicitly
+
+bindsym $mod+Control+L exec i3lock --dpms --inactivity-timeout 10
+--color=220022
+
+or else it's done by inactivity
+
+xautolock -detectsleep \
+    -time 3 -locker "i3lock --dpms --color=220022 --inactivity-timeout 10
+--nofork"
+
+This question thus has two parts:
+
+1. Am I doing something wrong that I sometimes have multiple i3lock
+instances?
+2. Is there a better way to detect screen lock than pidof i3lock?
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only if I'm in the UK
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150417/161f4518/attachment.html>
+
+From michael at i3wm.org  Fri Apr 17 09:19:20 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 17 Apr 2015 09:19:20 +0200
+Subject: [i3] Detecting screen locked
+In-Reply-To: <CAM4Y7zxpUEjhSZ3paq=EvszdKbc_cdUBmZ-YvDuxHe63UQQY1A@mail.gmail.com>
+References: <CAM4Y7zxpUEjhSZ3paq=EvszdKbc_cdUBmZ-YvDuxHe63UQQY1A@mail.gmail.com>
+Message-ID: <CANnVG6n+KVpV2B_OvpNrAfVGeiq-eWtzD78WNWQ_RzeHX1xbrA@mail.gmail.com>
+
+i3lock shouldn’t hang around. Can you start stracing all your i3lock
+instances automatically and provide the corresponding strace output of a
+hung instance in a bugreport?
+
+On Fri, Apr 17, 2015 at 9:04 AM, Jeff Abrahamson <jeff at purple.com> wrote:
+
+> I have a maintenance function that ought not bother spinning the CPU if
+> the screen is locked.  It checks this thus:
+>
+> if pidof i3lock >/dev/null; then
+>     ...
+>
+> This is i3-specific, which is sad, but not a huge problem.  What is a
+> problem is that i3lock sometimes hangs around even though I think it should
+> exit on unlock.  And, indeed, most of the time it does exit on unlock.
+> Once in a while, I find I have one or even several i3lock processes hanging
+> around.
+>
+> I either lock my screen explicitly
+>
+> bindsym $mod+Control+L exec i3lock --dpms --inactivity-timeout 10
+> --color=220022
+>
+> or else it's done by inactivity
+>
+> xautolock -detectsleep \
+>     -time 3 -locker "i3lock --dpms --color=220022 --inactivity-timeout 10
+> --nofork"
+>
+> This question thus has two parts:
+>
+> 1. Am I doing something wrong that I sometimes have multiple i3lock
+> instances?
+> 2. Is there a better way to detect screen lock than pidof i3lock?
+>
+> Jeff Abrahamson
+> +33 6 24 40 01 57
+> +44 7920 594 255    <-- only if I'm in the UK
+>
+> http://jeff.purple.com/
+> http://blog.purple.com/jeff/
+>
+
+
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150417/04875b8d/attachment.html>
+
+From jeff at purple.com  Fri Apr 17 09:23:56 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Fri, 17 Apr 2015 09:23:56 +0200
+Subject: [i3] Detecting screen locked
+In-Reply-To: <CANnVG6n+KVpV2B_OvpNrAfVGeiq-eWtzD78WNWQ_RzeHX1xbrA@mail.gmail.com>
+References: <CAM4Y7zxpUEjhSZ3paq=EvszdKbc_cdUBmZ-YvDuxHe63UQQY1A@mail.gmail.com>
+ <CANnVG6n+KVpV2B_OvpNrAfVGeiq-eWtzD78WNWQ_RzeHX1xbrA@mail.gmail.com>
+Message-ID: <CAM4Y7zxV5ijEYc0SJ8fZmJehaDwCpd2LZJFmyFFokt+2AOzTew@mail.gmail.com>
+
+Sure thing.
+
+Just to be clear, do you mean that instead of launching "i3lock .." I
+substitute "strace -o/tmp/i3lock-log-$(date +%s) i3lock ..."?
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only if I'm in the UK
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+
+On 17 April 2015 at 09:19, Michael Stapelberg <michael at i3wm.org> wrote:
+
+> i3lock shouldn’t hang around. Can you start stracing all your i3lock
+> instances automatically and provide the corresponding strace output of a
+> hung instance in a bugreport?
+>
+> On Fri, Apr 17, 2015 at 9:04 AM, Jeff Abrahamson <jeff at purple.com> wrote:
+>
+>> I have a maintenance function that ought not bother spinning the CPU if
+>> the screen is locked.  It checks this thus:
+>>
+>> if pidof i3lock >/dev/null; then
+>>     ...
+>>
+>> This is i3-specific, which is sad, but not a huge problem.  What is a
+>> problem is that i3lock sometimes hangs around even though I think it should
+>> exit on unlock.  And, indeed, most of the time it does exit on unlock.
+>> Once in a while, I find I have one or even several i3lock processes hanging
+>> around.
+>>
+>> I either lock my screen explicitly
+>>
+>> bindsym $mod+Control+L exec i3lock --dpms --inactivity-timeout 10
+>> --color=220022
+>>
+>> or else it's done by inactivity
+>>
+>> xautolock -detectsleep \
+>>     -time 3 -locker "i3lock --dpms --color=220022 --inactivity-timeout 10
+>> --nofork"
+>>
+>> This question thus has two parts:
+>>
+>> 1. Am I doing something wrong that I sometimes have multiple i3lock
+>> instances?
+>> 2. Is there a better way to detect screen lock than pidof i3lock?
+>>
+>> Jeff Abrahamson
+>> +33 6 24 40 01 57
+>> +44 7920 594 255    <-- only if I'm in the UK
+>>
+>> http://jeff.purple.com/
+>> http://blog.purple.com/jeff/
+>>
+>
+>
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150417/ef3edb8d/attachment.html>
+
+From michael at i3wm.org  Fri Apr 17 09:39:36 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 17 Apr 2015 09:39:36 +0200
+Subject: [i3] Detecting screen locked
+In-Reply-To: <CAM4Y7zxV5ijEYc0SJ8fZmJehaDwCpd2LZJFmyFFokt+2AOzTew@mail.gmail.com>
+References: <CAM4Y7zxpUEjhSZ3paq=EvszdKbc_cdUBmZ-YvDuxHe63UQQY1A@mail.gmail.com>
+ <CANnVG6n+KVpV2B_OvpNrAfVGeiq-eWtzD78WNWQ_RzeHX1xbrA@mail.gmail.com>
+ <CAM4Y7zxV5ijEYc0SJ8fZmJehaDwCpd2LZJFmyFFokt+2AOzTew@mail.gmail.com>
+Message-ID: <CANnVG6k=HN=mpyL_7D4xZ09RC06FAXvasNiQVtKYMj7L-9FTUA@mail.gmail.com>
+
+Yes, but also use -f (to follow child processes) and -s 2048 (to increase
+the size of strings) and -tt (to get timing).
+
+On Fri, Apr 17, 2015 at 9:23 AM, Jeff Abrahamson <jeff at purple.com> wrote:
+
+> Sure thing.
+>
+> Just to be clear, do you mean that instead of launching "i3lock .." I
+> substitute "strace -o/tmp/i3lock-log-$(date +%s) i3lock ..."?
+>
+> Jeff Abrahamson
+> +33 6 24 40 01 57
+> +44 7920 594 255    <-- only if I'm in the UK
+>
+> http://jeff.purple.com/
+> http://blog.purple.com/jeff/
+>
+> On 17 April 2015 at 09:19, Michael Stapelberg <michael at i3wm.org> wrote:
+>
+>> i3lock shouldn’t hang around. Can you start stracing all your i3lock
+>> instances automatically and provide the corresponding strace output of a
+>> hung instance in a bugreport?
+>>
+>> On Fri, Apr 17, 2015 at 9:04 AM, Jeff Abrahamson <jeff at purple.com> wrote:
+>>
+>>> I have a maintenance function that ought not bother spinning the CPU if
+>>> the screen is locked.  It checks this thus:
+>>>
+>>> if pidof i3lock >/dev/null; then
+>>>     ...
+>>>
+>>> This is i3-specific, which is sad, but not a huge problem.  What is a
+>>> problem is that i3lock sometimes hangs around even though I think it should
+>>> exit on unlock.  And, indeed, most of the time it does exit on unlock.
+>>> Once in a while, I find I have one or even several i3lock processes hanging
+>>> around.
+>>>
+>>> I either lock my screen explicitly
+>>>
+>>> bindsym $mod+Control+L exec i3lock --dpms --inactivity-timeout 10
+>>> --color=220022
+>>>
+>>> or else it's done by inactivity
+>>>
+>>> xautolock -detectsleep \
+>>>     -time 3 -locker "i3lock --dpms --color=220022 --inactivity-timeout
+>>> 10 --nofork"
+>>>
+>>> This question thus has two parts:
+>>>
+>>> 1. Am I doing something wrong that I sometimes have multiple i3lock
+>>> instances?
+>>> 2. Is there a better way to detect screen lock than pidof i3lock?
+>>>
+>>> Jeff Abrahamson
+>>> +33 6 24 40 01 57
+>>> +44 7920 594 255    <-- only if I'm in the UK
+>>>
+>>> http://jeff.purple.com/
+>>> http://blog.purple.com/jeff/
+>>>
+>>
+>>
+>>
+>> --
+>> Best regards,
+>> Michael
+>>
+>
+>
+
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150417/d56a49e7/attachment-0001.html>
+
+From jeff at purple.com  Fri Apr 17 09:56:10 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Fri, 17 Apr 2015 09:56:10 +0200
+Subject: [i3] Detecting screen locked
+In-Reply-To: <CANnVG6k=HN=mpyL_7D4xZ09RC06FAXvasNiQVtKYMj7L-9FTUA@mail.gmail.com>
+References: <CAM4Y7zxpUEjhSZ3paq=EvszdKbc_cdUBmZ-YvDuxHe63UQQY1A@mail.gmail.com>
+ <CANnVG6n+KVpV2B_OvpNrAfVGeiq-eWtzD78WNWQ_RzeHX1xbrA@mail.gmail.com>
+ <CAM4Y7zxV5ijEYc0SJ8fZmJehaDwCpd2LZJFmyFFokt+2AOzTew@mail.gmail.com>
+ <CANnVG6k=HN=mpyL_7D4xZ09RC06FAXvasNiQVtKYMj7L-9FTUA@mail.gmail.com>
+Message-ID: <CAM4Y7zxz70d0Bfo7zak=OD3ttPzqyyP76uB3F3FTnrHmhPzOVA@mail.gmail.com>
+
+I invoke i3lock at the commandline thus:
+
+[S-18]jeff at siegfried:gtd $ strace -o/tmp/i3lock-log-$(date +%s) -f -s 2048
+-tt  i3lock --dpms --inactivity-timeout 10 --color=220022
+[S-18]jeff at siegfried:gtd $
+
+and the result is that i3lock does not recognize my password.  It does echo
+my typing, it just always says fail.  I switch to a vt, login, and kill it.
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only if I'm in the UK
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+
+On 17 April 2015 at 09:39, Michael Stapelberg <michael at i3wm.org> wrote:
+
+> Yes, but also use -f (to follow child processes) and -s 2048 (to increase
+> the size of strings) and -tt (to get timing).
+>
+> On Fri, Apr 17, 2015 at 9:23 AM, Jeff Abrahamson <jeff at purple.com> wrote:
+>
+>> Sure thing.
+>>
+>> Just to be clear, do you mean that instead of launching "i3lock .." I
+>> substitute "strace -o/tmp/i3lock-log-$(date +%s) i3lock ..."?
+>>
+>> Jeff Abrahamson
+>> +33 6 24 40 01 57
+>> +44 7920 594 255    <-- only if I'm in the UK
+>>
+>> http://jeff.purple.com/
+>> http://blog.purple.com/jeff/
+>>
+>> On 17 April 2015 at 09:19, Michael Stapelberg <michael at i3wm.org> wrote:
+>>
+>>> i3lock shouldn’t hang around. Can you start stracing all your i3lock
+>>> instances automatically and provide the corresponding strace output of a
+>>> hung instance in a bugreport?
+>>>
+>>> On Fri, Apr 17, 2015 at 9:04 AM, Jeff Abrahamson <jeff at purple.com>
+>>> wrote:
+>>>
+>>>> I have a maintenance function that ought not bother spinning the CPU if
+>>>> the screen is locked.  It checks this thus:
+>>>>
+>>>> if pidof i3lock >/dev/null; then
+>>>>     ...
+>>>>
+>>>> This is i3-specific, which is sad, but not a huge problem.  What is a
+>>>> problem is that i3lock sometimes hangs around even though I think it should
+>>>> exit on unlock.  And, indeed, most of the time it does exit on unlock.
+>>>> Once in a while, I find I have one or even several i3lock processes hanging
+>>>> around.
+>>>>
+>>>> I either lock my screen explicitly
+>>>>
+>>>> bindsym $mod+Control+L exec i3lock --dpms --inactivity-timeout 10
+>>>> --color=220022
+>>>>
+>>>> or else it's done by inactivity
+>>>>
+>>>> xautolock -detectsleep \
+>>>>     -time 3 -locker "i3lock --dpms --color=220022 --inactivity-timeout
+>>>> 10 --nofork"
+>>>>
+>>>> This question thus has two parts:
+>>>>
+>>>> 1. Am I doing something wrong that I sometimes have multiple i3lock
+>>>> instances?
+>>>> 2. Is there a better way to detect screen lock than pidof i3lock?
+>>>>
+>>>> Jeff Abrahamson
+>>>> +33 6 24 40 01 57
+>>>> +44 7920 594 255    <-- only if I'm in the UK
+>>>>
+>>>> http://jeff.purple.com/
+>>>> http://blog.purple.com/jeff/
+>>>>
+>>>
+>>>
+>>>
+>>> --
+>>> Best regards,
+>>> Michael
+>>>
+>>
+>>
+>
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150417/508dfbbd/attachment.html>
+
+From michael at i3wm.org  Fri Apr 17 10:09:09 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 17 Apr 2015 10:09:09 +0200
+Subject: [i3] Detecting screen locked
+In-Reply-To: <CAM4Y7zxz70d0Bfo7zak=OD3ttPzqyyP76uB3F3FTnrHmhPzOVA@mail.gmail.com>
+References: <CAM4Y7zxpUEjhSZ3paq=EvszdKbc_cdUBmZ-YvDuxHe63UQQY1A@mail.gmail.com>
+ <CANnVG6n+KVpV2B_OvpNrAfVGeiq-eWtzD78WNWQ_RzeHX1xbrA@mail.gmail.com>
+ <CAM4Y7zxV5ijEYc0SJ8fZmJehaDwCpd2LZJFmyFFokt+2AOzTew@mail.gmail.com>
+ <CANnVG6k=HN=mpyL_7D4xZ09RC06FAXvasNiQVtKYMj7L-9FTUA@mail.gmail.com>
+ <CAM4Y7zxz70d0Bfo7zak=OD3ttPzqyyP76uB3F3FTnrHmhPzOVA@mail.gmail.com>
+Message-ID: <CANnVG6kLZQv05hkFo7wt0vf+9FNNAty5NtwOVMgyz+2oXmfXvA@mail.gmail.com>
+
+Ugh, then you’re running it in a setuid setup. You’ll need to start i3lock
+and then attach strace afterwards using -p.
+
+On Fri, Apr 17, 2015 at 9:56 AM, Jeff Abrahamson <jeff at purple.com> wrote:
+
+> I invoke i3lock at the commandline thus:
+>
+> [S-18]jeff at siegfried:gtd $ strace -o/tmp/i3lock-log-$(date +%s) -f -s
+> 2048 -tt  i3lock --dpms --inactivity-timeout 10 --color=220022
+> [S-18]jeff at siegfried:gtd $
+>
+> and the result is that i3lock does not recognize my password.  It does
+> echo my typing, it just always says fail.  I switch to a vt, login, and
+> kill it.
+>
+> Jeff Abrahamson
+> +33 6 24 40 01 57
+> +44 7920 594 255    <-- only if I'm in the UK
+>
+> http://jeff.purple.com/
+> http://blog.purple.com/jeff/
+>
+> On 17 April 2015 at 09:39, Michael Stapelberg <michael at i3wm.org> wrote:
+>
+>> Yes, but also use -f (to follow child processes) and -s 2048 (to increase
+>> the size of strings) and -tt (to get timing).
+>>
+>> On Fri, Apr 17, 2015 at 9:23 AM, Jeff Abrahamson <jeff at purple.com> wrote:
+>>
+>>> Sure thing.
+>>>
+>>> Just to be clear, do you mean that instead of launching "i3lock .." I
+>>> substitute "strace -o/tmp/i3lock-log-$(date +%s) i3lock ..."?
+>>>
+>>> Jeff Abrahamson
+>>> +33 6 24 40 01 57
+>>> +44 7920 594 255    <-- only if I'm in the UK
+>>>
+>>> http://jeff.purple.com/
+>>> http://blog.purple.com/jeff/
+>>>
+>>> On 17 April 2015 at 09:19, Michael Stapelberg <michael at i3wm.org> wrote:
+>>>
+>>>> i3lock shouldn’t hang around. Can you start stracing all your i3lock
+>>>> instances automatically and provide the corresponding strace output of a
+>>>> hung instance in a bugreport?
+>>>>
+>>>> On Fri, Apr 17, 2015 at 9:04 AM, Jeff Abrahamson <jeff at purple.com>
+>>>> wrote:
+>>>>
+>>>>> I have a maintenance function that ought not bother spinning the CPU
+>>>>> if the screen is locked.  It checks this thus:
+>>>>>
+>>>>> if pidof i3lock >/dev/null; then
+>>>>>     ...
+>>>>>
+>>>>> This is i3-specific, which is sad, but not a huge problem.  What is a
+>>>>> problem is that i3lock sometimes hangs around even though I think it should
+>>>>> exit on unlock.  And, indeed, most of the time it does exit on unlock.
+>>>>> Once in a while, I find I have one or even several i3lock processes hanging
+>>>>> around.
+>>>>>
+>>>>> I either lock my screen explicitly
+>>>>>
+>>>>> bindsym $mod+Control+L exec i3lock --dpms --inactivity-timeout 10
+>>>>> --color=220022
+>>>>>
+>>>>> or else it's done by inactivity
+>>>>>
+>>>>> xautolock -detectsleep \
+>>>>>     -time 3 -locker "i3lock --dpms --color=220022 --inactivity-timeout
+>>>>> 10 --nofork"
+>>>>>
+>>>>> This question thus has two parts:
+>>>>>
+>>>>> 1. Am I doing something wrong that I sometimes have multiple i3lock
+>>>>> instances?
+>>>>> 2. Is there a better way to detect screen lock than pidof i3lock?
+>>>>>
+>>>>> Jeff Abrahamson
+>>>>> +33 6 24 40 01 57
+>>>>> +44 7920 594 255    <-- only if I'm in the UK
+>>>>>
+>>>>> http://jeff.purple.com/
+>>>>> http://blog.purple.com/jeff/
+>>>>>
+>>>>
+>>>>
+>>>>
+>>>> --
+>>>> Best regards,
+>>>> Michael
+>>>>
+>>>
+>>>
+>>
+>>
+>> --
+>> Best regards,
+>> Michael
+>>
+>
+>
+
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150417/e7a79391/attachment.html>
+
+From jeff at purple.com  Fri Apr 17 10:20:25 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Fri, 17 Apr 2015 10:20:25 +0200
+Subject: [i3] Detecting screen locked
+In-Reply-To: <CANnVG6kLZQv05hkFo7wt0vf+9FNNAty5NtwOVMgyz+2oXmfXvA@mail.gmail.com>
+References: <CAM4Y7zxpUEjhSZ3paq=EvszdKbc_cdUBmZ-YvDuxHe63UQQY1A@mail.gmail.com>
+ <CANnVG6n+KVpV2B_OvpNrAfVGeiq-eWtzD78WNWQ_RzeHX1xbrA@mail.gmail.com>
+ <CAM4Y7zxV5ijEYc0SJ8fZmJehaDwCpd2LZJFmyFFokt+2AOzTew@mail.gmail.com>
+ <CANnVG6k=HN=mpyL_7D4xZ09RC06FAXvasNiQVtKYMj7L-9FTUA@mail.gmail.com>
+ <CAM4Y7zxz70d0Bfo7zak=OD3ttPzqyyP76uB3F3FTnrHmhPzOVA@mail.gmail.com>
+ <CANnVG6kLZQv05hkFo7wt0vf+9FNNAty5NtwOVMgyz+2oXmfXvA@mail.gmail.com>
+Message-ID: <CAM4Y7zwZ=9aR4mAPD8AhnVsJDGkbfgAEHJOKj2QpSEq3RYVFuQ@mail.gmail.com>
+
+Interesting.  How does setuid have this effect on i3lock but only under
+strace?
+
+Any idea where the setuid is coming from or how to find out?  The system is
+pretty vanilla ubuntu 14.10 (they have a good installer) aside from running
+i3 instead of gnome.
+
+The exec path that's visible once I'm logged in is lightdm -> lightdm
+--sesion-child -> i3.  I see that i3 parents what is executed due to
+.xsessionrc.
+
+I'll try to gather traces with -p, but this will depend on me thinking to
+trace i3lock from a vt before unlocking the screen.  My apologies in
+advance if I take a long time to catch the occasional errant process that
+way.
+
+And thanks for your ever prompt assistance and insights.
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only if I'm in the UK
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+
+On 17 April 2015 at 10:09, Michael Stapelberg <michael at i3wm.org> wrote:
+
+> Ugh, then you’re running it in a setuid setup. You’ll need to start i3lock
+> and then attach strace afterwards using -p.
+>
+> On Fri, Apr 17, 2015 at 9:56 AM, Jeff Abrahamson <jeff at purple.com> wrote:
+>
+>> I invoke i3lock at the commandline thus:
+>>
+>> [S-18]jeff at siegfried:gtd $ strace -o/tmp/i3lock-log-$(date +%s) -f -s
+>> 2048 -tt  i3lock --dpms --inactivity-timeout 10 --color=220022
+>> [S-18]jeff at siegfried:gtd $
+>>
+>> and the result is that i3lock does not recognize my password.  It does
+>> echo my typing, it just always says fail.  I switch to a vt, login, and
+>> kill it.
+>>
+>> Jeff Abrahamson
+>> +33 6 24 40 01 57
+>> +44 7920 594 255    <-- only if I'm in the UK
+>>
+>> http://jeff.purple.com/
+>> http://blog.purple.com/jeff/
+>>
+>> On 17 April 2015 at 09:39, Michael Stapelberg <michael at i3wm.org> wrote:
+>>
+>>> Yes, but also use -f (to follow child processes) and -s 2048 (to
+>>> increase the size of strings) and -tt (to get timing).
+>>>
+>>> On Fri, Apr 17, 2015 at 9:23 AM, Jeff Abrahamson <jeff at purple.com>
+>>> wrote:
+>>>
+>>>> Sure thing.
+>>>>
+>>>> Just to be clear, do you mean that instead of launching "i3lock .." I
+>>>> substitute "strace -o/tmp/i3lock-log-$(date +%s) i3lock ..."?
+>>>>
+>>>> Jeff Abrahamson
+>>>> +33 6 24 40 01 57
+>>>> +44 7920 594 255    <-- only if I'm in the UK
+>>>>
+>>>> http://jeff.purple.com/
+>>>> http://blog.purple.com/jeff/
+>>>>
+>>>> On 17 April 2015 at 09:19, Michael Stapelberg <michael at i3wm.org> wrote:
+>>>>
+>>>>> i3lock shouldn’t hang around. Can you start stracing all your i3lock
+>>>>> instances automatically and provide the corresponding strace output of a
+>>>>> hung instance in a bugreport?
+>>>>>
+>>>>> On Fri, Apr 17, 2015 at 9:04 AM, Jeff Abrahamson <jeff at purple.com>
+>>>>> wrote:
+>>>>>
+>>>>>> I have a maintenance function that ought not bother spinning the CPU
+>>>>>> if the screen is locked.  It checks this thus:
+>>>>>>
+>>>>>> if pidof i3lock >/dev/null; then
+>>>>>>     ...
+>>>>>>
+>>>>>> This is i3-specific, which is sad, but not a huge problem.  What is a
+>>>>>> problem is that i3lock sometimes hangs around even though I think it should
+>>>>>> exit on unlock.  And, indeed, most of the time it does exit on unlock.
+>>>>>> Once in a while, I find I have one or even several i3lock processes hanging
+>>>>>> around.
+>>>>>>
+>>>>>> I either lock my screen explicitly
+>>>>>>
+>>>>>> bindsym $mod+Control+L exec i3lock --dpms --inactivity-timeout 10
+>>>>>> --color=220022
+>>>>>>
+>>>>>> or else it's done by inactivity
+>>>>>>
+>>>>>> xautolock -detectsleep \
+>>>>>>     -time 3 -locker "i3lock --dpms --color=220022
+>>>>>> --inactivity-timeout 10 --nofork"
+>>>>>>
+>>>>>> This question thus has two parts:
+>>>>>>
+>>>>>> 1. Am I doing something wrong that I sometimes have multiple i3lock
+>>>>>> instances?
+>>>>>> 2. Is there a better way to detect screen lock than pidof i3lock?
+>>>>>>
+>>>>>> Jeff Abrahamson
+>>>>>> +33 6 24 40 01 57
+>>>>>> +44 7920 594 255    <-- only if I'm in the UK
+>>>>>>
+>>>>>> http://jeff.purple.com/
+>>>>>> http://blog.purple.com/jeff/
+>>>>>>
+>>>>>
+>>>>>
+>>>>>
+>>>>> --
+>>>>> Best regards,
+>>>>> Michael
+>>>>>
+>>>>
+>>>>
+>>>
+>>>
+>>> --
+>>> Best regards,
+>>> Michael
+>>>
+>>
+>>
+>
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150417/45817983/attachment-0001.html>
+
+From michael at i3wm.org  Fri Apr 17 11:47:49 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 17 Apr 2015 02:47:49 -0700
+Subject: [i3] Detecting screen locked
+In-Reply-To: <CAM4Y7zwZ=9aR4mAPD8AhnVsJDGkbfgAEHJOKj2QpSEq3RYVFuQ@mail.gmail.com>
+References: <CAM4Y7zxpUEjhSZ3paq=EvszdKbc_cdUBmZ-YvDuxHe63UQQY1A@mail.gmail.com>
+ <CANnVG6n+KVpV2B_OvpNrAfVGeiq-eWtzD78WNWQ_RzeHX1xbrA@mail.gmail.com>
+ <CAM4Y7zxV5ijEYc0SJ8fZmJehaDwCpd2LZJFmyFFokt+2AOzTew@mail.gmail.com>
+ <CANnVG6k=HN=mpyL_7D4xZ09RC06FAXvasNiQVtKYMj7L-9FTUA@mail.gmail.com>
+ <CAM4Y7zxz70d0Bfo7zak=OD3ttPzqyyP76uB3F3FTnrHmhPzOVA@mail.gmail.com>
+ <CANnVG6kLZQv05hkFo7wt0vf+9FNNAty5NtwOVMgyz+2oXmfXvA@mail.gmail.com>
+ <CAM4Y7zwZ=9aR4mAPD8AhnVsJDGkbfgAEHJOKj2QpSEq3RYVFuQ@mail.gmail.com>
+Message-ID: <CANnVG6m0VAZcdN+jXCGQHcg6EzsPomavwmqzh8zwtBu5Sues6w@mail.gmail.com>
+
+See http://superuser.com/a/248127 for why setuid is ignored when
+running under strace.
+
+Given that you run i3lock on linux, it might be PAM which uses setuid
+in some of its modules.
+
+On Fri, Apr 17, 2015 at 1:20 AM, Jeff Abrahamson <jeff at purple.com> wrote:
+> Interesting.  How does setuid have this effect on i3lock but only under
+> strace?
+>
+> Any idea where the setuid is coming from or how to find out?  The system is
+> pretty vanilla ubuntu 14.10 (they have a good installer) aside from running
+> i3 instead of gnome.
+>
+> The exec path that's visible once I'm logged in is lightdm -> lightdm
+> --sesion-child -> i3.  I see that i3 parents what is executed due to
+> .xsessionrc.
+>
+> I'll try to gather traces with -p, but this will depend on me thinking to
+> trace i3lock from a vt before unlocking the screen.  My apologies in advance
+> if I take a long time to catch the occasional errant process that way.
+>
+> And thanks for your ever prompt assistance and insights.
+>
+> Jeff Abrahamson
+> +33 6 24 40 01 57
+> +44 7920 594 255    <-- only if I'm in the UK
+>
+> http://jeff.purple.com/
+> http://blog.purple.com/jeff/
+>
+> On 17 April 2015 at 10:09, Michael Stapelberg <michael at i3wm.org> wrote:
+>>
+>> Ugh, then you’re running it in a setuid setup. You’ll need to start i3lock
+>> and then attach strace afterwards using -p.
+>>
+>> On Fri, Apr 17, 2015 at 9:56 AM, Jeff Abrahamson <jeff at purple.com> wrote:
+>>>
+>>> I invoke i3lock at the commandline thus:
+>>>
+>>> [S-18]jeff at siegfried:gtd $ strace -o/tmp/i3lock-log-$(date +%s) -f -s
+>>> 2048 -tt  i3lock --dpms --inactivity-timeout 10 --color=220022
+>>> [S-18]jeff at siegfried:gtd $
+>>>
+>>> and the result is that i3lock does not recognize my password.  It does
+>>> echo my typing, it just always says fail.  I switch to a vt, login, and kill
+>>> it.
+>>>
+>>> Jeff Abrahamson
+>>> +33 6 24 40 01 57
+>>> +44 7920 594 255    <-- only if I'm in the UK
+>>>
+>>> http://jeff.purple.com/
+>>> http://blog.purple.com/jeff/
+>>>
+>>> On 17 April 2015 at 09:39, Michael Stapelberg <michael at i3wm.org> wrote:
+>>>>
+>>>> Yes, but also use -f (to follow child processes) and -s 2048 (to
+>>>> increase the size of strings) and -tt (to get timing).
+>>>>
+>>>> On Fri, Apr 17, 2015 at 9:23 AM, Jeff Abrahamson <jeff at purple.com>
+>>>> wrote:
+>>>>>
+>>>>> Sure thing.
+>>>>>
+>>>>> Just to be clear, do you mean that instead of launching "i3lock .." I
+>>>>> substitute "strace -o/tmp/i3lock-log-$(date +%s) i3lock ..."?
+>>>>>
+>>>>> Jeff Abrahamson
+>>>>> +33 6 24 40 01 57
+>>>>> +44 7920 594 255    <-- only if I'm in the UK
+>>>>>
+>>>>> http://jeff.purple.com/
+>>>>> http://blog.purple.com/jeff/
+>>>>>
+>>>>> On 17 April 2015 at 09:19, Michael Stapelberg <michael at i3wm.org> wrote:
+>>>>>>
+>>>>>> i3lock shouldn’t hang around. Can you start stracing all your i3lock
+>>>>>> instances automatically and provide the corresponding strace output of a
+>>>>>> hung instance in a bugreport?
+>>>>>>
+>>>>>> On Fri, Apr 17, 2015 at 9:04 AM, Jeff Abrahamson <jeff at purple.com>
+>>>>>> wrote:
+>>>>>>>
+>>>>>>> I have a maintenance function that ought not bother spinning the CPU
+>>>>>>> if the screen is locked.  It checks this thus:
+>>>>>>>
+>>>>>>> if pidof i3lock >/dev/null; then
+>>>>>>>     ...
+>>>>>>>
+>>>>>>> This is i3-specific, which is sad, but not a huge problem.  What is a
+>>>>>>> problem is that i3lock sometimes hangs around even though I think it should
+>>>>>>> exit on unlock.  And, indeed, most of the time it does exit on unlock.  Once
+>>>>>>> in a while, I find I have one or even several i3lock processes hanging
+>>>>>>> around.
+>>>>>>>
+>>>>>>> I either lock my screen explicitly
+>>>>>>>
+>>>>>>> bindsym $mod+Control+L exec i3lock --dpms --inactivity-timeout 10
+>>>>>>> --color=220022
+>>>>>>>
+>>>>>>> or else it's done by inactivity
+>>>>>>>
+>>>>>>> xautolock -detectsleep \
+>>>>>>>     -time 3 -locker "i3lock --dpms --color=220022
+>>>>>>> --inactivity-timeout 10 --nofork"
+>>>>>>>
+>>>>>>> This question thus has two parts:
+>>>>>>>
+>>>>>>> 1. Am I doing something wrong that I sometimes have multiple i3lock
+>>>>>>> instances?
+>>>>>>> 2. Is there a better way to detect screen lock than pidof i3lock?
+>>>>>>>
+>>>>>>> Jeff Abrahamson
+>>>>>>> +33 6 24 40 01 57
+>>>>>>> +44 7920 594 255    <-- only if I'm in the UK
+>>>>>>>
+>>>>>>> http://jeff.purple.com/
+>>>>>>> http://blog.purple.com/jeff/
+>>>>>>
+>>>>>>
+>>>>>>
+>>>>>>
+>>>>>> --
+>>>>>> Best regards,
+>>>>>> Michael
+>>>>>
+>>>>>
+>>>>
+>>>>
+>>>>
+>>>> --
+>>>> Best regards,
+>>>> Michael
+>>>
+>>>
+>>
+>>
+>>
+>> --
+>> Best regards,
+>> Michael
+>
+>
+
+
+
+-- 
+Best regards,
+Michael
+
+From jeff at purple.com  Fri Apr 17 12:00:51 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Fri, 17 Apr 2015 12:00:51 +0200
+Subject: [i3] Detecting screen locked
+In-Reply-To: <CANnVG6m0VAZcdN+jXCGQHcg6EzsPomavwmqzh8zwtBu5Sues6w@mail.gmail.com>
+References: <CAM4Y7zxpUEjhSZ3paq=EvszdKbc_cdUBmZ-YvDuxHe63UQQY1A@mail.gmail.com>
+ <CANnVG6n+KVpV2B_OvpNrAfVGeiq-eWtzD78WNWQ_RzeHX1xbrA@mail.gmail.com>
+ <CAM4Y7zxV5ijEYc0SJ8fZmJehaDwCpd2LZJFmyFFokt+2AOzTew@mail.gmail.com>
+ <CANnVG6k=HN=mpyL_7D4xZ09RC06FAXvasNiQVtKYMj7L-9FTUA@mail.gmail.com>
+ <CAM4Y7zxz70d0Bfo7zak=OD3ttPzqyyP76uB3F3FTnrHmhPzOVA@mail.gmail.com>
+ <CANnVG6kLZQv05hkFo7wt0vf+9FNNAty5NtwOVMgyz+2oXmfXvA@mail.gmail.com>
+ <CAM4Y7zwZ=9aR4mAPD8AhnVsJDGkbfgAEHJOKj2QpSEq3RYVFuQ@mail.gmail.com>
+ <CANnVG6m0VAZcdN+jXCGQHcg6EzsPomavwmqzh8zwtBu5Sues6w@mail.gmail.com>
+Message-ID: <CAM4Y7zxQav3GKdSDu=4zU-Kvo-=wLsRzrqs4to1aQZeS9GinMw@mail.gmail.com>
+
+Thanks.  I understand (and a bit better, now) why strace/ptrace may have
+problems with a program that calls setuid.  On the other hand, i3lock
+doesn't have the setuid bit set, and the strace logs do not show an attempt
+to call strace.
+
+[S-18]jeff at siegfried:~ $ stat /usr/bin/i3lock
+  File: ‘/usr/bin/i3lock’
+  Size: 31912           Blocks: 64         IO Block: 4096   regular file
+Device: fc01h/64513d    Inode: 1575208     Links: 1
+Access: (0755/-rwxr-xr-x)  Uid: (    0/    root)   Gid: (    0/    root)
+Access: 2015-04-16 20:02:56.634223226 +0200
+Modify: 2014-07-19 01:13:09.000000000 +0200
+Change: 2015-03-04 15:18:43.959784604 +0100
+ Birth: -
+[S-18]jeff at siegfried:~ $ grep setuid /tmp/i3lock-log-1429256*
+1,[S-18] jeff at siegfried:~ $
+
+This said, if something PAM did when I logged in affects the behavior of
+stracing i3lock, I do not think I will try to figure out what PAM has done.
+;-)  But I still find it odd that i3lock would interpret keystrokes
+differently under strace or not based on what I know so far.
+
+Well, I will debug what I can.  Maybe I will compile an i3lock with
+scaffolding over the weekend to see what I can learn.
+
+Thanks again.
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only if I'm in the UK
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+
+On 17 April 2015 at 11:47, Michael Stapelberg <michael at i3wm.org> wrote:
+
+> See http://superuser.com/a/248127 for why setuid is ignored when
+> running under strace.
+>
+> Given that you run i3lock on linux, it might be PAM which uses setuid
+> in some of its modules.
+>
+> On Fri, Apr 17, 2015 at 1:20 AM, Jeff Abrahamson <jeff at purple.com> wrote:
+> > Interesting.  How does setuid have this effect on i3lock but only under
+> > strace?
+> >
+> > Any idea where the setuid is coming from or how to find out?  The system
+> is
+> > pretty vanilla ubuntu 14.10 (they have a good installer) aside from
+> running
+> > i3 instead of gnome.
+> >
+> > The exec path that's visible once I'm logged in is lightdm -> lightdm
+> > --sesion-child -> i3.  I see that i3 parents what is executed due to
+> > .xsessionrc.
+> >
+> > I'll try to gather traces with -p, but this will depend on me thinking to
+> > trace i3lock from a vt before unlocking the screen.  My apologies in
+> advance
+> > if I take a long time to catch the occasional errant process that way.
+> >
+> > And thanks for your ever prompt assistance and insights.
+> >
+> > Jeff Abrahamson
+> > +33 6 24 40 01 57
+> > +44 7920 594 255    <-- only if I'm in the UK
+> >
+> > http://jeff.purple.com/
+> > http://blog.purple.com/jeff/
+> >
+> > On 17 April 2015 at 10:09, Michael Stapelberg <michael at i3wm.org> wrote:
+> >>
+> >> Ugh, then you’re running it in a setuid setup. You’ll need to start
+> i3lock
+> >> and then attach strace afterwards using -p.
+> >>
+> >> On Fri, Apr 17, 2015 at 9:56 AM, Jeff Abrahamson <jeff at purple.com>
+> wrote:
+> >>>
+> >>> I invoke i3lock at the commandline thus:
+> >>>
+> >>> [S-18]jeff at siegfried:gtd $ strace -o/tmp/i3lock-log-$(date +%s) -f -s
+> >>> 2048 -tt  i3lock --dpms --inactivity-timeout 10 --color=220022
+> >>> [S-18]jeff at siegfried:gtd $
+> >>>
+> >>> and the result is that i3lock does not recognize my password.  It does
+> >>> echo my typing, it just always says fail.  I switch to a vt, login,
+> and kill
+> >>> it.
+> >>>
+> >>> Jeff Abrahamson
+> >>> +33 6 24 40 01 57
+> >>> +44 7920 594 255    <-- only if I'm in the UK
+> >>>
+> >>> http://jeff.purple.com/
+> >>> http://blog.purple.com/jeff/
+> >>>
+> >>> On 17 April 2015 at 09:39, Michael Stapelberg <michael at i3wm.org>
+> wrote:
+> >>>>
+> >>>> Yes, but also use -f (to follow child processes) and -s 2048 (to
+> >>>> increase the size of strings) and -tt (to get timing).
+> >>>>
+> >>>> On Fri, Apr 17, 2015 at 9:23 AM, Jeff Abrahamson <jeff at purple.com>
+> >>>> wrote:
+> >>>>>
+> >>>>> Sure thing.
+> >>>>>
+> >>>>> Just to be clear, do you mean that instead of launching "i3lock .." I
+> >>>>> substitute "strace -o/tmp/i3lock-log-$(date +%s) i3lock ..."?
+> >>>>>
+> >>>>> Jeff Abrahamson
+> >>>>> +33 6 24 40 01 57
+> >>>>> +44 7920 594 255    <-- only if I'm in the UK
+> >>>>>
+> >>>>> http://jeff.purple.com/
+> >>>>> http://blog.purple.com/jeff/
+> >>>>>
+> >>>>> On 17 April 2015 at 09:19, Michael Stapelberg <michael at i3wm.org>
+> wrote:
+> >>>>>>
+> >>>>>> i3lock shouldn’t hang around. Can you start stracing all your i3lock
+> >>>>>> instances automatically and provide the corresponding strace output
+> of a
+> >>>>>> hung instance in a bugreport?
+> >>>>>>
+> >>>>>> On Fri, Apr 17, 2015 at 9:04 AM, Jeff Abrahamson <jeff at purple.com>
+> >>>>>> wrote:
+> >>>>>>>
+> >>>>>>> I have a maintenance function that ought not bother spinning the
+> CPU
+> >>>>>>> if the screen is locked.  It checks this thus:
+> >>>>>>>
+> >>>>>>> if pidof i3lock >/dev/null; then
+> >>>>>>>     ...
+> >>>>>>>
+> >>>>>>> This is i3-specific, which is sad, but not a huge problem.  What
+> is a
+> >>>>>>> problem is that i3lock sometimes hangs around even though I think
+> it should
+> >>>>>>> exit on unlock.  And, indeed, most of the time it does exit on
+> unlock.  Once
+> >>>>>>> in a while, I find I have one or even several i3lock processes
+> hanging
+> >>>>>>> around.
+> >>>>>>>
+> >>>>>>> I either lock my screen explicitly
+> >>>>>>>
+> >>>>>>> bindsym $mod+Control+L exec i3lock --dpms --inactivity-timeout 10
+> >>>>>>> --color=220022
+> >>>>>>>
+> >>>>>>> or else it's done by inactivity
+> >>>>>>>
+> >>>>>>> xautolock -detectsleep \
+> >>>>>>>     -time 3 -locker "i3lock --dpms --color=220022
+> >>>>>>> --inactivity-timeout 10 --nofork"
+> >>>>>>>
+> >>>>>>> This question thus has two parts:
+> >>>>>>>
+> >>>>>>> 1. Am I doing something wrong that I sometimes have multiple i3lock
+> >>>>>>> instances?
+> >>>>>>> 2. Is there a better way to detect screen lock than pidof i3lock?
+> >>>>>>>
+> >>>>>>> Jeff Abrahamson
+> >>>>>>> +33 6 24 40 01 57
+> >>>>>>> +44 7920 594 255    <-- only if I'm in the UK
+> >>>>>>>
+> >>>>>>> http://jeff.purple.com/
+> >>>>>>> http://blog.purple.com/jeff/
+> >>>>>>
+> >>>>>>
+> >>>>>>
+> >>>>>>
+> >>>>>> --
+> >>>>>> Best regards,
+> >>>>>> Michael
+> >>>>>
+> >>>>>
+> >>>>
+> >>>>
+> >>>>
+> >>>> --
+> >>>> Best regards,
+> >>>> Michael
+> >>>
+> >>>
+> >>
+> >>
+> >>
+> >> --
+> >> Best regards,
+> >> Michael
+> >
+> >
+>
+>
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150417/a6130566/attachment.html>
+
+From michael at i3wm.org  Fri Apr 17 12:50:54 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 17 Apr 2015 03:50:54 -0700
+Subject: [i3] Detecting screen locked
+In-Reply-To: <CAM4Y7zxQav3GKdSDu=4zU-Kvo-=wLsRzrqs4to1aQZeS9GinMw@mail.gmail.com>
+References: <CAM4Y7zxpUEjhSZ3paq=EvszdKbc_cdUBmZ-YvDuxHe63UQQY1A@mail.gmail.com>
+ <CANnVG6n+KVpV2B_OvpNrAfVGeiq-eWtzD78WNWQ_RzeHX1xbrA@mail.gmail.com>
+ <CAM4Y7zxV5ijEYc0SJ8fZmJehaDwCpd2LZJFmyFFokt+2AOzTew@mail.gmail.com>
+ <CANnVG6k=HN=mpyL_7D4xZ09RC06FAXvasNiQVtKYMj7L-9FTUA@mail.gmail.com>
+ <CAM4Y7zxz70d0Bfo7zak=OD3ttPzqyyP76uB3F3FTnrHmhPzOVA@mail.gmail.com>
+ <CANnVG6kLZQv05hkFo7wt0vf+9FNNAty5NtwOVMgyz+2oXmfXvA@mail.gmail.com>
+ <CAM4Y7zwZ=9aR4mAPD8AhnVsJDGkbfgAEHJOKj2QpSEq3RYVFuQ@mail.gmail.com>
+ <CANnVG6m0VAZcdN+jXCGQHcg6EzsPomavwmqzh8zwtBu5Sues6w@mail.gmail.com>
+ <CAM4Y7zxQav3GKdSDu=4zU-Kvo-=wLsRzrqs4to1aQZeS9GinMw@mail.gmail.com>
+Message-ID: <CANnVG6kNvbn5FvtAoPmnVFqJy12UvndJoTQPGAmu1Hgr2muYSQ@mail.gmail.com>
+
+On Fri, Apr 17, 2015 at 3:00 AM, Jeff Abrahamson <jeff at purple.com> wrote:
+> Thanks.  I understand (and a bit better, now) why strace/ptrace may have
+> problems with a program that calls setuid.  On the other hand, i3lock
+> doesn't have the setuid bit set, and the strace logs do not show an attempt
+> to call strace.
+>
+> [S-18]jeff at siegfried:~ $ stat /usr/bin/i3lock
+>   File: ‘/usr/bin/i3lock’
+>   Size: 31912           Blocks: 64         IO Block: 4096   regular file
+> Device: fc01h/64513d    Inode: 1575208     Links: 1
+> Access: (0755/-rwxr-xr-x)  Uid: (    0/    root)   Gid: (    0/    root)
+> Access: 2015-04-16 20:02:56.634223226 +0200
+> Modify: 2014-07-19 01:13:09.000000000 +0200
+> Change: 2015-03-04 15:18:43.959784604 +0100
+>  Birth: -
+> [S-18]jeff at siegfried:~ $ grep setuid /tmp/i3lock-log-1429256*
+> 1,[S-18] jeff at siegfried:~ $
+>
+> This said, if something PAM did when I logged in affects the behavior of
+> stracing i3lock, I do not think I will try to figure out what PAM has done.
+> ;-)  But I still find it odd that i3lock would interpret keystrokes
+> differently under strace or not based on what I know so far.
+
+It doesn’t. I’m saying the PAM stack (outside of i3’s code) likely
+requires setuid permission for some modules (most likely pam_unix).
+
+>
+> Well, I will debug what I can.  Maybe I will compile an i3lock with
+> scaffolding over the weekend to see what I can learn.
+>
+> Thanks again.
+>
+> Jeff Abrahamson
+> +33 6 24 40 01 57
+> +44 7920 594 255    <-- only if I'm in the UK
+>
+> http://jeff.purple.com/
+> http://blog.purple.com/jeff/
+>
+> On 17 April 2015 at 11:47, Michael Stapelberg <michael at i3wm.org> wrote:
+>>
+>> See http://superuser.com/a/248127 for why setuid is ignored when
+>> running under strace.
+>>
+>> Given that you run i3lock on linux, it might be PAM which uses setuid
+>> in some of its modules.
+>>
+>> On Fri, Apr 17, 2015 at 1:20 AM, Jeff Abrahamson <jeff at purple.com> wrote:
+>> > Interesting.  How does setuid have this effect on i3lock but only under
+>> > strace?
+>> >
+>> > Any idea where the setuid is coming from or how to find out?  The system
+>> > is
+>> > pretty vanilla ubuntu 14.10 (they have a good installer) aside from
+>> > running
+>> > i3 instead of gnome.
+>> >
+>> > The exec path that's visible once I'm logged in is lightdm -> lightdm
+>> > --sesion-child -> i3.  I see that i3 parents what is executed due to
+>> > .xsessionrc.
+>> >
+>> > I'll try to gather traces with -p, but this will depend on me thinking
+>> > to
+>> > trace i3lock from a vt before unlocking the screen.  My apologies in
+>> > advance
+>> > if I take a long time to catch the occasional errant process that way.
+>> >
+>> > And thanks for your ever prompt assistance and insights.
+>> >
+>> > Jeff Abrahamson
+>> > +33 6 24 40 01 57
+>> > +44 7920 594 255    <-- only if I'm in the UK
+>> >
+>> > http://jeff.purple.com/
+>> > http://blog.purple.com/jeff/
+>> >
+>> > On 17 April 2015 at 10:09, Michael Stapelberg <michael at i3wm.org> wrote:
+>> >>
+>> >> Ugh, then you’re running it in a setuid setup. You’ll need to start
+>> >> i3lock
+>> >> and then attach strace afterwards using -p.
+>> >>
+>> >> On Fri, Apr 17, 2015 at 9:56 AM, Jeff Abrahamson <jeff at purple.com>
+>> >> wrote:
+>> >>>
+>> >>> I invoke i3lock at the commandline thus:
+>> >>>
+>> >>> [S-18]jeff at siegfried:gtd $ strace -o/tmp/i3lock-log-$(date +%s) -f -s
+>> >>> 2048 -tt  i3lock --dpms --inactivity-timeout 10 --color=220022
+>> >>> [S-18]jeff at siegfried:gtd $
+>> >>>
+>> >>> and the result is that i3lock does not recognize my password.  It does
+>> >>> echo my typing, it just always says fail.  I switch to a vt, login,
+>> >>> and kill
+>> >>> it.
+>> >>>
+>> >>> Jeff Abrahamson
+>> >>> +33 6 24 40 01 57
+>> >>> +44 7920 594 255    <-- only if I'm in the UK
+>> >>>
+>> >>> http://jeff.purple.com/
+>> >>> http://blog.purple.com/jeff/
+>> >>>
+>> >>> On 17 April 2015 at 09:39, Michael Stapelberg <michael at i3wm.org>
+>> >>> wrote:
+>> >>>>
+>> >>>> Yes, but also use -f (to follow child processes) and -s 2048 (to
+>> >>>> increase the size of strings) and -tt (to get timing).
+>> >>>>
+>> >>>> On Fri, Apr 17, 2015 at 9:23 AM, Jeff Abrahamson <jeff at purple.com>
+>> >>>> wrote:
+>> >>>>>
+>> >>>>> Sure thing.
+>> >>>>>
+>> >>>>> Just to be clear, do you mean that instead of launching "i3lock .."
+>> >>>>> I
+>> >>>>> substitute "strace -o/tmp/i3lock-log-$(date +%s) i3lock ..."?
+>> >>>>>
+>> >>>>> Jeff Abrahamson
+>> >>>>> +33 6 24 40 01 57
+>> >>>>> +44 7920 594 255    <-- only if I'm in the UK
+>> >>>>>
+>> >>>>> http://jeff.purple.com/
+>> >>>>> http://blog.purple.com/jeff/
+>> >>>>>
+>> >>>>> On 17 April 2015 at 09:19, Michael Stapelberg <michael at i3wm.org>
+>> >>>>> wrote:
+>> >>>>>>
+>> >>>>>> i3lock shouldn’t hang around. Can you start stracing all your
+>> >>>>>> i3lock
+>> >>>>>> instances automatically and provide the corresponding strace output
+>> >>>>>> of a
+>> >>>>>> hung instance in a bugreport?
+>> >>>>>>
+>> >>>>>> On Fri, Apr 17, 2015 at 9:04 AM, Jeff Abrahamson <jeff at purple.com>
+>> >>>>>> wrote:
+>> >>>>>>>
+>> >>>>>>> I have a maintenance function that ought not bother spinning the
+>> >>>>>>> CPU
+>> >>>>>>> if the screen is locked.  It checks this thus:
+>> >>>>>>>
+>> >>>>>>> if pidof i3lock >/dev/null; then
+>> >>>>>>>     ...
+>> >>>>>>>
+>> >>>>>>> This is i3-specific, which is sad, but not a huge problem.  What
+>> >>>>>>> is a
+>> >>>>>>> problem is that i3lock sometimes hangs around even though I think
+>> >>>>>>> it should
+>> >>>>>>> exit on unlock.  And, indeed, most of the time it does exit on
+>> >>>>>>> unlock.  Once
+>> >>>>>>> in a while, I find I have one or even several i3lock processes
+>> >>>>>>> hanging
+>> >>>>>>> around.
+>> >>>>>>>
+>> >>>>>>> I either lock my screen explicitly
+>> >>>>>>>
+>> >>>>>>> bindsym $mod+Control+L exec i3lock --dpms --inactivity-timeout 10
+>> >>>>>>> --color=220022
+>> >>>>>>>
+>> >>>>>>> or else it's done by inactivity
+>> >>>>>>>
+>> >>>>>>> xautolock -detectsleep \
+>> >>>>>>>     -time 3 -locker "i3lock --dpms --color=220022
+>> >>>>>>> --inactivity-timeout 10 --nofork"
+>> >>>>>>>
+>> >>>>>>> This question thus has two parts:
+>> >>>>>>>
+>> >>>>>>> 1. Am I doing something wrong that I sometimes have multiple
+>> >>>>>>> i3lock
+>> >>>>>>> instances?
+>> >>>>>>> 2. Is there a better way to detect screen lock than pidof i3lock?
+>> >>>>>>>
+>> >>>>>>> Jeff Abrahamson
+>> >>>>>>> +33 6 24 40 01 57
+>> >>>>>>> +44 7920 594 255    <-- only if I'm in the UK
+>> >>>>>>>
+>> >>>>>>> http://jeff.purple.com/
+>> >>>>>>> http://blog.purple.com/jeff/
+>> >>>>>>
+>> >>>>>>
+>> >>>>>>
+>> >>>>>>
+>> >>>>>> --
+>> >>>>>> Best regards,
+>> >>>>>> Michael
+>> >>>>>
+>> >>>>>
+>> >>>>
+>> >>>>
+>> >>>>
+>> >>>> --
+>> >>>> Best regards,
+>> >>>> Michael
+>> >>>
+>> >>>
+>> >>
+>> >>
+>> >>
+>> >> --
+>> >> Best regards,
+>> >> Michael
+>> >
+>> >
+>>
+>>
+>>
+>> --
+>> Best regards,
+>> Michael
+>
+>
+
+
+
+-- 
+Best regards,
+Michael
+
+From jeffrubic at gmail.com  Sat Apr 18 19:26:07 2015
+From: jeffrubic at gmail.com (Jeff Bauer)
+Date: Sat, 18 Apr 2015 12:26:07 -0500
+Subject: [i3] i3 upgrade failure on trusty
+Message-ID: <20150418172607.GA18049@rubic.com>
+
+Upgrade failure on Ubuntu 14.04:
+
+The following packages will be upgraded:
+  i3 i3-wm
+2 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+Need to get 697 kB of archives.
+After this operation, 13.3 kB of additional disk space will be used.
+Do you want to continue? [Y/n]
+Err http://debian.sur5r.net/i3/ trusty/universe i3 amd64 4.10.1-1~~trusty1
+  404  Not Found [IP: 217.8.49.41 80]
+Err http://debian.sur5r.net/i3/ trusty/universe i3-wm amd64 4.10.1-1~~trusty1
+  404  Not Found [IP: 217.8.49.41 80]
+E: Failed to fetch http://debian.sur5r.net/i3/pool/universe/i/i3-wm/i3_4.10.1-1~~trusty1_amd64.deb  404  Not Found [IP: 217.8.49.41 80]
+
+E: Failed to fetch http://debian.sur5r.net/i3/pool/universe/i/i3-wm/i3-wm_4.10.1-1~~trusty1_amd64.deb  404  Not Found [IP: 217.8.49.41 80]
+
+----
+
+Reviewing the http://debian.sur5r.net/i3/pool/universe/i/i3-wm
+link, I see i3-wm_4.10.2-1~~trusty1_amd64.deb, but not
+i3-wm_4.10.1-1~~trusty1_amd64.deb.
+
+Best workaround?
+
+-Jeff
+
+From michael at i3wm.org  Sat Apr 18 19:46:49 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 18 Apr 2015 19:46:49 +0200
+Subject: [i3] i3 upgrade failure on trusty
+In-Reply-To: <20150418172607.GA18049@rubic.com>
+References: <20150418172607.GA18049@rubic.com>
+Message-ID: <CANnVG6m7HFz1ip2fm4Wz3XGiKEeHrC1g=2+_nQPAQ6ayB-TCgw@mail.gmail.com>
+
+Did you try running apt-get update?
+
+On Sat, Apr 18, 2015 at 7:26 PM, Jeff Bauer <jeffrubic at gmail.com> wrote:
+
+> Upgrade failure on Ubuntu 14.04:
+>
+> The following packages will be upgraded:
+>   i3 i3-wm
+> 2 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+> Need to get 697 kB of archives.
+> After this operation, 13.3 kB of additional disk space will be used.
+> Do you want to continue? [Y/n]
+> Err http://debian.sur5r.net/i3/ trusty/universe i3 amd64 4.10.1-1~~trusty1
+>   404  Not Found [IP: 217.8.49.41 80]
+> Err http://debian.sur5r.net/i3/ trusty/universe i3-wm amd64
+> 4.10.1-1~~trusty1
+>   404  Not Found [IP: 217.8.49.41 80]
+> E: Failed to fetch
+> http://debian.sur5r.net/i3/pool/universe/i/i3-wm/i3_4.10.1-1~~trusty1_amd64.deb
+> 404  Not Found [IP: 217.8.49.41 80]
+>
+> E: Failed to fetch
+> http://debian.sur5r.net/i3/pool/universe/i/i3-wm/i3-wm_4.10.1-1~~trusty1_amd64.deb
+> 404  Not Found [IP: 217.8.49.41 80]
+>
+> ----
+>
+> Reviewing the http://debian.sur5r.net/i3/pool/universe/i/i3-wm
+> link, I see i3-wm_4.10.2-1~~trusty1_amd64.deb, but not
+> i3-wm_4.10.1-1~~trusty1_amd64.deb.
+>
+> Best workaround?
+>
+> -Jeff
+>
+
+
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150418/d2eab21e/attachment.html>
+
+From jeffrubic at gmail.com  Sat Apr 18 20:04:38 2015
+From: jeffrubic at gmail.com (Jeff Bauer)
+Date: Sat, 18 Apr 2015 13:04:38 -0500
+Subject: [i3] i3 upgrade failure on trusty
+In-Reply-To: <CANnVG6m7HFz1ip2fm4Wz3XGiKEeHrC1g=2+_nQPAQ6ayB-TCgw@mail.gmail.com>
+References: <20150418172607.GA18049@rubic.com>
+ <CANnVG6m7HFz1ip2fm4Wz3XGiKEeHrC1g=2+_nQPAQ6ayB-TCgw@mail.gmail.com>
+Message-ID: <20150418180438.GB18049@rubic.com>
+
+Michael,
+
+Yes, apt-get update runs and completes without any problems.
+
+-Jeff
+
+On Sat, Apr 18, 2015 at 07:46:49PM +0200, Michael Stapelberg wrote:
+>    Did you try running apt-get update?
+>
+>    On Sat, Apr 18, 2015 at 7:26 PM, Jeff Bauer <[1]jeffrubic at gmail.com>
+>    wrote:
+>
+>      Upgrade failure on Ubuntu 14.04:
+>      The following packages will be upgraded:
+>        i3 i3-wm
+>      2 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+>      Need to get 697 kB of archives.
+>      After this operation, 13.3 kB of additional disk space will be used.
+>      Do you want to continue? [Y/n]
+>      Err [2]http://debian.sur5r.net/i3/ trusty/universe i3 amd64
+>      4.10.1-1~~trusty1
+>        404  Not Found [IP: [3]217.8.49.41 80]
+>      Err [4]http://debian.sur5r.net/i3/ trusty/universe i3-wm amd64
+>      4.10.1-1~~trusty1
+>        404  Not Found [IP: [5]217.8.49.41 80]
+>      E: Failed to fetch
+>      [6]http://debian.sur5r.net/i3/pool/universe/i/i3-wm/i3_4.10.1-1~~tru
+>      sty1_amd64.deb  404  Not Found [IP: [7]217.8.49.41 80]
+>      E: Failed to fetch
+>      [8]http://debian.sur5r.net/i3/pool/universe/i/i3-wm/i3-wm_4.10.1-1~~
+>      trusty1_amd64.deb  404  Not Found [IP: [9]217.8.49.41 80]
+>      ----
+>      Reviewing the [10]http://debian.sur5r.net/i3/pool/universe/i/i3-wm
+>      link, I see i3-wm_4.10.2-1~~trusty1_amd64.deb, but not
+>      i3-wm_4.10.1-1~~trusty1_amd64.deb.
+>      Best workaround?
+>      -Jeff
+>
+>    --
+>    Best regards,
+>    Michael
+>
+> References
+>
+>    1. mailto:jeffrubic at gmail.com
+>    2. http://debian.sur5r.net/i3/
+>    3. tel:217.8.49.41 80
+>    4. http://debian.sur5r.net/i3/
+>    5. tel:217.8.49.41 80
+>    6. http://debian.sur5r.net/i3/pool/universe/i/i3-wm/i3_4.10.1-1~~trusty1_amd64.deb
+>    7. tel:217.8.49.41 80
+>    8. http://debian.sur5r.net/i3/pool/universe/i/i3-wm/i3-wm_4.10.1-1~~trusty1_amd64.deb
+>    9. tel:217.8.49.41 80
+>   10. http://debian.sur5r.net/i3/pool/universe/i/i3-wm
+
+From michael at i3wm.org  Sat Apr 18 20:07:12 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 18 Apr 2015 20:07:12 +0200
+Subject: [i3] i3 upgrade failure on trusty
+In-Reply-To: <20150418180438.GB18049@rubic.com>
+References: <20150418172607.GA18049@rubic.com>
+ <CANnVG6m7HFz1ip2fm4Wz3XGiKEeHrC1g=2+_nQPAQ6ayB-TCgw@mail.gmail.com>
+ <20150418180438.GB18049@rubic.com>
+Message-ID: <CANnVG6=jS_gCGtXoscJw3iSvCBW6mVjykiqGy2X-9P_M=w61eA@mail.gmail.com>
+
+sur5r,
+http://debian.sur5r.net/i3/dists/trusty/universe/binary-amd64/Packages
+indeed refers to v4.10.1, which is not in pool/ anymore. Could you take a
+look please?
+
+On Sat, Apr 18, 2015 at 8:04 PM, Jeff Bauer <jeffrubic at gmail.com> wrote:
+
+> Michael,
+>
+> Yes, apt-get update runs and completes without any problems.
+>
+> -Jeff
+>
+> On Sat, Apr 18, 2015 at 07:46:49PM +0200, Michael Stapelberg wrote:
+> >    Did you try running apt-get update?
+> >
+> >    On Sat, Apr 18, 2015 at 7:26 PM, Jeff Bauer <[1]jeffrubic at gmail.com>
+> >    wrote:
+> >
+> >      Upgrade failure on Ubuntu 14.04:
+> >      The following packages will be upgraded:
+> >        i3 i3-wm
+> >      2 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+> >      Need to get 697 kB of archives.
+> >      After this operation, 13.3 kB of additional disk space will be used.
+> >      Do you want to continue? [Y/n]
+> >      Err [2]http://debian.sur5r.net/i3/ trusty/universe i3 amd64
+> >      4.10.1-1~~trusty1
+> >        404  Not Found [IP: [3]217.8.49.41 80]
+> >      Err [4]http://debian.sur5r.net/i3/ trusty/universe i3-wm amd64
+> >      4.10.1-1~~trusty1
+> >        404  Not Found [IP: [5]217.8.49.41 80]
+> >      E: Failed to fetch
+> >      [6]
+> http://debian.sur5r.net/i3/pool/universe/i/i3-wm/i3_4.10.1-1~~tru
+> >      sty1_amd64.deb  404  Not Found [IP: [7]217.8.49.41 80]
+> >      E: Failed to fetch
+> >      [8]
+> http://debian.sur5r.net/i3/pool/universe/i/i3-wm/i3-wm_4.10.1-1~~
+> >      trusty1_amd64.deb  404  Not Found [IP: [9]217.8.49.41 80]
+> >      ----
+> >      Reviewing the [10]http://debian.sur5r.net/i3/pool/universe/i/i3-wm
+> >      link, I see i3-wm_4.10.2-1~~trusty1_amd64.deb, but not
+> >      i3-wm_4.10.1-1~~trusty1_amd64.deb.
+> >      Best workaround?
+> >      -Jeff
+> >
+> >    --
+> >    Best regards,
+> >    Michael
+> >
+> > References
+> >
+> >    1. mailto:jeffrubic at gmail.com
+> >    2. http://debian.sur5r.net/i3/
+> >    3. tel:217.8.49.41 80
+> >    4. http://debian.sur5r.net/i3/
+> >    5. tel:217.8.49.41 80
+> >    6.
+> http://debian.sur5r.net/i3/pool/universe/i/i3-wm/i3_4.10.1-1~~trusty1_amd64.deb
+> >    7. tel:217.8.49.41 80
+> >    8.
+> http://debian.sur5r.net/i3/pool/universe/i/i3-wm/i3-wm_4.10.1-1~~trusty1_amd64.deb
+> >    9. tel:217.8.49.41 80
+> >   10. http://debian.sur5r.net/i3/pool/universe/i/i3-wm
+>
+
+
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150418/ff41fc01/attachment.html>
+
+From michael at i3wm.org  Mon Apr 27 18:42:17 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 27 Apr 2015 18:42:17 +0200
+Subject: [i3] faq.i3wm.org logins via Google accounts broken
+Message-ID: <CANnVG6=_YeRv1WAQi9CmPRQ0P6wSr0xKfOFBhHqG1p6P6TnmYA@mail.gmail.com>
+
+Hey,
+
+We’ve migrated faq.i3wm.org to a newer version of Askbot. Since about a
+week, OpenID (what was used for logins via Google accounts previously) is
+deprecated and developers should switch to the Google+ API. The update of
+Askbot was necessary in order to use the new API.
+
+However, the migration was everything but smooth. See the following FAQ
+post for details:
+https://faq.i3wm.org/question/5903/why-can-i-not-log-in-using-my-google-account/?answer=5904#post-id-5904
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150427/d1395906/attachment.html>
+
+From antonio.corbi at ua.es  Mon Apr 27 19:48:27 2015
+From: antonio.corbi at ua.es (Antonio-M. Corbi Bellot)
+Date: Mon, 27 Apr 2015 19:48:27 +0200
+Subject: [i3] window assigned workspace and high cpu usage
+Message-ID: <20150427194827.7ee77cc1@hal9000.dlsi.ua.es>
+
+Hi all,
+
+I am currently using i3 version 4.10.2.
+
+Since a few months I've been observing a strange behaviour in i3 when I
+assign a window from emacs or chromium to a specific workspace. The
+behaviour I'm describing here was also the same with i3 4.[7,8,9].x.
+
+For example, I assign emacs to this key combination:
+
+bindsym $mod+Shift+m  exec "emacs"
+
+And the workspace assignment is this:
+
+assign [class="Emacs"] 2
+
+Assuming I'm working in workspace 1, when I press $mod+Shift+m (I don't
+change to ws 2 for the moment), emacs starts in workspace 2 but I see
+an increment in cpu usage being the main culprits emacs (approx. 60%
+cpu usage) and xorg (approx. 90% cpu usage). And this cpu usage is
+sustained...it doesn't slow down until I change to workspace 2 ($mod+2)
+and then I observe that emacs hasn't finished starting and in the very
+moment I've changed to workspace 2 it is like it resumes execution and
+it finishes starting normally. It is then that cpu usage from xorg and
+emacs slow down to their normal values.
+
+I've also observed this behaviour with chromium, no other applications
+suffer from this 'strange' behaviour, i.e I use claws-mail in workspace
+4 and it opens there without a glitch. Also I use glade (3.18.1) in
+this way, assigned to workspace 2, and it starts nicely.
+
+I'm not sure if it is an emacs/chromium bug or an i3 bug or even a xorg
+bug, but I've observed it only with i3 and these applications.
+
+Has anyone observed this?
+
+Antonio Corbi.
+
+From admin at airblader.de  Mon Apr 27 19:52:51 2015
+From: admin at airblader.de (=?windows-1252?Q?Ingo_B=FCrk?=)
+Date: Mon, 27 Apr 2015 19:52:51 +0200
+Subject: [i3] window assigned workspace and high cpu usage
+In-Reply-To: <20150427194827.7ee77cc1@hal9000.dlsi.ua.es>
+References: <20150427194827.7ee77cc1@hal9000.dlsi.ua.es>
+Message-ID: <553E7773.8020805@airblader.de>
+
+I can't reproduce the CPU load with Google Chrome.
+However, it seems that if I wait a little before switching to the
+workspace, AdBlock dies. Makes me wonder if this is at all related.
+
+Do you have a log file?
+
+
+Ingo
+
+On 04/27/2015 07:48 PM, Antonio-M. Corbi Bellot wrote:
+> Hi all,
+>
+> I am currently using i3 version 4.10.2.
+>
+> Since a few months I've been observing a strange behaviour in i3 when I
+> assign a window from emacs or chromium to a specific workspace. The
+> behaviour I'm describing here was also the same with i3 4.[7,8,9].x.
+>
+> For example, I assign emacs to this key combination:
+>
+> bindsym $mod+Shift+m  exec "emacs"
+>
+> And the workspace assignment is this:
+>
+> assign [class="Emacs"] 2
+>
+> Assuming I'm working in workspace 1, when I press $mod+Shift+m (I don't
+> change to ws 2 for the moment), emacs starts in workspace 2 but I see
+> an increment in cpu usage being the main culprits emacs (approx. 60%
+> cpu usage) and xorg (approx. 90% cpu usage). And this cpu usage is
+> sustained...it doesn't slow down until I change to workspace 2 ($mod+2)
+> and then I observe that emacs hasn't finished starting and in the very
+> moment I've changed to workspace 2 it is like it resumes execution and
+> it finishes starting normally. It is then that cpu usage from xorg and
+> emacs slow down to their normal values.
+>
+> I've also observed this behaviour with chromium, no other applications
+> suffer from this 'strange' behaviour, i.e I use claws-mail in workspace
+> 4 and it opens there without a glitch. Also I use glade (3.18.1) in
+> this way, assigned to workspace 2, and it starts nicely.
+>
+> I'm not sure if it is an emacs/chromium bug or an i3 bug or even a xorg
+> bug, but I've observed it only with i3 and these applications.
+>
+> Has anyone observed this?
+>
+> Antonio Corbi.
+
+
+From michael at i3wm.org  Mon Apr 27 20:13:00 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 27 Apr 2015 20:13:00 +0200
+Subject: [i3] window assigned workspace and high cpu usage
+In-Reply-To: <20150427194827.7ee77cc1@hal9000.dlsi.ua.es>
+References: <20150427194827.7ee77cc1@hal9000.dlsi.ua.es>
+Message-ID: <CANnVG6nbU7G0GeDyrugG60PdZdcA_ncRGpaQCKzb7THS6b=Y1g@mail.gmail.com>
+
+It could be that the application in question is busylooping until it
+receives the MapNotify event. Perhaps for_window [class="Emacs"] move to
+workspace 2, workspace 2, workspace back_and_forth works? (but it will
+flicker)
+
+If so, file a bug upstream with the application(s) in question.
+
+On Mon, Apr 27, 2015 at 7:48 PM, Antonio-M. Corbi Bellot <
+antonio.corbi at ua.es> wrote:
+
+> Hi all,
+>
+> I am currently using i3 version 4.10.2.
+>
+> Since a few months I've been observing a strange behaviour in i3 when I
+> assign a window from emacs or chromium to a specific workspace. The
+> behaviour I'm describing here was also the same with i3 4.[7,8,9].x.
+>
+> For example, I assign emacs to this key combination:
+>
+> bindsym $mod+Shift+m  exec "emacs"
+>
+> And the workspace assignment is this:
+>
+> assign [class="Emacs"] 2
+>
+> Assuming I'm working in workspace 1, when I press $mod+Shift+m (I don't
+> change to ws 2 for the moment), emacs starts in workspace 2 but I see
+> an increment in cpu usage being the main culprits emacs (approx. 60%
+> cpu usage) and xorg (approx. 90% cpu usage). And this cpu usage is
+> sustained...it doesn't slow down until I change to workspace 2 ($mod+2)
+> and then I observe that emacs hasn't finished starting and in the very
+> moment I've changed to workspace 2 it is like it resumes execution and
+> it finishes starting normally. It is then that cpu usage from xorg and
+> emacs slow down to their normal values.
+>
+> I've also observed this behaviour with chromium, no other applications
+> suffer from this 'strange' behaviour, i.e I use claws-mail in workspace
+> 4 and it opens there without a glitch. Also I use glade (3.18.1) in
+> this way, assigned to workspace 2, and it starts nicely.
+>
+> I'm not sure if it is an emacs/chromium bug or an i3 bug or even a xorg
+> bug, but I've observed it only with i3 and these applications.
+>
+> Has anyone observed this?
+>
+> Antonio Corbi.
+>
+
+
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150427/ab30d3ef/attachment.html>
+
+From simonnagl at aim.com  Mon Apr 27 20:53:44 2015
+From: simonnagl at aim.com (Simon Nagl)
+Date: Mon, 27 Apr 2015 20:53:44 +0200
+Subject: [i3] window assigned workspace and high cpu usage
+In-Reply-To: <553E7773.8020805@airblader.de>
+References: <20150427194827.7ee77cc1@hal9000.dlsi.ua.es>
+ <553E7773.8020805@airblader.de>
+Message-ID: <553E85B8.7000004@aim.com>
+
+I cannot reproduce this as well.
+
+# i3 version 4.10.2 (2015-04-16, branch "4.10.2") ...
+# Chromium 42.0.2311.90
+# xorg-server 1.17.1-5
+
+I used the config Antonio Corbi posted:
+
+bindsym $mod+Shift+m  exec "chromium"
+assign [class="Chromium"] 2
+
+Chromium opens with normal CPU usage and the workspace changes to the
+right color. After finished starting up CPU usage of chromium is as low
+as starting it "normal".
+
+Do you use i3 inside of a desktop enviroment?
+Maby that could help to repoduce it and locate the error?
+
+
+Simon
+
+
+On 27.04.2015 19:52, Ingo Bürk wrote:
+> I can't reproduce the CPU load with Google Chrome.
+> However, it seems that if I wait a little before switching to the
+> workspace, AdBlock dies. Makes me wonder if this is at all related.
+> 
+> Do you have a log file?
+> 
+> 
+> Ingo
+> 
+> On 04/27/2015 07:48 PM, Antonio-M. Corbi Bellot wrote:
+>> Hi all,
+>>
+>> I am currently using i3 version 4.10.2.
+>>
+>> Since a few months I've been observing a strange behaviour in i3 when I
+>> assign a window from emacs or chromium to a specific workspace. The
+>> behaviour I'm describing here was also the same with i3 4.[7,8,9].x.
+>>
+>> For example, I assign emacs to this key combination:
+>>
+>> bindsym $mod+Shift+m  exec "emacs"
+>>
+>> And the workspace assignment is this:
+>>
+>> assign [class="Emacs"] 2
+>>
+>> Assuming I'm working in workspace 1, when I press $mod+Shift+m (I don't
+>> change to ws 2 for the moment), emacs starts in workspace 2 but I see
+>> an increment in cpu usage being the main culprits emacs (approx. 60%
+>> cpu usage) and xorg (approx. 90% cpu usage). And this cpu usage is
+>> sustained...it doesn't slow down until I change to workspace 2 ($mod+2)
+>> and then I observe that emacs hasn't finished starting and in the very
+>> moment I've changed to workspace 2 it is like it resumes execution and
+>> it finishes starting normally. It is then that cpu usage from xorg and
+>> emacs slow down to their normal values.
+>>
+>> I've also observed this behaviour with chromium, no other applications
+>> suffer from this 'strange' behaviour, i.e I use claws-mail in workspace
+>> 4 and it opens there without a glitch. Also I use glade (3.18.1) in
+>> this way, assigned to workspace 2, and it starts nicely.
+>>
+>> I'm not sure if it is an emacs/chromium bug or an i3 bug or even a xorg
+>> bug, but I've observed it only with i3 and these applications.
+>>
+>> Has anyone observed this?
+>>
+>> Antonio Corbi.
+> 
+
+-- 
+Simon Nagl
+________________________________________
+Zieglerstraße 12
+86666 Burgheim
+
+mailto:simonnagl at aim.com
+Tel: 0179 403 87 61
+
+OpenPG: A7C87E3D
+
+From antonio.corbi at ua.es  Mon Apr 27 21:25:18 2015
+From: antonio.corbi at ua.es (antonio.corbi at ua.es)
+Date: Mon, 27 Apr 2015 21:25:18 +0200
+Subject: [i3] window assigned workspace and high cpu usage
+In-Reply-To: <553E85B8.7000004@aim.com>
+Message-ID: <01ba2456-3e1f-47e8-a9a6-d00c375c45ab@email.android.com>
+
+As soon as I arrive home I'll try Michael's suggestion and see what happens.
+
+I start i3 from my custom .xsession. I'll post it later as now I'm not on the computer.
+
+Thanks for your help
+Antonio
+
+El 27/4/2015 20:53, Simon Nagl <simonnagl at aim.com> escribió:
+>
+> I cannot reproduce this as well. 
+>
+> # i3 version 4.10.2 (2015-04-16, branch "4.10.2") ... 
+> # Chromium 42.0.2311.90 
+> # xorg-server 1.17.1-5 
+>
+> I used the config Antonio Corbi posted: 
+>
+> bindsym $mod+Shift+m  exec "chromium" 
+> assign [class="Chromium"] 2 
+>
+> Chromium opens with normal CPU usage and the workspace changes to the 
+> right color. After finished starting up CPU usage of chromium is as low 
+> as starting it "normal". 
+>
+> Do you use i3 inside of a desktop enviroment? 
+> Maby that could help to repoduce it and locate the error? 
+>
+>
+> Simon 
+>
+>
+> On 27.04.2015 19:52, Ingo Bürk wrote: 
+> > I can't reproduce the CPU load with Google Chrome. 
+> > However, it seems that if I wait a little before switching to the 
+> > workspace, AdBlock dies. Makes me wonder if this is at all related. 
+> > 
+> > Do you have a log file? 
+> > 
+> > 
+> > Ingo 
+> > 
+> > On 04/27/2015 07:48 PM, Antonio-M. Corbi Bellot wrote: 
+> >> Hi all, 
+> >> 
+> >> I am currently using i3 version 4.10.2. 
+> >> 
+> >> Since a few months I've been observing a strange behaviour in i3 when I 
+> >> assign a window from emacs or chromium to a specific workspace. The 
+> >> behaviour I'm describing here was also the same with i3 4.[7,8,9].x. 
+> >> 
+> >> For example, I assign emacs to this key combination: 
+> >> 
+> >> bindsym $mod+Shift+m  exec "emacs" 
+> >> 
+> >> And the workspace assignment is this: 
+> >> 
+> >> assign [class="Emacs"] 2 
+> >> 
+> >> Assuming I'm working in workspace 1, when I press $mod+Shift+m (I don't 
+> >> change to ws 2 for the moment), emacs starts in workspace 2 but I see 
+> >> an increment in cpu usage being the main culprits emacs (approx. 60% 
+> >> cpu usage) and xorg (approx. 90% cpu usage). And this cpu usage is 
+> >> sustained...it doesn't slow down until I change to workspace 2 ($mod+2) 
+> >> and then I observe that emacs hasn't finished starting and in the very 
+> >> moment I've changed to workspace 2 it is like it resumes execution and 
+> >> it finishes starting normally. It is then that cpu usage from xorg and 
+> >> emacs slow down to their normal values. 
+> >> 
+> >> I've also observed this behaviour with chromium, no other applications 
+> >> suffer from this 'strange' behaviour, i.e I use claws-mail in workspace 
+> >> 4 and it opens there without a glitch. Also I use glade (3.18.1) in 
+> >> this way, assigned to workspace 2, and it starts nicely. 
+> >> 
+> >> I'm not sure if it is an emacs/chromium bug or an i3 bug or even a xorg 
+> >> bug, but I've observed it only with i3 and these applications. 
+> >> 
+> >> Has anyone observed this? 
+> >> 
+> >> Antonio Corbi. 
+> > 
+>
+> -- 
+> Simon Nagl 
+> ________________________________________ 
+> Zieglerstraße 12 
+> 86666 Burgheim 
+>
+> mailto:simonnagl at aim.com 
+> Tel: 0179 403 87 61 
+>
+> OpenPG: A7C87E3D 
+
+From antonio.corbi at ua.es  Mon Apr 27 23:13:49 2015
+From: antonio.corbi at ua.es (Antonio-M. Corbi Bellot)
+Date: Mon, 27 Apr 2015 23:13:49 +0200
+Subject: [i3] window assigned workspace and high cpu usage
+In-Reply-To: <CANnVG6nbU7G0GeDyrugG60PdZdcA_ncRGpaQCKzb7THS6b=Y1g@mail.gmail.com>
+References: <20150427194827.7ee77cc1@hal9000.dlsi.ua.es>
+ <CANnVG6nbU7G0GeDyrugG60PdZdcA_ncRGpaQCKzb7THS6b=Y1g@mail.gmail.com>
+Message-ID: <20150427231349.4142eaec@hal9000.home>
+
+El Mon, 27 Apr 2015 20:13:00 +0200
+Michael Stapelberg <michael at i3wm.org> escribio:
+
+> It could be that the application in question is busylooping until it
+> receives the MapNotify event. Perhaps for_window [class="Emacs"] move
+> to workspace 2, workspace 2, workspace back_and_forth works? (but it
+> will flicker)
+> 
+> If so, file a bug upstream with the application(s) in question.
+
+OK, tried this and it doesn't work neither.
+
+In my custom .xsession, at the end I call i3 like this:
+
+dbus-launch --exit-with-session i3
+
+I will continue trying to discover what is happening here.
+
+Thanks for your comments and help and also thanks to Michael for this
+marvelous window manager.
+
+Antonio.
+
+From freebsd-listen at fabiankeil.de  Tue Apr 28 11:57:21 2015
+From: freebsd-listen at fabiankeil.de (Fabian Keil)
+Date: Tue, 28 Apr 2015 11:57:21 +0200
+Subject: [i3] window assigned workspace and high cpu usage
+In-Reply-To: <20150427194827.7ee77cc1@hal9000.dlsi.ua.es>
+References: <20150427194827.7ee77cc1@hal9000.dlsi.ua.es>
+Message-ID: <68144d7f.0cec43e1@fabiankeil.de>
+
+"Antonio-M. Corbi Bellot" <antonio.corbi at ua.es> wrote:
+
+> I am currently using i3 version 4.10.2.
+> 
+> Since a few months I've been observing a strange behaviour in i3 when I
+> assign a window from emacs or chromium to a specific workspace. The
+> behaviour I'm describing here was also the same with i3 4.[7,8,9].x.
+> 
+> For example, I assign emacs to this key combination:
+> 
+> bindsym $mod+Shift+m  exec "emacs"
+> 
+> And the workspace assignment is this:
+> 
+> assign [class="Emacs"] 2
+> 
+> Assuming I'm working in workspace 1, when I press $mod+Shift+m (I don't
+> change to ws 2 for the moment), emacs starts in workspace 2 but I see
+> an increment in cpu usage being the main culprits emacs (approx. 60%
+> cpu usage) and xorg (approx. 90% cpu usage). And this cpu usage is
+> sustained...it doesn't slow down until I change to workspace 2 ($mod+2)
+> and then I observe that emacs hasn't finished starting and in the very
+> moment I've changed to workspace 2 it is like it resumes execution and
+> it finishes starting normally. It is then that cpu usage from xorg and
+> emacs slow down to their normal values.
+> 
+> I've also observed this behaviour with chromium, no other applications
+> suffer from this 'strange' behaviour, i.e I use claws-mail in workspace
+> 4 and it opens there without a glitch. Also I use glade (3.18.1) in
+> this way, assigned to workspace 2, and it starts nicely.
+> 
+> I'm not sure if it is an emacs/chromium bug or an i3 bug or even a xorg
+> bug, but I've observed it only with i3 and these applications.
+> 
+> Has anyone observed this?
+
+I've observed similar behaviour as a result of the i3 config line:
+
+| exec --no-startup-id i3-msg 'workspace 4; exec emacs; workspace 1'
+
+My workaround is to drop the "workspace 1", otherwise emacs busy-loops
+on fd 6 (socket /tmp/.X11-unix/X0) until I switch to its workspace
+and wait for the window to be rendered.
+
+I don't use chromium (not enough RAM to build it).
+
+Fabian
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 181 bytes
+Desc: OpenPGP digital signature
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150428/45625542/attachment.sig>
+
+From antonio.corbi at ua.es  Tue Apr 28 14:28:18 2015
+From: antonio.corbi at ua.es (Antonio-M. Corbi Bellot)
+Date: Tue, 28 Apr 2015 14:28:18 +0200
+Subject: [i3] window assigned workspace and high cpu usage
+In-Reply-To: <68144d7f.0cec43e1@fabiankeil.de>
+References: <20150427194827.7ee77cc1@hal9000.dlsi.ua.es>
+ <68144d7f.0cec43e1@fabiankeil.de>
+Message-ID: <20150428142818.7e235946@toshiba>
+
+El Tue, 28 Apr 2015 11:57:21 +0200
+Fabian Keil <freebsd-listen at fabiankeil.de> escribio:
+
+> I've observed similar behaviour as a result of the i3 config line:
+> 
+> | exec --no-startup-id i3-msg 'workspace 4; exec emacs; workspace 1'
+> 
+> My workaround is to drop the "workspace 1", otherwise emacs busy-loops
+> on fd 6 (socket /tmp/.X11-unix/X0) until I switch to its workspace
+> and wait for the window to be rendered.
+> 
+> I don't use chromium (not enough RAM to build it).
+> 
+> Fabian
+
+Hi Fabian!
+
+I think that this is the behaviour I've seen with emacs and chromium.
+Thank's for your response...at least I'm not alone 8-)
+
+Antonio
+
+From antonio.corbi at ua.es  Tue Apr 28 16:37:43 2015
+From: antonio.corbi at ua.es (Antonio-M. Corbi Bellot)
+Date: Tue, 28 Apr 2015 16:37:43 +0200
+Subject: [i3] window assigned workspace and high cpu usage
+In-Reply-To: <20150428142818.7e235946@toshiba>
+References: <20150427194827.7ee77cc1@hal9000.dlsi.ua.es>
+ <68144d7f.0cec43e1@fabiankeil.de> <20150428142818.7e235946@toshiba>
+Message-ID: <20150428163743.12f5b454@hal9000.dlsi.ua.es>
+
+Hi all again,
+
+In order to add some more information about what happens when I start
+emacs and I don't change to its assigned workspace, an 'strace -p `pidof
+emacs`' repeats and repeats this kind of output:
+
+-----------------------------------------------------------
+--- SIGIO {si_signo=SIGIO, si_code=SI_KERNEL} ---
+rt_sigreturn({mask=[]})                 = 1
+recvmsg(8, {msg_name(0)=NULL, msg_iov(1)=[{"\1\1\275\213\0\0\0\0\"\0\300\1\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", 4096}], msg_controllen=0, msg_flags=0}, 0) = 32
+recvmsg(8, 0x7fff63453840, 0)           = -1 EAGAIN (Resource temporarily unavailable)
+recvmsg(8, 0x7fff63453840, 0)           = -1 EAGAIN (Resource temporarily unavailable)
+poll([{fd=8, events=POLLIN|POLLOUT}], 1, 4294967295) = 1 ([{fd=8, revents=POLLOUT}])
+writev(8, [{"+\1\1\0", 4}, {NULL, 0}, {"", 0}], 3) = 4
+poll([{fd=8, events=POLLIN}], 1, 4294967295) = 1 ([{fd=8, revents=POLLIN}])
+--- SIGIO {si_signo=SIGIO, si_code=SI_KERNEL} ---
+rt_sigreturn({mask=[]})                 = 1
+recvmsg(8, {msg_name(0)=NULL, msg_iov(1)=[{"\1\1\276\213\0\0\0\0\"\0\300\1\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0", 4096}], msg_controllen=0, msg_flags=0}, 0) = 32
+recvmsg(8, 0x7fff63453870, 0)           = -1 EAGAIN (Resource temporarily unavailable)
+recvmsg(8, 0x7fff63453870, 0)           = -1 EAGAIN (Resource temporarily unavailable)
+recvmsg(8, 0x7fff634536c0, 0)           = -1 EAGAIN (Resource temporarily unavailable)
+poll([{fd=5, events=POLLIN}, {fd=7, events=POLLIN}, {fd=8, events=POLLIN}, {fd=11, events=POLLIN}], 4, 0) = 0 (Timeout)
+recvmsg(8, 0x7fff634538c0, 0)           = -1 EAGAIN (Resource temporarily unavailable)
+recvmsg(8, 0x7fff63453890, 0)           = -1 EAGAIN (Resource temporarily unavailable)
+poll([{fd=8, events=POLLIN|POLLOUT}], 1, 4294967295) = 1 ([{fd=8, revents=POLLOUT}])
+writev(8, [{"+\1\1\0", 4}, {NULL, 0}, {"", 0}], 3) = 4
+poll([{fd=8, events=POLLIN}], 1, 4294967295) = 1 ([{fd=8, revents=POLLIN}])
+--------------------------------------------------------------
+
+And the output of 'ls -l /proc/`pidof emacs`/fd/8' is:
+
+/proc/`pidof emacs`/fd/8 -> socket:[119884]
+
+For fd=5,11 it also says socket:[something] and fd=7 says
+anon_inode:[eventfd]
+
+Antonio
+
+> El Tue, 28 Apr 2015 11:57:21 +0200
+> Fabian Keil <freebsd-listen at fabiankeil.de> escribio:
+> 
+> > I've observed similar behaviour as a result of the i3 config line:
+> > 
+> > | exec --no-startup-id i3-msg 'workspace 4; exec emacs; workspace 1'
+> > 
+> > My workaround is to drop the "workspace 1", otherwise emacs
+> > busy-loops on fd 6 (socket /tmp/.X11-unix/X0) until I switch to its
+> > workspace and wait for the window to be rendered.
+> > 
+> > I don't use chromium (not enough RAM to build it).
+> > 
+> > Fabian
+> 
+> Hi Fabian!
+> 
+> I think that this is the behaviour I've seen with emacs and chromium.
+> Thank's for your response...at least I'm not alone 8-)
+> 
+> Antonio
+

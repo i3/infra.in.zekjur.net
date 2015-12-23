@@ -1,0 +1,73 @@
+From michael+i3 at stapelberg.de  Sun Sep  5 14:22:33 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 05 Sep 2010 14:22:33 +0200
+Subject: [i3 announcement] i3lock 2.0 released
+Message-ID: <1283688859-sup-7726@midna.zekjur.net>
+
+Hi,
+
+a few minutes ago, I released version 2.0 of i3lock.
+
+i3lock is a simple (but improved) screen locker, like slock. You start it, your
+screen gets blanked (or an image will be displayed) and stays like this until
+you enter your password.
+
+This version of i3lock was completely rewritten (so no longer a fork of slock)
+using XCB (instead of Xlib). Some of its features are:
+ ? i3lock forks, so you can combine it with an alias to suspend to RAM.
+ ? You can specify a background color or a PNG image to display.
+ ? You can specify whether i3lock should bell upon a wrong password.
+ ? i3lock uses PAM and therefore is compatible with LDAP etcetera.
+
+Get it from?
+http://i3.zekjur.net/i3lock/i3lock-2.0.tar.gz
+?and verify the GPG signature:
+http://i3.zekjur.net/i3lock/i3lock-2.0.tar.gz.asc
+
+Best regards,
+Michael
+
+BTW: For the debian users, a new version has been uploaded and will be
+available soon.
+
+From michael+i3 at stapelberg.de  Thu Sep 23 01:01:29 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Thu, 23 Sep 2010 01:01:29 +0200
+Subject: [i3 announcement] i3status 2.2 released
+Message-ID: <1285196327-sup-2516@midna.zekjur.net>
+
+Hi,
+
+a few minutes ago, I released version 2.2 of i3status.
+
+i3status is a small program (less than 1000 SLOC) for generating a status bar
+for dzen2, xmobar or similar programs. It is designed to be very efficient by
+issuing a very small number of system calls, as one generally wants to update
+such a status line every second. This ensures that even under high load, your
+status bar is updated correctly. Also, it saves a bit of energy by not hogging
+your CPU as much as spawning the corresponding amount of shell commands would. 
+
+The changes between i3status 2.1 and i3status 2.2 are:
+
+ ? Implement a discordian date module (like ddate(1))
+ ? Implement ALSA volume support
+ ? disk: implement %avail (different from %free with regard to the reserved
+   space of your filesystem)
+ ? wireless: display quality relative to the wireless maximum quality.
+ ? wireless: display connection speed (bitrate)
+ ? wireless: custom colors for link quality
+ ? Bugfix: Treat an interface as 'down' when it cannot be found in
+   /proc/net/wireless
+ ? Bugfix: Correctly check for interface up/down status
+
+Get it from?
+http://i3.zekjur.net/i3status/i3status-2.2.tar.bz2
+?and verify the GPG signature:
+http://i3.zekjur.net/i3status/i3status-2.2.tar.bz2.asc
+
+Best regards,
+Michael
+
+BTW: As always, I also uploaded a new version to debian. It will be available
+soon.
+

@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Gesture recognizer dev approach
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Gesture%20recognizer%20dev%20approach&In-Reply-To=%3CCALOS%3DhfER27DGep5GWv9x60C3eJT-wChhBG1bxk9S31ahahafQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000811.html">
+   <LINK REL="Next"  HREF="000783.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Gesture recognizer dev approach</H1>
+    <B>Ahmet Emre &#199;epo&#287;lu</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Gesture%20recognizer%20dev%20approach&In-Reply-To=%3CCALOS%3DhfER27DGep5GWv9x60C3eJT-wChhBG1bxk9S31ahahafQ%40mail.gmail.com%3E"
+       TITLE="[i3] Gesture recognizer dev approach">aecepoglu at gmail.com
+       </A><BR>
+    <I>Mon Jul  9 12:02:40 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000811.html">[i3] i3 tree visualization program
+</A></li>
+        <LI>Next message: <A HREF="000783.html">[i3] Gesture recognizer dev approach
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#780">[ date ]</a>
+              <a href="thread.html#780">[ thread ]</a>
+              <a href="subject.html#780">[ subject ]</a>
+              <a href="author.html#780">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey guys,
+I am going to start writing a gesture recognizer for utilizing pointer
+devices (singe/multi touch) on linux as a front end to window managers. I
+wanted to hear your opinions on it before actually starting the development.
+
+I'm thinking of a layered structure like this
+__gesture recognizer
+__gesture recognizer interface for window manager
+__window-manager
+So, simply, a gesture recognizer is gonna be an app that prints an
+identifier when a gesture is recognized
+The middle layer is going to read those identifiers, and send commands to
+the window manager
+And the window manager is... the window manager.
+
+I'd like the user to be able to change to a different gesture recognizer
+without having to do too much tweaking. I'd like it to be usable on all the
+window managers.
+
+There are obvious issues though
+Say &quot;gr1&quot;,&quot;gr2&quot;,&quot;gr*&quot; are gesture recognizers. They print an identifier
+like &quot;close-win&quot;,&quot;switch-next-workspace&quot; etc.
+&quot;i3wm-gr-interface&quot;, &quot;blackbox-gr-interface&quot; etc are various middle layer
+applications
+&quot;i3wm&quot;, &quot;blackbox&quot; etc are the window managers
+
+consider the middle layer:
+* i3wm-gr-interface will likely be implementing i3wm-ipc-protocol.
+* blackbox-gr-interface however will implement xlib
+And sadly, there are not many window managers like i3 that's easy to
+communicate with. For example when I need to list available workspaces in a
+window manager other than i3, I will have to implement workspaces myself,
+because there is no means of learning about them from blackbox. When this
+is the case, it's better to embed the gesture recognizer within the window
+manager.
+
+Should I just stick with writing a gesture recognizer for i3wm only? This
+way, the top and the middle layers can be put together. This will be my
+route of choice, unless I learn about a way window managers can be
+communicated with.
+
+I don't plan on creating an online repo for my code until it has a working
+demo, unless people would like me to. I plan to develop using C, and finish
+it in a month's time, if things go as I'd like them to.
+
+That's all, cheers.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120709/8e34edfa/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120709/8e34edfa/attachment.html</A>&gt;
+</PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000811.html">[i3] i3 tree visualization program
+</A></li>
+	<LI>Next message: <A HREF="000783.html">[i3] Gesture recognizer dev approach
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#780">[ date ]</a>
+              <a href="thread.html#780">[ thread ]</a>
+              <a href="subject.html#780">[ subject ]</a>
+              <a href="author.html#780">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

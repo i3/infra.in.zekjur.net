@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] I3 and emacs
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20I3%20and%20emacs&In-Reply-To=%3CCAM4Y7zxci6JR9oTVEYT9CqjbKJGS1STcmL4ZgxXQ5BmWxa5NWw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002006.html">
+   <LINK REL="Next"  HREF="002008.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] I3 and emacs</H1>
+    <B>Jeff Abrahamson</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20I3%20and%20emacs&In-Reply-To=%3CCAM4Y7zxci6JR9oTVEYT9CqjbKJGS1STcmL4ZgxXQ5BmWxa5NWw%40mail.gmail.com%3E"
+       TITLE="[i3] I3 and emacs">jeff at purple.com
+       </A><BR>
+    <I>Wed Mar  4 19:21:56 CET 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002006.html">[i3] advice on quick manipulation of splits
+</A></li>
+        <LI>Next message: <A HREF="002008.html">[i3] I3 and emacs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2007">[ date ]</a>
+              <a href="thread.html#2007">[ thread ]</a>
+              <a href="subject.html#2007">[ subject ]</a>
+              <a href="author.html#2007">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>That's really great, thanks.  I think this solved what I want.  This leaves
+me with only a small question that I've half-answered below.
+
+So I say this in my config:
+
+bindsym $mod+Tab mode &quot;I3&quot;
+
+mode &quot;I3&quot; {
+    # start a terminal
+    bindsym c exec urxvt
+
+    ...
+    bindsym Escape mode &quot;default&quot;
+}
+
+And now I can type &quot;$mod+Tab c&quot; to open a new terminal, &quot;$mod-Tab f&quot; to go
+full screen, etc.  And, meanwhile, $mod-f does what I expect it to in emacs
+and bash, which is to go forward one word.
+
+One curiosity is that my I3 mode is, well, modal.  Sometimes I suppose this
+makes sense, if I'm going to issue quite a lot of commands to the window
+manager.  (This is the case with resize mode.)  But It would be nice to
+have a transient mode where any command within the mode is executed and
+then causes the mode to exit.  Is that possible?
+
+Let me half answer that question.  I've discovered it's possible if I ask
+for it with each command:
+
+    bindsym f fullscreen; mode &quot;default&quot;
+
+But it would be cool to be able to specify this about the mode rather than
+have to repeat myself throughout the mode's bindings.
+
+bindsym $mod+Tab transientmode &quot;I3&quot;
+
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    &lt;-- only if I'm in the UK
+
+<A HREF="http://jeff.purple.com/">http://jeff.purple.com/</A>
+<A HREF="http://blog.purple.com/jeff/">http://blog.purple.com/jeff/</A>
+
+On 21 February 2015 at 11:22, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt; wrote:
+
+&gt;<i> See <A HREF="https://faq.i3wm.org/question/360/emacs-like-keybinding/">https://faq.i3wm.org/question/360/emacs-like-keybinding/</A>
+</I>&gt;<i>
+</I>&gt;<i> On Sat, Feb 21, 2015 at 8:45 AM, Jeff Abrahamson &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jeff at purple.com</A>&gt; wrote:
+</I>&gt;<i> &gt; I'd like to use I3 and emacs. I don't have a spare modifier key on my
+</I>&gt;<i> &gt; keyboard, so I'd like to use a prefix key. Maybe I missed it in the
+</I>&gt;<i> docs, in
+</I>&gt;<i> &gt; which case, please accept my apologies. (I've only just begun to look at
+</I>&gt;<i> the
+</I>&gt;<i> &gt; source.)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; 1. Is there support for this currently in I3?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; 2. If not, is there interest in a patch?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Jeff Abrahamson
+</I>&gt;<i> &gt; +33 6 24 40 01 57
+</I>&gt;<i> &gt; +44 7920 594 255    &lt;-- only if I'm in the UK
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; <A HREF="http://jeff.purple.com/">http://jeff.purple.com/</A>
+</I>&gt;<i> &gt; <A HREF="http://blog.purple.com/jeff/">http://blog.purple.com/jeff/</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Michael
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150304/100a5573/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150304/100a5573/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002006.html">[i3] advice on quick manipulation of splits
+</A></li>
+	<LI>Next message: <A HREF="002008.html">[i3] I3 and emacs
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2007">[ date ]</a>
+              <a href="thread.html#2007">[ thread ]</a>
+              <a href="subject.html#2007">[ subject ]</a>
+              <a href="author.html#2007">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

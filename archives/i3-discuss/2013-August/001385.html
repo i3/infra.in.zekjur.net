@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] About &quot;bindelse&quot; and &quot;time out&quot; feature requests for binding	modes
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20About%20%22bindelse%22%20and%20%22time%20out%22%20feature%20requests%20for%20binding%0A%09modes&In-Reply-To=%3CCAGb_FfY%3DnuT8CPSbe_S5b5FpTq6dsg521Me5-H2t2fz6MQW_ag%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001384.html">
+   <LINK REL="Next"  HREF="001389.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] About &quot;bindelse&quot; and &quot;time out&quot; feature requests for binding	modes</H1>
+    <B>Sylvain Benner</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20About%20%22bindelse%22%20and%20%22time%20out%22%20feature%20requests%20for%20binding%0A%09modes&In-Reply-To=%3CCAGb_FfY%3DnuT8CPSbe_S5b5FpTq6dsg521Me5-H2t2fz6MQW_ag%40mail.gmail.com%3E"
+       TITLE="[i3] About &quot;bindelse&quot; and &quot;time out&quot; feature requests for binding	modes">sylvain.benner at gmail.com
+       </A><BR>
+    <I>Fri Aug  9 06:25:44 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001384.html">[i3] Move container via $mod+shift+F12
+</A></li>
+        <LI>Next message: <A HREF="001389.html">[i3] About &quot;bindelse&quot; and &quot;time out&quot; feature requests for	binding modes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1385">[ date ]</a>
+              <a href="thread.html#1385">[ thread ]</a>
+              <a href="subject.html#1385">[ subject ]</a>
+              <a href="author.html#1385">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I read the following ticket listed as major priority:
+<A HREF="http://bugs.i3wm.org/report/ticket/662">http://bugs.i3wm.org/report/ticket/662</A>
+
+First it is quite old, but that's not the point.
+
+Second I doubt that any of these features would be really useful.
+The &quot;time out&quot; is clearly a bad idea. Letting the computer deciding itself
+to reset a mode which has been enabled by the user can introduce some sort
+of desynchronization between the user and the computer state. Depending on
+his mood one can perceive the time differently so a fixed time out value
+can be sometime confusing. It ends up that there is no good fixed value for
+such a time out.
+The &quot;bindelse&quot; is less &quot;evil&quot; but it does not address the issue, for
+instance, if I press the wrong key, my reflex is to immediately correct
+this move and press the good key. In the case of &quot;bindelse&quot; the first wrong
+key would reset the mode and the effect of the next good input is undefined.
+
+So I think that this post has one solution:
+<A HREF="http://infra.in.zekjur.net/archives/i3-discuss/2011-January/000180.html">http://infra.in.zekjur.net/archives/i3-discuss/2011-January/000180.html</A>
+
+The reply is clear: &quot;This appears to be the silver bullet!&quot;
+This already working solution allows a fine-grained control of which inputs
+reset the mode.
+
+The next reply about sticky idea is very clever and reflect what I
+experienced when playing with binding modes. It happens that if one key
+should reset the mode then there is a high chance that the whole key
+binding group should do it too.
+
+For now I have a bunch of &quot;mode default&quot; and it's fine.
+
+-syl20bnr-
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130809/2f6cc3c8/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130809/2f6cc3c8/attachment.html</A>&gt;
+</PRE>
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001384.html">[i3] Move container via $mod+shift+F12
+</A></li>
+	<LI>Next message: <A HREF="001389.html">[i3] About &quot;bindelse&quot; and &quot;time out&quot; feature requests for	binding modes
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1385">[ date ]</a>
+              <a href="thread.html#1385">[ thread ]</a>
+              <a href="subject.html#1385">[ subject ]</a>
+              <a href="author.html#1385">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

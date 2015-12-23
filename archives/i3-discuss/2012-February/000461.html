@@ -1,0 +1,230 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] first week impressions of using i3
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20first%20week%20impressions%20of%20using%20i3&In-Reply-To=%3C20120202083126.GA7201%40lenny.retea.local%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000460.html">
+   <LINK REL="Next"  HREF="000462.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] first week impressions of using i3</H1>
+    <B>Marius Vlad</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20first%20week%20impressions%20of%20using%20i3&In-Reply-To=%3C20120202083126.GA7201%40lenny.retea.local%3E"
+       TITLE="[i3] first week impressions of using i3">m3s0n3.14 at gmail.com
+       </A><BR>
+    <I>Thu Feb  2 09:31:26 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000460.html">[i3] first week impressions of using i3
+</A></li>
+        <LI>Next message: <A HREF="000462.html">[i3] first week impressions of using i3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#461">[ date ]</a>
+              <a href="thread.html#461">[ thread ]</a>
+              <a href="subject.html#461">[ subject ]</a>
+              <a href="author.html#461">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi, 
+
+On Thu, Feb 02, 2012 at 08:39:17AM +0200, Alex V. Koval wrote:
+&gt;<i> 
+</I>&gt;<i> Hi All,
+</I>&gt;<i> 
+</I>&gt;<i> At first BIG thanks for authors for creating such an excellent product!
+</I>&gt;<i> 
+</I>&gt;<i> I would like to share my 1-week experience here, because I think it
+</I>&gt;<i> is relevant for authours to understand what/how novices think. My
+</I>&gt;<i> impressions
+</I>&gt;<i> are fresh now, but the more I became used to, the less I will notice
+</I>&gt;<i> the small but important differencies which novice users need.
+</I>&gt;<i> 
+</I>&gt;<i> What I explain is neigher critics, neither wishes to implement. It
+</I>&gt;<i> is as-is, just the impressions of new user, and please do your own
+</I>&gt;<i> judgement
+</I>&gt;<i> and conclusions if anything from said below is important for you
+</I>&gt;<i> and strategically for i3.
+</I>&gt;<i> 
+</I>&gt;<i> Things I've noticed:
+</I>&gt;<i> 
+</I>&gt;<i> 1) There are no good explation of stacking mode in the video screencast
+</I>&gt;<i>     and docs.
+</I>        I found the documentation pretty easy to follow and understand, 
+        but then again never used stacking mode.
+&gt;<i> 
+</I>&gt;<i> 2) &quot;Resize&quot; section of default config file is too complicated. I've come
+</I>&gt;<i>     with much better solution for me, it is very easy to remember:
+</I>
+        +1, but on the other hand, resizing for me has always involved 
+        the mouse.
+
+&gt;<i> 
+</I>&gt;<i> # resize
+</I>&gt;<i> bindsym Mod4+Mod1+Left            resize shrink   right 3 px or 3 ppt
+</I>&gt;<i> bindsym Mod4+Mod1+Right           resize grow     right 3 px or 3 ppt
+</I>&gt;<i> bindsym Mod4+Mod1+Control+Right   resize shrink   left 3 px or 3 ppt
+</I>&gt;<i> bindsym Mod4+Mod1+Control+Left    resize grow     left 3 px or 3 ppt
+</I>&gt;<i> bindsym Mod4+Mod1+Up              resize shrink   down 3 px or 3 ppt
+</I>&gt;<i> bindsym Mod4+Mod1+Down            resize grow     down 3 px or 3 ppt
+</I>&gt;<i> bindsym Mod4+Mod1+Control+Down    resize shrink   up 3 px or 3 ppt
+</I>&gt;<i> bindsym Mod4+Mod1+Control+Up      resize grow     up 3 px or 3 ppt
+</I>&gt;<i> 
+</I>&gt;<i> P.S. May be I just don't get the defaule resize mode. I've tried
+</I>&gt;<i> it a few times and later just disabled it because were unable to learn
+</I>&gt;<i> it fast.
+</I>&gt;<i> 
+</I>&gt;<i> 3) [minor issue ]Modkey + jkl - difficult to re-learn after xmonad,
+</I>&gt;<i>     awesome and others which have assigned different meanings for those keys
+</I>&gt;<i>     by default
+</I>
+        I also come from 3 years of using xmonad, but the ModKey+jkl;?
+        is there as well enabled by default (see bellow).
+
+        You can cycle windows wih ``vi'' like bindings. 
+        The only thing which is weird is because ModKey+h is bind 
+        to horiz split.
+
+        Maybe here we can enable a default ``vi'' window splitting as
+        well ? (binding ModKey+s for horiz and ModKey+v for vertical 
+        -- though I think I had to replace other modifier as it was
+        already taken).
+
+        This the key word here is default configuration, by default
+        I mean the simplest configuration file you can have -- if
+        for instance I delete my configuration file, i3 should
+        assume implicit values as explained in the manual.
+
+&gt;<i> 
+</I>&gt;<i> 4) [minor] I can not find the shortcut for Alt-Tab. Simple, this
+</I>&gt;<i> should be ability
+</I>&gt;<i>     to cycle windows on current desktop. Most of newcoming users would feel
+</I>&gt;<i>     bad without it.
+</I>        +1, at first was pressing this pretty intensive, it seems I
+        never realized until ``now'' how much I used that.
+&gt;<i> 
+</I>&gt;<i> 5) [minor] Floating mode for the whole desktop. Let me explain.
+</I>&gt;<i> Tiling &amp; stacking
+</I>&gt;<i>     are very good for hard work, where all space is occupied
+</I>&gt;<i>     by different windows. But there are situations when I don't need
+</I>&gt;<i>     this. Sometimes I want to see my nice background and a few floating
+</I>&gt;<i>     windows over it. It would be good to have such a mode for desktop,
+</I>&gt;<i>     as a fallback for a typical user to normal work.
+</I>
+        I think floating should be ``enabled'' before window/container 
+        creation -- let's say I want this workspace to have floating 
+        mode switch to that then all windows in that workspace can be
+        smartly sized placed.
+&gt;<i> 
+</I>&gt;<i>     The other argument: I use to put very nice background on my desktop,
+</I>&gt;<i>     and would never see it if I always work in tiling.
+</I>&gt;<i> 
+</I>&gt;<i>     It is also _very_ important IMO if we would ever have floating
+</I>&gt;<i>     mode for desktop, it should support 'smart' window placement. I've
+</I>&gt;<i>     explained
+</I>&gt;<i>     what I mean in this video: <A HREF="http://youtu.be/eS-mchtzJsg">http://youtu.be/eS-mchtzJsg</A> but generally it
+</I>&gt;<i>     means
+</I>&gt;<i>     the following: place window in biggest onuccupied space on current screen.
+</I>&gt;<i> 
+</I>&gt;<i> 6) *Always* pressing Modkey+H, Modkey+V before every next program open is
+</I>&gt;<i>     overkill. I think more smart would be to cycle this. Why? Because now every
+</I>&gt;<i>     next window open always have bigger ratio X*Y where it is comfortable to
+</I>&gt;<i>     work
+</I>&gt;<i>     with apps in square. So, what I mean, exactly, I think it would be helpful
+</I>&gt;<i>     if:
+</I>&gt;<i>       6.1. Mod+enter - opens terminal on full screen
+</I>&gt;<i>       6.2. Mod+enter - opens terminal split vertically
+</I>&gt;<i>       6.3. Mod+enter (without Modkey+v) opens new terminal split horizontally
+</I>&gt;<i> 
+</I>&gt;<i> etc... Because I always tend to do it this way. I don't see big necessity
+</I>&gt;<i> to open tall narrow terminals.
+</I>
+        I also vote on this, but I have to say that after some
+        time, I find it more normal/natural this way, as you arrange 
+        your layout as you may seem fit -- but of course having a
+        default ``smart'' spiral layout sounds great, the issue for
+        me here would be to keep this layout after windows/containers
+        are destroyed not having to do it all over again.
+&gt;<i> 
+</I>&gt;<i>     6.4. Next one should open horizontally.
+</I>&gt;<i> 
+</I>&gt;<i> Looks like we come up to somehow called 'spiral' layout, but its
+</I>&gt;<i> smarter because
+</I>&gt;<i> when you switch to other window, it would continue splitting this way.
+</I>
+        You have consistent behaviour which we humans seem to value
+        and care.
+&gt;<i> 
+</I>&gt;<i> 7) Its very pity that dmenu does not remember previous choice. It
+</I>&gt;<i> would be great
+</I>&gt;<i> to improve this part of dmenu.
+</I>
+        Unfortunately suckless-tools is another project.
+&gt;<i> 
+</I>&gt;<i> 8) Until there are serious bugs remain, like dying tray applications (
+</I>&gt;<i> <A HREF="http://bugs.i3wm.org/report/ticket/550">http://bugs.i3wm.org/report/ticket/550</A>) it would be diffcult to advertize
+</I>&gt;<i> i3. I am upset that such great window manager still don't get great
+</I>&gt;<i> public attention (like I don't see it in Google Trends), but may be
+</I>&gt;<i> its not a right time. When everything will be very stable, I will
+</I>&gt;<i> try publish an article about it in habr (21523 readers) for russian
+</I>&gt;<i> speaking ppl.
+</I>
+        Never had this issue, and it seems stable enough to go
+        from a 3 year xmonad productive configuration in just
+        a day pretty nice.
+&gt;<i> 
+</I>&gt;<i> Again, please don't treat this as critics, no way! You have created
+</I>&gt;<i> one of the greatest products around, and I hope that my first impressions
+</I>&gt;<i> will tell you something about new users mind :)
+</I>
+        I do feel the same way, great job!
+&gt;<i> 
+</I>&gt;<i> Best Regards,
+</I>&gt;<i> 
+</I>&gt;<i> --
+</I>&gt;<i> Alex V. Koval
+</I>&gt;<i> 
+</I>
+-- 
+m3s0n dot 3 dot 14 at gmail dot com 
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 490 bytes
+Desc: Digital signature
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120202/b46ec5f3/attachment.pgp">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120202/b46ec5f3/attachment.pgp</A>&gt;
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000460.html">[i3] first week impressions of using i3
+</A></li>
+	<LI>Next message: <A HREF="000462.html">[i3] first week impressions of using i3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#461">[ date ]</a>
+              <a href="thread.html#461">[ thread ]</a>
+              <a href="subject.html#461">[ subject ]</a>
+              <a href="author.html#461">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

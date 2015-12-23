@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] Minor fix for libi3/ipc_send_message.c
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Minor%20fix%20for%20libi3/ipc_send_message.c&In-Reply-To=%3CCANVYNa-Hxs2iaACdKiYC8TBrr36uTaTLXAACBQg4aTD8moM%2Bwg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001130.html">
+   <LINK REL="Next"  HREF="001132.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] Minor fix for libi3/ipc_send_message.c</H1>
+    <B>Fernando Lemos</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Minor%20fix%20for%20libi3/ipc_send_message.c&In-Reply-To=%3CCANVYNa-Hxs2iaACdKiYC8TBrr36uTaTLXAACBQg4aTD8moM%2Bwg%40mail.gmail.com%3E"
+       TITLE="[i3] [PATCH] Minor fix for libi3/ipc_send_message.c">fernandotcl at i3wm.org
+       </A><BR>
+    <I>Fri Jan 11 12:54:50 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001130.html">[i3] [PATCH] Minor fix for libi3/ipc_send_message.c
+</A></li>
+        <LI>Next message: <A HREF="001132.html">[i3] [PATCH] Minor fix for libi3/ipc_send_message.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1131">[ date ]</a>
+              <a href="thread.html#1131">[ thread ]</a>
+              <a href="subject.html#1131">[ subject ]</a>
+              <a href="author.html#1131">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>2013/1/11 David Coppa &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">dcoppa at gmail.com</A>&gt;
+
+&gt;<i> On Thu, Jan 10, 2013 at 10:38 PM, Fernando Lemos &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">fernandotcl at i3wm.org</A>&gt;
+</I>&gt;<i> wrote:
+</I>&gt;<i> &gt; 2013/1/10 David Coppa &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">dcoppa at gmail.com</A>&gt;
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; Hi,
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; imho there's no need to copy so much for the ipc magic code.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Hi, That's not how strncpy works. The third argument to strncpy is there
+</I>&gt;<i> to
+</I>&gt;<i> &gt; prevent the buffer from overflowing. Use strncpy with buffer_size - 1 as
+</I>&gt;<i> the
+</I>&gt;<i> &gt; third argument unless you know what you're doing.
+</I>&gt;<i>
+</I>&gt;<i> I3_IPC_MAGIC is:
+</I>&gt;<i>
+</I>&gt;<i> #define I3_IPC_MAGIC &quot;i3-ipc&quot;
+</I>&gt;<i>
+</I>&gt;<i> And then you have:
+</I>&gt;<i>
+</I>&gt;<i> int buffer_size = strlen(I3_IPC_MAGIC) + sizeof(uint32_t) +
+</I>&gt;<i> sizeof(uint32_t) + message_size;
+</I>&gt;<i> char msg[buffer_size];
+</I>&gt;<i> char *walk = msg;
+</I>&gt;<i> strncpy(walk, I3_IPC_MAGIC, strlen(I3_IPC_MAGIC));
+</I>&gt;<i> ...
+</I>&gt;<i>
+</I>&gt;<i> So imho it's not possible to overflow the buffer here.
+</I>&gt;<i>
+</I>
+That doesn't matter. strncpy is designed to prevent buffer overflows. If
+you don't specify buffer_size - 1, you're misusing it.
+
+If you don't care about overflows, use strcpy instead, or even memcpy. But
+you have to have a reason to get rid of the buffer overflow protection
+(e.g., this is a hot code path that *needs* to be optimized and strncpy
+*is* the bottleneck).
+
+Even though there's no buffer overflow possibility now, it's unlikely, but
+maybe some day there will be. Or maybe this code will get copied and pasted
+somewhere where there might be a buffer overflow. strncpy just makes sense,
+you need a reason to replace it with strcpy.
+
+
+&gt;<i>
+</I>&gt;<i> Btw, I think the &quot;big plan&quot; is to make i3bar use the IPC related
+</I>&gt;<i> functions from libi3, instead of rolling its own, to avoid code
+</I>&gt;<i> duplication. I think this happened because i3bar initially was a
+</I>&gt;<i> third-party project that later got merged into i3.
+</I>&gt;<i>
+</I>
+Yep, that sounds great to me.
+
+Regards,
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130111/cfe6d63a/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130111/cfe6d63a/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001130.html">[i3] [PATCH] Minor fix for libi3/ipc_send_message.c
+</A></li>
+	<LI>Next message: <A HREF="001132.html">[i3] [PATCH] Minor fix for libi3/ipc_send_message.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1131">[ date ]</a>
+              <a href="thread.html#1131">[ thread ]</a>
+              <a href="subject.html#1131">[ subject ]</a>
+              <a href="author.html#1131">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

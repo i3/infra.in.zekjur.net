@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3lock: undefined symbol: xkb_context_new
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3lock%3A%20undefined%20symbol%3A%20xkb_context_new&In-Reply-To=%3CCAFenBsaJoZcmPdXyunDThYbNBQ3Ooi1Cri8fZrXC%3D4Bv9-7BNA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001490.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3lock: undefined symbol: xkb_context_new</H1>
+    <B>Thiago Farina</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3lock%3A%20undefined%20symbol%3A%20xkb_context_new&In-Reply-To=%3CCAFenBsaJoZcmPdXyunDThYbNBQ3Ooi1Cri8fZrXC%3D4Bv9-7BNA%40mail.gmail.com%3E"
+       TITLE="[i3] i3lock: undefined symbol: xkb_context_new">tfarina at chromium.org
+       </A><BR>
+    <I>Sat Nov 23 20:18:03 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001490.html">[i3] i3lock: undefined symbol: xkb_context_new
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1492">[ date ]</a>
+              <a href="thread.html#1492">[ thread ]</a>
+              <a href="subject.html#1492">[ subject ]</a>
+              <a href="author.html#1492">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, Nov 23, 2013 at 5:11 PM, Thiago Farina &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">tfarina at chromium.org</A>&gt; wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Anyone knows, or have any clue, why I might be getting this:
+</I>&gt;<i>
+</I>&gt;<i> $ ./i3lock
+</I>&gt;<i> ./i3lock: symbol lookup error: ./i3lock: undefined symbol: xkb_context_new
+</I>&gt;<i>
+</I>&gt;<i> $ pkg-config --cflags xkbcommon
+</I>&gt;<i> -I/usr/local/include
+</I>&gt;<i>
+</I>&gt;<i> $ pkg-config --libs xkbcommon
+</I>&gt;<i> -L/usr/local/lib -lxkbcommon
+</I>&gt;<i>
+</I>&gt;<i> In my libxkbcommon checkout I ran:
+</I>&gt;<i> $ sudo make install
+</I>&gt;<i>
+</I>&gt;<i> Do I need to install it elsewhere or do something else?
+</I>&gt;<i>
+</I>Got it!
+
+In libxkbcommon:
+$ ./configure --prefix=/usr
+$ make
+$ sudo make install
+
+Then in i3lock:
+$ make
+$ ./i3lock
+
+-- 
+Thiago
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001490.html">[i3] i3lock: undefined symbol: xkb_context_new
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1492">[ date ]</a>
+              <a href="thread.html#1492">[ thread ]</a>
+              <a href="subject.html#1492">[ subject ]</a>
+              <a href="author.html#1492">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

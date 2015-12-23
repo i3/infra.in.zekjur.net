@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3lock hooks
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3lock%20hooks&In-Reply-To=%3CCAAuVr738PvGRFnDrM2D25mhU-6cr37Y3Wk%2BwWfJeTb1FTRn3HQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001268.html">
+   <LINK REL="Next"  HREF="001275.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3lock hooks</H1>
+    <B>BRAGA, Bruno</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3lock%20hooks&In-Reply-To=%3CCAAuVr738PvGRFnDrM2D25mhU-6cr37Y3Wk%2BwWfJeTb1FTRn3HQ%40mail.gmail.com%3E"
+       TITLE="[i3] i3lock hooks">bruno.braga at gmail.com
+       </A><BR>
+    <I>Mon Apr 15 06:14:56 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001268.html">[i3] i3lock hooks
+</A></li>
+        <LI>Next message: <A HREF="001275.html">[i3] i3lock hooks
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1274">[ date ]</a>
+              <a href="thread.html#1274">[ thread ]</a>
+              <a href="subject.html#1274">[ subject ]</a>
+              <a href="author.html#1274">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I will try to run this with strace and see how it goes... Let you know the
+results (if I can read them, lol)...
+
+Cheers,
+
+
+--
+*Bruno Braga*
+www.brunobraga.net
+<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">bruno.braga at gmail.com</A>
+
+
+On Sun, Apr 14, 2013 at 1:24 AM, Giorgos Keramidas &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">gkeramidas at gmail.com</A>&gt;wrote:
+
+&gt;<i> On 2013-04-13 10:14, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt; wrote:
+</I>&gt;<i> &gt;Giorgos Keramidas &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">gkeramidas at gmail.com</A>&gt; writes:
+</I>&gt;<i> &gt;&gt; After ev_loop() is done, there is no return statement, so if ev_loop
+</I>&gt;<i> &gt;&gt; happens to return, main() is free to return a random value, e.g. the
+</I>&gt;<i> &gt;&gt; contents of a register or some random value from the stack.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ev_loop never returns.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; i3lock exits with code 0 from here:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     if (pam_authenticate(pam_handle, 0) == PAM_SUCCESS) {
+</I>&gt;<i> &gt;         DEBUG(&quot;successfully authenticated\n&quot;);
+</I>&gt;<i> &gt;         clear_password_memory();
+</I>&gt;<i> &gt;         exit(0);
+</I>&gt;<i> &gt;     }
+</I>&gt;<i>
+</I>&gt;<i> Yeah, I noticed that ev_loop is not supposed to return a little after
+</I>&gt;<i> sending that email.  I guess the only way to find out what's going on
+</I>&gt;<i> would be to run i3lock under strace and log that to a file.
+</I>&gt;<i>
+</I>&gt;<i> If ev_loop never returns, I don't see anything in i3lock.c that would
+</I>&gt;<i> cause it to return with a non-zero exit code.  It must be something
+</I>&gt;<i> external to the program itself, e.g. a signal that's killing it.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130415/5ecdc26a/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130415/5ecdc26a/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001268.html">[i3] i3lock hooks
+</A></li>
+	<LI>Next message: <A HREF="001275.html">[i3] i3lock hooks
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1274">[ date ]</a>
+              <a href="thread.html#1274">[ thread ]</a>
+              <a href="subject.html#1274">[ subject ]</a>
+              <a href="author.html#1274">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

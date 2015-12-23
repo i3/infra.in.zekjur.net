@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [i3status] [PATCH] Network throughput
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5Bi3status%5D%20%5BPATCH%5D%20Network%20throughput&In-Reply-To=%3C4F5F1265.4000106%40apparatus.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000551.html">
+   <LINK REL="Next"  HREF="000555.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [i3status] [PATCH] Network throughput</H1>
+    <B>Mathias Buhr</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5Bi3status%5D%20%5BPATCH%5D%20Network%20throughput&In-Reply-To=%3C4F5F1265.4000106%40apparatus.de%3E"
+       TITLE="[i3] [i3status] [PATCH] Network throughput">buhr at apparatus.de
+       </A><BR>
+    <I>Tue Mar 13 10:24:53 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000551.html">[i3] [i3status] [PATCH] Network throughput
+</A></li>
+        <LI>Next message: <A HREF="000555.html">[i3] question about 'containers'
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#552">[ date ]</a>
+              <a href="thread.html#552">[ thread ]</a>
+              <a href="subject.html#552">[ subject ]</a>
+              <a href="author.html#552">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 03/12/2012 11:20 PM, Michael Stapelberg wrote:
+&gt;<i> Hi Mathias,
+</I>&gt;<i> 
+</I>&gt;<i> Excerpts from Mathias Buhr's message of 2012-03-12 13:14:51 +0100:
+</I>&gt;&gt;<i> I've patched i3status to monitor incoming &amp; outgoing network traffic
+</I>&gt;<i> Thanks for posting your patch. I am not very interested in merging it, though,
+</I>&gt;<i> on the one hand for the reason you already mentioned (it introduces a lot of
+</I>&gt;<i> code), and on the other hand I don&#8217;t really think that incoming/outgoing
+</I>&gt;<i> network traffic is a good metric for anything except very special use cases &#8212;
+</I>&gt;<i> and for those, there are already tools :).
+</I>&gt;<i> 
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Michael
+</I>
+
+Hi Michael,
+
+first of all: thank you for i3! I really appreciate your work on that!
+
+I agree with your comments and I have thought about them already. I
+don't see the network throughput as accurate measurement but as clue
+about what is going on. It is more or less just a hint and I didn't want
+to use any extra tools/screen space for that. In my case it was actually
+very helpful in finding the culprit. After all, the use of network
+throughput is a choice. If a user doesn't like it, they don't have to
+add it to their config.
+As there seem to be some interest from other users: I could try to trim
+the code. A few of the supported architecture are probably not needed
+(solaris, hpux, bsd?) although it's nice to have them.
+
+Best regards,
+Mathias
+
+P.S.: I think some modules of i3status produce wrong output when using
+i3bar output mode. I wanted to fix that but a question arose: what is
+this mode supposed to do anyway? The manual of i3bar explicitly wants
+output_format to be &quot;none&quot;. Is it just some kind of legacy? We could
+trim that too
+
+</PRE>
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000551.html">[i3] [i3status] [PATCH] Network throughput
+</A></li>
+	<LI>Next message: <A HREF="000555.html">[i3] question about 'containers'
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#552">[ date ]</a>
+              <a href="thread.html#552">[ thread ]</a>
+              <a href="subject.html#552">[ subject ]</a>
+              <a href="author.html#552">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,20 @@
+diff --git i/src/handlers.c w/src/handlers.c
+index 0d087e7..ed65bc9 100644
+--- i/src/handlers.c
++++ w/src/handlers.c
+@@ -723,6 +723,7 @@ static bool handle_normal_hints(void *data, xcb_connection_t *conn, uint8_t stat
+     }
+ 
+     bool changed = false;
++#if 0
+     if ((size_hints.flags & XCB_ICCCM_SIZE_HINT_P_RESIZE_INC)) {
+         if (size_hints.width_inc > 0 && size_hints.width_inc < 0xFFFF)
+             if (con->width_increment != size_hints.width_inc) {
+@@ -738,6 +739,7 @@ static bool handle_normal_hints(void *data, xcb_connection_t *conn, uint8_t stat
+         if (changed)
+             DLOG("resize increments changed\n");
+     }
++#endif
+ 
+     int base_width = 0, base_height = 0;
+ 

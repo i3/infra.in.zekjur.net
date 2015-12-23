@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3-nagbar and keyboard
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3-nagbar%20and%20keyboard&In-Reply-To=%3CCANnVG6%3DV0Zk_yM7sf2o2%3DpX-eTaLXsSVqPEoKCY3FNoUO-HUSw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001865.html">
+   <LINK REL="Next"  HREF="001867.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3-nagbar and keyboard</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3-nagbar%20and%20keyboard&In-Reply-To=%3CCANnVG6%3DV0Zk_yM7sf2o2%3DpX-eTaLXsSVqPEoKCY3FNoUO-HUSw%40mail.gmail.com%3E"
+       TITLE="[i3] i3-nagbar and keyboard">michael at i3wm.org
+       </A><BR>
+    <I>Sun Sep 21 16:12:19 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001865.html">[i3] i3-nagbar and keyboard
+</A></li>
+        <LI>Next message: <A HREF="001867.html">[i3] How to move workspace by name to a given named output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1866">[ date ]</a>
+              <a href="thread.html#1866">[ thread ]</a>
+              <a href="subject.html#1866">[ subject ]</a>
+              <a href="author.html#1866">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, Sep 21, 2014 at 6:20 AM, grubernd &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">lists at mehrzweckraum.com</A>&gt; wrote:
+&gt;<i> On 2014-09-21 05:14, Tony Crisci wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Here you go: `bindsym $mod+Escape pkill i3-nagbar`.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> i have a better hack:
+</I>&gt;<i>
+</I>&gt;<i> sudo mv /usr/bin/i3-nagbar /usr/bin/i3-nagbar-no
+</I>&gt;<i>
+</I>&gt;&gt;<i> Yes, nobody likes nagbar.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> and here we have a misunderstanding. i like nagbar, because it would be a
+</I>&gt;<i> very elegant way of displaying dialogs inside the window manager without
+</I>&gt;<i> resorting to extra tools like dialog, ncurses, gtk, or whatever.
+</I>&gt;<i>
+</I>&gt;&gt;<i> Nagbar is meant to be a teaching tool for new users.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> ouch. see engineering below..
+</I>&gt;<i>
+</I>&gt;&gt;<i> It appears when you have a syntax error in your config file or duplicate
+</I>&gt;&gt;<i> binding. It's there to warn you about the default key combination that
+</I>&gt;&gt;<i> exits the wm so you don't press it on accident for the first time. If
+</I>&gt;&gt;<i> your config file is free of errors, you should never see it.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> i am really glad that the designers of most software dont follow your line
+</I>&gt;<i> of thought. imagine all software would display funky big bars that *do not
+</I>&gt;<i> follow their own design paradigm* and force you to use a differnt interface
+</I>&gt;<i> than they usually do.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> One thing that I don't like about some desktop environments is that they
+</I>&gt;&gt;<i> are too talky. There is always something flashing in the corner or some
+</I>&gt;&gt;<i> popup notification that I don't care about on my screen. i3 is designed
+</I>&gt;&gt;<i> to be quiet.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> yes, and that's a good thing. i dont want i3 to talk more. but here's the
+</I>&gt;<i> thing: i3 already has a method to display user-initiated system dialogs, aka
+</I>&gt;<i> &quot;the nagbar&quot;, but they do not follow the general design paradigm of
+</I>&gt;<i> keyboard-centered control. and that is the thing i am trying to get across.
+</I>&gt;<i> i3 doesnt follow it's own rules.
+</I>&gt;<i>
+</I>&gt;&gt;<i> There is no other window manager &quot;meta information&quot; that
+</I>&gt;&gt;<i> needs to be displayed in nagbar other than config errors. This is good
+</I>&gt;&gt;<i> unix engineering.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> i dont know too much about good _unix_ engineering, but good engineering
+</I>&gt;<i> doesnt get in the way of the user and changes behaviour midway.
+</I>&gt;<i>
+</I>&gt;<i> mind: nagbar should nag. but in my opinion it should not be the only tool
+</I>&gt;<i> that requires a very specific type of hardware to be attached to the
+</I>&gt;<i> computer. that's all i am saying.
+</I>It doesn’t require a mouse. You can just kill it. Or fix the error in
+your config file and run “i3 reload”. Or (for the use case of exiting
+your session) run “i3 exit”, or just shut down your computer, or
+terminate the X session otherwise.
+
+There are plenty of alternatives, but they are not as convenient as
+just using nagbar when having a mouse attached. Similarly, i3 comes
+with a resize mode configured by default (keyboard shortcuts), yet
+resizing with a mouse is typically more convenient.
+
+i3’s line of thinking doesn’t dictate the keyboard as the one and only
+input device in all situations. We encourage you to use whichever
+input device is the most appropriate. For most window management
+operations, that’s clearly the keyboard, for resizing that’s most
+often the mouse, for nagging users that’s clearly the mouse :).
+
+Also note that nagbar is _not_ a generic tool to display dialogs that
+is well integrated into i3. Its purpose really is to nag you about
+config errors (so that you don’t nag us in our support channels) and
+before exiting a session accidentally. For the latter, you are
+expected to eventually change your config to bypass nagbar entirely.
+
+I don’t want to shut you up, but after this reply I don’t think
+there’s a lot to talk about anymore. I get that you don’t like the
+situation as-is, but the nagbar concept works very well for all other
+users that I’ve talked to, and it is very unlikely to change.
+
+&gt;<i>
+</I>&gt;<i> cheers,
+</I>&gt;<i> grubernd
+</I>
+
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001865.html">[i3] i3-nagbar and keyboard
+</A></li>
+	<LI>Next message: <A HREF="001867.html">[i3] How to move workspace by name to a given named output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1866">[ date ]</a>
+              <a href="thread.html#1866">[ thread ]</a>
+              <a href="subject.html#1866">[ subject ]</a>
+              <a href="author.html#1866">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

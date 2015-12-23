@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH 2/2] Automatically run gdb to get a trace when	crashed
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%202/2%5D%20Automatically%20run%20gdb%20to%20get%20a%20trace%20when%0A%09crashed&In-Reply-To=%3C20120822155153.26637.67135%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000867.html">
+   <LINK REL="Next"  HREF="000873.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH 2/2] Automatically run gdb to get a trace when	crashed</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%202/2%5D%20Automatically%20run%20gdb%20to%20get%20a%20trace%20when%0A%09crashed&In-Reply-To=%3C20120822155153.26637.67135%40midna.zekjur.net%3E"
+       TITLE="[i3] [PATCH 2/2] Automatically run gdb to get a trace when	crashed">michael at i3wm.org
+       </A><BR>
+    <I>Wed Aug 22 17:51:53 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000867.html">[i3] [PATCH 2/2] Automatically run gdb to get a trace when crashed
+</A></li>
+        <LI>Next message: <A HREF="000873.html">[i3] [PATCH 1/2] Replace exit option with core-dump when crashed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#877">[ date ]</a>
+              <a href="thread.html#877">[ thread ]</a>
+              <a href="subject.html#877">[ subject ]</a>
+              <a href="author.html#877">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Bas,
+
+comments below:
+
+Quoting Bas Pape (2012-08-22 11:43:13)
+&gt;<i>      if (sym == 'c') {
+</I>&gt;<i>          DLOG(&quot;User issued core-dump command.\n&quot;);
+</I>&gt;<i>          coredump(raised_signal);
+</I>&gt;<i> +
+</I>&gt;<i> +        /* wait for the child to dump its core */
+</I>&gt;<i> +        sleep(1);
+</I>OMG /o\ &#8212; please don&#8217;t do that. This is very prone to race-conditions.
+We can use waitpid() to wait for the child instead (or maybe a libev
+child handler to make it async).
+
+&gt;<i> +        /* run gdb */
+</I>&gt;<i> +        char filename[PATH_MAX] = &quot;/tmp/&quot;;
+</I>Again, please honor TMPDIR.
+
+&gt;<i> +        char pattern[PATH_MAX] = { 0 };
+</I>&gt;<i> +        int patternfd;
+</I>&gt;<i> +        int found;
+</I>&gt;<i> +        if ((patternfd = open(&quot;/proc/sys/kernel/core_pattern&quot;, O_RDONLY)) &gt;= 0) {
+</I>&gt;<i> +            if (read(patternfd, pattern, sizeof(pattern)) &gt; 0) {
+</I>&gt;<i> +                /* strip the trailing newline */
+</I>&gt;<i> +                memset(pattern + strlen(pattern) - 1, 0, 1);
+</I>&gt;<i> +                strncat(filename, pattern, PATH_MAX - 5);
+</I>Magic numbers are bad, mhkay? Use strlen(&quot;/tmp/&quot;) instead, the compiler
+will optimize it away at compile-time.
+
+Also, this code won&#8217;t work. core_pattern is not a static filename, it&#8217;s
+a pattern. I have it set to /tmp/%e.core.%p for example. Figuring out
+the location of the core dump is actually a pretty hard problem and I
+don&#8217;t see an obvious solution for it.
+
+I think it&#8217;d be better to have gdb attached to the current process.
+
+Thanks for working on this,
+Best regards,
+Michael
+</PRE>
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000867.html">[i3] [PATCH 2/2] Automatically run gdb to get a trace when crashed
+</A></li>
+	<LI>Next message: <A HREF="000873.html">[i3] [PATCH 1/2] Replace exit option with core-dump when crashed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#877">[ date ]</a>
+              <a href="thread.html#877">[ thread ]</a>
+              <a href="subject.html#877">[ subject ]</a>
+              <a href="author.html#877">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

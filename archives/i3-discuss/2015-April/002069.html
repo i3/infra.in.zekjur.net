@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Detecting screen locked
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Detecting%20screen%20locked&In-Reply-To=%3CCANnVG6kLZQv05hkFo7wt0vf%2B9FNNAty5NtwOVMgyz%2B2oXmfXvA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002068.html">
+   <LINK REL="Next"  HREF="002070.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Detecting screen locked</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Detecting%20screen%20locked&In-Reply-To=%3CCANnVG6kLZQv05hkFo7wt0vf%2B9FNNAty5NtwOVMgyz%2B2oXmfXvA%40mail.gmail.com%3E"
+       TITLE="[i3] Detecting screen locked">michael at i3wm.org
+       </A><BR>
+    <I>Fri Apr 17 10:09:09 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002068.html">[i3] Detecting screen locked
+</A></li>
+        <LI>Next message: <A HREF="002070.html">[i3] Detecting screen locked
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2069">[ date ]</a>
+              <a href="thread.html#2069">[ thread ]</a>
+              <a href="subject.html#2069">[ subject ]</a>
+              <a href="author.html#2069">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ugh, then you’re running it in a setuid setup. You’ll need to start i3lock
+and then attach strace afterwards using -p.
+
+On Fri, Apr 17, 2015 at 9:56 AM, Jeff Abrahamson &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jeff at purple.com</A>&gt; wrote:
+
+&gt;<i> I invoke i3lock at the commandline thus:
+</I>&gt;<i>
+</I>&gt;<i> [S-18]<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jeff at siegfried</A>:gtd $ strace -o/tmp/i3lock-log-$(date +%s) -f -s
+</I>&gt;<i> 2048 -tt  i3lock --dpms --inactivity-timeout 10 --color=220022
+</I>&gt;<i> [S-18]<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jeff at siegfried</A>:gtd $
+</I>&gt;<i>
+</I>&gt;<i> and the result is that i3lock does not recognize my password.  It does
+</I>&gt;<i> echo my typing, it just always says fail.  I switch to a vt, login, and
+</I>&gt;<i> kill it.
+</I>&gt;<i>
+</I>&gt;<i> Jeff Abrahamson
+</I>&gt;<i> +33 6 24 40 01 57
+</I>&gt;<i> +44 7920 594 255    &lt;-- only if I'm in the UK
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://jeff.purple.com/">http://jeff.purple.com/</A>
+</I>&gt;<i> <A HREF="http://blog.purple.com/jeff/">http://blog.purple.com/jeff/</A>
+</I>&gt;<i>
+</I>&gt;<i> On 17 April 2015 at 09:39, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Yes, but also use -f (to follow child processes) and -s 2048 (to increase
+</I>&gt;&gt;<i> the size of strings) and -tt (to get timing).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Fri, Apr 17, 2015 at 9:23 AM, Jeff Abrahamson &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jeff at purple.com</A>&gt; wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Sure thing.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Just to be clear, do you mean that instead of launching &quot;i3lock ..&quot; I
+</I>&gt;&gt;&gt;<i> substitute &quot;strace -o/tmp/i3lock-log-$(date +%s) i3lock ...&quot;?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Jeff Abrahamson
+</I>&gt;&gt;&gt;<i> +33 6 24 40 01 57
+</I>&gt;&gt;&gt;<i> +44 7920 594 255    &lt;-- only if I'm in the UK
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> <A HREF="http://jeff.purple.com/">http://jeff.purple.com/</A>
+</I>&gt;&gt;&gt;<i> <A HREF="http://blog.purple.com/jeff/">http://blog.purple.com/jeff/</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> On 17 April 2015 at 09:19, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt; wrote:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> i3lock shouldn’t hang around. Can you start stracing all your i3lock
+</I>&gt;&gt;&gt;&gt;<i> instances automatically and provide the corresponding strace output of a
+</I>&gt;&gt;&gt;&gt;<i> hung instance in a bugreport?
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> On Fri, Apr 17, 2015 at 9:04 AM, Jeff Abrahamson &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jeff at purple.com</A>&gt;
+</I>&gt;&gt;&gt;&gt;<i> wrote:
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> I have a maintenance function that ought not bother spinning the CPU
+</I>&gt;&gt;&gt;&gt;&gt;<i> if the screen is locked.  It checks this thus:
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> if pidof i3lock &gt;/dev/null; then
+</I>&gt;&gt;&gt;&gt;&gt;<i>     ...
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> This is i3-specific, which is sad, but not a huge problem.  What is a
+</I>&gt;&gt;&gt;&gt;&gt;<i> problem is that i3lock sometimes hangs around even though I think it should
+</I>&gt;&gt;&gt;&gt;&gt;<i> exit on unlock.  And, indeed, most of the time it does exit on unlock.
+</I>&gt;&gt;&gt;&gt;&gt;<i> Once in a while, I find I have one or even several i3lock processes hanging
+</I>&gt;&gt;&gt;&gt;&gt;<i> around.
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> I either lock my screen explicitly
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> bindsym $mod+Control+L exec i3lock --dpms --inactivity-timeout 10
+</I>&gt;&gt;&gt;&gt;&gt;<i> --color=220022
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> or else it's done by inactivity
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> xautolock -detectsleep \
+</I>&gt;&gt;&gt;&gt;&gt;<i>     -time 3 -locker &quot;i3lock --dpms --color=220022 --inactivity-timeout
+</I>&gt;&gt;&gt;&gt;&gt;<i> 10 --nofork&quot;
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> This question thus has two parts:
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> 1. Am I doing something wrong that I sometimes have multiple i3lock
+</I>&gt;&gt;&gt;&gt;&gt;<i> instances?
+</I>&gt;&gt;&gt;&gt;&gt;<i> 2. Is there a better way to detect screen lock than pidof i3lock?
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Jeff Abrahamson
+</I>&gt;&gt;&gt;&gt;&gt;<i> +33 6 24 40 01 57
+</I>&gt;&gt;&gt;&gt;&gt;<i> +44 7920 594 255    &lt;-- only if I'm in the UK
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> <A HREF="http://jeff.purple.com/">http://jeff.purple.com/</A>
+</I>&gt;&gt;&gt;&gt;&gt;<i> <A HREF="http://blog.purple.com/jeff/">http://blog.purple.com/jeff/</A>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> --
+</I>&gt;&gt;&gt;&gt;<i> Best regards,
+</I>&gt;&gt;&gt;&gt;<i> Michael
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i> Best regards,
+</I>&gt;&gt;<i> Michael
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150417/e7a79391/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150417/e7a79391/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002068.html">[i3] Detecting screen locked
+</A></li>
+	<LI>Next message: <A HREF="002070.html">[i3] Detecting screen locked
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2069">[ date ]</a>
+              <a href="thread.html#2069">[ thread ]</a>
+              <a href="subject.html#2069">[ subject ]</a>
+              <a href="author.html#2069">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

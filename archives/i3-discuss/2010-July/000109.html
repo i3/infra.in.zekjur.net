@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Querying Current Workspace / Window
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Querying%20Current%20Workspace%20/%20Window&In-Reply-To=%3C1277963966-sup-120%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000108.html">
+   <LINK REL="Next"  HREF="000110.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Querying Current Workspace / Window</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Querying%20Current%20Workspace%20/%20Window&In-Reply-To=%3C1277963966-sup-120%40midna.zekjur.net%3E"
+       TITLE="[i3] Querying Current Workspace / Window">michael+i3 at stapelberg.de
+       </A><BR>
+    <I>Thu Jul  1 08:06:24 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000108.html">[i3] Querying Current Workspace / Window
+</A></li>
+        <LI>Next message: <A HREF="000110.html">[i3] Behaviour of &quot;Mark&quot; and &quot;Goto&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#109">[ date ]</a>
+              <a href="thread.html#109">[ thread ]</a>
+              <a href="subject.html#109">[ subject ]</a>
+              <a href="author.html#109">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Excerpts from registration.i3's message of 2010-07-01 02:24:28 +0200:
+&gt;<i> Is there an easy(ish) way find out the number of the currently focussed
+</I>&gt;<i> workspace from the command line?
+</I>Yes, using AnyEvent::I3, this is pretty simple:
+
+perl -MList::Util -MAnyEvent::I3 \
+     -E 'my @ws = @{i3-&gt;get_workspaces-&gt;recv};
+     my $focused = List::Util::first { $_-&gt;{focused} } @ws;
+     say $focused-&gt;{num}'
+
+Best regards,
+Michael
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000108.html">[i3] Querying Current Workspace / Window
+</A></li>
+	<LI>Next message: <A HREF="000110.html">[i3] Behaviour of &quot;Mark&quot; and &quot;Goto&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#109">[ date ]</a>
+              <a href="thread.html#109">[ thread ]</a>
+              <a href="subject.html#109">[ subject ]</a>
+              <a href="author.html#109">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

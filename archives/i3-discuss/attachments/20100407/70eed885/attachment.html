@@ -1,0 +1,26 @@
+<tt>
+I&nbsp;tried&nbsp;to&nbsp;debug&nbsp;i3&nbsp;with&nbsp;gdb.&lt;br&gt;After&nbsp;I&nbsp;closed&nbsp;urxvt&nbsp;window&nbsp;I&#39;ve&nbsp;got&nbsp;in&nbsp;gdb:&lt;br&gt;Program&nbsp;received&nbsp;signal&nbsp;SIGTTOU,&nbsp;Stopped&nbsp;(tty&nbsp;output).&lt;br&gt;After&nbsp;bt&nbsp;I&#39;ve&nbsp;got:&nbsp;src/mainx.c:596&lt;br&gt;&lt;br&gt;At&nbsp;this&nbsp;line&nbsp;is:&nbsp;&lt;br&gt;ev_loop(loop,&nbsp;0);&lt;br&gt;<br>
+&lt;br&gt;Does&nbsp;this&nbsp;give&nbsp;an&nbsp;idea&nbsp;what&#39;s&nbsp;going&nbsp;on?&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;div&nbsp;class=&quot;gmail_quote&quot;&gt;2010/4/3&nbsp;Michael&nbsp;Stapelberg&nbsp;&lt;span&nbsp;dir=&quot;ltr&quot;&gt;&lt;&lt;a&nbsp;href=&quot;mailto:michael%2Bi3@stapelberg.de&quot;&gt;michael+i3@stapelberg.de&lt;/a&gt;&gt;&lt;/span&gt;&lt;br&gt;&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:&nbsp;0pt&nbsp;0pt&nbsp;0pt&nbsp;0.8ex;&nbsp;border-left:&nbsp;1px&nbsp;solid&nbsp;rgb(204,&nbsp;204,&nbsp;204);&nbsp;padding-left:&nbsp;1ex;&quot;&gt;<br>
+Hi&nbsp;Alexander,&lt;br&gt;<br>
+&lt;br&gt;<br>
+Excerpts&nbsp;from&nbsp;Alexander&nbsp;Kalentyev&#39;s&nbsp;message&nbsp;of&nbsp;2010-04-02&nbsp;20:32:27&nbsp;+0200:&lt;br&gt;<br>
+&lt;div&nbsp;class=&quot;im&quot;&gt;&gt;&nbsp;After&nbsp;start&nbsp;I&nbsp;see&nbsp;first&nbsp;tag,&nbsp;mouse&nbsp;is&nbsp;moving&nbsp;although&nbsp;I&nbsp;can&#39;t&nbsp;do&nbsp;anything.&lt;br&gt;<br>
+&gt;&nbsp;It&nbsp;just&nbsp;doesn&#39;t&nbsp;react&nbsp;on&nbsp;keys.&nbsp;I&nbsp;even&nbsp;couldn&#39;t&nbsp;kill&nbsp;it.&lt;br&gt;<br>
+&gt;&nbsp;As&nbsp;I&nbsp;started&nbsp;in&nbsp;a&nbsp;verbose&nbsp;mode&nbsp;I&nbsp;have&nbsp;logs&nbsp;(see&nbsp;attach).&lt;br&gt;<br>
+&gt;&nbsp;I&nbsp;guess&nbsp;I&#39;m&nbsp;doing&nbsp;something&nbsp;wrong,&nbsp;but&nbsp;don&#39;t&nbsp;know&nbsp;what...&lt;br&gt;<br>
+&lt;/div&gt;Please&nbsp;enable&nbsp;the&nbsp;IPC&nbsp;interface&nbsp;(if&nbsp;not&nbsp;already&nbsp;done)&nbsp;and&nbsp;use&nbsp;the&nbsp;following&lt;br&gt;<br>
+command&nbsp;(issue&nbsp;it&nbsp;on&nbsp;a&nbsp;Console&nbsp;or&nbsp;using&nbsp;SSH&nbsp;from&nbsp;a&nbsp;different&nbsp;computer):&lt;br&gt;<br>
+&lt;br&gt;<br>
+&nbsp; i3-msg&nbsp;2&lt;br&gt;<br>
+&lt;br&gt;<br>
+You&nbsp;should&nbsp;see&nbsp;i3&nbsp;switching&nbsp;to&nbsp;the&nbsp;second&nbsp;workspace&nbsp;now.&nbsp;Now&nbsp;try&nbsp;clicking&lt;br&gt;<br>
+on&nbsp;the&nbsp;&quot;1&quot;&nbsp;in&nbsp;the&nbsp;workspace&nbsp;bar.&nbsp;It&nbsp;should&nbsp;switch&nbsp;back&nbsp;now.&lt;br&gt;<br>
+&lt;br&gt;<br>
+If&nbsp;this&nbsp;is&nbsp;the&nbsp;case,&nbsp;there&nbsp;is&nbsp;something&nbsp;wrong&nbsp;with&nbsp;your&nbsp;keybindings&nbsp;or&lt;br&gt;<br>
+keyboard&nbsp;or&nbsp;something&nbsp;like&nbsp;that…&lt;br&gt;<br>
+&lt;br&gt;<br>
+Best&nbsp;regards,&lt;br&gt;<br>
+&lt;font&nbsp;color=&quot;#888888&quot;&gt;Michael&lt;br&gt;<br>
+&lt;/font&gt;&lt;/blockquote&gt;&lt;/div&gt;&lt;br&gt;<br>
+
+</tt>

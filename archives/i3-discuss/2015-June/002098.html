@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] About accessing workspaces by name
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20About%20accessing%20workspaces%20by%20name&In-Reply-To=%3C20150616170843.GA22670%40red_water.cs.ucl.ac.uk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002097.html">
+   <LINK REL="Next"  HREF="002099.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] About accessing workspaces by name</H1>
+    <B>Kareem Khazem</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20About%20accessing%20workspaces%20by%20name&In-Reply-To=%3C20150616170843.GA22670%40red_water.cs.ucl.ac.uk%3E"
+       TITLE="[i3] About accessing workspaces by name">karkhaz at gmail.com
+       </A><BR>
+    <I>Tue Jun 16 19:08:43 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002097.html">[i3] About accessing workspaces by name
+</A></li>
+        <LI>Next message: <A HREF="002099.html">[i3] About accessing workspaces by name
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2098">[ date ]</a>
+              <a href="thread.html#2098">[ thread ]</a>
+              <a href="subject.html#2098">[ subject ]</a>
+              <a href="author.html#2098">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 2015-06-16 1902, Nicolas Bercher wrote:
+&gt;<i>  why and/or &quot;switch to workspace by name&quot; and &quot;move window to
+</I>&gt;<i>  workspace by name&quot; are not implemented?
+</I>&gt;<i>  (namely M-t &lt;wpname&gt; / M-S-t &lt;wpname&gt; under wmii.)
+</I>
+Hi Nicholas,
+
+You can use i3-msg to do this from the command line. I use a
+combination of i3-msg and dmenu to do this.
+
+I wrote a script (ws_menu.rb) that finds the names of all workspaces
+on DisplayPort-1, and lists them in dmenu, and when I type the name of
+a workspace it switches to that one. If I type a name which is not
+currently a workspace, then it creates a new workspace with that name
+on DisplayPort-1.
+
+You simply write this in your i3 config:
+bindsym $mod+f exec /home/kareem/script/ws_menu.rb
+
+And here is the script:
+
+______________________________________________________________________
+#!/usr/bin/env ruby
+
+require 'json'
+
+# Get workspaces on a particular output
+workspaces = JSON.parse `i3-msg -t get_workspaces`
+workspaces.select! {|ws| ws['output'] == &quot;DisplayPort-1&quot;}
+
+# Build string of names
+names = workspaces.map {|ws| ws['name']}
+names = names.inject(&quot;&quot;) {|acc, e| e + &quot;\n&quot; + acc}
+
+result = `echo &quot;#{names}&quot; | dmenu -p &quot;Select Workspace:&quot;`
+
+if names.include? result
+  exec &quot;i3-msg -t command workspace #{result}&quot;
+else
+  system &quot;i3-msg -t command workspace new&quot;
+  exec &quot;i3-msg -t command rename workspace to #{result}&quot;
+end
+______________________________________________________________________
+
+Hope this helps
+
+-- 
+Kareem
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002097.html">[i3] About accessing workspaces by name
+</A></li>
+	<LI>Next message: <A HREF="002099.html">[i3] About accessing workspaces by name
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2098">[ date ]</a>
+              <a href="thread.html#2098">[ thread ]</a>
+              <a href="subject.html#2098">[ subject ]</a>
+              <a href="author.html#2098">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

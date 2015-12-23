@@ -1,0 +1,245 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3 announcement] i3 v4.3 released
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-announce%40infra.in.zekjur.net?Subject=Re%3A%20%5Bi3%20announcement%5D%20i3%20v4.3%20released&In-Reply-To=%3Cx6y5k69cbr.fsf%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3 announcement] i3 v4.3 released</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-announce%40infra.in.zekjur.net?Subject=Re%3A%20%5Bi3%20announcement%5D%20i3%20v4.3%20released&In-Reply-To=%3Cx6y5k69cbr.fsf%40midna.zekjur.net%3E"
+       TITLE="[i3 announcement] i3 v4.3 released">michael at i3wm.org
+       </A><BR>
+    <I>Wed Sep 19 19:01:12 CEST 2012</I>
+    <P><UL>
+        
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#34">[ date ]</a>
+              <a href="thread.html#34">[ thread ]</a>
+              <a href="subject.html#34">[ subject ]</a>
+              <a href="author.html#34">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I just released i3 v4.3. The changes follow:
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Release notes for i3 v4.3    &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+This is the i3 v4.3. This version is considered stable. All users of i3 are
+strongly encouraged to upgrade.
+
+One rather visible change is that commands which could not be parsed properly
+  will now spawn i3-nagbar. In case you used &quot;bindsym $mod+x firefox&quot; (and
+  forgot the &quot;exec&quot; keyword) or you made a typo in your config, you will now
+  notice that :).
+
+
+We also made the orientation (horizontal/vertical) part of the layout
+  mechanism: Before, we got the default layout and you could change
+  orientation. Now, there are two new layouts &quot;splitv&quot; and &quot;splith&quot;, which
+  replace the default layout. The &quot;split h&quot; and &quot;split v&quot; commands continue to
+  work as before, they split the current container and you will end up in a
+  split container with layout splith (after &quot;split h&quot;) or splitv (after
+  &quot;split v&quot;).
+
+  To change a splith container into a splitv container, use either &quot;layout
+  splitv&quot; or &quot;layout toggle split&quot;. The latter command is used in the
+  default config as mod+l (formerly &quot;layout default&quot;). In case you have
+  &quot;layout default&quot; in your config file, it is recommended to just replace
+  it by &quot;layout toggle split&quot;, which will work as &quot;layout default&quot; did
+  before when pressing it once, but toggle between horizontal/vertical
+  when pressing it repeatedly.
+
+  The rationale behind this change is that it&#8217;s cleaner to have all
+  parameters that influence how windows are rendered in the layout itself
+  rather than having one special layout in combination with an additional
+  orientation. This enables us to change existing split containers in all
+  cases without breaking existing features (see ticket #464). Also, users
+  should feel more confident about whether they are actually splitting or
+  just changing an existing split container now.
+
+  As a nice side-effect, this commit brings back the &quot;layout toggle&quot;
+  feature we once had in i3 v3 (see the userguide).
+
+
+Another very important change is that we now support pango for rendering text.
+  The default is still to use misc-fixed (X core fonts), but you can use a font
+  specification starting with &quot;xft:&quot; now, such as &quot;xft:DejaVu Sans Mono 10&quot; and
+  i3 will use pango. The sole motivation for this is NOT to have fancier window
+  decorations, but to support fonts which have more glyphs (think Japanese for
+  example) and to support right-to-left rendering (open <A HREF="http://www.ftpal.net/">http://www.ftpal.net/</A>
+  for an example). Supporting users from all over the planet is important, and
+  as such I would strongly advise distribution packagers to leave pango support
+  enabled. In case you are working on a very low-spec embedded device, it is
+  easy enough to disable pango support, see common.mk.
+
+
+Also, the 'layout' command now always works on the parent split container. This
+  allows you to do things like this:
+
+      for_window [class=&quot;XTerm&quot;] layout tabbed
+
+  When you now open XTerm on an empty workspace, the whole workspace will be
+  set to tabbed. In case you want to open XTerm in its own tabbed split
+  container, you need to split before:
+
+      for_window [class=&quot;XTerm&quot;] split v, layout tabbed
+
+
+Furthermore, we decided to entirely ignore resize increment size hints for
+  tiling windows. These are set by terminal emulators (such as urxvt,
+  gnome-terminal, &#8230;) and specify that the window may only be resized in
+  multiples of the specified size. All terminal emulators cope with the window
+  manager ignoring these hints and by doing so, they can decide what to do with
+  the lost space (that is, pseudo-transparency now works without black bars in
+  urxvt).
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Changes in v4.3            &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+  &#8226; docs: there now is documentation about lib::i3test and lib::i3test::Test,
+    the main Perl modules used by our testsuite.
+  &#8226; docs/refcard: update for v4
+  &#8226; docs/userguide: clarify the default for focus_follows_mouse and new_window
+  &#8226; docs/userguide: add section about implicit containers
+  &#8226; docs/userguide: give 'move &lt;container|workspace&gt; to output' its own section
+  &#8226; docs/ipc: document the 'window' field in the GET_TREE reply
+  &#8226; docs/ipc: update links to ipc libraries
+  &#8226; docs/ipc: make the reply sections consistent
+  &#8226; docs/i3bar-protocol: add example (illustration-only!) shell script
+  &#8226; man/i3bar.man: reference i3bar-protocol
+  &#8226; IPC: Commands now lead to proper error messages in general. If we forgot
+    about a specific one, please open a ticket.
+  &#8226; IPC: implement GET_VERSION to find out the i3 version
+  &#8226; i3-dump-log now comes with a massively more helpful error message that
+    should cover all the use cases.
+  &#8226; 'workspace number &lt;number&gt;' now opens a new workspace
+  &#8226; 'workspace number &lt;number&gt;' now works with the back_and_forth option
+  &#8226; Allow focus with target (criteria) when in fullscreen mode in some cases
+  &#8226; Allow focus child/parent when in fullscreen mode
+  &#8226; Restrict directional focus when in fullscreen mode
+  &#8226; Prevent moving out of fullscreen containers
+  &#8226; Add 'move to workspace current' (useful when used with criteria)
+  &#8226; replace loglevels by a global debug logging
+  &#8226; make: new makefile layout
+  &#8226; make: canonicalize path when compiling. This leads to sth like
+    ../i3-4.2/src/main.c in backtraces, clearly identifying i3 code.
+  &#8226; automatically hide i3bar when it&#8217;s unneeded (after urgency hints)
+  &#8226; i3-config-wizard: use the level 0 keysym whenever it&#8217;s unambiguous
+  &#8226; i3-nagbar: use custom scripts to work around different terminal emulators
+    using different ways of interpreting the arguments to -e
+  &#8226; i3-sensible-terminal: add xfce4-terminal
+  &#8226; default config: require confirmation when exiting i3
+  &#8226; Display i3-nagbar when a command leads to an error.
+  &#8226; testcases: complete-run now supports --xtrace
+  &#8226; testcases: handle EAGAIN (fixes hangs)
+  &#8226; testcases: handle test bailouts
+  &#8226; Introduce splith/splitv layouts, remove orientation
+  &#8226; Implement hide_edge_borders option
+  &#8226; Support _NET_ACTIVE_WINDOW ClientMessages
+  &#8226; Set I3_PID atom on the X11 root window
+  &#8226; Implement i3 --moreversion, handy for figuring out whether you run the
+    latest binary which is installed.
+  &#8226; i3bar: be less strict about the {&quot;version&quot;:1} JSON header
+  &#8226; shm-logging: implement i3-dump-log -f (follow)
+  &#8226; Implement pango support
+  &#8226; 'move workspace number n' will now create the workspace if it doesn&#8217;t exist
+  &#8226; Accept slashes in RandR output names
+  &#8226; Keep startup-notification sequences around for 30s after completion
+  &#8226; Introduce bindsym --release, which will trigger the binding not on the
+    KeyPress event, but on the KeyRelease event (useful for import(1) or
+    xdotool(1)).
+  &#8226; The signalhandler does not offer you to exit i3 anymore. Instead, there is
+    'b' for writing a backtrace to a file in /tmp (if gdb is installed)
+  &#8226; Remove support for resize increment hints for tiling windows
+  &#8226; Exit fullscreen mode when 'scratchpad show' is executed while in fullscreen
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Bugfixes                   &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+  &#8226; Fix floating precision bug when floating windows are moved between outputs.
+  &#8226; i3bar won&#8217;t crash when full_text is missing or null in the JSON input
+  &#8226; When having &quot;workspace number 1&quot; in your config, there will no longer be a
+    stray workspace &quot;number 1&quot;.
+  &#8226; i3.config.keycodes used bindsym instead of bindcode for the arrow key
+    resizing bindings by mistake
+  &#8226; Fix 'move to workspace' when used with criteria
+  &#8226; Handle clicks to the very left edge of i3bar
+  &#8226; When using i3 -C, don&#8217;t send remaining arguments as an IPC command
+  &#8226; Fix reload crashes in rare cases
+  &#8226; i3bar: inform all clients of new tray selection owner (fixes tray problems
+    with X-Chat and possibly others)
+  &#8226; resizing: traverse containers up properly (fixes non-working resizing when
+    having a h-split within a h-split for example)
+  &#8226; Fix floating coordinates when moving assigned workspaces
+  &#8226; Properly fix floating coordinates when disabling outputs
+  &#8226; floating_fix_coordinates: properly deal with negative positions
+  &#8226; floating windows: add deco_height only when in normal border mode (fixes
+    initial floating window position/size when using a different default border
+    setting).
+  &#8226; Fix moving scratchpad window
+  &#8226; Cleanup zero-byte logfile on immediate exit (they are created by i3
+    --get-socketpath for example).
+  &#8226; Fix resizing floating windows by height
+  &#8226; Fix back_and_forth in 'workspace number' for named workspaces
+  &#8226; Grab server and process pending events before managing existing windows
+    (fixes problems with GIMP windows not being managed after an in-place
+     restart)
+  &#8226; Don&#8217;t allow ConfigureRequests while in fullscreen (fixes a compatibility
+    issue with gnome-terminal and xfce&#8217;s terminal)
+  &#8226; Fix flickering with 1pixel border tabbed layouts
+  &#8226; Use _exit() instead of exit() when i3 utility programs cannot be executed
+  &#8226; Don&#8217;t focus the wrong workspace when moving to scratchpad
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Thanks!                    &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+Thanks for testing, bugfixes, discussions and everything I forgot go out to:
+
+  aksr, Axel Wagner, darkraven, David Coppa, eeemsi, Felicitus, Fernando Tarl&#225;
+  Cardoso Lemos, Iakov Davydov, jh, Joel Stemmer, Julius Plenz, loblik, Marcel
+  Hellwig, Marcus, mloskot, Moritz Bandemer, oblique, Ondrej Grover, Pavel
+  L&#246;bl, Philipp Middendorf, prg, Quentin Glidic, Sebastian Ullrich, Simon
+  Elsbrock, somelauw, stfn, tucos, TunnelWicht, Valentin Haenel
+
+-- Michael Stapelberg, 2012-09-19
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#34">[ date ]</a>
+              <a href="thread.html#34">[ thread ]</a>
+              <a href="subject.html#34">[ subject ]</a>
+              <a href="author.html#34">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-announce">More information about the i3-announce
+mailing list</a><br>
+</body></html>

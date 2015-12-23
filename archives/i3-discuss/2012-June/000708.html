@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Improved%20i3bar%20hide%20mode%20behavior%20%28In%20my%20point%20of%0A%09view%29&In-Reply-To=%3CCABrV9YspQE-Uq%3DdHkzkF8uNa_z65g5Czj5iBdLSrCnZ74tX7UQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000711.html">
+   <LINK REL="Next"  HREF="000714.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)</H1>
+    <B>Alexander Kalentyev</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Improved%20i3bar%20hide%20mode%20behavior%20%28In%20my%20point%20of%0A%09view%29&In-Reply-To=%3CCABrV9YspQE-Uq%3DdHkzkF8uNa_z65g5Czj5iBdLSrCnZ74tX7UQ%40mail.gmail.com%3E"
+       TITLE="[i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)">comrad.karlovich at googlemail.com
+       </A><BR>
+    <I>Thu Jun 14 23:53:24 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000711.html">[i3] Problem with autologin
+</A></li>
+        <LI>Next message: <A HREF="000714.html">[i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#708">[ date ]</a>
+              <a href="thread.html#708">[ thread ]</a>
+              <a href="subject.html#708">[ subject ]</a>
+              <a href="author.html#708">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>This patch was accepted?
+
+2012/3/26 Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt;
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Excerpts from Fernando Lemos's message of 2012-02-24 01:13:04 +0100:
+</I>&gt;<i> &gt; This sounds interesting, but have you discussed it with Michael first?
+</I>&gt;<i> &gt; I'd recommend always pinging Michael first to see if what you intend
+</I>&gt;<i> &gt; to do is in line with the project goals and things like that. Unless,
+</I>&gt;<i> &gt; of course, you don't care about getting your patches merged.
+</I>&gt;<i> No worries, the patch makes sense (judging from the description).
+</I>&gt;<i>
+</I>&gt;<i> &gt; Please merge both patches in a single one to make it easier to review
+</I>&gt;<i> &gt; (unless they do separate things, of course).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I noticed you used &quot;if (&quot; and &quot;if(&quot;, please stick with &quot;if (&quot; as
+</I>&gt;<i> &gt; that's what the rest of xcb.c uses.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; You declare and read bar_hidden, but you never seem to write to it. Am
+</I>&gt;<i> &gt; I missing something? Also, I'd rather have the code that calls
+</I>&gt;<i> &gt; hide/unhide_bar simply not call those functions rather than do the
+</I>&gt;<i> &gt; checking inside the functions, but that's subjective, I guess.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; The indentation level on the call to hide_bars() in the last chunk of
+</I>&gt;<i> &gt; the second patch is wrong. Are you sure you don't want that enclosed
+</I>&gt;<i> &gt; by brackets, as part of the &quot;else&quot; branch?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; You're doing all the logic in the drawing code. Perhaps it would be
+</I>&gt;<i> &gt; better to detect that stuff directly in the ipc.c, when you receive
+</I>&gt;<i> &gt; the workspace info from i3, after the call to parse_workspaces_json.
+</I>&gt;<i> All of Fernando&#8217;s comments are valid.
+</I>&gt;<i>
+</I>&gt;<i> Do you want to update the patch? If you need any help/have any questions,
+</I>&gt;<i> please let us know.
+</I>&gt;<i>
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Michael
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120614/4905b4fa/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120614/4905b4fa/attachment.html</A>&gt;
+</PRE>
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000711.html">[i3] Problem with autologin
+</A></li>
+	<LI>Next message: <A HREF="000714.html">[i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#708">[ date ]</a>
+              <a href="thread.html#708">[ thread ]</a>
+              <a href="subject.html#708">[ subject ]</a>
+              <a href="author.html#708">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

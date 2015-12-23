@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Improved%20i3bar%20hide%20mode%20behavior%20%28In%20my%20point%20of%0A%09view%29&In-Reply-To=%3CCAMJW5%3D3JXKVPBT6nGct-01jCWGgo8vnvmrR-ZO9f6_rr37Bb%2Bg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000772.html">
+   <LINK REL="Next"  HREF="000801.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)</H1>
+    <B>DR</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Improved%20i3bar%20hide%20mode%20behavior%20%28In%20my%20point%20of%0A%09view%29&In-Reply-To=%3CCAMJW5%3D3JXKVPBT6nGct-01jCWGgo8vnvmrR-ZO9f6_rr37Bb%2Bg%40mail.gmail.com%3E"
+       TITLE="[i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)">drdarkraven at gmail.com
+       </A><BR>
+    <I>Fri Jul 13 16:22:01 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000772.html">[i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)
+</A></li>
+        <LI>Next message: <A HREF="000801.html">[i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#800">[ date ]</a>
+              <a href="thread.html#800">[ thread ]</a>
+              <a href="subject.html#800">[ subject ]</a>
+              <a href="author.html#800">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, Jul 8, 2012 at 4:31 AM, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt; wrote:
+
+&gt;<i> Hi DR,
+</I>&gt;<i>
+</I>&gt;<i> Quoting DR (2012-07-07 17:45:52)
+</I>&gt;<i> &gt; Since I failed to convince Michael to accept my newer patch, I decide to
+</I>&gt;<i> drop
+</I>&gt;<i> &gt; those more &quot;advanced&quot; patch, and try to push this simple patch into i3.
+</I>&gt;<i> Thanks for updating your patch. Here are my comments:
+</I>&gt;<i>
+</I>&gt;<i> 1) You are not using FREE(last_urgent_ws);, but free(last_urgent_ws) in
+</I>&gt;<i>    line 1489, which is unsafe (it is not guaranteed that last_urgent_ws
+</I>&gt;<i>    is != NULL).
+</I>&gt;<i>
+</I>&gt;<i> 2) You are using strdup() instead of sstrdup() in line 1490, so you
+</I>&gt;<i>    don&#8217;t handle -EMEMORY.
+</I>&gt;<i>
+</I>&gt;<i> 3) Instead of using if (last_urgent_ws) free(last_urgent_ws); you should
+</I>&gt;<i>    use FREE(last_urgent_ws) in line 1526.
+</I>&gt;<i>
+</I>&gt;<i> 4) Your patch doesn&#8217;t actually work when the user is not navigating away
+</I>&gt;<i>    from the workspace using the keyboard, but when he is focusing the
+</I>&gt;<i>    urgent window with the mouse. i3bar will properly update the urgency
+</I>&gt;<i>    indicator for that workspace, but it won&#8217;t hide.
+</I>&gt;<i>
+</I>This behavior is intended, so user can easily (using only his mouse)
+navigate back to previous workspace before the urgency happen.
+
+&gt;<i>
+</I>&gt;<i>    I&#8217;d suggest to save a flag which is set to true when i3bar calls
+</I>&gt;<i>    unhide_bars() due to an urgent workspace. Then, check if that flag is
+</I>&gt;<i>    set, but no more urgent workspaces are found (!has_urgent &amp;&amp;
+</I>&gt;<i>    !mod_pressed &amp;&amp; hidden_due_to_urgency) and call hide_bars().
+</I>&gt;<i>
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Michael
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120713/1be91949/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120713/1be91949/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000772.html">[i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)
+</A></li>
+	<LI>Next message: <A HREF="000801.html">[i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#800">[ date ]</a>
+              <a href="thread.html#800">[ thread ]</a>
+              <a href="subject.html#800">[ subject ]</a>
+              <a href="author.html#800">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

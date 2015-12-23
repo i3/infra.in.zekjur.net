@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Error: status_command process exited unexpectedly (exit 1)
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Error%3A%20status_command%20process%20exited%20unexpectedly%20%28exit%201%29&In-Reply-To=%3CCANnVG6mkMTq6PPZnrdtunwcPqvncu4%3D53P7-ZSDe%3Dh68MSCHFw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002227.html">
+   <LINK REL="Next"  HREF="002231.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Error: status_command process exited unexpectedly (exit 1)</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Error%3A%20status_command%20process%20exited%20unexpectedly%20%28exit%201%29&In-Reply-To=%3CCANnVG6mkMTq6PPZnrdtunwcPqvncu4%3D53P7-ZSDe%3Dh68MSCHFw%40mail.gmail.com%3E"
+       TITLE="[i3] Error: status_command process exited unexpectedly (exit 1)">michael at i3wm.org
+       </A><BR>
+    <I>Thu Oct 15 22:41:39 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002227.html">[i3] Error: status_command process exited unexpectedly (exit 1)
+</A></li>
+        <LI>Next message: <A HREF="002231.html">[i3] Debugging techniques.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2228">[ date ]</a>
+              <a href="thread.html#2228">[ thread ]</a>
+              <a href="subject.html#2228">[ subject ]</a>
+              <a href="author.html#2228">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Could you open an issue for this at <A HREF="https://github.com/i3/i3">https://github.com/i3/i3</A> please? We’d
+like to keep all bugs in one place.
+
+Also, please try changing your login shell from fish to bash before
+reporting, just so that you know whether fish is to blame here. We’ve
+certainly had trouble with fish before.
+
+On Wed, Oct 14, 2015 at 11:44 PM, Taro Murao &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">taro.murao at gmail.com</A>&gt; wrote:
+
+&gt;<i> Hello,
+</I>&gt;<i>
+</I>&gt;<i>     when I start i3status with i3 in bar {}, I get the error message:
+</I>&gt;<i> Error:
+</I>&gt;<i>     status_command process exited unexpectedly (exit 1). Can anyone help?
+</I>&gt;<i>
+</I>&gt;<i>     I followed the debugging instruction on
+</I>&gt;<i> <A HREF="http://i3wm.org/docs/debugging.html.">http://i3wm.org/docs/debugging.html.</A>
+</I>&gt;<i>     When the bar is displayed with
+</I>&gt;<i>
+</I>&gt;<i>     $ for c in $(i3-msg -t get_bar_config | python -c \ 'import
+</I>&gt;<i>     json,sys;print(&quot;\n&quot;.join(json.load(sys.stdin)))'); do \ (i3bar
+</I>&gt;<i> --bar_id=$c
+</I>&gt;<i>     &gt;i3bar.$c.log 2&gt;&amp;1) &amp; \ done;
+</I>&gt;<i>
+</I>&gt;<i>     The bar displays without error. I use Fish shell, Arch Linux and KDE.
+</I>&gt;<i> Below
+</I>&gt;<i>     is the log I obtained with &quot;verbose yes&quot;, but the log probably
+</I>&gt;<i> contains no
+</I>&gt;<i>     error messages because I don't have the error when I restart i3bar
+</I>&gt;<i> this way.
+</I>&gt;<i>
+</I>&gt;<i>     i3status: trying to auto-detect output_format setting
+</I>&gt;<i>     i3status: auto-detected &quot;i3bar&quot;
+</I>&gt;<i>     [libi3] libi3/font.c Using Pango font monospace, size 8
+</I>&gt;<i>     [libi3] libi3/font.c X11 root window dictates 96.094581 DPI
+</I>&gt;<i>     [i3bar/src/xcb.c:1216] Calculated font height: 13
+</I>&gt;<i>     [i3bar/src/xcb.c:1342] Setting bar_fg = #FFFFFF as
+</I>&gt;<i> _NET_SYSTEM_TRAY_COLORS
+</I>&gt;<i>     [i3bar/src/xcb.c:985] received an xkb event
+</I>&gt;<i>     [i3bar/src/ipc.c:197] Got data!
+</I>&gt;<i>     [i3bar/src/ipc.c:63] Parsing outputs JSON...
+</I>&gt;<i>
+</I>&gt;<i> - Ignored:
+</I>&gt;<i>     [i3bar/src/ipc.c:65] Reconfiguring windows...
+</I>&gt;<i>     [i3bar/src/xcb.c:1488] Re-allocating statusline buffer,
+</I>&gt;<i> statusline_width =
+</I>&gt;<i>     0, root_screen-&gt;width_in_pixels = 1366
+</I>&gt;<i>     [i3bar/src/xcb.c:1583] Destroying window for output VIRTUAL1
+</I>&gt;<i>     [i3bar/src/xcb.c:1583] Destroying window for output VGA1
+</I>&gt;<i>     [i3bar/src/xcb.c:1583] Destroying window for output HDMI3
+</I>&gt;<i>     [i3bar/src/xcb.c:1583] Destroying window for output HDMI2
+</I>&gt;<i>     [i3bar/src/xcb.c:1583] Destroying window for output HDMI1
+</I>&gt;<i>     [i3bar/src/xcb.c:1583] Destroying window for output DP3
+</I>&gt;<i>     [i3bar/src/xcb.c:1583] Destroying window for output DP2
+</I>&gt;<i>     [i3bar/src/xcb.c:1583] Destroying window for output DP1
+</I>&gt;<i>     [i3bar/src/xcb.c:1588] Creating window for output LVDS1
+</I>&gt;<i>     [i3bar/src/xcb.c:1259] Initializing system tray functionality
+</I>&gt;<i>     [i3bar/src/xcb.c:1342] Setting bar_fg = #FFFFFF as
+</I>&gt;<i> _NET_SYSTEM_TRAY_COLORS
+</I>&gt;<i>     [i3bar/src/xcb.c:1793] Drawing bars...
+</I>&gt;<i>     [i3bar/src/xcb.c:1801] Output VIRTUAL1 inactive, skipping...
+</I>&gt;<i>     [i3bar/src/xcb.c:1801] Output VGA1 inactive, skipping...
+</I>&gt;<i>     [i3bar/src/xcb.c:1801] Output HDMI3 inactive, skipping...
+</I>&gt;<i>     [i3bar/src/xcb.c:1801] Output HDMI2 inactive, skipping...
+</I>&gt;<i>     [i3bar/src/xcb.c:1801] Output HDMI1 inactive, skipping...
+</I>&gt;<i>     [i3bar/src/xcb.c:1801] Output DP3 inactive, skipping...
+</I>&gt;<i>     [i3bar/src/xcb.c:1801] Output DP2 inactive, skipping...
+</I>&gt;<i>     [i3bar/src/xcb.c:1801] Output DP1 inactive, skipping...
+</I>&gt;<i>     [i3bar/src/ipc.c:197] Got data!
+</I>&gt;<i>     [i3bar/src/ipc.c:54] Got subscribe reply: {&quot;success&quot;:true}
+</I>&gt;<i>     [i3bar/src/ipc.c:197] Got data!
+</I>&gt;<i>     [i3bar/src/ipc.c:43] Got workspace data!
+</I>&gt;<i>     [i3bar/src/workspaces.c:142] Got workspace canonical: 1, name: '1',
+</I>&gt;<i>     name_width: 7, glyphs: 1
+</I>&gt;<i>     [i3bar/src/workspaces.c:142] Got workspace canonical: 2, name: '2',
+</I>&gt;<i>     name_width: 7, glyphs: 1
+</I>&gt;<i>     [i3bar/src/xcb.c:1793] Drawing bars...
+</I>&gt;<i>     [i3bar/src/xcb.c:1801] Output VIRTUAL1 inactive, skipping...
+</I>&gt;<i>     [i3bar/src/xcb.c:1801] Output VGA1 inactive, skipping...
+</I>&gt;<i>     [i3bar/src/xcb.c:1801] Output HDMI3 inactive, skipping...
+</I>&gt;<i>     [i3bar/src/xcb.c:1801] Output HDMI2 inactive, skipping...
+</I>&gt;<i>     [i3bar/src/xcb.c:1801] Output HDMI1 inactive, skipping...
+</I>&gt;<i>     [i3bar/src/xcb.c:1801] Output DP3 inactive, skipping...
+</I>&gt;<i>     [i3bar/src/xcb.c:1801] Output DP2 inactive, skipping...
+</I>&gt;<i>     [i3bar/src/xcb.c:1801] Output DP1 inactive, skipping...
+</I>&gt;<i>     [i3bar/src/xcb.c:1825] Drawing button for WS 1 at x = 0, len = 7
+</I>&gt;<i>     [i3bar/src/xcb.c:1825] Drawing button for WS 2 at x = 18, len = 7
+</I>&gt;<i>     [i3bar/src/child.c:420] Detecting input type based on buffer
+</I>&gt;<i> *{&quot;version&quot;:1}
+</I>&gt;<i>     [
+</I>&gt;<i>     *
+</I>&gt;<i>     [i3bar/src/xcb.c:1793] Drawing bars...
+</I>&gt;<i>     [i3bar/src/xcb.c:1801] Output VIRTUAL1 inactive, skipping...
+</I>&gt;<i>     [i3bar/src/xcb.c:1801] Output VGA1 inactive, skipping...
+</I>&gt;<i>     [i3bar/src/xcb.c:1801] Output HDMI3 inactive, skipping...
+</I>&gt;<i>     [i3bar/src/xcb.c:1801] Output HDMI2 inactive, skipping...
+</I>&gt;<i>     [i3bar/src/xcb.c:1801] Output HDMI1 inactive, skipping...
+</I>&gt;<i>     [i3bar/src/xcb.c:1801] Output DP3 inactive, skipping...
+</I>&gt;<i>     [i3bar/src/xcb.c:1801] Output DP2 inactive, skipping...
+</I>&gt;<i>     [i3bar/src/xcb.c:1801] Output DP1 inactive, skipping...
+</I>&gt;<i>     [i3bar/src/xcb.c:1825] Drawing button for WS 1 at x = 0, len = 7
+</I>&gt;<i>     [i3bar/src/xcb.c:1825] Drawing button for WS 2 at x = 18, len = 7
+</I>&gt;<i>     [i3bar/src/child.c:297] copying statusline_buffer to statusline_head
+</I>&gt;<i>     [i3bar/src/child.c:301] dumping statusline:
+</I>&gt;<i>     [i3bar/src/child.c:304] full_text =
+</I>&gt;<i> 2001:4c50:d4d:1200:a288:b4ff:fe9d:be44
+</I>&gt;<i>     [i3bar/src/child.c:305] short_text = (null)
+</I>&gt;<i>     [i3bar/src/child.c:306] color = #00FF00
+</I>&gt;<i>     [i3bar/src/child.c:304] full_text = 148.6 GiB
+</I>&gt;<i>     [i3bar/src/child.c:305] short_text = (null)
+</I>&gt;<i>     [i3bar/src/child.c:306] color = (null)
+</I>&gt;<i>     [i3bar/src/child.c:304] full_text = DHCP: no
+</I>&gt;<i>     [i3bar/src/child.c:305] short_text = (null)
+</I>&gt;<i>     [i3bar/src/child.c:306] color = #FF0000
+</I>&gt;<i>     [i3bar/src/child.c:304] full_text = VPN: no
+</I>&gt;<i>     [i3bar/src/child.c:305] short_text = (null)
+</I>&gt;<i>     [i3bar/src/child.c:306] color = #FF0000
+</I>&gt;<i>     [i3bar/src/child.c:304] full_text = W: (066% at Tech_D0055186)
+</I>&gt;<i> 192.168.0.1
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Taro Murao | 村尾太郎
+</I>&gt;<i>
+</I>
+
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151015/5ff0c03b/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151015/5ff0c03b/attachment.html</A>&gt;
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002227.html">[i3] Error: status_command process exited unexpectedly (exit 1)
+</A></li>
+	<LI>Next message: <A HREF="002231.html">[i3] Debugging techniques.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2228">[ date ]</a>
+              <a href="thread.html#2228">[ thread ]</a>
+              <a href="subject.html#2228">[ subject ]</a>
+              <a href="author.html#2228">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

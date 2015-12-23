@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] fix code to work with yajl 2.0.0
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20fix%20code%20to%20work%20with%20yajl%202.0.0&In-Reply-To=%3C1303854175-26020-1-git-send-email-badboy%40archlinux.us%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000216.html">
+   <LINK REL="Next"  HREF="000218.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] fix code to work with yajl 2.0.0</H1>
+    <B>badboy at archlinux.us</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20fix%20code%20to%20work%20with%20yajl%202.0.0&In-Reply-To=%3C1303854175-26020-1-git-send-email-badboy%40archlinux.us%3E"
+       TITLE="[i3] [PATCH] fix code to work with yajl 2.0.0">badboy at archlinux.us
+       </A><BR>
+    <I>Tue Apr 26 23:42:55 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000216.html">[i3] egde snapping for floating windows
+</A></li>
+        <LI>Next message: <A HREF="000218.html">[i3] [PATCH] fix code to work with yajl 2.0.0
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#217">[ date ]</a>
+              <a href="thread.html#217">[ thread ]</a>
+              <a href="subject.html#217">[ subject ]</a>
+              <a href="author.html#217">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>From: Jan-Erik Rediger &lt;<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">badboy at archlinux.us</A>&gt;
+
+---
+ src/ipc.c |   14 +++++++-------
+ 1 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/src/ipc.c b/src/ipc.c
+index fcda355..2cdc0bd 100644
+--- a/src/ipc.c
++++ b/src/ipc.c
+@@ -85,7 +85,7 @@ static bool mkdirp(const char *path) {
+ }
+ 
+ static void ipc_send_message(int fd, const unsigned char *payload,
+-                             int message_type, int message_size) {
++                             int message_type, size_t message_size) {
+         int buffer_size = strlen(&quot;i3-ipc&quot;) + sizeof(uint32_t) +
+                           sizeof(uint32_t) + message_size;
+         char msg[buffer_size];
+@@ -182,7 +182,7 @@ IPC_HANDLER(get_workspaces) {
+         if (last_focused == SLIST_END(&amp;(c_ws-&gt;focus_stack)))
+                 last_focused = NULL;
+ 
+-        yajl_gen gen = yajl_gen_alloc(NULL, NULL);
++        yajl_gen gen = yajl_gen_alloc(NULL);
+         y(array_open);
+ 
+         TAILQ_FOREACH(ws, workspaces, workspaces) {
+@@ -226,7 +226,7 @@ IPC_HANDLER(get_workspaces) {
+         y(array_close);
+ 
+         const unsigned char *payload;
+-        unsigned int length;
++        size_t length;
+         y(get_buf, &amp;payload, &amp;length);
+ 
+         ipc_send_message(fd, payload, I3_IPC_REPLY_TYPE_WORKSPACES, length);
+@@ -241,7 +241,7 @@ IPC_HANDLER(get_workspaces) {
+ IPC_HANDLER(get_outputs) {
+         Output *output;
+ 
+-        yajl_gen gen = yajl_gen_alloc(NULL, NULL);
++        yajl_gen gen = yajl_gen_alloc(NULL);
+         y(array_open);
+ 
+         TAILQ_FOREACH(output, &amp;outputs, outputs) {
+@@ -276,7 +276,7 @@ IPC_HANDLER(get_outputs) {
+         y(array_close);
+ 
+         const unsigned char *payload;
+-        unsigned int length;
++        size_t length;
+         y(get_buf, &amp;payload, &amp;length);
+ 
+         ipc_send_message(fd, payload, I3_IPC_REPLY_TYPE_OUTPUTS, length);
+@@ -288,7 +288,7 @@ IPC_HANDLER(get_outputs) {
+  *
+  */
+ static int add_subscription(void *extra, const unsigned char *s,
+-                            unsigned int len) {
++                            size_t len) {
+         ipc_client *client = extra;
+ 
+         DLOG(&quot;should add subscription to extra %p, sub %.*s\n&quot;, client, len, s);
+@@ -338,7 +338,7 @@ IPC_HANDLER(subscribe) {
+         memset(&amp;callbacks, 0, sizeof(yajl_callbacks));
+         callbacks.yajl_string = add_subscription;
+ 
+-        p = yajl_alloc(&amp;callbacks, NULL, NULL, (void*)client);
++        p = yajl_alloc(&amp;callbacks, NULL, (void*)client);
+         stat = yajl_parse(p, (const unsigned char*)message, message_size);
+         if (stat != yajl_status_ok) {
+                 unsigned char *err;
+-- 
+1.7.4.4
+
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000216.html">[i3] egde snapping for floating windows
+</A></li>
+	<LI>Next message: <A HREF="000218.html">[i3] [PATCH] fix code to work with yajl 2.0.0
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#217">[ date ]</a>
+              <a href="thread.html#217">[ thread ]</a>
+              <a href="subject.html#217">[ subject ]</a>
+              <a href="author.html#217">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,228 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3 new user experiences summary
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%20new%20user%20experiences%20summary&In-Reply-To=%3C561DF7C1.8060103%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002225.html">
+   <LINK REL="Next"  HREF="002230.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3 new user experiences summary</H1>
+    <B>Layus</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%20new%20user%20experiences%20summary&In-Reply-To=%3C561DF7C1.8060103%40gmail.com%3E"
+       TITLE="[i3] i3 new user experiences summary">layus.on at gmail.com
+       </A><BR>
+    <I>Wed Oct 14 08:35:45 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002225.html">[i3] i3 new user experiences summary
+</A></li>
+        <LI>Next message: <A HREF="002230.html">[i3] i3 new user experiences summary
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2226">[ date ]</a>
+              <a href="thread.html#2226">[ thread ]</a>
+              <a href="subject.html#2226">[ subject ]</a>
+              <a href="author.html#2226">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Nice to have such clear remarks from a new  (power)user.
+
+I just wanted to add some clarifications/coments.
+
+On 14/10/15 08:13, Michael Stapelberg wrote:
+&gt;<i> Thanks for writing this up. Answers inline.
+</I>&gt;<i>
+</I>&gt;<i> On Wed, Oct 14, 2015 at 1:08 AM, Frederik Eaton &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">frederik at ofb.net</A> 
+</I>&gt;<i> &lt;mailto:<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">frederik at ofb.net</A>&gt;&gt; wrote:
+</I>&gt;<i>
+</I>&gt;<i>     Hello All!
+</I>&gt;<i>
+</I>&gt;<i>     I just switched from Notion to i3 about a month ago. In general it's
+</I>&gt;<i>     been a positive experience, I especially appreciate the smaller
+</I>&gt;<i>     configuration file, the more sensible default bindings, the ability to
+</I>&gt;<i>     put windows in a tree (if that's the correct word).
+</I>&gt;<i>
+</I>&gt;<i>     After settling in, I made a quick list of some issues I ran into and
+</I>&gt;<i>     wanted to report back to the developers.
+</I>&gt;<i>
+</I>&gt;<i>     - As a user of the Dvorak keyboard layout, I was confused by the
+</I>&gt;<i>       result of running i3-config-wizard. I can see how h,t,n,s could be
+</I>&gt;<i>       used for navigation, but many of the remaining key bindings don't
+</I>&gt;<i>       make sense - why should 'd' split horizontally, or 'p' restart? This
+</I>&gt;<i>       wasn't really explained to me through the process of installing and
+</I>&gt;<i>       trying out the software. I ended up having to revert most of the
+</I>&gt;<i>       bindings to the Qwerty defaults. I think the wizard made things more
+</I>&gt;<i>       difficult in the end.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> The key _positions_ make some sense, the key mnemonics likely don’t. I 
+</I>&gt;<i> don’t think this is a big problem, as users are very likely to change 
+</I>&gt;<i> their config file anyway. Also, you’re free to use/not use the wizard 
+</I>&gt;<i> as you see fit — for most users, using the wizard seems to be the best 
+</I>&gt;<i> solution, which is why it’s started by default.
+</I>It is always difficult to mix the key positions and values and to pipck 
+reasonable defaults.
+On azerty, I want to use hjkl for navigation, but then h is no more 
+available for &quot;horizontal split&quot;.
+
+Also, it is easier to have the same bindings on all installations, even 
+if misplaced.
+This way, the tutorials can assume that the users all have Mod+p for 
+restart.
+If you are experienced enough to change the default bindings, then you 
+are experienced enough to transpose the tutorials :-)
+
+As usual, ideas on improving the bindings are welcome.
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     - Coming from Notion, I would have expected the default window layout
+</I>&gt;<i>       to be tabbed. At first I thought that i3 didn't support a tabbed
+</I>&gt;<i>       layout, because when I first started it (with killall notion; i3), I
+</I>&gt;<i>       ended up with 10 unusably-narrow windows. I still don't know how to
+</I>&gt;<i>       make tabbing the default - when I open windows on a new workspace,
+</I>&gt;<i>       they always come up split. If I kill and restart i3, then everything
+</I>&gt;<i>       comes up split (and uselessly narrow).
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Does “workspace_layout tabbed” do what you want?
+</I>Also, killing then starting i3 is not a common operation.
+You might prefer reload and/or restart as they preserve the layout.
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     - I had to ask the IRC channel for the name of the key binding to turn
+</I>&gt;<i>       a dialog box into a window - perhaps the documentation should be
+</I>&gt;<i>       improved so new users can avoid this hurdle (e.g. under TERMINOLOGY
+</I>&gt;<i>       in the man page, there could be an entry explaining that a &quot;Floating
+</I>&gt;<i>       Window&quot; is something like a dialog box).
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Can you please send a pull request for <A HREF="https://github.com/i3/i3">https://github.com/i3/i3</A> which 
+</I>&gt;<i> adds an explanation where you think it makes sense?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     - Even after learning the &quot;floating toggle&quot; binding it sometimes
+</I>&gt;<i>       becomes annoying or confusing to have to press it each time - for
+</I>&gt;<i>       instance if I have to print a lot of stuff in Firefox, but I
+</I>&gt;<i>       sometimes want to navigate to other windows when the print dialog is
+</I>&gt;<i>       open. I also sometimes accidentally turn Firefox into a floating
+</I>&gt;<i>       window when I'm doing this, and then I wonder where all the other
+</I>&gt;<i>       windows went.... I would appreciate an option to have dialogs always
+</I>&gt;<i>       come up as windows by default.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> If the print dialog is clearly meant to be floating, Firefox should 
+</I>&gt;<i> set the appropriate window hints. Since you describe you have to 
+</I>&gt;<i> manually make it floating, apparently Firefox doesn’t. You should file 
+</I>&gt;<i> a Firefox bug, but you can work around this with a for_window rule, 
+</I>&gt;<i> see 
+</I>&gt;<i> <A HREF="http://i3wm.org/docs/userguide.html#_arbitrary_commands_for_specific_windows_for_window">http://i3wm.org/docs/userguide.html#_arbitrary_commands_for_specific_windows_for_window</A>
+</I>i3 tries to be smart about which windows to keep floating.
+Basically, every window that specifically asks to be floating is kept 
+floating.
+
+If you want a drastic solution, add
+
+for_window [title=&quot;.*&quot;] floating disable
+
+My config tends to add floating windows :
+
+for_window [title=&quot;Oz Browser&quot;]       floating enable
+for_window [title=&quot;Super Hexagon&quot;]    floating enable
+for_window [title=&quot;^SpaceChem$&quot;]      floating enable
+for_window [class=&quot;Gnuplot&quot;]          floating enable
+for_window [class=&quot;FLTK&quot;]             floating enable
+#for_window [class=&quot;Graphviz&quot;]         floating enable
+for_window [window_role=&quot;CallWindow&quot;] floating enable
+
+&gt;<i>
+</I>&gt;<i>     - &quot;focus right&quot; is not always the reverse of &quot;focus left&quot;. For
+</I>&gt;<i>       instance, if the rightmost tab is split horizontally, then one
+</I>&gt;<i>       command will cycle through all the windows, but the other will get
+</I>&gt;<i>       stuck cycling through the children of the tab which has been split.
+</I>&gt;<i>       Same with &quot;focus up&quot; and &quot;focus down&quot; in the stacking layout, when a
+</I>&gt;<i>       child is split vertically. It seems it would be cleaner to have
+</I>&gt;<i>       these pairs be strict opposites.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> There are several places where the directional commands don’t strictly 
+</I>&gt;<i> operate on the tree and hence focus left/right are not always direct 
+</I>&gt;<i> opposites. We believe that bottomline, this makes it easier for users. 
+</I>&gt;<i> Even if it didn’t make it easier for users, changing it now would be 
+</I>&gt;<i> very disruptive to existing users, so I don’t think we can do much 
+</I>&gt;<i> about it.
+</I>&gt;<i>
+</I>&gt;<i> If you feel strongly, you might be able to implement your own logic 
+</I>&gt;<i> using the IPC interface: <A HREF="http://i3wm.org/docs/ipc.html">http://i3wm.org/docs/ipc.html</A>
+</I>This works much like commant completion in zsh for example.
+The right arrow cycles only on the last line of completions.
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     - I like that &quot;i3-nagbar&quot; is available to display error messages, but
+</I>&gt;<i>       I don't know how to close it with my keyboard... seems like I have
+</I>&gt;<i>       to use my mouse to close it. I'd prefer to avoid the mouse...!
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> It’s designed to nag you, so this is working as intended :).
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     Well, I hope this isn't too much stuff at once. I'm happy with i3 so
+</I>&gt;<i>     even if you don't fix any of these problems, I'll still use it. As I
+</I>&gt;<i>     mentioned above, I just wanted to report back since it's not always
+</I>&gt;<i>     easy to anticipate how new users will experience a piece of software.
+</I>&gt;<i>
+</I>&gt;<i>     Thanks for all your hard work in developing i3!
+</I>&gt;<i>
+</I>&gt;<i>     Best wishes,
+</I>&gt;<i>
+</I>&gt;<i>     Frederik
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -- 
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Michael
+</I>-- 
+Regards,
+Guillaume.
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151014/7b32d1b1/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151014/7b32d1b1/attachment.html</A>&gt;
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002225.html">[i3] i3 new user experiences summary
+</A></li>
+	<LI>Next message: <A HREF="002230.html">[i3] i3 new user experiences summary
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2226">[ date ]</a>
+              <a href="thread.html#2226">[ thread ]</a>
+              <a href="subject.html#2226">[ subject ]</a>
+              <a href="author.html#2226">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

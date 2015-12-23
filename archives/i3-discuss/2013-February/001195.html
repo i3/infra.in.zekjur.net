@@ -1,0 +1,258 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Building the latest i3 on RHEL 6
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Building%20the%20latest%20i3%20on%20RHEL%206&In-Reply-To=%3CCAHyBj%3D9F-YgZ9GE-8Nhvr8StDgZkqetvm6SRkExPqz3f4P_jfA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001194.html">
+   <LINK REL="Next"  HREF="001196.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Building the latest i3 on RHEL 6</H1>
+    <B>Dustin Jerome</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Building%20the%20latest%20i3%20on%20RHEL%206&In-Reply-To=%3CCAHyBj%3D9F-YgZ9GE-8Nhvr8StDgZkqetvm6SRkExPqz3f4P_jfA%40mail.gmail.com%3E"
+       TITLE="[i3] Building the latest i3 on RHEL 6">dustyjerome at gmail.com
+       </A><BR>
+    <I>Tue Feb 26 22:47:42 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001194.html">[i3] Building the latest i3 on RHEL 6
+</A></li>
+        <LI>Next message: <A HREF="001196.html">[i3] Building the latest i3 on RHEL 6
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1195">[ date ]</a>
+              <a href="thread.html#1195">[ thread ]</a>
+              <a href="subject.html#1195">[ subject ]</a>
+              <a href="author.html#1195">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Update:
+
+A nice gentleman named Emil recommend I leave the current cairo version
+1.8.8 installed and build from source a new version of cairo with xcb
+support, which I have done. I installed it to /opt/cairo-with-xcb. He then
+recommended that I statically link the cairo-with-xcb library in my
+libi3/font.c file, which I did by changing the include statement from:
+
+#include &lt;cairo/cairo-xcb.h&gt;
+
+to
+
+#include &quot;/opt/cairo-with-xcb/include/cairo/cairo-xcb.h&quot;
+
+and that took care of the problem from earlier (that is, libi3 compiled
+just fine).
+
+A new problem has cropped up:
+
+$ make
+
+[libi3] CC libi3/fake_configure_notify.c
+
+[libi3] CC libi3/font.c
+
+[libi3] CC libi3/get_colorpixel.c
+
+[libi3] CC libi3/get_mod_mask.c
+
+[libi3] CC libi3/get_visualtype.c
+
+[libi3] CC libi3/ipc_connect.c
+
+[libi3] CC libi3/ipc_recv_message.c
+
+[libi3] CC libi3/ipc_send_message.c
+
+[libi3] CC libi3/is_debug_build.c
+
+[libi3] CC libi3/root_atom_contents.c
+
+[libi3] CC libi3/safewrappers.c
+
+[libi3] CC libi3/string.c
+
+[libi3] CC libi3/strndup.c
+
+[libi3] CC libi3/ucs2_conversion.c
+
+[libi3] AR libi3.a
+
+[i3] YACC src/cfgparse.y
+
+[i3] CC src/cfgparse.tab.c
+
+[i3] LEX src/cfgparse.l
+
+[i3] CC src/cfgparse.yy.c
+
+[i3] CC src/assignments.c
+
+[i3] CC src/click.c
+
+[i3] CC src/commands.c
+
+[i3] Generating command parser
+
+[i3] CC src/commands_parser.c
+
+[i3] CC src/con.c
+
+../i3/src/con.c: In function &#8216;con_toggle_fullscreen&#8217;:
+
+../i3/src/con.c:615: error: &#8216;ATOM&#8217; undeclared (first use in this function)
+
+../i3/src/con.c:615: error: (Each undeclared identifier is reported only
+once
+../i3/src/con.c:615: error: for each function it appears in.)
+
+make: *** [src/con.o] Error 1
+
+
+The line in question is line 615 in con.c:
+
+    xcb_change_property(conn, XCB_PROP_MODE_REPLACE, con-&gt;window-&gt;id,
+
+                        A__NET_WM_STATE, XCB_ATOM_ATOM, 32, num, values);
+
+
+(and that is the only instance of the word &quot;ATOM&quot; in this file)
+
+As a test I attempted to change XCB_ATOM_ATOM to XCB_ATOM and that actually
+allowed me to successfully compile the con.c file (I'm assuming it found a
+more generic type that would probably fall on it's face during compile or
+run time), but Murphy's law prevails and a new set of errors:
+
+$ make
+[i3] CC src/ewmh.c
+
+../i3/src/ewmh.c: In function &#8216;ewmh_update_current_desktop&#8217;:
+
+../i3/src/ewmh.c:32: error: &#8216;CARDINAL&#8217; undeclared (first use in this
+function)
+../i3/src/ewmh.c:32: error: (Each undeclared identifier is reported only
+once
+../i3/src/ewmh.c:32: error: for each function it appears in.)
+
+../i3/src/ewmh.c: In function &#8216;ewmh_update_active_window&#8217;:
+
+../i3/src/ewmh.c:49: error: &#8216;WINDOW&#8217; undeclared (first use in this
+function)
+../i3/src/ewmh.c: In function &#8216;ewmh_update_workarea&#8217;:
+
+../i3/src/ewmh.c:109: error: &#8216;CARDINAL&#8217; undeclared (first use in this
+function)
+../i3/src/ewmh.c: In function &#8216;ewmh_update_client_list_stacking&#8217;:
+
+../i3/src/ewmh.c:126: error: &#8216;WINDOW&#8217; undeclared (first use in this
+function)
+../i3/src/ewmh.c: In function &#8216;ewmh_setup_hints&#8217;:
+
+../i3/src/ewmh.c:160: error: &#8216;WINDOW&#8217; undeclared (first use in this
+function)
+../i3/src/ewmh.c:167: error: &#8216;ATOM&#8217; undeclared (first use in this function)
+
+
+(at this point I have changed XCB_ATOM back to XCB_ATOM_ATOM in con.c; I
+can only assume I am missing some dependency).
+
+The offending lines were XCB_ATOM_CARDINAL, XCB_ATOM_WINDOW, etc. etc.
+
+I see these defined in an enum in xproto.h, which is included in &quot;all.h&quot;
+which is included in con.c and ewmh.c - so I'm at a loss as to why these
+errors are coming up.
+
+Any ideas?
+
+-Dustin
+
+On Mon, Feb 25, 2013 at 4:22 PM, Dustin Jerome &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">dustyjerome at gmail.com</A>&gt;wrote:
+
+&gt;<i> Hey folks,
+</I>&gt;<i>
+</I>&gt;<i> I'm trying to build the latest i3 on RHEL 6.
+</I>&gt;<i>
+</I>&gt;<i> I use i3 at home (arch), but at work we use RHEL 6 and the &quot;latest&quot;
+</I>&gt;<i> version availble in the EPEL repo's is 4.01, built back in 2011.
+</I>&gt;<i>
+</I>&gt;<i> I did some searching on these archives and only found a handful of RHEL
+</I>&gt;<i> mentions, this one being the most pertinent (describes my issue):
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/2012-Septemyum">http://infra.in.zekjur.net/pipermail/i3-discuss/2012-Septemyum</A> remove
+</I>&gt;<i> package but leave dependent packagesyum remove package but leave
+</I>&gt;<i> depe(especially considering my i3 config file from my home PC's is designed
+</I>&gt;<i> around 4.4's capabilities).ndent packagesber/000935.html&lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/2012-September/000935.html">http://infra.in.zekjur.net/pipermail/i3-discuss/2012-September/000935.html</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i> Now I'd rather follow Michael's advice and not start removing
+</I>&gt;<i> functionality from i3, as if that's the case I may as well just use 4.01
+</I>&gt;<i> and avoid the headache altogether.
+</I>&gt;<i>
+</I>&gt;<i> The version of cairo that comes packaged with RHEL 6 is 1.8 and is not
+</I>&gt;<i> built with xcb support, which is shown when I call make in the i3 git repo:
+</I>&gt;<i>
+</I>&gt;<i> $ make
+</I>&gt;<i> [libi3] CC libi3/font.c
+</I>&gt;<i> libi3/font.c:16:29: error: cairo/cairo-xcb.h: No such file or directory
+</I>&gt;<i> libi3/font.c: In function &#8216;load_pango_font&#8217;:
+</I>&gt;<i> libi3/font.c:57: warning: implicit declaration of function
+</I>&gt;<i> &#8216;cairo_xcb_surface_create&#8217;
+</I>&gt;<i> libi3/font.c:57: warning: initialization makes pointer from integer
+</I>&gt;<i> without a cast
+</I>&gt;<i> libi3/font.c: In function &#8216;draw_text_pango&#8217;:
+</I>&gt;<i> libi3/font.c:86: warning: initialization makes pointer from integer
+</I>&gt;<i> without a cast
+</I>&gt;<i> libi3/font.c: In function &#8216;predict_text_width_pango&#8217;:
+</I>&gt;<i> libi3/font.c:114: warning: initialization makes pointer from integer
+</I>&gt;<i> without a cast
+</I>&gt;<i> make: *** [libi3/font.o] Error 1
+</I>&gt;<i>
+</I>&gt;<i> I attempted to upgrade cairo, but there are a ton of packages dependent on
+</I>&gt;<i> it. I didn't want to attempt to remove or upgrade cairo without first
+</I>&gt;<i> getting some assistance.
+</I>&gt;<i>
+</I>&gt;<i> Going by this guide:
+</I>&gt;<i> <A HREF="http://wiki.centos.org/HowTos/RebuildSRPM">http://wiki.centos.org/HowTos/RebuildSRPM</A>
+</I>&gt;<i> I know how to re-build cairo with xcb support, and I also am able to do it
+</I>&gt;<i> building by source with the flags:
+</I>&gt;<i> ./configure --enable-xcb
+</I>&gt;<i>
+</I>&gt;<i> I guess my question is: how do I upgrade cairo with xcb support on RHEL 6
+</I>&gt;<i> without breaking things?
+</I>&gt;<i>
+</I>&gt;<i> Thank you!
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130226/fbcb2960/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130226/fbcb2960/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001194.html">[i3] Building the latest i3 on RHEL 6
+</A></li>
+	<LI>Next message: <A HREF="001196.html">[i3] Building the latest i3 on RHEL 6
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1195">[ date ]</a>
+              <a href="thread.html#1195">[ thread ]</a>
+              <a href="subject.html#1195">[ subject ]</a>
+              <a href="author.html#1195">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

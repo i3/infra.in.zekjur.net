@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Call for testing for the 4.8 release
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Call%20for%20testing%20for%20the%204.8%20release&In-Reply-To=%3Cm2egyvs1zk.fsf%40informatik.uni-tuebingen.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001753.html">
+   <LINK REL="Next"  HREF="001762.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Call for testing for the 4.8 release</H1>
+    <B>Marcus Crestani</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Call%20for%20testing%20for%20the%204.8%20release&In-Reply-To=%3Cm2egyvs1zk.fsf%40informatik.uni-tuebingen.de%3E"
+       TITLE="[i3] Call for testing for the 4.8 release">crestani at informatik.uni-tuebingen.de
+       </A><BR>
+    <I>Wed Jun 11 21:03:11 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001753.html">[i3] Call for testing for the 4.8 release
+</A></li>
+        <LI>Next message: <A HREF="001762.html">[i3] Call for testing for the 4.8 release
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1761">[ date ]</a>
+              <a href="thread.html#1761">[ thread ]</a>
+              <a href="subject.html#1761">[ subject ]</a>
+              <a href="author.html#1761">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;&gt;&gt;&gt;&gt;<i>&quot;MS&quot; == Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt; writes:
+</I>MS&gt; I want to release i3 v4.8 soon, so here is a call for testing.
+
+On OS X, I see a ton of &quot;macro redefined&quot; warnings when compiling
+src/log.c.  The redefinitions are caused by include/queue.h that exists
+as a system header /usr/include/sys/queue.h on OS X.
+
+I've attached a patch that moves the __APPLE__ specific include of
+sysctl.h below the include of i3.h.  This way, the compiler considers
+the redefinitions to come from a system header and does not show the
+warnings.  Also, types.h is no longer needed on OS X.
+
+With this patch i3 builds cleanly and works fine for me.
+
+-- 
+Marcus
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Include-sys-sysctl.h-after-i3.h-to-prevent-redefinit.patch
+Type: text/x-patch
+Size: 889 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140611/e48cdf81/attachment.bin">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140611/e48cdf81/attachment.bin</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001753.html">[i3] Call for testing for the 4.8 release
+</A></li>
+	<LI>Next message: <A HREF="001762.html">[i3] Call for testing for the 4.8 release
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1761">[ date ]</a>
+              <a href="thread.html#1761">[ thread ]</a>
+              <a href="subject.html#1761">[ subject ]</a>
+              <a href="author.html#1761">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

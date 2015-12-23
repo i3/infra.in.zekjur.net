@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] gnome-settings-daemon not working
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20gnome-settings-daemon%20not%20working&In-Reply-To=%3CCAJLw8%2BVETZFNx2eOrtRC7X_PuSb5gB6t9ehA%2B4GG%2BWZUgEAibw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002091.html">
+   <LINK REL="Next"  HREF="002093.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] gnome-settings-daemon not working</H1>
+    <B>Martin Cigorraga</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20gnome-settings-daemon%20not%20working&In-Reply-To=%3CCAJLw8%2BVETZFNx2eOrtRC7X_PuSb5gB6t9ehA%2B4GG%2BWZUgEAibw%40mail.gmail.com%3E"
+       TITLE="[i3] gnome-settings-daemon not working">martincigorraga at gmail.com
+       </A><BR>
+    <I>Sat May 23 23:39:26 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002091.html">[i3] gnome-settings-daemon not working
+</A></li>
+        <LI>Next message: <A HREF="002093.html">[i3] gnome-settings-daemon not working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2092">[ date ]</a>
+              <a href="thread.html#2092">[ thread ]</a>
+              <a href="subject.html#2092">[ subject ]</a>
+              <a href="author.html#2092">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hey Eric,
+
+You could use xset until you figure out what's happening there:
+$ xset r rate 200 40
+
+If you also want to specify a kbd layout:
+$ setxkbmap -rules evdev -model evdev -layout us -variant altgr-intl
+
+HTH.
+-Martín
+
+On Sat, May 23, 2015 at 5:31 PM, Eric Duncan &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">eduncan911 at gmail.com</A>&gt; wrote:
+
+&gt;<i> i3 version 4.10.2 (2015-04-16, branch &quot;4.10.2&quot;) © 2009-2014 Michael
+</I>&gt;<i> Stapelberg and contributors
+</I>&gt;<i>
+</I>&gt;<i> I recently switched to Arch and I'm bringing over my i3 dot files, etc.
+</I>&gt;<i>
+</I>&gt;<i> Got a problem... I can't see to get my Gnome 3.16 settings working in
+</I>&gt;<i> i3wm.  I haven't had a problem with my Debian (7 and Jessie Testing) and
+</I>&gt;<i> Ubuntu (14.04 and 14.10) installs in the past.  But I've installed Arch on
+</I>&gt;<i> two different machines, and on both I cannot get the gnome-settings-daemon
+</I>&gt;<i> (or at least that's what I think it is) to enable my Gnome settings.
+</I>&gt;<i>
+</I>&gt;<i> Specifically, I can't get my Gnome setting for Keyboard short delay and
+</I>&gt;<i> faster repeat enabled.  I have not tried any other settings.
+</I>&gt;<i>
+</I>&gt;<i> If it matters, I am running within VMware Workstation and Fusion.
+</I>&gt;<i>
+</I>&gt;<i> My config looks like:
+</I>&gt;<i>
+</I>&gt;<i> exec --no-startup-id /usr/bin/vmware-user-suid-wrapper
+</I>&gt;<i> #exec --no-startup-id /usr/lib/gnome-settings-daemon/gnome-settings-daemon
+</I>&gt;<i> #exec --no-startup-id /usr/bin/gnome-keyring-daemon --start
+</I>&gt;<i> --components=pkcs11,secrets,ssh,gpg #
+</I>&gt;<i> /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
+</I>&gt;<i> #exec --no-startup-id dropbox start
+</I>&gt;<i> exec --no-startup-id compton -Cb --config ~/.i3/compton.conf # -CGb
+</I>&gt;<i>
+</I>&gt;<i> So when logged in, I see:
+</I>&gt;<i>
+</I>&gt;<i> $ ps aux | grep gnome-settings
+</I>&gt;<i> gdm         897  0.0  0.3 820888 29796 tty1     Sl+  16:24   0:00
+</I>&gt;<i> /usr/lib/gnome-settings-daemon/gnome-settings-daemon
+</I>&gt;<i>
+</I>&gt;<i> If I uncomment the gnome-settings-daemon one, it starts under my username
+</I>&gt;<i> and loads a few other gnome services:
+</I>&gt;<i>
+</I>&gt;<i> $ ps aux | grep gnome-settings
+</I>&gt;<i> gdm         897  0.0  0.3 820888 29796 tty1     Sl+  16:24   0:00
+</I>&gt;<i> /usr/lib/gnome-settings-daemon/gnome-settings-daemon
+</I>&gt;<i> eric       1049  0.0  0.6 915224 51304 ?        Sl   16:24   0:00
+</I>&gt;<i> /usr/lib/gnome-settings-daemon/gnome-settings-daemon
+</I>&gt;<i> eric       1112  0.0  0.2 283984 18924 ?        Sl   16:24   0:00
+</I>&gt;<i> /usr/lib/gnome-settings-daemon/gsd-locate-pointer
+</I>&gt;<i> eric       1114  0.0  0.1 433304 11408 ?        Sl   16:24   0:00
+</I>&gt;<i> /usr/lib/gnome-settings-daemon/gsd-printer
+</I>&gt;<i>
+</I>&gt;<i> Sounds good, except no keyboard settings have taken effect.
+</I>&gt;<i>
+</I>&gt;<i> Thoughts?
+</I>&gt;<i>
+</I>&gt;<i> Thanks!
+</I>&gt;<i> Eric
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150523/8a4dc697/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150523/8a4dc697/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002091.html">[i3] gnome-settings-daemon not working
+</A></li>
+	<LI>Next message: <A HREF="002093.html">[i3] gnome-settings-daemon not working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2092">[ date ]</a>
+              <a href="thread.html#2092">[ thread ]</a>
+              <a href="subject.html#2092">[ subject ]</a>
+              <a href="author.html#2092">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

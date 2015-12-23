@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Colors for i3status in &quot;i3bar&quot; mode?
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Colors%20for%20i3status%20in%20%22i3bar%22%20mode%3F&In-Reply-To=%3CCAKR2__2NqvQAt_sCCCVM3OOBvLneDaezk7J%3DzUomV_o9yqWF_g%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000922.html">
+   <LINK REL="Next"  HREF="000924.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Colors for i3status in &quot;i3bar&quot; mode?</H1>
+    <B>Giorgos Keramidas</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Colors%20for%20i3status%20in%20%22i3bar%22%20mode%3F&In-Reply-To=%3CCAKR2__2NqvQAt_sCCCVM3OOBvLneDaezk7J%3DzUomV_o9yqWF_g%40mail.gmail.com%3E"
+       TITLE="[i3] Colors for i3status in &quot;i3bar&quot; mode?">gkeramidas at gmail.com
+       </A><BR>
+    <I>Thu Sep 13 10:44:30 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000922.html">[i3] #784 bring open scratchpad window to the current workspace
+</A></li>
+        <LI>Next message: <A HREF="000924.html">[i3] Colors for i3status in &quot;i3bar&quot; mode?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#923">[ date ]</a>
+              <a href="thread.html#923">[ thread ]</a>
+              <a href="subject.html#923">[ subject ]</a>
+              <a href="author.html#923">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi everyone,
+
+I'm trying to set up colors for i3status in i3bar mode, and for some
+reason it fails to work.
+
+My i3status config file looks like this:
+
+$ cat -n .i3status.conf
+     1 general {
+     2  output_format = &quot;i3bar&quot;
+     3  colors = true
+     4  color_good = &quot;#202020&quot;
+     5  color_degraded = &quot;#e5871f&quot;
+     6  color_bad = &quot;#c83839&quot;
+     7  interval = 10
+     8 }
+     9
+    10 order  = &quot;load&quot;
+    11 order += &quot;time&quot;
+    12
+    13 load {
+    14  format = &quot;L:%5min&quot;
+    15 }
+    16
+    17 time {
+    18  format = &quot;%H:%M &#9474;&quot;
+    19 }
+
+The color-related directives in my ~/.i3/config file look like this:
+
+# -- colours -- #
+#colourclass               border    backg.     text
+client.focused             #1793D0   #1793D0    #FFFFFF
+client.focused_inactive    #000000   #333333    #FFFFFF
+client.unfocused           #000000   #333333    #FFFFFF
+client.urgent              #FF0000   #FF0000    #FF0000
+
+bar {
+  status_command i3status
+  colors {
+    background #aeb2c3
+    statusline #000000
+
+    # color_class      border  backg.  text
+    focused_workspace  #204560 #384560 #f0d830
+    active_workspace   #686868 #aeb2c3 #222222
+    inactive_workspace #686868 #aeb2c3 #222222
+    urgent_workspace   #2f343a #aeb2c3 #ffffff
+  }
+
+But when I run i3status there are no color values in the JSON-formatted output:
+
+$ i3status -v
+i3status 59d52ad (2012-09-05) &#169; 2008-2012 Michael Stapelberg and contributors
+$ i3status
+{&quot;version&quot;:1}
+[
+[{&quot;name&quot;:&quot;load&quot;,&quot;full_text&quot;:&quot;L:0.08&quot;},{&quot;name&quot;:&quot;time&quot;,&quot;full_text&quot;:&quot;10:42 &#9474;&quot;}]
+,[{&quot;name&quot;:&quot;load&quot;,&quot;full_text&quot;:&quot;L:0.08&quot;},{&quot;name&quot;:&quot;time&quot;,&quot;full_text&quot;:&quot;10:42 &#9474;&quot;}]
+^C
+
+Am I missing something in the configuration of i3status to actually
+_send_ the colors to i3bar, like the example output in the manual of
+i3bar?
+
+I was expecting to see something like this instead, when colors = true:
+
+$ i3status
+{&quot;version&quot;:1}
+[
+[{&quot;name&quot;:&quot;load&quot;,&quot;full_text&quot;:&quot;L:0.08&quot;,&quot;color&quot;:
+&quot;#202020&quot;},{&quot;name&quot;:&quot;time&quot;,&quot;full_text&quot;:&quot;10:42 &#9474;&quot;,&quot;color&quot;: &quot;#202020&quot;}]
+,[{&quot;name&quot;:&quot;load&quot;,&quot;full_text&quot;:&quot;L:0.08&quot;,&quot;color&quot;:
+&quot;#202020&quot;},{&quot;name&quot;:&quot;time&quot;,&quot;full_text&quot;:&quot;10:42 &#9474;&quot;,&quot;color&quot;: &quot;#202020&quot;}]
+^C
+</PRE>
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000922.html">[i3] #784 bring open scratchpad window to the current workspace
+</A></li>
+	<LI>Next message: <A HREF="000924.html">[i3] Colors for i3status in &quot;i3bar&quot; mode?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#923">[ date ]</a>
+              <a href="thread.html#923">[ thread ]</a>
+              <a href="subject.html#923">[ subject ]</a>
+              <a href="author.html#923">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

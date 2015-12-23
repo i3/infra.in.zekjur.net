@@ -1,0 +1,3049 @@
+From drdarkraven at gmail.com  Thu Mar  1 07:02:05 2012
+From: drdarkraven at gmail.com (Raven )
+Date: Thu, 01 Mar 2012 14:02:05 +0800
+Subject: [i3] [PATCH] Transparency support
+In-Reply-To: <1330508645-sup-6340@stapelberg.de>
+References: <CAMJW5=0GeBus4D4npdO54Z5+mL33T4mz=Cem7J5X+6RveXTL7Q@mail.gmail.com>
+ <CANVYNa_utbh3Umvxpqd+bjwUv7h67JRhUik=xLHphdNusMr0yg@mail.gmail.com>
+ <CAMJW5=2ZHyZDzBy-EhHyM=0srB9UNnWYVUFt5UqhZX=kf2jBQA@mail.gmail.com>
+ <CANVYNa-S82Qkd04KX4TrPkrFMO1gRVtpcSa68cDQ_zF+e=gmNA@mail.gmail.com>
+ <op.v8b5j5am735up4@sraven> <1327744001-sup-4371@stapelberg.de>
+ <CAMJW5=3-OT5Lf0Ef5t2mRa-6p_6NB80CKfjS39QQ03p2DcWP8Q@mail.gmail.com>
+ <1327767281-sup-8641@stapelberg.de> <1328562055-sup-3279@stapelberg.de>
+ <CAMJW5=0FHnCWSv9G6-=zPbn55Tn=+WNkG9gEgRzg2Sgj=gBY3w@mail.gmail.com>
+ <CAMJW5=0Zfexbx-eRXwEd2EEKHXvSGVR7dMFiqFwKrCL3Xj99Nw@mail.gmail.com>
+ <CAMJW5=0rXDEVf5jU12fYm2x6b8Y_Anbxh2Von2qwjBdcwmrkTg@mail.gmail.com>
+ <CANVYNa_zj+zL9rZaqLHsOnNZGVwfSbTtc_ZQPcaFSbwJcpj1jQ@mail.gmail.com>
+ <CAMJW5=0yM0y8m-U-YRV8hseg6LNVEwZp4fT7zZJQs-UXVWuChQ@mail.gmail.com>
+ <CANVYNa-ZuH81YXqetnRmGZn3c59jb=V9-gXvgs7TftUnvfzrWQ@mail.gmail.com>
+ <1330333730-sup-7369@stapelberg.de>
+ <CAMJW5=1fTCJZz7Po8qrGDQ8vz4RXsUsRafM4Mu2OA553T6
+ tS6g@mail.gmail.com> <1330508645-sup-6340@stapelberg.de>
+Message-ID: <op.wag9prp2735up4@sraven>
+
+On Wed, 29 Feb 2012 17:51:07 +0800, Michael Stapelberg <michael at i3wm.org>  
+wrote:
+
+> Hi darkraven,
+>
+> Excerpts from DR's message of 2012-02-27 16:09:07 +0100:
+>> Here is a patch which enables i3 to use 32bit visual only when needed.
+> Thanks for your patch. It removes a commandline switch, which is a good  
+> thing,
+> and it seems to work just fine on my system.
+>
+> Here are a few comments about it:
+>
+> 1) The commit message is far too long and contains a snippet you pasted  
+> from
+>    IRC. I don?t see the reason for that excerpt even being in the commit
+>    message. Could you reduce the commit message to a reasonable length  
+> please?
+>
+> 2) You introduce trailing whitespace in a number of occasions. Please  
+> remove that.
+>    My git log says lines 21, 225, 245, 248 and 268 are affected.
+>
+> 3) In x_con_init(), you create a colormap for each window, without ever  
+> freeing
+>    them. This is an X11 resource leak and will make X11 go out of memory  
+> after
+>    a while. Can you avoid creating new colormaps for every window  
+> entirely?
+>
+> 4) Can you please use XCB_COPY_FROM_PARENT instead of an explicit 0 for  
+> the
+>    depth? I think this makes the effect clearer.
+>
+> 5) In get_visual_depth and get_visualid_by_depth, please adhere to our  
+> coding
+>    style: no spaces between the function name and its arguments. So, use
+>    "xcb_depth_next(&depth_iter)" instead of "xcb_depth_next  
+> (&depth_iter)".
+>
+> Thanks!
+>
+> Best regards,
+> Michael
+
+Hi, I've changed the patch a bit, this time it will (I think) meet all  
+your criteria.
+
+-- 
+Using Opera's revolutionary email client: http://www.opera.com/mail/
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Use-32bit-visual-only-when-needed.patch
+Type: application/octet-stream
+Size: 13727 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120301/c5bd2f38/attachment.obj>
+
+From drdarkraven at gmail.com  Sat Mar  3 09:08:22 2012
+From: drdarkraven at gmail.com (DR)
+Date: Sat, 3 Mar 2012 16:08:22 +0800
+Subject: [i3] NVIDIA dynamic configuration
+Message-ID: <CAMJW5=1P16iQcJH4Bk=KJTbKW0Fo-SPLNsvs2tQTCQkwkfi6zA@mail.gmail.com>
+
+I don't know how dynamic configuration in NVIDIA is done, but the
+NVIDIA driver is actually kinda support dynamic configuration.
+
+Using nvidia-settings, it is possible to add new display and change
+resolution on the fly. And i3 doesn't support this, by assuming "As
+the nVidia driver cannot do dynamic configuration anyways, this is not
+a big deal."
+
+From michael at i3wm.org  Sat Mar  3 11:20:23 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 03 Mar 2012 11:20:23 +0100
+Subject: [i3] NVIDIA dynamic configuration
+In-Reply-To: <CAMJW5=1P16iQcJH4Bk=KJTbKW0Fo-SPLNsvs2tQTCQkwkfi6zA@mail.gmail.com>
+References: <CAMJW5=1P16iQcJH4Bk=KJTbKW0Fo-SPLNsvs2tQTCQkwkfi6zA@mail.gmail.com>
+Message-ID: <1330769922-sup-4985@stapelberg.de>
+
+Hi DR,
+
+Excerpts from DR's message of 2012-03-03 09:08:22 +0100:
+> I don't know how dynamic configuration in NVIDIA is done, but the
+> NVIDIA driver is actually kinda support dynamic configuration.
+> 
+> Using nvidia-settings, it is possible to add new display and change
+> resolution on the fly. And i3 doesn't support this, by assuming "As
+> the nVidia driver cannot do dynamic configuration anyways, this is not
+> a big deal."
+Well, you need to restart i3 inplace to make it pick up new Xinerama settings.
+It is well explained in the multi-monitor document that the only sane way to
+pick up new configuration on the fly is by using XRandR, and, AFAIK, nVidia?s
+blob still doesn?t support this.
+
+To answer your question on IRC: Of course I?m not using nVidia whenever I can
+(not in any of my private machines for example).
+
+Best regards,
+Michael
+
+From drdarkraven at gmail.com  Sat Mar  3 13:29:52 2012
+From: drdarkraven at gmail.com (DR)
+Date: Sat, 3 Mar 2012 20:29:52 +0800
+Subject: [i3] [PATCH] Use ev_break() rather than exit() in i3bar.
+Message-ID: <CAMJW5=0M3vX6XXcgzigBJxOOVRAkaut86KjBDa=_DHbxZNhPVw@mail.gmail.com>
+
+If i3bar is running in hide mode, when i3wm exit, i3bar will exit
+without killing its child process, leaving a couple of processes in
+'T' mode (i.e. Stopped).
+
+With this patch, when i3bar needs to quit, it will call ev_break()
+rather than exit(), thus gives the code after ev_loop() a chance to
+clean things up.
+
+I'm not very sure I've done things right. I might change some exit()s
+called before ev_loop() into ev_break(), or leave some exit()s
+unconverted. Someone please review this patch.
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Convert-exit-to-ev_break-so-i3bar-could-exit-cleanly.patch
+Type: text/x-patch
+Size: 7146 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120303/552616ac/attachment.bin>
+
+From drdarkraven at gmail.com  Sat Mar  3 13:47:29 2012
+From: drdarkraven at gmail.com (DR)
+Date: Sat, 3 Mar 2012 20:47:29 +0800
+Subject: [i3] [PATCH] Use ev_break() rather than exit() in i3bar.
+In-Reply-To: <CAMJW5=0M3vX6XXcgzigBJxOOVRAkaut86KjBDa=_DHbxZNhPVw@mail.gmail.com>
+References: <CAMJW5=0M3vX6XXcgzigBJxOOVRAkaut86KjBDa=_DHbxZNhPVw@mail.gmail.com>
+Message-ID: <CAMJW5=1iGV9FROVpggd-OT-7ORzQCBnBfnzEmJMBJywTYx9wJA@mail.gmail.com>
+
+On Sat, Mar 3, 2012 at 8:29 PM, DR <drdarkraven at gmail.com> wrote:
+> If i3bar is running in hide mode, when i3wm exit, i3bar will exit
+> without killing its child process, leaving a couple of processes in
+> 'T' mode (i.e. Stopped).
+>
+> With this patch, when i3bar needs to quit, it will call ev_break()
+> rather than exit(), thus gives the code after ev_loop() a chance to
+> clean things up.
+>
+> I'm not very sure I've done things right. I might change some exit()s
+> called before ev_loop() into ev_break(), or leave some exit()s
+> unconverted. Someone please review this patch.
+
+Sorry, sorry. I made a mistake, I leave out a file in this patch.
+
+New patch attached.
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Convert-exit-to-ev_break-so-i3bar-could-exit-cleanly.patch
+Type: text/x-patch
+Size: 7921 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120303/35f4057e/attachment.bin>
+
+From fernandotcl at i3wm.org  Sat Mar  3 21:43:08 2012
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Sat, 3 Mar 2012 17:43:08 -0300
+Subject: [i3] [PATCH] Use ev_break() rather than exit() in i3bar.
+In-Reply-To: <CAMJW5=1iGV9FROVpggd-OT-7ORzQCBnBfnzEmJMBJywTYx9wJA@mail.gmail.com>
+References: <CAMJW5=0M3vX6XXcgzigBJxOOVRAkaut86KjBDa=_DHbxZNhPVw@mail.gmail.com>
+ <CAMJW5=1iGV9FROVpggd-OT-7ORzQCBnBfnzEmJMBJywTYx9wJA@mail.gmail.com>
+Message-ID: <CANVYNa9=fWN+d6EEKB4CJjAihV1cOdFr5uTpkZHTUd6hLH1Kyw@mail.gmail.com>
+
+Hi,
+
+On Sat, Mar 3, 2012 at 9:47 AM, DR <drdarkraven at gmail.com> wrote:
+> On Sat, Mar 3, 2012 at 8:29 PM, DR <drdarkraven at gmail.com> wrote:
+>> If i3bar is running in hide mode, when i3wm exit, i3bar will exit
+>> without killing its child process, leaving a couple of processes in
+>> 'T' mode (i.e. Stopped).
+>>
+>> With this patch, when i3bar needs to quit, it will call ev_break()
+>> rather than exit(), thus gives the code after ev_loop() a chance to
+>> clean things up.
+>>
+>> I'm not very sure I've done things right. I might change some exit()s
+>> called before ev_loop() into ev_break(), or leave some exit()s
+>> unconverted. Someone please review this patch.
+>
+> Sorry, sorry. I made a mistake, I leave out a file in this patch.
+>
+> New patch attached.
+
+Sounds great, but I think it would be cleaner to avoid exporting so
+many symbols. For example, for at least some of those calls to exit(),
+can't we just make the function signal to the caller through a return
+code that it has failed? The caller would then signal to his parent
+and so on, until we get to the event handlers. Those handlers know all
+state involved and can cleanly break out of the loop.
+
+In case the last sentence became a bit confusing, consider this (->
+indicates a function call):
+
+Event loop -> Event handler -> A -> B -> C
+
+If C called exit, you're now calling ev_break in C. But then you have
+to export the symbols of stuff that needs to be cleaned up in the
+event handler, in A and in B, so that you can clean up for them. If
+you instead propagate the error across the call stack, C would clean
+after itself and pass the error code to B, which would do the same and
+pass the error code to A, and so on. That way no function has to clean
+up after its parent.
+
+That might require some refactoring (e.g. some functions might already
+return something) but it's probably worth it.
+
+
+Another option may be only clean up what needs to be cleaned up.
+Memory usually doesn't need to be free'd if the process is going down
+anyways. I'd consider this last resort, but we already do that in the
+signal handler anyways, so it's not like it would be unprecedented.
+You could also call kill_child in an atexit() handler (child_pid would
+have to be initialized to 0), but it's ugly too.
+
+
+I also noticed that you call ev_break, but the signal handler calls
+ev_unloop. Is that intentional?
+
+
+Finally I'd recommend that you split part of the commit message into
+the description. In Git, the first line of the commit message is
+special and it must be short. How about something like this:
+
+---
+Use ev_break() instead of exit().
+
+Calling exit() directly would mean we would never clean up. So now we
+break out of the event loop instead. Now we can be sure the child killed
+killed when i3bar exits, for example.
+---
+
+
+Regards,
+
+From brunocassol at gmail.com  Sun Mar  4 07:13:32 2012
+From: brunocassol at gmail.com (Bruno Cassol)
+Date: Sun, 4 Mar 2012 02:13:32 -0400
+Subject: [i3] How to place applications opened in ~/.i3/config
+Message-ID: <CAHUo=FV8g7mNpjwFBfjK23GFCbJx7SynNcuJ9X+ZO+_TEO8aRg@mail.gmail.com>
+
+First of all,
+i3 is fu**ing amazing. thanks for it!
+It's my second attempt at tiling and this time I think I got it. Merit goes
+to i3 being easy even for dumb people like me.
+
+Well, I'm a web developer and I always want some applications opened when I
+startx. So the bottom of my ~/.i3/config looks like:
+
+exec i3-sensible-terminal
+exec gedit
+exec google-chrome
+exec parcellite
+
+
+I'd like to place those in a specific layout/position when i3 starts:
+_______________________
+|          |  chrome  |
+|   gedit  |          |
+|          |----------|
+|          | terminal |
+|__________|__________|
+
+
+How can I?
+
+Thanks,
+Bruno Cassol
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120304/0f8d8f6f/attachment.html>
+
+From fh at fhaun.de  Sun Mar  4 16:50:17 2012
+From: fh at fhaun.de (Frank Haun)
+Date: Sun, 04 Mar 2012 16:50:17 +0100
+Subject: [i3] How to place applications opened in ~/.i3/config
+References: <CAHUo=FV8g7mNpjwFBfjK23GFCbJx7SynNcuJ9X+ZO+_TEO8aRg@mail.gmail.com>
+Message-ID: <8762ekz7pi.fsf@m7000.fhaun.de>
+
+Bruno Cassol <brunocassol at gmail.com> writes:
+
+> Well, I'm a web developer and I always want some applications opened
+> when I startx. So the bottom of my ~/.i3/config looks like:
+>
+> exec i3-sensible-terminal
+> exec gedit
+> exec google-chrome
+> exec parcellite
+>
+>
+> I'd like to place those in a specific layout/position when i3 starts:
+> _______________________
+> | ? ? ? ? ?| ?chrome ?|
+> | ? gedit ?| ? ? ? ? ?|
+> | ? ? ? ? ?|----------|
+> | ? ? ? ? ?| terminal |
+> |__________|__________|
+>
+>
+> How can I?
+
+I use a shell script for auto starting. Here is a basic example. I use
+xdotool for waiting until a program is initialized. I added the
+paramater `--onlyvisible' to xdotool. It works much safer.
+
+https://github.com/fhaun/config-misc/blob/master/i3-stuff/auto-start-for-i3-simple
+
+For a more complex autostart file have a look one level up in my git.
+
+Frank
+
+From jonas at geiregat.org  Sun Mar  4 16:51:20 2012
+From: jonas at geiregat.org (Jonas Geiregat)
+Date: Sun, 4 Mar 2012 16:51:20 +0100
+Subject: [i3] unsubscribe
+Message-ID: <DBECA32B-2969-4506-B004-E93FB0756634@geiregat.org>
+
+
+
+From eelvex at gmail.com  Wed Mar  7 04:34:48 2012
+From: eelvex at gmail.com (EelVex)
+Date: Wed, 7 Mar 2012 05:34:48 +0200
+Subject: [i3] hide floating windows
+Message-ID: <CABNL=vEX2MJyXfPHQ4yXvqxy9SMxfBf4md_FZz8vQ-rX8jqnmA@mail.gmail.com>
+
+In the previous version of i3 there was command 'H' that toggled visibility
+of all floating windows.
+
+I can't find how to do this in the new version. Is there a way?
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120307/564da2ca/attachment.html>
+
+From michael at i3wm.org  Wed Mar  7 11:53:06 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 07 Mar 2012 11:53:06 +0100
+Subject: [i3] hide floating windows
+In-Reply-To: <CABNL=vEX2MJyXfPHQ4yXvqxy9SMxfBf4md_FZz8vQ-rX8jqnmA@mail.gmail.com>
+References: <CABNL=vEX2MJyXfPHQ4yXvqxy9SMxfBf4md_FZz8vQ-rX8jqnmA@mail.gmail.com>
+Message-ID: <1331117544-sup-2035@stapelberg.de>
+
+Hi EelVex,
+
+Excerpts from EelVex's message of 2012-03-07 04:34:48 +0100:
+> In the previous version of i3 there was command 'H' that toggled visibility
+> of all floating windows.
+> 
+> I can't find how to do this in the new version. Is there a way?
+No, we didn?t reimplement this (yet?). I don?t deal with floating windows at
+all personally. It is rather easy to implement, though, so if you want to give
+it a shot?
+
+Best regards,
+Michael
+
+From honza801 at gmail.com  Wed Mar  7 15:30:36 2012
+From: honza801 at gmail.com (Jan Krcmar)
+Date: Wed, 7 Mar 2012 15:30:36 +0100
+Subject: [i3] hide floating windows
+In-Reply-To: <1331117544-sup-2035@stapelberg.de>
+References: <CABNL=vEX2MJyXfPHQ4yXvqxy9SMxfBf4md_FZz8vQ-rX8jqnmA@mail.gmail.com>
+ <1331117544-sup-2035@stapelberg.de>
+Message-ID: <CAKneAXmu=7NjFcEAVv5eBHL_fX7phrrnKhVmMZSaoCMfLtSK1A@mail.gmail.com>
+
+hi,
+
+sounds like a nice feature to me
++1
+
+jan
+
+2012/3/7 Michael Stapelberg <michael at i3wm.org>:
+> Hi EelVex,
+>
+> Excerpts from EelVex's message of 2012-03-07 04:34:48 +0100:
+>> In the previous version of i3 there was command 'H' that toggled visibility
+>> of all floating windows.
+>>
+>> I can't find how to do this in the new version. Is there a way?
+> No, we didn?t reimplement this (yet?). I don?t deal with floating windows at
+> all personally. It is rather easy to implement, though, so if you want to give
+> it a shot?
+>
+> Best regards,
+> Michael
+
+From marcus.moeller at gmx.ch  Sat Mar 10 22:34:22 2012
+From: marcus.moeller at gmx.ch (Marcus Moeller)
+Date: Sat, 10 Mar 2012 22:34:22 +0100
+Subject: [i3] hide floating windows
+In-Reply-To: <CAKneAXmu=7NjFcEAVv5eBHL_fX7phrrnKhVmMZSaoCMfLtSK1A@mail.gmail.com>
+References: <CABNL=vEX2MJyXfPHQ4yXvqxy9SMxfBf4md_FZz8vQ-rX8jqnmA@mail.gmail.com>
+ <1331117544-sup-2035@stapelberg.de>
+ <CAKneAXmu=7NjFcEAVv5eBHL_fX7phrrnKhVmMZSaoCMfLtSK1A@mail.gmail.com>
+Message-ID: <4F5BC8DE.6070606@gmx.ch>
+
+Hi all.
+
+> sounds like a nice feature to me
+> +1
+
+Yes, I would also welcome such a feature. Atm. e.g. copying dialogs in 
+apps like pcmanfm are always in front, disturbing the workflow.
+
+Greets
+Marcus
+
+>> Excerpts from EelVex's message of 2012-03-07 04:34:48 +0100:
+>>> In the previous version of i3 there was command 'H' that toggled visibility
+>>> of all floating windows.
+>>>
+>>> I can't find how to do this in the new version. Is there a way?
+>> No, we didn?t reimplement this (yet?). I don?t deal with floating windows at
+>> all personally. It is rather easy to implement, though, so if you want to give
+>> it a shot?
+>>
+>> Best regards,
+>> Michael
+
+
+From marcus.moeller at gmx.ch  Sat Mar 10 23:06:49 2012
+From: marcus.moeller at gmx.ch (Marcus Moeller)
+Date: Sat, 10 Mar 2012 23:06:49 +0100
+Subject: [i3] spacing after shortened window title
+Message-ID: <4F5BD079.8070906@gmx.ch>
+
+Hi all,
+
+it would be great to have a little space between a shortened window 
+title and the title of the next window, especially in tabbed mode. At 
+the moment it looks a bit squeezed.
+
+Greets
+Marcus
+
+From xiaqqaix at gmail.com  Sun Mar 11 06:50:03 2012
+From: xiaqqaix at gmail.com (Cheer Xiao)
+Date: Sun, 11 Mar 2012 13:50:03 +0800
+Subject: [i3] Why no xft support?
+In-Reply-To: <CAMJW5=1KuFEF2K_Cv=he7TrhjRibRY4OuQpAPaq5dOg4uXY+_A@mail.gmail.com>
+References: <CAMJW5=2Q2fJbn9kj4fPT2W8PX0jnE7K42dboS5CvrDbC3bWW6w@mail.gmail.com>
+ <CANVYNa9rvFmH4AMm+kWMv4Cp4fYW2sEp987Dt6tcKJhR3OLWsw@mail.gmail.com>
+ <CAMJW5=3O1gi67swQ=xX4BKWy-a=Z0rGOH7qYWn9vSaq8C=FvBg@mail.gmail.com>
+ <CANVYNa9X+1Fo6GBk7EsLR026uKN3PjFqs1K9LnYLFghznRqEDg@mail.gmail.com>
+ <CANVYNa-bRkhjkznLd8uwQmi2Dx6jAd7prN2pDv+QyES5ENycJA@mail.gmail.com>
+ <CAMJW5=1KuFEF2K_Cv=he7TrhjRibRY4OuQpAPaq5dOg4uXY+_A@mail.gmail.com>
+Message-ID: <CAD+eWSWRRMnp9aDL4ht+Ubt_pe4D4CjYLZ72DWqxdyBAzD6qoQ@mail.gmail.com>
+
+2012/2/21 DR <drdarkraven at gmail.com>:
+> On Mon, Feb 20, 2012 at 7:14 AM, Fernando Lemos <fernandotcl at i3wm.org> wrote:
+>> On Sun, Feb 19, 2012 at 11:27 AM, Fernando Lemos <fernandotcl at i3wm.org> wrote:
+>>> Hi,
+>>>
+>>> On Sun, Feb 19, 2012 at 7:54 AM, DR <drdarkraven at gmail.com> wrote:
+>>>> If you send me the patch, I'd be glad to test it.
+>>>
+>>> 1/2: http://pastebin.com/Kw6srqZE
+>>
+>> Ugh. A revised patch that takes into account the alpha component in colors:
+>>
+>> 1/2: http://pastebin.com/zuyTSXKB
+>
+> I'm running i3 with your patch now.
+> While i3 is working well with this patch, I notice some glitches.
+>
+> The text's width seems to be mis-calculated, resulting in window title
+> being truncated even if the text string is far from filling the whole
+> title bar.
+> Another thing I notice is that the string seems to be truncated to a
+> 'wrong' length, leaves some trailing, undisplayable characters.
+>
+> These glitches mainly occur if non-english characters are involved.
+>
+> Screenshots attached.
+
+Care to share how you use this patch? I have already applied the
+patch, rebuilt and reinstalled i3. After skimming the code, I decided
+to try
+
+font xft:Bitstream Vera Sans Mono 10
+
+in ~/.i3/config but it failed. :'(
+
+-- 
+Regards,
+Cheer Xiao aka. xiaq
+
+From eelvex at gmail.com  Sun Mar 11 08:10:26 2012
+From: eelvex at gmail.com (EelVex)
+Date: Sun, 11 Mar 2012 09:10:26 +0200
+Subject: [i3] hide floating windows
+In-Reply-To: <1331117544-sup-2035@stapelberg.de>
+References: <CABNL=vEX2MJyXfPHQ4yXvqxy9SMxfBf4md_FZz8vQ-rX8jqnmA@mail.gmail.com>
+ <1331117544-sup-2035@stapelberg.de>
+Message-ID: <CABNL=vFjiWHyXK2inNo_vqX_C=6aoQc4pFt=DFcL171R0a_Y-Q@mail.gmail.com>
+
+On Mar 7, 2012 12:53 PM, "Michael Stapelberg" <michael at i3wm.org> wrote:
+>
+> Hi EelVex,
+>
+> Excerpts from EelVex's message of 2012-03-07 04:34:48 +0100:
+> > In the previous version of i3 there was command 'H' that toggled
+visibility
+> > of all floating windows.
+> >
+> > I can't find how to do this in the new version. Is there a way?
+> No, we didn?t reimplement this (yet?). I don?t deal with floating windows
+at
+> all personally. It is rather easy to implement, though, so if you want to
+give
+> it a shot?
+>
+> Best regards,
+> Michael
+
+Hi,
+
+I'll send a patch soon, then.
+
+Thanks :)
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120311/f7454bed/attachment.html>
+
+From marcus.moeller at gmx.ch  Sun Mar 11 09:55:40 2012
+From: marcus.moeller at gmx.ch (Marcus Moeller)
+Date: Sun, 11 Mar 2012 09:55:40 +0100
+Subject: [i3] i3 commands in fullscreen mode
+Message-ID: <4F5C688C.2010801@gmx.ch>
+
+Hi all.
+
+I have noticed that if I switch an app to fullscreen mode (using Mod+f), 
+regular navigation commands (like Mod+Left to switch to another 
+application) do no longer work.
+
+Is it perhaps possible to even enable these in fullscreen? A 'Fullscreen 
+mode' where are all applications are started in fullscreen would be a 
+cool option, if the rest works, then.
+
+Greets
+Marcus
+
+From drdarkraven at gmail.com  Sun Mar 11 12:19:46 2012
+From: drdarkraven at gmail.com (DR)
+Date: Sun, 11 Mar 2012 19:19:46 +0800
+Subject: [i3] [PATCH] Use ev_break() rather than exit() in i3bar.
+In-Reply-To: <CANVYNa9=fWN+d6EEKB4CJjAihV1cOdFr5uTpkZHTUd6hLH1Kyw@mail.gmail.com>
+References: <CAMJW5=0M3vX6XXcgzigBJxOOVRAkaut86KjBDa=_DHbxZNhPVw@mail.gmail.com>
+ <CAMJW5=1iGV9FROVpggd-OT-7ORzQCBnBfnzEmJMBJywTYx9wJA@mail.gmail.com>
+ <CANVYNa9=fWN+d6EEKB4CJjAihV1cOdFr5uTpkZHTUd6hLH1Kyw@mail.gmail.com>
+Message-ID: <CAMJW5=3SWVobyyqP20z6xb-Qse+E2EcUjnceOqNMxFHA9ziG2Q@mail.gmail.com>
+
+On Sun, Mar 4, 2012 at 4:43 AM, Fernando Lemos <fernandotcl at i3wm.org> wrote:
+> Hi,
+>
+> On Sat, Mar 3, 2012 at 9:47 AM, DR <drdarkraven at gmail.com> wrote:
+>> On Sat, Mar 3, 2012 at 8:29 PM, DR <drdarkraven at gmail.com> wrote:
+>>> If i3bar is running in hide mode, when i3wm exit, i3bar will exit
+>>> without killing its child process, leaving a couple of processes in
+>>> 'T' mode (i.e. Stopped).
+>>>
+>>> With this patch, when i3bar needs to quit, it will call ev_break()
+>>> rather than exit(), thus gives the code after ev_loop() a chance to
+>>> clean things up.
+>>>
+>>> I'm not very sure I've done things right. I might change some exit()s
+>>> called before ev_loop() into ev_break(), or leave some exit()s
+>>> unconverted. Someone please review this patch.
+>>
+>> Sorry, sorry. I made a mistake, I leave out a file in this patch.
+>>
+>> New patch attached.
+>
+> Sounds great, but I think it would be cleaner to avoid exporting so
+> many symbols. For example, for at least some of those calls to exit(),
+> can't we just make the function signal to the caller through a return
+> code that it has failed? The caller would then signal to his parent
+> and so on, until we get to the event handlers. Those handlers know all
+> state involved and can cleanly break out of the loop.
+>
+> In case the last sentence became a bit confusing, consider this (->
+> indicates a function call):
+>
+> Event loop -> Event handler -> A -> B -> C
+>
+> If C called exit, you're now calling ev_break in C. But then you have
+> to export the symbols of stuff that needs to be cleaned up in the
+> event handler, in A and in B, so that you can clean up for them. If
+> you instead propagate the error across the call stack, C would clean
+> after itself and pass the error code to B, which would do the same and
+> pass the error code to A, and so on. That way no function has to clean
+> up after its parent.
+>
+> That might require some refactoring (e.g. some functions might already
+> return something) but it's probably worth it.
+If my understanding of ev_break() is right, my patch works quite the
+same way as you described.
+Event handler will return, and all the clean up is done in main(), no
+extra symbols need to be exported.
+
+>
+>
+> Another option may be only clean up what needs to be cleaned up.
+> Memory usually doesn't need to be free'd if the process is going down
+> anyways. I'd consider this last resort, but we already do that in the
+> signal handler anyways, so it's not like it would be unprecedented.
+> You could also call kill_child in an atexit() handler (child_pid would
+> have to be initialized to 0), but it's ugly too.
+>
+>
+> I also noticed that you call ev_break, but the signal handler calls
+> ev_unloop. Is that intentional?
+The ev_unloop is from the old code. I just didn't notice that.
+
+>
+>
+> Finally I'd recommend that you split part of the commit message into
+> the description. In Git, the first line of the commit message is
+> special and it must be short. How about something like this:
+Thank you for point that out, I think I'm just too careless about the
+commit message....
+
+>
+> ---
+> Use ev_break() instead of exit().
+>
+> Calling exit() directly would mean we would never clean up. So now we
+> break out of the event loop instead. Now we can be sure the child killed
+> killed when i3bar exits, for example.
+> ---
+>
+>
+> Regards,
+
+From lobl.pavel at gmail.com  Sat Mar 10 21:33:44 2012
+From: lobl.pavel at gmail.com (=?ISO-8859-1?Q?Pavel_L=F6bl?=)
+Date: Sat, 10 Mar 2012 21:33:44 +0100
+Subject: [i3] i3status patch
+Message-ID: <CA+tYn00FRjiQ3csgR3kTLcxoQqHdYRyeCFhCyZAMXq8yCBuumg@mail.gmail.com>
+
+I know i3status is already efficient, so it's probably not a big
+hurt to set the refresh time quite low. But sometimes it
+would be nice to reflect changes immediately.
+
+Adding empty signal handler to i3status allows me to interrupt
+nanosleep call by sendig USR1 signal and print the output sooner
+then next update comes.
+
+172,175d17
+< void sig_handler (int sigint) {
+<         /* do nothing, we just interrupted nanosleep */
+< }
+<
+286,287d281
+<
+<         signal (SIGUSR1, sig_handler);
+
+But this likely requires all the other calls in i3status properly handle
+EINTR error. I've not read the whole source but just `grep -r  EINTR *`
+gives nothing.
+
+So would it be possible to have something like this in i3status or it's
+just an ugly hack?
+
+From michael at i3wm.org  Sun Mar 11 14:26:00 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 11 Mar 2012 14:26:00 +0100
+Subject: [i3] spacing after shortened window title
+In-Reply-To: <4F5BD079.8070906@gmx.ch>
+References: <4F5BD079.8070906@gmx.ch>
+Message-ID: <1331472324-sup-8009@stapelberg.de>
+
+Hi Marcus,
+
+Excerpts from Marcus Moeller's message of 2012-03-10 23:06:49 +0100:
+> it would be great to have a little space between a shortened window 
+> title and the title of the next window, especially in tabbed mode. At 
+> the moment it looks a bit squeezed.
+Are you using the latest git version of the "next" branch? We have borders
+between the tabs.
+
+Best regards,
+Michael
+
+From michael at i3wm.org  Sun Mar 11 14:29:10 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 11 Mar 2012 14:29:10 +0100
+Subject: [i3] i3 commands in fullscreen mode
+In-Reply-To: <4F5C688C.2010801@gmx.ch>
+References: <4F5C688C.2010801@gmx.ch>
+Message-ID: <1331472513-sup-1085@stapelberg.de>
+
+Hi Marcus,
+
+Excerpts from Marcus Moeller's message of 2012-03-11 09:55:40 +0100:
+> I have noticed that if I switch an app to fullscreen mode (using Mod+f), 
+> regular navigation commands (like Mod+Left to switch to another 
+> application) do no longer work.
+This is intended.
+
+> Is it perhaps possible to even enable these in fullscreen? A 'Fullscreen 
+> mode' where are all applications are started in fullscreen would be a 
+> cool option, if the rest works, then.
+If at all, this would be a new layout instead of the current fullscreen mode.
+
+Best regards,
+Michael
+
+From michael at i3wm.org  Sun Mar 11 14:30:00 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 11 Mar 2012 14:30:00 +0100
+Subject: [i3] i3status patch
+In-Reply-To: <CA+tYn00FRjiQ3csgR3kTLcxoQqHdYRyeCFhCyZAMXq8yCBuumg@mail.gmail.com>
+References: <CA+tYn00FRjiQ3csgR3kTLcxoQqHdYRyeCFhCyZAMXq8yCBuumg@mail.gmail.com>
+Message-ID: <1331472561-sup-9103@stapelberg.de>
+
+Hi Pavel,
+
+Excerpts from Pavel L?bl's message of 2012-03-10 21:33:44 +0100:
+> I know i3status is already efficient, so it's probably not a big
+> hurt to set the refresh time quite low. But sometimes it
+> would be nice to reflect changes immediately.
+What exactly is your use case? Aren?t sub-second refresh times a better
+solution for that?
+
+Best regards,
+Michael
+
+From fernandotcl at i3wm.org  Sun Mar 11 15:33:59 2012
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Sun, 11 Mar 2012 11:33:59 -0300
+Subject: [i3] Why no xft support?
+In-Reply-To: <CAD+eWSWRRMnp9aDL4ht+Ubt_pe4D4CjYLZ72DWqxdyBAzD6qoQ@mail.gmail.com>
+References: <CAMJW5=2Q2fJbn9kj4fPT2W8PX0jnE7K42dboS5CvrDbC3bWW6w@mail.gmail.com>
+ <CANVYNa9rvFmH4AMm+kWMv4Cp4fYW2sEp987Dt6tcKJhR3OLWsw@mail.gmail.com>
+ <CAMJW5=3O1gi67swQ=xX4BKWy-a=Z0rGOH7qYWn9vSaq8C=FvBg@mail.gmail.com>
+ <CANVYNa9X+1Fo6GBk7EsLR026uKN3PjFqs1K9LnYLFghznRqEDg@mail.gmail.com>
+ <CANVYNa-bRkhjkznLd8uwQmi2Dx6jAd7prN2pDv+QyES5ENycJA@mail.gmail.com>
+ <CAMJW5=1KuFEF2K_Cv=he7TrhjRibRY4OuQpAPaq5dOg4uXY+_A@mail.gmail.com>
+ <CAD+eWSWRRMnp9aDL4ht+Ubt_pe4D4CjYLZ72DWqxdyBAzD6qoQ@mail.gmail.com>
+Message-ID: <CANVYNa_vUdU-=Bc0MKoLgkw3qeU6FWxh=CFKVn0gMOmiM8qjPQ@mail.gmail.com>
+
+On Sun, Mar 11, 2012 at 2:50 AM, Cheer Xiao <xiaqqaix at gmail.com> wrote:
+> 2012/2/21 DR <drdarkraven at gmail.com>:
+>> On Mon, Feb 20, 2012 at 7:14 AM, Fernando Lemos <fernandotcl at i3wm.org> wrote:
+>>> On Sun, Feb 19, 2012 at 11:27 AM, Fernando Lemos <fernandotcl at i3wm.org> wrote:
+>>>> Hi,
+>>>>
+>>>> On Sun, Feb 19, 2012 at 7:54 AM, DR <drdarkraven at gmail.com> wrote:
+>>>>> If you send me the patch, I'd be glad to test it.
+>>>>
+>>>> 1/2: http://pastebin.com/Kw6srqZE
+>>>
+>>> Ugh. A revised patch that takes into account the alpha component in colors:
+>>>
+>>> 1/2: http://pastebin.com/zuyTSXKB
+>>
+>> I'm running i3 with your patch now.
+>> While i3 is working well with this patch, I notice some glitches.
+>>
+>> The text's width seems to be mis-calculated, resulting in window title
+>> being truncated even if the text string is far from filling the whole
+>> title bar.
+>> Another thing I notice is that the string seems to be truncated to a
+>> 'wrong' length, leaves some trailing, undisplayable characters.
+>>
+>> These glitches mainly occur if non-english characters are involved.
+>>
+>> Screenshots attached.
+>
+> Care to share how you use this patch? I have already applied the
+> patch, rebuilt and reinstalled i3. After skimming the code, I decided
+> to try
+>
+> font xft:Bitstream Vera Sans Mono 10
+>
+> in ~/.i3/config but it failed. :'(
+
+Hi,
+
+That's exactly how you should specify the font. :-)
+
+Check your logs, that's probably not a valid font description. After
+"xft:", you can specify any Pango font description. I personally use
+"font xft:Sans 8".
+
+Regards,
+
+From fernandotcl at i3wm.org  Sun Mar 11 15:48:01 2012
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Sun, 11 Mar 2012 11:48:01 -0300
+Subject: [i3] [PATCH] Use ev_break() rather than exit() in i3bar.
+In-Reply-To: <CAMJW5=3SWVobyyqP20z6xb-Qse+E2EcUjnceOqNMxFHA9ziG2Q@mail.gmail.com>
+References: <CAMJW5=0M3vX6XXcgzigBJxOOVRAkaut86KjBDa=_DHbxZNhPVw@mail.gmail.com>
+ <CAMJW5=1iGV9FROVpggd-OT-7ORzQCBnBfnzEmJMBJywTYx9wJA@mail.gmail.com>
+ <CANVYNa9=fWN+d6EEKB4CJjAihV1cOdFr5uTpkZHTUd6hLH1Kyw@mail.gmail.com>
+ <CAMJW5=3SWVobyyqP20z6xb-Qse+E2EcUjnceOqNMxFHA9ziG2Q@mail.gmail.com>
+Message-ID: <CANVYNa9ab3p89KWMa0-t1VLPv4CFLndjVEnM6v2j5omxd+47Uw@mail.gmail.com>
+
+Hi,
+
+On Sun, Mar 11, 2012 at 8:19 AM, DR <drdarkraven at gmail.com> wrote:
+>> Sounds great, but I think it would be cleaner to avoid exporting so
+>> many symbols. For example, for at least some of those calls to exit(),
+>> can't we just make the function signal to the caller through a return
+>> code that it has failed? The caller would then signal to his parent
+>> and so on, until we get to the event handlers. Those handlers know all
+>> state involved and can cleanly break out of the loop.
+>>
+>> In case the last sentence became a bit confusing, consider this (->
+>> indicates a function call):
+>>
+>> Event loop -> Event handler -> A -> B -> C
+>>
+>> If C called exit, you're now calling ev_break in C. But then you have
+>> to export the symbols of stuff that needs to be cleaned up in the
+>> event handler, in A and in B, so that you can clean up for them. If
+>> you instead propagate the error across the call stack, C would clean
+>> after itself and pass the error code to B, which would do the same and
+>> pass the error code to A, and so on. That way no function has to clean
+>> up after its parent.
+>>
+>> That might require some refactoring (e.g. some functions might already
+>> return something) but it's probably worth it.
+> If my understanding of ev_break() is right, my patch works quite the
+> same way as you described.
+> Event handler will return, and all the clean up is done in main(), no
+> extra symbols need to be exported.
+
+Nope. You're cleaning up for the callers, then breaking out of the
+loop the next time you return to the loop. What I suggested is that
+you propagate the error to the callers and let the callers do the
+clean up of their stuff, until you eventually get to the functions
+that are called by the event loop itself, which should then decide
+whether to break off the loop or not.
+
+In the aforementioned example, function C should clean up its
+resources and return an error code to B, which will then check that
+return code, clean up its own resources and return an error code to A
+and so forth. That way C doesn't have to know B's state, B doesn't
+have to know A's state, etc. It's then much easier to manage, much
+less likely that you forget to free some resources.
+
+Regards,
+
+From xiaqqaix at gmail.com  Sun Mar 11 16:03:08 2012
+From: xiaqqaix at gmail.com (Cheer Xiao)
+Date: Sun, 11 Mar 2012 23:03:08 +0800
+Subject: [i3] Why no xft support?
+In-Reply-To: <CANVYNa_vUdU-=Bc0MKoLgkw3qeU6FWxh=CFKVn0gMOmiM8qjPQ@mail.gmail.com>
+References: <CAMJW5=2Q2fJbn9kj4fPT2W8PX0jnE7K42dboS5CvrDbC3bWW6w@mail.gmail.com>
+ <CANVYNa9rvFmH4AMm+kWMv4Cp4fYW2sEp987Dt6tcKJhR3OLWsw@mail.gmail.com>
+ <CAMJW5=3O1gi67swQ=xX4BKWy-a=Z0rGOH7qYWn9vSaq8C=FvBg@mail.gmail.com>
+ <CANVYNa9X+1Fo6GBk7EsLR026uKN3PjFqs1K9LnYLFghznRqEDg@mail.gmail.com>
+ <CANVYNa-bRkhjkznLd8uwQmi2Dx6jAd7prN2pDv+QyES5ENycJA@mail.gmail.com>
+ <CAMJW5=1KuFEF2K_Cv=he7TrhjRibRY4OuQpAPaq5dOg4uXY+_A@mail.gmail.com>
+ <CAD+eWSWRRMnp9aDL4ht+Ubt_pe4D4CjYLZ72DWqxdyBAzD6qoQ@mail.gmail.com>
+ <CANVYNa_vUdU-=Bc0MKoLgkw3qeU6FWxh=CFKVn0gMOmiM8qjPQ@mail.gmail.com>
+Message-ID: <CAD+eWSVB26J72GctT8xyKQ4h1uOeLJWCem=1x7=mrao0=rLVdA@mail.gmail.com>
+
+2012/3/11 Fernando Lemos <fernandotcl at i3wm.org>:
+> [...snip...]
+> Hi,
+>
+> That's exactly how you should specify the font. :-)
+>
+> Check your logs, that's probably not a valid font description. After
+> "xft:", you can specify any Pango font description. I personally use
+> "font xft:Sans 8".
+
+So I switched to a simpler one, "font Consolas 10". Problem still. In
+the log there is a line
+
+ERROR: Could not open font xft:Consolas 10 (X error 15). Trying
+fallback to 'fixed'.
+
+and far below that, just before I restart i3:
+
+[src/xcb.c:945] ERROR: Could not open font. X Error Code: 15
+
+Weird since src/xcb.c doesn't has line 945... I also noticed that
+i3bar disappeared too, but there is no log message related to that.
+
+-- 
+Regards,
+Cheer Xiao aka. xiaq
+
+From fernandotcl at i3wm.org  Sun Mar 11 16:10:24 2012
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Sun, 11 Mar 2012 12:10:24 -0300
+Subject: [i3] Why no xft support?
+In-Reply-To: <CAD+eWSVB26J72GctT8xyKQ4h1uOeLJWCem=1x7=mrao0=rLVdA@mail.gmail.com>
+References: <CAMJW5=2Q2fJbn9kj4fPT2W8PX0jnE7K42dboS5CvrDbC3bWW6w@mail.gmail.com>
+ <CANVYNa9rvFmH4AMm+kWMv4Cp4fYW2sEp987Dt6tcKJhR3OLWsw@mail.gmail.com>
+ <CAMJW5=3O1gi67swQ=xX4BKWy-a=Z0rGOH7qYWn9vSaq8C=FvBg@mail.gmail.com>
+ <CANVYNa9X+1Fo6GBk7EsLR026uKN3PjFqs1K9LnYLFghznRqEDg@mail.gmail.com>
+ <CANVYNa-bRkhjkznLd8uwQmi2Dx6jAd7prN2pDv+QyES5ENycJA@mail.gmail.com>
+ <CAMJW5=1KuFEF2K_Cv=he7TrhjRibRY4OuQpAPaq5dOg4uXY+_A@mail.gmail.com>
+ <CAD+eWSWRRMnp9aDL4ht+Ubt_pe4D4CjYLZ72DWqxdyBAzD6qoQ@mail.gmail.com>
+ <CANVYNa_vUdU-=Bc0MKoLgkw3qeU6FWxh=CFKVn0gMOmiM8qjPQ@mail.gmail.com>
+ <CAD+eWSVB26J72GctT8xyKQ4h1uOeLJWCem=1x7=mrao0=rLVdA@mail.gmail.com>
+Message-ID: <CANVYNa-t1q0aOXakCC4cqd=sFYdL_9fA-tiVYWLuuhvqEc5e6g@mail.gmail.com>
+
+On Sun, Mar 11, 2012 at 12:03 PM, Cheer Xiao <xiaqqaix at gmail.com> wrote:
+> 2012/3/11 Fernando Lemos <fernandotcl at i3wm.org>:
+>> [...snip...]
+>> Hi,
+>>
+>> That's exactly how you should specify the font. :-)
+>>
+>> Check your logs, that's probably not a valid font description. After
+>> "xft:", you can specify any Pango font description. I personally use
+>> "font xft:Sans 8".
+>
+> So I switched to a simpler one, "font Consolas 10". Problem still. In
+> the log there is a line
+>
+> ERROR: Could not open font xft:Consolas 10 (X error 15). Trying
+> fallback to 'fixed'.
+>
+> and far below that, just before I restart i3:
+>
+> [src/xcb.c:945] ERROR: Could not open font. X Error Code: 15
+>
+> Weird since src/xcb.c doesn't has line 945... I also noticed that
+> i3bar disappeared too, but there is no log message related to that.
+
+src/xcb.c:945 is in i3bar/src/xcb.c (it's probably i3bar's stderr).
+
+The "xft:" prefix is only handled if your i3 is patched, which leads
+me to think that you're getting that message from an unpatched
+i3/i3bar.
+
+Regards,
+
+From xiaqqaix at gmail.com  Sun Mar 11 16:28:12 2012
+From: xiaqqaix at gmail.com (Cheer Xiao)
+Date: Sun, 11 Mar 2012 23:28:12 +0800
+Subject: [i3] Why no xft support?
+In-Reply-To: <CANVYNa-t1q0aOXakCC4cqd=sFYdL_9fA-tiVYWLuuhvqEc5e6g@mail.gmail.com>
+References: <CAMJW5=2Q2fJbn9kj4fPT2W8PX0jnE7K42dboS5CvrDbC3bWW6w@mail.gmail.com>
+ <CANVYNa9rvFmH4AMm+kWMv4Cp4fYW2sEp987Dt6tcKJhR3OLWsw@mail.gmail.com>
+ <CAMJW5=3O1gi67swQ=xX4BKWy-a=Z0rGOH7qYWn9vSaq8C=FvBg@mail.gmail.com>
+ <CANVYNa9X+1Fo6GBk7EsLR026uKN3PjFqs1K9LnYLFghznRqEDg@mail.gmail.com>
+ <CANVYNa-bRkhjkznLd8uwQmi2Dx6jAd7prN2pDv+QyES5ENycJA@mail.gmail.com>
+ <CAMJW5=1KuFEF2K_Cv=he7TrhjRibRY4OuQpAPaq5dOg4uXY+_A@mail.gmail.com>
+ <CAD+eWSWRRMnp9aDL4ht+Ubt_pe4D4CjYLZ72DWqxdyBAzD6qoQ@mail.gmail.com>
+ <CANVYNa_vUdU-=Bc0MKoLgkw3qeU6FWxh=CFKVn0gMOmiM8qjPQ@mail.gmail.com>
+ <CAD+eWSVB26J72GctT8xyKQ4h1uOeLJWCem=1x7=mrao0=rLVdA@mail.gmail.com>
+ <CANVYNa-t1q0aOXakCC4cqd=sFYdL_9fA-tiVYWLuuhvqEc5e6g@mail.gmail.com>
+Message-ID: <CAD+eWSWoA5kYHE_YXYYteP3Aj0cakTqHGMmfk4wJUxxGCgLRQw@mail.gmail.com>
+
+2012/3/11 Fernando Lemos <fernandotcl at i3wm.org>:
+> On Sun, Mar 11, 2012 at 12:03 PM, Cheer Xiao <xiaqqaix at gmail.com> wrote:
+>> 2012/3/11 Fernando Lemos <fernandotcl at i3wm.org>:
+>>> [...snip...]
+>>> Hi,
+>>>
+>>> That's exactly how you should specify the font. :-)
+>>>
+>>> Check your logs, that's probably not a valid font description. After
+>>> "xft:", you can specify any Pango font description. I personally use
+>>> "font xft:Sans 8".
+>>
+>> So I switched to a simpler one, "font Consolas 10". Problem still. In
+>> the log there is a line
+>>
+>> ERROR: Could not open font xft:Consolas 10 (X error 15). Trying
+>> fallback to 'fixed'.
+>>
+>> and far below that, just before I restart i3:
+>>
+>> [src/xcb.c:945] ERROR: Could not open font. X Error Code: 15
+>>
+>> Weird since src/xcb.c doesn't has line 945... I also noticed that
+>> i3bar disappeared too, but there is no log message related to that.
+>
+> src/xcb.c:945 is in i3bar/src/xcb.c (it's probably i3bar's stderr).
+>
+> The "xft:" prefix is only handled if your i3 is patched, which leads
+> me to think that you're getting that message from an unpatched
+> i3/i3bar.
+>
+
+I did a git am:
+
+~/src/i3$ git log
+
+commit 3389908a213b2afba75fe61c92466a08aefb24c5
+Author: Fernando Tarl? Cardoso Lemos <fernandotcl at gmail.com>
+Date:   Mon Nov 14 21:39:03 2011 -0200
+
+    Implement Pango rendering.
+
+...
+
+
+-- 
+Regards,
+Cheer Xiao aka. xiaq
+
+From fernandotcl at i3wm.org  Sun Mar 11 16:36:12 2012
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Sun, 11 Mar 2012 12:36:12 -0300
+Subject: [i3] Why no xft support?
+In-Reply-To: <CAD+eWSWoA5kYHE_YXYYteP3Aj0cakTqHGMmfk4wJUxxGCgLRQw@mail.gmail.com>
+References: <CAMJW5=2Q2fJbn9kj4fPT2W8PX0jnE7K42dboS5CvrDbC3bWW6w@mail.gmail.com>
+ <CANVYNa9rvFmH4AMm+kWMv4Cp4fYW2sEp987Dt6tcKJhR3OLWsw@mail.gmail.com>
+ <CAMJW5=3O1gi67swQ=xX4BKWy-a=Z0rGOH7qYWn9vSaq8C=FvBg@mail.gmail.com>
+ <CANVYNa9X+1Fo6GBk7EsLR026uKN3PjFqs1K9LnYLFghznRqEDg@mail.gmail.com>
+ <CANVYNa-bRkhjkznLd8uwQmi2Dx6jAd7prN2pDv+QyES5ENycJA@mail.gmail.com>
+ <CAMJW5=1KuFEF2K_Cv=he7TrhjRibRY4OuQpAPaq5dOg4uXY+_A@mail.gmail.com>
+ <CAD+eWSWRRMnp9aDL4ht+Ubt_pe4D4CjYLZ72DWqxdyBAzD6qoQ@mail.gmail.com>
+ <CANVYNa_vUdU-=Bc0MKoLgkw3qeU6FWxh=CFKVn0gMOmiM8qjPQ@mail.gmail.com>
+ <CAD+eWSVB26J72GctT8xyKQ4h1uOeLJWCem=1x7=mrao0=rLVdA@mail.gmail.com>
+ <CANVYNa-t1q0aOXakCC4cqd=sFYdL_9fA-tiVYWLuuhvqEc5e6g@mail.gmail.com>
+ <CAD+eWSWoA5kYHE_YXYYteP3Aj0cakTqHGMmfk4wJUxxGCgLRQw@mail.gmail.com>
+Message-ID: <CANVYNa_UCAgsMp4MB0JLngp=QWrHNiUm929kegjZLKUFT6vmYQ@mail.gmail.com>
+
+On Sun, Mar 11, 2012 at 12:28 PM, Cheer Xiao <xiaqqaix at gmail.com> wrote:
+> 2012/3/11 Fernando Lemos <fernandotcl at i3wm.org>:
+>> On Sun, Mar 11, 2012 at 12:03 PM, Cheer Xiao <xiaqqaix at gmail.com> wrote:
+>>> 2012/3/11 Fernando Lemos <fernandotcl at i3wm.org>:
+>>>> [...snip...]
+>>>> Hi,
+>>>>
+>>>> That's exactly how you should specify the font. :-)
+>>>>
+>>>> Check your logs, that's probably not a valid font description. After
+>>>> "xft:", you can specify any Pango font description. I personally use
+>>>> "font xft:Sans 8".
+>>>
+>>> So I switched to a simpler one, "font Consolas 10". Problem still. In
+>>> the log there is a line
+>>>
+>>> ERROR: Could not open font xft:Consolas 10 (X error 15). Trying
+>>> fallback to 'fixed'.
+>>>
+>>> and far below that, just before I restart i3:
+>>>
+>>> [src/xcb.c:945] ERROR: Could not open font. X Error Code: 15
+>>>
+>>> Weird since src/xcb.c doesn't has line 945... I also noticed that
+>>> i3bar disappeared too, but there is no log message related to that.
+>>
+>> src/xcb.c:945 is in i3bar/src/xcb.c (it's probably i3bar's stderr).
+>>
+>> The "xft:" prefix is only handled if your i3 is patched, which leads
+>> me to think that you're getting that message from an unpatched
+>> i3/i3bar.
+>>
+>
+> I did a git am:
+>
+> ~/src/i3$ git log
+>
+> commit 3389908a213b2afba75fe61c92466a08aefb24c5
+> Author: Fernando Tarl? Cardoso Lemos <fernandotcl at gmail.com>
+> Date: ? Mon Nov 14 21:39:03 2011 -0200
+>
+> ? ?Implement Pango rendering.
+>
+> ...
+
+Please add some logging, run i3 with full debug verbosity[1] and see
+if you can spot what went wrong. I can't see how the message you
+reported would be possible at all with the Pango patches.
+
+[1]: http://i3wm.org/docs/debugging.html
+
+Regards,
+
+From mail at merovius.de  Sun Mar 11 18:45:33 2012
+From: mail at merovius.de (Axel Wagner)
+Date: Sun, 11 Mar 2012 18:45:33 +0100
+Subject: [i3] i3status patch
+In-Reply-To: <1331472561-sup-9103@stapelberg.de>
+References: <CA+tYn00FRjiQ3csgR3kTLcxoQqHdYRyeCFhCyZAMXq8yCBuumg@mail.gmail.com>
+ <1331472561-sup-9103@stapelberg.de>
+Message-ID: <1331487740-sup-79@merovius.de>
+
+Hi,
+
+I could think of a few, maybe not that critical ones - for example you
+could have a hook for some updates (like ethernet or battery-status,
+just to name two), which sends a USR1. This would then make the
+information more ?realtime? with a one-second update while not putting
+additional stress on the system for refreshing _all_ the information
+several times a second.
+Yipp, not very important, an event based statusline-generator (like
+dstatus from fernando) might be better suited for ppl who want that?
+
+regards,
+
+Axel
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 198 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120311/40a66d53/attachment.pgp>
+
+From buhr at apparatus.de  Mon Mar 12 13:14:51 2012
+From: buhr at apparatus.de (Mathias Buhr)
+Date: Mon, 12 Mar 2012 13:14:51 +0100
+Subject: [i3] [i3status] [PATCH] Network throughput
+Message-ID: <4F5DE8BB.8000105@apparatus.de>
+
+Hi,
+
+just in case there is some interest:
+I've patched i3status to monitor incoming & outgoing network traffic
+with the help of some code from an XFCE4 panel plugin. XFCE itself took
+the code from a CLI monitoring tool called wormulon. I was working on
+some NFS issues and needed something to easily monitor that kind of stuff.
+The new "throughput" module can be used multiple times for different
+network interfaces and can (in theory) replace the ethernet module with
+exception of the network speed. As this change might break existing
+config files I didn't touch anything related to that.
+The downside of this patch is it's size: 81kb. The size is due to the
+necessary wormulon code but this solution doesn't add any external
+dependancies. Worumlon compiles on many platforms too.
+Network throughput can be monitored in Bytes, Kilobytes and Megabytes/s.
+
+If there is some interest and I did something wrong just let me know and
+I'll try to provide a better patch.
+
+Regards
+Mathias
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-added-support-for-network-throughput-monitoring.patch
+Type: text/x-patch
+Size: 82613 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120312/928ed4c4/attachment-0001.bin>
+
+From michael at i3wm.org  Mon Mar 12 23:20:54 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 12 Mar 2012 23:20:54 +0100
+Subject: [i3] [i3status] [PATCH] Network throughput
+In-Reply-To: <4F5DE8BB.8000105@apparatus.de>
+References: <4F5DE8BB.8000105@apparatus.de>
+Message-ID: <1331590769-sup-1370@stapelberg.de>
+
+Hi Mathias,
+
+Excerpts from Mathias Buhr's message of 2012-03-12 13:14:51 +0100:
+> I've patched i3status to monitor incoming & outgoing network traffic
+Thanks for posting your patch. I am not very interested in merging it, though,
+on the one hand for the reason you already mentioned (it introduces a lot of
+code), and on the other hand I don?t really think that incoming/outgoing
+network traffic is a good metric for anything except very special use cases ?
+and for those, there are already tools :).
+
+Best regards,
+Michael
+
+From alex at ua2web.com  Tue Mar 13 09:16:40 2012
+From: alex at ua2web.com (Alex V. Koval)
+Date: Tue, 13 Mar 2012 10:16:40 +0200 (EET)
+Subject: [i3] [i3status] [PATCH] Network throughput
+In-Reply-To: <1331590769-sup-1370@stapelberg.de>
+References: <4F5DE8BB.8000105@apparatus.de> <1331590769-sup-1370@stapelberg.de>
+Message-ID: <alpine.LNX.2.00.1203131008490.17692@avk-v131.local>
+
+
+Hi,
+
+sorry to interrupt in the between of conversation.
+
+On Mon, 12 Mar 2012, Michael Stapelberg wrote:
+
+> on the other hand I don't really think that incoming/outgoing
+> network traffic is a good metric
+
+a few of mine use cases:
+
+1) When you are on slow / paid connection it is usually good to know
+    if anything uses a lot of traffic now.
+
+2) When there is download going, it is good
+    to know when its finished without switching to an app.
+
+3) When I talk on Skype or other thing I often use to see if the
+    incoming/outgoing traffic does fit well in the current connection
+    speed.
+
+4) When I work in terminal and experience delays, quick look into
+    network status shows if this is a problem on my side (net load high)
+    or somewhere else.
+
+5) It helps to identify troyans or viruses when you see unexpected
+    traffic from your desktop.
+
+Those are a few my own use-cases for network load meter in i3wm, it it 
+ever would be implemented. I do understand your argument about code size,
+and agree that it looks a way too much.
+
+In worsest cases, when I definitely need to watch the traffic, I run
+gkrellm. But it does ates a lot of space on screen and so I prefer
+not do do this. In old good IceWM sysload and Network Traffic were graphs
+nicely integrated into the bar. It would be great if some day we will have
+smth. like this.
+
+--
+Alex V. Koval
+
+From xiaqqaix at gmail.com  Tue Mar 13 09:16:47 2012
+From: xiaqqaix at gmail.com (Cheer Xiao)
+Date: Tue, 13 Mar 2012 16:16:47 +0800
+Subject: [i3] Why no xft support?
+In-Reply-To: <CANVYNa_UCAgsMp4MB0JLngp=QWrHNiUm929kegjZLKUFT6vmYQ@mail.gmail.com>
+References: <CAMJW5=2Q2fJbn9kj4fPT2W8PX0jnE7K42dboS5CvrDbC3bWW6w@mail.gmail.com>
+ <CANVYNa9rvFmH4AMm+kWMv4Cp4fYW2sEp987Dt6tcKJhR3OLWsw@mail.gmail.com>
+ <CAMJW5=3O1gi67swQ=xX4BKWy-a=Z0rGOH7qYWn9vSaq8C=FvBg@mail.gmail.com>
+ <CANVYNa9X+1Fo6GBk7EsLR026uKN3PjFqs1K9LnYLFghznRqEDg@mail.gmail.com>
+ <CANVYNa-bRkhjkznLd8uwQmi2Dx6jAd7prN2pDv+QyES5ENycJA@mail.gmail.com>
+ <CAMJW5=1KuFEF2K_Cv=he7TrhjRibRY4OuQpAPaq5dOg4uXY+_A@mail.gmail.com>
+ <CAD+eWSWRRMnp9aDL4ht+Ubt_pe4D4CjYLZ72DWqxdyBAzD6qoQ@mail.gmail.com>
+ <CANVYNa_vUdU-=Bc0MKoLgkw3qeU6FWxh=CFKVn0gMOmiM8qjPQ@mail.gmail.com>
+ <CAD+eWSVB26J72GctT8xyKQ4h1uOeLJWCem=1x7=mrao0=rLVdA@mail.gmail.com>
+ <CANVYNa-t1q0aOXakCC4cqd=sFYdL_9fA-tiVYWLuuhvqEc5e6g@mail.gmail.com>
+ <CAD+eWSWoA5kYHE_YXYYteP3Aj0cakTqHGMmfk4wJUxxGCgLRQw@mail.gmail.com>
+ <CANVYNa_UCAgsMp4MB0JLngp=QWrHNiUm929kegjZLKUFT6vmYQ@mail.gmail.com>
+Message-ID: <CAD+eWSW+7DLYkJE-J2o==BrRUd+BOe=V0vrAWZAv8=OeQzVwFA@mail.gmail.com>
+
+Very sorry - my bad. I had i3 in my /usr/local/bin yet i3 installs
+itself to /usr/bin. I was using an older version. After deleting the
+/usr/local stuff, it worked like a charm. Sorry - and thanks!!
+
+
+-- 
+Regards,
+Cheer Xiao aka. xiaq
+
+From am at sic-software.com  Tue Mar 13 09:59:04 2012
+From: am at sic-software.com (Aaron Mueller)
+Date: Tue, 13 Mar 2012 09:59:04 +0100
+Subject: [i3] [i3status] [PATCH] Network throughput
+In-Reply-To: <alpine.LNX.2.00.1203131008490.17692@avk-v131.local>
+References: <4F5DE8BB.8000105@apparatus.de> <1331590769-sup-1370@stapelberg.de>
+ <alpine.LNX.2.00.1203131008490.17692@avk-v131.local>
+Message-ID: <4F5F0C58.30004@sic-software.com>
+
+On 03/13/2012 09:16 AM, Alex V. Koval wrote:
+> In worsest cases, when I definitely need to watch the traffic, I run
+>  gkrellm. But it does ates a lot of space on screen and so I prefer 
+> not do do this. In old good IceWM sysload and Network Traffic were 
+> graphs nicely integrated into the bar. It would be great if some day 
+> we will have smth. like this.
+
+I also like to have such a metric on my statusbar. With spark[1]
+ascii bars this would look just great.
+
+Aaron
+
+[1]: https://github.com/holman/spark
+
+From buhr at apparatus.de  Tue Mar 13 10:24:53 2012
+From: buhr at apparatus.de (Mathias Buhr)
+Date: Tue, 13 Mar 2012 10:24:53 +0100
+Subject: [i3] [i3status] [PATCH] Network throughput
+In-Reply-To: <1331590769-sup-1370@stapelberg.de>
+References: <4F5DE8BB.8000105@apparatus.de> <1331590769-sup-1370@stapelberg.de>
+Message-ID: <4F5F1265.4000106@apparatus.de>
+
+On 03/12/2012 11:20 PM, Michael Stapelberg wrote:
+> Hi Mathias,
+> 
+> Excerpts from Mathias Buhr's message of 2012-03-12 13:14:51 +0100:
+>> I've patched i3status to monitor incoming & outgoing network traffic
+> Thanks for posting your patch. I am not very interested in merging it, though,
+> on the one hand for the reason you already mentioned (it introduces a lot of
+> code), and on the other hand I don?t really think that incoming/outgoing
+> network traffic is a good metric for anything except very special use cases ?
+> and for those, there are already tools :).
+> 
+> Best regards,
+> Michael
+
+
+Hi Michael,
+
+first of all: thank you for i3! I really appreciate your work on that!
+
+I agree with your comments and I have thought about them already. I
+don't see the network throughput as accurate measurement but as clue
+about what is going on. It is more or less just a hint and I didn't want
+to use any extra tools/screen space for that. In my case it was actually
+very helpful in finding the culprit. After all, the use of network
+throughput is a choice. If a user doesn't like it, they don't have to
+add it to their config.
+As there seem to be some interest from other users: I could try to trim
+the code. A few of the supported architecture are probably not needed
+(solaris, hpux, bsd?) although it's nice to have them.
+
+Best regards,
+Mathias
+
+P.S.: I think some modules of i3status produce wrong output when using
+i3bar output mode. I wanted to fix that but a question arose: what is
+this mode supposed to do anyway? The manual of i3bar explicitly wants
+output_format to be "none". Is it just some kind of legacy? We could
+trim that too
+
+
+From marcus.moeller at gmx.ch  Thu Mar 15 20:45:51 2012
+From: marcus.moeller at gmx.ch (Marcus Moeller)
+Date: Thu, 15 Mar 2012 20:45:51 +0100
+Subject: [i3] spacing after shortened window title
+In-Reply-To: <1331472324-sup-8009@stapelberg.de>
+References: <4F5BD079.8070906@gmx.ch> <1331472324-sup-8009@stapelberg.de>
+Message-ID: <4F6246EF.8040500@gmx.ch>
+
+Dear Michael.
+
+> Excerpts from Marcus Moeller's message of 2012-03-10 23:06:49 +0100:
+>> it would be great to have a little space between a shortened window
+>> title and the title of the next window, especially in tabbed mode. At
+>> the moment it looks a bit squeezed.
+> Are you using the latest git version of the "next" branch? We have borders
+> between the tabs.
+
+Sadly not. I am using the one that is in Debian sid. But great to hear 
+that you have already taken care of that. Could you perhaps also lighten 
+the color of inactive window title text a bit? I find it really dark and 
+hard to read on black background.
+
+Thanks for your great work
+Marcus
+
+From fh at fhaun.de  Thu Mar 15 23:35:50 2012
+From: fh at fhaun.de (Frank Haun)
+Date: Thu, 15 Mar 2012 23:35:50 +0100
+Subject: [i3] spacing after shortened window title
+In-Reply-To: <4F6246EF.8040500@gmx.ch> (Marcus Moeller's message of "Thu, 15
+ Mar 2012 20:45:51 +0100")
+References: <4F5BD079.8070906@gmx.ch> <1331472324-sup-8009@stapelberg.de>
+ <4F6246EF.8040500@gmx.ch>
+Message-ID: <87obrxjxvd.fsf@m7000.fhaun.de>
+
+Marcus Moeller <marcus.moeller at gmx.ch> writes:
+
+> Could you perhaps also lighten the color of inactive window title text
+> a bit? I find it really dark and hard to read on black background.
+
+You can change it in your i3 config:
+
+  http://i3wm.org/docs/userguide.html#_changing_colors
+
+
+Frank
+-- 
+http://fhaun.blogspot.com/
+
+From marcus.moeller at gmx.ch  Fri Mar 16 08:27:44 2012
+From: marcus.moeller at gmx.ch (Marcus Moeller)
+Date: Fri, 16 Mar 2012 08:27:44 +0100
+Subject: [i3] question about 'containers'
+In-Reply-To: <1327858710-sup-4925@merovius.de>
+References: <alpine.LNX.2.00.1201291845450.7846@avk-v131-2>
+ <1327858710-sup-4925@merovius.de>
+Message-ID: <4F62EB70.6070202@gmx.ch>
+
+Hi all.
+
+> Excerpts from Alex V. Koval's message of 2012-01-29 17:50:32 +0100:
+>> For example, I can not find any information what does mean 'another
+>> container' which appears sometimes on top?
+
+I have to pick up this thread again, because it' still not completely 
+clear to me.
+
+Here is an example:
+
+I have predefined:
+
+workspace_layout tabbed
+
+in my i3 configuration. Now if I press e.g. Mod+V to switch to vertical 
+split it always opens 'another container' (unless I focus parent before).
+
+If I have not predefined any workspace_layout, it just splits without 
+creating 'another container' (and without having the need to focus 
+parent, too).
+
+What exactly is the difference here?
+
+Greets
+Marcus
+
+From old4 at o2.pl  Fri Mar 16 12:45:15 2012
+From: old4 at o2.pl (Mateusz Poszwa)
+Date: Fri, 16 Mar 2012 12:45:15 +0100
+Subject: [i3] question about 'containers'
+In-Reply-To: <4F62EB70.6070202@gmx.ch>
+References: <alpine.LNX.2.00.1201291845450.7846@avk-v131-2>
+ <1327858710-sup-4925@merovius.de> <4F62EB70.6070202@gmx.ch>
+Message-ID: <20120316124515.6511a0df@debelianear>
+
+On Fri, 16 Mar 2012 08:27:44 +0100
+Marcus Moeller <marcus.moeller at gmx.ch> wrote:
+
+> Hi all.
+> 
+> > Excerpts from Alex V. Koval's message of 2012-01-29 17:50:32 +0100:
+> >> For example, I can not find any information what does mean 'another
+> >> container' which appears sometimes on top?
+> 
+> I have to pick up this thread again, because it' still not completely 
+> clear to me.
+> 
+> Here is an example:
+> 
+> I have predefined:
+> 
+> workspace_layout tabbed
+> 
+> in my i3 configuration. Now if I press e.g. Mod+V to switch to vertical 
+> split it always opens 'another container' (unless I focus parent before).
+> 
+> If I have not predefined any workspace_layout, it just splits without 
+> creating 'another container' (and without having the need to focus 
+> parent, too).
+> 
+> What exactly is the difference here?
+
+That's not exactly true. It creates another container, but its title is
+not visible when its in default (tiling) layout (and this is the case
+when the workspace_layout is not specified).
+
+What you do when you split is create a container inside another
+container. This another container is just a single tab in parent
+container. It's just not visible when the layout is default.
+
+You can focus parent (to select the split container) and move it up or
+down (or left/right if you have a tall screen I guess) out of the tabbed
+container or change the workspace's layout to default (just to mask
+the title bar).
+
+
+Regards
+
+-- 
+Mateusz Poszwa
+
+From onaips at gmail.com  Sat Mar 17 22:45:01 2012
+From: onaips at gmail.com (=?ISO-8859-1?Q?Jos=E9_Luis_Pereira?=)
+Date: Sat, 17 Mar 2012 21:45:01 +0000
+Subject: [i3] tray_output for primary display
+In-Reply-To: <CAOPjWVM_cyN8Z_wfe1iMmGUJh+1QKbs1F5i0wCu12EppFO8yOg@mail.gmail.com>
+References: <CAOPjWVM_cyN8Z_wfe1iMmGUJh+1QKbs1F5i0wCu12EppFO8yOg@mail.gmail.com>
+Message-ID: <CAOPjWVORB_vCCwiFS-MuAvn6rDFuna6_q1tiws5fjen94H1C0g@mail.gmail.com>
+
+Hello all,
+
+I'm a new user of i3wm, and i am very pleased with it, thank you for
+writing such a good piece of software!
+However, i want to use the same config file for my pcs, and some of them do
+not feature the same display name, i cannot have a generic file for i3bar.
+Is it easy to implement something like:
+
+bar {
+tray_output primary
+}
+Instead of the former "none" or display name?
+
+Best Regards
+ ------
+Jos? Pereira
+Personal blog <http://www.onaips.com>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120317/4ef40391/attachment.html>
+
+From michael at i3wm.org  Sat Mar 17 23:24:08 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 17 Mar 2012 23:24:08 +0100
+Subject: [i3] tray_output for primary display
+In-Reply-To: <CAOPjWVORB_vCCwiFS-MuAvn6rDFuna6_q1tiws5fjen94H1C0g@mail.gmail.com>
+References: <CAOPjWVM_cyN8Z_wfe1iMmGUJh+1QKbs1F5i0wCu12EppFO8yOg@mail.gmail.com>
+ <CAOPjWVORB_vCCwiFS-MuAvn6rDFuna6_q1tiws5fjen94H1C0g@mail.gmail.com>
+Message-ID: <1332022980-sup-5561@stapelberg.de>
+
+Hi Jos?,
+
+Excerpts from Jos? Luis Pereira's message of 2012-03-17 22:45:01 +0100:
+> I'm a new user of i3wm, and i am very pleased with it, thank you for
+> writing such a good piece of software!
+Thanks!
+
+> However, i want to use the same config file for my pcs, and some of them do
+> not feature the same display name, i cannot have a generic file for i3bar.
+> Is it easy to implement something like:
+> 
+> bar {
+> tray_output primary
+> }
+> Instead of the former "none" or display name?
+This is not yet possible. It should be relatively easy to implement, though. If
+you are interested in implementing it, let me know, and I will guide you (only
+a bit of C knowledge required, nothing else). If you absolutely cannot
+implement it yourself, you could still file a feature request ticket on
+http://bugs.i3wm.org/
+
+Best regards,
+Michael
+
+From onaips at gmail.com  Sun Mar 18 14:34:43 2012
+From: onaips at gmail.com (=?ISO-8859-1?Q?Jos=E9_Luis_Pereira?=)
+Date: Sun, 18 Mar 2012 13:34:43 +0000
+Subject: [i3] tray_output for primary display
+In-Reply-To: <CAOPjWVORB_vCCwiFS-MuAvn6rDFuna6_q1tiws5fjen94H1C0g@mail.gmail.com>
+References: <CAOPjWVM_cyN8Z_wfe1iMmGUJh+1QKbs1F5i0wCu12EppFO8yOg@mail.gmail.com>
+ <CAOPjWVORB_vCCwiFS-MuAvn6rDFuna6_q1tiws5fjen94H1C0g@mail.gmail.com>
+Message-ID: <CAOPjWVMpViTfp-NRTCHtapc5oAgUPR46e9gDuJRs8LcGbjdsjg@mail.gmail.com>
+
+Thanks for your anwer. I would like to implement the feature, i have fairly
+good C knowledge for this. Would you give me some guidelines?
+I have been looking into the code and i found out that the modification
+should be in xbc.c on i3bar source, am i right?
+I realized i3bar uses ipc to communicate with i3wm, therefore i'm not sure
+if this is the right place to modify... Also, i do not know how should i
+get the primary display from xrandr..
+
+Best
+
+
+On Sat, Mar 17, 2012 at 9:45 PM, Jos? Luis Pereira <onaips at gmail.com> wrote:
+
+> Hello all,
+>
+> I'm a new user of i3wm, and i am very pleased with it, thank you for
+> writing such a good piece of software!
+> However, i want to use the same config file for my pcs, and some of them
+> do not feature the same display name, i cannot have a generic file for
+> i3bar.
+> Is it easy to implement something like:
+>
+> bar {
+> tray_output primary
+> }
+> Instead of the former "none" or display name?
+>
+> Best Regards
+>
+>  ------
+> Jos? Pereira
+> Personal blog <http://www.onaips.com>
+>
+>
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120318/7e926987/attachment.html>
+
+From michael at i3wm.org  Sun Mar 18 18:09:17 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 18 Mar 2012 18:09:17 +0100
+Subject: [i3] tray_output for primary display
+In-Reply-To: <CAOPjWVMpViTfp-NRTCHtapc5oAgUPR46e9gDuJRs8LcGbjdsjg@mail.gmail.com>
+References: <CAOPjWVM_cyN8Z_wfe1iMmGUJh+1QKbs1F5i0wCu12EppFO8yOg@mail.gmail.com>
+ <CAOPjWVORB_vCCwiFS-MuAvn6rDFuna6_q1tiws5fjen94H1C0g@mail.gmail.com>
+ <CAOPjWVMpViTfp-NRTCHtapc5oAgUPR46e9gDuJRs8LcGbjdsjg@mail.gmail.com>
+Message-ID: <1332090353-sup-19@stapelberg.de>
+
+Hi Jos?,
+
+Excerpts from Jos? Luis Pereira's message of 2012-03-18 14:34:43 +0100:
+> Thanks for your anwer. I would like to implement the feature, i have fairly
+Awesome!
+
+> good C knowledge for this. Would you give me some guidelines?
+> I have been looking into the code and i found out that the modification
+> should be in xbc.c on i3bar source, am i right?
+Yes, partly:
+
+Since i3bar uses IPC and doesn?t query RandR directly, I recommend introducing
+a new boolean member in the IPC reply for the get_outputs message (see i3-msg
+-t get_outputs), called "primary". Then, make i3bar handle "primary" as a
+special value (case-insensitively) in i3bar/src/xcb.c.
+
+Feel free to send patches to this mailing list for review and feel free to drop
+by on IRC to clarify any questions you might have.
+
+Best regards,
+Michael
+
+From breunig at uni-hd.de  Sun Mar 18 18:33:21 2012
+From: breunig at uni-hd.de (Stefan Breunig)
+Date: Sun, 18 Mar 2012 18:33:21 +0100
+Subject: [i3] Network throughput bash script (usable with i3status)
+Message-ID: <4F661C61.9040000@uni-hd.de>
+
+Hi,
+
+the attached bash script calculates the transfer rate in a time
+interval. While it works if called manually, the intended use is in
+addition to i3status.
+
+The script is very simple and only displays the combined rate for all
+given adapters, but adjusting it to show every adapter should be simple
+enough. That being said, to get the script running you likely need to
+adjust the paths to your computer (find /sys -name "statistics" works
+nicely).
+
+Have a look at i3status? man page on how to combine the output. While it
+should be possible to source the script, i3bar crashes for me (reported
+the bug already). Running the script in a subshell and having a single
+echo like written in the man page works, though.
+
+License is WTFPL.
+
+--Stefan
+-------------- next part --------------
+#!/bin/bash
+
+# path to store the old results in
+path="/dev/shm/measure-net-speed"
+
+# grabbing data
+eth0="/sys/devices/pci0000:00/0000:00:19.0/net/eth0/statistics"
+wlan0="/sys/devices/pci0000:00/0000:00:1c.1/0000:03:00.0/net/wlan0/statistics"
+read eth0_rx < "${eth0}/rx_bytes"
+read eth0_tx < "${eth0}/tx_bytes"
+read wlan0_rx < "${wlan0}/rx_bytes"
+read wlan0_tx < "${wlan0}/tx_bytes"
+
+# get time and sum of rx/tx for combined display
+time=$(date +%s)
+rx=$(( $eth0_rx + $wlan0_rx ))
+tx=$(( $eth0_tx + $wlan0_tx ))
+
+# write current data if file does not exist. Do not exit, this will cause
+# problems if this file is sourced instead of executed as another process.
+if ! [[ -f "${path}" ]]; then
+  echo "${time} ${rx} ${tx}" > "${path}"
+  chmod 0666 "${path}"
+fi
+
+# read previous state and update data storage
+read old < "${path}"
+echo "${time} ${rx} ${tx}" > "${path}"
+
+# parse old data and calc time passed
+old=(${old//;/ })
+time_diff=$(( $time - ${old[0]} ))
+
+# sanity check: has a positive amount of time passed
+if [[ "${time_diff}" -gt 0 ]]; then
+  # calc bytes transferred, and their rate in byte/s
+  rx_diff=$(( $rx - ${old[1]} ))
+  tx_diff=$(( $tx - ${old[2]} ))
+  rx_rate=$(( $rx_diff / $time_diff ))
+  tx_rate=$(( $tx_diff / $time_diff ))
+
+  # shift by 10 bytes to get KiB/s and by 20 for MiB/s
+  # and print the more human readable value.
+  # 1024^2 = 1048576
+
+  # incoming
+  if [[ "$rx_mib" -gt 1048576 ]]; then
+    rx_mib=$(( $rx_rate >> 20 ))
+    echo -n "${rx_mib} M?"
+  else
+    rx_kib=$(( $rx_rate >> 10 ))
+    echo -n "${rx_kib} K?"
+  fi
+
+  echo -n "  "
+
+  # outgoing
+  if [[ "$tx_mib" -gt 1048576 ]]; then
+    tx_mib=$(( $tx_rate >> 20 ))
+    echo -n "${tx_mib} M?"
+  else
+    tx_kib=$(( $tx_rate >> 10 ))
+    echo -n "${tx_kib} K?"
+  fi
+else
+  echo -n " ? "
+fi
+
+From alex at ua2web.com  Mon Mar 19 06:34:55 2012
+From: alex at ua2web.com (Alex V. Koval)
+Date: Mon, 19 Mar 2012 07:34:55 +0200
+Subject: [i3] Network throughput bash script (usable with i3status)
+In-Reply-To: <4F661C61.9040000@uni-hd.de>
+References: <4F661C61.9040000@uni-hd.de>
+Message-ID: <20120319073455.7a58fc32@avk-v131.local>
+
+Hi!
+
+On Sun, 18 Mar 2012 18:33:21 +0100
+Stefan Breunig <breunig at uni-hd.de> wrote:
+
+> Running the script in a subshell and
+> having a single echo like written in the man page works, though.
+
+Thanks! Works fine, here is script which worked for me:
+
+#!/bin/sh
+# shell script to prepend i3status with more stuff
+
+i3status -c ~/.i3/i3status.conf | while :
+do
+    read line
+    mystuff=`~/bin/measure-net-speed.sh`
+    echo "$mystuff | $line"
+done
+
+--
+Alex
+
+From onaips at gmail.com  Tue Mar 20 09:38:10 2012
+From: onaips at gmail.com (=?ISO-8859-1?Q?Jos=E9_Luis_Pereira?=)
+Date: Tue, 20 Mar 2012 08:38:10 +0000
+Subject: [i3] tray_output for primary display
+In-Reply-To: <1332090353-sup-19@stapelberg.de>
+References: <CAOPjWVM_cyN8Z_wfe1iMmGUJh+1QKbs1F5i0wCu12EppFO8yOg@mail.gmail.com>
+ <CAOPjWVORB_vCCwiFS-MuAvn6rDFuna6_q1tiws5fjen94H1C0g@mail.gmail.com>
+ <CAOPjWVMpViTfp-NRTCHtapc5oAgUPR46e9gDuJRs8LcGbjdsjg@mail.gmail.com>
+ <1332090353-sup-19@stapelberg.de>
+Message-ID: <CAOPjWVObDRxNr7stZLabjCOBGKyNEg_OCf_pUJ5a_tPe8RR9OQ@mail.gmail.com>
+
+Dear Michael, All
+
+Here you have the patch that implements the "primary" output feature. Its
+ working fairly well, could you add it also in the docs?
+Also, user should be aware that the is no default primary display (at least
+in my debian machine), you can make it by doing so:
+xrandr --output <output_display> --primary
+
+
+Looking forward to contribute with more patches.
+Best Regards
+------
+Jos? Pereira
+
+On Sun, Mar 18, 2012 at 5:09 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Jos?,
+>
+> Excerpts from Jos? Luis Pereira's message of 2012-03-18 14:34:43 +0100:
+> > Thanks for your anwer. I would like to implement the feature, i have
+> fairly
+> Awesome!
+>
+> > good C knowledge for this. Would you give me some guidelines?
+> > I have been looking into the code and i found out that the modification
+> > should be in xbc.c on i3bar source, am i right?
+> Yes, partly:
+>
+> Since i3bar uses IPC and doesn?t query RandR directly, I recommend
+> introducing
+> a new boolean member in the IPC reply for the get_outputs message (see
+> i3-msg
+> -t get_outputs), called "primary". Then, make i3bar handle "primary" as a
+> special value (case-insensitively) in i3bar/src/xcb.c.
+>
+> Feel free to send patches to this mailing list for review and feel free to
+> drop
+> by on IRC to clarify any questions you might have.
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120320/981e57bb/attachment.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: primary_output.diff
+Type: text/x-patch
+Size: 2591 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120320/981e57bb/attachment.bin>
+
+From acrvns at gmail.com  Tue Mar 20 15:21:17 2012
+From: acrvns at gmail.com (Alexander Corvinus)
+Date: Tue, 20 Mar 2012 17:21:17 +0300
+Subject: [i3] EWMH for panels
+Message-ID: <CAMbC+T-QEcUm+LjAapxgNao08K=QBazYP14OtL7iyTN6dx-DgA@mail.gmail.com>
+
+from i3 User?s Guide:
+> Regardless of which application you use to display the status line, you want to make sure that it registers as a dock window using EWMH hints. i3 will position the window either at the top or at the bottom of the screen, depending on which hint the application sets.
+
+Can you please elaborate, which hints need to be set? Can they be set
+in something like devilspie? I feel it will remain a relevant question
+for quite some time. Even dzen2's stable release currently can't set
+them on its own, so panel overlaps windows or other content.
+
+From mail at merovius.de  Tue Mar 20 15:49:17 2012
+From: mail at merovius.de (Axel Wagner)
+Date: Tue, 20 Mar 2012 15:49:17 +0100
+Subject: [i3] EWMH for panels
+In-Reply-To: <CAMbC+T-QEcUm+LjAapxgNao08K=QBazYP14OtL7iyTN6dx-DgA@mail.gmail.com>
+References: <CAMbC+T-QEcUm+LjAapxgNao08K=QBazYP14OtL7iyTN6dx-DgA@mail.gmail.com>
+Message-ID: <1332254281-sup-3162@merovius.de>
+
+Hi,
+
+Excerpts from Alexander Corvinus's message of 2012-03-20 15:21:17 +0100:
+> Can you please elaborate, which hints need to be set?
+
+You need to set the window-type to _NET_WM_WINDOW_TYPE_DOCK and set the
+_NET_WM_STRUT_PARTIAL property, which basically says how much space you
+want and where you want to be placed.
+You can find an example of both in i3bar/src/xcb.c:1241 resp.
+i3bar/src/xcb.c:1283.
+Furthor information about _NET_WM_STRUT_PARTIAL is provided in the EWMH-spec [1]
+
+> Can they be set in something like devilspie?
+
+I looked at [2] and there does not seem to exist an action to set STRUT
+or STRUT_PARTIAL, but you can set the window-type. Oddly there appears
+to be no way to set arbitrary EWMH-properties, which I find pretty
+unflexible?
+I don't know from the top of my head, what i3 does, when you request to be
+docking but don't set STRUT_PARTIAL. Iirc it used to put the window at the
+top of the screen.
+
+> Even dzen2's stable release currently can't set
+> them on its own, so panel overlaps windows or other content.
+
+This is only because the developer of dzen2 hasn't done a stable release
+in years. The code exists in the svn-repository for quite some time ;)
+
+Regards,
+
+Axel
+
+[1] http://standards.freedesktop.org/wm-spec/wm-spec-latest.html#id2578550
+[2] http://www.foosel.org/linux/devilspie#actions
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 198 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120320/4dc43962/attachment.pgp>
+
+From fernandotcl at i3wm.org  Wed Mar 21 01:36:17 2012
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Tue, 20 Mar 2012 21:36:17 -0300
+Subject: [i3] tray_output for primary display
+In-Reply-To: <CAOPjWVObDRxNr7stZLabjCOBGKyNEg_OCf_pUJ5a_tPe8RR9OQ@mail.gmail.com>
+References: <CAOPjWVM_cyN8Z_wfe1iMmGUJh+1QKbs1F5i0wCu12EppFO8yOg@mail.gmail.com>
+ <CAOPjWVORB_vCCwiFS-MuAvn6rDFuna6_q1tiws5fjen94H1C0g@mail.gmail.com>
+ <CAOPjWVMpViTfp-NRTCHtapc5oAgUPR46e9gDuJRs8LcGbjdsjg@mail.gmail.com>
+ <1332090353-sup-19@stapelberg.de>
+ <CAOPjWVObDRxNr7stZLabjCOBGKyNEg_OCf_pUJ5a_tPe8RR9OQ@mail.gmail.com>
+Message-ID: <CANVYNa9TTWBrrF1c6DaKenrp7ANi-XVZ=4Es0i45OkHXbAkb4A@mail.gmail.com>
+
+Hi,
+
+2012/3/20 Jos? Luis Pereira <onaips at gmail.com>:
+> Dear Michael, All
+>
+> Here you have the patch that implements the "primary" output feature. Its
+> ?working fairly well, could you add it also in the docs?
+> Also, user should be aware that the is no default primary display (at least
+> in my debian machine), you can make it by doing so:
+> xrandr --output <output_display> --primary
+
+Looks good, though I didn't test it. Some very minor suggestions, feel
+free to ignore them to your discretion:
+
+* I'd prefer to do the boolean comparison first in the "if" clause.
+There's no performance improvement in practice, but it seems more
+correct to me.
+
+* You've added a trailing whitespace to i3bar/outputs.h.
+
+If you can, please submit a patch for the docs. They're in the same
+Git repository. I believe you may choose to use send a different
+patch, or simply pack the changes in the same commit (specially as the
+changes should be simple enough).
+
+Regards,
+
+From onaips at gmail.com  Wed Mar 21 10:22:53 2012
+From: onaips at gmail.com (=?ISO-8859-1?Q?Jos=E9_Luis_Pereira?=)
+Date: Wed, 21 Mar 2012 09:22:53 +0000
+Subject: [i3] tray_output for primary display
+In-Reply-To: <CANVYNa9TTWBrrF1c6DaKenrp7ANi-XVZ=4Es0i45OkHXbAkb4A@mail.gmail.com>
+References: <CAOPjWVM_cyN8Z_wfe1iMmGUJh+1QKbs1F5i0wCu12EppFO8yOg@mail.gmail.com>
+ <CAOPjWVORB_vCCwiFS-MuAvn6rDFuna6_q1tiws5fjen94H1C0g@mail.gmail.com>
+ <CAOPjWVMpViTfp-NRTCHtapc5oAgUPR46e9gDuJRs8LcGbjdsjg@mail.gmail.com>
+ <1332090353-sup-19@stapelberg.de>
+ <CAOPjWVObDRxNr7stZLabjCOBGKyNEg_OCf_pUJ5a_tPe8RR9OQ@mail.gmail.com>
+ <CANVYNa9TTWBrrF1c6DaKenrp7ANi-XVZ=4Es0i45OkHXbAkb4A@mail.gmail.com>
+Message-ID: <CAOPjWVP2N7zro9pXKLNiD_fEX3smEgt2g8Z0KJ+zh7rW21Gm3Q@mail.gmail.com>
+
+Here you have, packed a doc, removed whitespace and changed if order.
+
+Best Regards
+
+------
+Jos? Pereira
+
+
+On Wed, Mar 21, 2012 at 12:36 AM, Fernando Lemos <fernandotcl at i3wm.org>wrote:
+
+> Hi,
+>
+> 2012/3/20 Jos? Luis Pereira <onaips at gmail.com>:
+> > Dear Michael, All
+> >
+> > Here you have the patch that implements the "primary" output feature. Its
+> >  working fairly well, could you add it also in the docs?
+> > Also, user should be aware that the is no default primary display (at
+> least
+> > in my debian machine), you can make it by doing so:
+> > xrandr --output <output_display> --primary
+>
+> Looks good, though I didn't test it. Some very minor suggestions, feel
+> free to ignore them to your discretion:
+>
+> * I'd prefer to do the boolean comparison first in the "if" clause.
+> There's no performance improvement in practice, but it seems more
+> correct to me.
+>
+> * You've added a trailing whitespace to i3bar/outputs.h.
+>
+> If you can, please submit a patch for the docs. They're in the same
+> Git repository. I believe you may choose to use send a different
+> patch, or simply pack the changes in the same commit (specially as the
+> changes should be simple enough).
+>
+> Regards,
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120321/449377ae/attachment.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: primary_output_0.2.diff
+Type: text/x-patch
+Size: 3420 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120321/449377ae/attachment.bin>
+
+From okiddle at yahoo.co.uk  Thu Mar 22 16:04:46 2012
+From: okiddle at yahoo.co.uk (Oliver Kiddle)
+Date: Thu, 22 Mar 2012 16:04:46 +0100
+Subject: [i3] creating new containers
+Message-ID: <16586.1332428686@thecus.kiddle.eu>
+
+Here are some thoughts from my initial experiences with i3.
+
+In general my problem with tiling window managers is that windows don't
+stay where I left them: close a window and everything gets resized to
+gobble up the space, or try to move one window and everything else gets
+messed up in the process. I've had more success with I3 than most
+because the child containers and tabs allow me to have the top level
+container largely left alone so things don't jump about. Also, the three
+structure is great because it is easy to understand and navigate.
+
+It seems the split command, either vertical, or horizontal is
+essentially the command to create a new container and move the current
+window down into that comtainer. Moving the current window isn't always
+really what I want (I want existing windows left alone). Furthermore, I
+think of the splits as being much like the other layouts and would
+prefer if the interface allowed me to create a container that is
+initially tabbed or stacked. Similarly, why not allow a parameter to the
+layout command of vertical or horizontal?
+
+What I'd really like is the concept of an empty container. I could then
+configure my preferred basic layout in .i3/config without having to
+startup any applications. Closing the last application in a container
+might leave the empty container and so avoid the issue of the rest of
+the screen being reorganised. It would also mean that when you hit mod+v
+or mod+h in default mode something would actually happen on the screen:
+currently nothing visible happens.
+
+I was thinking of simulating this by using a stub application. The
+bindsym for creating a container would launch this application and then
+do the split. The trouble is how to get rid of the stub application when
+the container ceases to be empty and how to get it back when the
+container empties again.
+
+Oliver
+
+From michael at i3wm.org  Thu Mar 22 19:20:03 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 22 Mar 2012 19:20:03 +0100
+Subject: [i3] creating new containers
+In-Reply-To: <16586.1332428686@thecus.kiddle.eu>
+References: <16586.1332428686@thecus.kiddle.eu>
+Message-ID: <20120322192003.7059d6e3@x200>
+
+Hi Oliver,
+
+Thanks for sharing your impressions.
+
+On Thu, 22 Mar 2012 16:04:46 +0100 Oliver Kiddle <okiddle at yahoo.co.uk>
+wrote:
+> It seems the split command, either vertical, or horizontal is
+> essentially the command to create a new container and move the current
+> window down into that comtainer. Moving the current window isn't
+> always really what I want (I want existing windows left alone).
+> Furthermore, I think of the splits as being much like the other
+> layouts and would prefer if the interface allowed me to create a
+> container that is initially tabbed or stacked. Similarly, why not
+> allow a parameter to the layout command of vertical or horizontal?
+There is a ticket for this feature request:
+http://bugs.i3wm.org/464
+
+> What I'd really like is the concept of an empty container. I could
+There is a command "open", which creates a new empty container.
+However, the user interface for this is not quite ready (which is why
+it?s undocumented).
+
+> then configure my preferred basic layout in .i3/config without having
+> to startup any applications. Closing the last application in a
+This is called "layout saving" or even "session saving", and is planned.
+
+> container might leave the empty container and so avoid the issue of
+> the rest of the screen being reorganised. It would also mean that
+> when you hit mod+v or mod+h in default mode something would actually
+> happen on the screen: currently nothing visible happens.
+In the current development version of i3, you?ll get a visual indicator
+telling you where the next window will appear.
+
+Best regards,
+Michael
+
+From hg197 at gmx.de  Thu Mar 22 20:48:56 2012
+From: hg197 at gmx.de (Mathias =?iso-8859-1?Q?M=FCller?=)
+Date: Thu, 22 Mar 2012 20:48:56 +0100
+Subject: [i3] xmobar - missing dock mode
+Message-ID: <20120322194856.GA21315@marvin>
+
+Hi there,
+
+since I want to start using i3 seriously , I thought it might be helpful joining this mailing list.
+
+My idea is to migrate from xmonad to i3. But I want to keep xmobar . My first problem here, it does not work
+as it should regarding the man page of i3status.
+
+it says: 
+
+> i3status | xmobar -o -t "%StdinReader%" -c "[Run StdinReader]"
+
+Well, modifying the theme ( -t ) and commands ( -c ) I stuck somewhere in the middle. xmobar, even using the very 
+simple configuration as mentioned above, will not be managed in dock mode by i3. It always overlays windows. Why ? 
+
+xprop sais:
+
+> _NET_WM_PID(CARDINAL) = 12666
+> _NET_WM_WINDOW_TYPE(ATOM) = _NET_WM_WINDOW_TYPE_DOCK
+> _NET_WM_STRUT_PARTIAL(CARDINAL) = 0, 0, 15, 0, 0, 0, 0, 0, 0, 1023, 0, 0
+> WM_NAME(STRING) = "xmobar"
+> WM_CLASS(STRING) = "xmobar"
+
+But the i3 web page says (External workspace bars --> 2. dock mode ) :
+
+> When a program sets the appropriate hint (_NET_WM_WINDOW_TYPE_DOCK), it will be managed in dock mode by i3.
+
+
+So, xmobar gives the needed hint to i3, but it seems to be ignored. Why this ? I really like to keep xmobar.
+
+I hope there some among of you using xmobar or knowing some clues.
+
+Thanks in advance for every help.
+
+Cheers,
+
+Mathias 
+
+-- 
+
+From michael at i3wm.org  Fri Mar 23 01:11:46 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 23 Mar 2012 01:11:46 +0100
+Subject: [i3] xmobar - missing dock mode
+In-Reply-To: <20120322194856.GA21315@marvin>
+References: <20120322194856.GA21315@marvin>
+Message-ID: <1332461450-sup-5436@stapelberg.de>
+
+Hi Mathias,
+
+Excerpts from Mathias M?ller's message of 2012-03-22 20:48:56 +0100:
+> So, xmobar gives the needed hint to i3, but it seems to be ignored. Why this
+> ? I really like to keep xmobar.
+Check http://i3wm.org/docs/debugging.html for the debug log. If you can?t
+figure it out from looking at it (it?s hard to read for outsiders), ask on IRC
+or open a ticket at http://bugs.i3wm.org/
+
+Best regards,
+Michael
+
+From bruno.braga at gmail.com  Sun Mar 25 12:56:52 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Sun, 25 Mar 2012 20:56:52 +1000
+Subject: [i3] i3 Bar Tray Compatible Applications
+Message-ID: <CAAuVr71pJo1DsTwo=rzKjBhhvp3pMtT1Qz4XBscncXdTmzp4mw@mail.gmail.com>
+
+Hi,
+
+Does anyone know about interesting apps to use in the tray that is well
+integrated with i3?
+
+I was looking for an email unread count display for Gmail, and
+unfortunately, gm-notify does not work with me. So I found gman, which
+seems to work, but stores password with no encryption, and icon size does
+not match with i3 bar size.
+
+If anyone has suggestions for this feature and others, I most appreciate.
+
+Regards,
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120325/642de16c/attachment.html>
+
+From alex at ua2web.com  Sun Mar 25 13:34:46 2012
+From: alex at ua2web.com (Alex V. Koval)
+Date: Sun, 25 Mar 2012 14:34:46 +0300
+Subject: [i3] i3 Bar Tray Compatible Applications
+In-Reply-To: <CAAuVr71pJo1DsTwo=rzKjBhhvp3pMtT1Qz4XBscncXdTmzp4mw@mail.gmail.com>
+References: <CAAuVr71pJo1DsTwo=rzKjBhhvp3pMtT1Qz4XBscncXdTmzp4mw@mail.gmail.com>
+Message-ID: <20120325143446.257052a9@avk-v131.local>
+
+On Sun, 25 Mar 2012 20:56:52 +1000
+"BRAGA, Bruno" <bruno.braga at gmail.com> wrote:
+
+> Hi,
+> 
+> Does anyone know about interesting apps to use in the tray that is
+> well integrated with i3?
+> 
+> I was looking for an email unread count display for Gmail, and
+> unfortunately, gm-notify does not work with me. So I found gman, which
+> seems to work, but stores password with no encryption, and icon size
+> does not match with i3 bar size.
+> 
+> If anyone has suggestions for this feature and others, I most
+> appreciate.
+
+I highly recommend claws-mail system. Not only it has a beautiful
+keybindings strategy, it also does perform well with gmail imap
+(labels=displayed as folders), have nice offline mode (which *does*
+actually work the way I expect this). All of those things do work well
+together. 
+
+
+Claws displays the icon, with status notificator (gree/red/etc).
+
+-- 
+UA2WEB - Ukrainian team developing Web sites & services
+
+From bruno.braga at gmail.com  Sun Mar 25 13:41:22 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Sun, 25 Mar 2012 21:41:22 +1000
+Subject: [i3] Issues with gnome-keyring
+Message-ID: <CAAuVr73wdkOZXOV0Ypb5ZCzNLTbaQ+6BhAKPP=cf+4zaOhe5nA@mail.gmail.com>
+
+Hi,
+
+I would like to know if anyone ever had problems with the gnome keyring...
+I am trying to use a couple of applications that rely on it, and they just
+return a weird error (could not google much about it):
+
+Does anyone know how to solve this issue?
+
+Thanks in advance,
+
+========================
+
+Gkr-Message: secret service operation failed: Method "CreateCollection"
+with signature "a{sv}s" on interface "org.freedesktop.Secret.Service"
+doesn't exist
+
+Exception in thread Thread-4:
+Traceback (most recent call last):
+  File "/usr/lib/python2.7/threading.py", line 552, in __bootstrap_inner
+    self.run()
+  File "/usr/lib/python2.7/dist-packages/polly/__init__.py", line 241, in
+run
+    self.callback(*self.args)
+  File "/usr/lib/python2.7/dist-packages/polly/gui/header/assistant.py",
+line 169, in _update
+    account = assistant.account_manager.add(data)
+  File "/usr/lib/python2.7/dist-packages/polly/gui/twitter/account.py",
+line 664, in add
+    keyring.set_password(self.name, data[SUBTOKEN_KEY],
+data[SUBTOKEN_SECRET_KEY])
+  File "/usr/lib/python2.7/dist-packages/keyring/core.py", line 35, in
+set_password
+    _keyring_backend.set_password(service_name, username, password)
+  File "/usr/lib/python2.7/dist-packages/keyring/backend.py", line 159, in
+set_password
+    None, None, None, None, 0, password)
+IOError
+
+===========================
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120325/a0e488ee/attachment.html>
+
+From fernandotcl at i3wm.org  Sun Mar 25 22:58:05 2012
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Sun, 25 Mar 2012 17:58:05 -0300
+Subject: [i3] Issues with gnome-keyring
+In-Reply-To: <CAAuVr73wdkOZXOV0Ypb5ZCzNLTbaQ+6BhAKPP=cf+4zaOhe5nA@mail.gmail.com>
+References: <CAAuVr73wdkOZXOV0Ypb5ZCzNLTbaQ+6BhAKPP=cf+4zaOhe5nA@mail.gmail.com>
+Message-ID: <CANVYNa8Hr+cXnSFSPmOpxtJCXHZJWJftJ6024zmm332YMTUUCw@mail.gmail.com>
+
+Hi,
+
+On Sun, Mar 25, 2012 at 8:41 AM, BRAGA, Bruno <bruno.braga at gmail.com> wrote:
+> Hi,
+>
+> I would like to know if anyone ever had problems with the gnome keyring... I
+> am trying to use a couple of applications that rely on it, and they just
+> return a weird error (could not google much about it):
+>
+> Does anyone know how to solve this issue?
+
+Could be a PolicyKit misconfiguration, or maybe you should consider
+running gnome-session or something like that. Anyways, please refer to
+your distribution's support channel, as this is not related to i3.
+
+Regards,
+
+From pkordy at gmail.com  Mon Mar 26 04:28:04 2012
+From: pkordy at gmail.com (Piotr Kordy)
+Date: Mon, 26 Mar 2012 04:28:04 +0200
+Subject: [i3] i3 Bar Tray Compatible Applications
+In-Reply-To: <CAAuVr71pJo1DsTwo=rzKjBhhvp3pMtT1Qz4XBscncXdTmzp4mw@mail.gmail.com>
+References: <CAAuVr71pJo1DsTwo=rzKjBhhvp3pMtT1Qz4XBscncXdTmzp4mw@mail.gmail.com>
+Message-ID: <CAPNvPCMLV95iQEDV_t9qN2UfH8LBeJCqoaMsAi+77i09rq5A-w@mail.gmail.com>
+
+Hi,
+I personally use the python script that I modified to use gnome-keyring for
+storing passwords. Then I use conky + dzen to display its output. If you
+want to use it you need to change user name in the source and creation of
+appropriate keyrings (e. g. using seahorse). Here is the line from my i3
+config file:
+exec sleep 20;conky -c /home/piotr/.i3/.conkyrc_i3|/home/piotr/bin/dzen2
+-bg black -fg white  -fn Terminus-9 -w 450  -y 1 -ta l -x 159
+I use development version of dzen with support for color icons and fonts.
+
+If you find application that stores passwords in a plain text you can
+always use encrypted directory (e. g. ecryptfs). I do it for example for
+pidgin.
+
+Regards,
+Piotr Kordy
+
+On 25 March 2012 12:56, BRAGA, Bruno <bruno.braga at gmail.com> wrote:
+
+> Hi,
+>
+> Does anyone know about interesting apps to use in the tray that is well
+> integrated with i3?
+>
+> I was looking for an email unread count display for Gmail, and
+> unfortunately, gm-notify does not work with me. So I found gman, which
+> seems to work, but stores password with no encryption, and icon size does
+> not match with i3 bar size.
+>
+> If anyone has suggestions for this feature and others, I most appreciate.
+>
+> Regards,
+>
+> --
+> *Braga, Bruno*
+> www.brunobraga.net
+> bruno.braga at gmail.com
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120326/477c0934/attachment.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: gmail.py
+Type: text/x-python
+Size: 3845 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120326/477c0934/attachment.py>
+
+From i3.thegrue at spamgourmet.com  Mon Mar 26 11:21:28 2012
+From: i3.thegrue at spamgourmet.com (i3.thegrue at spamgourmet.com)
+Date: Mon, 26 Mar 2012 11:21:28 +0200
+Subject: [i3] Is there some kind of sessionmanagement in i3?
+Message-ID: <20120326112128.6248c338@pc-cm-gru-virtlinux1.pt.local>
+
+Hello,
+
+Coming the way from fvwm2 (for several years), gnome, kde, ratpoison,
+awesome to i3, I think I have finally met "my" windowmanager. KUDOs, i3
+is just great :).
+
+I still have one problem to solve and hope you can help me.
+Whenever I log in, I have to layout some of my screens to match what I
+like. For example, I allways have emacs on screen 3 - that's the easy
+part and works perfectly.
+
+But then I have speedbar and emacs taking 50% of the screen, but I like
+something like 20%/80% and the 80% in a vertically aligned container.
+Of course, it's possible, but I always have to do that manually.
+Similar for my pidgin: I want 20% for the buddylist and 80% aligned
+vertically for the chat windows.
+Isn't there some way to automate this?
+
+cu
+-- 
+Markus Grunwald                                 http://www.the-grue.de
+
+M?nnerchor Markt Kirchseeon               Registered Linux User 101577
+Notenwart und Webmaster                          http://counter.li.org
+http://www.maennerchor-kirchseeon.de           pgp/gpg key ID 15CEDD0A
+
+     Fragen zur Mail? http://www.the-grue.de/mail_und_co/
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 190 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120326/eda376aa/attachment-0001.pgp>
+
+From andi at geekosphere.org  Mon Mar 26 11:26:51 2012
+From: andi at geekosphere.org (Andreas Herz)
+Date: Mon, 26 Mar 2012 11:26:51 +0200
+Subject: [i3] Is there some kind of sessionmanagement in i3?
+In-Reply-To: <20120326112128.6248c338@pc-cm-gru-virtlinux1.pt.local>
+References: <20120326112128.6248c338@pc-cm-gru-virtlinux1.pt.local>
+Message-ID: <20120326092651.GO30297@workstation>
+
+On 26/03/12 at 11:21, i3.thegrue at spamgourmet.com wrote:
+> But then I have speedbar and emacs taking 50% of the screen, but I like
+> something like 20%/80% and the 80% in a vertically aligned container.
+> Of course, it's possible, but I always have to do that manually.
+> Similar for my pidgin: I want 20% for the buddylist and 80% aligned
+> vertically for the chat windows.
+> Isn't there some way to automate this?
+
+Not yet, but several people requested this feature, so it will come :)
+
+-- 
+Andreas Herz
+
+From john.haltiwanger at gmail.com  Mon Mar 26 11:34:57 2012
+From: john.haltiwanger at gmail.com (John Haltiwanger)
+Date: Mon, 26 Mar 2012 11:34:57 +0200
+Subject: [i3] Is there some kind of sessionmanagement in i3?
+In-Reply-To: <20120326092651.GO30297@workstation>
+References: <20120326112128.6248c338@pc-cm-gru-virtlinux1.pt.local>
+ <20120326092651.GO30297@workstation>
+Message-ID: <CANenyVN46YfcX9RJgQoATuEDjbdpfy-FnA=v-SRR0Li63ZjGmg@mail.gmail.com>
+
+On Mon, Mar 26, 2012 at 11:26 AM, Andreas Herz <andi at geekosphere.org> wrote:
+
+> On 26/03/12 at 11:21, i3.thegrue at spamgourmet.com wrote:
+> > But then I have speedbar and emacs taking 50% of the screen, but I like
+> > something like 20%/80% and the 80% in a vertically aligned container.
+> > Of course, it's possible, but I always have to do that manually.
+> > Similar for my pidgin: I want 20% for the buddylist and 80% aligned
+> > vertically for the chat windows.
+> > Isn't there some way to automate this?
+>
+> Not yet, but several people requested this feature, so it will come :)
+>
+
+I had an idea to create a sort of interactive session manager for i3 tying
+together IPC and a WebKit instance (perhaps through LuaKit). Is it
+technically possible to provide dimensions when creating containers through
+IPC? If not, would this be introduced when session management is added?
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120326/deebbbf4/attachment.html>
+
+From i3.thegrue at spamgourmet.com  Mon Mar 26 11:58:10 2012
+From: i3.thegrue at spamgourmet.com (i3.thegrue at spamgourmet.com)
+Date: Mon, 26 Mar 2012 11:58:10 +0200
+Subject: [i3] Is there some kind of sessionmanagement in i3? (i3:
+ message 3 of 10)
+In-Reply-To: <20120326092651.GO30297@workstation>
+References: <20120326112128.6248c338@pc-cm-gru-virtlinux1.pt.local>
+ <20120326092651.GO30297@workstation>
+Message-ID: <20120326115810.38ea683e@pc-cm-gru-virtlinux1.pt.local>
+
+Hello,
+
+> > But then I have speedbar and emacs taking 50% of the screen, but I
+> > like something like 20%/80% and the 80% in a vertically aligned
+> > container. [...]
+> > Isn't there some way to automate this?
+>
+> Not yet, but several people requested this feature, so it will come :)
+
+Great :) Then I'll consider i3 as nearly perfect ;)
+
+Thanks for the good work,
+--
+Markus Grunwald                                 http://www.the-grue.de
+
+M?nnerchor Markt Kirchseeon               Registered Linux User 101577
+Notenwart und Webmaster                          http://counter.li.org
+http://www.maennerchor-kirchseeon.de           pgp/gpg key ID 15CEDD0A
+
+     Fragen zur Mail? http://www.the-grue.de/mail_und_co/
+
+From john.haltiwanger at gmail.com  Mon Mar 26 12:04:36 2012
+From: john.haltiwanger at gmail.com (John Haltiwanger)
+Date: Mon, 26 Mar 2012 12:04:36 +0200
+Subject: [i3] Is there some kind of sessionmanagement in i3?
+In-Reply-To: <CANenyVN46YfcX9RJgQoATuEDjbdpfy-FnA=v-SRR0Li63ZjGmg@mail.gmail.com>
+References: <20120326112128.6248c338@pc-cm-gru-virtlinux1.pt.local>
+ <20120326092651.GO30297@workstation>
+ <CANenyVN46YfcX9RJgQoATuEDjbdpfy-FnA=v-SRR0Li63ZjGmg@mail.gmail.com>
+Message-ID: <CANenyVPci_USfDP9yCp4hw=efaf2ee0zQE2A028fXqxWuadcYw@mail.gmail.com>
+
+On Mon, Mar 26, 2012 at 11:34 AM, John Haltiwanger <
+john.haltiwanger at gmail.com> wrote:
+
+>
+>
+> On Mon, Mar 26, 2012 at 11:26 AM, Andreas Herz <andi at geekosphere.org>wrote:
+>
+>> On 26/03/12 at 11:21, i3.thegrue at spamgourmet.com wrote:
+>> > But then I have speedbar and emacs taking 50% of the screen, but I like
+>> > something like 20%/80% and the 80% in a vertically aligned container.
+>> > Of course, it's possible, but I always have to do that manually.
+>> > Similar for my pidgin: I want 20% for the buddylist and 80% aligned
+>> > vertically for the chat windows.
+>> > Isn't there some way to automate this?
+>>
+>> Not yet, but several people requested this feature, so it will come :)
+>>
+>
+> I had an idea to create a sort of interactive session manager for i3 tying
+> together IPC and a WebKit instance (perhaps through LuaKit). Is it
+> technically possible to provide dimensions when creating containers through
+> IPC? If not, would this be introduced when session management is added?
+>
+
+I see that resize can take dimensions. Sorry for the stupid question.
+
+But I wonder why this isn't being presented to users as a temporary option
+for setting up session management in either .i3/config or using a script?
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120326/34dbf32b/attachment.html>
+
+From i3.thegrue at spamgourmet.com  Mon Mar 26 12:07:47 2012
+From: i3.thegrue at spamgourmet.com (i3.thegrue at spamgourmet.com)
+Date: Mon, 26 Mar 2012 12:07:47 +0200
+Subject: [i3] Stronger focus indication?
+Message-ID: <20120326120747.7f910aa1@pc-cm-gru-virtlinux1.pt.local>
+
+Hello,
+
+Is there a way to indicate focus a bit stronger? Most of the times I
+have no problem with it, but when I have multiple pidgin chat windows
+open, it's sometimes hard to find where the focus is. Something like a
+frame in a configurable colour comes to my mind...
+
+Thank you,
+--
+Markus Grunwald                                 http://www.the-grue.de
+
+M?nnerchor Markt Kirchseeon               Registered Linux User 101577
+Notenwart und Webmaster                          http://counter.li.org
+http://www.maennerchor-kirchseeon.de           pgp/gpg key ID 15CEDD0A
+
+     Fragen zur Mail? http://www.the-grue.de/mail_und_co/
+
+From old4 at o2.pl  Mon Mar 26 12:23:46 2012
+From: old4 at o2.pl (Mateusz Poszwa)
+Date: Mon, 26 Mar 2012 12:23:46 +0200
+Subject: [i3] Is there some kind of sessionmanagement in i3?
+In-Reply-To: <20120326092651.GO30297@workstation>
+References: <20120326112128.6248c338@pc-cm-gru-virtlinux1.pt.local>
+ <20120326092651.GO30297@workstation>
+Message-ID: <20120326122346.5d69895b@debelianear>
+
+On Mon, 26 Mar 2012 11:26:51 +0200
+Andreas Herz <andi at geekosphere.org> wrote:
+
+> On 26/03/12 at 11:21, i3.thegrue at spamgourmet.com wrote:
+> > But then I have speedbar and emacs taking 50% of the screen, but I like
+> > something like 20%/80% and the 80% in a vertically aligned container.
+> > Of course, it's possible, but I always have to do that manually.
+> > Similar for my pidgin: I want 20% for the buddylist and 80% aligned
+> > vertically for the chat windows.
+> > Isn't there some way to automate this?
+> 
+> Not yet, but several people requested this feature, so it will come :)
+> 
+
+As a temporal workaround I suggest using for_window triggers.
+It's not a perfect solution as you'd have to go to workspace 3 to run
+emacs for it to work (otherwise the trigger will change your currently
+focused window (unless you mark it, focus emacs, change size, and then
+focus back to the mark (still, races can occur))), but it may still be
+better than waiting idly. ;-)
+
+Regards
+
+-- 
+Mateusz Poszwa
+
+From michael at i3wm.org  Mon Mar 26 13:08:38 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 26 Mar 2012 13:08:38 +0200
+Subject: [i3] Stronger focus indication?
+In-Reply-To: <20120326120747.7f910aa1@pc-cm-gru-virtlinux1.pt.local>
+References: <20120326120747.7f910aa1@pc-cm-gru-virtlinux1.pt.local>
+Message-ID: <1332760050-sup-441@stapelberg.de>
+
+Hi,
+
+Excerpts from i3.thegrue's message of 2012-03-26 12:07:47 +0200:
+> Is there a way to indicate focus a bit stronger? Most of the times I
+> have no problem with it, but when I have multiple pidgin chat windows
+> open, it's sometimes hard to find where the focus is. Something like a
+> frame in a configurable colour comes to my mind...
+You can change the color of the focused window, see the user?s guide:
+http://i3wm.org/docs/userguide.html#_changing_colors
+
+Having a thicker border is not possible. Think about it ? you would either need
+to resize all affected windows on each focus change or always waste a number of
+pixels on your screen to provide enough space for a thicker border.
+
+Best regards,
+Michael
+
+From i3.thegrue at spamgourmet.com  Mon Mar 26 14:12:54 2012
+From: i3.thegrue at spamgourmet.com (i3.thegrue at spamgourmet.com)
+Date: Mon, 26 Mar 2012 14:12:54 +0200
+Subject: [i3] Stronger focus indication? (i3: message 6 of 20)
+In-Reply-To: <1332760050-sup-441@stapelberg.de>
+References: <20120326120747.7f910aa1@pc-cm-gru-virtlinux1.pt.local>
+ <1332760050-sup-441@stapelberg.de>
+Message-ID: <20120326141254.15523d11@pc-cm-gru-virtlinux1.pt.local>
+
+Hello,
+
+> > Is there a way to indicate focus a bit stronger?
+> You can change the color of the focused window, see the user?s guide:
+> http://i3wm.org/docs/userguide.html#_changing_colors
+
+Ah, yes - I've overlooked this part of the config. Thank you! But it's
+only allmost what I want (the 1 pixel thin frame is ok):
+
+client.focused          #4c7899 #ffff00 #ffffff
+
+Gives me a "nice" yellow frame around the focused window - that's
+good. But unfortunately, the focused "tabs" on tabbed containers are
+screaming in yellow, too :s I assume that I have to take one with the
+other, don't I?
+
+Hmm, well. If I make the text blue, I can at least read it:
+
+client.focused          #4c7899 #ffff00 #0000ff
+
+
+Seems to work :)
+
+Thanks for your help!
+cu
+--
+Markus Grunwald                                 http://www.the-grue.de
+
+M?nnerchor Markt Kirchseeon               Registered Linux User 101577
+Notenwart und Webmaster                          http://counter.li.org
+http://www.maennerchor-kirchseeon.de           pgp/gpg key ID 15CEDD0A
+
+     Fragen zur Mail? http://www.the-grue.de/mail_und_co/
+
+From michael at i3wm.org  Mon Mar 26 17:02:44 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 26 Mar 2012 17:02:44 +0200
+Subject: [i3] [PATCH] Transparency support
+In-Reply-To: <op.wag9prp2735up4@sraven>
+References: <CAMJW5=0GeBus4D4npdO54Z5+mL33T4mz=Cem7J5X+6RveXTL7Q@mail.gmail.com>
+ <CANVYNa_utbh3Umvxpqd+bjwUv7h67JRhUik=xLHphdNusMr0yg@mail.gmail.com>
+ <CAMJW5=2ZHyZDzBy-EhHyM=0srB9UNnWYVUFt5UqhZX=kf2jBQA@mail.gmail.com>
+ <CANVYNa-S82Qkd04KX4TrPkrFMO1gRVtpcSa68cDQ_zF+e=gmNA@mail.gmail.com>
+ <op.v8b5j5am735up4@sraven> <1327744001-sup-4371@stapelberg.de>
+ <CAMJW5=3-OT5Lf0Ef5t2mRa-6p_6NB80CKfjS39QQ03p2DcWP8Q@mail.gmail.com>
+ <1327767281-sup-8641@stapelberg.de> <1328562055-sup-3279@stapelberg.de>
+ <CAMJW5=0FHnCWSv9G6-=zPbn55Tn=+WNkG9gEgRzg2Sgj=gBY3w@mail.gmail.com>
+ <CAMJW5=0Zfexbx-eRXwEd2EEKHXvSGVR7dMFiqFwKrCL3Xj99Nw@mail.gmail.com>
+ <CAMJW5=0rXDEVf5jU12fYm2x6b8Y_Anbxh2Von2qwjBdcwmrkTg@mail.gmail.com>
+ <CANVYNa_zj+zL9rZaqLHsOnNZGVwfSbTtc_ZQPcaFSbwJcpj1jQ@mail.gmail.com>
+ <CAMJW5=0yM0y8m-U-YRV8hseg6LNVEwZp4fT7zZJQs-UXVWuChQ@mail.gmail.com>
+ <CANVYNa-ZuH81YXqetnRmGZn3c59jb=V9-gXvgs7TftUnvfzrWQ@mail.gmail.com>
+ <1330333730-sup-7369@stapelberg.de> <1330508645-sup-6340@stapelberg.de>
+ <op.wag9prp2 735up4@sraven>
+Message-ID: <1332774108-sup-6619@stapelberg.de>
+
+Hi darkraven,
+
+Excerpts from Raven's message of 2012-03-01 07:02:05 +0100:
+> Hi, I've changed the patch a bit, this time it will (I think) meet all  
+> your criteria.
+Almost, I changed a few style/comment things, see http://c.i3wm.org/e19c7b7
+
+Thanks for your patch! And sorry that it took me so long to take a look at it
+and merge it.
+
+Best regards,
+Michael
+
+From michael at i3wm.org  Mon Mar 26 17:36:51 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 26 Mar 2012 17:36:51 +0200
+Subject: [i3] [PATCH] Use ev_break() rather than exit() in i3bar.
+In-Reply-To: <CAMJW5=0M3vX6XXcgzigBJxOOVRAkaut86KjBDa=_DHbxZNhPVw@mail.gmail.com>
+References: <CAMJW5=0M3vX6XXcgzigBJxOOVRAkaut86KjBDa=_DHbxZNhPVw@mail.gmail.com>
+Message-ID: <1332775066-sup-2829@stapelberg.de>
+
+Hi darkraven,
+
+Excerpts from DR's message of 2012-03-03 13:29:52 +0100:
+> If i3bar is running in hide mode, when i3wm exit, i3bar will exit
+> without killing its child process, leaving a couple of processes in
+> 'T' mode (i.e. Stopped).
+Good catch, thanks.
+
+> I'm not very sure I've done things right. I might change some exit()s
+> called before ev_loop() into ev_break(), or leave some exit()s
+> unconverted. Someone please review this patch.
+Here are a few comments about your patch:
+
+1) You changed a few variables without any obvious reason. Please don?t do
+   that, always keep patches minimal.
+
+2) Instead of using ev_break(main_loop, EVBREAK_ALL), the ev manpage suggests
+   ev_break(EV_A_ EVBREAK_ALL); within a handler.
+
+3) Why do you even bother to communicate an exit status? i3bar is a
+   forever-running process. When it exits, it failed by definition. The exit
+   code can always be EXIT_FAILURE.
+
+4) You don?t need to free memory before exiting, the OS will clean it up when
+   the process exits.
+
+But, most importantly, taking a step back from all this: When you call ev_break
+and return from one function, the code of another function might still be
+executed (I think this is what Fernando was trying to say). Thus, ev_break +
+return is actually not equivalent to exit().
+
+Therefore, I just pushed commit http://c.i3wm.org/d519659, which works for me
+to fix this problem.
+
+Best regards,
+Michael
+
+From michael at i3wm.org  Mon Mar 26 17:59:48 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 26 Mar 2012 17:59:48 +0200
+Subject: [i3] [PATCH] Improved i3bar hide mode behavior (In my point of
+	view)
+In-Reply-To: <CANVYNa9Kbr_aDYTpN+4Qi6xsJKDFsQ34+3ZdpwK4MAqAOzETZg@mail.gmail.com>
+References: <CAMJW5=0hC+1YhuPyY8=eQtAKuM0VwzPgiGRDAwJs2aXzF_YcKw@mail.gmail.com>
+ <CAMJW5=2u8xves-DYAJk-xy4aM64eRhfoY5bPufh52OmYbgYomw@mail.gmail.com>
+ <CANVYNa9Kbr_aDYTpN+4Qi6xsJKDFsQ34+3ZdpwK4MAqAOzETZg@mail.gmail.com>
+Message-ID: <1332777505-sup-602@stapelberg.de>
+
+Hi,
+
+Excerpts from Fernando Lemos's message of 2012-02-24 01:13:04 +0100:
+> This sounds interesting, but have you discussed it with Michael first?
+> I'd recommend always pinging Michael first to see if what you intend
+> to do is in line with the project goals and things like that. Unless,
+> of course, you don't care about getting your patches merged.
+No worries, the patch makes sense (judging from the description).
+
+> Please merge both patches in a single one to make it easier to review
+> (unless they do separate things, of course).
+> 
+> I noticed you used "if (" and "if(", please stick with "if (" as
+> that's what the rest of xcb.c uses.
+> 
+> You declare and read bar_hidden, but you never seem to write to it. Am
+> I missing something? Also, I'd rather have the code that calls
+> hide/unhide_bar simply not call those functions rather than do the
+> checking inside the functions, but that's subjective, I guess.
+> 
+> The indentation level on the call to hide_bars() in the last chunk of
+> the second patch is wrong. Are you sure you don't want that enclosed
+> by brackets, as part of the "else" branch?
+> 
+> You're doing all the logic in the drawing code. Perhaps it would be
+> better to detect that stuff directly in the ipc.c, when you receive
+> the workspace info from i3, after the call to parse_workspaces_json.
+All of Fernando?s comments are valid.
+
+Do you want to update the patch? If you need any help/have any questions,
+please let us know.
+
+Best regards,
+Michael
+
+From michael at i3wm.org  Mon Mar 26 18:33:31 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 26 Mar 2012 18:33:31 +0200
+Subject: [i3] tray_output for primary display
+In-Reply-To: <CAOPjWVP2N7zro9pXKLNiD_fEX3smEgt2g8Z0KJ+zh7rW21Gm3Q@mail.gmail.com>
+References: <CAOPjWVM_cyN8Z_wfe1iMmGUJh+1QKbs1F5i0wCu12EppFO8yOg@mail.gmail.com>
+ <CAOPjWVORB_vCCwiFS-MuAvn6rDFuna6_q1tiws5fjen94H1C0g@mail.gmail.com>
+ <CAOPjWVMpViTfp-NRTCHtapc5oAgUPR46e9gDuJRs8LcGbjdsjg@mail.gmail.com>
+ <1332090353-sup-19@stapelberg.de>
+ <CAOPjWVObDRxNr7stZLabjCOBGKyNEg_OCf_pUJ5a_tPe8RR9OQ@mail.gmail.com>
+ <CANVYNa9TTWBrrF1c6DaKenrp7ANi-XVZ=4Es0i45OkHXbAkb4A@mail.gmail.com>
+ <CAOPjWVP2N7zro9pXKLNiD_fEX3smEgt2g8Z0KJ+zh7rW21Gm3Q@mail.gmail.com>
+Message-ID: <1332779502-sup-5813@stapelberg.de>
+
+Hi Jos?,
+
+Excerpts from Jos? Luis Pereira's message of 2012-03-21 10:22:53 +0100:
+> Here you have, packed a doc, removed whitespace and changed if order.
+I just tested your patch and it works fine for me. Two little things are
+missing before I can merge this:
+
+1) The patch against docs/userguide doesn?t apply cleanly anymore. Can you
+   rebase this?
+
+2) You only supplied a patch. Can you use git format-patch instead please so
+   that we have proper author information?
+
+Thanks!
+Best regards,
+Michael
+
+From i3.thegrue at spamgourmet.com  Tue Mar 27 15:49:28 2012
+From: i3.thegrue at spamgourmet.com (i3.thegrue at spamgourmet.com)
+Date: Tue, 27 Mar 2012 15:49:28 +0200
+Subject: [i3] How to restart i3bar?
+Message-ID: <20120327154928.30fde53a@pc-cm-gru-virtlinux1.pt.local>
+
+Hello,
+
+what's the right way to restart i3bar? I would like to play with the
+colours...
+
+That's what I came up with, but it's .... ugly:
+
+i3-msg -t command reload
+killall i3bar
+bar_id=$(i3-msg -t get_bar_config)
+i3bar --bar_id=${bar_id:2:10} --socket=/tmp/i3-gru.G1lmRw/ipc-socket.2387 &  
+
+btw. I'm still wondering how to find out the socket...
+
+
+TIA,
+--
+Markus Grunwald                                 http://www.the-grue.de
+
+M?nnerchor Markt Kirchseeon               Registered Linux User 101577
+Notenwart und Webmaster                          http://counter.li.org
+http://www.maennerchor-kirchseeon.de           pgp/gpg key ID 15CEDD0A
+
+     Fragen zur Mail? http://www.the-grue.de/mail_und_co/
+
+From mail at merovius.de  Tue Mar 27 16:24:18 2012
+From: mail at merovius.de (Axel Wagner)
+Date: Tue, 27 Mar 2012 16:24:18 +0200
+Subject: [i3] How to restart i3bar?
+In-Reply-To: <20120327154928.30fde53a@pc-cm-gru-virtlinux1.pt.local>
+References: <20120327154928.30fde53a@pc-cm-gru-virtlinux1.pt.local>
+Message-ID: <1332857646-sup-2927@merovius.de>
+
+Hi,
+
+how about
+$ i3 restart
+or (if you don't want to restart the whole of i3)
+$ i3 reload
+$ BARS=$(ps -C i3bar -o args=)
+$ killall i3bar
+
+And then execute every line of $BARS again (I'm not that good in
+shellscripting, sorry)?
+
+Regards,
+
+Axel
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 198 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120327/e18574d2/attachment.pgp>
+
+From michael at i3wm.org  Wed Mar 28 15:54:37 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 28 Mar 2012 15:54:37 +0200
+Subject: [i3] How to restart i3bar?
+In-Reply-To: <20120327154928.30fde53a@pc-cm-gru-virtlinux1.pt.local>
+References: <20120327154928.30fde53a@pc-cm-gru-virtlinux1.pt.local>
+Message-ID: <1332942831-sup-4751@stapelberg.de>
+
+Hi,
+
+Excerpts from i3.thegrue's message of 2012-03-27 15:49:28 +0200:
+> what's the right way to restart i3bar? I would like to play with the
+> colours...
+'i3 restart'
+
+> That's what I came up with, but it's .... ugly:
+Ugly, but the only way if you really want to do it by hand.
+
+> btw. I'm still wondering how to find out the socket...
+i3 --get-socketpath
+
+Best regards,
+Michael
+
+From okiddle at yahoo.co.uk  Thu Mar 29 00:49:10 2012
+From: okiddle at yahoo.co.uk (Oliver Kiddle)
+Date: Thu, 29 Mar 2012 00:49:10 +0200
+Subject: [i3] creating new containers
+In-Reply-To: <20120322192003.7059d6e3@x200> 
+References: <16586.1332428686@thecus.kiddle.eu> <20120322192003.7059d6e3@x200>
+Message-ID: <16275.1332974950@thecus.kiddle.eu>
+
+One thing I notice is that if I start an xterm in an empty workspace and
+then press Mod-A followed by Mod-W repeatedly it is somehow creating
+more containers at the top of the tree. Once there are about 20, the
+whole thing hangs so there must be a bug in this somewhere even if it is
+intended behaviour.
+
+On 22 Mar, Michael Stapelberg wrote:
+
+> > What I'd really like is the concept of an empty container. I could
+> There is a command "open", which creates a new empty container.
+> However, the user interface for this is not quite ready (which is why
+> it???s undocumented).
+
+I can see it isn't ready because the empty container isn't drawn
+properly but it is already very useful. Would be especially good if
+closing the last window in a container leaves an empty container.
+
+> > then configure my preferred basic layout in .i3/config without having
+> > to startup any applications. Closing the last application in a
+> This is called "layout saving" or even "session saving", and is planned.
+
+That sounds good, as long as I can simply configure a fixed session,
+consisting of nothing more than empty containers instead of having it
+remember by session from when I last logged out.
+
+Thanks
+
+Oliver
+
+From michael at i3wm.org  Thu Mar 29 12:57:36 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 29 Mar 2012 12:57:36 +0200
+Subject: [i3] creating new containers
+In-Reply-To: <16275.1332974950@thecus.kiddle.eu>
+References: <16586.1332428686@thecus.kiddle.eu> <20120322192003.7059d6e3@x200>
+ <16275.1332974950@thecus.kiddle.eu>
+Message-ID: <1333018617-sup-7162@stapelberg.de>
+
+Hi Oliver,
+
+Excerpts from Oliver Kiddle's message of 2012-03-29 00:49:10 +0200:
+> One thing I notice is that if I start an xterm in an empty workspace and
+> then press Mod-A followed by Mod-W repeatedly it is somehow creating
+> more containers at the top of the tree. Once there are about 20, the
+> whole thing hangs so there must be a bug in this somewhere even if it is
+If you can reproduce this every time, please file a bugreport (with a full
+debug log, your config file and detailed steps to reproduce) at
+http://bugs.i3wm.org/.
+
+Best regards,
+Michael
+
+From daniel at steenfamilies.com  Thu Mar 29 21:49:48 2012
+From: daniel at steenfamilies.com (Daniel Steen)
+Date: Thu, 29 Mar 2012 15:49:48 -0400
+Subject: [i3] interaction with lowlevel programs like synergy
+Message-ID: <CAD9tV_H8rqMzr5Y7_5eXwAO6VmoJkV5-vFMQTaC9h_xC2UkiYA@mail.gmail.com>
+
+I've been a user of i3 for a few years now, and I absolutely love it!   I
+found i3 after ion2 went out of development, and after trying all the other
+tiling window managers out there i3 was far and away the best.   Great
+work!
+
+One thing I have noticed is that i3 has some quirks with how it handles
+other low level programs that take keyboard input.    Specifically synergy (
+http://synergy2.sourceforge.net).  My goal is to be able to have three
+screens across two machines, where I run mail and calendaring on one
+machine (mac), and everything else on the other (linux).   I want to be
+able to use the same modifier key to switch from one machine to the next as
+I do to switch windows in i3.   However, i3 doesn't seem to pass the
+modifier on to synergy - even if the particular key combination is not
+mapped by i3.   So, as example,  if I user "super" as my i3 modifier key,
+and then set super+1, super+2, and super+3 to switch to desktops 1,2 and 3
+respectively.  Then if I tell synergy that super+4 switches to my mac,
+synergy does not get the key combination even though i3 has not explicitely
+mapped it.
+
+Is this inherant to the way things work, or is this adjustable?
+
+Thanks,
+Daniel Steen
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120329/bb53b4c7/attachment.html>
+
+From drdarkraven at gmail.com  Sat Mar 31 16:36:00 2012
+From: drdarkraven at gmail.com (DR)
+Date: Sat, 31 Mar 2012 22:36:00 +0800
+Subject: [i3] [PATCH 1/3] Enhance message sent with workspace event.
+Message-ID: <CAMJW5=1MuDx=-fi6QC2FGu90LPTm+p8=EEkRj5Z76+KN=Spm0g@mail.gmail.com>
+
+Add the name and num of the workspace triggers the event, to avoid round trips.
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Enhance-message-sent-with-workspace-event.patch
+Type: application/octet-stream
+Size: 3319 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120331/7e47b58c/attachment.obj>
+
+From drdarkraven at gmail.com  Sat Mar 31 16:37:03 2012
+From: drdarkraven at gmail.com (DR)
+Date: Sat, 31 Mar 2012 22:37:03 +0800
+Subject: [i3] [PATCH 1/3] Enhance message sent with workspace event.
+In-Reply-To: <CAMJW5=1MuDx=-fi6QC2FGu90LPTm+p8=EEkRj5Z76+KN=Spm0g@mail.gmail.com>
+References: <CAMJW5=1MuDx=-fi6QC2FGu90LPTm+p8=EEkRj5Z76+KN=Spm0g@mail.gmail.com>
+Message-ID: <CAMJW5=2PHaxs535nCJ9rXkUxBs35Xdex4+xqw+AJqZrULK3ksw@mail.gmail.com>
+
+[PATCH 2/3] Introduce run_command()
+
+    Use run_command() instead of parse_command(), which disable all
+    events before parse the command. This can avoid potential race
+    conditions.
+
+
+On Sat, Mar 31, 2012 at 10:36 PM, DR <drdarkraven at gmail.com> wrote:
+> Add the name and num of the workspace triggers the event, to avoid round trips.
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0002-Introduce-run_command.patch
+Type: application/octet-stream
+Size: 6554 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120331/4eceb788/attachment.obj>
+
+From drdarkraven at gmail.com  Sat Mar 31 16:37:33 2012
+From: drdarkraven at gmail.com (DR)
+Date: Sat, 31 Mar 2012 22:37:33 +0800
+Subject: [i3] [PATCH 1/3] Enhance message sent with workspace event.
+In-Reply-To: <CAMJW5=2PHaxs535nCJ9rXkUxBs35Xdex4+xqw+AJqZrULK3ksw@mail.gmail.com>
+References: <CAMJW5=1MuDx=-fi6QC2FGu90LPTm+p8=EEkRj5Z76+KN=Spm0g@mail.gmail.com>
+ <CAMJW5=2PHaxs535nCJ9rXkUxBs35Xdex4+xqw+AJqZrULK3ksw@mail.gmail.com>
+Message-ID: <CAMJW5=2ZYAxzOLFXN8kNKMYFuNZH4mXECVme3_niAAXTGQspRg@mail.gmail.com>
+
+[PATCH 3/3] Improved i3bar auto hide/unhide behaviour.
+
+    i3bar will unhide if an urgent workspace appears.
+    i3bar will hide when:
+        1. Navigate away from the last urgent workspace.
+        2. The last urgent workspace become non-urgent and that workspace
+        is focused when it became urgent.
+
+
+On Sat, Mar 31, 2012 at 10:37 PM, DR <drdarkraven at gmail.com> wrote:
+> [PATCH 2/3] Introduce run_command()
+>
+> ? ?Use run_command() instead of parse_command(), which disable all
+> ? ?events before parse the command. This can avoid potential race
+> ? ?conditions.
+>
+>
+> On Sat, Mar 31, 2012 at 10:36 PM, DR <drdarkraven at gmail.com> wrote:
+>> Add the name and num of the workspace triggers the event, to avoid round trips.
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0003-Improved-i3bar-auto-hide-unhide-behaviour.patch
+Type: application/octet-stream
+Size: 9750 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120331/3d223907/attachment-0001.obj>
+
+From drdarkraven at gmail.com  Sat Mar 31 16:53:19 2012
+From: drdarkraven at gmail.com (DR)
+Date: Sat, 31 Mar 2012 22:53:19 +0800
+Subject: [i3] [PATCH 1/3] Enhance message sent with workspace event.
+In-Reply-To: <CAMJW5=2PHaxs535nCJ9rXkUxBs35Xdex4+xqw+AJqZrULK3ksw@mail.gmail.com>
+References: <CAMJW5=1MuDx=-fi6QC2FGu90LPTm+p8=EEkRj5Z76+KN=Spm0g@mail.gmail.com>
+ <CAMJW5=2PHaxs535nCJ9rXkUxBs35Xdex4+xqw+AJqZrULK3ksw@mail.gmail.com>
+Message-ID: <CAMJW5=0vr3xByO6bQ=0qnoobc8ZQXMUcN8NwH43DWdtBcQuvng@mail.gmail.com>
+
+On Sat, Mar 31, 2012 at 10:37 PM, DR <drdarkraven at gmail.com> wrote:
+> [PATCH 2/3] Introduce run_command()
+>
+> ? ?Use run_command() instead of parse_command(), which disable all
+> ? ?events before parse the command. This can avoid potential race
+> ? ?conditions.
+No no. this still doesn't solve that problem...
+That enter notify just comes out from no way...
+
+>
+>
+> On Sat, Mar 31, 2012 at 10:36 PM, DR <drdarkraven at gmail.com> wrote:
+>> Add the name and num of the workspace triggers the event, to avoid round trips.
+

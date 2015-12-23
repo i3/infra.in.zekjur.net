@@ -1,0 +1,198 @@
+<tt>
+Here&nbsp;are&nbsp;what&nbsp;the&nbsp;inset&nbsp;windows&nbsp;look&nbsp;like:&lt;div&gt;&lt;a&nbsp;href=&quot;http://i.imgur.com/lfZU2.png&quot;&gt;http://i.imgur.com/lfZU2.png&lt;/a&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Thanks,&lt;/div&gt;&lt;div&gt;Kevin&lt;br&gt;&lt;br&gt;&lt;div&nbsp;class=&quot;gmail_quote&quot;&gt;On&nbsp;Sun,&nbsp;Nov&nbsp;18,&nbsp;2012&nbsp;at&nbsp;5:56&nbsp;AM,&nbsp;Kevin&nbsp;Murphy&nbsp;&lt;span&nbsp;dir=&quot;ltr&quot;&gt;&lt;&lt;a&nbsp;href=&quot;mailto:kemurphy.cmu@gmail.com&quot;&nbsp;target=&quot;_blank&quot;&gt;kemurphy.cmu@gmail.com&lt;/a&gt;&gt;&lt;/span&gt;&nbsp;wrote:&lt;br&gt;<br>
+&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;<br>
+From:&nbsp;Kevin&nbsp;Murphy&nbsp;&lt;&lt;a&nbsp;href=&quot;mailto:kemurphy@andrew.cmu.edu&quot;&nbsp;target=&quot;_blank&quot;&gt;kemurphy@andrew.cmu.edu&lt;/a&gt;&gt;&lt;br&gt;<br>
+&lt;br&gt;<br>
+---&lt;br&gt;<br>
+ include/render.h&nbsp;|&nbsp; 2&nbsp;+-&lt;br&gt;<br>
+ src/floating.c&nbsp; &nbsp;|&nbsp; 6&nbsp;+++---&lt;br&gt;<br>
+ src/manage.c&nbsp; &nbsp; &nbsp;|&nbsp; 2&nbsp;+-&lt;br&gt;<br>
+ src/randr.c&nbsp; &nbsp; &nbsp; |&nbsp; 2&nbsp;+-&lt;br&gt;<br>
+ src/render.c&nbsp; &nbsp; &nbsp;|&nbsp;35&nbsp;+++++++++++++++++++++++++++--------&lt;br&gt;<br>
+ src/tree.c&nbsp; &nbsp; &nbsp; &nbsp;|&nbsp; 2&nbsp;+-&lt;br&gt;<br>
+ 6&nbsp;files&nbsp;changed,&nbsp;34&nbsp;insertions(+),&nbsp;15&nbsp;deletions(-)&lt;br&gt;<br>
+&lt;br&gt;<br>
+diff&nbsp;--git&nbsp;a/include/render.h&nbsp;b/include/render.h&lt;br&gt;<br>
+index&nbsp;0a5949f..d458bd3&nbsp;100644&lt;br&gt;<br>
+---&nbsp;a/include/render.h&lt;br&gt;<br>
++++&nbsp;b/include/render.h&lt;br&gt;<br>
+@@&nbsp;-19,6&nbsp;+19,6&nbsp;@@&lt;br&gt;<br>
+ &nbsp;*&nbsp;updated&nbsp;in&nbsp;X11.&lt;br&gt;<br>
+ &nbsp;*&lt;br&gt;<br>
+ &nbsp;*/&lt;br&gt;<br>
+-void&nbsp;render_con(Con&nbsp;*con,&nbsp;bool&nbsp;render_fullscreen);&lt;br&gt;<br>
++void&nbsp;render_con(Con&nbsp;*con,&nbsp;bool&nbsp;render_fullscreen,&nbsp;bool&nbsp;already_inset);&lt;br&gt;<br>
+&lt;br&gt;<br>
+ #endif&lt;br&gt;<br>
+diff&nbsp;--git&nbsp;a/src/floating.c&nbsp;b/src/floating.c&lt;br&gt;<br>
+index&nbsp;b884a18..7347fcc&nbsp;100644&lt;br&gt;<br>
+---&nbsp;a/src/floating.c&lt;br&gt;<br>
++++&nbsp;b/src/floating.c&lt;br&gt;<br>
+@@&nbsp;-251,8&nbsp;+251,8&nbsp;@@&nbsp;void&nbsp;floating_enable(Con&nbsp;*con,&nbsp;bool&nbsp;automatic)&nbsp;{&lt;br&gt;<br>
+ &nbsp; &nbsp; TAILQ_INSERT_TAIL(&amp;(nc-&gt;focus_head),&nbsp;con,&nbsp;focused);&lt;br&gt;<br>
+&lt;br&gt;<br>
+ &nbsp; &nbsp; /*&nbsp;render&nbsp;the&nbsp;cons&nbsp;to&nbsp;get&nbsp;initial&nbsp;window_rect&nbsp;correct&nbsp;*/&lt;br&gt;<br>
+-&nbsp; &nbsp; render_con(nc,&nbsp;false);&lt;br&gt;<br>
+-&nbsp; &nbsp; render_con(con,&nbsp;false);&lt;br&gt;<br>
++&nbsp; &nbsp; render_con(nc,&nbsp;false,&nbsp;true);&lt;br&gt;<br>
++&nbsp; &nbsp; render_con(con,&nbsp;false,&nbsp;true);&lt;br&gt;<br>
+&lt;br&gt;<br>
+ &nbsp; &nbsp; if&nbsp;(set_focus)&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; con_focus(con);&lt;br&gt;<br>
+@@&nbsp;-376,7&nbsp;+376,7&nbsp;@@&nbsp;DRAGGING_CB(drag_window_callback)&nbsp;{&lt;br&gt;<br>
+ &nbsp; &nbsp; con-&gt;rect.x&nbsp;=&nbsp;old_rect-&gt;x&nbsp;+&nbsp;(new_x&nbsp;-&nbsp;event-&gt;root_x);&lt;br&gt;<br>
+ &nbsp; &nbsp; con-&gt;rect.y&nbsp;=&nbsp;old_rect-&gt;y&nbsp;+&nbsp;(new_y&nbsp;-&nbsp;event-&gt;root_y);&lt;br&gt;<br>
+&lt;br&gt;<br>
+-&nbsp; &nbsp; render_con(con,&nbsp;false);&lt;br&gt;<br>
++&nbsp; &nbsp; render_con(con,&nbsp;false,&nbsp;true);&lt;br&gt;<br>
+ &nbsp; &nbsp; x_push_node(con);&lt;br&gt;<br>
+ &nbsp; &nbsp; xcb_flush(conn);&lt;br&gt;<br>
+&lt;br&gt;<br>
+diff&nbsp;--git&nbsp;a/src/manage.c&nbsp;b/src/manage.c&lt;br&gt;<br>
+index&nbsp;10aa3a8..24290be&nbsp;100644&lt;br&gt;<br>
+---&nbsp;a/src/manage.c&lt;br&gt;<br>
++++&nbsp;b/src/manage.c&lt;br&gt;<br>
+@@&nbsp;-415,7&nbsp;+415,7&nbsp;@@&nbsp;void&nbsp;manage_window(xcb_window_t&nbsp;window,&nbsp;xcb_get_window_attributes_cookie_t&nbsp;cooki&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;*&nbsp;workspace&nbsp;at&nbsp;all.&nbsp;However,&nbsp;just&nbsp;calling&nbsp;render_con()&nbsp;on&nbsp;the&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;*&nbsp;workspace&nbsp;isn’t&nbsp;enough&nbsp;either&nbsp;—&nbsp;it&nbsp;needs&nbsp;the&nbsp;rect.&nbsp;*/&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; ws-&gt;rect&nbsp;=&nbsp;ws-&gt;parent-&gt;rect;&lt;br&gt;<br>
+-&nbsp; &nbsp; &nbsp; &nbsp; render_con(ws,&nbsp;true);&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; render_con(ws,&nbsp;true,&nbsp;false);&lt;br&gt;<br>
+ &nbsp; &nbsp; }&lt;br&gt;<br>
+ &nbsp; &nbsp; tree_render();&lt;br&gt;<br>
+&lt;br&gt;<br>
+diff&nbsp;--git&nbsp;a/src/randr.c&nbsp;b/src/randr.c&lt;br&gt;<br>
+index&nbsp;267d6e4..9b22788&nbsp;100644&lt;br&gt;<br>
+---&nbsp;a/src/randr.c&lt;br&gt;<br>
++++&nbsp;b/src/randr.c&lt;br&gt;<br>
+@@&nbsp;-351,7&nbsp;+351,7&nbsp;@@&nbsp;void&nbsp;init_ws_for_output(Output&nbsp;*output,&nbsp;Con&nbsp;*content)&nbsp;{&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;*&nbsp;Then,&nbsp;we&nbsp;need&nbsp;to&nbsp;work&nbsp;with&nbsp;the&nbsp;&quot;content&quot;&nbsp;container,&nbsp;since&nbsp;we&nbsp;cannot&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;*&nbsp;be&nbsp;sure&nbsp;that&nbsp;the&nbsp;workspace&nbsp;itself&nbsp;was&nbsp;rendered&nbsp;at&nbsp;all&nbsp;(in&nbsp;case&nbsp;it’s&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;*&nbsp;invisible,&nbsp;it&nbsp;won’t&nbsp;be&nbsp;rendered).&nbsp;*/&lt;br&gt;<br>
+-&nbsp; &nbsp; &nbsp; &nbsp; render_con(workspace_out,&nbsp;false);&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; render_con(workspace_out,&nbsp;false,&nbsp;true);&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; Con&nbsp;*ws_out_content&nbsp;=&nbsp;output_get_content(workspace_out);&lt;br&gt;<br>
+&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; Con&nbsp;*floating_con;&lt;br&gt;<br>
+diff&nbsp;--git&nbsp;a/src/render.c&nbsp;b/src/render.c&lt;br&gt;<br>
+index&nbsp;1216241..63a9deb&nbsp;100644&lt;br&gt;<br>
+---&nbsp;a/src/render.c&lt;br&gt;<br>
++++&nbsp;b/src/render.c&lt;br&gt;<br>
+@@&nbsp;-54,7&nbsp;+54,7&nbsp;@@&nbsp;static&nbsp;void&nbsp;render_l_output(Con&nbsp;*con)&nbsp;{&lt;br&gt;<br>
+ &nbsp; &nbsp; if&nbsp;(fullscreen)&nbsp;{&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; fullscreen-&gt;rect&nbsp;=&nbsp;con-&gt;rect;&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; x_raise_con(fullscreen);&lt;br&gt;<br>
+-&nbsp; &nbsp; &nbsp; &nbsp; render_con(fullscreen,&nbsp;true);&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; render_con(fullscreen,&nbsp;true,&nbsp;false);&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; return;&lt;br&gt;<br>
+ &nbsp; &nbsp; }&lt;br&gt;<br>
+&lt;br&gt;<br>
+@@&nbsp;-94,7&nbsp;+94,7&nbsp;@@&nbsp;static&nbsp;void&nbsp;render_l_output(Con&nbsp;*con)&nbsp;{&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; DLOG(&quot;child&nbsp;at&nbsp;(%d,&nbsp;%d)&nbsp;with&nbsp;(%d&nbsp;x&nbsp;%d)\n&quot;,&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; child-&gt;rect.x,&nbsp;child-&gt;rect.y,&nbsp;child-&gt;rect.width,&nbsp;child-&gt;rect.height);&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; x_raise_con(child);&lt;br&gt;<br>
+-&nbsp; &nbsp; &nbsp; &nbsp; render_con(child,&nbsp;false);&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; render_con(child,&nbsp;false,&nbsp;child-&gt;type&nbsp;==&nbsp;CT_DOCKAREA);&lt;br&gt;<br>
+ &nbsp; &nbsp; }&lt;br&gt;<br>
+ }&lt;br&gt;<br>
+&lt;br&gt;<br>
+@@&nbsp;-106,7&nbsp;+106,7&nbsp;@@&nbsp;static&nbsp;void&nbsp;render_l_output(Con&nbsp;*con)&nbsp;{&lt;br&gt;<br>
+ &nbsp;*&nbsp;updated&nbsp;in&nbsp;X11.&lt;br&gt;<br>
+ &nbsp;*&lt;br&gt;<br>
+ &nbsp;*/&lt;br&gt;<br>
+-void&nbsp;render_con(Con&nbsp;*con,&nbsp;bool&nbsp;render_fullscreen)&nbsp;{&lt;br&gt;<br>
++void&nbsp;render_con(Con&nbsp;*con,&nbsp;bool&nbsp;render_fullscreen,&nbsp;bool&nbsp;already_inset)&nbsp;{&lt;br&gt;<br>
+ &nbsp; &nbsp; int&nbsp;children&nbsp;=&nbsp;con_num_children(con);&lt;br&gt;<br>
+ &nbsp; &nbsp; DLOG(&quot;Rendering&nbsp;%snode&nbsp;%p&nbsp;/&nbsp;%s&nbsp;/&nbsp;layout&nbsp;%d&nbsp;/&nbsp;children&nbsp;%d\n&quot;,&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(render_fullscreen&nbsp;?&nbsp;&quot;fullscreen&nbsp;&quot;&nbsp;:&nbsp;&quot;&quot;),&nbsp;con,&nbsp;con-&gt;name,&nbsp;con-&gt;layout,&lt;br&gt;<br>
+@@&nbsp;-124,6&nbsp;+124,25&nbsp;@@&nbsp;void&nbsp;render_con(Con&nbsp;*con,&nbsp;bool&nbsp;render_fullscreen)&nbsp;{&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; rect.width&nbsp;-=&nbsp;2&nbsp;*&nbsp;2;&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; rect.height&nbsp;-=&nbsp;2&nbsp;*&nbsp;2;&lt;br&gt;<br>
+ &nbsp; &nbsp; }&lt;br&gt;<br>
++&lt;br&gt;<br>
++&nbsp; &nbsp; bool&nbsp;should_inset&nbsp;=&nbsp;((con_is_leaf(con)&nbsp;||&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; (children&nbsp;&gt;&nbsp;0&nbsp;&amp;&amp;&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;(con-&gt;layout&nbsp;==&nbsp;L_STACKED&nbsp;||&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; con-&gt;layout&nbsp;==&nbsp;L_TABBED)))&nbsp;&amp;&amp;&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;con-&gt;type&nbsp;!=&nbsp;CT_FLOATING_CON&nbsp;&amp;&amp;&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;con-&gt;type&nbsp;!=&nbsp;CT_WORKSPACE);&lt;br&gt;<br>
++&nbsp; &nbsp; if&nbsp;((!already_inset&nbsp;&amp;&amp;&nbsp;should_inset))&nbsp;{&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; Rect&nbsp;inset&nbsp;=&nbsp;(Rect)&nbsp;{4,&nbsp;4,&nbsp;4&nbsp;*&nbsp;-2,&nbsp;4&nbsp;*&nbsp;-2};&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; rect&nbsp;=&nbsp;rect_add(rect,&nbsp;inset);&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; if&nbsp;(!render_fullscreen)&nbsp;{&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; con-&gt;rect&nbsp;=&nbsp;rect_add(con-&gt;rect,&nbsp;inset);&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if&nbsp;(con-&gt;window)&nbsp;{&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; con-&gt;window_rect&nbsp;=&nbsp;rect_add(con-&gt;window_rect,&nbsp;inset);&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; }&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; inset.height&nbsp;=&nbsp;0;&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; con-&gt;deco_rect&nbsp;=&nbsp;rect_add(con-&gt;deco_rect,&nbsp;inset);&lt;br&gt;<br>
++&nbsp; &nbsp; }&lt;br&gt;<br>
+&lt;br&gt;<br>
+ &nbsp; &nbsp; int&nbsp;x&nbsp;=&nbsp;rect.x;&lt;br&gt;<br>
+ &nbsp; &nbsp; int&nbsp;y&nbsp;=&nbsp;rect.y;&lt;br&gt;<br>
+@@&nbsp;-191,7&nbsp;+210,7&nbsp;@@&nbsp;void&nbsp;render_con(Con&nbsp;*con,&nbsp;bool&nbsp;render_fullscreen)&nbsp;{&lt;br&gt;<br>
+ &nbsp; &nbsp; if&nbsp;(fullscreen)&nbsp;{&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; fullscreen-&gt;rect&nbsp;=&nbsp;rect;&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; x_raise_con(fullscreen);&lt;br&gt;<br>
+-&nbsp; &nbsp; &nbsp; &nbsp; render_con(fullscreen,&nbsp;true);&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; render_con(fullscreen,&nbsp;true,&nbsp;false);&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; return;&lt;br&gt;<br>
+ &nbsp; &nbsp; }&lt;br&gt;<br>
+&lt;br&gt;<br>
+@@&nbsp;-231,7&nbsp;+250,7&nbsp;@@&nbsp;void&nbsp;render_con(Con&nbsp;*con,&nbsp;bool&nbsp;render_fullscreen)&nbsp;{&lt;br&gt;<br>
+ &nbsp; &nbsp; }&nbsp;else&nbsp;if&nbsp;(con-&gt;type&nbsp;==&nbsp;CT_ROOT)&nbsp;{&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; Con&nbsp;*output;&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; TAILQ_FOREACH(output,&nbsp;&amp;(con-&gt;nodes_head),&nbsp;nodes)&nbsp;{&lt;br&gt;<br>
+-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; render_con(output,&nbsp;false);&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; render_con(output,&nbsp;false,&nbsp;false);&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; }&lt;br&gt;<br>
+&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; /*&nbsp;We&nbsp;need&nbsp;to&nbsp;render&nbsp;floating&nbsp;windows&nbsp;after&nbsp;rendering&nbsp;all&nbsp;outputs’&lt;br&gt;<br>
+@@&nbsp;-269,7&nbsp;+288,7&nbsp;@@&nbsp;void&nbsp;render_con(Con&nbsp;*con,&nbsp;bool&nbsp;render_fullscreen)&nbsp;{&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; DLOG(&quot;floating&nbsp;child&nbsp;at&nbsp;(%d,%d)&nbsp;with&nbsp;%d&nbsp;x&nbsp;%d\n&quot;,&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;child-&gt;rect.x,&nbsp;child-&gt;rect.y,&nbsp;child-&gt;rect.width,&nbsp;child-&gt;rect.height);&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; x_raise_con(child);&lt;br&gt;<br>
+-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; render_con(child,&nbsp;false);&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; render_con(child,&nbsp;false,&nbsp;true);&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; }&lt;br&gt;<br>
+&lt;br&gt;<br>
+@@&nbsp;-365,7&nbsp;+384,7&nbsp;@@&nbsp;void&nbsp;render_con(Con&nbsp;*con,&nbsp;bool&nbsp;render_fullscreen)&nbsp;{&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; DLOG(&quot;child&nbsp;at&nbsp;(%d,&nbsp;%d)&nbsp;with&nbsp;(%d&nbsp;x&nbsp;%d)\n&quot;,&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; child-&gt;rect.x,&nbsp;child-&gt;rect.y,&nbsp;child-&gt;rect.width,&nbsp;child-&gt;rect.height);&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; x_raise_con(child);&lt;br&gt;<br>
+-&nbsp; &nbsp; &nbsp; &nbsp; render_con(child,&nbsp;false);&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; render_con(child,&nbsp;false,&nbsp;should_inset&nbsp;||&nbsp;already_inset);&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; i++;&lt;br&gt;<br>
+ &nbsp; &nbsp; }&lt;br&gt;<br>
+&lt;br&gt;<br>
+@@&nbsp;-378,7&nbsp;+397,7&nbsp;@@&nbsp;void&nbsp;render_con(Con&nbsp;*con,&nbsp;bool&nbsp;render_fullscreen)&nbsp;{&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;*&nbsp;that&nbsp;we&nbsp;have&nbsp;a&nbsp;non-leaf-container&nbsp;inside&nbsp;the&nbsp;stack.&nbsp;In&nbsp;that&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;*&nbsp;case,&nbsp;the&nbsp;children&nbsp;of&nbsp;the&nbsp;non-leaf-container&nbsp;need&nbsp;to&nbsp;be&nbsp;raised&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;*&nbsp;aswell.&nbsp;*/&lt;br&gt;<br>
+-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; render_con(child,&nbsp;false);&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; render_con(child,&nbsp;false,&nbsp;true);&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; }&lt;br&gt;<br>
+&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; if&nbsp;(children&nbsp;!=&nbsp;1)&lt;br&gt;<br>
+diff&nbsp;--git&nbsp;a/src/tree.c&nbsp;b/src/tree.c&lt;br&gt;<br>
+index&nbsp;7a5fb9f..12d3b9d&nbsp;100644&lt;br&gt;<br>
+---&nbsp;a/src/tree.c&lt;br&gt;<br>
++++&nbsp;b/src/tree.c&lt;br&gt;<br>
+@@&nbsp;-474,7&nbsp;+474,7&nbsp;@@&nbsp;void&nbsp;tree_render(void)&nbsp;{&lt;br&gt;<br>
+ &nbsp; &nbsp; mark_unmapped(croot);&lt;br&gt;<br>
+ &nbsp; &nbsp; croot-&gt;mapped&nbsp;=&nbsp;true;&lt;br&gt;<br>
+&lt;br&gt;<br>
+-&nbsp; &nbsp; render_con(croot,&nbsp;false);&lt;br&gt;<br>
++&nbsp; &nbsp; render_con(croot,&nbsp;false,&nbsp;false);&lt;br&gt;<br>
+&lt;br&gt;<br>
+ &nbsp; &nbsp; x_push_changes(croot);&lt;br&gt;<br>
+ &nbsp; &nbsp; DLOG(&quot;--&nbsp;END&nbsp;RENDERING&nbsp;--\n&quot;);&lt;br&gt;<br>
+&lt;span&gt;&lt;font&nbsp;color=&quot;#888888&quot;&gt;--&lt;br&gt;<br>
+1.8.0&lt;br&gt;<br>
+&lt;br&gt;<br>
+&lt;/font&gt;&lt;/span&gt;&lt;/blockquote&gt;&lt;/div&gt;&lt;br&gt;<br>
+&lt;/div&gt;<br>
+
+</tt>

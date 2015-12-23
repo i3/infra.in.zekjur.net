@@ -1,0 +1,38 @@
+>From 349d7b2d1b603ce1ea54e275776505bd2a980e16 Mon Sep 17 00:00:00 2001
+From: Marcus Crestani <crestani@informatik.uni-tuebingen.de>
+Date: Wed, 11 Jun 2014 20:53:22 +0200
+Subject: [PATCH] Include sys/sysctl.h after i3.h to prevent redefinition warnings caused by queue.h on OS X.
+
+---
+ src/log.c |    8 ++++----
+ 1 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/log.c b/src/log.c
+index ec44f3a..1014908 100644
+--- a/src/log.c
++++ b/src/log.c
+@@ -21,10 +21,6 @@
+ #include <sys/stat.h>
+ #include <errno.h>
+ #include <pthread.h>
+-#if defined(__APPLE__)
+-#include <sys/types.h>
+-#include <sys/sysctl.h>
+-#endif
+ 
+ #include "util.h"
+ #include "log.h"
+@@ -32,6 +28,10 @@
+ #include "libi3.h"
+ #include "shmlog.h"
+ 
++#if defined(__APPLE__)
++#include <sys/sysctl.h>
++#endif
++
+ static bool debug_logging = false;
+ static bool verbose = false;
+ static FILE *errorfile;
+-- 
+1.6.4.2
+

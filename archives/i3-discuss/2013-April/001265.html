@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3bar: toggle mode
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3bar%3A%20toggle%20mode&In-Reply-To=%3C51694156.7090105%40web.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001286.html">
+   <LINK REL="Next"  HREF="001266.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3bar: toggle mode</H1>
+    <B>justus jonas</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3bar%3A%20toggle%20mode&In-Reply-To=%3C51694156.7090105%40web.de%3E"
+       TITLE="[i3] i3bar: toggle mode">haptix at web.de
+       </A><BR>
+    <I>Sat Apr 13 13:28:22 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001286.html">[i3] Natural sizing of windows
+</A></li>
+        <LI>Next message: <A HREF="001266.html">[i3] i3bar: toggle mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1265">[ date ]</a>
+              <a href="thread.html#1265">[ thread ]</a>
+              <a href="subject.html#1265">[ subject ]</a>
+              <a href="author.html#1265">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+currently I am working on a patch for fixing feature request #651 and 
+#833. This would introduce a mode &quot;toggle&quot; for i3bar, which toggles 
+between showing and hiding the i3bar whenever the i3bar modifier is 
+pressed.
+
+This is easily done when targeting a setup with only one i3bar process. 
+But when using two bar blocks in the config, two i3bar processes are 
+started, each one only has knowledge about the output (and its children 
+workspaces) where they are drawn on. So if one of the bars is unhidden 
+because of an urgency hint, I have no way to synchronize the 
+hidden/unhidden state between the two processes. So, when only one of 
+the bars is unhidden, I would like to react to this in both i3bar 
+processes, so I can switch to hiding the bars when pressing the modifier 
+next time. Otherwise the two processes will have different states when 
+toggling, or I would toggle to unhiding the i3bar even though one or 
+both of the bars may already be unhidden.
+
+Can anyone of you give me a hint on how to synchronize the state of the 
+two bars or how to tackle this problem in another way?
+
+Thanks in advance and best regards
+jj
+</PRE>
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001286.html">[i3] Natural sizing of windows
+</A></li>
+	<LI>Next message: <A HREF="001266.html">[i3] i3bar: toggle mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1265">[ date ]</a>
+              <a href="thread.html#1265">[ thread ]</a>
+              <a href="subject.html#1265">[ subject ]</a>
+              <a href="author.html#1265">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

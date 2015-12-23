@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Debugging techniques.
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Debugging%20techniques.&In-Reply-To=%3C5633E7A4.1010201%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002232.html">
+   <LINK REL="Next"  HREF="002233.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Debugging techniques.</H1>
+    <B>Layus</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Debugging%20techniques.&In-Reply-To=%3C5633E7A4.1010201%40gmail.com%3E"
+       TITLE="[i3] Debugging techniques.">layus.on at gmail.com
+       </A><BR>
+    <I>Fri Oct 30 22:56:52 CET 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002232.html">[i3] Debugging techniques.
+</A></li>
+        <LI>Next message: <A HREF="002233.html">[i3] Weird keybinding issue after suspend
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2234">[ date ]</a>
+              <a href="thread.html#2234">[ thread ]</a>
+              <a href="subject.html#2234">[ subject ]</a>
+              <a href="author.html#2234">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thank you for the detailed answer.
+
+I think I have sorted it all out.
+
+My use case is an i3 session started with some session manager like gdm 
+or kdm (or any other *dm).
+In that setup, the users have little access to the arguments passed to i3.
+
+Let's assume the system uses an i3 build from <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">git at master.</A>
+It should be sufficient to start i3 as &quot;i3 --shmlog-size=25000000 -V -d 
+all&quot; to get extended logs including the starting phase, and suitable for 
+bug reports.
+
+If users are annoyed by the memory usage, they can add 'exec 
+--no-startup-id i3-msg shmlog no' to their config.
+
+This way, I enable users to
+1) access complete logs suitable for debug without needing root access
+2) disable i3 logging if they do not want it
+
+If it is not an up-to-date git build, they can still use the logs it for 
+their own debug purposes.
+
+Do you think the idea of always starting i3 with the 
+&quot;--shmlog-size=25000000 -V -d all&quot; parameters makes sense ?
+
+-- 
+Regards,
+Layus
+
+On 27/10/15 15:22, Michael Stapelberg wrote:
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Tue, Oct 27, 2015 at 7:01 AM, Guillaume Maudoux (Layus) 
+</I>&gt;<i> &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">layus.on at gmail.com</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;<i>     Hello world!
+</I>&gt;<i>
+</I>&gt;<i>     I am trying to enable debugging in i3, and I am confused by the
+</I>&gt;<i>     number of different options to do this.
+</I>&gt;<i>
+</I>&gt;<i>        command line          config option
+</I>&gt;<i>     -- --------------------  -----------------------------
+</I>&gt;<i>     1 i3 --shmlog-size=X shmlog on|off|toggle|&lt;size&gt;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Note that “shmlog on|off|toggle|&lt;size&gt;” refers to a command, not a 
+</I>&gt;<i> config directive.
+</I>&gt;<i>
+</I>&gt;<i>     2 i3 -V ?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Errors (ELOG in the code) are always printed to stdout.
+</I>&gt;<i> Verbose log messages (LOG in the code) are printed to stdout if -V is 
+</I>&gt;<i> enabled. Intended for curious users.
+</I>&gt;<i> Debug log messages (DLOG in the code) are printed if -d is enabled.
+</I>&gt;<i>
+</I>&gt;<i>     3 i3 -d all             ?
+</I>&gt;<i>     4  ? debuglog on|off|toggle
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 3 and 4 are the same setting. The “all” argument to -d is obsolete, 
+</I>&gt;<i> but kept for backwards compatibility.
+</I>&gt;<i>
+</I>&gt;<i> See also <A HREF="https://github.com/i3/i3/issues/1823">https://github.com/i3/i3/issues/1823</A> for a related discussion.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     So my question are:
+</I>&gt;<i>
+</I>&gt;<i>     Which one is the recommended way ?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> The recommended way is to use an automatically built version from 
+</I>&gt;<i> <A HREF="http://i3wm.org/docs/repositories.html">http://i3wm.org/docs/repositories.html</A> (or i3-git if your package 
+</I>&gt;<i> manager knows how to build automatically build software from git) 
+</I>&gt;<i> because otherwise any of your findings will need to be confirmed again 
+</I>&gt;<i> on a more recent version.
+</I>&gt;<i>
+</I>&gt;<i> These versions automatically enable debug logging to shared memory 
+</I>&gt;<i> (they check whether they were built from a git version that is not a 
+</I>&gt;<i> release version).
+</I>&gt;<i>
+</I>&gt;<i>     Does `shmlog on` imply  `debuglog on` ?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> No.
+</I>&gt;<i>
+</I>&gt;<i>     Does `-d all` imply `-V` ?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> No.
+</I>&gt;<i>
+</I>&gt;<i>     What size do you recommend for the shmlog size ?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> 25MB (arbitrarily chosen, but proven to be enough for all issues we’ve 
+</I>&gt;<i> encountered so far).
+</I>&gt;<i>
+</I>&gt;<i>     May I assume that the config options cannot be used to debug
+</I>&gt;<i>     issues prior to loading the configuration file (nor issues while
+</I>&gt;<i>     loading the configuration file) ?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> If you specify them as command-line parameters to i3, they will be 
+</I>&gt;<i> active before loading the configuration file.
+</I>&gt;<i>
+</I>&gt;<i>     Which of these options provide enough information for a bug report
+</I>&gt;<i>     ? Is -V enough ?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Please use -V -d all, as per section 2 of 
+</I>&gt;<i> <A HREF="http://i3wm.org/docs/debugging.html">http://i3wm.org/docs/debugging.html</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>     It seems that shm logging is better in the sense that it does not
+</I>&gt;<i>     increase a log file size, but not as nice as it locks some memory
+</I>&gt;<i>     space.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Correct.
+</I>&gt;<i>
+</I>&gt;<i>     What is the reason behind shm logging, instead of the usual
+</I>&gt;<i>     logging to file + logrotate ?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> It’s easier for us to set aside a chunk of memory than to make sure 
+</I>&gt;<i> that every user of i3 knows about having to logrotate a file away. 
+</I>&gt;<i> Anecdotally, we’ve had a bunch of users whose hard drive (or RAM, in 
+</I>&gt;<i> case of /tmp being on tmpfs) filled up because of an ever-growing i3 
+</I>&gt;<i> logfile.
+</I>&gt;<i>
+</I>&gt;<i> -- 
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Michael
+</I>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151030/62d7c040/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151030/62d7c040/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002232.html">[i3] Debugging techniques.
+</A></li>
+	<LI>Next message: <A HREF="002233.html">[i3] Weird keybinding issue after suspend
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2234">[ date ]</a>
+              <a href="thread.html#2234">[ thread ]</a>
+              <a href="subject.html#2234">[ subject ]</a>
+              <a href="author.html#2234">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

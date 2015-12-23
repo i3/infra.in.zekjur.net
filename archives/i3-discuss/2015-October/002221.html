@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Problems getting Ubuntu repository working
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Problems%20getting%20Ubuntu%20repository%20working&In-Reply-To=%3CCANnVG6krv7oum8zVjd%3D-cXhJrmbtgxUQPfssRuYtLafZebgtjg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002220.html">
+   <LINK REL="Next"  HREF="002223.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Problems getting Ubuntu repository working</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Problems%20getting%20Ubuntu%20repository%20working&In-Reply-To=%3CCANnVG6krv7oum8zVjd%3D-cXhJrmbtgxUQPfssRuYtLafZebgtjg%40mail.gmail.com%3E"
+       TITLE="[i3] Problems getting Ubuntu repository working">michael at i3wm.org
+       </A><BR>
+    <I>Tue Oct 13 08:53:42 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002220.html">[i3] Problems getting Ubuntu repository working
+</A></li>
+        <LI>Next message: <A HREF="002223.html">[i3] Problems getting Ubuntu repository working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2221">[ date ]</a>
+              <a href="thread.html#2221">[ thread ]</a>
+              <a href="subject.html#2221">[ subject ]</a>
+              <a href="author.html#2221">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE><A HREF="http://i3wm.org/docs/repositories.html">http://i3wm.org/docs/repositories.html</A> lists:
+
+# echo &quot;deb <A HREF="http://debian.sur5r.net/i3/">http://debian.sur5r.net/i3/</A> $(lsb_release -c -s) universe&quot; &gt;&gt;
+/etc/apt/sources.list
+
+That command has to be executed. The $(lsb_release -c -s) part will be
+replaced by your Ubuntu version when you do that. It seems like you have
+not properly executed the command, based on the -c and -s flags showing up
+in your sources.list.
+
+On Tue, Oct 13, 2015 at 5:31 AM, Matt Ilacqua &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ilaq241 at gmail.com</A>&gt; wrote:
+
+&gt;<i> Realized my version of i3 is 4.7.2 and that the sur5r repository wasn't
+</I>&gt;<i> working for me. I'm using xubuntu 14.04 LTS
+</I>&gt;<i>
+</I>&gt;<i> Here's what I see with apt-get update:
+</I>&gt;<i>
+</I>&gt;<i> Ign <A HREF="http://debian.sur5r.net">http://debian.sur5r.net</A> -c InRelease
+</I>&gt;<i>
+</I>&gt;<i> Ign <A HREF="http://debian.sur5r.net">http://debian.sur5r.net</A> -c Release.gpg
+</I>&gt;<i> Ign <A HREF="http://debian.sur5r.net">http://debian.sur5r.net</A> -c Release
+</I>&gt;<i> Err <A HREF="http://debian.sur5r.net">http://debian.sur5r.net</A> -c/-s) i386 Packages
+</I>&gt;<i>   404  Not Found [IP: 217.8.49.41 80]
+</I>&gt;<i> Err <A HREF="http://debian.sur5r.net">http://debian.sur5r.net</A> -c/universe i386 Packages
+</I>&gt;<i>   404  Not Found [IP: 217.8.49.41 80]
+</I>&gt;<i> Ign <A HREF="http://debian.sur5r.net">http://debian.sur5r.net</A> -c/-s) Translation-en_US
+</I>&gt;<i> Ign <A HREF="http://debian.sur5r.net">http://debian.sur5r.net</A> -c/-s) Translation-en
+</I>&gt;<i> Ign <A HREF="http://debian.sur5r.net">http://debian.sur5r.net</A> -c/universe Translation-en_US
+</I>&gt;<i>
+</I>&gt;<i> Ign <A HREF="http://debian.sur5r.net">http://debian.sur5r.net</A> -c/universe Translation-en
+</I>&gt;<i>
+</I>&gt;<i> W: Failed to fetch
+</I>&gt;<i> <A HREF="http://debian.sur5r.net/i3/dists/-c/-s">http://debian.sur5r.net/i3/dists/-c/-s</A>)/binary-i386/Packages  404  Not
+</I>&gt;<i> Found [IP: 217.8.49.41 80]
+</I>&gt;<i>
+</I>&gt;<i> W: Failed to fetch
+</I>&gt;<i> <A HREF="http://debian.sur5r.net/i3/dists/-c/universe/binary-i386/Packages">http://debian.sur5r.net/i3/dists/-c/universe/binary-i386/Packages</A>  404
+</I>&gt;<i>  Not Found [IP: 217.8.49.41 80]
+</I>&gt;<i>
+</I>&gt;<i> E: Some index files failed to download. They have been ignored, or old
+</I>&gt;<i> ones used instead.
+</I>&gt;<i>
+</I>&gt;<i> And in my /etc/apt/sources.list file I have:
+</I>&gt;<i>
+</I>&gt;<i> deb <A HREF="http://debian.sur5r.net/i3/">http://debian.sur5r.net/i3/</A>  -c -s) universe
+</I>&gt;<i>
+</I>&gt;<i> I also tried directly copying &quot;deb <A HREF="http://debian.sur5r.net/i3/">http://debian.sur5r.net/i3/</A> $(lsb_release
+</I>&gt;<i> -c -s) universe&quot; right into sources.list and am still getting 404's in my
+</I>&gt;<i> sudo apt-get update.
+</I>&gt;<i>
+</I>&gt;<i> Any info or suggestions would be appreciated. Thanks!
+</I>&gt;<i>
+</I>
+
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151013/9fb95cbc/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151013/9fb95cbc/attachment.html</A>&gt;
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002220.html">[i3] Problems getting Ubuntu repository working
+</A></li>
+	<LI>Next message: <A HREF="002223.html">[i3] Problems getting Ubuntu repository working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2221">[ date ]</a>
+              <a href="thread.html#2221">[ thread ]</a>
+              <a href="subject.html#2221">[ subject ]</a>
+              <a href="author.html#2221">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,4030 @@
+From cjk at wwwtech.de  Wed Nov  7 13:24:31 2012
+From: cjk at wwwtech.de (Christian Kruse)
+Date: Wed, 07 Nov 2012 13:24:31 +0100
+Subject: [i3] Arrange workspaces in two rows
+Message-ID: <150255808.thy6azFDv7@achilles.local.defunct.ch>
+
+Hey,
+
+is it possible to arrange your workspaces in two rows as for example in Xfce 
+or KDE?
+
+I'd like to do so because I want to be able to switch to a specific workspace 
+within fewer keystrokes without having to use workspace <no>, e.g. $mod-Down, 
+$mod-Right would switch me to workspace 5 in a two-rows-6-workspaces setup.
+
+Is this possible to achieve with i3?
+
+Greetings,
+ CK
+
+
+From marcos at anue.biz  Wed Nov  7 14:21:14 2012
+From: marcos at anue.biz (Marcos Moyano)
+Date: Wed, 7 Nov 2012 10:21:14 -0300
+Subject: [i3] Arrange workspaces in two rows
+In-Reply-To: <150255808.thy6azFDv7@achilles.local.defunct.ch>
+References: <150255808.thy6azFDv7@achilles.local.defunct.ch>
+Message-ID: <CANxNxiCw0xgd8BqacxbgM3n2C7c1J1x4jX8VJzb051=PnSTa9Q@mail.gmail.com>
+
+You can do something like:
+bindsym Control+Mod1+Right workspace next
+bindsym Control+Mod1+Left workspace prev
+
+to iterate over your workspaces (this cycles: ie: from 1 to n with
+Ctrl+Mod1+Left). I'm not sure about the two rows thing.
+
+rgds,
+Marcos
+
+On Wed, Nov 7, 2012 at 9:24 AM, Christian Kruse <cjk at wwwtech.de> wrote:
+
+> Hey,
+>
+> is it possible to arrange your workspaces in two rows as for example in
+> Xfce
+> or KDE?
+>
+> I'd like to do so because I want to be able to switch to a specific
+> workspace
+> within fewer keystrokes without having to use workspace <no>, e.g.
+> $mod-Down,
+> $mod-Right would switch me to workspace 5 in a two-rows-6-workspaces setup.
+>
+> Is this possible to achieve with i3?
+>
+> Greetings,
+>  CK
+>
+>
+
+
+-- 
+Marcos Moyano
+Co-Founder of Anue
+Skype: marcosmoyano
+http://www.anue.biz/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121107/6cd54ade/attachment.html>
+
+From cjk at wwwtech.de  Wed Nov  7 14:32:32 2012
+From: cjk at wwwtech.de (Christian Kruse)
+Date: Wed, 07 Nov 2012 14:32:32 +0100
+Subject: [i3] Arrange workspaces in two rows
+In-Reply-To: <CANxNxiCw0xgd8BqacxbgM3n2C7c1J1x4jX8VJzb051=PnSTa9Q@mail.gmail.com>
+References: <150255808.thy6azFDv7@achilles.local.defunct.ch>
+ <CANxNxiCw0xgd8BqacxbgM3n2C7c1J1x4jX8VJzb051=PnSTa9Q@mail.gmail.com>
+Message-ID: <1781831.dHPMqWjtnW@achilles.local.defunct.ch>
+
+Hey,
+
+On Wednesday 07 November 2012 10:21:14 Marcos Moyano wrote:
+> You can do something like:
+> bindsym Control+Mod1+Right workspace next
+> bindsym Control+Mod1+Left workspace prev
+> 
+> to iterate over your workspaces (this cycles: ie: from 1 to n with
+> Ctrl+Mod1+Left). I'm not sure about the two rows thing.
+
+I know that one, thanks. But I have to type 10 times Ctrl-Mod-Right in the 
+worst case. With two rows it would only be 3 keystrokes in the worst case.
+
+Greetings,
+ CK
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121107/254d5f22/attachment.html>
+
+From v.somlev at gmail.com  Wed Nov  7 15:14:35 2012
+From: v.somlev at gmail.com (Vesso)
+Date: Wed, 7 Nov 2012 15:14:35 +0100
+Subject: [i3] Arrange workspaces in two rows
+In-Reply-To: <1781831.dHPMqWjtnW@achilles.local.defunct.ch>
+References: <150255808.thy6azFDv7@achilles.local.defunct.ch>
+ <CANxNxiCw0xgd8BqacxbgM3n2C7c1J1x4jX8VJzb051=PnSTa9Q@mail.gmail.com>
+ <1781831.dHPMqWjtnW@achilles.local.defunct.ch>
+Message-ID: <CALyUeK_bgVRObRM5DSLjq+GoTfHEGdGm-FLYWsEWLmFD2ZPzgQ@mail.gmail.com>
+
+Hi Christian,
+
+Here is a solution I image might work. I used the same idea on Fluxbox
+to have otherwise unsupported multiple rows of workspaces.
+
+As far as I know, you can put multiple commands for one keybinding by
+separating them with commas:
+bindsym <keys> <command1>, <command2>, <command3>, etc
+I only tried with 2 commands, not sure if it works with more than two.
+Hopefully it does, since this hypothetical feature is the center of
+the solution.
+
+How does this help, you ask? Let's say you have 8 workspaces you want
+organized in 2 rows with 4 workspaces each. Check out these bindings:
+bindsym Control+Mod1+up workspace prev, workspace prev, workspace
+prev, workspace prev
+bindsym Control+Mod1+down workspace next, workspace next, workspace
+next, workspace next
+(Actually it doesn't matter which line is with prev's and which with next's)
+If you are on workspace 3 (3rd on row 1), pressing either of those key
+combos will move you to the workspace "below", which the 7th one (3rd
+on row 2), since 3+4=3-4=7. (We are dealing with modulo 8 because of 8
+workspaces).
+You can apply this for 2 rows with 2 or 3 workspaces each, by
+adjusting the number of prev/next commands. Remember we are dealing
+with mod N arithmetic, where N is the total number of workspaces.
+
+Unfortunately, they will still appear linearly in the statusbar, though. :|
+
+Hope this helps!
+
+Regards
+-VS
+
+On Wed, Nov 7, 2012 at 2:32 PM, Christian Kruse <cjk at wwwtech.de> wrote:
+> Hey,
+>
+>
+>
+> On Wednesday 07 November 2012 10:21:14 Marcos Moyano wrote:
+>
+>> You can do something like:
+>
+>> bindsym Control+Mod1+Right workspace next
+>
+>> bindsym Control+Mod1+Left workspace prev
+>
+>>
+>
+>> to iterate over your workspaces (this cycles: ie: from 1 to n with
+>
+>> Ctrl+Mod1+Left). I'm not sure about the two rows thing.
+>
+>
+>
+> I know that one, thanks. But I have to type 10 times Ctrl-Mod-Right in the
+> worst case. With two rows it would only be 3 keystrokes in the worst case.
+>
+>
+>
+> Greetings,
+>
+> CK
+>
+>
+
+From dcoppa at gmail.com  Mon Nov 12 09:54:08 2012
+From: dcoppa at gmail.com (David Coppa)
+Date: Mon, 12 Nov 2012 09:54:08 +0100
+Subject: [i3] Problem with 81393c93c2810e098966fe4089f3c8ea09f9cbe6
+ ("bugfix: fix workspace back_and_forth after displaying a scratchpad
+ window")
+Message-ID: <CABM=MF+s_1or_BgY_nHjGT8r91fFW0Bd98rkXcM8XuhuXm8Z4g@mail.gmail.com>
+
+Hi all,
+
+There's a problem with your latest bugfixing commit on the master branch:
+
+src/workspace.o(.text+0x1160): In function `_workspace_show':
+: undefined reference to `con_is_internal'
+
+"con_is_internal" is only in the 'next' branch of i3.
+
+Cheers,
+David
+
+From simon at iodev.org  Mon Nov 12 12:19:11 2012
+From: simon at iodev.org (Simon Elsbrock)
+Date: Mon, 12 Nov 2012 12:19:11 +0100
+Subject: [i3] [PATCH] bugfix: don't use con_is_internal
+In-Reply-To: <CABM=MF+s_1or_BgY_nHjGT8r91fFW0Bd98rkXcM8XuhuXm8Z4g@mail.gmail.com>
+References: <CABM=MF+s_1or_BgY_nHjGT8r91fFW0Bd98rkXcM8XuhuXm8Z4g@mail.gmail.com>
+Message-ID: <1352719151-7668-1-git-send-email-simon@iodev.org>
+
+---
+ src/workspace.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/workspace.c b/src/workspace.c
+index 1e70718..298088e 100644
+--- a/src/workspace.c
++++ b/src/workspace.c
+@@ -343,7 +343,7 @@ static void _workspace_show(Con *workspace) {
+      * the corresponding workspace is cleaned up.
+      * NOTE: Internal cons such as __i3_scratch (when a scratchpad window is
+      * focused) are skipped, see bug #868. */
+-    if (current && !con_is_internal(current)) {
++    if (current && current->name[0] == '_' && current->name[1] == '_') {
+         FREE(previous_workspace_name);
+         if (current) {
+             previous_workspace_name = sstrdup(current->name);
+-- 
+1.7.10.4
+
+
+From old4 at o2.pl  Mon Nov 12 12:51:29 2012
+From: old4 at o2.pl (Mateusz Poszwa)
+Date: Mon, 12 Nov 2012 12:51:29 +0100
+Subject: [i3] [PATCH] bugfix: don't use con_is_internal
+In-Reply-To: <1352719151-7668-1-git-send-email-simon@iodev.org>
+References: <CABM=MF+s_1or_BgY_nHjGT8r91fFW0Bd98rkXcM8XuhuXm8Z4g@mail.gmail.com>
+ <1352719151-7668-1-git-send-email-simon@iodev.org>
+Message-ID: <20121112125129.70bf9270@debelianear>
+
+On Mon, 12 Nov 2012 12:19:11 +0100
+Simon Elsbrock <simon at iodev.org> wrote:
+
+> ---
+>  src/workspace.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/src/workspace.c b/src/workspace.c
+> index 1e70718..298088e 100644
+> --- a/src/workspace.c
+> +++ b/src/workspace.c
+> @@ -343,7 +343,7 @@ static void _workspace_show(Con *workspace) {
+>       * the corresponding workspace is cleaned up.
+>       * NOTE: Internal cons such as __i3_scratch (when a scratchpad window is
+>       * focused) are skipped, see bug #868. */
+> -    if (current && !con_is_internal(current)) {
+> +    if (current && current->name[0] == '_' && current->name[1] == '_') {
+
+Shouldn't that be?:
+
+  +    if (current && !(current->name[0] == '_' && current->name[1] == '_')) {
+
+?? I'm not familiar with !con_is_internal, but the comment above
+says that internal cons do begin with two underscores.
+
+>          FREE(previous_workspace_name);
+>          if (current) {
+>              previous_workspace_name = sstrdup(current->name);
+
+
+
+-- 
+Mateusz Poszwa
+
+From simon at iodev.org  Mon Nov 12 13:36:33 2012
+From: simon at iodev.org (Simon Elsbrock)
+Date: Mon, 12 Nov 2012 13:36:33 +0100
+Subject: [i3] [PATCH] bugfix: don't use con_is_internal
+In-Reply-To: <20121112125129.70bf9270@debelianear>
+References: <20121112125129.70bf9270@debelianear>
+Message-ID: <1352723793-11588-1-git-send-email-simon@iodev.org>
+
+---
+
+ Of course you're correct. Thanks!
+
+ src/workspace.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/workspace.c b/src/workspace.c
+index 1e70718..25b30ff 100644
+--- a/src/workspace.c
++++ b/src/workspace.c
+@@ -343,7 +343,7 @@ static void _workspace_show(Con *workspace) {
+      * the corresponding workspace is cleaned up.
+      * NOTE: Internal cons such as __i3_scratch (when a scratchpad window is
+      * focused) are skipped, see bug #868. */
+-    if (current && !con_is_internal(current)) {
++    if (current && !(current->name[0] == '_' && current->name[1] == '_')) {
+         FREE(previous_workspace_name);
+         if (current) {
+             previous_workspace_name = sstrdup(current->name);
+--
+1.7.10.4
+
+
+From michael at i3wm.org  Mon Nov 12 19:49:55 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 12 Nov 2012 19:49:55 +0100
+Subject: [i3] [PATCH] bugfix: don't use con_is_internal
+In-Reply-To: <1352723793-11588-1-git-send-email-simon@iodev.org>
+References: <20121112125129.70bf9270@debelianear>
+ <1352723793-11588-1-git-send-email-simon@iodev.org>
+Message-ID: <x6625abqr0.fsf@midna.zekjur.net>
+
+Hi Simon,
+
+Thanks, this is merged.
+
+-- 
+Best regards,
+Michael
+
+From banym at banym.de  Tue Nov 13 16:12:08 2012
+From: banym at banym.de (Dominik Zajac)
+Date: Tue, 13 Nov 2012 16:12:08 +0100
+Subject: [i3] i3 + Fedora 17 on Thinkpad
+Message-ID: <DDBFDA23-DFF3-4D20-BE3E-FFB8BDE9E63C@banym.de>
+
+Hi,
+
+I want to use i3 with Fedora 17 on my Thinkpad. On Gnome there is the ACPI event handling working. Suspend when closing the cover or all the function buttons are working. Maybe someone is using i3 on Fedora and knows how to easily run a tool handling all this stuff in background ?
+
+Regards,
+
+Dominik
+
+From sardemff7+i3 at sardemff7.net  Wed Nov 14 12:29:24 2012
+From: sardemff7+i3 at sardemff7.net (Quentin Glidic)
+Date: Wed, 14 Nov 2012 12:29:24 +0100
+Subject: [i3] i3 + Fedora 17 on Thinkpad
+In-Reply-To: <DDBFDA23-DFF3-4D20-BE3E-FFB8BDE9E63C@banym.de>
+References: <DDBFDA23-DFF3-4D20-BE3E-FFB8BDE9E63C@banym.de>
+Message-ID: <50A38094.5010809@sardemff7.net>
+
+Hi,
+
+On 13/11/2012 16:12, Dominik Zajac wrote:
+> I want to use i3 with Fedora 17 on my Thinkpad. On Gnome there is the ACPI event handling working. Suspend when closing the cover or all the function buttons are working. Maybe someone is using i3 on Fedora and knows how to easily run a tool handling all this stuff in background ?
+
+Simple:
+http://off-topic.sardemff7.net/post/2012/06/21/About-the-GNOME-features-in-an-alternative-environment
+
+Cheers,
+
+-- 
+
+Quentin ?Sardem FF7? Glidic
+
+From banym at banym.de  Fri Nov 16 20:18:35 2012
+From: banym at banym.de (Dominik Zajac)
+Date: Fri, 16 Nov 2012 20:18:35 +0100
+Subject: [i3] i3 + Fedora 17 on Thinkpad
+In-Reply-To: <50A38094.5010809@sardemff7.net>
+References: <DDBFDA23-DFF3-4D20-BE3E-FFB8BDE9E63C@banym.de>
+ <50A38094.5010809@sardemff7.net>
+Message-ID: <50A6918B.30102@banym.de>
+
+On 11/14/2012 12:29 PM, Quentin Glidic wrote:
+> Hi,
+>
+> On 13/11/2012 16:12, Dominik Zajac wrote:
+>> I want to use i3 with Fedora 17 on my Thinkpad. On Gnome there is the ACPI event handling working. Suspend when closing the cover or all the function buttons are working. Maybe someone is using i3 on Fedora and knows how to easily run a tool handling all this stuff in background ?
+> Simple:
+> http://off-topic.sardemff7.net/post/2012/06/21/About-the-GNOME-features-in-an-alternative-environment
+>
+> Cheers,
+>
+Thx, using:
+
+exec /usr/libexec/gnome-settings-daemon &
+
+in my i3 config works perfectly.
+
+Regards,
+
+Dominik
+
+
+From kemurphy.cmu at gmail.com  Sun Nov 18 11:56:50 2012
+From: kemurphy.cmu at gmail.com (Kevin Murphy)
+Date: Sun, 18 Nov 2012 05:56:50 -0500
+Subject: [i3] [PATCH 0/5] Assorted Patches
+Message-ID: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+
+From: Kevin Murphy <kemurphy at andrew.cmu.edu>
+
+Here are some patches I've been sitting on that enhance the appearance of i3.
+(Yes, looks matter; I, for one, can't be efficient if the environment I stare
+at all day is an eyesore :) )
+
+0001 is a fix for true transparency that I worked on a while ago -- I still need
+to reimplement the rendering cache since apparently it makes a noticable
+difference in performance, and I don't expect this one to be accepted as is, but
+I'd like to put it out there for those who want it early and don't see the
+perf hit.
+
+0005 is for window borders to be inset on the tiling layer, which looks pretty
+cool.  I intend to make the inset size configurable, and don't expect this one
+to be accepted just yet either, but I'd also like this one to at least be out
+there for those that want it.  Feedback would also be appreciated.
+
+Thanks for reading!
+
+Kevin Murphy (5):
+  Fixes for true transparency.
+  Added "focus" IPC message/event.
+  Show title of focused window in i3bar
+  Alignment fixes for i3bar
+  Added window insets (similar to herbstluftwm)
+
+ docs/userguide              |  16 ++++
+ i3-config-wizard/main.c     |   1 +
+ i3bar/include/common.h      |   3 +
+ i3bar/include/focus.h       |  23 ++++++
+ i3bar/include/xcb.h         |   6 ++
+ i3bar/src/focus.c           | 111 ++++++++++++++++++++++++++
+ i3bar/src/ipc.c             |  27 ++++++-
+ i3bar/src/main.c            |   1 +
+ i3bar/src/xcb.c             | 164 +++++++++++++++++++++++++++++++++-----
+ include/config.h            |   8 ++
+ include/config_directives.h |   1 +
+ include/data.h              |   3 -
+ include/i3/ipc.h            |   9 +++
+ include/libi3.h             |   8 +-
+ include/render.h            |   2 +-
+ include/x.h                 |   2 +-
+ include/xcb.h               |  16 +---
+ libi3/font.c                |  29 ++++++-
+ libi3/get_visualtype.c      |  25 +++---
+ parser-specs/config.spec    |   6 ++
+ src/cfgparse.l              |   2 +
+ src/cfgparse.y              |  10 +++
+ src/commands.c              |   4 +-
+ src/con.c                   |   7 +-
+ src/config_directives.c     |   4 +
+ src/floating.c              |   6 +-
+ src/handlers.c              |   3 +
+ src/ipc.c                   |  45 ++++++++++-
+ src/main.c                  |  62 ++++++++++++---
+ src/manage.c                |   3 +-
+ src/randr.c                 |   2 +-
+ src/render.c                |  35 ++++++--
+ src/resize.c                |   7 +-
+ src/tree.c                  |   2 +-
+ src/x.c                     | 190 ++++++++++++--------------------------------
+ src/xcb.c                   |  51 ++----------
+ 36 files changed, 615 insertions(+), 279 deletions(-)
+ create mode 100644 i3bar/include/focus.h
+ create mode 100644 i3bar/src/focus.c
+
+-- 
+1.8.0
+
+
+From kemurphy.cmu at gmail.com  Sun Nov 18 11:56:51 2012
+From: kemurphy.cmu at gmail.com (Kevin Murphy)
+Date: Sun, 18 Nov 2012 05:56:51 -0500
+Subject: [i3] =?utf-8?q?=5BPATCH_1/5=5D_Fixes_for_true_transparency=2E?=
+In-Reply-To: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+References: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+Message-ID: <1353236215-32206-2-git-send-email-kemurphy.cmu@gmail.com>
+
+From: Kevin Murphy <kemurphy at andrew.cmu.edu>
+
+Reverts commit 9d68d78 "Use 32bit visual only when needed", as the
+definition of "needed" in that context was incorrect.  32-bit visuals
+are now enabled by either the enable_alpha_channel config setting or the
+--enable-alpha-channel command line switch.  This patch also simplifies
+the drawing routine in x.c, as even after reverting 9d68d78, there were
+still visible artifacts behind windows due to overdrawing.
+
+A nice side effect of this patch is it also happens to fix issues with
+borders disappearing and windows losing transparency after an i3
+restart.
+---
+ docs/userguide              |  16 ++++
+ i3-config-wizard/main.c     |   1 +
+ include/config.h            |   8 ++
+ include/config_directives.h |   1 +
+ include/data.h              |   3 -
+ include/libi3.h             |   8 +-
+ include/x.h                 |   2 +-
+ include/xcb.h               |  16 +---
+ libi3/font.c                |  29 ++++++-
+ libi3/get_visualtype.c      |  25 +++---
+ parser-specs/config.spec    |   6 ++
+ src/cfgparse.l              |   2 +
+ src/cfgparse.y              |  10 +++
+ src/commands.c              |   4 +-
+ src/con.c                   |   6 +-
+ src/config_directives.c     |   4 +
+ src/main.c                  |  62 ++++++++++++---
+ src/manage.c                |   1 -
+ src/resize.c                |   7 +-
+ src/x.c                     | 190 ++++++++++++--------------------------------
+ src/xcb.c                   |  51 ++----------
+ 21 files changed, 214 insertions(+), 238 deletions(-)
+
+diff --git a/docs/userguide b/docs/userguide
+index 99fb072..e64df52 100644
+--- a/docs/userguide
++++ b/docs/userguide
+@@ -871,6 +871,22 @@ force_xinerama yes
+ Also note that your output names are not descriptive (like +HDMI1+) when using
+ Xinerama, instead they are counted up, starting at 0: +xinerama-0+, +xinerama-1+, ?
+ 
++=== Enabling Transparency
++
++Those who wish to enable transparency can turn on the alpha channel with either
++the --enable-alpha-channel commandline switch, or the enable_alpha_channel
++configuration option.
++
++*Syntax*:
++-----------------------
++enable_alpha_channel <yes|no>
++-----------------------
++
++*Example*:
++------------------
++enable_alpha_channel yes
++------------------
++
+ === Automatic back-and-forth when switching to the current workspace
+ 
+ This configuration directive enables automatic +workspace back_and_forth+ (see
+diff --git a/i3-config-wizard/main.c b/i3-config-wizard/main.c
+index f033f9f..937d293 100644
+--- a/i3-config-wizard/main.c
++++ b/i3-config-wizard/main.c
+@@ -77,6 +77,7 @@ static xcb_window_t win;
+ static xcb_pixmap_t pixmap;
+ static xcb_gcontext_t pixmap_gc;
+ static xcb_key_symbols_t *symbols;
++xcb_screen_t *root_screen;
+ xcb_window_t root;
+ Display *dpy;
+ 
+diff --git a/include/config.h b/include/config.h
+index 04f1c85..4c46d16 100644
+--- a/include/config.h
++++ b/include/config.h
+@@ -143,6 +143,14 @@ struct Config {
+      * is fetched once and never updated. */
+     bool force_xinerama;
+ 
++    /** By default, use the default X11 visual, which typically uses 24-bit
++     * color.  This doesn't allow transparency to work properly, so we provide
++     * the option to enable the alpha channel for 32-bit color.
++     *
++     * Note: this option only takes effect upon i3 startup; it cannot be
++     * changed once i3 is running without an in-place restart. */
++    bool enable_alpha_channel;
++
+     /** Overwrites output detection (for testing), see src/fake_outputs.c */
+     char *fake_outputs;
+ 
+diff --git a/include/config_directives.h b/include/config_directives.h
+index 1faaa97..2daeb42 100644
+--- a/include/config_directives.h
++++ b/include/config_directives.h
+@@ -41,6 +41,7 @@ CFGFUN(default_orientation, const char *orientation);
+ CFGFUN(workspace_layout, const char *layout);
+ CFGFUN(workspace_back_and_forth, const char *value);
+ CFGFUN(focus_follows_mouse, const char *value);
++CFGFUN(enable_alpha_channel, const char *value);
+ CFGFUN(force_focus_wrapping, const char *value);
+ CFGFUN(force_xinerama, const char *value);
+ CFGFUN(fake_outputs, const char *outputs);
+diff --git a/include/data.h b/include/data.h
+index 63b18b2..5fe06fa 100644
+--- a/include/data.h
++++ b/include/data.h
+@@ -340,9 +340,6 @@ struct Window {
+      * (assignments run only once) */
+     uint32_t nr_assignments;
+     Assignment **ran_assignments;
+-
+-    /** Depth of the window */
+-    uint16_t depth;
+ };
+ 
+ /**
+diff --git a/include/libi3.h b/include/libi3.h
+index 7547845..dc1f1b4 100644
+--- a/include/libi3.h
++++ b/include/libi3.h
+@@ -346,7 +346,13 @@ int predict_text_width(i3String *text);
+  * Returns the visual type associated with the given screen.
+  *
+  */
+-xcb_visualtype_t *get_visualtype(xcb_screen_t *screen);
++xcb_visualtype_t *get_visualtype_for_screen(xcb_screen_t *screen);
++
++/**
++ * Returns the visual type associated with the given depth for the given screen.
++ *
++ */
++xcb_visualtype_t *get_visualtype_for_depth(xcb_screen_t *screen, uint8_t depth);
+ 
+ /**
+  * Returns true if this version of i3 is a debug build (anything which is not a
+diff --git a/include/x.h b/include/x.h
+index c3d4ffc..61046b8 100644
+--- a/include/x.h
++++ b/include/x.h
+@@ -19,7 +19,7 @@ extern xcb_window_t focused_id;
+  * every container from con_new().
+  *
+  */
+-void x_con_init(Con *con, uint16_t depth);
++void x_con_init(Con *con);
+ 
+ /**
+  * Moves a child window from Container src to Container dest.
+diff --git a/include/xcb.h b/include/xcb.h
+index 15d3e28..d041915 100644
+--- a/include/xcb.h
++++ b/include/xcb.h
+@@ -56,8 +56,8 @@ extern unsigned int xcb_numlock_mask;
+  * generating an ID and checking for errors.
+  *
+  */
+-xcb_window_t create_window(xcb_connection_t *conn, Rect r, uint16_t depth, xcb_visualid_t visual,
+-        uint16_t window_class, enum xcursor_cursor_t cursor, bool map, uint32_t mask, uint32_t *values);
++xcb_window_t create_window(xcb_connection_t *conn, Rect r, uint16_t window_class,
++        enum xcursor_cursor_t cursor, bool map, uint32_t mask, uint32_t *values);
+ 
+ /**
+  * Draws a line from x,y to to_x,to_y using the given color
+@@ -117,16 +117,4 @@ void xcb_warp_pointer_rect(xcb_connection_t *conn, Rect *rect);
+  */
+ void xcb_set_root_cursor(int cursor);
+ 
+-/**
+- * Get depth of visual specified by visualid
+- *
+- */
+-uint16_t get_visual_depth(xcb_visualid_t visual_id);
+-
+-/**
+- * Get visualid with specified depth
+- *
+- */
+-xcb_visualid_t get_visualid_by_depth(uint16_t depth);
+-
+ #endif
+diff --git a/libi3/font.c b/libi3/font.c
+index a2162c4..c257287 100644
+--- a/libi3/font.c
++++ b/libi3/font.c
+@@ -30,6 +30,20 @@ static double pango_font_red;
+ static double pango_font_green;
+ static double pango_font_blue;
+ 
++static uint8_t get_depth_of_drawable(xcb_drawable_t drawable) {
++    xcb_get_geometry_reply_t *geom;
++    int depth = 0;
++
++    geom = xcb_get_geometry_reply(conn, xcb_get_geometry(conn, drawable), 0);
++
++    if (geom) {
++        depth = geom->depth;
++        free(geom);
++    }
++
++    return depth;
++}
++
+ /*
+  * Loads a Pango font description into an i3Font structure. Returns true
+  * on success, false otherwise.
+@@ -51,7 +65,7 @@ static bool load_pango_font(i3Font *font, const char *desc) {
+     /* We cache root_visual_type here, since you must call
+      * load_pango_font before any other pango function
+      * that would need root_visual_type */
+-    root_visual_type = get_visualtype(root_screen);
++    root_visual_type = get_visualtype_for_screen(root_screen);
+ 
+     /* Create a dummy Pango layout to compute the font height */
+     cairo_surface_t *surface = cairo_xcb_surface_create(conn, root_screen->root, root_visual_type, 1, 1);
+@@ -80,10 +94,19 @@ static bool load_pango_font(i3Font *font, const char *desc) {
+  */
+ static void draw_text_pango(const char *text, size_t text_len,
+         xcb_drawable_t drawable, int x, int y, int max_width) {
++    /* Query the depth of the drawable to get the proper visualtype */
++    xcb_visualtype_t *visual_type;
++    uint8_t depth = get_depth_of_drawable(drawable);
++    if (depth) {
++        visual_type = get_visualtype_for_depth(root_screen, depth);
++    } else {
++        /* Fall back to root_screen's visual */
++        visual_type = root_visual_type;
++    }
++
+     /* Create the Pango layout */
+-    /* root_visual_type is cached in load_pango_font */
+     cairo_surface_t *surface = cairo_xcb_surface_create(conn, drawable,
+-            root_visual_type, x + max_width, y + savedFont->height);
++            visual_type, x + max_width, y + savedFont->height);
+     cairo_t *cr = cairo_create(surface);
+     PangoLayout *layout = pango_cairo_create_layout(cr);
+     pango_layout_set_font_description(layout, savedFont->specific.pango_desc);
+diff --git a/libi3/get_visualtype.c b/libi3/get_visualtype.c
+index d11722f..f1e7ad0 100644
+--- a/libi3/get_visualtype.c
++++ b/libi3/get_visualtype.c
+@@ -6,23 +6,20 @@
+  *
+  */
+ #include "libi3.h"
++#include <xcb/xcb_util.h>
+ 
+ /*
+  * Returns the visual type associated with the given screen.
+  *
+  */
+-xcb_visualtype_t *get_visualtype(xcb_screen_t *screen) {
+-    xcb_depth_iterator_t depth_iter;
+-    for (depth_iter = xcb_screen_allowed_depths_iterator(screen);
+-         depth_iter.rem;
+-         xcb_depth_next(&depth_iter)) {
+-        xcb_visualtype_iterator_t visual_iter;
+-        for (visual_iter = xcb_depth_visuals_iterator(depth_iter.data);
+-             visual_iter.rem;
+-             xcb_visualtype_next(&visual_iter)) {
+-            if (screen->root_visual == visual_iter.data->visual_id)
+-                return visual_iter.data;
+-        }
+-    }
+-    return NULL;
++xcb_visualtype_t *get_visualtype_for_screen(xcb_screen_t *screen) {
++    return xcb_aux_find_visual_by_id(screen, screen->root_visual);
++}
++
++/*
++ * Returns the visual type associated with the given depth for the given screen.
++ *
++ */
++xcb_visualtype_t *get_visualtype_for_depth(xcb_screen_t *screen, uint8_t depth) {
++    return xcb_aux_find_visual_by_attrs(screen, -1, depth);
+ }
+diff --git a/parser-specs/config.spec b/parser-specs/config.spec
+index 1c11bf9..70a4ff5 100644
+--- a/parser-specs/config.spec
++++ b/parser-specs/config.spec
+@@ -31,6 +31,7 @@ state INITIAL:
+   'for_window'                             -> FOR_WINDOW
+   'assign'                                 -> ASSIGN
+   'focus_follows_mouse'                    -> FOCUS_FOLLOWS_MOUSE
++  'enable_alpha_channel'                   -> ENABLE_ALPHA_CHANNEL
+   'force_focus_wrapping'                   -> FORCE_FOCUS_WRAPPING
+   'force_xinerama', 'force-xinerama'       -> FORCE_XINERAMA
+   'workspace_auto_back_and_forth'          -> WORKSPACE_BACK_AND_FORTH
+@@ -171,6 +172,11 @@ state FOCUS_FOLLOWS_MOUSE:
+   value = word
+       -> call cfg_focus_follows_mouse($value)
+ 
++# enable_alpha_channel bool
++state ENABLE_ALPHA_CHANNEL:
++  value = word
++      -> call cfg_enable_alpha_channel($value)
++
+ # force_focus_wrapping
+ state FORCE_FOCUS_WRAPPING:
+   value = word
+diff --git a/src/cfgparse.l b/src/cfgparse.l
+index 6eef8a5..d6b2757 100644
+--- a/src/cfgparse.l
++++ b/src/cfgparse.l
+@@ -212,6 +212,8 @@ focus_follows_mouse             { return TOKFOCUSFOLLOWSMOUSE; }
+ force_focus_wrapping            { return TOK_FORCE_FOCUS_WRAPPING; }
+ force_xinerama                  { return TOK_FORCE_XINERAMA; }
+ force-xinerama                  { return TOK_FORCE_XINERAMA; }
++enable_alpha_channel            { return TOK_ENABLE_ALPHA_CHANNEL; }
++enable-alpha-channel            { return TOK_ENABLE_ALPHA_CHANNEL; }
+ fake_outputs                    { WS_STRING; return TOK_FAKE_OUTPUTS; }
+ fake-outputs                    { WS_STRING; return TOK_FAKE_OUTPUTS; }
+ workspace_auto_back_and_forth   { return TOK_WORKSPACE_AUTO_BAF; }
+diff --git a/src/cfgparse.y b/src/cfgparse.y
+index 2a22aae..17f8f55 100644
+--- a/src/cfgparse.y
++++ b/src/cfgparse.y
+@@ -755,6 +755,7 @@ void parse_file(const char *f) {
+ %token                  TOKFOCUSFOLLOWSMOUSE        "focus_follows_mouse"
+ %token                  TOK_FORCE_FOCUS_WRAPPING    "force_focus_wrapping"
+ %token                  TOK_FORCE_XINERAMA          "force_xinerama"
++%token                  TOK_ENABLE_ALPHA_CHANNEL    "enable_alpha_channel"
+ %token                  TOK_FAKE_OUTPUTS            "fake_outputs"
+ %token                  TOK_WORKSPACE_AUTO_BAF      "workspace_auto_back_and_forth"
+ %token                  TOK_WORKSPACE_URGENCY_TIMER "force_display_urgency_hint"
+@@ -861,6 +862,7 @@ line:
+     | focus_follows_mouse
+     | force_focus_wrapping
+     | force_xinerama
++    | enable_alpha_channel
+     | fake_outputs
+     | force_display_urgency_hint
+     | workspace_back_and_forth
+@@ -1570,6 +1572,14 @@ force_xinerama:
+     }
+     ;
+ 
++enable_alpha_channel:
++    TOK_ENABLE_ALPHA_CHANNEL bool
++    {
++        DLOG("enable alpha channel = %d\n", $2);
++        config.enable_alpha_channel = $2;
++    }
++    ;
++
+ fake_outputs:
+     TOK_FAKE_OUTPUTS STR
+     {
+diff --git a/src/commands.c b/src/commands.c
+index cb53a31..a7cdaa0 100644
+--- a/src/commands.c
++++ b/src/commands.c
+@@ -584,8 +584,10 @@ static void cmd_resize_floating(I3_CMD, char *way, char *direction, Con *floatin
+     } else if (strcmp(direction, "left") == 0) {
+         floating_con->rect.x -= px;
+         floating_con->rect.width += px;
+-    } else {
++    } else if (strcmp(direction, "width") == 0) {
+         floating_con->rect.width += px;
++    } else {
++        floating_con->rect.height += px;
+     }
+ }
+ 
+diff --git a/src/con.c b/src/con.c
+index ad5025a..5b5dce9 100644
+--- a/src/con.c
++++ b/src/con.c
+@@ -66,10 +66,8 @@ Con *con_new(Con *parent, i3Window *window) {
+     cnt++;
+     if ((cnt % (sizeof(colors) / sizeof(char*))) == 0)
+         cnt = 0;
+-    if (window)
+-        x_con_init(new, window->depth);
+-    else
+-        x_con_init(new, XCB_COPY_FROM_PARENT);
++
++    x_con_init(new);
+ 
+     TAILQ_INIT(&(new->floating_head));
+     TAILQ_INIT(&(new->nodes_head));
+diff --git a/src/config_directives.c b/src/config_directives.c
+index 8b636c0..317e43d 100644
+--- a/src/config_directives.c
++++ b/src/config_directives.c
+@@ -340,6 +340,10 @@ CFGFUN(focus_follows_mouse, const char *value) {
+     config.disable_focus_follows_mouse = !eval_boolstr(value);
+ }
+ 
++CFGFUN(enable_alpha_channel, const char *value) {
++    config.enable_alpha_channel = eval_boolstr(value);
++}
++
+ CFGFUN(force_xinerama, const char *value) {
+     config.force_xinerama = eval_boolstr(value);
+ }
+diff --git a/src/main.c b/src/main.c
+index 6d0f80c..bbbd771 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -248,6 +248,7 @@ int main(int argc, char *argv[]) {
+     char *layout_path = NULL;
+     bool delete_layout_path = false;
+     bool force_xinerama = false;
++    bool enable_alpha_channel = false;
+     char *fake_outputs = NULL;
+     bool disable_signalhandler = false;
+     static struct option long_options[] = {
+@@ -262,6 +263,8 @@ int main(int argc, char *argv[]) {
+         {"restart", required_argument, 0, 0},
+         {"force-xinerama", no_argument, 0, 0},
+         {"force_xinerama", no_argument, 0, 0},
++        {"enable-alpha-channel", no_argument, 0, 0},
++        {"enable_alpha_channel", no_argument, 0, 0},
+         {"disable-signalhandler", no_argument, 0, 0},
+         {"shmlog-size", required_argument, 0, 0},
+         {"shmlog_size", required_argument, 0, 0},
+@@ -273,6 +276,7 @@ int main(int argc, char *argv[]) {
+         {0, 0, 0, 0}
+     };
+     int option_index = 0, opt;
++    xcb_void_cookie_t colormap_cookie;
+ 
+     setlocale(LC_ALL, "");
+ 
+@@ -343,6 +347,10 @@ int main(int argc, char *argv[]) {
+                          "Please check if your driver really does not support RandR "
+                          "and disable this option as soon as you can.\n");
+                     break;
++                } else if (strcmp(long_options[option_index].name, "enable-alpha-channel") == 0 ||
++                           strcmp(long_options[option_index].name, "enable_alpha_channel") == 0) {
++                    enable_alpha_channel = true;
++                    break;
+                 } else if (strcmp(long_options[option_index].name, "disable-signalhandler") == 0) {
+                     disable_signalhandler = true;
+                     break;
+@@ -396,6 +404,9 @@ int main(int argc, char *argv[]) {
+                                 "\told nVidia closed source driver (older than 302.17), which does\n"
+                                 "\tnot support RandR.\n");
+                 fprintf(stderr, "\n");
++                fprintf(stderr, "\t--enable-alpha-channel\n"
++                                "\tUse a 32-bit visual for transparency support.\n");
++                fprintf(stderr, "\n");
+                 fprintf(stderr, "\t--get-socketpath\n"
+                                 "\tRetrieve the i3 IPC socket path from X11, print it, then exit.\n");
+                 fprintf(stderr, "\n");
+@@ -511,29 +522,41 @@ int main(int argc, char *argv[]) {
+     main_loop = EV_DEFAULT;
+     if (main_loop == NULL)
+             die("Could not initialize libev. Bad LIBEV_FLAGS?\n");
+-
++    
+     root_screen = xcb_aux_get_screen(conn, conn_screen);
+     root = root_screen->root;
+ 
++    load_configuration(conn, override_configpath, false);
++    if (only_check_config) {
++        LOG("Done checking configuration file. Exiting.\n");
++        exit(0);
++    }
++
++    if (config.enable_alpha_channel)
++        enable_alpha_channel = true;
++
+     /* By default, we use the same depth and visual as the root window, which
+      * usually is TrueColor (24 bit depth) and the corresponding visual.
+      * However, we also check if a 32 bit depth and visual are available (for
+      * transparency) and use it if so. */
+-    root_depth = root_screen->root_depth;
+-    visual_id = root_screen->root_visual;
+-    colormap = root_screen->default_colormap;
++    bool found_visual = false;
++    if (enable_alpha_channel) {
++        xcb_visualtype_t *visualtype = NULL;
++        if ((visualtype = xcb_aux_find_visual_by_attrs(root_screen, -1, 32)) != NULL) {
++            root_depth = 32;
++            visual_id = visualtype->visual_id;
++            colormap = xcb_generate_id(conn);
++            colormap_cookie = xcb_create_colormap_checked(conn, XCB_COLORMAP_ALLOC_NONE, colormap, root, visual_id);
++            found_visual = true;
++            DLOG("Found a visual with 32 bit depth.\n");
++        }
++    }
+ 
+     DLOG("root_depth = %d, visual_id = 0x%08x.\n", root_depth, visual_id);
+ 
+     xcb_get_geometry_cookie_t gcookie = xcb_get_geometry(conn, root);
+     xcb_query_pointer_cookie_t pointercookie = xcb_query_pointer(conn, root);
+ 
+-    load_configuration(conn, override_configpath, false);
+-    if (only_check_config) {
+-        LOG("Done checking configuration file. Exiting.\n");
+-        exit(0);
+-    }
+-
+     if (config.ipc_socket_path == NULL) {
+         /* Fall back to a file name in /tmp/ based on the PID */
+         if ((config.ipc_socket_path = getenv("I3SOCK")) == NULL)
+@@ -555,6 +578,25 @@ int main(int argc, char *argv[]) {
+     cookie = xcb_change_window_attributes_checked(conn, root, mask, values);
+     check_error(conn, cookie, "Another window manager seems to be running");
+ 
++    /* By now we already checked for replies once, so let?s see if colormap
++     * creation worked (if requested), and fall back to default if it failed
++     * or if the alpha channel wasn't enabled. */
++    do {
++        if (enable_alpha_channel && found_visual) {
++            xcb_generic_error_t *error = xcb_request_check(conn, colormap_cookie);
++            if (error == NULL) {
++                break;
++            } else {
++                ELOG("Could not create ColorMap for 32 bit visual, falling back to X11 default.\n");
++                DLOG("root_depth = %d, visual_id = 0x%08x.\n", root_depth, visual_id);
++                free(error);
++            }
++        }
++        root_depth = root_screen->root_depth;
++        visual_id = root_screen->root_visual;
++        colormap = root_screen->default_colormap;
++    } while (0);
++
+     xcb_get_geometry_reply_t *greply = xcb_get_geometry_reply(conn, gcookie, NULL);
+     if (greply == NULL) {
+         ELOG("Could not get geometry of the root window, exiting\n");
+diff --git a/src/manage.c b/src/manage.c
+index 9835aa2..10aa3a8 100644
+--- a/src/manage.c
++++ b/src/manage.c
+@@ -162,7 +162,6 @@ void manage_window(xcb_window_t window, xcb_get_window_attributes_cookie_t cooki
+ 
+     i3Window *cwindow = scalloc(sizeof(i3Window));
+     cwindow->id = window;
+-    cwindow->depth = get_visual_depth(attr->visual);
+ 
+     /* We need to grab the mouse buttons for click to focus */
+     xcb_grab_button(conn, false, window, XCB_EVENT_MASK_BUTTON_PRESS,
+diff --git a/src/resize.c b/src/resize.c
+index 268dc3f..8508713 100644
+--- a/src/resize.c
++++ b/src/resize.c
+@@ -71,8 +71,7 @@ int resize_graphical_handler(Con *first, Con *second, orientation_t orientation,
+ 
+     /* Open a new window, the resizebar. Grab the pointer and move the window around
+        as the user moves the pointer. */
+-    xcb_window_t grabwin = create_window(conn, output->rect, XCB_COPY_FROM_PARENT, XCB_COPY_FROM_PARENT,
+-            XCB_WINDOW_CLASS_INPUT_ONLY, XCURSOR_CURSOR_POINTER, true, mask, values);
++    xcb_window_t grabwin = create_window(conn, output->rect, XCB_WINDOW_CLASS_INPUT_ONLY, XCURSOR_CURSOR_POINTER, true, mask, values);
+ 
+     Rect helprect;
+     if (orientation == HORIZ) {
+@@ -95,8 +94,8 @@ int resize_graphical_handler(Con *first, Con *second, orientation_t orientation,
+     mask |= XCB_CW_OVERRIDE_REDIRECT;
+     values[1] = 1;
+ 
+-    xcb_window_t helpwin = create_window(conn, helprect, XCB_COPY_FROM_PARENT, XCB_COPY_FROM_PARENT,
+-            XCB_WINDOW_CLASS_INPUT_OUTPUT, (orientation == HORIZ ?
++    xcb_window_t helpwin = create_window(conn, helprect, XCB_WINDOW_CLASS_INPUT_OUTPUT,
++                                         (orientation == HORIZ ?
+                                           XCURSOR_CURSOR_RESIZE_HORIZONTAL :
+                                           XCURSOR_CURSOR_RESIZE_VERTICAL), true, mask, values);
+ 
+diff --git a/src/x.c b/src/x.c
+index 78c6de3..6535d07 100644
+--- a/src/x.c
++++ b/src/x.c
+@@ -87,60 +87,36 @@ static con_state *state_for_frame(xcb_window_t window) {
+  * every container from con_new().
+  *
+  */
+-void x_con_init(Con *con, uint16_t depth) {
++void x_con_init(Con *con) {
+     /* TODO: maybe create the window when rendering first? we could then even
+      * get the initial geometry right */
+ 
+     uint32_t mask = 0;
+     uint32_t values[5];
+ 
+-    xcb_visualid_t visual = XCB_COPY_FROM_PARENT;
+-    xcb_colormap_t win_colormap = XCB_NONE;
+-    if (depth != root_depth && depth != XCB_COPY_FROM_PARENT) {
+-        /* For custom visuals, we need to create a colormap before creating
+-         * this window. It will be freed directly after creating the window. */
+-        visual = get_visualid_by_depth(depth);
+-        win_colormap = xcb_generate_id(conn);
+-        xcb_create_colormap_checked(conn, XCB_COLORMAP_ALLOC_NONE, win_colormap, root, visual);
+-
+-        /* We explicitly set a background color and border color (even though we
+-         * don?t even have a border) because the X11 server requires us to when
+-         * using 32 bit color depths, see
+-         * http://stackoverflow.com/questions/3645632 */
+-        mask |= XCB_CW_BACK_PIXEL;
+-        values[0] = root_screen->black_pixel;
+-
+-        mask |= XCB_CW_BORDER_PIXEL;
+-        values[1] = root_screen->black_pixel;
+-
+-        /* our own frames should not be managed */
+-        mask |= XCB_CW_OVERRIDE_REDIRECT;
+-        values[2] = 1;
+-
+-        /* see include/xcb.h for the FRAME_EVENT_MASK */
+-        mask |= XCB_CW_EVENT_MASK;
+-        values[3] = FRAME_EVENT_MASK & ~XCB_EVENT_MASK_ENTER_WINDOW;
+-
+-        mask |= XCB_CW_COLORMAP;
+-        values[4] = win_colormap;
+-    } else {
+-        /* our own frames should not be managed */
+-        mask = XCB_CW_OVERRIDE_REDIRECT;
+-        values[0] = 1;
++    /* We explicitly set a background color and border color (even though we
++     * don?t even have a border) because the X11 server requires us to when
++     * using 32 bit color depths, see
++     * http://stackoverflow.com/questions/3645632 */
++    mask |= XCB_CW_BACK_PIXEL;
++    values[0] = root_screen->black_pixel;
+ 
+-        /* see include/xcb.h for the FRAME_EVENT_MASK */
+-        mask |= XCB_CW_EVENT_MASK;
+-        values[1] = FRAME_EVENT_MASK & ~XCB_EVENT_MASK_ENTER_WINDOW;
++    mask |= XCB_CW_BORDER_PIXEL;
++    values[1] = root_screen->black_pixel;
+ 
+-        mask |= XCB_CW_COLORMAP;
+-        values[2] = colormap;
+-    }
++    /* our own frames should not be managed */
++    mask |= XCB_CW_OVERRIDE_REDIRECT;
++    values[2] = 1;
+ 
+-    Rect dims = { -15, -15, 10, 10 };
+-    con->frame = create_window(conn, dims, depth, visual, XCB_WINDOW_CLASS_INPUT_OUTPUT, XCURSOR_CURSOR_POINTER, false, mask, values);
++    /* see include/xcb.h for the FRAME_EVENT_MASK */
++    mask |= XCB_CW_EVENT_MASK;
++    values[3] = FRAME_EVENT_MASK & ~XCB_EVENT_MASK_ENTER_WINDOW;
+ 
+-    if (win_colormap != XCB_NONE)
+-        xcb_free_colormap(conn, win_colormap);
++    mask |= XCB_CW_COLORMAP;
++    values[4] = colormap;
++
++    Rect dims = { -15, -15, 10, 10 };
++    con->frame = create_window(conn, dims, XCB_WINDOW_CLASS_INPUT_OUTPUT, XCURSOR_CURSOR_POINTER, false, mask, values);
+ 
+     struct con_state *state = scalloc(sizeof(struct con_state));
+     state->id = con->frame;
+@@ -322,12 +298,6 @@ void x_draw_decoration(Con *con) {
+     if (con->rect.height == 0)
+         return;
+ 
+-    /* Skip containers whose pixmap has not yet been created (can happen when
+-     * decoration rendering happens recursively for a window for which
+-     * x_push_node() was not yet called) */
+-    if (leaf && con->pixmap == XCB_NONE)
+-        return;
+-
+     /* 1: build deco_params and compare with cache */
+     struct deco_render_params *p = scalloc(sizeof(struct deco_render_params));
+ 
+@@ -352,29 +322,12 @@ void x_draw_decoration(Con *con) {
+     p->con_is_leaf = con_is_leaf(con);
+     p->parent_orientation = con_orientation(parent);
+ 
+-    if (con->deco_render_params != NULL &&
+-        (con->window == NULL || !con->window->name_x_changed) &&
+-        !parent->pixmap_recreated &&
+-        !con->pixmap_recreated &&
+-        memcmp(p, con->deco_render_params, sizeof(struct deco_render_params)) == 0) {
+-        free(p);
+-        goto copy_pixmaps;
+-    }
+-
+-    Con *next = con;
+-    while ((next = TAILQ_NEXT(next, nodes))) {
+-        FREE(next->deco_render_params);
+-    }
+-
+     FREE(con->deco_render_params);
+     con->deco_render_params = p;
+ 
+     if (con->window != NULL && con->window->name_x_changed)
+         con->window->name_x_changed = false;
+ 
+-    parent->pixmap_recreated = false;
+-    con->pixmap_recreated = false;
+-
+     /* 2: draw the client.background, but only for the parts around the client_rect */
+     if (con->window != NULL) {
+         xcb_rectangle_t background[] = {
+@@ -450,7 +403,7 @@ void x_draw_decoration(Con *con) {
+                         { r->width + br.width + br.x, br.y, r->width, r->height + br.height } });
+             else
+                 xcb_poly_fill_rectangle(conn, con->pixmap, con->pm_gc, 1, (xcb_rectangle_t[]){
+-                        { br.x, r->height + br.height + br.y, r->width - (2 * br.x), r->height } });
++                        { br.x, r->height + br.height + br.y, r->width + br.width, -(br.height + br.y) } });
+         }
+ 
+     }
+@@ -458,7 +411,7 @@ void x_draw_decoration(Con *con) {
+     /* if this is a borderless/1pixel window, we don?t need to render the
+      * decoration. */
+     if (p->border_style != BS_NORMAL)
+-        goto copy_pixmaps;
++        return;
+ 
+     /* 4: paint the bar */
+     xcb_change_gc(conn, parent->pm_gc, XCB_GC_FOREGROUND, (uint32_t[]){ p->color->background });
+@@ -505,11 +458,11 @@ void x_draw_decoration(Con *con) {
+                 con->deco_rect.width - 2);
+         free(title);
+ 
+-        goto copy_pixmaps;
++        return;
+     }
+ 
+     if (win->name == NULL)
+-        goto copy_pixmaps;
++        return;
+ 
+     int indent_level = 0,
+         indent_mult = 0;
+@@ -555,9 +508,6 @@ void x_draw_decoration(Con *con) {
+ 
+     xcb_change_gc(conn, parent->pm_gc, XCB_GC_FOREGROUND, (uint32_t[]){ p->color->border });
+     xcb_poly_segment(conn, parent->pixmap, parent->pm_gc, 2, segments);
+-
+-copy_pixmaps:
+-    xcb_copy_area(conn, con->pixmap, con->frame, con->pm_gc, 0, 0, 0, 0, con->rect.width, con->rect.height);
+ }
+ 
+ /*
+@@ -570,7 +520,32 @@ void x_deco_recurse(Con *con) {
+     Con *current;
+     bool leaf = TAILQ_EMPTY(&(con->nodes_head)) &&
+                 TAILQ_EMPTY(&(con->floating_head));
+-    con_state *state = state_for_frame(con->frame);
++    bool should_draw = (con->type != CT_ROOT && con->type != CT_OUTPUT) &&
++                       (!leaf || con->mapped);
++
++    if (should_draw) {
++        if (con->pixmap == 0) {
++            con->pixmap = xcb_generate_id(conn);
++            con->pm_gc = xcb_generate_id(conn);
++        } else {
++            xcb_free_pixmap(conn, con->pixmap);
++            xcb_free_gc(conn, con->pm_gc);
++        }
++        
++        xcb_create_pixmap(conn, root_depth, con->pixmap, con->frame, con->rect.width, con->rect.height);
++        
++        /* For the graphics context, we disable GraphicsExposure events.
++         * Those will be sent when a CopyArea request cannot be fulfilled
++         * properly due to parts of the source being unmapped or otherwise
++         * unavailable. Since we always copy from pixmaps to windows, this
++         * is not a concern for us. */
++        xcb_create_gc(conn, con->pm_gc, con->pixmap, XCB_GC_GRAPHICS_EXPOSURES, (uint32_t[]) { 0 });
++
++        /* Clear stale data from behind the window */
++        xcb_change_gc(conn, con->pm_gc, XCB_GC_FOREGROUND, (uint32_t[]){ 0 /* Pure transparent */ });
++        xcb_poly_fill_rectangle(conn, con->pixmap, con->pm_gc, 1, (xcb_rectangle_t[]){
++                { 0, 0, con->rect.width, con->rect.height } });
++    }
+ 
+     if (!leaf) {
+         TAILQ_FOREACH(current, &(con->nodes_head), nodes)
+@@ -578,14 +553,12 @@ void x_deco_recurse(Con *con) {
+ 
+         TAILQ_FOREACH(current, &(con->floating_head), floating_windows)
+             x_deco_recurse(current);
+-
+-        if (state->mapped)
+-            xcb_copy_area(conn, con->pixmap, con->frame, con->pm_gc, 0, 0, 0, 0, con->rect.width, con->rect.height);
+     }
+ 
+-    if ((con->type != CT_ROOT && con->type != CT_OUTPUT) &&
+-        (!leaf || con->mapped))
++    if (should_draw) {
+         x_draw_decoration(con);
++        xcb_copy_area(conn, con->pixmap, con->frame, con->pm_gc, 0, 0, 0, 0, con->rect.width, con->rect.height);
++    }
+ }
+ 
+ /*
+@@ -657,61 +630,9 @@ void x_push_node(Con *con) {
+     /* Set new position if rect changed (and if height > 0) */
+     if (memcmp(&(state->rect), &rect, sizeof(Rect)) != 0 &&
+         rect.height > 0) {
+-        /* We first create the new pixmap, then render to it, set it as the
+-         * background and only afterwards change the window size. This reduces
+-         * flickering. */
+-
+-        /* As the pixmap only depends on the size and not on the position, it
+-         * is enough to check if width/height have changed. Also, we don?t
+-         * create a pixmap at all when the window is actually not visible
+-         * (height == 0). */
+-        if ((state->rect.width != rect.width ||
+-            state->rect.height != rect.height)) {
+-            if (con->pixmap == 0) {
+-                con->pixmap = xcb_generate_id(conn);
+-                con->pm_gc = xcb_generate_id(conn);
+-            } else {
+-                xcb_free_pixmap(conn, con->pixmap);
+-                xcb_free_gc(conn, con->pm_gc);
+-            }
+-
+-            uint16_t win_depth = root_depth;
+-            if (con->window)
+-                win_depth = con->window->depth;
+-
+-            xcb_create_pixmap(conn, win_depth, con->pixmap, con->frame, rect.width, rect.height);
+-
+-            /* For the graphics context, we disable GraphicsExposure events.
+-             * Those will be sent when a CopyArea request cannot be fulfilled
+-             * properly due to parts of the source being unmapped or otherwise
+-             * unavailable. Since we always copy from pixmaps to windows, this
+-             * is not a concern for us. */
+-            uint32_t values[] = { 0 };
+-            xcb_create_gc(conn, con->pm_gc, con->pixmap, XCB_GC_GRAPHICS_EXPOSURES, values);
+-
+-            con->pixmap_recreated = true;
+-
+-            /* Don?t render the decoration for windows inside a stack which are
+-             * not visible right now */
+-            if (!con->parent ||
+-                con->parent->layout != L_STACKED ||
+-                TAILQ_FIRST(&(con->parent->focus_head)) == con)
+-                /* Render the decoration now to make the correct decoration visible
+-                 * from the very first moment. Later calls will be cached, so this
+-                 * doesn?t hurt performance. */
+-                x_deco_recurse(con);
+-        }
+ 
+         DLOG("setting rect (%d, %d, %d, %d)\n", rect.x, rect.y, rect.width, rect.height);
+-        /* flush to ensure that the following commands are sent in a single
+-         * buffer and will be processed directly afterwards (the contents of a
+-         * window get lost when resizing it, therefore we want to provide it as
+-         * fast as possible) */
+-        xcb_flush(conn);
+         xcb_set_window_rect(conn, con->frame, rect);
+-        if (con->pixmap != XCB_NONE)
+-            xcb_copy_area(conn, con->pixmap, con->frame, con->pm_gc, 0, 0, 0, 0, con->rect.width, con->rect.height);
+-        xcb_flush(conn);
+ 
+         memcpy(&(state->rect), &rect, sizeof(Rect));
+         fake_notify = true;
+@@ -760,11 +681,6 @@ void x_push_node(Con *con) {
+         values[0] = FRAME_EVENT_MASK;
+         xcb_change_window_attributes(conn, con->frame, XCB_CW_EVENT_MASK, values);
+ 
+-        /* copy the pixmap contents to the frame window immediately after mapping */
+-        if (con->pixmap != XCB_NONE)
+-            xcb_copy_area(conn, con->pixmap, con->frame, con->pm_gc, 0, 0, 0, 0, con->rect.width, con->rect.height);
+-        xcb_flush(conn);
+-
+         DLOG("mapping container %08x (serial %d)\n", con->frame, cookie.sequence);
+         state->mapped = con->mapped;
+     }
+diff --git a/src/xcb.c b/src/xcb.c
+index caa203f..2ef87d4 100644
+--- a/src/xcb.c
++++ b/src/xcb.c
+@@ -18,11 +18,15 @@ unsigned int xcb_numlock_mask;
+  * for errors.
+  *
+  */
+-xcb_window_t create_window(xcb_connection_t *conn, Rect dims,
+-        uint16_t depth, xcb_visualid_t visual, uint16_t window_class,
++xcb_window_t create_window(xcb_connection_t *conn, Rect dims, uint16_t window_class,
+         enum xcursor_cursor_t cursor, bool map, uint32_t mask, uint32_t *values) {
+     xcb_window_t result = xcb_generate_id(conn);
+ 
++    /* By default, the color depth determined in src/main.c is used (32 bit if
++     * available, otherwise the X11 root window?s default depth). */
++    uint16_t depth = root_depth;
++    xcb_visualid_t visual = visual_id;
++
+     /* If the window class is XCB_WINDOW_CLASS_INPUT_ONLY, we copy depth and
+      * visual id from the parent window. */
+     if (window_class == XCB_WINDOW_CLASS_INPUT_ONLY) {
+@@ -203,46 +207,3 @@ void xcb_set_root_cursor(int cursor) {
+     xcb_free_cursor(conn, cursor_id);
+     xcb_flush(conn);
+ }
+-
+-/*
+- * Get depth of visual specified by visualid
+- *
+- */
+-uint16_t get_visual_depth(xcb_visualid_t visual_id){
+-    xcb_depth_iterator_t depth_iter;
+-
+-    depth_iter = xcb_screen_allowed_depths_iterator(root_screen);
+-    for (; depth_iter.rem; xcb_depth_next(&depth_iter)) {
+-        xcb_visualtype_iterator_t visual_iter;
+-
+-        visual_iter = xcb_depth_visuals_iterator(depth_iter.data);
+-        for (; visual_iter.rem; xcb_visualtype_next(&visual_iter)) {
+-            if (visual_id == visual_iter.data->visual_id) {
+-                return depth_iter.data->depth;
+-            }
+-        }
+-    }
+-    return 0;
+-}
+-
+-/*
+- * Get visualid with specified depth
+- *
+- */
+-xcb_visualid_t get_visualid_by_depth(uint16_t depth){
+-    xcb_depth_iterator_t depth_iter;
+-
+-    depth_iter = xcb_screen_allowed_depths_iterator(root_screen);
+-    for (; depth_iter.rem; xcb_depth_next(&depth_iter)) {
+-        if (depth_iter.data->depth != depth)
+-            continue;
+-
+-        xcb_visualtype_iterator_t visual_iter;
+-
+-        visual_iter = xcb_depth_visuals_iterator(depth_iter.data);
+-        if (!visual_iter.rem)
+-            continue;
+-        return visual_iter.data->visual_id;
+-    }
+-    return 0;
+-}
+-- 
+1.8.0
+
+
+From kemurphy.cmu at gmail.com  Sun Nov 18 11:56:52 2012
+From: kemurphy.cmu at gmail.com (Kevin Murphy)
+Date: Sun, 18 Nov 2012 05:56:52 -0500
+Subject: [i3] [PATCH 2/5] Added "focus" IPC message/event.
+In-Reply-To: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+References: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+Message-ID: <1353236215-32206-3-git-send-email-kemurphy.cmu@gmail.com>
+
+From: Kevin Murphy <kemurphy at andrew.cmu.edu>
+
+The IPC message is used to query the window ID and title of the focused
+window.  The event is used to notify subscribers when the currently
+focused window changes.
+---
+ include/i3/ipc.h |  9 +++++++++
+ src/con.c        |  1 +
+ src/handlers.c   |  3 +++
+ src/ipc.c        | 45 ++++++++++++++++++++++++++++++++++++++++++++-
+ 4 files changed, 57 insertions(+), 1 deletion(-)
+
+diff --git a/include/i3/ipc.h b/include/i3/ipc.h
+index 93b2ae8..04464f2 100644
+--- a/include/i3/ipc.h
++++ b/include/i3/ipc.h
+@@ -43,6 +43,9 @@
+ /** Request the i3 version */
+ #define I3_IPC_MESSAGE_TYPE_GET_VERSION         7
+ 
++/** Request the id and title of the focused window */
++#define I3_IPC_MESSAGE_TYPE_GET_FOCUS           8
++
+ /*
+  * Messages from i3 to clients
+  *
+@@ -72,6 +75,9 @@
+ /** i3 version reply type */
+ #define I3_IPC_REPLY_TYPE_VERSION               7
+ 
++/** Focus reply type */
++#define I3_IPC_REPLY_TYPE_FOCUS                 8
++
+ /*
+  * Events from i3 to clients. Events have the first bit set high.
+  *
+@@ -87,4 +93,7 @@
+ /* The output event will be triggered upon mode changes */
+ #define I3_IPC_EVENT_MODE                       (I3_IPC_EVENT_MASK | 2)
+ 
++/* The output event will be triggered upon change of active window focus */
++#define I3_IPC_EVENT_FOCUS                      (I3_IPC_EVENT_MASK | 3)
++
+ #endif
+diff --git a/src/con.c b/src/con.c
+index 5b5dce9..9ad7716 100644
+--- a/src/con.c
++++ b/src/con.c
+@@ -210,6 +210,7 @@ void con_focus(Con *con) {
+         con_focus(con->parent);
+ 
+     focused = con;
++    ipc_send_event("focus", I3_IPC_EVENT_FOCUS, "{\"change\":\"window\"}");
+     /* We can't blindly reset non-leaf containers since they might have
+      * other urgent children. Therefore we only reset leafs and propagate
+      * the changes upwards via con_update_parents_urgency() which does proper
+diff --git a/src/handlers.c b/src/handlers.c
+index 7fa29e1..0fc396e 100644
+--- a/src/handlers.c
++++ b/src/handlers.c
+@@ -521,6 +521,9 @@ static bool handle_windowname_change(void *data, xcb_connection_t *conn, uint8_t
+ 
+     window_update_name(con->window, prop, false);
+ 
++    if (con == focused)
++        ipc_send_event("focus", I3_IPC_EVENT_FOCUS, "{\"change\":\"title\"}");
++
+     x_push_changes(croot);
+ 
+     return true;
+diff --git a/src/ipc.c b/src/ipc.c
+index 17c15b9..ab45407 100644
+--- a/src/ipc.c
++++ b/src/ipc.c
+@@ -705,6 +705,48 @@ IPC_HANDLER(get_bar_config) {
+ }
+ 
+ /*
++ * Formats the reply message for a FOCUS request and sends it to the
++ * client
++ *
++ */
++IPC_HANDLER(focus) {
++#if YAJL_MAJOR >= 2
++    yajl_gen gen = yajl_gen_alloc(NULL);
++#else
++    yajl_gen gen = yajl_gen_alloc(NULL, NULL);
++#endif
++    y(map_open);
++
++    ystr("id");
++    if (focused->window != NULL) {
++        y(integer, focused->window->id);
++    } else {
++        y(integer, focused->frame);
++    }
++
++    ystr("title");
++    if (focused->window && focused->window->name)
++        ystr(i3string_as_utf8(focused->window->name));
++    else if (focused->type != CT_WORKSPACE && focused->name)
++        ystr(focused->name);
++    else
++        ystr("");
++
++    y(map_close);
++
++    const unsigned char *payload;
++#if YAJL_MAJOR >= 2
++    size_t length;
++#else
++    unsigned int length;
++#endif
++    y(get_buf, &payload, &length);
++
++    ipc_send_message(fd, length, I3_IPC_REPLY_TYPE_FOCUS, payload);
++    y(free);
++}
++
++/*
+  * Callback for the YAJL parser (will be called when a string is parsed).
+  *
+  */
+@@ -780,7 +822,7 @@ IPC_HANDLER(subscribe) {
+ 
+ /* The index of each callback function corresponds to the numeric
+  * value of the message type (see include/i3/ipc.h) */
+-handler_t handlers[8] = {
++handler_t handlers[9] = {
+     handle_command,
+     handle_get_workspaces,
+     handle_subscribe,
+@@ -789,6 +831,7 @@ handler_t handlers[8] = {
+     handle_get_marks,
+     handle_get_bar_config,
+     handle_get_version,
++    handle_focus,
+ };
+ 
+ /*
+-- 
+1.8.0
+
+
+From kemurphy.cmu at gmail.com  Sun Nov 18 11:56:53 2012
+From: kemurphy.cmu at gmail.com (Kevin Murphy)
+Date: Sun, 18 Nov 2012 05:56:53 -0500
+Subject: [i3] =?utf-8?q?=5BPATCH_3/5=5D_Show_title_of_focused_window_in_i3?=
+	=?utf-8?q?bar?=
+In-Reply-To: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+References: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+Message-ID: <1353236215-32206-4-git-send-email-kemurphy.cmu@gmail.com>
+
+From: Kevin Murphy <kemurphy at andrew.cmu.edu>
+
+---
+ i3bar/include/common.h |   3 +
+ i3bar/include/focus.h  |  23 +++++++
+ i3bar/include/xcb.h    |   6 ++
+ i3bar/src/focus.c      | 111 ++++++++++++++++++++++++++++++++++
+ i3bar/src/ipc.c        |  27 ++++++++-
+ i3bar/src/main.c       |   1 +
+ i3bar/src/xcb.c        | 158 +++++++++++++++++++++++++++++++++++++++++++------
+ 7 files changed, 307 insertions(+), 22 deletions(-)
+ create mode 100644 i3bar/include/focus.h
+ create mode 100644 i3bar/src/focus.c
+
+diff --git a/i3bar/include/common.h b/i3bar/include/common.h
+index 870e6db..01bfdfa 100644
+--- a/i3bar/include/common.h
++++ b/i3bar/include/common.h
+@@ -45,7 +45,10 @@ struct status_block {
+ 
+ TAILQ_HEAD(statusline_head, status_block) statusline_head;
+ 
++i3String *focused_title_text;
++
+ #include "child.h"
++#include "focus.h"
+ #include "ipc.h"
+ #include "outputs.h"
+ #include "util.h"
+diff --git a/i3bar/include/focus.h b/i3bar/include/focus.h
+new file mode 100644
+index 0000000..29e4429
+--- /dev/null
++++ b/i3bar/include/focus.h
+@@ -0,0 +1,23 @@
++/*
++ * vim:ts=4:sw=4:expandtab
++ *
++ * i3bar - an xcb-based status- and ws-bar for i3
++ * ? 2010-2011 Axel Wagner and contributors (see also: LICENSE)
++ *
++ * focus.c: Maintaining the workspace-lists
++ *
++ */
++#ifndef FOCUS_H_
++#define FOCUS_H_
++
++#include <xcb/xproto.h>
++
++#include "common.h"
++
++/*
++ * Start parsing the received json-string
++ *
++ */
++void parse_focus_json(char *json);
++
++#endif
+diff --git a/i3bar/include/xcb.h b/i3bar/include/xcb.h
+index 75019c8..db1f0bc 100644
+--- a/i3bar/include/xcb.h
++++ b/i3bar/include/xcb.h
+@@ -101,6 +101,12 @@ void destroy_window(i3_output *output);
+ void realloc_sl_buffer(void);
+ 
+ /*
++ * Reallocate the focused-title-buffer
++ *
++ */
++void realloc_ft_buffer();
++
++/*
+  * Reconfigure all bars and create new for newly activated outputs
+  *
+  */
+diff --git a/i3bar/src/focus.c b/i3bar/src/focus.c
+new file mode 100644
+index 0000000..8bea250
+--- /dev/null
++++ b/i3bar/src/focus.c
+@@ -0,0 +1,111 @@
++/*
++ * vim:ts=4:sw=4:expandtab
++ *
++ * i3bar - an xcb-based status- and ws-bar for i3
++ * ? 2010-2011 Axel Wagner and contributors (see also: LICENSE)
++ *
++ * focus.c: Maintaining the workspace-lists
++ *
++ */
++#include <string.h>
++#include <stdlib.h>
++#include <stdio.h>
++#include <errno.h>
++#include <yajl/yajl_parse.h>
++#include <yajl/yajl_version.h>
++
++#include "common.h"
++
++/*
++ * Parse a string (name, output)
++ *
++ */
++#if YAJL_MAJOR >= 2
++static int focus_string_cb(void *params_, const unsigned char *val, size_t len) {
++#else
++static int focus_string_cb(void *params_, const unsigned char *val, unsigned int len) {
++#endif
++    char *cur_key = *(char**)params_;
++
++    if (!strcmp(cur_key, "title")) {
++        focused_title_text = i3string_from_utf8_with_length((const char*)val, len);
++
++        FREE(cur_key);
++        return 1;
++    }
++
++    FREE(cur_key);
++    return 0;
++}
++
++/*
++ * Parse a key.
++ *
++ */
++#if YAJL_MAJOR >= 2
++static int focus_map_key_cb(void *params_, const unsigned char *keyVal, size_t keyLen) {
++#else
++static int focus_map_key_cb(void *params_, const unsigned char *keyVal, unsigned int keyLen) {
++#endif
++    char **cur_key_p = (char**)params_;
++
++    char *cur_key = smalloc(sizeof(unsigned char) * (keyLen + 1));
++    strncpy(cur_key, (const char*) keyVal, keyLen);
++    cur_key[keyLen] = '\0';
++
++    *cur_key_p = cur_key;
++
++    return 1;
++}
++
++/* A datastructure to pass all these callbacks to yajl */
++yajl_callbacks focus_callbacks = {
++    NULL,
++    NULL,
++    NULL,
++    NULL,
++    NULL,
++    &focus_string_cb,
++    NULL,
++    &focus_map_key_cb,
++    NULL,
++    NULL,
++    NULL
++};
++
++/*
++ * Start parsing the received json-string
++ *
++ */
++void parse_focus_json(char *json) {
++    /* FIXME: Fasciliate stream-processing, i.e. allow starting to interpret
++     * JSON in chunks */
++    yajl_handle handle;
++    yajl_status state;
++    char *cur_key = NULL;
++#if YAJL_MAJOR < 2
++    yajl_parser_config parse_conf = { 0, 0 };
++
++    handle = yajl_alloc(&focus_callbacks, &parse_conf, NULL, (void*) &cur_key);
++#else
++    handle = yajl_alloc(&focus_callbacks, NULL, (void*) &cur_key);
++#endif
++
++    state = yajl_parse(handle, (const unsigned char*) json, strlen(json));
++
++    /* FIXME: Propper errorhandling for JSON-parsing */
++    switch (state) {
++        case yajl_status_ok:
++            break;
++        case yajl_status_client_canceled:
++#if YAJL_MAJOR < 2
++        case yajl_status_insufficient_data:
++#endif
++        case yajl_status_error:
++            ELOG("Could not parse focus-reply!\n");
++            exit(EXIT_FAILURE);
++            break;
++    }
++
++    yajl_free(handle);
++}
+diff --git a/i3bar/src/ipc.c b/i3bar/src/ipc.c
+index 2170e50..c9e909e 100644
+--- a/i3bar/src/ipc.c
++++ b/i3bar/src/ipc.c
+@@ -75,6 +75,16 @@ void got_output_reply(char *reply) {
+ }
+ 
+ /*
++ * Called, when we get a reply with workspaces-data
++ *
++ */
++void got_focus_reply(char *reply) {
++    DLOG("Got Focus-Data!\n");
++    parse_focus_json(reply);
++    draw_bars(false);
++}
++
++/*
+  * Called when we get the configuration for our bar instance
+  *
+  */
+@@ -115,6 +125,8 @@ handler_t reply_handlers[] = {
+     NULL,
+     NULL,
+     &got_bar_config,
++    NULL,
++    &got_focus_reply,
+ };
+ 
+ /*
+@@ -148,12 +160,21 @@ void got_mode_event(char *event) {
+     draw_bars(false);
+ }
+ 
++/*
++ * Called, when a focus-event arrives (i.e. the focused window changed)
++ *
++ */
++void got_focus_event(char *event) {
++    DLOG("Got Focus Event!\n");
++    i3_send_msg(I3_IPC_MESSAGE_TYPE_GET_FOCUS, NULL);
++}
+ 
+ /* Data-structure to easily call the reply-handlers later */
+ handler_t event_handlers[] = {
+     &got_workspace_event,
+     &got_output_event,
+-    &got_mode_event
++    &got_mode_event,
++    &got_focus_event,
+ };
+ 
+ /*
+@@ -309,8 +330,8 @@ void destroy_connection(void) {
+  */
+ void subscribe_events(void) {
+     if (config.disable_ws) {
+-        i3_send_msg(I3_IPC_MESSAGE_TYPE_SUBSCRIBE, "[ \"output\", \"mode\" ]");
++        i3_send_msg(I3_IPC_MESSAGE_TYPE_SUBSCRIBE, "[ \"output\", \"mode\", \"focus\" ]");
+     } else {
+-        i3_send_msg(I3_IPC_MESSAGE_TYPE_SUBSCRIBE, "[ \"workspace\", \"output\", \"mode\" ]");
++        i3_send_msg(I3_IPC_MESSAGE_TYPE_SUBSCRIBE, "[ \"workspace\", \"output\", \"mode\", \"focus\" ]");
+     }
+ }
+diff --git a/i3bar/src/main.c b/i3bar/src/main.c
+index ea60564..b4ae08e 100644
+--- a/i3bar/src/main.c
++++ b/i3bar/src/main.c
+@@ -149,6 +149,7 @@ int main(int argc, char **argv) {
+     if (init_connection(socket_path)) {
+         /* Request the bar configuration. When it arrives, we fill the config array. */
+         i3_send_msg(I3_IPC_MESSAGE_TYPE_GET_BAR_CONFIG, config.bar_id);
++        i3_send_msg(I3_IPC_MESSAGE_TYPE_GET_FOCUS, NULL);
+     }
+ 
+     /* We listen to SIGTERM/QUIT/INT and try to exit cleanly, by stopping the main-loop.
+diff --git a/i3bar/src/xcb.c b/i3bar/src/xcb.c
+index 5ae8023..c20ff37 100644
+--- a/i3bar/src/xcb.c
++++ b/i3bar/src/xcb.c
+@@ -68,6 +68,11 @@ xcb_gcontext_t   statusline_clear;
+ xcb_pixmap_t     statusline_pm;
+ uint32_t         statusline_width;
+ 
++xcb_gcontext_t   focused_title_ctx;
++xcb_gcontext_t   focused_title_clear;
++xcb_pixmap_t     focused_title_pm;
++uint32_t         focused_title_width;
++
+ /* Event-Watchers, to interact with the user */
+ ev_prepare *xcb_prep;
+ ev_check   *xcb_chk;
+@@ -152,15 +157,48 @@ void refresh_statusline(void) {
+ 
+         if (TAILQ_NEXT(block, blocks) != NULL) {
+             /* This is not the last block, draw a separator. */
+-            set_font_colors(statusline_ctx, get_colorpixel("#666666"), colors.bar_bg);
+-            xcb_poly_line(xcb_connection, XCB_COORD_MODE_ORIGIN, statusline_pm,
+-                          statusline_ctx, 2,
+-                          (xcb_point_t[]){ { x - 5, 2 }, { x - 5, font.height - 2 } });
++            uint32_t mask = XCB_GC_FOREGROUND | XCB_GC_BACKGROUND;
++            uint32_t vals[] = { get_colorpixel("#222222"), colors.bar_bg };
++            xcb_change_gc(xcb_connection,
++                          statusline_ctx,
++                          mask,
++                          vals);
++            xcb_poly_fill_rectangle(xcb_connection, statusline_pm,
++                                    statusline_ctx, 1,
++                                    (xcb_rectangle_t[]){ { x - 6, 0, 2, font.height + 4 } });
+         }
+     }
+ }
+ 
+ /*
++ * Redraws the focused title to the buffer
++ *
++ */
++void refresh_focused_title() {
++    uint32_t old_focused_title_width = focused_title_width;
++    focused_title_width = 0;
++    
++    if (focused_title_text)
++        focused_title_width = predict_text_width(focused_title_text);
++
++    /* If the title is bigger than our screen we need to make sure that
++     * the pixmap provides enough space, so re-allocate if the width grew */
++    if (focused_title_width > root_screen->width_in_pixels &&
++        focused_title_width > old_focused_title_width)
++        realloc_ft_buffer();
++
++    /* Clear the title pixmap. */
++    xcb_rectangle_t rect = { 0, 0, root_screen->width_in_pixels, font.height + 4 };
++    xcb_poly_fill_rectangle(xcb_connection, focused_title_pm, focused_title_clear, 1, &rect);
++
++    /* Draw the text. */
++    if (focused_title_text) {
++        set_font_colors(focused_title_ctx, colors.bar_fg, colors.bar_bg);
++        draw_text(focused_title_text, focused_title_pm, focused_title_ctx, 0, 0, focused_title_width);
++    }
++}
++
++/*
+  * Hides all bars (unmaps them)
+  *
+  */
+@@ -843,6 +881,29 @@ char *init_xcb_early() {
+     uint32_t mask = XCB_GC_FOREGROUND;
+     uint32_t vals[] = { colors.bar_bg, colors.bar_bg };
+ 
++    focused_title_clear = xcb_generate_id(xcb_connection);
++    xcb_void_cookie_t ft_clear_ctx_cookie = xcb_create_gc_checked(xcb_connection,
++                                                               focused_title_clear,
++                                                               xcb_root,
++                                                               mask,
++                                                               vals);
++
++    focused_title_ctx = xcb_generate_id(xcb_connection);
++    xcb_void_cookie_t ft_ctx_cookie = xcb_create_gc_checked(xcb_connection,
++                                                            focused_title_ctx,
++                                                            xcb_root,
++                                                            0,
++                                                            NULL);
++
++    focused_title_pm = xcb_generate_id(xcb_connection);
++    xcb_void_cookie_t ft_pm_cookie = xcb_create_pixmap_checked(xcb_connection,
++                                                               root_screen->root_depth,
++                                                               focused_title_pm,
++                                                               xcb_root,
++                                                               root_screen->width_in_pixels,
++                                                               root_screen->height_in_pixels);
++
++
+     statusline_clear = xcb_generate_id(xcb_connection);
+     xcb_void_cookie_t clear_ctx_cookie = xcb_create_gc_checked(xcb_connection,
+                                                                statusline_clear,
+@@ -902,8 +963,10 @@ char *init_xcb_early() {
+         }
+     }
+ 
+-
+-    if (xcb_request_failed(sl_pm_cookie, "Could not allocate statusline-buffer") ||
++    if (xcb_request_failed(ft_pm_cookie, "Could not allocate focused-title-buffer") ||
++        xcb_request_failed(ft_clear_ctx_cookie, "Could not allocate focused-title-buffer-clearcontext") ||
++        xcb_request_failed(ft_ctx_cookie, "Could not allocate focused-title-buffer-context") ||
++        xcb_request_failed(sl_pm_cookie, "Could not allocate statusline-buffer") ||
+         xcb_request_failed(clear_ctx_cookie, "Could not allocate statusline-buffer-clearcontext") ||
+         xcb_request_failed(sl_ctx_cookie, "Could not allocate statusline-buffer-context")) {
+         exit(EXIT_FAILURE);
+@@ -1197,6 +1260,50 @@ void realloc_sl_buffer(void) {
+ }
+ 
+ /*
++ * Reallocate the focused-title-buffer
++ *
++ */
++void realloc_ft_buffer() {
++    DLOG("Re-allocating focused-title-buffer, focused_title_width = %d, root_screen->width_in_pixels = %d\n",
++         focused_title_width, root_screen->width_in_pixels);
++    xcb_free_pixmap(xcb_connection, focused_title_pm);
++    focused_title_pm = xcb_generate_id(xcb_connection);
++    xcb_void_cookie_t ft_pm_cookie = xcb_create_pixmap_checked(xcb_connection,
++                                                               root_screen->root_depth,
++                                                               focused_title_pm,
++                                                               xcb_root,
++                                                               MAX(root_screen->width_in_pixels, focused_title_width),
++                                                               root_screen->height_in_pixels);
++
++    uint32_t mask = XCB_GC_FOREGROUND;
++    uint32_t vals[2] = { colors.bar_bg, colors.bar_bg };
++    xcb_free_gc(xcb_connection, focused_title_clear);
++    focused_title_clear = xcb_generate_id(xcb_connection);
++    xcb_void_cookie_t ft_clear_ctx_cookie = xcb_create_gc_checked(xcb_connection,
++                                                                 focused_title_clear,
++                                                                 xcb_root,
++                                                                 mask,
++                                                                 vals);
++
++    mask |= XCB_GC_BACKGROUND;
++    vals[0] = colors.bar_fg;
++    focused_title_ctx = xcb_generate_id(xcb_connection);
++    xcb_free_gc(xcb_connection, focused_title_ctx);
++    xcb_void_cookie_t ft_ctx_cookie = xcb_create_gc_checked(xcb_connection,
++                                                            focused_title_ctx,
++                                                            xcb_root,
++                                                            mask,
++                                                            vals);
++
++    if (xcb_request_failed(ft_pm_cookie, "Could not allocate focused-title-buffer") ||
++        xcb_request_failed(ft_clear_ctx_cookie, "Could not allocate focused-title-buffer-clearcontext") ||
++        xcb_request_failed(ft_ctx_cookie, "Could not allocate focused-title-buffer-context")) {
++        exit(EXIT_FAILURE);
++    }
++
++}
++
++/*
+  * Reconfigure all bars and create new bars for recently activated outputs
+  *
+  */
+@@ -1414,6 +1521,7 @@ void draw_bars(bool unhide) {
+     int i = 0;
+ 
+     refresh_statusline();
++    refresh_focused_title();
+ 
+     static char *last_urgent_ws = NULL;
+     bool walks_away = true;
+@@ -1441,25 +1549,28 @@ void draw_bars(bool unhide) {
+                                 1,
+                                 &rect);
+ 
++        /* Calculate the width of the tray area */
++        int traypx = 0;
++        trayclient *trayclient;
++        TAILQ_FOREACH(trayclient, outputs_walk->trayclients, tailq) {
++            if (!trayclient->mapped)
++                continue;
++            /* We assume the tray icons are quadratic (we use the font
++             * *height* as *width* of the icons) because we configured them
++             * like this. */
++            traypx += font.height + 2;
++        }
++
++        /* Add 2px of padding if there are any tray icons */
++        if (traypx > 0)
++            traypx += 2;
++
+         if (!TAILQ_EMPTY(&statusline_head)) {
+             DLOG("Printing statusline!\n");
+ 
+             /* Luckily we already prepared a seperate pixmap containing the rendered
+              * statusline, we just have to copy the relevant parts to the relevant
+              * position */
+-            trayclient *trayclient;
+-            int traypx = 0;
+-            TAILQ_FOREACH(trayclient, outputs_walk->trayclients, tailq) {
+-                if (!trayclient->mapped)
+-                    continue;
+-                /* We assume the tray icons are quadratic (we use the font
+-                 * *height* as *width* of the icons) because we configured them
+-                 * like this. */
+-                traypx += font.height + 2;
+-            }
+-            /* Add 2px of padding if there are any tray icons */
+-            if (traypx > 0)
+-                traypx += 2;
+             xcb_copy_area(xcb_connection,
+                           statusline_pm,
+                           outputs_walk->buffer,
+@@ -1567,6 +1678,15 @@ void draw_bars(bool unhide) {
+             draw_text(binding.name, outputs_walk->buffer, outputs_walk->bargc, i + 5, 2, binding.width);
+         }
+ 
++        int16_t focused_title_constrained_width = outputs_walk->rect.w - traypx - 4 - statusline_width - (2 * 4);
++        xcb_copy_area(xcb_connection,
++                      focused_title_pm,
++                      outputs_walk->buffer,
++                      outputs_walk->bargc,
++                      MAX(0, (int16_t)(focused_title_width - focused_title_constrained_width)), 0,
++                      i + 4, 2,
++                      MIN(focused_title_constrained_width, focused_title_width), font.height);
++
+         i = 0;
+     }
+ 
+-- 
+1.8.0
+
+
+From kemurphy.cmu at gmail.com  Sun Nov 18 11:56:54 2012
+From: kemurphy.cmu at gmail.com (Kevin Murphy)
+Date: Sun, 18 Nov 2012 05:56:54 -0500
+Subject: [i3] [PATCH 4/5] Alignment fixes for i3bar
+In-Reply-To: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+References: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+Message-ID: <1353236215-32206-5-git-send-email-kemurphy.cmu@gmail.com>
+
+From: Kevin Murphy <kemurphy at andrew.cmu.edu>
+
+---
+ i3bar/src/xcb.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/i3bar/src/xcb.c b/i3bar/src/xcb.c
+index c20ff37..983d5ad 100644
+--- a/i3bar/src/xcb.c
++++ b/i3bar/src/xcb.c
+@@ -130,7 +130,7 @@ void refresh_statusline(void) {
+         block->width = predict_text_width(block->full_text);
+         /* If this is not the last block, add some pixels for a separator. */
+         if (TAILQ_NEXT(block, blocks) != NULL)
+-            block->width += 9;
++            block->width += 10;
+         statusline_width += block->width;
+     }
+ 
+@@ -141,7 +141,7 @@ void refresh_statusline(void) {
+         realloc_sl_buffer();
+ 
+     /* Clear the statusline pixmap. */
+-    xcb_rectangle_t rect = { 0, 0, root_screen->width_in_pixels, font.height };
++    xcb_rectangle_t rect = { 0, 0, root_screen->width_in_pixels, font.height + 4 };
+     xcb_poly_fill_rectangle(xcb_connection, statusline_pm, statusline_clear, 1, &rect);
+ 
+     /* Draw the text of each block. */
+@@ -1576,7 +1576,7 @@ void draw_bars(bool unhide) {
+                           outputs_walk->buffer,
+                           outputs_walk->bargc,
+                           MAX(0, (int16_t)(statusline_width - outputs_walk->rect.w + 4)), 0,
+-                          MAX(0, (int16_t)(outputs_walk->rect.w - statusline_width - traypx - 4)), 3,
++                          MAX(0, (int16_t)(outputs_walk->rect.w - statusline_width - traypx - 4)), 2,
+                           MIN(outputs_walk->rect.w - traypx - 4, statusline_width), font.height);
+         }
+ 
+-- 
+1.8.0
+
+
+From kemurphy.cmu at gmail.com  Sun Nov 18 11:56:55 2012
+From: kemurphy.cmu at gmail.com (Kevin Murphy)
+Date: Sun, 18 Nov 2012 05:56:55 -0500
+Subject: [i3] =?utf-8?q?=5BPATCH_5/5=5D_Added_window_insets_=28similar_to_?=
+	=?utf-8?q?herbstluftwm=29?=
+In-Reply-To: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+References: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+Message-ID: <1353236215-32206-6-git-send-email-kemurphy.cmu@gmail.com>
+
+From: Kevin Murphy <kemurphy at andrew.cmu.edu>
+
+---
+ include/render.h |  2 +-
+ src/floating.c   |  6 +++---
+ src/manage.c     |  2 +-
+ src/randr.c      |  2 +-
+ src/render.c     | 35 +++++++++++++++++++++++++++--------
+ src/tree.c       |  2 +-
+ 6 files changed, 34 insertions(+), 15 deletions(-)
+
+diff --git a/include/render.h b/include/render.h
+index 0a5949f..d458bd3 100644
+--- a/include/render.h
++++ b/include/render.h
+@@ -19,6 +19,6 @@
+  * updated in X11.
+  *
+  */
+-void render_con(Con *con, bool render_fullscreen);
++void render_con(Con *con, bool render_fullscreen, bool already_inset);
+ 
+ #endif
+diff --git a/src/floating.c b/src/floating.c
+index b884a18..7347fcc 100644
+--- a/src/floating.c
++++ b/src/floating.c
+@@ -251,8 +251,8 @@ void floating_enable(Con *con, bool automatic) {
+     TAILQ_INSERT_TAIL(&(nc->focus_head), con, focused);
+ 
+     /* render the cons to get initial window_rect correct */
+-    render_con(nc, false);
+-    render_con(con, false);
++    render_con(nc, false, true);
++    render_con(con, false, true);
+ 
+     if (set_focus)
+         con_focus(con);
+@@ -376,7 +376,7 @@ DRAGGING_CB(drag_window_callback) {
+     con->rect.x = old_rect->x + (new_x - event->root_x);
+     con->rect.y = old_rect->y + (new_y - event->root_y);
+ 
+-    render_con(con, false);
++    render_con(con, false, true);
+     x_push_node(con);
+     xcb_flush(conn);
+ 
+diff --git a/src/manage.c b/src/manage.c
+index 10aa3a8..24290be 100644
+--- a/src/manage.c
++++ b/src/manage.c
+@@ -415,7 +415,7 @@ void manage_window(xcb_window_t window, xcb_get_window_attributes_cookie_t cooki
+          * workspace at all. However, just calling render_con() on the
+          * workspace isn?t enough either ? it needs the rect. */
+         ws->rect = ws->parent->rect;
+-        render_con(ws, true);
++        render_con(ws, true, false);
+     }
+     tree_render();
+ 
+diff --git a/src/randr.c b/src/randr.c
+index 267d6e4..9b22788 100644
+--- a/src/randr.c
++++ b/src/randr.c
+@@ -351,7 +351,7 @@ void init_ws_for_output(Output *output, Con *content) {
+          * Then, we need to work with the "content" container, since we cannot
+          * be sure that the workspace itself was rendered at all (in case it?s
+          * invisible, it won?t be rendered). */
+-        render_con(workspace_out, false);
++        render_con(workspace_out, false, true);
+         Con *ws_out_content = output_get_content(workspace_out);
+ 
+         Con *floating_con;
+diff --git a/src/render.c b/src/render.c
+index 1216241..63a9deb 100644
+--- a/src/render.c
++++ b/src/render.c
+@@ -54,7 +54,7 @@ static void render_l_output(Con *con) {
+     if (fullscreen) {
+         fullscreen->rect = con->rect;
+         x_raise_con(fullscreen);
+-        render_con(fullscreen, true);
++        render_con(fullscreen, true, false);
+         return;
+     }
+ 
+@@ -94,7 +94,7 @@ static void render_l_output(Con *con) {
+         DLOG("child at (%d, %d) with (%d x %d)\n",
+                 child->rect.x, child->rect.y, child->rect.width, child->rect.height);
+         x_raise_con(child);
+-        render_con(child, false);
++        render_con(child, false, child->type == CT_DOCKAREA);
+     }
+ }
+ 
+@@ -106,7 +106,7 @@ static void render_l_output(Con *con) {
+  * updated in X11.
+  *
+  */
+-void render_con(Con *con, bool render_fullscreen) {
++void render_con(Con *con, bool render_fullscreen, bool already_inset) {
+     int children = con_num_children(con);
+     DLOG("Rendering %snode %p / %s / layout %d / children %d\n",
+          (render_fullscreen ? "fullscreen " : ""), con, con->name, con->layout,
+@@ -124,6 +124,25 @@ void render_con(Con *con, bool render_fullscreen) {
+         rect.width -= 2 * 2;
+         rect.height -= 2 * 2;
+     }
++    
++    bool should_inset = ((con_is_leaf(con) ||
++                          (children > 0 &&
++                           (con->layout == L_STACKED ||
++                            con->layout == L_TABBED))) &&
++                         con->type != CT_FLOATING_CON &&
++                         con->type != CT_WORKSPACE);
++    if ((!already_inset && should_inset)) {
++        Rect inset = (Rect) {4, 4, 4 * -2, 4 * -2};
++        rect = rect_add(rect, inset);
++        if (!render_fullscreen) {
++            con->rect = rect_add(con->rect, inset);
++            if (con->window) {
++                con->window_rect = rect_add(con->window_rect, inset);
++            }
++        }
++        inset.height = 0;
++        con->deco_rect = rect_add(con->deco_rect, inset);
++    }
+ 
+     int x = rect.x;
+     int y = rect.y;
+@@ -191,7 +210,7 @@ void render_con(Con *con, bool render_fullscreen) {
+     if (fullscreen) {
+         fullscreen->rect = rect;
+         x_raise_con(fullscreen);
+-        render_con(fullscreen, true);
++        render_con(fullscreen, true, false);
+         return;
+     }
+ 
+@@ -231,7 +250,7 @@ void render_con(Con *con, bool render_fullscreen) {
+     } else if (con->type == CT_ROOT) {
+         Con *output;
+         TAILQ_FOREACH(output, &(con->nodes_head), nodes) {
+-            render_con(output, false);
++            render_con(output, false, false);
+         }
+ 
+         /* We need to render floating windows after rendering all outputs?
+@@ -269,7 +288,7 @@ void render_con(Con *con, bool render_fullscreen) {
+                 DLOG("floating child at (%d,%d) with %d x %d\n",
+                      child->rect.x, child->rect.y, child->rect.width, child->rect.height);
+                 x_raise_con(child);
+-                render_con(child, false);
++                render_con(child, false, true);
+             }
+         }
+ 
+@@ -365,7 +384,7 @@ void render_con(Con *con, bool render_fullscreen) {
+         DLOG("child at (%d, %d) with (%d x %d)\n",
+                 child->rect.x, child->rect.y, child->rect.width, child->rect.height);
+         x_raise_con(child);
+-        render_con(child, false);
++        render_con(child, false, should_inset || already_inset);
+         i++;
+     }
+ 
+@@ -378,7 +397,7 @@ void render_con(Con *con, bool render_fullscreen) {
+              * that we have a non-leaf-container inside the stack. In that
+              * case, the children of the non-leaf-container need to be raised
+              * aswell. */
+-            render_con(child, false);
++            render_con(child, false, true);
+         }
+ 
+         if (children != 1)
+diff --git a/src/tree.c b/src/tree.c
+index 7a5fb9f..12d3b9d 100644
+--- a/src/tree.c
++++ b/src/tree.c
+@@ -474,7 +474,7 @@ void tree_render(void) {
+     mark_unmapped(croot);
+     croot->mapped = true;
+ 
+-    render_con(croot, false);
++    render_con(croot, false, false);
+ 
+     x_push_changes(croot);
+     DLOG("-- END RENDERING --\n");
+-- 
+1.8.0
+
+
+From kemurphy.cmu at gmail.com  Sun Nov 18 12:14:18 2012
+From: kemurphy.cmu at gmail.com (Kevin Murphy)
+Date: Sun, 18 Nov 2012 06:14:18 -0500
+Subject: [i3] [PATCH 5/5] Added window insets (similar to herbstluftwm)
+In-Reply-To: <1353236215-32206-6-git-send-email-kemurphy.cmu@gmail.com>
+References: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+ <1353236215-32206-6-git-send-email-kemurphy.cmu@gmail.com>
+Message-ID: <CAMO0NGba-XF6tXXSfO6_5wdubjvJQKo3DiAgPRQ3spC+g8HSzg@mail.gmail.com>
+
+Here are what the inset windows look like:
+http://i.imgur.com/lfZU2.png
+
+Thanks,
+Kevin
+
+On Sun, Nov 18, 2012 at 5:56 AM, Kevin Murphy <kemurphy.cmu at gmail.com>wrote:
+
+> From: Kevin Murphy <kemurphy at andrew.cmu.edu>
+>
+> ---
+>  include/render.h |  2 +-
+>  src/floating.c   |  6 +++---
+>  src/manage.c     |  2 +-
+>  src/randr.c      |  2 +-
+>  src/render.c     | 35 +++++++++++++++++++++++++++--------
+>  src/tree.c       |  2 +-
+>  6 files changed, 34 insertions(+), 15 deletions(-)
+>
+> diff --git a/include/render.h b/include/render.h
+> index 0a5949f..d458bd3 100644
+> --- a/include/render.h
+> +++ b/include/render.h
+> @@ -19,6 +19,6 @@
+>   * updated in X11.
+>   *
+>   */
+> -void render_con(Con *con, bool render_fullscreen);
+> +void render_con(Con *con, bool render_fullscreen, bool already_inset);
+>
+>  #endif
+> diff --git a/src/floating.c b/src/floating.c
+> index b884a18..7347fcc 100644
+> --- a/src/floating.c
+> +++ b/src/floating.c
+> @@ -251,8 +251,8 @@ void floating_enable(Con *con, bool automatic) {
+>      TAILQ_INSERT_TAIL(&(nc->focus_head), con, focused);
+>
+>      /* render the cons to get initial window_rect correct */
+> -    render_con(nc, false);
+> -    render_con(con, false);
+> +    render_con(nc, false, true);
+> +    render_con(con, false, true);
+>
+>      if (set_focus)
+>          con_focus(con);
+> @@ -376,7 +376,7 @@ DRAGGING_CB(drag_window_callback) {
+>      con->rect.x = old_rect->x + (new_x - event->root_x);
+>      con->rect.y = old_rect->y + (new_y - event->root_y);
+>
+> -    render_con(con, false);
+> +    render_con(con, false, true);
+>      x_push_node(con);
+>      xcb_flush(conn);
+>
+> diff --git a/src/manage.c b/src/manage.c
+> index 10aa3a8..24290be 100644
+> --- a/src/manage.c
+> +++ b/src/manage.c
+> @@ -415,7 +415,7 @@ void manage_window(xcb_window_t window,
+> xcb_get_window_attributes_cookie_t cooki
+>           * workspace at all. However, just calling render_con() on the
+>           * workspace isn?t enough either ? it needs the rect. */
+>          ws->rect = ws->parent->rect;
+> -        render_con(ws, true);
+> +        render_con(ws, true, false);
+>      }
+>      tree_render();
+>
+> diff --git a/src/randr.c b/src/randr.c
+> index 267d6e4..9b22788 100644
+> --- a/src/randr.c
+> +++ b/src/randr.c
+> @@ -351,7 +351,7 @@ void init_ws_for_output(Output *output, Con *content) {
+>           * Then, we need to work with the "content" container, since we
+> cannot
+>           * be sure that the workspace itself was rendered at all (in case
+> it?s
+>           * invisible, it won?t be rendered). */
+> -        render_con(workspace_out, false);
+> +        render_con(workspace_out, false, true);
+>          Con *ws_out_content = output_get_content(workspace_out);
+>
+>          Con *floating_con;
+> diff --git a/src/render.c b/src/render.c
+> index 1216241..63a9deb 100644
+> --- a/src/render.c
+> +++ b/src/render.c
+> @@ -54,7 +54,7 @@ static void render_l_output(Con *con) {
+>      if (fullscreen) {
+>          fullscreen->rect = con->rect;
+>          x_raise_con(fullscreen);
+> -        render_con(fullscreen, true);
+> +        render_con(fullscreen, true, false);
+>          return;
+>      }
+>
+> @@ -94,7 +94,7 @@ static void render_l_output(Con *con) {
+>          DLOG("child at (%d, %d) with (%d x %d)\n",
+>                  child->rect.x, child->rect.y, child->rect.width,
+> child->rect.height);
+>          x_raise_con(child);
+> -        render_con(child, false);
+> +        render_con(child, false, child->type == CT_DOCKAREA);
+>      }
+>  }
+>
+> @@ -106,7 +106,7 @@ static void render_l_output(Con *con) {
+>   * updated in X11.
+>   *
+>   */
+> -void render_con(Con *con, bool render_fullscreen) {
+> +void render_con(Con *con, bool render_fullscreen, bool already_inset) {
+>      int children = con_num_children(con);
+>      DLOG("Rendering %snode %p / %s / layout %d / children %d\n",
+>           (render_fullscreen ? "fullscreen " : ""), con, con->name,
+> con->layout,
+> @@ -124,6 +124,25 @@ void render_con(Con *con, bool render_fullscreen) {
+>          rect.width -= 2 * 2;
+>          rect.height -= 2 * 2;
+>      }
+> +
+> +    bool should_inset = ((con_is_leaf(con) ||
+> +                          (children > 0 &&
+> +                           (con->layout == L_STACKED ||
+> +                            con->layout == L_TABBED))) &&
+> +                         con->type != CT_FLOATING_CON &&
+> +                         con->type != CT_WORKSPACE);
+> +    if ((!already_inset && should_inset)) {
+> +        Rect inset = (Rect) {4, 4, 4 * -2, 4 * -2};
+> +        rect = rect_add(rect, inset);
+> +        if (!render_fullscreen) {
+> +            con->rect = rect_add(con->rect, inset);
+> +            if (con->window) {
+> +                con->window_rect = rect_add(con->window_rect, inset);
+> +            }
+> +        }
+> +        inset.height = 0;
+> +        con->deco_rect = rect_add(con->deco_rect, inset);
+> +    }
+>
+>      int x = rect.x;
+>      int y = rect.y;
+> @@ -191,7 +210,7 @@ void render_con(Con *con, bool render_fullscreen) {
+>      if (fullscreen) {
+>          fullscreen->rect = rect;
+>          x_raise_con(fullscreen);
+> -        render_con(fullscreen, true);
+> +        render_con(fullscreen, true, false);
+>          return;
+>      }
+>
+> @@ -231,7 +250,7 @@ void render_con(Con *con, bool render_fullscreen) {
+>      } else if (con->type == CT_ROOT) {
+>          Con *output;
+>          TAILQ_FOREACH(output, &(con->nodes_head), nodes) {
+> -            render_con(output, false);
+> +            render_con(output, false, false);
+>          }
+>
+>          /* We need to render floating windows after rendering all outputs?
+> @@ -269,7 +288,7 @@ void render_con(Con *con, bool render_fullscreen) {
+>                  DLOG("floating child at (%d,%d) with %d x %d\n",
+>                       child->rect.x, child->rect.y, child->rect.width,
+> child->rect.height);
+>                  x_raise_con(child);
+> -                render_con(child, false);
+> +                render_con(child, false, true);
+>              }
+>          }
+>
+> @@ -365,7 +384,7 @@ void render_con(Con *con, bool render_fullscreen) {
+>          DLOG("child at (%d, %d) with (%d x %d)\n",
+>                  child->rect.x, child->rect.y, child->rect.width,
+> child->rect.height);
+>          x_raise_con(child);
+> -        render_con(child, false);
+> +        render_con(child, false, should_inset || already_inset);
+>          i++;
+>      }
+>
+> @@ -378,7 +397,7 @@ void render_con(Con *con, bool render_fullscreen) {
+>               * that we have a non-leaf-container inside the stack. In that
+>               * case, the children of the non-leaf-container need to be
+> raised
+>               * aswell. */
+> -            render_con(child, false);
+> +            render_con(child, false, true);
+>          }
+>
+>          if (children != 1)
+> diff --git a/src/tree.c b/src/tree.c
+> index 7a5fb9f..12d3b9d 100644
+> --- a/src/tree.c
+> +++ b/src/tree.c
+> @@ -474,7 +474,7 @@ void tree_render(void) {
+>      mark_unmapped(croot);
+>      croot->mapped = true;
+>
+> -    render_con(croot, false);
+> +    render_con(croot, false, false);
+>
+>      x_push_changes(croot);
+>      DLOG("-- END RENDERING --\n");
+> --
+> 1.8.0
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121118/67ec355d/attachment.html>
+
+From kemurphy.cmu at gmail.com  Sun Nov 18 12:18:08 2012
+From: kemurphy.cmu at gmail.com (Kevin Murphy)
+Date: Sun, 18 Nov 2012 06:18:08 -0500
+Subject: [i3] [PATCH 4/5] Alignment fixes for i3bar
+In-Reply-To: <1353236215-32206-5-git-send-email-kemurphy.cmu@gmail.com>
+References: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+ <1353236215-32206-5-git-send-email-kemurphy.cmu@gmail.com>
+Message-ID: <CAMO0NGZBahoPUvafZ18q0_nd4dhpivGYuWpFroo4BVqM=Lf=HA@mail.gmail.com>
+
+This patch fixes vertical text alignment between the workspace labels,
+window title, and status line, and horizontal spacing between the window
+title and status line in i3bar.
+
+Sorry for not elaborating more in the original description :)
+
+Thanks,
+Kevin
+
+On Sun, Nov 18, 2012 at 5:56 AM, Kevin Murphy <kemurphy.cmu at gmail.com>wrote:
+
+> From: Kevin Murphy <kemurphy at andrew.cmu.edu>
+>
+> ---
+>  i3bar/src/xcb.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/i3bar/src/xcb.c b/i3bar/src/xcb.c
+> index c20ff37..983d5ad 100644
+> --- a/i3bar/src/xcb.c
+> +++ b/i3bar/src/xcb.c
+> @@ -130,7 +130,7 @@ void refresh_statusline(void) {
+>          block->width = predict_text_width(block->full_text);
+>          /* If this is not the last block, add some pixels for a
+> separator. */
+>          if (TAILQ_NEXT(block, blocks) != NULL)
+> -            block->width += 9;
+> +            block->width += 10;
+>          statusline_width += block->width;
+>      }
+>
+> @@ -141,7 +141,7 @@ void refresh_statusline(void) {
+>          realloc_sl_buffer();
+>
+>      /* Clear the statusline pixmap. */
+> -    xcb_rectangle_t rect = { 0, 0, root_screen->width_in_pixels,
+> font.height };
+> +    xcb_rectangle_t rect = { 0, 0, root_screen->width_in_pixels,
+> font.height + 4 };
+>      xcb_poly_fill_rectangle(xcb_connection, statusline_pm,
+> statusline_clear, 1, &rect);
+>
+>      /* Draw the text of each block. */
+> @@ -1576,7 +1576,7 @@ void draw_bars(bool unhide) {
+>                            outputs_walk->buffer,
+>                            outputs_walk->bargc,
+>                            MAX(0, (int16_t)(statusline_width -
+> outputs_walk->rect.w + 4)), 0,
+> -                          MAX(0, (int16_t)(outputs_walk->rect.w -
+> statusline_width - traypx - 4)), 3,
+> +                          MAX(0, (int16_t)(outputs_walk->rect.w -
+> statusline_width - traypx - 4)), 2,
+>                            MIN(outputs_walk->rect.w - traypx - 4,
+> statusline_width), font.height);
+>          }
+>
+> --
+> 1.8.0
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121118/afe515cc/attachment.html>
+
+From sebasti at nullri.ch  Sun Nov 18 14:12:13 2012
+From: sebasti at nullri.ch (Sebastian Ullrich)
+Date: Sun, 18 Nov 2012 14:12:13 +0100
+Subject: [i3] [PATCH 5/5] Added window insets (similar to herbstluftwm)
+In-Reply-To: <1353236215-32206-6-git-send-email-kemurphy.cmu@gmail.com>
+References: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+ <1353236215-32206-6-git-send-email-kemurphy.cmu@gmail.com>
+Message-ID: <CAD_zNMC-2zO38qaEcjR5morWRgjKwcT=36sRDBwPMwf-a-b4eg@mail.gmail.com>
+
+These insets are gorgeous and I'd be happy to use the patch even if it
+wouldn't be accepted into the main project. However, there are some
+bugs/unusual behavior:
+* background fills up with black artifacts if not using
+enable_alpha_channel from patch #1 in conjunction with a compositing
+manager. Even then, compton's shadows seem to trigger the same
+behavior: http://i.imgur.com/Q0MiK.png
+* clicking on the background focuses the whole workspace
+
+On Sun, Nov 18, 2012 at 11:56 AM, Kevin Murphy <kemurphy.cmu at gmail.com> wrote:
+> From: Kevin Murphy <kemurphy at andrew.cmu.edu>
+>
+> ---
+>  include/render.h |  2 +-
+>  src/floating.c   |  6 +++---
+>  src/manage.c     |  2 +-
+>  src/randr.c      |  2 +-
+>  src/render.c     | 35 +++++++++++++++++++++++++++--------
+>  src/tree.c       |  2 +-
+>  6 files changed, 34 insertions(+), 15 deletions(-)
+>
+> diff --git a/include/render.h b/include/render.h
+> index 0a5949f..d458bd3 100644
+> --- a/include/render.h
+> +++ b/include/render.h
+> @@ -19,6 +19,6 @@
+>   * updated in X11.
+>   *
+>   */
+> -void render_con(Con *con, bool render_fullscreen);
+> +void render_con(Con *con, bool render_fullscreen, bool already_inset);
+>
+>  #endif
+> diff --git a/src/floating.c b/src/floating.c
+> index b884a18..7347fcc 100644
+> --- a/src/floating.c
+> +++ b/src/floating.c
+> @@ -251,8 +251,8 @@ void floating_enable(Con *con, bool automatic) {
+>      TAILQ_INSERT_TAIL(&(nc->focus_head), con, focused);
+>
+>      /* render the cons to get initial window_rect correct */
+> -    render_con(nc, false);
+> -    render_con(con, false);
+> +    render_con(nc, false, true);
+> +    render_con(con, false, true);
+>
+>      if (set_focus)
+>          con_focus(con);
+> @@ -376,7 +376,7 @@ DRAGGING_CB(drag_window_callback) {
+>      con->rect.x = old_rect->x + (new_x - event->root_x);
+>      con->rect.y = old_rect->y + (new_y - event->root_y);
+>
+> -    render_con(con, false);
+> +    render_con(con, false, true);
+>      x_push_node(con);
+>      xcb_flush(conn);
+>
+> diff --git a/src/manage.c b/src/manage.c
+> index 10aa3a8..24290be 100644
+> --- a/src/manage.c
+> +++ b/src/manage.c
+> @@ -415,7 +415,7 @@ void manage_window(xcb_window_t window, xcb_get_window_attributes_cookie_t cooki
+>           * workspace at all. However, just calling render_con() on the
+>           * workspace isn?t enough either ? it needs the rect. */
+>          ws->rect = ws->parent->rect;
+> -        render_con(ws, true);
+> +        render_con(ws, true, false);
+>      }
+>      tree_render();
+>
+> diff --git a/src/randr.c b/src/randr.c
+> index 267d6e4..9b22788 100644
+> --- a/src/randr.c
+> +++ b/src/randr.c
+> @@ -351,7 +351,7 @@ void init_ws_for_output(Output *output, Con *content) {
+>           * Then, we need to work with the "content" container, since we cannot
+>           * be sure that the workspace itself was rendered at all (in case it?s
+>           * invisible, it won?t be rendered). */
+> -        render_con(workspace_out, false);
+> +        render_con(workspace_out, false, true);
+>          Con *ws_out_content = output_get_content(workspace_out);
+>
+>          Con *floating_con;
+> diff --git a/src/render.c b/src/render.c
+> index 1216241..63a9deb 100644
+> --- a/src/render.c
+> +++ b/src/render.c
+> @@ -54,7 +54,7 @@ static void render_l_output(Con *con) {
+>      if (fullscreen) {
+>          fullscreen->rect = con->rect;
+>          x_raise_con(fullscreen);
+> -        render_con(fullscreen, true);
+> +        render_con(fullscreen, true, false);
+>          return;
+>      }
+>
+> @@ -94,7 +94,7 @@ static void render_l_output(Con *con) {
+>          DLOG("child at (%d, %d) with (%d x %d)\n",
+>                  child->rect.x, child->rect.y, child->rect.width, child->rect.height);
+>          x_raise_con(child);
+> -        render_con(child, false);
+> +        render_con(child, false, child->type == CT_DOCKAREA);
+>      }
+>  }
+>
+> @@ -106,7 +106,7 @@ static void render_l_output(Con *con) {
+>   * updated in X11.
+>   *
+>   */
+> -void render_con(Con *con, bool render_fullscreen) {
+> +void render_con(Con *con, bool render_fullscreen, bool already_inset) {
+>      int children = con_num_children(con);
+>      DLOG("Rendering %snode %p / %s / layout %d / children %d\n",
+>           (render_fullscreen ? "fullscreen " : ""), con, con->name, con->layout,
+> @@ -124,6 +124,25 @@ void render_con(Con *con, bool render_fullscreen) {
+>          rect.width -= 2 * 2;
+>          rect.height -= 2 * 2;
+>      }
+> +
+> +    bool should_inset = ((con_is_leaf(con) ||
+> +                          (children > 0 &&
+> +                           (con->layout == L_STACKED ||
+> +                            con->layout == L_TABBED))) &&
+> +                         con->type != CT_FLOATING_CON &&
+> +                         con->type != CT_WORKSPACE);
+> +    if ((!already_inset && should_inset)) {
+> +        Rect inset = (Rect) {4, 4, 4 * -2, 4 * -2};
+> +        rect = rect_add(rect, inset);
+> +        if (!render_fullscreen) {
+> +            con->rect = rect_add(con->rect, inset);
+> +            if (con->window) {
+> +                con->window_rect = rect_add(con->window_rect, inset);
+> +            }
+> +        }
+> +        inset.height = 0;
+> +        con->deco_rect = rect_add(con->deco_rect, inset);
+> +    }
+>
+>      int x = rect.x;
+>      int y = rect.y;
+> @@ -191,7 +210,7 @@ void render_con(Con *con, bool render_fullscreen) {
+>      if (fullscreen) {
+>          fullscreen->rect = rect;
+>          x_raise_con(fullscreen);
+> -        render_con(fullscreen, true);
+> +        render_con(fullscreen, true, false);
+>          return;
+>      }
+>
+> @@ -231,7 +250,7 @@ void render_con(Con *con, bool render_fullscreen) {
+>      } else if (con->type == CT_ROOT) {
+>          Con *output;
+>          TAILQ_FOREACH(output, &(con->nodes_head), nodes) {
+> -            render_con(output, false);
+> +            render_con(output, false, false);
+>          }
+>
+>          /* We need to render floating windows after rendering all outputs?
+> @@ -269,7 +288,7 @@ void render_con(Con *con, bool render_fullscreen) {
+>                  DLOG("floating child at (%d,%d) with %d x %d\n",
+>                       child->rect.x, child->rect.y, child->rect.width, child->rect.height);
+>                  x_raise_con(child);
+> -                render_con(child, false);
+> +                render_con(child, false, true);
+>              }
+>          }
+>
+> @@ -365,7 +384,7 @@ void render_con(Con *con, bool render_fullscreen) {
+>          DLOG("child at (%d, %d) with (%d x %d)\n",
+>                  child->rect.x, child->rect.y, child->rect.width, child->rect.height);
+>          x_raise_con(child);
+> -        render_con(child, false);
+> +        render_con(child, false, should_inset || already_inset);
+>          i++;
+>      }
+>
+> @@ -378,7 +397,7 @@ void render_con(Con *con, bool render_fullscreen) {
+>               * that we have a non-leaf-container inside the stack. In that
+>               * case, the children of the non-leaf-container need to be raised
+>               * aswell. */
+> -            render_con(child, false);
+> +            render_con(child, false, true);
+>          }
+>
+>          if (children != 1)
+> diff --git a/src/tree.c b/src/tree.c
+> index 7a5fb9f..12d3b9d 100644
+> --- a/src/tree.c
+> +++ b/src/tree.c
+> @@ -474,7 +474,7 @@ void tree_render(void) {
+>      mark_unmapped(croot);
+>      croot->mapped = true;
+>
+> -    render_con(croot, false);
+> +    render_con(croot, false, false);
+>
+>      x_push_changes(croot);
+>      DLOG("-- END RENDERING --\n");
+> --
+> 1.8.0
+>
+
+From lgunsch at gmail.com  Mon Nov 19 20:21:54 2012
+From: lgunsch at gmail.com (Lewis Gunsch)
+Date: Mon, 19 Nov 2012 12:21:54 -0700
+Subject: [i3] [PATCH 5/5] Added window insets (similar to herbstluftwm)
+In-Reply-To: <CAD_zNMC-2zO38qaEcjR5morWRgjKwcT=36sRDBwPMwf-a-b4eg@mail.gmail.com>
+References: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+ <1353236215-32206-6-git-send-email-kemurphy.cmu@gmail.com>
+ <CAD_zNMC-2zO38qaEcjR5morWRgjKwcT=36sRDBwPMwf-a-b4eg@mail.gmail.com>
+Message-ID: <CACBHMbFhGngzoUkw-6+3nO06o1z_HmV375rMvWHZb1-+Sdtt-A@mail.gmail.com>
+
+Hi,
+
+I think I have a similar issue where the left and right screen edges start
+out as gray, and if I click and move the mouse the gray border descends and
+leaves black behind.
+
+Also, is that wide gap between the window borders suppose to be there? Or
+am I not understanding something here?
+
+Cheers,
+~Lewis
+
+
+On Sun, Nov 18, 2012 at 6:12 AM, Sebastian Ullrich <sebasti at nullri.ch>wrote:
+
+> These insets are gorgeous and I'd be happy to use the patch even if it
+> wouldn't be accepted into the main project. However, there are some
+> bugs/unusual behavior:
+> * background fills up with black artifacts if not using
+> enable_alpha_channel from patch #1 in conjunction with a compositing
+> manager. Even then, compton's shadows seem to trigger the same
+> behavior: http://i.imgur.com/Q0MiK.png
+> * clicking on the background focuses the whole workspace
+>
+> On Sun, Nov 18, 2012 at 11:56 AM, Kevin Murphy <kemurphy.cmu at gmail.com>
+> wrote:
+> > From: Kevin Murphy <kemurphy at andrew.cmu.edu>
+> >
+> > ---
+> >  include/render.h |  2 +-
+> >  src/floating.c   |  6 +++---
+> >  src/manage.c     |  2 +-
+> >  src/randr.c      |  2 +-
+> >  src/render.c     | 35 +++++++++++++++++++++++++++--------
+> >  src/tree.c       |  2 +-
+> >  6 files changed, 34 insertions(+), 15 deletions(-)
+> >
+> > diff --git a/include/render.h b/include/render.h
+> > index 0a5949f..d458bd3 100644
+> > --- a/include/render.h
+> > +++ b/include/render.h
+> > @@ -19,6 +19,6 @@
+> >   * updated in X11.
+> >   *
+> >   */
+> > -void render_con(Con *con, bool render_fullscreen);
+> > +void render_con(Con *con, bool render_fullscreen, bool already_inset);
+> >
+> >  #endif
+> > diff --git a/src/floating.c b/src/floating.c
+> > index b884a18..7347fcc 100644
+> > --- a/src/floating.c
+> > +++ b/src/floating.c
+> > @@ -251,8 +251,8 @@ void floating_enable(Con *con, bool automatic) {
+> >      TAILQ_INSERT_TAIL(&(nc->focus_head), con, focused);
+> >
+> >      /* render the cons to get initial window_rect correct */
+> > -    render_con(nc, false);
+> > -    render_con(con, false);
+> > +    render_con(nc, false, true);
+> > +    render_con(con, false, true);
+> >
+> >      if (set_focus)
+> >          con_focus(con);
+> > @@ -376,7 +376,7 @@ DRAGGING_CB(drag_window_callback) {
+> >      con->rect.x = old_rect->x + (new_x - event->root_x);
+> >      con->rect.y = old_rect->y + (new_y - event->root_y);
+> >
+> > -    render_con(con, false);
+> > +    render_con(con, false, true);
+> >      x_push_node(con);
+> >      xcb_flush(conn);
+> >
+> > diff --git a/src/manage.c b/src/manage.c
+> > index 10aa3a8..24290be 100644
+> > --- a/src/manage.c
+> > +++ b/src/manage.c
+> > @@ -415,7 +415,7 @@ void manage_window(xcb_window_t window,
+> xcb_get_window_attributes_cookie_t cooki
+> >           * workspace at all. However, just calling render_con() on the
+> >           * workspace isn?t enough either ? it needs the rect. */
+> >          ws->rect = ws->parent->rect;
+> > -        render_con(ws, true);
+> > +        render_con(ws, true, false);
+> >      }
+> >      tree_render();
+> >
+> > diff --git a/src/randr.c b/src/randr.c
+> > index 267d6e4..9b22788 100644
+> > --- a/src/randr.c
+> > +++ b/src/randr.c
+> > @@ -351,7 +351,7 @@ void init_ws_for_output(Output *output, Con
+> *content) {
+> >           * Then, we need to work with the "content" container, since we
+> cannot
+> >           * be sure that the workspace itself was rendered at all (in
+> case it?s
+> >           * invisible, it won?t be rendered). */
+> > -        render_con(workspace_out, false);
+> > +        render_con(workspace_out, false, true);
+> >          Con *ws_out_content = output_get_content(workspace_out);
+> >
+> >          Con *floating_con;
+> > diff --git a/src/render.c b/src/render.c
+> > index 1216241..63a9deb 100644
+> > --- a/src/render.c
+> > +++ b/src/render.c
+> > @@ -54,7 +54,7 @@ static void render_l_output(Con *con) {
+> >      if (fullscreen) {
+> >          fullscreen->rect = con->rect;
+> >          x_raise_con(fullscreen);
+> > -        render_con(fullscreen, true);
+> > +        render_con(fullscreen, true, false);
+> >          return;
+> >      }
+> >
+> > @@ -94,7 +94,7 @@ static void render_l_output(Con *con) {
+> >          DLOG("child at (%d, %d) with (%d x %d)\n",
+> >                  child->rect.x, child->rect.y, child->rect.width,
+> child->rect.height);
+> >          x_raise_con(child);
+> > -        render_con(child, false);
+> > +        render_con(child, false, child->type == CT_DOCKAREA);
+> >      }
+> >  }
+> >
+> > @@ -106,7 +106,7 @@ static void render_l_output(Con *con) {
+> >   * updated in X11.
+> >   *
+> >   */
+> > -void render_con(Con *con, bool render_fullscreen) {
+> > +void render_con(Con *con, bool render_fullscreen, bool already_inset) {
+> >      int children = con_num_children(con);
+> >      DLOG("Rendering %snode %p / %s / layout %d / children %d\n",
+> >           (render_fullscreen ? "fullscreen " : ""), con, con->name,
+> con->layout,
+> > @@ -124,6 +124,25 @@ void render_con(Con *con, bool render_fullscreen) {
+> >          rect.width -= 2 * 2;
+> >          rect.height -= 2 * 2;
+> >      }
+> > +
+> > +    bool should_inset = ((con_is_leaf(con) ||
+> > +                          (children > 0 &&
+> > +                           (con->layout == L_STACKED ||
+> > +                            con->layout == L_TABBED))) &&
+> > +                         con->type != CT_FLOATING_CON &&
+> > +                         con->type != CT_WORKSPACE);
+> > +    if ((!already_inset && should_inset)) {
+> > +        Rect inset = (Rect) {4, 4, 4 * -2, 4 * -2};
+> > +        rect = rect_add(rect, inset);
+> > +        if (!render_fullscreen) {
+> > +            con->rect = rect_add(con->rect, inset);
+> > +            if (con->window) {
+> > +                con->window_rect = rect_add(con->window_rect, inset);
+> > +            }
+> > +        }
+> > +        inset.height = 0;
+> > +        con->deco_rect = rect_add(con->deco_rect, inset);
+> > +    }
+> >
+> >      int x = rect.x;
+> >      int y = rect.y;
+> > @@ -191,7 +210,7 @@ void render_con(Con *con, bool render_fullscreen) {
+> >      if (fullscreen) {
+> >          fullscreen->rect = rect;
+> >          x_raise_con(fullscreen);
+> > -        render_con(fullscreen, true);
+> > +        render_con(fullscreen, true, false);
+> >          return;
+> >      }
+> >
+> > @@ -231,7 +250,7 @@ void render_con(Con *con, bool render_fullscreen) {
+> >      } else if (con->type == CT_ROOT) {
+> >          Con *output;
+> >          TAILQ_FOREACH(output, &(con->nodes_head), nodes) {
+> > -            render_con(output, false);
+> > +            render_con(output, false, false);
+> >          }
+> >
+> >          /* We need to render floating windows after rendering all
+> outputs?
+> > @@ -269,7 +288,7 @@ void render_con(Con *con, bool render_fullscreen) {
+> >                  DLOG("floating child at (%d,%d) with %d x %d\n",
+> >                       child->rect.x, child->rect.y, child->rect.width,
+> child->rect.height);
+> >                  x_raise_con(child);
+> > -                render_con(child, false);
+> > +                render_con(child, false, true);
+> >              }
+> >          }
+> >
+> > @@ -365,7 +384,7 @@ void render_con(Con *con, bool render_fullscreen) {
+> >          DLOG("child at (%d, %d) with (%d x %d)\n",
+> >                  child->rect.x, child->rect.y, child->rect.width,
+> child->rect.height);
+> >          x_raise_con(child);
+> > -        render_con(child, false);
+> > +        render_con(child, false, should_inset || already_inset);
+> >          i++;
+> >      }
+> >
+> > @@ -378,7 +397,7 @@ void render_con(Con *con, bool render_fullscreen) {
+> >               * that we have a non-leaf-container inside the stack. In
+> that
+> >               * case, the children of the non-leaf-container need to be
+> raised
+> >               * aswell. */
+> > -            render_con(child, false);
+> > +            render_con(child, false, true);
+> >          }
+> >
+> >          if (children != 1)
+> > diff --git a/src/tree.c b/src/tree.c
+> > index 7a5fb9f..12d3b9d 100644
+> > --- a/src/tree.c
+> > +++ b/src/tree.c
+> > @@ -474,7 +474,7 @@ void tree_render(void) {
+> >      mark_unmapped(croot);
+> >      croot->mapped = true;
+> >
+> > -    render_con(croot, false);
+> > +    render_con(croot, false, false);
+> >
+> >      x_push_changes(croot);
+> >      DLOG("-- END RENDERING --\n");
+> > --
+> > 1.8.0
+> >
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121119/4764fa7e/attachment.html>
+
+From kemurphy.cmu at gmail.com  Mon Nov 19 21:52:22 2012
+From: kemurphy.cmu at gmail.com (Kevin Murphy)
+Date: Mon, 19 Nov 2012 15:52:22 -0500
+Subject: [i3] [PATCH 5/5] Added window insets (similar to herbstluftwm)
+In-Reply-To: <CACBHMbFhGngzoUkw-6+3nO06o1z_HmV375rMvWHZb1-+Sdtt-A@mail.gmail.com>
+References: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+ <1353236215-32206-6-git-send-email-kemurphy.cmu@gmail.com>
+ <CAD_zNMC-2zO38qaEcjR5morWRgjKwcT=36sRDBwPMwf-a-b4eg@mail.gmail.com>
+ <CACBHMbFhGngzoUkw-6+3nO06o1z_HmV375rMvWHZb1-+Sdtt-A@mail.gmail.com>
+Message-ID: <CC7BCC77-41C4-4E47-8DB1-4813251E6FB3@gmail.com>
+
+Hi Lewis,
+
+Those gaps are what this patch does :). Thanks for confirmation of the bug, I'll investigate more later.
+
+Thanks,
+Kevin
+
+On Nov 19, 2012, at 2:21 PM, Lewis Gunsch <lgunsch at gmail.com> wrote:
+
+> Hi,
+> 
+> I think I have a similar issue where the left and right screen edges start out as gray, and if I click and move the mouse the gray border descends and leaves black behind.
+> 
+> Also, is that wide gap between the window borders suppose to be there?  Or am I not understanding something here?
+> 
+> Cheers,
+> ~Lewis
+> 
+> 
+> On Sun, Nov 18, 2012 at 6:12 AM, Sebastian Ullrich <sebasti at nullri.ch> wrote:
+> These insets are gorgeous and I'd be happy to use the patch even if it
+> wouldn't be accepted into the main project. However, there are some
+> bugs/unusual behavior:
+> * background fills up with black artifacts if not using
+> enable_alpha_channel from patch #1 in conjunction with a compositing
+> manager. Even then, compton's shadows seem to trigger the same
+> behavior: http://i.imgur.com/Q0MiK.png
+> * clicking on the background focuses the whole workspace
+> 
+> On Sun, Nov 18, 2012 at 11:56 AM, Kevin Murphy <kemurphy.cmu at gmail.com> wrote:
+> > From: Kevin Murphy <kemurphy at andrew.cmu.edu>
+> >
+> > ---
+> >  include/render.h |  2 +-
+> >  src/floating.c   |  6 +++---
+> >  src/manage.c     |  2 +-
+> >  src/randr.c      |  2 +-
+> >  src/render.c     | 35 +++++++++++++++++++++++++++--------
+> >  src/tree.c       |  2 +-
+> >  6 files changed, 34 insertions(+), 15 deletions(-)
+> >
+> > diff --git a/include/render.h b/include/render.h
+> > index 0a5949f..d458bd3 100644
+> > --- a/include/render.h
+> > +++ b/include/render.h
+> > @@ -19,6 +19,6 @@
+> >   * updated in X11.
+> >   *
+> >   */
+> > -void render_con(Con *con, bool render_fullscreen);
+> > +void render_con(Con *con, bool render_fullscreen, bool already_inset);
+> >
+> >  #endif
+> > diff --git a/src/floating.c b/src/floating.c
+> > index b884a18..7347fcc 100644
+> > --- a/src/floating.c
+> > +++ b/src/floating.c
+> > @@ -251,8 +251,8 @@ void floating_enable(Con *con, bool automatic) {
+> >      TAILQ_INSERT_TAIL(&(nc->focus_head), con, focused);
+> >
+> >      /* render the cons to get initial window_rect correct */
+> > -    render_con(nc, false);
+> > -    render_con(con, false);
+> > +    render_con(nc, false, true);
+> > +    render_con(con, false, true);
+> >
+> >      if (set_focus)
+> >          con_focus(con);
+> > @@ -376,7 +376,7 @@ DRAGGING_CB(drag_window_callback) {
+> >      con->rect.x = old_rect->x + (new_x - event->root_x);
+> >      con->rect.y = old_rect->y + (new_y - event->root_y);
+> >
+> > -    render_con(con, false);
+> > +    render_con(con, false, true);
+> >      x_push_node(con);
+> >      xcb_flush(conn);
+> >
+> > diff --git a/src/manage.c b/src/manage.c
+> > index 10aa3a8..24290be 100644
+> > --- a/src/manage.c
+> > +++ b/src/manage.c
+> > @@ -415,7 +415,7 @@ void manage_window(xcb_window_t window, xcb_get_window_attributes_cookie_t cooki
+> >           * workspace at all. However, just calling render_con() on the
+> >           * workspace isn?t enough either ? it needs the rect. */
+> >          ws->rect = ws->parent->rect;
+> > -        render_con(ws, true);
+> > +        render_con(ws, true, false);
+> >      }
+> >      tree_render();
+> >
+> > diff --git a/src/randr.c b/src/randr.c
+> > index 267d6e4..9b22788 100644
+> > --- a/src/randr.c
+> > +++ b/src/randr.c
+> > @@ -351,7 +351,7 @@ void init_ws_for_output(Output *output, Con *content) {
+> >           * Then, we need to work with the "content" container, since we cannot
+> >           * be sure that the workspace itself was rendered at all (in case it?s
+> >           * invisible, it won?t be rendered). */
+> > -        render_con(workspace_out, false);
+> > +        render_con(workspace_out, false, true);
+> >          Con *ws_out_content = output_get_content(workspace_out);
+> >
+> >          Con *floating_con;
+> > diff --git a/src/render.c b/src/render.c
+> > index 1216241..63a9deb 100644
+> > --- a/src/render.c
+> > +++ b/src/render.c
+> > @@ -54,7 +54,7 @@ static void render_l_output(Con *con) {
+> >      if (fullscreen) {
+> >          fullscreen->rect = con->rect;
+> >          x_raise_con(fullscreen);
+> > -        render_con(fullscreen, true);
+> > +        render_con(fullscreen, true, false);
+> >          return;
+> >      }
+> >
+> > @@ -94,7 +94,7 @@ static void render_l_output(Con *con) {
+> >          DLOG("child at (%d, %d) with (%d x %d)\n",
+> >                  child->rect.x, child->rect.y, child->rect.width, child->rect.height);
+> >          x_raise_con(child);
+> > -        render_con(child, false);
+> > +        render_con(child, false, child->type == CT_DOCKAREA);
+> >      }
+> >  }
+> >
+> > @@ -106,7 +106,7 @@ static void render_l_output(Con *con) {
+> >   * updated in X11.
+> >   *
+> >   */
+> > -void render_con(Con *con, bool render_fullscreen) {
+> > +void render_con(Con *con, bool render_fullscreen, bool already_inset) {
+> >      int children = con_num_children(con);
+> >      DLOG("Rendering %snode %p / %s / layout %d / children %d\n",
+> >           (render_fullscreen ? "fullscreen " : ""), con, con->name, con->layout,
+> > @@ -124,6 +124,25 @@ void render_con(Con *con, bool render_fullscreen) {
+> >          rect.width -= 2 * 2;
+> >          rect.height -= 2 * 2;
+> >      }
+> > +
+> > +    bool should_inset = ((con_is_leaf(con) ||
+> > +                          (children > 0 &&
+> > +                           (con->layout == L_STACKED ||
+> > +                            con->layout == L_TABBED))) &&
+> > +                         con->type != CT_FLOATING_CON &&
+> > +                         con->type != CT_WORKSPACE);
+> > +    if ((!already_inset && should_inset)) {
+> > +        Rect inset = (Rect) {4, 4, 4 * -2, 4 * -2};
+> > +        rect = rect_add(rect, inset);
+> > +        if (!render_fullscreen) {
+> > +            con->rect = rect_add(con->rect, inset);
+> > +            if (con->window) {
+> > +                con->window_rect = rect_add(con->window_rect, inset);
+> > +            }
+> > +        }
+> > +        inset.height = 0;
+> > +        con->deco_rect = rect_add(con->deco_rect, inset);
+> > +    }
+> >
+> >      int x = rect.x;
+> >      int y = rect.y;
+> > @@ -191,7 +210,7 @@ void render_con(Con *con, bool render_fullscreen) {
+> >      if (fullscreen) {
+> >          fullscreen->rect = rect;
+> >          x_raise_con(fullscreen);
+> > -        render_con(fullscreen, true);
+> > +        render_con(fullscreen, true, false);
+> >          return;
+> >      }
+> >
+> > @@ -231,7 +250,7 @@ void render_con(Con *con, bool render_fullscreen) {
+> >      } else if (con->type == CT_ROOT) {
+> >          Con *output;
+> >          TAILQ_FOREACH(output, &(con->nodes_head), nodes) {
+> > -            render_con(output, false);
+> > +            render_con(output, false, false);
+> >          }
+> >
+> >          /* We need to render floating windows after rendering all outputs?
+> > @@ -269,7 +288,7 @@ void render_con(Con *con, bool render_fullscreen) {
+> >                  DLOG("floating child at (%d,%d) with %d x %d\n",
+> >                       child->rect.x, child->rect.y, child->rect.width, child->rect.height);
+> >                  x_raise_con(child);
+> > -                render_con(child, false);
+> > +                render_con(child, false, true);
+> >              }
+> >          }
+> >
+> > @@ -365,7 +384,7 @@ void render_con(Con *con, bool render_fullscreen) {
+> >          DLOG("child at (%d, %d) with (%d x %d)\n",
+> >                  child->rect.x, child->rect.y, child->rect.width, child->rect.height);
+> >          x_raise_con(child);
+> > -        render_con(child, false);
+> > +        render_con(child, false, should_inset || already_inset);
+> >          i++;
+> >      }
+> >
+> > @@ -378,7 +397,7 @@ void render_con(Con *con, bool render_fullscreen) {
+> >               * that we have a non-leaf-container inside the stack. In that
+> >               * case, the children of the non-leaf-container need to be raised
+> >               * aswell. */
+> > -            render_con(child, false);
+> > +            render_con(child, false, true);
+> >          }
+> >
+> >          if (children != 1)
+> > diff --git a/src/tree.c b/src/tree.c
+> > index 7a5fb9f..12d3b9d 100644
+> > --- a/src/tree.c
+> > +++ b/src/tree.c
+> > @@ -474,7 +474,7 @@ void tree_render(void) {
+> >      mark_unmapped(croot);
+> >      croot->mapped = true;
+> >
+> > -    render_con(croot, false);
+> > +    render_con(croot, false, false);
+> >
+> >      x_push_changes(croot);
+> >      DLOG("-- END RENDERING --\n");
+> > --
+> > 1.8.0
+> >
+> 
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121119/9f7282ac/attachment-0001.html>
+
+From michael at i3wm.org  Tue Nov 20 09:28:17 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 20 Nov 2012 09:28:17 +0100
+Subject: [i3] [PATCH 2/5] Added "focus" IPC message/event.
+In-Reply-To: <1353236215-32206-3-git-send-email-kemurphy.cmu@gmail.com>
+References: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+ <1353236215-32206-3-git-send-email-kemurphy.cmu@gmail.com>
+Message-ID: <x6fw448yqm.fsf@midna.zekjur.net>
+
+Hi Kevin,
+
+Kevin Murphy <kemurphy.cmu at gmail.com> writes:
+> +/** Request the id and title of the focused window */
+> +#define I3_IPC_MESSAGE_TYPE_GET_FOCUS           8
+I?d prefer this to be "GET_FOCUSED", just because getting the x11 focus
+is a trivial thing to do already for which you wouldn?t need window
+manager support.
+
+> +    ipc_send_event("focus", I3_IPC_EVENT_FOCUS,
+> "{\"change\":\"window\"}");
+Is there a reason why you don?t include the properties you send in
+GET_FOCUS replies right here? You could avoid one extra round-trip (and
+race conditions!) with that.
+
+> +    if (con == focused)
+> +        ipc_send_event("focus", I3_IPC_EVENT_FOCUS,
+> "{\"change\":\"title\"}");
+Same here.
+
+> +    y(map_open);
+> +
+> +    ystr("id");
+> +    if (focused->window != NULL) {
+> +        y(integer, focused->window->id);
+> +    } else {
+> +        y(integer, focused->frame);
+> +    }
+> +
+> +    ystr("title");
+> +    if (focused->window && focused->window->name)
+> +        ystr(i3string_as_utf8(focused->window->name));
+> +    else if (focused->type != CT_WORKSPACE && focused->name)
+> +        ystr(focused->name);
+> +    else
+> +        ystr("");
+> +
+> +    y(map_close);
+Is there a reason to not use dump_node? Actually, is there a reason to
+not use the GET_TREE ipc request and then filter for the focused node
+(which is trivial)? It includes the same properties.
+
+I think the event part of this is rather nice, but the request/reply is
+unnecessary. You might want to have a look at
+workspace.c:ipc_send_workspace_focus_event to see how other events
+include the entire sub-tree. Using this technique would lead to a more
+consistent IPC interface than your suggestion.
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Tue Nov 20 09:29:11 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 20 Nov 2012 09:29:11 +0100
+Subject: [i3] [PATCH 3/5] Show title of focused window in i3bar
+In-Reply-To: <1353236215-32206-4-git-send-email-kemurphy.cmu@gmail.com>
+References: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+ <1353236215-32206-4-git-send-email-kemurphy.cmu@gmail.com>
+Message-ID: <x6d2z88yp4.fsf@midna.zekjur.net>
+
+Hi Kevin,
+
+Thanks for your patch. I will not merge it, since it doesn?t fit the i3
+look & feel. We want window titles to appear over the corresponding
+window or not at all, if you turn them off.
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Tue Nov 20 09:30:12 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 20 Nov 2012 09:30:12 +0100
+Subject: [i3] [PATCH 4/5] Alignment fixes for i3bar
+In-Reply-To: <CAMO0NGZBahoPUvafZ18q0_nd4dhpivGYuWpFroo4BVqM=Lf=HA@mail.gmail.com>
+References: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+ <1353236215-32206-5-git-send-email-kemurphy.cmu@gmail.com>
+ <CAMO0NGZBahoPUvafZ18q0_nd4dhpivGYuWpFroo4BVqM=Lf=HA@mail.gmail.com>
+Message-ID: <x6a9uc8ynf.fsf@midna.zekjur.net>
+
+Hi Kevin,
+
+Kevin Murphy <kemurphy.cmu at gmail.com> writes:
+> This patch fixes vertical text alignment between the workspace labels,
+> window title, and status line, and horizontal spacing between the window
+> title and status line in i3bar.
+Can you amend that in your patch and re-send it please?
+
+@fernandotcl: Can you have a look at the following changes please?
+
+> On Sun, Nov 18, 2012 at 5:56 AM, Kevin Murphy <kemurphy.cmu at gmail.com>wrote:
+>
+>> From: Kevin Murphy <kemurphy at andrew.cmu.edu>
+>>
+>> ---
+>>  i3bar/src/xcb.c | 6 +++---
+>>  1 file changed, 3 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/i3bar/src/xcb.c b/i3bar/src/xcb.c
+>> index c20ff37..983d5ad 100644
+>> --- a/i3bar/src/xcb.c
+>> +++ b/i3bar/src/xcb.c
+>> @@ -130,7 +130,7 @@ void refresh_statusline(void) {
+>>          block->width = predict_text_width(block->full_text);
+>>          /* If this is not the last block, add some pixels for a
+>> separator. */
+>>          if (TAILQ_NEXT(block, blocks) != NULL)
+>> -            block->width += 9;
+>> +            block->width += 10;
+>>          statusline_width += block->width;
+>>      }
+>>
+>> @@ -141,7 +141,7 @@ void refresh_statusline(void) {
+>>          realloc_sl_buffer();
+>>
+>>      /* Clear the statusline pixmap. */
+>> -    xcb_rectangle_t rect = { 0, 0, root_screen->width_in_pixels,
+>> font.height };
+>> +    xcb_rectangle_t rect = { 0, 0, root_screen->width_in_pixels,
+>> font.height + 4 };
+>>      xcb_poly_fill_rectangle(xcb_connection, statusline_pm,
+>> statusline_clear, 1, &rect);
+>>
+>>      /* Draw the text of each block. */
+>> @@ -1576,7 +1576,7 @@ void draw_bars(bool unhide) {
+>>                            outputs_walk->buffer,
+>>                            outputs_walk->bargc,
+>>                            MAX(0, (int16_t)(statusline_width -
+>> outputs_walk->rect.w + 4)), 0,
+>> -                          MAX(0, (int16_t)(outputs_walk->rect.w -
+>> statusline_width - traypx - 4)), 3,
+>> +                          MAX(0, (int16_t)(outputs_walk->rect.w -
+>> statusline_width - traypx - 4)), 2,
+>>                            MIN(outputs_walk->rect.w - traypx - 4,
+>> statusline_width), font.height);
+>>          }
+>>
+>> --
+>> 1.8.0
+>>
+>>
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Tue Nov 20 09:31:34 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 20 Nov 2012 09:31:34 +0100
+Subject: [i3] [PATCH 5/5] Added window insets (similar to herbstluftwm)
+In-Reply-To: <CAMO0NGba-XF6tXXSfO6_5wdubjvJQKo3DiAgPRQ3spC+g8HSzg@mail.gmail.com>
+References: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+ <1353236215-32206-6-git-send-email-kemurphy.cmu@gmail.com>
+ <CAMO0NGba-XF6tXXSfO6_5wdubjvJQKo3DiAgPRQ3spC+g8HSzg@mail.gmail.com>
+Message-ID: <x67gpg8yl5.fsf@midna.zekjur.net>
+
+Hi Kevin,
+
+Kevin Murphy <kemurphy.cmu at gmail.com> writes:
+> Here are what the inset windows look like:
+> http://i.imgur.com/lfZU2.png
+Thanks for this patch, but I also won?t merge it. i3 uses all your
+screen and that is part of the look & feel. This patch would lead to
+more code complexity, rendering and code paths, possible bugs and
+unwanted behavior, way too many different options and customization
+possibilities.
+
+-- 
+Best regards,
+Michael
+
+From andi at geekosphere.org  Tue Nov 20 09:59:53 2012
+From: andi at geekosphere.org (Andreas Herz)
+Date: Tue, 20 Nov 2012 09:59:53 +0100
+Subject: [i3] [PATCH 3/5] Show title of focused window in i3bar
+In-Reply-To: <x6d2z88yp4.fsf@midna.zekjur.net>
+References: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+ <1353236215-32206-4-git-send-email-kemurphy.cmu@gmail.com>
+ <x6d2z88yp4.fsf@midna.zekjur.net>
+Message-ID: <20121120085953.GB22533@workstation>
+
+On 20/11/12 at 09:29, Michael Stapelberg wrote:
+> Thanks for your patch. I will not merge it, since it doesn?t fit the i3
+> look & feel. We want window titles to appear over the corresponding
+> window or not at all, if you turn them off.
+
+Not even as optional feature? i don't need it that much but i think it
+was nice if you want to save space but in the i3bar there is enough
+space.
+
+-- 
+Andreas Herz
+
+From am at sic-software.com  Tue Nov 20 10:09:34 2012
+From: am at sic-software.com (Aaron Mueller)
+Date: Tue, 20 Nov 2012 10:09:34 +0100
+Subject: [i3] [PATCH 3/5] Show title of focused window in i3bar
+In-Reply-To: <20121120085953.GB22533@workstation>
+References: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+ <1353236215-32206-4-git-send-email-kemurphy.cmu@gmail.com>
+ <x6d2z88yp4.fsf@midna.zekjur.net> <20121120085953.GB22533@workstation>
+Message-ID: <50AB48CE.2040204@sic-software.com>
+
+On 11/20/2012 09:59 AM, Andreas Herz wrote:
+> On 20/11/12 at 09:29, Michael Stapelberg wrote:
+>> Thanks for your patch. I will not merge it, since it doesn?t fit the i3
+>> look & feel. We want window titles to appear over the corresponding
+>> window or not at all, if you turn them off.
+> 
+> Not even as optional feature? i don't need it that much but i think it
+> was nice if you want to save space but in the i3bar there is enough
+> space.
+
+My i3Bar looks like this (not much space left on the right screen):
+http://i.imgur.com/34jUZ.png
+
+A feature which I love to see is a marker with a number of windows on
+every workspace so I can better 'guess' whats in there.
+
+  Aaron
+
+
+From kemurphy.cmu at gmail.com  Tue Nov 20 10:34:12 2012
+From: kemurphy.cmu at gmail.com (Kevin Murphy)
+Date: Tue, 20 Nov 2012 04:34:12 -0500
+Subject: [i3] [PATCH 3/5] Show title of focused window in i3bar
+In-Reply-To: <50AB48CE.2040204@sic-software.com>
+References: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+ <1353236215-32206-4-git-send-email-kemurphy.cmu@gmail.com>
+ <x6d2z88yp4.fsf@midna.zekjur.net>
+ <20121120085953.GB22533@workstation>
+ <50AB48CE.2040204@sic-software.com>
+Message-ID: <CAMO0NGbMneOSsp1BP9X+qf7fsadjd0di5d+jyXveXGCSFZbQnw@mail.gmail.com>
+
+Yeah, so this one is less visual and more utility.  I want to know what the
+active window is called because the highlights don't always catch my eye,
+but I'd like to save vertical screen space by not including title bars, and
+there is plenty of unused space in the workspace bar.  I wonder how that
+doesn't fit the i3 philosophy?
+
+Thanks,
+Kevin
+
+On Tue, Nov 20, 2012 at 4:09 AM, Aaron Mueller <am at sic-software.com> wrote:
+
+> On 11/20/2012 09:59 AM, Andreas Herz wrote:
+> > On 20/11/12 at 09:29, Michael Stapelberg wrote:
+> >> Thanks for your patch. I will not merge it, since it doesn?t fit the i3
+> >> look & feel. We want window titles to appear over the corresponding
+> >> window or not at all, if you turn them off.
+> >
+> > Not even as optional feature? i don't need it that much but i think it
+> > was nice if you want to save space but in the i3bar there is enough
+> > space.
+>
+> My i3Bar looks like this (not much space left on the right screen):
+> http://i.imgur.com/34jUZ.png
+>
+> A feature which I love to see is a marker with a number of windows on
+> every workspace so I can better 'guess' whats in there.
+>
+>   Aaron
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121120/4bfc7469/attachment.html>
+
+From kemurphy.cmu at gmail.com  Tue Nov 20 10:37:28 2012
+From: kemurphy.cmu at gmail.com (Kevin Murphy)
+Date: Tue, 20 Nov 2012 04:37:28 -0500
+Subject: [i3] [PATCH 2/5] Added "focus" IPC message/event.
+In-Reply-To: <x6fw448yqm.fsf@midna.zekjur.net>
+References: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+ <1353236215-32206-3-git-send-email-kemurphy.cmu@gmail.com>
+ <x6fw448yqm.fsf@midna.zekjur.net>
+Message-ID: <CAMO0NGYatqRG0G38JEwfFLD-1hTk4Tv0_Xp1A6ZG7Y3GOQzqtQ@mail.gmail.com>
+
+I figured there was a better way to do this, thanks for the suggestions :)
+ I submitted these more for comments than for "please merge as is" anyway,
+so that's helpful.  I'll play with it more when I get some spare time in a
+couple weeks.
+
+Thanks,
+Kevin
+
+On Tue, Nov 20, 2012 at 3:28 AM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Kevin,
+>
+> Kevin Murphy <kemurphy.cmu at gmail.com> writes:
+> > +/** Request the id and title of the focused window */
+> > +#define I3_IPC_MESSAGE_TYPE_GET_FOCUS           8
+> I?d prefer this to be "GET_FOCUSED", just because getting the x11 focus
+> is a trivial thing to do already for which you wouldn?t need window
+> manager support.
+>
+> > +    ipc_send_event("focus", I3_IPC_EVENT_FOCUS,
+> > "{\"change\":\"window\"}");
+> Is there a reason why you don?t include the properties you send in
+> GET_FOCUS replies right here? You could avoid one extra round-trip (and
+> race conditions!) with that.
+>
+> > +    if (con == focused)
+> > +        ipc_send_event("focus", I3_IPC_EVENT_FOCUS,
+> > "{\"change\":\"title\"}");
+> Same here.
+>
+> > +    y(map_open);
+> > +
+> > +    ystr("id");
+> > +    if (focused->window != NULL) {
+> > +        y(integer, focused->window->id);
+> > +    } else {
+> > +        y(integer, focused->frame);
+> > +    }
+> > +
+> > +    ystr("title");
+> > +    if (focused->window && focused->window->name)
+> > +        ystr(i3string_as_utf8(focused->window->name));
+> > +    else if (focused->type != CT_WORKSPACE && focused->name)
+> > +        ystr(focused->name);
+> > +    else
+> > +        ystr("");
+> > +
+> > +    y(map_close);
+> Is there a reason to not use dump_node? Actually, is there a reason to
+> not use the GET_TREE ipc request and then filter for the focused node
+> (which is trivial)? It includes the same properties.
+>
+> I think the event part of this is rather nice, but the request/reply is
+> unnecessary. You might want to have a look at
+> workspace.c:ipc_send_workspace_focus_event to see how other events
+> include the entire sub-tree. Using this technique would lead to a more
+> consistent IPC interface than your suggestion.
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121120/9eefda89/attachment-0001.html>
+
+From kemurphy.cmu at gmail.com  Tue Nov 20 10:41:42 2012
+From: kemurphy.cmu at gmail.com (Kevin Murphy)
+Date: Tue, 20 Nov 2012 04:41:42 -0500
+Subject: [i3] [PATCH 5/5] Added window insets (similar to herbstluftwm)
+In-Reply-To: <x67gpg8yl5.fsf@midna.zekjur.net>
+References: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+ <1353236215-32206-6-git-send-email-kemurphy.cmu@gmail.com>
+ <CAMO0NGba-XF6tXXSfO6_5wdubjvJQKo3DiAgPRQ3spC+g8HSzg@mail.gmail.com>
+ <x67gpg8yl5.fsf@midna.zekjur.net>
+Message-ID: <CAMO0NGYWAYetDuF2E0RpVPP+9VsXG-dboGCnnThqoipWpzYoYw@mail.gmail.com>
+
+That's fair.  Oh well, it's buggy anyway :)
+
+On Tue, Nov 20, 2012 at 3:31 AM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Kevin,
+>
+> Kevin Murphy <kemurphy.cmu at gmail.com> writes:
+> > Here are what the inset windows look like:
+> > http://i.imgur.com/lfZU2.png
+> Thanks for this patch, but I also won?t merge it. i3 uses all your
+> screen and that is part of the look & feel. This patch would lead to
+> more code complexity, rendering and code paths, possible bugs and
+> unwanted behavior, way too many different options and customization
+> possibilities.
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121120/2ca30535/attachment.html>
+
+From kemurphy.cmu at gmail.com  Tue Nov 20 10:42:41 2012
+From: kemurphy.cmu at gmail.com (Kevin Murphy)
+Date: Tue, 20 Nov 2012 04:42:41 -0500
+Subject: [i3] [PATCH 4/5] Alignment fixes for i3bar
+In-Reply-To: <CAMO0NGbQ02mMCo6iRkX1f6=+Gqh9NtGLQsdBLmXec_OUTEPhrA@mail.gmail.com>
+References: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+ <1353236215-32206-5-git-send-email-kemurphy.cmu@gmail.com>
+ <CAMO0NGZBahoPUvafZ18q0_nd4dhpivGYuWpFroo4BVqM=Lf=HA@mail.gmail.com>
+ <x6a9uc8ynf.fsf@midna.zekjur.net>
+ <CAMO0NGbQ02mMCo6iRkX1f6=+Gqh9NtGLQsdBLmXec_OUTEPhrA@mail.gmail.com>
+Message-ID: <CAMO0NGZOCYOS-VU3b5F2rj6HLRebtT9B30HOeJp3HOb663y1Kw@mail.gmail.com>
+
+Missed the reply-all button :)
+
+On Tue, Nov 20, 2012 at 4:39 AM, Kevin Murphy <kemurphy.cmu at gmail.com>wrote:
+
+> Sure thing.  I'll also rebase it without the window title patch below it,
+> for the time being. :)
+>
+> Thanks,
+> Kevin
+>
+>
+> On Tue, Nov 20, 2012 at 3:30 AM, Michael Stapelberg <michael at i3wm.org>wrote:
+>
+>> Hi Kevin,
+>>
+>> Kevin Murphy <kemurphy.cmu at gmail.com> writes:
+>> > This patch fixes vertical text alignment between the workspace labels,
+>> > window title, and status line, and horizontal spacing between the window
+>> > title and status line in i3bar.
+>> Can you amend that in your patch and re-send it please?
+>>
+>> @fernandotcl: Can you have a look at the following changes please?
+>>
+>> > On Sun, Nov 18, 2012 at 5:56 AM, Kevin Murphy <kemurphy.cmu at gmail.com
+>> >wrote:
+>> >
+>> >> From: Kevin Murphy <kemurphy at andrew.cmu.edu>
+>> >>
+>> >> ---
+>> >>  i3bar/src/xcb.c | 6 +++---
+>> >>  1 file changed, 3 insertions(+), 3 deletions(-)
+>> >>
+>> >> diff --git a/i3bar/src/xcb.c b/i3bar/src/xcb.c
+>> >> index c20ff37..983d5ad 100644
+>> >> --- a/i3bar/src/xcb.c
+>> >> +++ b/i3bar/src/xcb.c
+>> >> @@ -130,7 +130,7 @@ void refresh_statusline(void) {
+>> >>          block->width = predict_text_width(block->full_text);
+>> >>          /* If this is not the last block, add some pixels for a
+>> >> separator. */
+>> >>          if (TAILQ_NEXT(block, blocks) != NULL)
+>> >> -            block->width += 9;
+>> >> +            block->width += 10;
+>> >>          statusline_width += block->width;
+>> >>      }
+>> >>
+>> >> @@ -141,7 +141,7 @@ void refresh_statusline(void) {
+>> >>          realloc_sl_buffer();
+>> >>
+>> >>      /* Clear the statusline pixmap. */
+>> >> -    xcb_rectangle_t rect = { 0, 0, root_screen->width_in_pixels,
+>> >> font.height };
+>> >> +    xcb_rectangle_t rect = { 0, 0, root_screen->width_in_pixels,
+>> >> font.height + 4 };
+>> >>      xcb_poly_fill_rectangle(xcb_connection, statusline_pm,
+>> >> statusline_clear, 1, &rect);
+>> >>
+>> >>      /* Draw the text of each block. */
+>> >> @@ -1576,7 +1576,7 @@ void draw_bars(bool unhide) {
+>> >>                            outputs_walk->buffer,
+>> >>                            outputs_walk->bargc,
+>> >>                            MAX(0, (int16_t)(statusline_width -
+>> >> outputs_walk->rect.w + 4)), 0,
+>> >> -                          MAX(0, (int16_t)(outputs_walk->rect.w -
+>> >> statusline_width - traypx - 4)), 3,
+>> >> +                          MAX(0, (int16_t)(outputs_walk->rect.w -
+>> >> statusline_width - traypx - 4)), 2,
+>> >>                            MIN(outputs_walk->rect.w - traypx - 4,
+>> >> statusline_width), font.height);
+>> >>          }
+>> >>
+>> >> --
+>> >> 1.8.0
+>> >>
+>> >>
+>>
+>> --
+>> Best regards,
+>> Michael
+>>
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121120/e4fd32a6/attachment.html>
+
+From michael at i3wm.org  Tue Nov 20 11:51:22 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 20 Nov 2012 11:51:22 +0100
+Subject: [i3] [PATCH 3/5] Show title of focused window in i3bar
+In-Reply-To: <CAMO0NGbMneOSsp1BP9X+qf7fsadjd0di5d+jyXveXGCSFZbQnw@mail.gmail.com>
+References: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+ <1353236215-32206-4-git-send-email-kemurphy.cmu@gmail.com>
+ <x6d2z88yp4.fsf@midna.zekjur.net> <20121120085953.GB22533@workstation>
+ <50AB48CE.2040204@sic-software.com>
+ <CAMO0NGbMneOSsp1BP9X+qf7fsadjd0di5d+jyXveXGCSFZbQnw@mail.gmail.com>
+Message-ID: <x6txsky2c5.fsf@midna.zekjur.net>
+
+Hi Kevin,
+
+Kevin Murphy <kemurphy.cmu at gmail.com> writes:
+> but I'd like to save vertical screen space by not including title bars, and
+> there is plenty of unused space in the workspace bar.  I wonder how that
+> doesn't fit the i3 philosophy?
+Well, the philosophy is that title bars are either important to you
+(then you display them) or not (then you don?t display them).
+
+Please don?t misinterpret our desire to save space. We don?t want to
+save space in every possible situation in any possible way.
+
+-- 
+Best regards,
+Michael
+
+From fernandotcl at i3wm.org  Tue Nov 20 18:25:36 2012
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Tue, 20 Nov 2012 15:25:36 -0200
+Subject: [i3] [PATCH 4/5] Alignment fixes for i3bar
+In-Reply-To: <x6a9uc8ynf.fsf@midna.zekjur.net>
+References: <1353236215-32206-1-git-send-email-kemurphy.cmu@gmail.com>
+ <1353236215-32206-5-git-send-email-kemurphy.cmu@gmail.com>
+ <CAMO0NGZBahoPUvafZ18q0_nd4dhpivGYuWpFroo4BVqM=Lf=HA@mail.gmail.com>
+ <x6a9uc8ynf.fsf@midna.zekjur.net>
+Message-ID: <CANVYNa_Z8cUQgJqn9yxnJXwQ5G7Tf+0DLOCp7nX98AYEpMMSMw@mail.gmail.com>
+
+On Tue, Nov 20, 2012 at 6:30 AM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> >> @@ -130,7 +130,7 @@ void refresh_statusline(void) {
+> >>          block->width = predict_text_width(block->full_text);
+> >>          /* If this is not the last block, add some pixels for a
+> >> separator. */
+> >>          if (TAILQ_NEXT(block, blocks) != NULL)
+> >> -            block->width += 9;
+> >> +            block->width += 10;
+> >>          statusline_width += block->width;
+> >>      }
+>
+
+I don't use JSON input, so I can't really tell whether or not this the
+separator was visually misaligned. This looks correct to me, though, since
+we're using a 5px padding before the separator, and this means the
+separator should be placed in the middle.
+
+
+> >>
+> >> @@ -141,7 +141,7 @@ void refresh_statusline(void) {
+> >>          realloc_sl_buffer();
+> >>
+> >>      /* Clear the statusline pixmap. */
+> >> -    xcb_rectangle_t rect = { 0, 0, root_screen->width_in_pixels,
+> >> font.height };
+> >> +    xcb_rectangle_t rect = { 0, 0, root_screen->width_in_pixels,
+> >> font.height + 4 };
+> >>      xcb_poly_fill_rectangle(xcb_connection, statusline_pm,
+> >> statusline_clear, 1, &rect);
+>
+
+Not sure why that's needed, since we shouldn't be drawing past font.height.
+Am I missing something?
+
+
+> >>
+> >>      /* Draw the text of each block. */
+> >> @@ -1576,7 +1576,7 @@ void draw_bars(bool unhide) {
+> >>                            outputs_walk->buffer,
+> >>                            outputs_walk->bargc,
+> >>                            MAX(0, (int16_t)(statusline_width -
+> >> outputs_walk->rect.w + 4)), 0,
+> >> -                          MAX(0, (int16_t)(outputs_walk->rect.w -
+> >> statusline_width - traypx - 4)), 3,
+> >> +                          MAX(0, (int16_t)(outputs_walk->rect.w -
+> >> statusline_width - traypx - 4)), 2,
+> >>                            MIN(outputs_walk->rect.w - traypx - 4,
+> >> statusline_width), font.height);
+> >>          }
+>
+
+I didn't try this patch, but this makes sense to me. The status line
+alignment seems to be off-by-one, I believe this would fix that. What I'd
+like to see is the workspace buttons text being aligned with the status
+text as well. It seems to be off by one or two pixels at the moment.
+
+Regards,
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121120/79eacbd5/attachment.html>
+
+From michael.barabanov at gmail.com  Tue Nov 20 20:42:12 2012
+From: michael.barabanov at gmail.com (Michael Barabanov)
+Date: Tue, 20 Nov 2012 11:42:12 -0800
+Subject: [i3] restricting mouse cursor to one monitor
+Message-ID: <k8gmei$3ki$1@ger.gmane.org>
+
+Hi,
+
+In the multi-monitor (xrandr) setup, would would it take to restrict the 
+mouse cursor to the current workspace only? I'd like to make monitor 
+switching explicit via $mod-1, $mod-2 etc.
+
+Thanks,
+Michael.
+
+
+From emikulic at gmail.com  Sat Nov 24 06:09:22 2012
+From: emikulic at gmail.com (Emil Mikulic)
+Date: Sat, 24 Nov 2012 16:09:22 +1100
+Subject: [i3] [PATCH] Fix memory leaks in config_parser.
+Message-ID: <CA+bNT69mrtExGuxZ=+HKUxikCw1fhz9Zz9dCvZJSpkq=+87dsg@mail.gmail.com>
+
+I'm running the 'next' branch and found these with valgrind.  Attached
+patch.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121124/8bafd4b5/attachment.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Fix-memory-leaks-in-config_parser.patch
+Type: application/octet-stream
+Size: 2572 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121124/8bafd4b5/attachment.obj>
+
+From michael at i3wm.org  Sat Nov 24 17:40:58 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 24 Nov 2012 17:40:58 +0100
+Subject: [i3] [PATCH] Fix memory leaks in config_parser.
+In-Reply-To: <CA+bNT69mrtExGuxZ=+HKUxikCw1fhz9Zz9dCvZJSpkq=+87dsg@mail.gmail.com>
+References: <CA+bNT69mrtExGuxZ=+HKUxikCw1fhz9Zz9dCvZJSpkq=+87dsg@mail.gmail.com>
+Message-ID: <x6txsf54yt.fsf@midna.zekjur.net>
+
+Hi Emil,
+
+Emil Mikulic <emikulic at gmail.com> writes:
+> I'm running the 'next' branch and found these with valgrind.  Attached
+> patch.
+Thanks, this is applied.
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Mon Nov 26 23:19:40 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 26 Nov 2012 23:19:40 +0100
+Subject: [i3] Screencast on containers and the tree data structure
+Message-ID: <x6624s3t37.fsf@midna.zekjur.net>
+
+Hi,
+
+there is a new screencast on containers and the tree data structure:
+http://youtu.be/AWA8Pl57UBY
+
+-- 
+Best regards,
+Michael
+
+From brian.grossman+i3-discuss at gmail.com  Tue Nov 27 21:08:57 2012
+From: brian.grossman+i3-discuss at gmail.com (Brian Grossman)
+Date: Tue, 27 Nov 2012 13:08:57 -0700
+Subject: [i3] Screencast on containers and the tree data structure
+In-Reply-To: <x6624s3t37.fsf@midna.zekjur.net>
+References: <x6624s3t37.fsf@midna.zekjur.net>
+Message-ID: <CAPUwkJKhPB9SFiaLDNcFe6Zv65=6tBRGh-U+XRzrxBssPAZ22A@mail.gmail.com>
+
+Nice.  What are you using to display the tree structure?
+
+Brian
+
+On Mon, Nov 26, 2012 at 3:19 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi,
+>
+> there is a new screencast on containers and the tree data structure:
+> http://youtu.be/AWA8Pl57UBY
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121127/b594512a/attachment.html>
+
+From michael at i3wm.org  Tue Nov 27 22:09:43 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 27 Nov 2012 22:09:43 +0100
+Subject: [i3] Screencast on containers and the tree data structure
+In-Reply-To: <CAPUwkJKhPB9SFiaLDNcFe6Zv65=6tBRGh-U+XRzrxBssPAZ22A@mail.gmail.com>
+References: <x6624s3t37.fsf@midna.zekjur.net>
+ <CAPUwkJKhPB9SFiaLDNcFe6Zv65=6tBRGh-U+XRzrxBssPAZ22A@mail.gmail.com>
+Message-ID: <x6r4ne3g88.fsf@midna.zekjur.net>
+
+Hi Brian,
+
+Brian Grossman <brian.grossman+i3-discuss at gmail.com> writes:
+> Nice.  What are you using to display the tree structure?
+I am using the dump-asy program which you can find in i3?s contrib/
+folder. It renders the tree starting from a specific node (root, or a
+workspace, for exapmle) using asymptote, which in turn uses LaTeX.
+
+In my i3 config, I used this:
+
+    bindsym Mod1+x exec --no-startup-id ~/i3/contrib/dump-asy.pl 3
+    for_window [class="GV"] floating enable, border none
+
+
+-- 
+Best regards,
+Michael
+
+From mateusz at loskot.net  Wed Nov 28 00:29:03 2012
+From: mateusz at loskot.net (Mateusz Loskot)
+Date: Tue, 27 Nov 2012 23:29:03 +0000
+Subject: [i3] Screencast on containers and the tree data structure
+In-Reply-To: <x6624s3t37.fsf@midna.zekjur.net>
+References: <x6624s3t37.fsf@midna.zekjur.net>
+Message-ID: <CABUeae94RXYPCesawHUmeYKWaDO2j1MR_7RFx_svaHFFn8SEfQ@mail.gmail.com>
+
+On 26 November 2012 22:19, Michael Stapelberg <michael at i3wm.org> wrote:
+
+> Hi,
+>
+> there is a new screencast on containers and the tree data structure:
+> http://youtu.be/AWA8Pl57UBY
+>
+>
+Thanks Michael for the effort, this is really cool stuff!
+
+Best regards,
+--
+Mateusz Loskot, http://mateusz.loskot.net
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121127/d8ea6f00/attachment.html>
+

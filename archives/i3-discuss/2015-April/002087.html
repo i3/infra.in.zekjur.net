@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] window assigned workspace and high cpu usage
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20window%20assigned%20workspace%20and%20high%20cpu%20usage&In-Reply-To=%3C20150428163743.12f5b454%40hal9000.dlsi.ua.es%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002086.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] window assigned workspace and high cpu usage</H1>
+    <B>Antonio-M. Corbi Bellot</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20window%20assigned%20workspace%20and%20high%20cpu%20usage&In-Reply-To=%3C20150428163743.12f5b454%40hal9000.dlsi.ua.es%3E"
+       TITLE="[i3] window assigned workspace and high cpu usage">antonio.corbi at ua.es
+       </A><BR>
+    <I>Tue Apr 28 16:37:43 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002086.html">[i3] window assigned workspace and high cpu usage
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2087">[ date ]</a>
+              <a href="thread.html#2087">[ thread ]</a>
+              <a href="subject.html#2087">[ subject ]</a>
+              <a href="author.html#2087">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all again,
+
+In order to add some more information about what happens when I start
+emacs and I don't change to its assigned workspace, an 'strace -p `pidof
+emacs`' repeats and repeats this kind of output:
+
+-----------------------------------------------------------
+--- SIGIO {si_signo=SIGIO, si_code=SI_KERNEL} ---
+rt_sigreturn({mask=[]})                 = 1
+recvmsg(8, {msg_name(0)=NULL, msg_iov(1)=[{&quot;\1\1\275\213\0\0\0\0\&quot;\0\300\1\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&quot;, 4096}], msg_controllen=0, msg_flags=0}, 0) = 32
+recvmsg(8, 0x7fff63453840, 0)           = -1 EAGAIN (Resource temporarily unavailable)
+recvmsg(8, 0x7fff63453840, 0)           = -1 EAGAIN (Resource temporarily unavailable)
+poll([{fd=8, events=POLLIN|POLLOUT}], 1, 4294967295) = 1 ([{fd=8, revents=POLLOUT}])
+writev(8, [{&quot;+\1\1\0&quot;, 4}, {NULL, 0}, {&quot;&quot;, 0}], 3) = 4
+poll([{fd=8, events=POLLIN}], 1, 4294967295) = 1 ([{fd=8, revents=POLLIN}])
+--- SIGIO {si_signo=SIGIO, si_code=SI_KERNEL} ---
+rt_sigreturn({mask=[]})                 = 1
+recvmsg(8, {msg_name(0)=NULL, msg_iov(1)=[{&quot;\1\1\276\213\0\0\0\0\&quot;\0\300\1\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0&quot;, 4096}], msg_controllen=0, msg_flags=0}, 0) = 32
+recvmsg(8, 0x7fff63453870, 0)           = -1 EAGAIN (Resource temporarily unavailable)
+recvmsg(8, 0x7fff63453870, 0)           = -1 EAGAIN (Resource temporarily unavailable)
+recvmsg(8, 0x7fff634536c0, 0)           = -1 EAGAIN (Resource temporarily unavailable)
+poll([{fd=5, events=POLLIN}, {fd=7, events=POLLIN}, {fd=8, events=POLLIN}, {fd=11, events=POLLIN}], 4, 0) = 0 (Timeout)
+recvmsg(8, 0x7fff634538c0, 0)           = -1 EAGAIN (Resource temporarily unavailable)
+recvmsg(8, 0x7fff63453890, 0)           = -1 EAGAIN (Resource temporarily unavailable)
+poll([{fd=8, events=POLLIN|POLLOUT}], 1, 4294967295) = 1 ([{fd=8, revents=POLLOUT}])
+writev(8, [{&quot;+\1\1\0&quot;, 4}, {NULL, 0}, {&quot;&quot;, 0}], 3) = 4
+poll([{fd=8, events=POLLIN}], 1, 4294967295) = 1 ([{fd=8, revents=POLLIN}])
+--------------------------------------------------------------
+
+And the output of 'ls -l /proc/`pidof emacs`/fd/8' is:
+
+/proc/`pidof emacs`/fd/8 -&gt; socket:[119884]
+
+For fd=5,11 it also says socket:[something] and fd=7 says
+anon_inode:[eventfd]
+
+Antonio
+
+&gt;<i> El Tue, 28 Apr 2015 11:57:21 +0200
+</I>&gt;<i> Fabian Keil &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">freebsd-listen at fabiankeil.de</A>&gt; escribio:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; I've observed similar behaviour as a result of the i3 config line:
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; | exec --no-startup-id i3-msg 'workspace 4; exec emacs; workspace 1'
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; My workaround is to drop the &quot;workspace 1&quot;, otherwise emacs
+</I>&gt;<i> &gt; busy-loops on fd 6 (socket /tmp/.X11-unix/X0) until I switch to its
+</I>&gt;<i> &gt; workspace and wait for the window to be rendered.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I don't use chromium (not enough RAM to build it).
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Fabian
+</I>&gt;<i> 
+</I>&gt;<i> Hi Fabian!
+</I>&gt;<i> 
+</I>&gt;<i> I think that this is the behaviour I've seen with emacs and chromium.
+</I>&gt;<i> Thank's for your response...at least I'm not alone 8-)
+</I>&gt;<i> 
+</I>&gt;<i> Antonio
+</I></PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002086.html">[i3] window assigned workspace and high cpu usage
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2087">[ date ]</a>
+              <a href="thread.html#2087">[ thread ]</a>
+              <a href="subject.html#2087">[ subject ]</a>
+              <a href="author.html#2087">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

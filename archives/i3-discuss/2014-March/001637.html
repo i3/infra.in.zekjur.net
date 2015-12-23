@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [i3status] Update interval alignment glitch
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5Bi3status%5D%20Update%20interval%20alignment%20glitch&In-Reply-To=%3C5324A0AC.4060908%40hunsicker.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001636.html">
+   <LINK REL="Next"  HREF="001638.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [i3status] Update interval alignment glitch</H1>
+    <B>Marco Hunsicker</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5Bi3status%5D%20Update%20interval%20alignment%20glitch&In-Reply-To=%3C5324A0AC.4060908%40hunsicker.de%3E"
+       TITLE="[i3] [i3status] Update interval alignment glitch">i3 at hunsicker.de
+       </A><BR>
+    <I>Sat Mar 15 19:49:16 CET 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001636.html">[i3] [i3status] Update interval alignment glitch
+</A></li>
+        <LI>Next message: <A HREF="001638.html">[i3] [i3status] Update interval alignment glitch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1637">[ date ]</a>
+              <a href="thread.html#1637">[ thread ]</a>
+              <a href="subject.html#1637">[ subject ]</a>
+              <a href="author.html#1637">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Michael,
+
+&gt;&gt;<i> But it's only a compromise if I understand the intention of the minute
+</I>&gt;&gt;<i> aligning correctly.
+</I>
+&gt;<i> Why is it a compromise? What is the intention behind the minute
+</I>&gt;<i> aligning?
+</I>
+I'm not sure as no one really explained it. From Gereon's comment 
+regarding &quot;ugly numbers&quot; my guess is that the alignment should make sure 
+that the refreshes happen in a deterministic way in order to display the 
+time information in a consistent manner.
+
+05s -&gt; 10s-&gt; 15s -&gt; 20s. You never see 01s 02s 03s 11s etc.
+
+Therefore his preference to perform the alignment always, not only upon 
+a new minute.
+
+
+&gt;<i> I thought it&#8217;s to have an update at the beginning of every
+</I>&gt;<i> minute, just as we align on full seconds.
+</I>
+My thinking initially, hence my patch. But now I'm not sure anymore.
+
+
+&gt;<i> This will still be true with
+</I>&gt;<i> the proposed change. And in case people who use minute alignment don&#8217;t
+</I>&gt;<i> want to have updates during the minute, they should just not send
+</I>&gt;<i> SIGUSR1 to i3status, right?
+</I>
+A bit prohibitive to my liking as the signal is very useful and I would 
+rather find a solution that works for all use cases. But then I don't 
+know how many users find the alignment essential. I don't include 
+seconds with my clock. I could do without any alignment at all, 
+therefore my idea to inspect the time information.
+
+Personally, I'm fine with the patch. But in order to cater for all 
+needs, I would find a new configuration option worth thinking about. 
+This would enable all parties to choose the policy which makes most 
+sense to them. The new default could be to align only once, but users 
+would be able to disable alignment or enforce it always.
+
+Cheers,
+   Marco
+
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001636.html">[i3] [i3status] Update interval alignment glitch
+</A></li>
+	<LI>Next message: <A HREF="001638.html">[i3] [i3status] Update interval alignment glitch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1637">[ date ]</a>
+              <a href="thread.html#1637">[ thread ]</a>
+              <a href="subject.html#1637">[ subject ]</a>
+              <a href="author.html#1637">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

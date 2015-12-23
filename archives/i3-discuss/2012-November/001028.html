@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Arrange workspaces in two rows
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Arrange%20workspaces%20in%20two%20rows&In-Reply-To=%3CCALyUeK_bgVRObRM5DSLjq%2BGoTfHEGdGm-FLYWsEWLmFD2ZPzgQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001027.html">
+   <LINK REL="Next"  HREF="001029.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Arrange workspaces in two rows</H1>
+    <B>Vesso</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Arrange%20workspaces%20in%20two%20rows&In-Reply-To=%3CCALyUeK_bgVRObRM5DSLjq%2BGoTfHEGdGm-FLYWsEWLmFD2ZPzgQ%40mail.gmail.com%3E"
+       TITLE="[i3] Arrange workspaces in two rows">v.somlev at gmail.com
+       </A><BR>
+    <I>Wed Nov  7 15:14:35 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001027.html">[i3] Arrange workspaces in two rows
+</A></li>
+        <LI>Next message: <A HREF="001029.html">[i3] Problem with 81393c93c2810e098966fe4089f3c8ea09f9cbe6 (&quot;bugfix: fix workspace back_and_forth after displaying a scratchpad window&quot;)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1028">[ date ]</a>
+              <a href="thread.html#1028">[ thread ]</a>
+              <a href="subject.html#1028">[ subject ]</a>
+              <a href="author.html#1028">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Christian,
+
+Here is a solution I image might work. I used the same idea on Fluxbox
+to have otherwise unsupported multiple rows of workspaces.
+
+As far as I know, you can put multiple commands for one keybinding by
+separating them with commas:
+bindsym &lt;keys&gt; &lt;command1&gt;, &lt;command2&gt;, &lt;command3&gt;, etc
+I only tried with 2 commands, not sure if it works with more than two.
+Hopefully it does, since this hypothetical feature is the center of
+the solution.
+
+How does this help, you ask? Let's say you have 8 workspaces you want
+organized in 2 rows with 4 workspaces each. Check out these bindings:
+bindsym Control+Mod1+up workspace prev, workspace prev, workspace
+prev, workspace prev
+bindsym Control+Mod1+down workspace next, workspace next, workspace
+next, workspace next
+(Actually it doesn't matter which line is with prev's and which with next's)
+If you are on workspace 3 (3rd on row 1), pressing either of those key
+combos will move you to the workspace &quot;below&quot;, which the 7th one (3rd
+on row 2), since 3+4=3-4=7. (We are dealing with modulo 8 because of 8
+workspaces).
+You can apply this for 2 rows with 2 or 3 workspaces each, by
+adjusting the number of prev/next commands. Remember we are dealing
+with mod N arithmetic, where N is the total number of workspaces.
+
+Unfortunately, they will still appear linearly in the statusbar, though. :|
+
+Hope this helps!
+
+Regards
+-VS
+
+On Wed, Nov 7, 2012 at 2:32 PM, Christian Kruse &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">cjk at wwwtech.de</A>&gt; wrote:
+&gt;<i> Hey,
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Wednesday 07 November 2012 10:21:14 Marcos Moyano wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> You can do something like:
+</I>&gt;<i>
+</I>&gt;&gt;<i> bindsym Control+Mod1+Right workspace next
+</I>&gt;<i>
+</I>&gt;&gt;<i> bindsym Control+Mod1+Left workspace prev
+</I>&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> to iterate over your workspaces (this cycles: ie: from 1 to n with
+</I>&gt;<i>
+</I>&gt;&gt;<i> Ctrl+Mod1+Left). I'm not sure about the two rows thing.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I know that one, thanks. But I have to type 10 times Ctrl-Mod-Right in the
+</I>&gt;<i> worst case. With two rows it would only be 3 keystrokes in the worst case.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Greetings,
+</I>&gt;<i>
+</I>&gt;<i> CK
+</I>&gt;<i>
+</I>&gt;<i>
+</I></PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001027.html">[i3] Arrange workspaces in two rows
+</A></li>
+	<LI>Next message: <A HREF="001029.html">[i3] Problem with 81393c93c2810e098966fe4089f3c8ea09f9cbe6 (&quot;bugfix: fix workspace back_and_forth after displaying a scratchpad window&quot;)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1028">[ date ]</a>
+              <a href="thread.html#1028">[ thread ]</a>
+              <a href="subject.html#1028">[ subject ]</a>
+              <a href="author.html#1028">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

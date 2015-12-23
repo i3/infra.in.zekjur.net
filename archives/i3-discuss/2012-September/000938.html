@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] building 4.3 on RHEL 6
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20building%204.3%20on%20RHEL%206&In-Reply-To=%3CCACg2Y9vBRB2pQz%3DMAsv0pn_c5W_3NZUfMieDvuh0iGhn%3DBCzrQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000937.html">
+   <LINK REL="Next"  HREF="000942.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] building 4.3 on RHEL 6</H1>
+    <B>Marcelo Cerri</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20building%204.3%20on%20RHEL%206&In-Reply-To=%3CCACg2Y9vBRB2pQz%3DMAsv0pn_c5W_3NZUfMieDvuh0iGhn%3DBCzrQ%40mail.gmail.com%3E"
+       TITLE="[i3] building 4.3 on RHEL 6">mhcerri at gmail.com
+       </A><BR>
+    <I>Thu Sep 20 15:09:34 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000937.html">[i3] building 4.3 on RHEL 6
+</A></li>
+        <LI>Next message: <A HREF="000942.html">[i3] 2-pixel-border-mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#938">[ date ]</a>
+              <a href="thread.html#938">[ thread ]</a>
+              <a href="subject.html#938">[ subject ]</a>
+              <a href="author.html#938">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Oliver,
+
+I've compiled the latest i3 version from git (next branch) for rhel 6.3
+without any changes. Although I had to compile some deps from source. For
+example, for yajl I updated the SRPM package to 1.0.8 and rebuilt the
+package.
+
+Regards,
+Marcelo
+
+On Wed, Sep 19, 2012 at 11:18 PM, Oliver Kiddle &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">okiddle at yahoo.co.uk</A>&gt; wrote:
+
+&gt;<i> I had a few issues building the latest i3.
+</I>&gt;<i>
+</I>&gt;<i> It seems cairo has been built without xcb support or at least
+</I>&gt;<i> cairo/cairo-xcb.h was not found. I worked around this by disabling pango
+</I>&gt;<i> which is easy enough. My Debian system has a cairo-xcb.pc file so it
+</I>&gt;<i> should be possible to make that automatic if it is the most appropriate
+</I>&gt;<i> workaround.
+</I>&gt;<i>
+</I>&gt;<i> The next problem was with ev.h not being found when compiling i3-msg,
+</I>&gt;<i> i3-nagbar, i3-config-wizard and i3-input. $(LIBEV_CFLAGS) was missing
+</I>&gt;<i> from their Makefiles and ev.h is in /usr/include/libev (it presumably
+</I>&gt;<i> works by accident on Debian because there it is just /usr/include/ev.h).
+</I>&gt;<i> However, it looks to me like these #includes are superfluous and the
+</I>&gt;<i> correct fix is simply to remove them as per the patch below.
+</I>&gt;<i>
+</I>&gt;<i> Finally, the trickiest problem is that yajl_get_bytes_consumed() was
+</I>&gt;<i> introduced with yajl 1.0.8 and RHEL 6 includes yajl 1.0.7. The relevant
+</I>&gt;<i> call was introduced in commit e53405c2 and it seemed fairly safe to
+</I>&gt;<i> apply that whole change in reverse.
+</I>&gt;<i>
+</I>&gt;<i> Oliver
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120920/09847bf0/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120920/09847bf0/attachment.html</A>&gt;
+</PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000937.html">[i3] building 4.3 on RHEL 6
+</A></li>
+	<LI>Next message: <A HREF="000942.html">[i3] 2-pixel-border-mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#938">[ date ]</a>
+              <a href="thread.html#938">[ thread ]</a>
+              <a href="subject.html#938">[ subject ]</a>
+              <a href="author.html#938">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

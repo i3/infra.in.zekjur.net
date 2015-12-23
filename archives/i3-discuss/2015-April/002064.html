@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Detecting screen locked
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Detecting%20screen%20locked&In-Reply-To=%3CCAM4Y7zxpUEjhSZ3paq%3DEvszdKbc_cdUBmZ-YvDuxHe63UQQY1A%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002062.html">
+   <LINK REL="Next"  HREF="002065.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Detecting screen locked</H1>
+    <B>Jeff Abrahamson</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Detecting%20screen%20locked&In-Reply-To=%3CCAM4Y7zxpUEjhSZ3paq%3DEvszdKbc_cdUBmZ-YvDuxHe63UQQY1A%40mail.gmail.com%3E"
+       TITLE="[i3] Detecting screen locked">jeff at purple.com
+       </A><BR>
+    <I>Fri Apr 17 09:04:11 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002062.html">[i3] New to i3wm
+</A></li>
+        <LI>Next message: <A HREF="002065.html">[i3] Detecting screen locked
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2064">[ date ]</a>
+              <a href="thread.html#2064">[ thread ]</a>
+              <a href="subject.html#2064">[ subject ]</a>
+              <a href="author.html#2064">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I have a maintenance function that ought not bother spinning the CPU if the
+screen is locked.  It checks this thus:
+
+if pidof i3lock &gt;/dev/null; then
+    ...
+
+This is i3-specific, which is sad, but not a huge problem.  What is a
+problem is that i3lock sometimes hangs around even though I think it should
+exit on unlock.  And, indeed, most of the time it does exit on unlock.
+Once in a while, I find I have one or even several i3lock processes hanging
+around.
+
+I either lock my screen explicitly
+
+bindsym $mod+Control+L exec i3lock --dpms --inactivity-timeout 10
+--color=220022
+
+or else it's done by inactivity
+
+xautolock -detectsleep \
+    -time 3 -locker &quot;i3lock --dpms --color=220022 --inactivity-timeout 10
+--nofork&quot;
+
+This question thus has two parts:
+
+1. Am I doing something wrong that I sometimes have multiple i3lock
+instances?
+2. Is there a better way to detect screen lock than pidof i3lock?
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    &lt;-- only if I'm in the UK
+
+<A HREF="http://jeff.purple.com/">http://jeff.purple.com/</A>
+<A HREF="http://blog.purple.com/jeff/">http://blog.purple.com/jeff/</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150417/161f4518/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150417/161f4518/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002062.html">[i3] New to i3wm
+</A></li>
+	<LI>Next message: <A HREF="002065.html">[i3] Detecting screen locked
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2064">[ date ]</a>
+              <a href="thread.html#2064">[ thread ]</a>
+              <a href="subject.html#2064">[ subject ]</a>
+              <a href="author.html#2064">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

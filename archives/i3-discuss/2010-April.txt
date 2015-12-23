@@ -1,0 +1,2119 @@
+From comrad.karlovich at googlemail.com  Fri Apr  2 20:32:27 2010
+From: comrad.karlovich at googlemail.com (Alexander Kalentyev)
+Date: Fri, 2 Apr 2010 20:32:27 +0200
+Subject: [i3] No respond on any keys
+Message-ID: <p2v4d89abe61004021132z4c02810er60cf4e75f89d060b@mail.gmail.com>
+
+Hello everybody!
+
+I read about i3 and have found, that it has nice ideas and decided to try.
+I didn't succeed unfortunately.
+No problem description:
+
+I have Arch Linux with i3-3.e from community. I also installed i3lock-git
+and i3status-git from aur.
+As well as dzen2-gadgets-svn (don't know whether it's correct version).
+
+Then I copied default config to ~/.config/i3
+
+In my .xinitrc I have :
+exec i3 -d all --force-xinerama -V >>~/.i3/i3log 2>&1
+
+like it was recommended for nvidia drivers. (Tried also without
+--force-xinerama)
+
+After start I see first tag, mouse is moving although I can't do anything.
+It just doesn't react on keys. I even couldn't kill it.
+As I started in a verbose mode I have logs (see attach).
+I guess I'm doing something wrong, but don't know what...
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100402/adb70f91/attachment.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: i3log
+Type: application/octet-stream
+Size: 91547 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100402/adb70f91/attachment.obj>
+
+From njs41 at pitt.edu  Sat Apr  3 02:54:52 2010
+From: njs41 at pitt.edu (Nicholas Schafer)
+Date: Fri, 02 Apr 2010 20:54:52 -0400
+Subject: [i3] No respond on any keys
+In-Reply-To: <p2v4d89abe61004021132z4c02810er60cf4e75f89d060b@mail.gmail.com>
+References: <p2v4d89abe61004021132z4c02810er60cf4e75f89d060b@mail.gmail.com>
+Message-ID: <20100403005452.GA11309@nicholas-arch.hsd1.pa.comcast.net>
+
+On Fri, Apr 02, 2010 at 08:32:27PM +0200, Alexander Kalentyev wrote:
+Hi,
+
+Just a small idea, here. I notice that you have the option in your
+~/.xinitrc for logging. Did you create that file? I did the same thing,
+and that solved it for me ;)
+
+Also, if you don't want logging, I just 
+
+"exec i3 --force-xinerama"
+
+and then I start a script that adds a background with Feh and a
+statusbar with dzen2.
+
+I'm not sure what the -d or all switches do.
+
+Sorry I couldn't help more.
+
+Nick
+
+> Hello everybody!
+> 
+> I read about i3 and have found, that it has nice ideas and decided to try.
+> I didn't succeed unfortunately.
+> No problem description:
+> 
+> I have Arch Linux with i3-3.e from community. I also installed i3lock-git
+> and i3status-git from aur.
+> As well as dzen2-gadgets-svn (don't know whether it's correct version).
+> 
+> Then I copied default config to ~/.config/i3
+> 
+> In my .xinitrc I have :
+> exec i3 -d all --force-xinerama -V >>~/.i3/i3log 2>&1
+> 
+> like it was recommended for nvidia drivers. (Tried also without
+> --force-xinerama)
+> 
+> After start I see first tag, mouse is moving although I can't do anything.
+> It just doesn't react on keys. I even couldn't kill it.
+> As I started in a verbose mode I have logs (see attach).
+> I guess I'm doing something wrong, but don't know what...
+
+
+
+
+From comrad.karlovich at googlemail.com  Sat Apr  3 08:45:22 2010
+From: comrad.karlovich at googlemail.com (Alexander Kalentyev)
+Date: Sat, 3 Apr 2010 08:45:22 +0200
+Subject: [i3] No respond on any keys
+In-Reply-To: <20100403005452.GA11309@nicholas-arch.hsd1.pa.comcast.net>
+References: <p2v4d89abe61004021132z4c02810er60cf4e75f89d060b@mail.gmail.com>
+	<20100403005452.GA11309@nicholas-arch.hsd1.pa.comcast.net>
+Message-ID: <k2j4d89abe61004022345g299990fxd785e8d67009b65@mail.gmail.com>
+
+Now I know what caused my problems. Anyway I can think about this as a bug.
+The problem is, that when I had a welcome message then after closing it
+everything hanged, otherwise it worked.
+I have found two more issues:
+1) When I used my script for starting urxvt instead of directly doing this
+everything also hanged. The script is:
+
+#!/bin/sh
+urxvtc "$@"
+if [ $? -eq 2 ]; then
+urxvtd -q -o -f
+urxvtc "$@"
+fi
+
+*note: this has no problems working with awesome.
+
+2) When I killed a firefox (from console), which was alone on the tag, the
+tag was destroyed, but again everything was hanging.
+
+2010/4/3 Nicholas Schafer <njs41 at pitt.edu>
+
+> On Fri, Apr 02, 2010 at 08:32:27PM +0200, Alexander Kalentyev wrote:
+> Hi,
+>
+> Just a small idea, here. I notice that you have the option in your
+> ~/.xinitrc for logging. Did you create that file? I did the same thing,
+> and that solved it for me ;)
+>
+> Also, if you don't want logging, I just
+>
+> "exec i3 --force-xinerama"
+>
+> and then I start a script that adds a background with Feh and a
+> statusbar with dzen2.
+>
+> I'm not sure what the -d or all switches do.
+>
+> Sorry I couldn't help more.
+>
+> Nick
+>
+> > Hello everybody!
+> >
+> > I read about i3 and have found, that it has nice ideas and decided to
+> try.
+> > I didn't succeed unfortunately.
+> > No problem description:
+> >
+> > I have Arch Linux with i3-3.e from community. I also installed i3lock-git
+> > and i3status-git from aur.
+> > As well as dzen2-gadgets-svn (don't know whether it's correct version).
+> >
+> > Then I copied default config to ~/.config/i3
+> >
+> > In my .xinitrc I have :
+> > exec i3 -d all --force-xinerama -V >>~/.i3/i3log 2>&1
+> >
+> > like it was recommended for nvidia drivers. (Tried also without
+> > --force-xinerama)
+> >
+> > After start I see first tag, mouse is moving although I can't do
+> anything.
+> > It just doesn't react on keys. I even couldn't kill it.
+> > As I started in a verbose mode I have logs (see attach).
+> > I guess I'm doing something wrong, but don't know what...
+>
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100403/53ced3f1/attachment.html>
+
+From michael+i3 at stapelberg.de  Sat Apr  3 10:52:02 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 03 Apr 2010 10:52:02 +0200
+Subject: [i3] No respond on any keys
+In-Reply-To: <p2v4d89abe61004021132z4c02810er60cf4e75f89d060b@mail.gmail.com>
+References: <p2v4d89abe61004021132z4c02810er60cf4e75f89d060b@mail.gmail.com>
+Message-ID: <1270284631-sup-3660@midna.zekjur.net>
+
+Hi Alexander,
+
+Excerpts from Alexander Kalentyev's message of 2010-04-02 20:32:27 +0200:
+> After start I see first tag, mouse is moving although I can't do anything.
+> It just doesn't react on keys. I even couldn't kill it.
+> As I started in a verbose mode I have logs (see attach).
+> I guess I'm doing something wrong, but don't know what...
+Please enable the IPC interface (if not already done) and use the following
+command (issue it on a Console or using SSH from a different computer):
+
+  i3-msg 2
+
+You should see i3 switching to the second workspace now. Now try clicking
+on the "1" in the workspace bar. It should switch back now.
+
+If this is the case, there is something wrong with your keybindings or
+keyboard or something like that?
+
+Best regards,
+Michael
+
+
+From comrad.karlovich at googlemail.com  Sat Apr  3 16:34:41 2010
+From: comrad.karlovich at googlemail.com (Alexander Kalentyev)
+Date: Sat, 3 Apr 2010 16:34:41 +0200
+Subject: [i3] No respond on any keys
+In-Reply-To: <1270284631-sup-3660@midna.zekjur.net>
+References: <p2v4d89abe61004021132z4c02810er60cf4e75f89d060b@mail.gmail.com>
+	<1270284631-sup-3660@midna.zekjur.net>
+Message-ID: <t2m4d89abe61004030734g577df799g9a581712bacc2c12@mail.gmail.com>
+
+I tried that, but i3 didn't react.
+In fact I could see (switching back to Alt-F7) only black window with mouse
+cursor on it.
+The full description of what I did:
+1) start i3
+2) see the welcome message
+3) do not touching it I try to see whether window manager reacts on keys and
+it is (OK)
+4) Click on the "ok" button on the message
+5) i3 stack (mouse is moving, but it doesn't react on keys)
+6) switch to console Ctrl-Alt-F2
+7) sending message ( i3-msg 2)
+8) switch back to X Alt-F7
+9) see black window with the mouse cursor
+
+2010/4/3 Michael Stapelberg
+<michael+i3 at stapelberg.de<michael%2Bi3 at stapelberg.de>
+>
+
+> Hi Alexander,
+>
+> Excerpts from Alexander Kalentyev's message of 2010-04-02 20:32:27 +0200:
+> > After start I see first tag, mouse is moving although I can't do
+> anything.
+> > It just doesn't react on keys. I even couldn't kill it.
+> > As I started in a verbose mode I have logs (see attach).
+> > I guess I'm doing something wrong, but don't know what...
+> Please enable the IPC interface (if not already done) and use the following
+> command (issue it on a Console or using SSH from a different computer):
+>
+>  i3-msg 2
+>
+> You should see i3 switching to the second workspace now. Now try clicking
+> on the "1" in the workspace bar. It should switch back now.
+>
+> If this is the case, there is something wrong with your keybindings or
+> keyboard or something like that?
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100403/6052d2f9/attachment.html>
+
+From debiandunes at yahoo.com  Sat Apr  3 21:10:30 2010
+From: debiandunes at yahoo.com (Will Set)
+Date: Sat, 3 Apr 2010 12:10:30 -0700 (PDT)
+Subject: [i3] i3 respond on any keys!
+In-Reply-To: <t2m4d89abe61004030734g577df799g9a581712bacc2c12@mail.gmail.com>
+Message-ID: <686290.58117.qm@web35606.mail.mud.yahoo.com>
+
+It sounds to me from "description 1-9 below" that i3 is behaving as it should..
+example: "4) Click on the "ok" button on the message"
+Do you read the message before you click ok?
+
+you don't need to click the "ok button" of the Welcome message to continue using i3.
+Futhurmore, I'd recommend you NOT click the OK button of the welcome message. 
+
+vvill
+
+--- On Sat, 4/3/10, Alexander Kalentyev <comrad.karlovich at googlemail.com> wrote:
+
+From: Alexander Kalentyev <comrad.karlovich at googlemail.com>
+Subject: Re: [i3] No respond on any keys
+To: i3-discuss at i3.zekjur.net
+Date: Saturday, April 3, 2010, 10:34 AM
+
+I tried that, but i3 didn't react.
+In fact I could see (switching back to Alt-F7) only black window with mouse cursor on it.
+The full description of what I did:
+1) start i3
+2) see the welcome message
+3) do not touching it I try to see whether window manager reacts on keys and it is (OK)
+
+4) Click on the "ok" button on the message
+5) i3 stack (mouse is moving, but it doesn't react on keys)
+6) switch to console Ctrl-Alt-F2
+7) sending message ( i3-msg 2)
+8) switch back to X Alt-F7
+
+9) see black window with the mouse cursor
+
+2010/4/3 Michael Stapelberg <michael+i3 at stapelberg.de>
+
+Hi Alexander,
+
+
+
+Excerpts from Alexander Kalentyev's message of 2010-04-02 20:32:27 +0200:
+
+> After start I see first tag, mouse is moving although I can't do anything.
+
+> It just doesn't react on keys. I even couldn't kill it.
+
+> As I started in a verbose mode I have logs (see attach).
+
+> I guess I'm doing something wrong, but don't know what...
+
+Please enable the IPC interface (if not already done) and use the following
+
+command (issue it on a Console or using SSH from a different computer):
+
+
+
+ ?i3-msg 2
+
+
+
+You should see i3 switching to the second workspace now. Now try clicking
+
+on the "1" in the workspace bar. It should switch back now.
+
+
+
+If this is the case, there is something wrong with your keybindings or
+
+keyboard or something like that?
+
+
+
+Best regards,
+
+Michael
+
+
+
+
+
+
+      
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100403/c6626044/attachment.html>
+
+From debiandunes at yahoo.com  Sat Apr  3 21:22:43 2010
+From: debiandunes at yahoo.com (Will Set)
+Date: Sat, 3 Apr 2010 12:22:43 -0700 (PDT)
+Subject: [i3] i3 debian packages
+Message-ID: <508422.56710.qm@web35601.mail.mud.yahoo.com>
+
+Hi Michael,
+            I wanted to give a bit of positive feedback on the Debian  i3 packages. I've use a few of the minimal debain window managers. I just found i3 in the repos about 2 weeks ago and it compares nicely to dwm.
+Learning the new keybindings just takes time, as I have not seen any other program that uses the exact combination of keys that i3 uses..
+
+alt-shift-spacebar
+vvill
+
+
+      
+
+
+From comrad.karlovich at googlemail.com  Sat Apr  3 21:43:47 2010
+From: comrad.karlovich at googlemail.com (Alexander Kalentyev)
+Date: Sat, 3 Apr 2010 21:43:47 +0200
+Subject: [i3] i3 respond on any keys!
+In-Reply-To: <686290.58117.qm@web35606.mail.mud.yahoo.com>
+References: <t2m4d89abe61004030734g577df799g9a581712bacc2c12@mail.gmail.com>
+	<686290.58117.qm@web35606.mail.mud.yahoo.com>
+Message-ID: <p2k4d89abe61004031243xef1d27bep8fe80c96c5754373@mail.gmail.com>
+
+"I'd recommend you NOT click the OK button of the welcome message." - Ooops.
+Yes, you are right I didn't read the message. I read a lot before, all kind
+of information what was on the web page.
+And looking through I thought, that it's all I know already.
+
+Then two other issues remain. I'll just repeat what I wrote before:
+I have found two more issues:
+1) When I used my script for starting urxvt instead of directly doing this,
+everything also hanged. The script is:
+
+#!/bin/sh
+urxvtc "$@"
+if [ $? -eq 2 ]; then
+urxvtd -q -o -f
+urxvtc "$@"
+fi
+
+*note: this has no problems working with awesome.
+
+2) When I killed a firefox (from console), which was alone on the tag, the
+tag was destroyed, but again everything was hanging.
+---
+Especially the second issue is irritating.
+
+2010/4/3 Will Set <debiandunes at yahoo.com>
+
+> It sounds to me from "description 1-9 below" that i3 is behaving as it
+> should..
+> example: "4) Click on the "ok" button on the message"
+> Do you read the message before you click ok?
+>
+> you don't need to click the "ok button" of the Welcome message to continue
+> using i3.
+> Futhurmore, I'd recommend you NOT click the OK button of the welcome
+> message.
+>
+> vvill
+>
+> --- On *Sat, 4/3/10, Alexander Kalentyev <comrad.karlovich at googlemail.com>
+> * wrote:
+>
+>
+> From: Alexander Kalentyev <comrad.karlovich at googlemail.com>
+> Subject: Re: [i3] No respond on any keys
+> To: i3-discuss at i3.zekjur.net
+> Date: Saturday, April 3, 2010, 10:34 AM
+>
+> I tried that, but i3 didn't react.
+> In fact I could see (switching back to Alt-F7) only black window with mouse
+> cursor on it.
+> The full description of what I did:
+> 1) start i3
+> 2) see the welcome message
+> 3) do not touching it I try to see whether window manager reacts on keys
+> and it is (OK)
+> 4) Click on the "ok" button on the message
+> 5) i3 stack (mouse is moving, but it doesn't react on keys)
+> 6) switch to console Ctrl-Alt-F2
+> 7) sending message ( i3-msg 2)
+> 8) switch back to X Alt-F7
+> 9) see black window with the mouse cursor
+>
+> 2010/4/3 Michael Stapelberg <michael+i3 at stapelberg.de<http://mc/compose?to=michael%2Bi3 at stapelberg.de>
+> >
+>
+>> Hi Alexander,
+>>
+>> Excerpts from Alexander Kalentyev's message of 2010-04-02 20:32:27 +0200:
+>> > After start I see first tag, mouse is moving although I can't do
+>> anything.
+>> > It just doesn't react on keys. I even couldn't kill it.
+>> > As I started in a verbose mode I have logs (see attach).
+>> > I guess I'm doing something wrong, but don't know what...
+>> Please enable the IPC interface (if not already done) and use the
+>> following
+>> command (issue it on a Console or using SSH from a different computer):
+>>
+>>  i3-msg 2
+>>
+>> You should see i3 switching to the second workspace now. Now try clicking
+>> on the "1" in the workspace bar. It should switch back now.
+>>
+>> If this is the case, there is something wrong with your keybindings or
+>> keyboard or something like that?
+>>
+>> Best regards,
+>> Michael
+>>
+>
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100403/638df16c/attachment.html>
+
+From debiandunes at yahoo.com  Sat Apr  3 22:29:52 2010
+From: debiandunes at yahoo.com (Will Set)
+Date: Sat, 3 Apr 2010 13:29:52 -0700 (PDT)
+Subject: [i3] i3 respond on any keys
+Message-ID: <724094.7524.qm@web35604.mail.mud.yahoo.com>
+
+Those issues sound to me as if they have more to do with your urxvtc script and firefox rather than i3 and you should probably ask about what is going on with them in the?arch forum.
+
+Also, the "i3 welcome message" is instructions for how to use i3....
+
+Running  minimal system is a bit harder than the point and click things..
+You're getting closer to the nuts and bolts of your computer...
+
+vvill
+
+--- On Sat, 4/3/10, Alexander Kalentyev <comrad.karlovich at googlemail.com> wrote:
+
+From: Alexander Kalentyev <comrad.karlovich at googlemail.com>
+Subject: Re: [i3] i3 respond on any keys!
+To: i3-discuss at i3.zekjur.net
+Date: Saturday, April 3, 2010, 3:43 PM
+
+"I'd recommend you NOT click the OK button of the welcome message." - Ooops.
+Yes, you are right I didn't read the message. I read a lot before, all kind of information what was on the web page.
+And looking through I
+ thought, that it's all I know already.
+
+
+
+
+Then two other issues remain. I'll just repeat what I wrote before:
+I have found two more issues:
+
+1) When I used my script for starting urxvt instead of directly doing 
+this, everything also hanged. The script is:
+
+#!/bin/sh
+urxvtc 
+"$@"
+if [ $? -eq 2 ]; then
+urxvtd -q -o -f
+urxvtc "$@"
+
+fi
+
+*note: this has no problems working with awesome.
+
+2) 
+When I killed a firefox (from console), which was alone on the tag, the 
+tag was destroyed, but again everything was hanging.
+---
+Especially the second issue is irritating.
+
+2010/4/3 Will Set <debiandunes at yahoo.com>
+
+
+
+It sounds to me from "description 1-9 below" that i3 is behaving as it should..
+example: "4) Click on the "ok" button on the message"
+
+
+
+Do you read the message before you click ok?
+
+you don't need to click the "ok button" of the Welcome message to continue using i3.
+Futhurmore, I'd recommend you NOT click the OK button of the welcome message. 
+
+
+
+
+vvill
+
+--- On Sat, 4/3/10, Alexander Kalentyev <comrad.karlovich at googlemail.com> wrote:
+
+
+
+
+From: Alexander Kalentyev <comrad.karlovich at googlemail.com>
+Subject: Re: [i3] No respond on any keys
+To: i3-discuss at i3.zekjur.net
+
+
+
+Date: Saturday, April 3, 2010, 10:34 AM
+
+I tried that, but i3 didn't react.
+In fact I could see (switching
+ back to Alt-F7) only black window with mouse cursor on it.
+The full description of what I did:
+1) start i3
+2) see the welcome message
+3) do not touching it I try to see whether window manager reacts on keys and it is (OK)
+
+
+
+
+4) Click on the "ok" button on the message
+5) i3 stack (mouse is moving, but it doesn't react on keys)
+6) switch to console Ctrl-Alt-F2
+7) sending message ( i3-msg 2)
+8) switch back to X Alt-F7
+
+
+
+
+9) see black window with the mouse cursor
+
+2010/4/3 Michael Stapelberg <michael+i3 at stapelberg.de>
+
+
+
+
+Hi Alexander,
+
+
+
+Excerpts from Alexander Kalentyev's message of 2010-04-02 20:32:27 +0200:
+
+> After start I see first tag, mouse is moving although I can't do anything.
+
+> It just doesn't react on keys. I even couldn't kill it.
+
+> As I started in a verbose mode I have logs (see attach).
+
+> I guess I'm doing something wrong, but don't know what...
+
+Please enable the IPC interface (if not already done) and use the following
+
+command (issue it on a Console or using SSH from a different computer):
+
+
+
+ ?i3-msg 2
+
+
+
+You should see i3 switching to the second workspace now. Now try clicking
+
+on the "1" in the workspace bar. It should switch back now.
+
+
+
+If this is the case, there is something wrong with your keybindings or
+
+keyboard or something like that?
+
+
+
+Best regards,
+
+Michael
+
+
+
+
+
+
+? ? ? 
+
+
+
+
+
+      
+
+
+From comrad.karlovich at googlemail.com  Sat Apr  3 23:22:32 2010
+From: comrad.karlovich at googlemail.com (Alexander Kalentyev)
+Date: Sat, 3 Apr 2010 23:22:32 +0200
+Subject: [i3] i3 respond on any keys
+In-Reply-To: <724094.7524.qm@web35604.mail.mud.yahoo.com>
+References: <724094.7524.qm@web35604.mail.mud.yahoo.com>
+Message-ID: <r2u4d89abe61004031422hd40adc15l8e02f3609c7dab3a@mail.gmail.com>
+
+"Those issues sound to me as if they have more to do with your urxvtc script
+and firefox rather than i3..."
+Absolutely not! You at do the same for example using xterm:
+1) open rxvt on 1 workspace
+2) open another workspace
+3) launch xterm with dmenu
+4) go to the workspace 1
+5) ps aux | grep xterm
+6) kill {xterm pid} and everything hangs again.
+
+Can somebody reproduce that, or I am the only one like that?
+----
+"Running  minimal system is a bit harder than the point and click things.."
+- I'm aware of that. I've used wmii, then awesome, now have found i3...
+It allows flexible layout configuration, that's the reason I like It.
+What I miss:
+1) Goto notified window. And then go back.
+2) Configuration via lua (but that's my personal taste and I think I could
+do that, right?)
+
+
+
+2010/4/3 Will Set <debiandunes at yahoo.com>
+
+> Those issues sound to me as if they have more to do with your urxvtc script
+> and firefox rather than i3 and you should probably ask about what is going
+> on with them in the arch forum.
+>
+> Also, the "i3 welcome message" is instructions for how to use i3....
+>
+> Running  minimal system is a bit harder than the point and click things..
+> You're getting closer to the nuts and bolts of your computer...
+>
+> vvill
+>
+> --- On Sat, 4/3/10, Alexander Kalentyev <comrad.karlovich at googlemail.com>
+> wrote:
+>
+> From: Alexander Kalentyev <comrad.karlovich at googlemail.com>
+> Subject: Re: [i3] i3 respond on any keys!
+> To: i3-discuss at i3.zekjur.net
+> Date: Saturday, April 3, 2010, 3:43 PM
+>
+> "I'd recommend you NOT click the OK button of the welcome message." -
+> Ooops.
+> Yes, you are right I didn't read the message. I read a lot before, all kind
+> of information what was on the web page.
+> And looking through I
+>  thought, that it's all I know already.
+>
+>
+>
+>
+> Then two other issues remain. I'll just repeat what I wrote before:
+> I have found two more issues:
+>
+> 1) When I used my script for starting urxvt instead of directly doing
+> this, everything also hanged. The script is:
+>
+> #!/bin/sh
+> urxvtc
+> "$@"
+> if [ $? -eq 2 ]; then
+> urxvtd -q -o -f
+> urxvtc "$@"
+>
+> fi
+>
+> *note: this has no problems working with awesome.
+>
+> 2)
+> When I killed a firefox (from console), which was alone on the tag, the
+> tag was destroyed, but again everything was hanging.
+> ---
+> Especially the second issue is irritating.
+>
+> 2010/4/3 Will Set <debiandunes at yahoo.com>
+>
+>
+>
+> It sounds to me from "description 1-9 below" that i3 is behaving as it
+> should..
+> example: "4) Click on the "ok" button on the message"
+>
+>
+>
+> Do you read the message before you click ok?
+>
+> you don't need to click the "ok button" of the Welcome message to continue
+> using i3.
+> Futhurmore, I'd recommend you NOT click the OK button of the welcome
+> message.
+>
+>
+>
+>
+> vvill
+>
+> --- On Sat, 4/3/10, Alexander Kalentyev <comrad.karlovich at googlemail.com>
+> wrote:
+>
+>
+>
+>
+> From: Alexander Kalentyev <comrad.karlovich at googlemail.com>
+> Subject: Re: [i3] No respond on any keys
+> To: i3-discuss at i3.zekjur.net
+>
+>
+>
+> Date: Saturday, April 3, 2010, 10:34 AM
+>
+> I tried that, but i3 didn't react.
+> In fact I could see (switching
+>  back to Alt-F7) only black window with mouse cursor on it.
+> The full description of what I did:
+> 1) start i3
+> 2) see the welcome message
+> 3) do not touching it I try to see whether window manager reacts on keys
+> and it is (OK)
+>
+>
+>
+>
+> 4) Click on the "ok" button on the message
+> 5) i3 stack (mouse is moving, but it doesn't react on keys)
+> 6) switch to console Ctrl-Alt-F2
+> 7) sending message ( i3-msg 2)
+> 8) switch back to X Alt-F7
+>
+>
+>
+>
+> 9) see black window with the mouse cursor
+>
+> 2010/4/3 Michael Stapelberg <michael+i3 at stapelberg.de<michael%2Bi3 at stapelberg.de>
+> >
+>
+>
+>
+>
+> Hi Alexander,
+>
+>
+>
+> Excerpts from Alexander Kalentyev's message of 2010-04-02 20:32:27 +0200:
+>
+> > After start I see first tag, mouse is moving although I can't do
+> anything.
+>
+> > It just doesn't react on keys. I even couldn't kill it.
+>
+> > As I started in a verbose mode I have logs (see attach).
+>
+> > I guess I'm doing something wrong, but don't know what...
+>
+> Please enable the IPC interface (if not already done) and use the following
+>
+> command (issue it on a Console or using SSH from a different computer):
+>
+>
+>
+>   i3-msg 2
+>
+>
+>
+> You should see i3 switching to the second workspace now. Now try clicking
+>
+> on the "1" in the workspace bar. It should switch back now.
+>
+>
+>
+> If this is the case, there is something wrong with your keybindings or
+>
+> keyboard or something like that?
+>
+>
+>
+> Best regards,
+>
+> Michael
+>
+>
+>
+>
+>
+>
+>
+>
+>
+>
+>
+>
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100403/0927a721/attachment.html>
+
+From comrad.karlovich at googlemail.com  Sat Apr  3 23:24:18 2010
+From: comrad.karlovich at googlemail.com (Alexander Kalentyev)
+Date: Sat, 3 Apr 2010 23:24:18 +0200
+Subject: [i3] i3 respond on any keys
+In-Reply-To: <r2u4d89abe61004031422hd40adc15l8e02f3609c7dab3a@mail.gmail.com>
+References: <724094.7524.qm@web35604.mail.mud.yahoo.com>
+	<r2u4d89abe61004031422hd40adc15l8e02f3609c7dab3a@mail.gmail.com>
+Message-ID: <u2p4d89abe61004031424t8cf503d1gf03743ec01c2f194@mail.gmail.com>
+
+Well, It's enough to kill any last window on the workspace to make i3 hang.
+
+2010/4/3 Alexander Kalentyev <comrad.karlovich at googlemail.com>
+
+> "Those issues sound to me as if they have more to do with your urxvtc
+> script and firefox rather than i3..."
+> Absolutely not! You at do the same for example using xterm:
+> 1) open rxvt on 1 workspace
+> 2) open another workspace
+> 3) launch xterm with dmenu
+> 4) go to the workspace 1
+> 5) ps aux | grep xterm
+> 6) kill {xterm pid} and everything hangs again.
+>
+> Can somebody reproduce that, or I am the only one like that?
+> ----
+> "Running  minimal system is a bit harder than the point and click things.."
+> - I'm aware of that. I've used wmii, then awesome, now have found i3...
+> It allows flexible layout configuration, that's the reason I like It.
+> What I miss:
+> 1) Goto notified window. And then go back.
+> 2) Configuration via lua (but that's my personal taste and I think I could
+> do that, right?)
+>
+>
+>
+>
+> 2010/4/3 Will Set <debiandunes at yahoo.com>
+>
+>> Those issues sound to me as if they have more to do with your urxvtc
+>> script and firefox rather than i3 and you should probably ask about what is
+>> going on with them in the arch forum.
+>>
+>> Also, the "i3 welcome message" is instructions for how to use i3....
+>>
+>> Running  minimal system is a bit harder than the point and click things..
+>> You're getting closer to the nuts and bolts of your computer...
+>>
+>> vvill
+>>
+>> --- On Sat, 4/3/10, Alexander Kalentyev <comrad.karlovich at googlemail.com>
+>> wrote:
+>>
+>> From: Alexander Kalentyev <comrad.karlovich at googlemail.com>
+>> Subject: Re: [i3] i3 respond on any keys!
+>> To: i3-discuss at i3.zekjur.net
+>> Date: Saturday, April 3, 2010, 3:43 PM
+>>
+>> "I'd recommend you NOT click the OK button of the welcome message." -
+>> Ooops.
+>> Yes, you are right I didn't read the message. I read a lot before, all
+>> kind of information what was on the web page.
+>> And looking through I
+>>  thought, that it's all I know already.
+>>
+>>
+>>
+>>
+>> Then two other issues remain. I'll just repeat what I wrote before:
+>> I have found two more issues:
+>>
+>> 1) When I used my script for starting urxvt instead of directly doing
+>> this, everything also hanged. The script is:
+>>
+>> #!/bin/sh
+>> urxvtc
+>> "$@"
+>> if [ $? -eq 2 ]; then
+>> urxvtd -q -o -f
+>> urxvtc "$@"
+>>
+>> fi
+>>
+>> *note: this has no problems working with awesome.
+>>
+>> 2)
+>> When I killed a firefox (from console), which was alone on the tag, the
+>> tag was destroyed, but again everything was hanging.
+>> ---
+>> Especially the second issue is irritating.
+>>
+>> 2010/4/3 Will Set <debiandunes at yahoo.com>
+>>
+>>
+>>
+>> It sounds to me from "description 1-9 below" that i3 is behaving as it
+>> should..
+>> example: "4) Click on the "ok" button on the message"
+>>
+>>
+>>
+>> Do you read the message before you click ok?
+>>
+>> you don't need to click the "ok button" of the Welcome message to continue
+>> using i3.
+>> Futhurmore, I'd recommend you NOT click the OK button of the welcome
+>> message.
+>>
+>>
+>>
+>>
+>> vvill
+>>
+>> --- On Sat, 4/3/10, Alexander Kalentyev <comrad.karlovich at googlemail.com>
+>> wrote:
+>>
+>>
+>>
+>>
+>> From: Alexander Kalentyev <comrad.karlovich at googlemail.com>
+>> Subject: Re: [i3] No respond on any keys
+>> To: i3-discuss at i3.zekjur.net
+>>
+>>
+>>
+>> Date: Saturday, April 3, 2010, 10:34 AM
+>>
+>> I tried that, but i3 didn't react.
+>> In fact I could see (switching
+>>  back to Alt-F7) only black window with mouse cursor on it.
+>> The full description of what I did:
+>> 1) start i3
+>> 2) see the welcome message
+>> 3) do not touching it I try to see whether window manager reacts on keys
+>> and it is (OK)
+>>
+>>
+>>
+>>
+>> 4) Click on the "ok" button on the message
+>> 5) i3 stack (mouse is moving, but it doesn't react on keys)
+>> 6) switch to console Ctrl-Alt-F2
+>> 7) sending message ( i3-msg 2)
+>> 8) switch back to X Alt-F7
+>>
+>>
+>>
+>>
+>> 9) see black window with the mouse cursor
+>>
+>> 2010/4/3 Michael Stapelberg <michael+i3 at stapelberg.de<michael%2Bi3 at stapelberg.de>
+>> >
+>>
+>>
+>>
+>>
+>> Hi Alexander,
+>>
+>>
+>>
+>> Excerpts from Alexander Kalentyev's message of 2010-04-02 20:32:27 +0200:
+>>
+>> > After start I see first tag, mouse is moving although I can't do
+>> anything.
+>>
+>> > It just doesn't react on keys. I even couldn't kill it.
+>>
+>> > As I started in a verbose mode I have logs (see attach).
+>>
+>> > I guess I'm doing something wrong, but don't know what...
+>>
+>> Please enable the IPC interface (if not already done) and use the
+>> following
+>>
+>> command (issue it on a Console or using SSH from a different computer):
+>>
+>>
+>>
+>>   i3-msg 2
+>>
+>>
+>>
+>> You should see i3 switching to the second workspace now. Now try clicking
+>>
+>> on the "1" in the workspace bar. It should switch back now.
+>>
+>>
+>>
+>> If this is the case, there is something wrong with your keybindings or
+>>
+>> keyboard or something like that?
+>>
+>>
+>>
+>> Best regards,
+>>
+>> Michael
+>>
+>>
+>>
+>>
+>>
+>>
+>>
+>>
+>>
+>>
+>>
+>>
+>>
+>>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100403/da09cfd0/attachment.html>
+
+From comrad.karlovich at googlemail.com  Sat Apr  3 23:30:48 2010
+From: comrad.karlovich at googlemail.com (Alexander Kalentyev)
+Date: Sat, 3 Apr 2010 23:30:48 +0200
+Subject: [i3] i3 respond on any keys
+In-Reply-To: <u2p4d89abe61004031424t8cf503d1gf03743ec01c2f194@mail.gmail.com>
+References: <724094.7524.qm@web35604.mail.mud.yahoo.com>
+	<r2u4d89abe61004031422hd40adc15l8e02f3609c7dab3a@mail.gmail.com>
+	<u2p4d89abe61004031424t8cf503d1gf03743ec01c2f194@mail.gmail.com>
+Message-ID: <l2j4d89abe61004031430nfc128fbfz20c5764ac1b0e165@mail.gmail.com>
+
+Once again. Any window closing produces this effect. Sorry, that I didn't
+check that thoroughly from the very beginning.
+See log in attach.
+
+2010/4/3 Alexander Kalentyev <comrad.karlovich at googlemail.com>
+
+> Well, It's enough to kill any last window on the workspace to make i3 hang.
+>
+> 2010/4/3 Alexander Kalentyev <comrad.karlovich at googlemail.com>
+>
+> "Those issues sound to me as if they have more to do with your urxvtc
+>> script and firefox rather than i3..."
+>> Absolutely not! You at do the same for example using xterm:
+>> 1) open rxvt on 1 workspace
+>> 2) open another workspace
+>> 3) launch xterm with dmenu
+>> 4) go to the workspace 1
+>> 5) ps aux | grep xterm
+>> 6) kill {xterm pid} and everything hangs again.
+>>
+>> Can somebody reproduce that, or I am the only one like that?
+>> ----
+>> "Running  minimal system is a bit harder than the point and click
+>> things.." - I'm aware of that. I've used wmii, then awesome, now have found
+>> i3...
+>> It allows flexible layout configuration, that's the reason I like It.
+>> What I miss:
+>> 1) Goto notified window. And then go back.
+>> 2) Configuration via lua (but that's my personal taste and I think I could
+>> do that, right?)
+>>
+>>
+>>
+>>
+>> 2010/4/3 Will Set <debiandunes at yahoo.com>
+>>
+>>> Those issues sound to me as if they have more to do with your urxvtc
+>>> script and firefox rather than i3 and you should probably ask about what is
+>>> going on with them in the arch forum.
+>>>
+>>> Also, the "i3 welcome message" is instructions for how to use i3....
+>>>
+>>> Running  minimal system is a bit harder than the point and click things..
+>>> You're getting closer to the nuts and bolts of your computer...
+>>>
+>>> vvill
+>>>
+>>> --- On Sat, 4/3/10, Alexander Kalentyev <comrad.karlovich at googlemail.com>
+>>> wrote:
+>>>
+>>> From: Alexander Kalentyev <comrad.karlovich at googlemail.com>
+>>> Subject: Re: [i3] i3 respond on any keys!
+>>> To: i3-discuss at i3.zekjur.net
+>>> Date: Saturday, April 3, 2010, 3:43 PM
+>>>
+>>> "I'd recommend you NOT click the OK button of the welcome message." -
+>>> Ooops.
+>>> Yes, you are right I didn't read the message. I read a lot before, all
+>>> kind of information what was on the web page.
+>>> And looking through I
+>>>  thought, that it's all I know already.
+>>>
+>>>
+>>>
+>>>
+>>> Then two other issues remain. I'll just repeat what I wrote before:
+>>> I have found two more issues:
+>>>
+>>> 1) When I used my script for starting urxvt instead of directly doing
+>>> this, everything also hanged. The script is:
+>>>
+>>> #!/bin/sh
+>>> urxvtc
+>>> "$@"
+>>> if [ $? -eq 2 ]; then
+>>> urxvtd -q -o -f
+>>> urxvtc "$@"
+>>>
+>>> fi
+>>>
+>>> *note: this has no problems working with awesome.
+>>>
+>>> 2)
+>>> When I killed a firefox (from console), which was alone on the tag, the
+>>> tag was destroyed, but again everything was hanging.
+>>> ---
+>>> Especially the second issue is irritating.
+>>>
+>>> 2010/4/3 Will Set <debiandunes at yahoo.com>
+>>>
+>>>
+>>>
+>>> It sounds to me from "description 1-9 below" that i3 is behaving as it
+>>> should..
+>>> example: "4) Click on the "ok" button on the message"
+>>>
+>>>
+>>>
+>>> Do you read the message before you click ok?
+>>>
+>>> you don't need to click the "ok button" of the Welcome message to
+>>> continue using i3.
+>>> Futhurmore, I'd recommend you NOT click the OK button of the welcome
+>>> message.
+>>>
+>>>
+>>>
+>>>
+>>> vvill
+>>>
+>>> --- On Sat, 4/3/10, Alexander Kalentyev <comrad.karlovich at googlemail.com>
+>>> wrote:
+>>>
+>>>
+>>>
+>>>
+>>> From: Alexander Kalentyev <comrad.karlovich at googlemail.com>
+>>> Subject: Re: [i3] No respond on any keys
+>>> To: i3-discuss at i3.zekjur.net
+>>>
+>>>
+>>>
+>>> Date: Saturday, April 3, 2010, 10:34 AM
+>>>
+>>> I tried that, but i3 didn't react.
+>>> In fact I could see (switching
+>>>  back to Alt-F7) only black window with mouse cursor on it.
+>>> The full description of what I did:
+>>> 1) start i3
+>>> 2) see the welcome message
+>>> 3) do not touching it I try to see whether window manager reacts on keys
+>>> and it is (OK)
+>>>
+>>>
+>>>
+>>>
+>>> 4) Click on the "ok" button on the message
+>>> 5) i3 stack (mouse is moving, but it doesn't react on keys)
+>>> 6) switch to console Ctrl-Alt-F2
+>>> 7) sending message ( i3-msg 2)
+>>> 8) switch back to X Alt-F7
+>>>
+>>>
+>>>
+>>>
+>>> 9) see black window with the mouse cursor
+>>>
+>>> 2010/4/3 Michael Stapelberg <michael+i3 at stapelberg.de<michael%2Bi3 at stapelberg.de>
+>>> >
+>>>
+>>>
+>>>
+>>>
+>>> Hi Alexander,
+>>>
+>>>
+>>>
+>>> Excerpts from Alexander Kalentyev's message of 2010-04-02 20:32:27 +0200:
+>>>
+>>> > After start I see first tag, mouse is moving although I can't do
+>>> anything.
+>>>
+>>> > It just doesn't react on keys. I even couldn't kill it.
+>>>
+>>> > As I started in a verbose mode I have logs (see attach).
+>>>
+>>> > I guess I'm doing something wrong, but don't know what...
+>>>
+>>> Please enable the IPC interface (if not already done) and use the
+>>> following
+>>>
+>>> command (issue it on a Console or using SSH from a different computer):
+>>>
+>>>
+>>>
+>>>   i3-msg 2
+>>>
+>>>
+>>>
+>>> You should see i3 switching to the second workspace now. Now try clicking
+>>>
+>>> on the "1" in the workspace bar. It should switch back now.
+>>>
+>>>
+>>>
+>>> If this is the case, there is something wrong with your keybindings or
+>>>
+>>> keyboard or something like that?
+>>>
+>>>
+>>>
+>>> Best regards,
+>>>
+>>> Michael
+>>>
+>>>
+>>>
+>>>
+>>>
+>>>
+>>>
+>>>
+>>>
+>>>
+>>>
+>>>
+>>>
+>>>
+>>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100403/b4e113e6/attachment.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: i3log.gz
+Type: application/x-gzip
+Size: 3689 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100403/b4e113e6/attachment.bin>
+
+From daniel at steenfamilies.com  Sun Apr  4 05:35:44 2010
+From: daniel at steenfamilies.com (Daniel Steen)
+Date: Sat, 03 Apr 2010 23:35:44 -0400
+Subject: [i3] No respond on any keys
+In-Reply-To: <t2m4d89abe61004030734g577df799g9a581712bacc2c12@mail.gmail.com>
+References: <p2v4d89abe61004021132z4c02810er60cf4e75f89d060b@mail.gmail.com>	<1270284631-sup-3660@midna.zekjur.net>
+	<t2m4d89abe61004030734g577df799g9a581712bacc2c12@mail.gmail.com>
+Message-ID: <4BB80910.3090409@steenfamilies.com>
+
+Alex,
+
+A few questions:
+
+1) Do you see a little bar down at the bottom with a desktop number in
+it all the way to the left?  It should be there both before and after
+you close the welcome message.
+2) what happens when you hit Alt+Enter?
+
+-Dan
+
+On 04/03/10 10:34, Alexander Kalentyev wrote:
+> I tried that, but i3 didn't react.
+> In fact I could see (switching back to Alt-F7) only black window with
+> mouse cursor on it.
+> The full description of what I did:
+> 1) start i3
+> 2) see the welcome message
+> 3) do not touching it I try to see whether window manager reacts on
+> keys and it is (OK)
+> 4) Click on the "ok" button on the message
+> 5) i3 stack (mouse is moving, but it doesn't react on keys)
+> 6) switch to console Ctrl-Alt-F2
+> 7) sending message ( i3-msg 2)
+> 8) switch back to X Alt-F7
+> 9) see black window with the mouse cursor
+>
+> 2010/4/3 Michael Stapelberg <michael+i3 at stapelberg.de
+> <mailto:michael%2Bi3 at stapelberg.de>>
+>
+>     Hi Alexander,
+>
+>     Excerpts from Alexander Kalentyev's message of 2010-04-02 20:32:27
+>     +0200:
+>     > After start I see first tag, mouse is moving although I can't do
+>     anything.
+>     > It just doesn't react on keys. I even couldn't kill it.
+>     > As I started in a verbose mode I have logs (see attach).
+>     > I guess I'm doing something wrong, but don't know what...
+>     Please enable the IPC interface (if not already done) and use the
+>     following
+>     command (issue it on a Console or using SSH from a different
+>     computer):
+>
+>      i3-msg 2
+>
+>     You should see i3 switching to the second workspace now. Now try
+>     clicking
+>     on the "1" in the workspace bar. It should switch back now.
+>
+>     If this is the case, there is something wrong with your keybindings or
+>     keyboard or something like that?
+>
+>     Best regards,
+>     Michael
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100403/68c7fba0/attachment.html>
+
+From comrad.karlovich at googlemail.com  Sun Apr  4 08:16:26 2010
+From: comrad.karlovich at googlemail.com (Alexander Kalentyev)
+Date: Sun, 4 Apr 2010 08:16:26 +0200
+Subject: [i3] No respond on any keys
+In-Reply-To: <4BB80910.3090409@steenfamilies.com>
+References: <p2v4d89abe61004021132z4c02810er60cf4e75f89d060b@mail.gmail.com>
+	<1270284631-sup-3660@midna.zekjur.net>
+	<t2m4d89abe61004030734g577df799g9a581712bacc2c12@mail.gmail.com>
+	<4BB80910.3090409@steenfamilies.com>
+Message-ID: <j2k4d89abe61004032316t961542aam627e75cb07d8bc7@mail.gmail.com>
+
+1) When i3 hangs, then after going to console and back I don't see anything.
+(Seems It's not redrawing).
+2) When it hangs, it doesn't react on anything.
+
+2010/4/4 Daniel Steen <daniel at steenfamilies.com>
+
+>  Alex,
+>
+> A few questions:
+>
+> 1) Do you see a little bar down at the bottom with a desktop number in it
+> all the way to the left?  It should be there both before and after you close
+> the welcome message.
+> 2) what happens when you hit Alt+Enter?
+>
+> -Dan
+>
+>
+> On 04/03/10 10:34, Alexander Kalentyev wrote:
+>
+> I tried that, but i3 didn't react.
+> In fact I could see (switching back to Alt-F7) only black window with mouse
+> cursor on it.
+> The full description of what I did:
+> 1) start i3
+> 2) see the welcome message
+> 3) do not touching it I try to see whether window manager reacts on keys
+> and it is (OK)
+> 4) Click on the "ok" button on the message
+> 5) i3 stack (mouse is moving, but it doesn't react on keys)
+> 6) switch to console Ctrl-Alt-F2
+> 7) sending message ( i3-msg 2)
+> 8) switch back to X Alt-F7
+> 9) see black window with the mouse cursor
+>
+> 2010/4/3 Michael Stapelberg <michael+i3 at stapelberg.de<michael%2Bi3 at stapelberg.de>
+> >
+>
+>> Hi Alexander,
+>>
+>> Excerpts from Alexander Kalentyev's message of 2010-04-02 20:32:27 +0200:
+>> > After start I see first tag, mouse is moving although I can't do
+>> anything.
+>> > It just doesn't react on keys. I even couldn't kill it.
+>> > As I started in a verbose mode I have logs (see attach).
+>> > I guess I'm doing something wrong, but don't know what...
+>>  Please enable the IPC interface (if not already done) and use the
+>> following
+>> command (issue it on a Console or using SSH from a different computer):
+>>
+>>  i3-msg 2
+>>
+>> You should see i3 switching to the second workspace now. Now try clicking
+>> on the "1" in the workspace bar. It should switch back now.
+>>
+>> If this is the case, there is something wrong with your keybindings or
+>> keyboard or something like that?
+>>
+>> Best regards,
+>> Michael
+>>
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100404/0e670f2e/attachment.html>
+
+From uli.armbruster at googlemail.com  Tue Apr  6 15:28:48 2010
+From: uli.armbruster at googlemail.com (Uli Armbruster)
+Date: Tue, 6 Apr 2010 15:28:48 +0200
+Subject: [i3] question about how to integrate a pure conky bar
+Message-ID: <20100406132848.GA23773@Archlinux>
+
+Hi guys
+
+With the new release we have this option to remove the workspace bar, see http://i3.zekjur.net/docs/userguide.html#_internal_workspace_bar which is a wonderful thing :-) Till then I used conky in combination with dzen2 to display the status bar above i3's workspace bar, which was fine, but not really my thing, I prefer a pure conky window. What I need for this is the possibility to tell i3, that it should not use the last e.g. 16 pixels on the bottom of the screen, so my conky bar can be seen all the time. In Openbox this is called "margins", I don't know if this is what this is generally called.
+
+My conky is only 1 line and it goes completely from left to right at the bottom of the screen, just so you can imagine what I intend to do here.
+
+I hope you understand what I mean. Is this possible? I looked through the whole userguide, maybe I missed this.
+
+Thnx guys!
+
+
+From michael+i3 at stapelberg.de  Tue Apr  6 15:33:46 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Tue, 06 Apr 2010 15:33:46 +0200
+Subject: [i3] question about how to integrate a pure conky bar
+In-Reply-To: <20100406132848.GA23773@Archlinux>
+References: <20100406132848.GA23773@Archlinux>
+Message-ID: <1270560689-sup-6810@midna.zekjur.net>
+
+Hi Uli,
+
+Excerpts from Uli Armbruster's message of 2010-04-06 15:28:48 +0200:
+> My conky is only 1 line and it goes completely from left to right at the
+> bottom of the screen, just so you can imagine what I intend to do here.
+i3 automatically places dock clients like you described. As far as I know,
+you can let conky set the correct hint by adding "own_window_type dock"
+to your configfile.
+
+Best regards,
+Michael
+
+
+From dcoppa at gmail.com  Tue Apr  6 15:33:18 2010
+From: dcoppa at gmail.com (David Coppa)
+Date: Tue, 6 Apr 2010 15:33:18 +0200
+Subject: [i3] question about how to integrate a pure conky bar
+In-Reply-To: <20100406132848.GA23773@Archlinux>
+References: <20100406132848.GA23773@Archlinux>
+Message-ID: <n2qa6e8c9421004060633i58ff5ddbg97afe95dd03f08af@mail.gmail.com>
+
+On Tue, Apr 6, 2010 at 3:28 PM, Uli Armbruster
+<uli.armbruster at googlemail.com> wrote:
+> Hi guys
+>
+> With the new release we have this option to remove the workspace bar, see http://i3.zekjur.net/docs/userguide.html#_internal_workspace_bar which is a wonderful thing :-) Till then I used conky in combination with dzen2 to display the status bar above i3's workspace bar, which was fine, but not really my thing, I prefer a pure conky window. What I need for this is the possibility to tell i3, that it should not use the last e.g. 16 pixels on the bottom of the screen, so my conky bar can be seen all the time. In Openbox this is called "margins", I don't know if this is what this is generally called.
+
+You can use "conky | dzen2 -dock": it should work.
+
+ciao
+david
+
+
+From uli.armbruster at googlemail.com  Tue Apr  6 17:49:06 2010
+From: uli.armbruster at googlemail.com (Uli Armbruster)
+Date: Tue, 6 Apr 2010 17:49:06 +0200
+Subject: [i3] question about how to integrate a pure conky bar
+Message-ID: <20100406154906.GC4910@Archlinux>
+
+Hi you two
+
+Thanks, both of your ways seem to do the trick, that's really nice! NOW i3 really has everything I want and behaves exactly the way I want it to. SO amazing, this is really a happy moment! :-)
+
+
+
+Just a note for those who want to do the same, here's my ~/.conkyrc
+
+background no
+use_xft yes
+xftfont Terminus:size=9
+update_interval 1.0
+total_run_times 0
+# the next two lines are very important, without them i3 won't give space for conky
+own_window yes
+own_window_type dock
+own_window_transparent yes
+double_buffer yes
+# I use the next two lines to make the conky line as thin as possible to waste as little space as possible
+border_inner_margin 0
+border_outer_margin 0
+use_spacer left
+
+TEXT
+${color #979797}mem ${color }${mem} / ${swap}${color #979797} root ${color }${fs_free /}${color #979797} home ${color }${fs_free /home}${if_mounted /media/2000GB}${color #979797} 2000GB ${color }${fs_free /media/2000GB}${endif}${if_mounted /media/1500GB}${color #979797} 1500GB ${color }${fs_free /media/1500GB}${endif}${if_mounted /media/500GB}${color #979797} 500GB ${color }${fs_free /media/500GB}${endif}${if_mounted /media/16GB}${color #979797} 16GB ${color }${fs_free /media/16GB}${endif}${if_mounted /media/4GB}${color #979797} 4GB ${color }${fs_free /media/4GB}${endif}${color #979797} hdd${color }${hddtemp /dev/sda}?C${color #979797} cpu ${color }${exec cat /proc/acpi/thermal_zone/THRC/temperature | awk {'print $2 "?C"'}} / ${color }${cpu}% / ${freq_g}GHz${color #979797} bat ${color }${battery BAT0}${if_up eth0}${color #979797} lan ${color }${downspeed eth0} / ${upspeed eth0}${endif}${if_up eth1}${color #979797} wlan ${color }${downspeed eth1} / ${upspeed eth1}${endif}${alignr 0}${color }${time %a}, ${ti
+me %x %R}
+
+
+
+Merci beaucoup!
+
+Greetz
+Army
+
+
+From comrad.karlovich at googlemail.com  Wed Apr  7 22:07:52 2010
+From: comrad.karlovich at googlemail.com (Alexander Kalentyev)
+Date: Wed, 7 Apr 2010 22:07:52 +0200
+Subject: [i3] No respond on any keys
+In-Reply-To: <1270284631-sup-3660@midna.zekjur.net>
+References: <p2v4d89abe61004021132z4c02810er60cf4e75f89d060b@mail.gmail.com>
+	<1270284631-sup-3660@midna.zekjur.net>
+Message-ID: <y2p4d89abe61004071307p535d6b5oab2dd40526e28cac@mail.gmail.com>
+
+I tried to debug i3 with gdb.
+After I closed urxvt window I've got in gdb:
+Program received signal SIGTTOU, Stopped (tty output).
+After bt I've got: src/mainx.c:596
+
+At this line is:
+ev_loop(loop, 0);
+
+Does this give an idea what's going on?
+
+
+2010/4/3 Michael Stapelberg
+<michael+i3 at stapelberg.de<michael%2Bi3 at stapelberg.de>
+>
+
+> Hi Alexander,
+>
+> Excerpts from Alexander Kalentyev's message of 2010-04-02 20:32:27 +0200:
+> > After start I see first tag, mouse is moving although I can't do
+> anything.
+> > It just doesn't react on keys. I even couldn't kill it.
+> > As I started in a verbose mode I have logs (see attach).
+> > I guess I'm doing something wrong, but don't know what...
+> Please enable the IPC interface (if not already done) and use the following
+> command (issue it on a Console or using SSH from a different computer):
+>
+>  i3-msg 2
+>
+> You should see i3 switching to the second workspace now. Now try clicking
+> on the "1" in the workspace bar. It should switch back now.
+>
+> If this is the case, there is something wrong with your keybindings or
+> keyboard or something like that?
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100407/70eed885/attachment.html>
+
+From michael+i3 at stapelberg.de  Wed Apr  7 22:21:33 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Wed, 07 Apr 2010 22:21:33 +0200
+Subject: [i3] No respond on any keys
+In-Reply-To: <y2p4d89abe61004071307p535d6b5oab2dd40526e28cac@mail.gmail.com>
+References: <p2v4d89abe61004021132z4c02810er60cf4e75f89d060b@mail.gmail.com>
+	<1270284631-sup-3660@midna.zekjur.net>
+	<y2p4d89abe61004071307p535d6b5oab2dd40526e28cac@mail.gmail.com>
+Message-ID: <1270671663-sup-9885@midna.zekjur.net>
+
+Hi Alexander,
+
+Excerpts from Alexander Kalentyev's message of 2010-04-07 22:07:52 +0200:
+> After I closed urxvt window I've got in gdb:
+> Program received signal SIGTTOU, Stopped (tty output).
+> After bt I've got: src/mainx.c:596
+Interesting. Can you try to send SIGCONT to i3 when it is stuck like that? Does
+that make it continue?
+
+Best regards,
+Michael
+
+
+From comrad.karlovich at googlemail.com  Thu Apr  8 09:40:59 2010
+From: comrad.karlovich at googlemail.com (Alexander Kalentyev)
+Date: Thu, 8 Apr 2010 09:40:59 +0200
+Subject: [i3] No respond on any keys
+In-Reply-To: <1270671663-sup-9885@midna.zekjur.net>
+References: <p2v4d89abe61004021132z4c02810er60cf4e75f89d060b@mail.gmail.com>
+	<1270284631-sup-3660@midna.zekjur.net>
+	<y2p4d89abe61004071307p535d6b5oab2dd40526e28cac@mail.gmail.com>
+	<1270671663-sup-9885@midna.zekjur.net>
+Message-ID: <l2v4d89abe61004080040h92d76623s9bcb1c30c215e58a@mail.gmail.com>
+
+I tried that. After that i3 was alive (of course until I close some window
+again), but all "old" windows were unmanageable, although I could open new
+ones and move etc. them.
+I forgot to tell, that I'm using fish shell. Don't now does it matters...
+But even if so, "awesome" works fine for me.
+
+2010/4/7 Michael Stapelberg
+<michael+i3 at stapelberg.de<michael%2Bi3 at stapelberg.de>
+>
+
+> Hi Alexander,
+>
+> Excerpts from Alexander Kalentyev's message of 2010-04-07 22:07:52 +0200:
+> > After I closed urxvt window I've got in gdb:
+> > Program received signal SIGTTOU, Stopped (tty output).
+> > After bt I've got: src/mainx.c:596
+> Interesting. Can you try to send SIGCONT to i3 when it is stuck like that?
+> Does
+> that make it continue?
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100408/43a19fc0/attachment.html>
+
+From michael+i3 at stapelberg.de  Thu Apr  8 11:12:28 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Thu, 08 Apr 2010 11:12:28 +0200
+Subject: [i3] No respond on any keys
+In-Reply-To: <l2v4d89abe61004080040h92d76623s9bcb1c30c215e58a@mail.gmail.com>
+References: <p2v4d89abe61004021132z4c02810er60cf4e75f89d060b@mail.gmail.com>
+	<1270284631-sup-3660@midna.zekjur.net>
+	<y2p4d89abe61004071307p535d6b5oab2dd40526e28cac@mail.gmail.com>
+	<1270671663-sup-9885@midna.zekjur.net>
+	<l2v4d89abe61004080040h92d76623s9bcb1c30c215e58a@mail.gmail.com>
+Message-ID: <1270717900-sup-9926@midna.zekjur.net>
+
+Hi Alexander,
+
+Excerpts from Alexander Kalentyev's message of 2010-04-08 09:40:59 +0200:
+> I forgot to tell, that I'm using fish shell. Don't now does it matters...
+Only installing and setting fish as my default shell did not trigger this
+bug for me. Can you tell us about your way of starting i3? Do you use
+.xsession? Can you send the .xsession file?
+
+Best regards,
+Michael
+
+
+From comrad.karlovich at googlemail.com  Thu Apr  8 19:59:50 2010
+From: comrad.karlovich at googlemail.com (Alexander Kalentyev)
+Date: Thu, 8 Apr 2010 19:59:50 +0200
+Subject: [i3] No respond on any keys
+In-Reply-To: <1270717900-sup-9926@midna.zekjur.net>
+References: <p2v4d89abe61004021132z4c02810er60cf4e75f89d060b@mail.gmail.com>
+	<1270284631-sup-3660@midna.zekjur.net>
+	<y2p4d89abe61004071307p535d6b5oab2dd40526e28cac@mail.gmail.com>
+	<1270671663-sup-9885@midna.zekjur.net>
+	<l2v4d89abe61004080040h92d76623s9bcb1c30c215e58a@mail.gmail.com>
+	<1270717900-sup-9926@midna.zekjur.net>
+Message-ID: <t2n4d89abe61004081059jd516e323l5058705662272f74@mail.gmail.com>
+
+Hi Michael,
+My .xinitrc looks like:
+#!/bin/sh
+exec i3 -d all -V >>~/.i3/i3log 2>&1
+
+
+2010/4/8 Michael Stapelberg
+<michael+i3 at stapelberg.de<michael%2Bi3 at stapelberg.de>
+>
+
+> Hi Alexander,
+>
+> Excerpts from Alexander Kalentyev's message of 2010-04-08 09:40:59 +0200:
+> > I forgot to tell, that I'm using fish shell. Don't now does it matters...
+> Only installing and setting fish as my default shell did not trigger this
+> bug for me. Can you tell us about your way of starting i3? Do you use
+> .xsession? Can you send the .xsession file?
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100408/d73a5108/attachment.html>
+
+From michael+i3 at stapelberg.de  Thu Apr  8 20:52:01 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Thu, 08 Apr 2010 20:52:01 +0200
+Subject: [i3] No respond on any keys
+In-Reply-To: <t2n4d89abe61004081059jd516e323l5058705662272f74@mail.gmail.com>
+References: <p2v4d89abe61004021132z4c02810er60cf4e75f89d060b@mail.gmail.com>
+	<1270284631-sup-3660@midna.zekjur.net>
+	<y2p4d89abe61004071307p535d6b5oab2dd40526e28cac@mail.gmail.com>
+	<1270671663-sup-9885@midna.zekjur.net>
+	<l2v4d89abe61004080040h92d76623s9bcb1c30c215e58a@mail.gmail.com>
+	<1270717900-sup-9926@midna.zekjur.net>
+	<t2n4d89abe61004081059jd516e323l5058705662272f74@mail.gmail.com>
+Message-ID: <1270752692-sup-6810@midna.zekjur.net>
+
+Hi Alexander,
+
+Excerpts from Alexander Kalentyev's message of 2010-04-08 19:59:50 +0200:
+> My .xinitrc looks like:
+> #!/bin/sh
+> exec i3 -d all -V >>~/.i3/i3log 2>&1
+Where is /bin/sh linked to?
+
+Best regards,
+Michael
+
+
+From comrad.karlovich at googlemail.com  Thu Apr  8 21:10:38 2010
+From: comrad.karlovich at googlemail.com (Alexander Kalentyev)
+Date: Thu, 8 Apr 2010 21:10:38 +0200
+Subject: [i3] No respond on any keys
+In-Reply-To: <1270752692-sup-6810@midna.zekjur.net>
+References: <p2v4d89abe61004021132z4c02810er60cf4e75f89d060b@mail.gmail.com>
+	<1270284631-sup-3660@midna.zekjur.net>
+	<y2p4d89abe61004071307p535d6b5oab2dd40526e28cac@mail.gmail.com>
+	<1270671663-sup-9885@midna.zekjur.net>
+	<l2v4d89abe61004080040h92d76623s9bcb1c30c215e58a@mail.gmail.com>
+	<1270717900-sup-9926@midna.zekjur.net>
+	<t2n4d89abe61004081059jd516e323l5058705662272f74@mail.gmail.com>
+	<1270752692-sup-6810@midna.zekjur.net>
+Message-ID: <h2p4d89abe61004081210hdfb7f4a3xdb062b6c77762656@mail.gmail.com>
+
+Hi Michael,
+
+2010/4/8 Michael Stapelberg
+<michael+i3 at stapelberg.de<michael%2Bi3 at stapelberg.de>
+>
+
+> Where is /bin/sh linked to?
+>
+
+bash
+
+Regards,
+Alexander
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100408/ce7560d8/attachment.html>
+
+From comrad.karlovich at googlemail.com  Fri Apr  9 21:29:23 2010
+From: comrad.karlovich at googlemail.com (Alexander Kalentyev)
+Date: Fri, 9 Apr 2010 21:29:23 +0200
+Subject: [i3] No respond on any keys
+In-Reply-To: <1270752692-sup-6810@midna.zekjur.net>
+References: <p2v4d89abe61004021132z4c02810er60cf4e75f89d060b@mail.gmail.com>
+	<1270284631-sup-3660@midna.zekjur.net>
+	<y2p4d89abe61004071307p535d6b5oab2dd40526e28cac@mail.gmail.com>
+	<1270671663-sup-9885@midna.zekjur.net>
+	<l2v4d89abe61004080040h92d76623s9bcb1c30c215e58a@mail.gmail.com>
+	<1270717900-sup-9926@midna.zekjur.net>
+	<t2n4d89abe61004081059jd516e323l5058705662272f74@mail.gmail.com>
+	<1270752692-sup-6810@midna.zekjur.net>
+Message-ID: <t2g4d89abe61004091229q9727aa6cl8733215551bcbdb3@mail.gmail.com>
+
+Hi Michael,
+Now I know where problem is.
+It's definitively fish shell. The problem seems to appear when you start i3
+using .xinitrc and have fish as your default shell.
+I still don't understand why this is happening, and why awesome for example
+is not affected by that...
+
+2010/4/8 Michael Stapelberg
+<michael+i3 at stapelberg.de<michael%2Bi3 at stapelberg.de>
+>
+
+> Hi Alexander,
+>
+> Excerpts from Alexander Kalentyev's message of 2010-04-08 19:59:50 +0200:
+> > My .xinitrc looks like:
+> > #!/bin/sh
+> > exec i3 -d all -V >>~/.i3/i3log 2>&1
+> Where is /bin/sh linked to?
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100409/7df7aca5/attachment.html>
+
+From michael+i3 at stapelberg.de  Fri Apr  9 22:05:17 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Fri, 09 Apr 2010 22:05:17 +0200
+Subject: [i3] No respond on any keys
+In-Reply-To: <t2g4d89abe61004091229q9727aa6cl8733215551bcbdb3@mail.gmail.com>
+References: <p2v4d89abe61004021132z4c02810er60cf4e75f89d060b@mail.gmail.com>
+	<1270284631-sup-3660@midna.zekjur.net>
+	<y2p4d89abe61004071307p535d6b5oab2dd40526e28cac@mail.gmail.com>
+	<1270671663-sup-9885@midna.zekjur.net>
+	<l2v4d89abe61004080040h92d76623s9bcb1c30c215e58a@mail.gmail.com>
+	<1270717900-sup-9926@midna.zekjur.net>
+	<t2n4d89abe61004081059jd516e323l5058705662272f74@mail.gmail.com>
+	<1270752692-sup-6810@midna.zekjur.net>
+	<t2g4d89abe61004091229q9727aa6cl8733215551bcbdb3@mail.gmail.com>
+Message-ID: <1270843375-sup-5674@midna.zekjur.net>
+
+Hi Alexander,
+
+Excerpts from Alexander Kalentyev's message of 2010-04-09 21:29:23 +0200:
+> It's definitively fish shell. The problem seems to appear when you start i3
+> using .xinitrc and have fish as your default shell.
+I set fish as default shell in /etc/passwd and changed my .xsession to use
+/bin/bash, so I should have the same setup as you in this respect. However, I
+still cannot reproduce the problems you are having.
+
+Can you tell me your versions of libev, xcb, xcb-util and fish?
+
+Best regards,
+Michael
+
+
+From comrad.karlovich at googlemail.com  Sat Apr 10 13:09:54 2010
+From: comrad.karlovich at googlemail.com (Alexander Kalentyev)
+Date: Sat, 10 Apr 2010 13:09:54 +0200
+Subject: [i3] No respond on any keys
+In-Reply-To: <1270843375-sup-5674@midna.zekjur.net>
+References: <p2v4d89abe61004021132z4c02810er60cf4e75f89d060b@mail.gmail.com>
+	<1270284631-sup-3660@midna.zekjur.net>
+	<y2p4d89abe61004071307p535d6b5oab2dd40526e28cac@mail.gmail.com>
+	<1270671663-sup-9885@midna.zekjur.net>
+	<l2v4d89abe61004080040h92d76623s9bcb1c30c215e58a@mail.gmail.com>
+	<1270717900-sup-9926@midna.zekjur.net>
+	<t2n4d89abe61004081059jd516e323l5058705662272f74@mail.gmail.com>
+	<1270752692-sup-6810@midna.zekjur.net>
+	<t2g4d89abe61004091229q9727aa6cl8733215551bcbdb3@mail.gmail.com>
+	<1270843375-sup-5674@midna.zekjur.net>
+Message-ID: <u2n4d89abe61004100409ne6fb32b9q63892f850ba54b35@mail.gmail.com>
+
+Hi Michael,
+
+May be the difference is, that I start i3 from shell with startx?
+Anyway:
+community/libev 3.9-1
+extra/libxcb 1.5-1
+extra/xcb-util 0.3.6-1
+community/fish 1.23.1-2
+
+Best regards,
+Alexander
+
+
+2010/4/9 Michael Stapelberg
+<michael+i3 at stapelberg.de<michael%2Bi3 at stapelberg.de>
+>
+
+> Hi Alexander,
+>
+> Excerpts from Alexander Kalentyev's message of 2010-04-09 21:29:23 +0200:
+> > It's definitively fish shell. The problem seems to appear when you start
+> i3
+> > using .xinitrc and have fish as your default shell.
+> I set fish as default shell in /etc/passwd and changed my .xsession to use
+> /bin/bash, so I should have the same setup as you in this respect. However,
+> I
+> still cannot reproduce the problems you are having.
+>
+> Can you tell me your versions of libev, xcb, xcb-util and fish?
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100410/454ea3cb/attachment.html>
+
+From debiandunes at yahoo.com  Sat Apr 10 18:58:11 2010
+From: debiandunes at yahoo.com (Will Set)
+Date: Sat, 10 Apr 2010 09:58:11 -0700 (PDT)
+Subject: [i3] i3
+In-Reply-To: <u2n4d89abe61004100409ne6fb32b9q63892f850ba54b35@mail.gmail.com>
+Message-ID: <734325.33805.qm@web35602.mail.mud.yahoo.com>
+
+It might help to make things more clear if you coulkd test for hidden files .xinitrc and .xsession in your users home directory.
+If either of these files exists? could you post the content....
+
+Also googling your startup script gave me some interesting results...
+It might be helpful for you too? ().... drop your startx script into a google search box
+
+--- On Sat, 4/10/10, Alexander Kalentyev <comrad.karlovich at googlemail.com> wrote:
+
+From: Alexander Kalentyev <comrad.karlovich at googlemail.com>
+Subject: Re: [i3] No respond on any keys
+To: i3-discuss at i3.zekjur.net
+Date: Saturday, April 10, 2010, 7:09 AM
+
+Hi Michael,
+
+May be the difference is, that I start i3 from shell with startx?
+Anyway:
+community/libev 3.9-1
+extra/libxcb 1.5-1
+extra/xcb-util 0.3.6-1
+community/fish 1.23.1-2
+
+Best regards,
+Alexander
+
+
+
+2010/4/9 Michael Stapelberg <michael+i3 at stapelberg.de>
+
+Hi Alexander,
+
+
+
+Excerpts from Alexander Kalentyev's message of 2010-04-09 21:29:23 +0200:
+
+> It's definitively fish shell. The problem seems to appear when you start i3
+
+> using .xinitrc and have fish as your default shell.
+
+I set fish as default shell in /etc/passwd and changed my .xsession to use
+
+/bin/bash, so I should have the same setup as you in this respect. However, I
+
+still cannot reproduce the problems you are having.
+
+
+
+Can you tell me your versions of libev, xcb, xcb-util and fish?
+
+
+
+Best regards,
+
+Michael
+
+
+
+
+
+
+      
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100410/2d56cefb/attachment.html>
+
+From comrad.karlovich at googlemail.com  Sat Apr 10 21:17:30 2010
+From: comrad.karlovich at googlemail.com (Alexander Kalentyev)
+Date: Sat, 10 Apr 2010 21:17:30 +0200
+Subject: [i3] i3
+In-Reply-To: <734325.33805.qm@web35602.mail.mud.yahoo.com>
+References: <u2n4d89abe61004100409ne6fb32b9q63892f850ba54b35@mail.gmail.com>
+	<734325.33805.qm@web35602.mail.mud.yahoo.com>
+Message-ID: <j2s4d89abe61004101217vc82ad0b0g823bc5f55796441c@mail.gmail.com>
+
+.xinitrc I posted already and .xsession I don't have.
+
+2010/4/10 Will Set <debiandunes at yahoo.com>
+
+> It might help to make things more clear if you coulkd test for hidden files
+> .xinitrc and .xsession in your users home directory.
+> If either of these files exists  could you post the content....
+>
+> Also googling your startup script gave me some interesting results...
+> It might be helpful for you too  ().... drop your startx script into a
+> google search box
+>
+> --- On *Sat, 4/10/10, Alexander Kalentyev <comrad.karlovich at googlemail.com
+> >* wrote:
+>
+>
+> From: Alexander Kalentyev <comrad.karlovich at googlemail.com>
+> Subject: Re: [i3] No respond on any keys
+> To: i3-discuss at i3.zekjur.net
+> Date: Saturday, April 10, 2010, 7:09 AM
+>
+> Hi Michael,
+>
+> May be the difference is, that I start i3 from shell with startx?
+> Anyway:
+> community/libev 3.9-1
+> extra/libxcb 1.5-1
+> extra/xcb-util 0.3.6-1
+> community/fish 1.23.1-2
+>
+> Best regards,
+> Alexander
+>
+>
+> 2010/4/9 Michael Stapelberg <michael+i3 at stapelberg.de<http://mc/compose?to=michael%2Bi3 at stapelberg.de>
+> >
+>
+>> Hi Alexander,
+>>
+>> Excerpts from Alexander Kalentyev's message of 2010-04-09 21:29:23 +0200:
+>> > It's definitively fish shell. The problem seems to appear when you start
+>> i3
+>> > using .xinitrc and have fish as your default shell.
+>> I set fish as default shell in /etc/passwd and changed my .xsession to use
+>> /bin/bash, so I should have the same setup as you in this respect.
+>> However, I
+>> still cannot reproduce the problems you are having.
+>>
+>> Can you tell me your versions of libev, xcb, xcb-util and fish?
+>>
+>> Best regards,
+>> Michael
+>>
+>
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100410/68325058/attachment.html>
+
+From michael+i3 at stapelberg.de  Sat Apr 10 23:11:04 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 10 Apr 2010 23:11:04 +0200
+Subject: [i3] No respond on any keys
+In-Reply-To: <u2n4d89abe61004100409ne6fb32b9q63892f850ba54b35@mail.gmail.com>
+References: <p2v4d89abe61004021132z4c02810er60cf4e75f89d060b@mail.gmail.com>
+	<1270284631-sup-3660@midna.zekjur.net>
+	<y2p4d89abe61004071307p535d6b5oab2dd40526e28cac@mail.gmail.com>
+	<1270671663-sup-9885@midna.zekjur.net>
+	<l2v4d89abe61004080040h92d76623s9bcb1c30c215e58a@mail.gmail.com>
+	<1270717900-sup-9926@midna.zekjur.net>
+	<t2n4d89abe61004081059jd516e323l5058705662272f74@mail.gmail.com>
+	<1270752692-sup-6810@midna.zekjur.net>
+	<t2g4d89abe61004091229q9727aa6cl8733215551bcbdb3@mail.gmail.com>
+	<1270843375-sup-5674@midna.zekjur.net>
+	<u2n4d89abe61004100409ne6fb32b9q63892f850ba54b35@mail.gmail.com>
+Message-ID: <1270933811-sup-3620@midna.zekjur.net>
+
+Hi Alexander,
+
+Excerpts from Alexander Kalentyev's message of 2010-04-10 13:09:54 +0200:
+> May be the difference is, that I start i3 from shell with startx?
+That may very well be. Without having tried it, please try using xdm instead.
+
+> Anyway:
+> community/libev 3.9-1
+> extra/libxcb 1.5-1
+> extra/xcb-util 0.3.6-1
+> community/fish 1.23.1-2
+The versions look good so far.
+
+Best regards,
+Michael
+
+
+From comrad.karlovich at googlemail.com  Sun Apr 11 15:59:18 2010
+From: comrad.karlovich at googlemail.com (Alexander Kalentyev)
+Date: Sun, 11 Apr 2010 15:59:18 +0200
+Subject: [i3] No respond on any keys
+In-Reply-To: <1270933811-sup-3620@midna.zekjur.net>
+References: <p2v4d89abe61004021132z4c02810er60cf4e75f89d060b@mail.gmail.com>
+	<1270671663-sup-9885@midna.zekjur.net>
+	<l2v4d89abe61004080040h92d76623s9bcb1c30c215e58a@mail.gmail.com>
+	<1270717900-sup-9926@midna.zekjur.net>
+	<t2n4d89abe61004081059jd516e323l5058705662272f74@mail.gmail.com>
+	<1270752692-sup-6810@midna.zekjur.net>
+	<t2g4d89abe61004091229q9727aa6cl8733215551bcbdb3@mail.gmail.com>
+	<1270843375-sup-5674@midna.zekjur.net>
+	<u2n4d89abe61004100409ne6fb32b9q63892f850ba54b35@mail.gmail.com>
+	<1270933811-sup-3620@midna.zekjur.net>
+Message-ID: <q2r4d89abe61004110659h6b921682wd339d8b9fa757ff3@mail.gmail.com>
+
+Hi Michael,
+
+I tried with cdm (http://cdm.ghost1227.com/X11/) and it works!
+But I'm not sure, that I will stay with cdm. Actually I really prefer
+to use startx...
+
+Regards,
+Alexander
+
+2010/4/10 Michael Stapelberg
+<michael+i3 at stapelberg.de<michael%2Bi3 at stapelberg.de>
+>
+
+> Hi Alexander,
+>
+> Excerpts from Alexander Kalentyev's message of 2010-04-10 13:09:54 +0200:
+> > May be the difference is, that I start i3 from shell with startx?
+> That may very well be. Without having tried it, please try using xdm
+> instead.
+>
+> > Anyway:
+> > community/libev 3.9-1
+> > extra/libxcb 1.5-1
+> > extra/xcb-util 0.3.6-1
+> > community/fish 1.23.1-2
+> The versions look good so far.
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100411/bf20e8b5/attachment.html>
+

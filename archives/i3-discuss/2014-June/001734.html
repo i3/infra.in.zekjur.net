@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Google hangouts extension
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Google%20hangouts%20extension&In-Reply-To=%3CCANOdGizc3MHF6LoQztU65OLaTXx-LHG5O6zeXaqyT-BOjSC-wg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+   <LINK REL="Next"  HREF="001735.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Google hangouts extension</H1>
+    <B>Anders Aagaard</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Google%20hangouts%20extension&In-Reply-To=%3CCANOdGizc3MHF6LoQztU65OLaTXx-LHG5O6zeXaqyT-BOjSC-wg%40mail.gmail.com%3E"
+       TITLE="[i3] Google hangouts extension">aagaande at gmail.com
+       </A><BR>
+    <I>Sun Jun  1 12:19:59 CEST 2014</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="001735.html">[i3] Google hangouts extension
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1734">[ date ]</a>
+              <a href="thread.html#1734">[ thread ]</a>
+              <a href="subject.html#1734">[ subject ]</a>
+              <a href="author.html#1734">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi
+
+On Sat, May 31, 2014 at 3:18 PM, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt; wrote:
+&gt;<i> Anders Aagaard &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">aagaande at gmail.com</A>&gt; writes:
+</I>&gt;&gt;<i> Starting to implement the client side of this I realize it might be
+</I>&gt;&gt;<i> good to know the workspace of the window in question. That's easy
+</I>&gt;&gt;<i> enough to add.  Also technically we could skip the &quot;changed&quot; field, as
+</I>&gt;&gt;<i> the &quot;focused&quot; field in the container will tell you the same
+</I>&gt;&gt;<i> information. I also wouldn't mind knowing the window class. Any
+</I>&gt;&gt;<i> technical reason that's not already in the Con class?
+</I>&gt;<i> It is -- I think you're not using the &quot;next&quot; branch, but you should. The
+</I>&gt;<i> &quot;master&quot; branch contains the latest release + bugfixes only, whereas
+</I>&gt;<i> development happens in &quot;next&quot;.
+</I>
+I actually wrote the patch on master and then rebased (and tested) on
+next afterwards. I didn't notice that WM_CLASS was there in next
+though, brilliant! I also saw the replies on the pr, and that's what I
+get for not checking next ;). One thing it does not have though is an
+event for windows that doesn't get focus. However I'm a bit uncertain
+about how to add that cleanly, since the event is now pushed in a very
+different location.
+
+I could of course add it directly from the &quot;Request to focus con on a
+hidden workspace&quot; check in handlers.c. It feels a bit bad though since
+the other event is sent in a very different place (x.c). Also would an
+event called &quot;focus&quot; that has &quot;focused&quot;:False be enough to make sense
+api wise?
+
+Alternately I could add some code to start sending events for
+con_set_urgency (since focus request that fails now sets an urgency),
+but it wouldn't be usable for my use case unless I also add a reason
+for the urgency change. Which I guess could be
+demands_attention/focus_request and wm_hints? Not sure about that last
+one, where it's really coming from ;).
+
+&gt;&gt;<i> On Tue, May 27, 2014 at 7:43 PM, Anders Aagaard &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">aagaande at gmail.com</A>&gt; wrote:
+</I>&gt;&gt;&gt;<i> Sent a patch to <A HREF="http://cr.i3wm.org/patch/559">http://cr.i3wm.org/patch/559</A> now. I unfortunately
+</I>&gt;&gt;&gt;<i> can't get the tests running. Trying to start up a x session with
+</I>&gt;&gt;&gt;<i> Xdummy seems to make the nvidia driver explode... I've done some
+</I>&gt;&gt;&gt;<i> manual testing and I really don't see how this could screw up anything
+</I>&gt;&gt;&gt;<i> else (.. famous last words I know).
+</I>&gt;<i> I have the tests working with nvidia 331.67. Can you be more specific
+</I>&gt;<i> about what breaks on your machine?
+</I>
+It's an issue with glx, I've got an nvidia optimus setup, so I'm not
+terribly surprised. I could probably get it working fine by not
+loading glx, but it was easier to setup a VM for it. (I should point
+out it fails starting the X session, so it's not the test running part
+that's broken).
+
+&gt;<i> --
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Michael
+</I>
+-- 
+Best regards
+Anders
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="001735.html">[i3] Google hangouts extension
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1734">[ date ]</a>
+              <a href="thread.html#1734">[ thread ]</a>
+              <a href="subject.html#1734">[ subject ]</a>
+              <a href="author.html#1734">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

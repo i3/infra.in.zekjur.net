@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] Block outward events while processing commands.
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Block%20outward%20events%20while%20processing%20commands.&In-Reply-To=%3C20120630170526.16509.25764%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000764.html">
+   <LINK REL="Next"  HREF="000738.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] Block outward events while processing commands.</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Block%20outward%20events%20while%20processing%20commands.&In-Reply-To=%3C20120630170526.16509.25764%40midna.zekjur.net%3E"
+       TITLE="[i3] [PATCH] Block outward events while processing commands.">michael at i3wm.org
+       </A><BR>
+    <I>Sat Jun 30 19:05:26 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000764.html">[i3] [PATCH] Block outward events while processing commands.
+</A></li>
+        <LI>Next message: <A HREF="000738.html">[i3] [PATCH] Improve workspaces events
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#765">[ date ]</a>
+              <a href="thread.html#765">[ thread ]</a>
+              <a href="subject.html#765">[ subject ]</a>
+              <a href="author.html#765">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Quoting DR (2012-06-30 16:30:49)
+&gt;<i> This should solve the problem, but wouldn't my solution make things simpler?
+</I>I don&#8217;t think so. What I was suggesting is already working and the same
+technique as used in the testcases, so I&#8217;d really prefer that a lot in
+comparison to touching quite some amount of code.
+
+&gt;<i> PS. I have had a little thought about the situation you suggest where X
+</I>&gt;<i> representation is not changed after tree_render(). Wouldn't the unmap command
+</I>&gt;<i> sent by i3bar queued after those sent by i3 in Xorg buffer? If so, it won't be
+</I>&gt;<i> a problem.
+</I>You cannot make this assumption because of how i3 and i3bar might get
+scheduled on your CPU.
+
+Best regards,
+Michael
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000764.html">[i3] [PATCH] Block outward events while processing commands.
+</A></li>
+	<LI>Next message: <A HREF="000738.html">[i3] [PATCH] Improve workspaces events
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#765">[ date ]</a>
+              <a href="thread.html#765">[ thread ]</a>
+              <a href="subject.html#765">[ subject ]</a>
+              <a href="author.html#765">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

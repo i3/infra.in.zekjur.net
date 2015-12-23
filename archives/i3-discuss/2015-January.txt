@@ -1,0 +1,239 @@
+From ultrabug at ultrabug.net  Fri Jan  9 11:08:37 2015
+From: ultrabug at ultrabug.net (Ultrabug)
+Date: Fri, 09 Jan 2015 11:08:37 +0100
+Subject: [i3] py3status v2.0 is out !
+Message-ID: <54AFA8A5.4040502@ultrabug.net>
+
+Greetings i3wm users,
+
+I'm very pleased to announce the release of *py3status v2.0* !
+
+It brings some interesting new features which I hope can benefit to the
+i3wm users looking to gain more control over their i3bar.
+
+What is py3status ?
+-------------------------
+It is a user-contributed project which gives you an easy and flexible
+way to display your own stuff in your i3barby wrapping your current
+i3status configuration.
+
+New major features since release v1.x
+-------------------------------------------------
+The main idea of this release is that *py3status now extends your
+i3status.conf* which allows you to control your i3bar more easily than ever.
+
+- *Handle all click events *(i3status modules included) *directly from
+your i3status config* [3]*
+*- All py3status contributed modules are now shipped and *usable
+directly without the need to copy them to your local folder*.
+**- *Load, configure and order py3status modules directly from your
+i3status
+config<https://github.com/ultrabug/py3status/wiki/Load-and-order-py3status-modules-directly-from-your-current-i3status-config>
+*just like any other i3status module [4]
+- Every click event now triggers a refresh of the clicked module, even
+for i3status modules. This makes your i3bar more responsive than ever !
+
+Read the release blog post [1] <http://www.ultrabug.fr/py3status-v2-0/>
+for more details and examples or check out the project's wiki [2]
+<https://github.com/ultrabug/py3status/wiki>.
+
+Fancy a chat or need help ?
+-----------------------------------
+Feel free to join the #py3status IRC channel on FreeNode to get help or
+share your ideas !
+
+Thanks
+---------
+For their insight, contributions and feedback with a special mention to
+@tablet-mode who inspired this release.
+
+@AdamBSteele
+@obb
+@scotte
+@ShadowPrince
+@tablet-mode
+
+
+I also want to take this opportunity to wish you all a happy and
+peaceful year.
+
+[1] http://www.ultrabug.fr/py3status-v2-0/
+[2] https://github.com/ultrabug/py3status/wiki
+[3]
+https://github.com/ultrabug/py3status/wiki/Handle-click-events-directly-from-your-i3status-config
+[4]
+https://github.com/ultrabug/py3status/wiki/Load-and-order-py3status-modules-directly-from-your-current-i3status-config
+
+Ultrabug
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150109/a8f670b2/attachment.html>
+
+From tfarina at chromium.org  Wed Jan 14 23:08:13 2015
+From: tfarina at chromium.org (Thiago Farina)
+Date: Wed, 14 Jan 2015 20:08:13 -0200
+Subject: [i3] How to get i3wm statically linked?
+In-Reply-To: <CAKXNJ5nunzzNsdiSO5i35PC1mw8eAHuZ+g-HJmC8JxQt25DtyA@mail.gmail.com>
+References: <CAKXNJ5nunzzNsdiSO5i35PC1mw8eAHuZ+g-HJmC8JxQt25DtyA@mail.gmail.com>
+Message-ID: <CAFenBsYvxckRQmd+QgG+f=aUZvG1+hmtvTx3+=cEeQk00LFa2g@mail.gmail.com>
+
+On Mon, Dec 15, 2014 at 7:15 PM, cyberwoodman . <taras.koroljuk at gmail.com>
+wrote:
+
+> Hello. At work I must use and old Ubuntu 11.04 version. So I limited to
+> use i3 with version 3.x
+>
+> Sadly, the newest version of i3 is much more handy than previous one.
+>
+> Could you please advise me how to build i3 statically linked? Thanks.
+>
+
+What makes you think it is building in a shared/dynamic mode?
+
+How are you building it?
+
+-- 
+Thiago Farina
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150114/b3b68314/attachment.html>
+
+From taras.koroljuk at gmail.com  Thu Jan 15 18:41:01 2015
+From: taras.koroljuk at gmail.com (cyberwoodman .)
+Date: Thu, 15 Jan 2015 19:41:01 +0200
+Subject: [i3] How to get i3wm statically linked?
+In-Reply-To: <CAFenBsYvxckRQmd+QgG+f=aUZvG1+hmtvTx3+=cEeQk00LFa2g@mail.gmail.com>
+References: <CAKXNJ5nunzzNsdiSO5i35PC1mw8eAHuZ+g-HJmC8JxQt25DtyA@mail.gmail.com>
+ <CAFenBsYvxckRQmd+QgG+f=aUZvG1+hmtvTx3+=cEeQk00LFa2g@mail.gmail.com>
+Message-ID: <CAKXNJ5mLiJ3GwxbxDQ45aKN8wOVCRxCXVdBZV6dLwQ9vGH5B9A@mail.gmail.com>
+
+make
+
+2015-01-15 0:08 GMT+02:00 Thiago Farina <tfarina at chromium.org>:
+
+>
+>
+> On Mon, Dec 15, 2014 at 7:15 PM, cyberwoodman . <taras.koroljuk at gmail.com>
+> wrote:
+>
+>> Hello. At work I must use and old Ubuntu 11.04 version. So I limited to
+>> use i3 with version 3.x
+>>
+>> Sadly, the newest version of i3 is much more handy than previous one.
+>>
+>> Could you please advise me how to build i3 statically linked? Thanks.
+>>
+>
+> What makes you think it is building in a shared/dynamic mode?
+>
+> How are you building it?
+>
+> --
+> Thiago Farina
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150115/b552e7d8/attachment.html>
+
+From tfarina at chromium.org  Fri Jan 16 03:59:39 2015
+From: tfarina at chromium.org (Thiago Farina)
+Date: Fri, 16 Jan 2015 00:59:39 -0200
+Subject: [i3] How to get i3wm statically linked?
+In-Reply-To: <CAKXNJ5mLiJ3GwxbxDQ45aKN8wOVCRxCXVdBZV6dLwQ9vGH5B9A@mail.gmail.com>
+References: <CAKXNJ5nunzzNsdiSO5i35PC1mw8eAHuZ+g-HJmC8JxQt25DtyA@mail.gmail.com>
+ <CAFenBsYvxckRQmd+QgG+f=aUZvG1+hmtvTx3+=cEeQk00LFa2g@mail.gmail.com>
+ <CAKXNJ5mLiJ3GwxbxDQ45aKN8wOVCRxCXVdBZV6dLwQ9vGH5B9A@mail.gmail.com>
+Message-ID: <CAFenBsbECurCudPCrnV+uyi0G4eJ9cMWOsfTOp_RE5bsH_BwWw@mail.gmail.com>
+
+On Thu, Jan 15, 2015 at 3:41 PM, cyberwoodman . <taras.koroljuk at gmail.com>
+wrote:
+
+> make
+>
+> Does the libraries end up with .a or .so?
+
+-- 
+Thiago Farina
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150116/ec65d0f5/attachment.html>
+
+From taras.koroljuk at gmail.com  Fri Jan 16 07:47:50 2015
+From: taras.koroljuk at gmail.com (taras.koroljuk at gmail.com)
+Date: Fri, 16 Jan 2015 08:47:50 +0200
+Subject: [i3] How to get i3wm statically linked?
+In-Reply-To: <CAFenBsbECurCudPCrnV+uyi0G4eJ9cMWOsfTOp_RE5bsH_BwWw@mail.gmail.com>
+References: <CAKXNJ5nunzzNsdiSO5i35PC1mw8eAHuZ+g-HJmC8JxQt25DtyA@mail.gmail.com>
+ <CAKXNJ5mLiJ3GwxbxDQ45aKN8wOVCRxCXVdBZV6dLwQ9vGH5B9A@mail.gmail.com>
+ <CAFenBsbECurCudPCrnV+uyi0G4eJ9cMWOsfTOp_RE5bsH_BwWw@mail.gmail.com>
+Message-ID: <3128480.xUfVZufskC@localhost>
+
+On Friday, January 16, 2015 12:59:39 AM Thiago Farina wrote:
+> On Thu, Jan 15, 2015 at 3:41 PM, cyberwoodman . 
+<taras.koroljuk at gmail.com>
+> 
+> wrote:
+> > make
+> > 
+> > Does the libraries end up with .a or .so?
+
+As far as i know. On the linking stage i3 links with next external libraries:
+
+-lrt -lxcb -lxcb-util -lxcb-keysyms -l-iccm -lxcb-xinerama -lxcb-randr -lxcb -lX11 -
+lxcb-cursor -lcairo -lpangocairo ....
+
+also these libraries must have it's own (fresh) versionSo to link i3 i need also 
+compile these dependencies too. But I guess it's very-very long way.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150116/624c7389/attachment.html>
+
+From dcoppa at gmail.com  Thu Jan 22 16:34:56 2015
+From: dcoppa at gmail.com (David Coppa)
+Date: Thu, 22 Jan 2015 16:34:56 +0100
+Subject: [i3] i3, you won!
+Message-ID: <CABM=MFKO1YysmEstuhfxxb1z-A27-sGZtR=UqNoYGefTf9-ixw@mail.gmail.com>
+
+http://pollmill.com/f/which-tiling-window-manager-do-you-use-dax6md8/answers.html
+
+cheers,
+David
+
+From techlivezheng at gmail.com  Sat Jan 24 06:23:02 2015
+From: techlivezheng at gmail.com (=?UTF-8?B?6YOR5paH6L6JKFRlY2hsaXZlIFpoZW5nKQ==?=)
+Date: Sat, 24 Jan 2015 13:23:02 +0800
+Subject: [i3] i3, you won!
+In-Reply-To: <CABM=MFKO1YysmEstuhfxxb1z-A27-sGZtR=UqNoYGefTf9-ixw@mail.gmail.com>
+References: <CABM=MFKO1YysmEstuhfxxb1z-A27-sGZtR=UqNoYGefTf9-ixw@mail.gmail.com>
+Message-ID: <CAPYzjrQt08UGnicvc9m7UFPopHM3E9gnNAPnN=uUfxeLBvsX5w@mail.gmail.com>
+
+Congrats, mate.
+
+2015-01-22 23:34 GMT+08:00 David Coppa <dcoppa at gmail.com>:
+> http://pollmill.com/f/which-tiling-window-manager-do-you-use-dax6md8/answers.html
+>
+> cheers,
+> David
+
+From single.w.1992 at gmail.com  Sat Jan 24 07:45:52 2015
+From: single.w.1992 at gmail.com (=?gb2312?B?0ubQws7i?=)
+Date: Sat, 24 Jan 2015 14:45:52 +0800
+Subject: [i3] i3, you won!
+In-Reply-To: <CAPYzjrQt08UGnicvc9m7UFPopHM3E9gnNAPnN=uUfxeLBvsX5w@mail.gmail.com>
+References: <CABM=MFKO1YysmEstuhfxxb1z-A27-sGZtR=UqNoYGefTf9-ixw@mail.gmail.com>
+ <CAPYzjrQt08UGnicvc9m7UFPopHM3E9gnNAPnN=uUfxeLBvsX5w@mail.gmail.com>
+Message-ID: <32CFEAF8-5A87-4222-A88F-C5924743072C@gmail.com>
+
+It’s that true?
+
+> 在 2015年1月24日，13:23，郑文辉(Techlive Zheng) <techlivezheng at gmail.com> 写道：
+> 
+> Congrats, mate.
+> 
+> 2015-01-22 23:34 GMT+08:00 David Coppa <dcoppa at gmail.com>:
+>> http://pollmill.com/f/which-tiling-window-manager-do-you-use-dax6md8/answers.html
+>> 
+>> cheers,
+>> David
+
+

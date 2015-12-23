@@ -1,0 +1,85 @@
+From michael+i3 at stapelberg.de  Sun May  8 14:57:34 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 08 May 2011 14:57:34 +0200
+Subject: [i3 announcement] =?utf-8?q?i3_3=2E=CE=B5-bf3_released?=
+Message-ID: <1304859377-sup-7729@midna.zekjur.net>
+
+Hi,
+
+A few minutes ago, I released i3 3.?-bf3. Here are the release notes:
+
+This is the third bugfix release (bf3) for version 3.? of i3. Current
+development focuses on the tree branch which contains a major refactoring.
+Because  there are still bugs in the stable versions, though, we felt it was a
+good idea to have this bugfix release.
+
+This release contains only bugfixes and is considered stable.
+
+All users of older versions are encouraged to upgrade as soon as possible.
+
+Thanks for this release go out to fernandotcl, Merovius, Raphael, badboy,
+David.
+
+A list of changes follows:
+
+ * Bugfix: Send WM_TAKE_FOCUS (fixes focus problems for Java apps)
+ * Bugfix: Fix unaligned memory access on sparc
+ * Bugfix: Fix possible rounding errors (when rounding up)
+ * Make i3 compatible with latest xcb and yajl
+
+-- Michael Stapelberg, 2011-05-08
+
+From michael+i3 at stapelberg.de  Sat May 28 22:21:05 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 28 May 2011 22:21:05 +0200
+Subject: [i3 announcement] i3 -tree *PREVIEW RELEASE 3*
+Message-ID: <1306614003-sup-7069@midna.zekjur.net>
+
+Hi,
+
+(Also check http://i3wm.org/tree/ if you prefer websites).
+
+I just released the third *PREVIEW RELEASE* of the i3 tree branch. Quote from
+the release announcement:
+
+This is the third PREVIEW RELEASE for the tree branch. It is *NOT* part of
+i3?s regular releases and should *NOT* be packaged in the usual way for
+distributions. Instead, provide a separate, unofficial package if possible.
+
+The so called tree branch is the place where the next version of i3 is
+developed. This time, we did a major code refactoring bringing many changes.
+The idea is to use a tree as datastructure instead of separate lists (like one
+for outputs, workspaces and a table for storing your window layout).
+
+Quite a few advantages arise from this new data structure. The most prominent
+ones will be a slightly different look and feel, the possibility to store your
+layout and restore it later, correct resizing, a much cleaner command parser
+and more little improvements.
+
+As this is a preview release, some things are not working yet. Generally,
+though, the core developers are using it already and think it?s good enough to
+try it out. With this release, we want to gather feedback from you, so please
+report any bugs you encounter in our bugtracker at http://bugs.i3wm.org/
+
+What should be working in this release?
+---------------------------------------
+
+ ? Basic window management, navigation, moving
+ ? Fullscreen mode, correct aspect ratio
+ ? Stacked/Tabbed layout, floating mode
+ ? Splitting (for fancy layouts), resizing
+ ? Restarts (preserving the layout), crash handler
+ ? RandR changes, keyboard layout changes
+ ? Dock clients
+ ? Assignments
+ ? i3bar, get it from http://git.merovius.de/
+
+If any of these features do not work (correctly), please file a bugreport.
+
+What is not working in this release?
+------------------------------------
+
+ ? Configfile compatibility
+
+ -- Michael Stapelberg, 2011-05-28
+

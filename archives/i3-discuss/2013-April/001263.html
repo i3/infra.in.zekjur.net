@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3lock hooks
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3lock%20hooks&In-Reply-To=%3C20130413052215.GA8103%40saturn%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001262.html">
+   <LINK REL="Next"  HREF="001264.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3lock hooks</H1>
+    <B>Giorgos Keramidas</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3lock%20hooks&In-Reply-To=%3C20130413052215.GA8103%40saturn%3E"
+       TITLE="[i3] i3lock hooks">gkeramidas at gmail.com
+       </A><BR>
+    <I>Sat Apr 13 07:22:17 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001262.html">[i3] i3lock hooks
+</A></li>
+        <LI>Next message: <A HREF="001264.html">[i3] i3lock hooks
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1263">[ date ]</a>
+              <a href="thread.html#1263">[ thread ]</a>
+              <a href="subject.html#1263">[ subject ]</a>
+              <a href="author.html#1263">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 2013-04-12 09:52, &quot;BRAGA, Bruno&quot; &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">bruno.braga at gmail.com</A>&gt; wrote:
+&gt;<i> Michael,
+</I>&gt;<i>
+</I>&gt;<i> I noticed that the commands executed with &amp;&amp; do not always work...
+</I>&gt;<i> triggering the lock and unlocking it right away always work, but every time
+</I>&gt;<i> I leave the machine locked for longer time (hour or more), the posthook
+</I>&gt;<i> script is never called.
+</I>&gt;<i> Sorry it is hard to reproduce/troubleshoot.
+</I>&gt;<i>
+</I>&gt;<i> For example:
+</I>&gt;<i>
+</I>&gt;<i> bindsym Control+mod1+l exec ~/.i3/i3lock-prehook.sh &amp;&amp; i3lock -c 000000 &amp;&amp; ~/.i3/i3lock-posthook.sh
+</I>&gt;<i>
+</I>&gt;<i> the i3lock-prehook.sh script is:
+</I>&gt;<i>
+</I>&gt;<i> #!/bin/bash
+</I>&gt;<i> logger -t &quot;prehook&quot; 'Executed.'
+</I>&gt;<i>
+</I>&gt;<i> the i3lock-posthook.sh script is:
+</I>&gt;<i>
+</I>&gt;<i> #!/bin/bash
+</I>&gt;<i> logger -t &quot;posthook&quot; 'Executed.'
+</I>&gt;<i>
+</I>&gt;<i> ----------------
+</I>&gt;<i>
+</I>&gt;<i> Dont know if this is even worth pursuing.... I solved the problem by
+</I>&gt;<i> wrapping it all into a single script:
+</I>&gt;<i>
+</I>&gt;<i> bindsym Control+mod1+l exec ~/.i3/i3lock.sh
+</I>&gt;<i>
+</I>&gt;<i> the i3lock.sh script is:
+</I>&gt;<i>
+</I>&gt;<i> #!/bin/bash
+</I>&gt;<i> logger -t &quot;prehook&quot; 'Executed.'
+</I>&gt;<i> i3lock  -c 000000
+</I>&gt;<i> logger -t &quot;posthook&quot; 'Executed.'
+</I>&gt;<i>
+</I>&gt;<i> (which will obivously work even if something goes wrong with i3lock).
+</I>
+Hi Bruno,
+
+I think this may be a bug in i3lock.  The main i3 code calls the command
+you have configured in your startup file with the execl() equivalent of:
+
+    # From startup_application() in src/startup.c:134
+    $SHELL -c &quot;~/.i3/i3lock-prehook.sh &amp;&amp; i3lock -c 000000 &amp;&amp; ~/.i3/i3lock-posthook.sh&quot;
+
+So if 'i3lock -c 000000' is running, but the next part of the command
+never runs, it means that the shell got an exit code != 0 from i3lock.
+
+Since i3lock is not failing to start, but it has been running for a
+while, the only reason I can think of that would cause a non-zero exit
+code is that main() in i3lock.s never calls 'return 0' when it's done.
+
+The last parts of i3lock's main() function are:
+
+    int main(int argc, char *argv[]) {
+        ...
+        /* Invoke the event callback once to catch all the events which were
+         * received up until now. ev will only pick up new events (when the
+        X11
+         * file descriptor becomes readable). */
+        ev_invoke(main_loop, xcb_check, 0);
+        ev_loop(main_loop, 0);
+    }
+
+After ev_loop() is done, there is no return statement, so if ev_loop
+happens to return, main() is free to return a random value, e.g. the
+contents of a register or some random value from the stack.
+
+This may explain why &quot;it sometimes works&quot;.
+
+Can you try adding this return statement to i3lock's main() function,
+and then rebuild i3lock from source?
+
+    int main(int argc, char *argv[]) {
+        ...
+        /* Invoke the event callback once to catch all the events which were
+         * received up until now. ev will only pick up new events (when the
+        X11
+         * file descriptor becomes readable). */
+        ev_invoke(main_loop, xcb_check, 0);
+        ev_loop(main_loop, 0);
++       return EXIT_SUCCESS;
+    }
+
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001262.html">[i3] i3lock hooks
+</A></li>
+	<LI>Next message: <A HREF="001264.html">[i3] i3lock hooks
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1263">[ date ]</a>
+              <a href="thread.html#1263">[ thread ]</a>
+              <a href="subject.html#1263">[ subject ]</a>
+              <a href="author.html#1263">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

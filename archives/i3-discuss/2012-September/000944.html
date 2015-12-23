@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Floating mode focus &amp; workspaces
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Floating%20mode%20focus%20%26%20workspaces&In-Reply-To=%3CCANxNxiB-wvcF1XikxYade4tVWneqO3N9gV0PVu%2BnEeQSi0B%3DAg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000940.html">
+   <LINK REL="Next"  HREF="000945.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Floating mode focus &amp; workspaces</H1>
+    <B>Marcos Moyano</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Floating%20mode%20focus%20%26%20workspaces&In-Reply-To=%3CCANxNxiB-wvcF1XikxYade4tVWneqO3N9gV0PVu%2BnEeQSi0B%3DAg%40mail.gmail.com%3E"
+       TITLE="[i3] Floating mode focus &amp; workspaces">marcos at anue.biz
+       </A><BR>
+    <I>Wed Sep 26 19:17:52 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000940.html">[i3] Floating mode focus &amp; workspaces
+</A></li>
+        <LI>Next message: <A HREF="000945.html">[i3] Floating mode focus &amp; workspaces
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#944">[ date ]</a>
+              <a href="thread.html#944">[ thread ]</a>
+              <a href="subject.html#944">[ subject ]</a>
+              <a href="author.html#944">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I thought this could be a good starting point for me to start looking at
+i3's code. So I decided to code a patch for this. The only thing is that I
+did add a new configuration option &quot;raise_on_focus&quot; because I don't want
+that to be my default behavior.
+Should I create a ticket and attach my patch to it?
+
+Here's the patch
+
+On Thu, Sep 20, 2012 at 9:41 PM, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt;wrote:
+
+&gt;<i>
+</I>&gt;<i> Hi Giorgos,
+</I>&gt;<i>
+</I>&gt;<i> Giorgos Keramidas &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">gkeramidas at gmail.com</A>&gt; writes:
+</I>&gt;<i> &gt;   - When focused by mouse _click_ events, raise immediately
+</I>&gt;<i> i3 does this already.
+</I>&gt;<i>
+</I>&gt;<i> &gt;   - When focused by mouse movement, _maybe_ raise after a timeout
+</I>&gt;<i> &gt; (commonly called raise_on_focus)
+</I>&gt;<i> A timeout would feel weird and not fit i3&#8217;s look&amp;feel well.
+</I>&gt;<i>
+</I>&gt;<i> &gt; This is currently not supported AFAIK, but if you're interested in
+</I>&gt;<i> &gt; writing a patch, please do it :-)
+</I>&gt;<i> As I said, it is. Carlos is talking changing focus via keyboard, not
+</I>&gt;<i> via mouse.
+</I>&gt;<i>
+</I>&gt;<i> &gt;&gt; First, when there are two floating windows one on top of another,
+</I>&gt;<i> &gt;&gt; changing focus between them does not bring the lower one to the front
+</I>&gt;<i> &gt;&gt; unless I click on it with the mouse. Is there any way to automatically
+</I>&gt;<i> &gt;&gt; follow a 'change focus' action with a 'bring to front' action? I can't
+</I>&gt;<i> &gt;&gt; find a command for the second one.
+</I>&gt;<i> Patch welcome. I think raising a floating window on focus should be the
+</I>&gt;<i> default action, so no new configuration directives are required.
+</I>&gt;<i>
+</I>&gt;<i> &gt;&gt; Second, what is the closest method to get a floating layout to an
+</I>&gt;<i> &gt;&gt; entire workspace (and one that you can enable/disable dynamically)?
+</I>&gt;<i> I&#8217;m not sure what exactly you mean by that. Making all windows on one
+</I>&gt;<i> workspace floating is not supported, also marking workspaces as
+</I>&gt;<i> floating-by-default is not supported. i3 is primarily a tiling window
+</I>&gt;<i> manager, floating windows are only for popup windows.
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Michael
+</I>&gt;<i>
+</I>
+
+
+-- 
+Marcos Moyano
+Co-Founder of Anue
+Skype: marcosmoyano
+<A HREF="http://www.anue.biz/">http://www.anue.biz/</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120926/6ff67afb/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120926/6ff67afb/attachment.html</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: raise_on_focus.patch
+Type: application/octet-stream
+Size: 3748 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120926/6ff67afb/attachment.obj">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120926/6ff67afb/attachment.obj</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000940.html">[i3] Floating mode focus &amp; workspaces
+</A></li>
+	<LI>Next message: <A HREF="000945.html">[i3] Floating mode focus &amp; workspaces
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#944">[ date ]</a>
+              <a href="thread.html#944">[ thread ]</a>
+              <a href="subject.html#944">[ subject ]</a>
+              <a href="author.html#944">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

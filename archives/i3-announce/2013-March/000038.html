@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3 announcement] i3 v4.5 released
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-announce%40infra.in.zekjur.net?Subject=Re%3A%20%5Bi3%20announcement%5D%20i3%20v4.5%20released&In-Reply-To=%3Cx6mwu8hhnb.fsf%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000039.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3 announcement] i3 v4.5 released</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-announce%40infra.in.zekjur.net?Subject=Re%3A%20%5Bi3%20announcement%5D%20i3%20v4.5%20released&In-Reply-To=%3Cx6mwu8hhnb.fsf%40midna.zekjur.net%3E"
+       TITLE="[i3 announcement] i3 v4.5 released">michael at i3wm.org
+       </A><BR>
+    <I>Tue Mar 12 14:28:08 CET 2013</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000039.html">[i3 announcement] i3 v4.5.1 released
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#38">[ date ]</a>
+              <a href="thread.html#38">[ thread ]</a>
+              <a href="subject.html#38">[ subject ]</a>
+              <a href="author.html#38">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I just released i3 v4.5. Here are the release notes:
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Release notes for i3 v4.5    &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+This is the i3 v4.5. This version is considered stable. All users of i3 are
+strongly encouraged to upgrade.
+
+Most of the changes are cleanups and bugfixes. Due to cleanups, i3 no longer
+  depends on flex/bison at all. Furthermore, libev &#8805; 4 is now a hard dependency
+  (libev &lt; 4 is not supported anymore).
+
+One important change to note is that moving windows to a different output will
+  no longer move focus to that output. If you want to have the old behavior,
+  modify the keybindings for moving in your configfile like this:
+
+    bindsym $mod+Shift+1 move workspace 1; workspace 1
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Changes in v4.5            &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+  &#8226; docs/hacking-howto: refer people to cr.i3wm.org
+  &#8226; docs/ipc: Adds Go IPC lib to the docs.
+  &#8226; docs/userguide: remove obsolete sentence about client.background
+  &#8226; docs/userguide: be explicit about assignment processing order
+  &#8226; docs/userguide: be more clear about the resize command arguments
+  &#8226; docs/userguide: fix typo: s/11x/11px/
+  &#8226; i3-dmenu-desktop: don&#8217;t add &#8220;geany&#8221; if &#8220;Geany&#8221; is already present
+  &#8226; i3-dmenu-desktop: strip newlines from dmenu &#8805; 4.4
+  &#8226; i3-dmenu-desktop: skip files with broken utf8 but warn about it
+  &#8226; i3-dmenu-desktop: skip broken files (no/empty Exec=) but warn about them
+  &#8226; i3-dmenu-desktop: List filenames of .desktop files
+  &#8226; i3-dmenu-desktop: remove %i from commandline
+  &#8226; i3-nagbar: Work around terminals not supporting -e with quoted arguments
+  &#8226; i3-nagbar: use the same font as configured for i3
+  &#8226; i3bar: set _NET_SYSTEM_TRAY_COLORS for symbolic icons (gtk3+)
+  &#8226; i3bar: don&#8217;t use X11 borders to avoid overlapping in hide mode
+  &#8226; i3bar: separator color via config; separator width and on/off via ipc
+  &#8226; i3bar: Allow min_width of a block in i3bar to be a string
+  &#8226; i3-msg: parse command replies and display errors nicely if there were
+    errors
+  &#8226; Draw 1px tab separators left/right instead of 2px on the right only
+  &#8226; Render tree before destroying X11 containers upon unmap
+  &#8226; scratchpad show: move visible scratchpad window from another workspace to
+    focused workspace instead of doing nothing
+  &#8226; ignore MotionNotify events generated while warping the pointer
+  &#8226; Allow X11 servers which do not support the XKB extension.
+  &#8226; remove the urgency indicator when a window is closed
+  &#8226; wrap when moving containers to outputs with direction
+  &#8226; scratchpad_show: focus unfocused scratchpad window
+  &#8226; Split workspace instead of changing orientation
+  &#8226; scratchpad: always auto center on 'scratchpad show' if window hasn't been
+    repositioned by the user
+  &#8226; Add a new IPC event for changes on windows.
+  &#8226; config: accept &#8220;smart&#8221; as popup_during_fullscreen parameter
+  &#8226; Add support for _NET_WM_STATE_DEMANDS_ATTENTION.
+  &#8226; Obey WM_SIZE_HINTS's resize increments in floating mode
+  &#8226; Do not move focus if a container is moved across outputs
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Bugfixes                   &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+  &#8226; Ignore ConfigureRequests for scratchpad windows
+  &#8226; Correctly parse `move ... workspace *_on_output`
+  &#8226; i3bar: Set separator color properly when drawing
+  &#8226; Properly parse commands like &#8220;move workspace torrent&#8221;
+  &#8226; Handle nested transient popups properly
+  &#8226; Fix decoration rect size for windows without border
+  &#8226; parse outputs as &quot;word&quot;, not &quot;string&quot;, to ignore trailing whitespace
+  &#8226; fix crash when disabling output without any windows
+  &#8226; scratchpad: fix crash when moving last window of an invisible workspace
+  &#8226; fix coordinates of scratchpad windows on output changes
+  &#8226; call scratchpad_show() when focusing scratchpad windows via criteria
+  &#8226; fix continuous resize bug in floating mode, e.g. with xbmc
+  &#8226; fix &#8220;overlapping&#8221; --release key bindings
+  &#8226; fix IPC messages writes with low buffer sizes
+  &#8226; unregister as window manager before restarting (fixes a race condition)
+  &#8226; Fix bind[code|sym] --release
+  &#8226; remove superfluous #include &lt;xcb/xcb_atom.h&gt;
+  &#8226; Makefile: Repect AR environment variable
+  &#8226; i3-input: restore input focus on exit()
+  &#8226; Also draw right tab border for split containers
+  &#8226; Fix scrolling on a tabbed titlebar which contains split cons
+  &#8226; Correctly close floating windows
+  &#8226; handle MapRequests sent between i3 registering as a wm and handling events
+  &#8226; i3bar: fake DestroyNotify and send MANAGER ClientMessages to fix tray restarts
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Thanks!                    &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+Thanks for testing, bugfixes, discussions and everything I forgot go out to:
+
+  Adrien Schildknecht, alex, Andr&#225;s Mohari, Artem Shinkarov, badboy, bafain,
+  cradle, dcoppa, Donald, dRbiG, eeemsi, else, emias, f8l, Francesco Mazzoli,
+  jasper, joepd, Kacper Kowalik, Kai, knopwob, Marcos, Marius Muja, Mats,
+  MeanEYE, Merovius, oblique, paolo, phlux, Piotr S. Staszewski, pnutzh4x0r,
+  rasi, saurabhgeek92, Sebastian Rachuj, Sebastian Ullrich, slowpoke, Steven
+  Allen, supplantr, Tai-Lin Chu, Tucos, Vivien Didelot, xeen
+
+-- Michael Stapelberg, 2013-03-12
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000039.html">[i3 announcement] i3 v4.5.1 released
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#38">[ date ]</a>
+              <a href="thread.html#38">[ thread ]</a>
+              <a href="subject.html#38">[ subject ]</a>
+              <a href="author.html#38">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-announce">More information about the i3-announce
+mailing list</a><br>
+</body></html>

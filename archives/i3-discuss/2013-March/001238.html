@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Correct scratchpad show behaviour ?
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Correct%20scratchpad%20show%20behaviour%20%3F&In-Reply-To=%3C5151DE71.1090901%40imag.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001237.html">
+   <LINK REL="Next"  HREF="001239.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Correct scratchpad show behaviour ?</H1>
+    <B>Philippe Virouleau</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Correct%20scratchpad%20show%20behaviour%20%3F&In-Reply-To=%3C5151DE71.1090901%40imag.fr%3E"
+       TITLE="[i3] Correct scratchpad show behaviour ?">philippe.virouleau at imag.fr
+       </A><BR>
+    <I>Tue Mar 26 18:44:17 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001237.html">[i3] Correct scratchpad show behaviour ?
+</A></li>
+        <LI>Next message: <A HREF="001239.html">[i3] Status bar - wifi
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1238">[ date ]</a>
+              <a href="thread.html#1238">[ thread ]</a>
+              <a href="subject.html#1238">[ subject ]</a>
+              <a href="author.html#1238">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thanks for the answer, actually your fix doesn't work when you have 
+floating windows that are not in the scratchpad.
+
+Actually you can test for the scratchpad_state by taking the parent :
+&quot;(current-&gt;con-&gt;parent-&gt;scratchpad_state != SCRATCHPAD_NONE)&quot; does the 
+trick.
+But there was also some missing tests in scratchpad_show function, since 
+two of the &quot;If this was 'scratchpad show' without criteria&quot; doesn't 
+check that the given parameter &quot;con&quot; is null.
+I don't know exactly what to do with my commit, I assume I should submit 
+it to the code review so that's what I will do.
+
+Regards,
+Philippe
+
+On 26/03/2013 16:31, Marcos Moyano wrote:
+&gt;<i> I was able to reproduce this. Also, I wrote this patch that fixes it:
+</I>&gt;<i> <A HREF="http://cr.i3wm.org/patch/113">http://cr.i3wm.org/patch/113</A>
+</I>&gt;<i>
+</I>&gt;<i> I'm not sure why can't I test against current-&gt;con-&gt;scratchpad_state 
+</I>&gt;<i> being other than 0. That was my original approach, but after logging 
+</I>&gt;<i> the value, it always return 0 on every match. Any idea?
+</I>&gt;<i>
+</I>&gt;<i> Rgds,
+</I>&gt;<i> Marcos
+</I>&gt;<i>
+</I>&gt;<i> On Tue, Mar 26, 2013 at 10:12 AM, Philippe Virouleau 
+</I>&gt;<i> &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">philippe.virouleau at imag.fr</A> &lt;mailto:<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">philippe.virouleau at imag.fr</A>&gt;&gt; wrote:
+</I>&gt;<i>
+</I>&gt;<i>     I was experimenting some things with the scratchpad feature, and
+</I>&gt;<i>     the following totally messed up my current workspace :
+</I>&gt;<i>
+</I>&gt;<i>     bindsym $mod+Shift+P [title=&quot;.*&quot;] scratchpad show
+</I>&gt;<i>
+</I>&gt;<i>     If you re-start i3 with an empty scratchpad, open some windows,
+</I>&gt;<i>     then switch to another workspace and press mod+shift+P, all the
+</I>&gt;<i>     windows (even if they are not in the scratchpad) will come to that
+</I>&gt;<i>     workspace (without being switched to floating windows).
+</I>&gt;<i>     However if you add some windows to the scratchpad, then restart i3
+</I>&gt;<i>     and do the previous manipulation, only windows from the scratchpad
+</I>&gt;<i>     will come to the workspace.
+</I>&gt;<i>     It looks like in some cases i3 doesn't check properly if the
+</I>&gt;<i>     matching windows are in the scratchpad.
+</I>&gt;<i>
+</I>&gt;<i>     I don't think it's the expected behaviour so I'm posting this here.
+</I>&gt;<i>
+</I>&gt;<i>     Regards,
+</I>&gt;<i>     Philippe
+</I>&gt;<i>
+</I>&gt;<i>     -- 
+</I>&gt;<i>     Philippe Virouleau
+</I>&gt;<i>     IJD INRIA - &#201;quipe MOAIS
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -- 
+</I>&gt;<i> Marcos Moyano
+</I>&gt;<i> Co-Founder of Anue
+</I>&gt;<i> Skype: marcosmoyano
+</I>&gt;<i> <A HREF="http://www.anue.biz/">http://www.anue.biz/</A>
+</I>
+
+-- 
+Philippe Virouleau
+IJD INRIA - &#201;quipe MOAIS
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130326/ab25edd4/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130326/ab25edd4/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001237.html">[i3] Correct scratchpad show behaviour ?
+</A></li>
+	<LI>Next message: <A HREF="001239.html">[i3] Status bar - wifi
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1238">[ date ]</a>
+              <a href="thread.html#1238">[ thread ]</a>
+              <a href="subject.html#1238">[ subject ]</a>
+              <a href="author.html#1238">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

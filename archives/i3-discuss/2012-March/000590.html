@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] How to restart i3bar?
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20How%20to%20restart%20i3bar%3F&In-Reply-To=%3C20120327154928.30fde53a%40pc-cm-gru-virtlinux1.pt.local%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000588.html">
+   <LINK REL="Next"  HREF="000591.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] How to restart i3bar?</H1>
+    <B>i3.thegrue at spamgourmet.com</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20How%20to%20restart%20i3bar%3F&In-Reply-To=%3C20120327154928.30fde53a%40pc-cm-gru-virtlinux1.pt.local%3E"
+       TITLE="[i3] How to restart i3bar?">i3.thegrue at spamgourmet.com
+       </A><BR>
+    <I>Tue Mar 27 15:49:28 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000588.html">[i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)
+</A></li>
+        <LI>Next message: <A HREF="000591.html">[i3] How to restart i3bar?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#590">[ date ]</a>
+              <a href="thread.html#590">[ thread ]</a>
+              <a href="subject.html#590">[ subject ]</a>
+              <a href="author.html#590">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+what's the right way to restart i3bar? I would like to play with the
+colours...
+
+That's what I came up with, but it's .... ugly:
+
+i3-msg -t command reload
+killall i3bar
+bar_id=$(i3-msg -t get_bar_config)
+i3bar --bar_id=${bar_id:2:10} --socket=/tmp/i3-gru.G1lmRw/ipc-socket.2387 &amp;  
+
+btw. I'm still wondering how to find out the socket...
+
+
+TIA,
+--
+Markus Grunwald                                 <A HREF="http://www.the-grue.de">http://www.the-grue.de</A>
+
+M&#228;nnerchor Markt Kirchseeon               Registered Linux User 101577
+Notenwart und Webmaster                          <A HREF="http://counter.li.org">http://counter.li.org</A>
+<A HREF="http://www.maennerchor-kirchseeon.de">http://www.maennerchor-kirchseeon.de</A>           pgp/gpg key ID 15CEDD0A
+
+     Fragen zur Mail? <A HREF="http://www.the-grue.de/mail_und_co/">http://www.the-grue.de/mail_und_co/</A>
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000588.html">[i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)
+</A></li>
+	<LI>Next message: <A HREF="000591.html">[i3] How to restart i3bar?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#590">[ date ]</a>
+              <a href="thread.html#590">[ thread ]</a>
+              <a href="subject.html#590">[ subject ]</a>
+              <a href="author.html#590">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,32 @@
+<tt>
+&lt;div&nbsp;dir=&quot;ltr&quot;&gt;Yikes,&nbsp;thanks!&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;It&nbsp;turns&nbsp;out&nbsp;I&nbsp;had&nbsp;the&nbsp;&amp;&amp;&nbsp;in&nbsp;several&nbsp;execs,&nbsp;but&nbsp;hadn&#39;t&nbsp;really&nbsp;locked&nbsp;that&nbsp;in&nbsp;to&nbsp;memory.&nbsp; I&nbsp;think&nbsp;I&nbsp;missed&nbsp;the&nbsp;--no-startup-id&nbsp;thing&nbsp;because&nbsp;when&nbsp;I&nbsp;run&nbsp;i3lock&nbsp;I&nbsp;also&nbsp;do&nbsp;a&nbsp;&quot;xset&nbsp;dpms&nbsp;force&nbsp;off&quot;.&lt;/div&gt;<br>
+<br>
+&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&nbsp;style&gt;Is&nbsp;the&nbsp;parallel&nbsp;exec&nbsp;thing&nbsp;in&nbsp;the&nbsp;docs&nbsp;anywhere?&nbsp; It&nbsp;makes&nbsp;sense&nbsp;now&nbsp;that&nbsp;you&nbsp;point&nbsp;it&nbsp;out,&nbsp;but&nbsp;I&nbsp;don&#39;t&nbsp;see&nbsp;it&nbsp;mentioned.&lt;/div&gt;&lt;div&nbsp;style&gt;&lt;br&gt;&lt;/div&gt;&lt;div&nbsp;style&gt;Also,&nbsp;under&nbsp;what&nbsp;circumstances&nbsp;is&nbsp;the&nbsp;quoting&nbsp;required?&nbsp; Am&nbsp;I&nbsp;just&nbsp;lucky&nbsp;that&nbsp;the&nbsp;&amp;&amp;&nbsp;chains&nbsp;I&nbsp;have&nbsp;now&nbsp;seem&nbsp;to&nbsp;work&nbsp;without&nbsp;quotes?&lt;/div&gt;<br>
+<br>
+&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&nbsp;style&gt;Brian&lt;/div&gt;&lt;/div&gt;&lt;div&nbsp;class=&quot;gmail_extra&quot;&gt;&lt;br&gt;&lt;br&gt;&lt;div&nbsp;class=&quot;gmail_quote&quot;&gt;On&nbsp;Mon,&nbsp;Apr&nbsp;8,&nbsp;2013&nbsp;at&nbsp;12:34&nbsp;AM,&nbsp;Michael&nbsp;Stapelberg&nbsp;&lt;span&nbsp;dir=&quot;ltr&quot;&gt;&lt;&lt;a&nbsp;href=&quot;mailto:michael@i3wm.org&quot;&nbsp;target=&quot;_blank&quot;&gt;michael@i3wm.org&lt;/a&gt;&gt;&lt;/span&gt;&nbsp;wrote:&lt;br&gt;<br>
+<br>
+&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;Hi&nbsp;Brian,&lt;br&gt;<br>
+&lt;div&nbsp;class=&quot;im&quot;&gt;&lt;br&gt;<br>
+Brian&nbsp;Grossman&nbsp;&lt;&lt;a&nbsp;href=&quot;mailto:brian.grossman%2Bi3-discuss@gmail.com&quot;&gt;brian.grossman+i3-discuss@gmail.com&lt;/a&gt;&gt;&nbsp;writes:&lt;br&gt;<br>
+&gt;&nbsp;Sidestepping&nbsp;the&nbsp;question&nbsp;a&nbsp;little,&nbsp;how&nbsp;about&nbsp;something&nbsp;like&nbsp;this&nbsp;in&lt;br&gt;<br>
+&gt;&nbsp;~/.i3/config:&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&nbsp;bindsym&nbsp;$mod+Return&nbsp;exec&nbsp;i3lock&nbsp;-n&nbsp;;&nbsp;exec&nbsp;~/bin/bruno-returns&lt;br&gt;<br>
+&lt;/div&gt;Beware,&nbsp;this&nbsp;does&nbsp;not&nbsp;do&nbsp;what&nbsp;you&nbsp;probably&nbsp;think:&lt;br&gt;<br>
+&lt;br&gt;<br>
+The&nbsp;semicolon&nbsp;separates&nbsp;i3&nbsp;commands,&nbsp;so&nbsp;you&nbsp;tell&nbsp;i3&nbsp;to&nbsp;start&nbsp;i3lock&nbsp;-n&lt;br&gt;<br>
+and&nbsp;to&nbsp;start&nbsp;~/bin/bruno-returns&nbsp;immediately&nbsp;afterwards.&lt;br&gt;<br>
+&lt;br&gt;<br>
+Instead,&nbsp;use:&lt;br&gt;<br>
+&lt;br&gt;<br>
+bindsym&nbsp;$mod+x&nbsp;exec&nbsp;--no-startup-id&nbsp;&quot;i3lock&nbsp;-n&nbsp;&amp;&amp;&nbsp;~/bin/bruno-returns&quot;&lt;br&gt;<br>
+&lt;br&gt;<br>
+(--no-startup-id&nbsp;because&nbsp;i3lock&nbsp;doesn’t&nbsp;support&nbsp;startup&nbsp;notifications&nbsp;—&lt;br&gt;<br>
+ it&nbsp;starts&nbsp;up&nbsp;fast&nbsp;enough&nbsp;;-))&lt;br&gt;<br>
+&lt;span&nbsp;class=&quot;HOEnZb&quot;&gt;&lt;font&nbsp;color=&quot;#888888&quot;&gt;&lt;br&gt;<br>
+--&lt;br&gt;<br>
+Best&nbsp;regards,&lt;br&gt;<br>
+Michael&lt;br&gt;<br>
+&lt;/font&gt;&lt;/span&gt;&lt;/blockquote&gt;&lt;/div&gt;&lt;br&gt;&lt;/div&gt;<br>
+
+</tt>

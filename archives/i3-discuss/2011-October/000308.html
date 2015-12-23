@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] egde snapping for floating windows
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20egde%20snapping%20for%20floating%20windows&In-Reply-To=%3CCAKneAXma_6E-52zH6%2Bm5mdYUSSGyPYsgdLi60v4SfF3Eftk8ZQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000307.html">
+   <LINK REL="Next"  HREF="000309.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] egde snapping for floating windows</H1>
+    <B>Jan Krcmar</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20egde%20snapping%20for%20floating%20windows&In-Reply-To=%3CCAKneAXma_6E-52zH6%2Bm5mdYUSSGyPYsgdLi60v4SfF3Eftk8ZQ%40mail.gmail.com%3E"
+       TITLE="[i3] egde snapping for floating windows">honza801 at gmail.com
+       </A><BR>
+    <I>Tue Oct 18 16:40:04 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000307.html">[i3] key for showing version
+</A></li>
+        <LI>Next message: <A HREF="000309.html">[i3] i3-discuss and i3-announce are now on Gmane too
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#308">[ date ]</a>
+              <a href="thread.html#308">[ thread ]</a>
+              <a href="subject.html#308">[ subject ]</a>
+              <a href="author.html#308">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>hi,
+
+oops, seems i've overlooked this mail
+
+&gt;<i> I tried your patch with the default snap_threshold of 10 pixels. I noticed
+</I>&gt;<i> multiple issues:
+</I>&gt;<i>
+</I>&gt;<i> 1) I can&#8217;t seem to position my windows within the 10 pixels to every screen
+</I>&gt;<i> &#160; edge (e.g. I cannot position them at x=6, y=3). It always snaps. That is a
+</I>&gt;<i> &#160; serious usability problem, but I don&#8217;t see a good way to solve it within the
+</I>&gt;<i> &#160; existing i3 codebase.
+</I>&gt;<i>
+</I>&gt;<i> &#160; A way that could work better (without having tried it): Signaling the user
+</I>&gt;<i> &#160; that the window could snap. If you have ever used Apple Keynote or Xcode&#8217;s
+</I>&gt;<i> &#160; User Interface Builder you know the helper lines they have to signal that
+</I>&gt;<i> &#160; something can be aligned somewhere [1]. After signaling, the user could
+</I>&gt;<i> &#160; either let the mouse button go (and the window would snap) or keep on
+</I>&gt;<i> &#160; positioning and would be allowed to do it like he wants. As I said, I don&#8217;t
+</I>&gt;<i> &#160; see how to implement this with i3&#8217;s codebase (in particular not without
+</I>&gt;<i> &#160; using compositing).
+</I>&gt;<i>
+</I>&gt;<i> &#160; Another way would be to press a specific key while dragging, like Control.
+</I>&gt;<i> &#160; Not sure if Control is a good choice for that, and also not sure if using it
+</I>&gt;<i> &#160; together with the floating_modifier (which might already include Control
+</I>&gt;<i> &#160; :-/) is a reasonable key combination to press.
+</I>
+yes, this is the way the snapping should work. snaps window on
+specified threshold. i really don't like the way of 'signalling'
+something to the user, it seems pretty ugly to me. the user should use
+snapping or shouldn't. this is the way the most systems offer
+(actually i haven't seen another way).
+
+&gt;<i> 2) You don&#8217;t consider dock clients but always snap to the screen edges.
+</I>
+hmm, i can observe different bahaviour. i'm running i3bar this way:
+i3bar -d bottom
+and all the windows are respecting this border. have you got some
+other informations about this?
+
+&gt;<i> 3) There are various little code style points which I&#8217;m omitting in this mail,
+</I>&gt;<i> &#160; due to the reasons below.
+</I>
+i'm sorry :)
+
+&gt;<i> Now that I saw how it looks and feels, I don&#8217;t think this is a good feature for
+</I>&gt;<i> i3. It feels a little weird to use and frankly, I don&#8217;t think we need it.
+</I>&gt;<i> Floating mode is mainly implemented for (modal) popup dialogs like password
+</I>&gt;<i> prompts. i3 does not aim to become a good floating window manager.
+</I>&gt;<i>
+</I>&gt;<i> So, in conclusion: Thanks for your efforts, but I say no to this version of the
+</I>&gt;<i> patch and probably also to further versions, unless you can convince me that
+</I>&gt;<i> it&#8217;s really worth it and that you sorted out the usability problems.
+</I>
+ok, this is the beauty of open source. i have my own branch including
+my patch and using/improving it (while trying to keep it in sync) and
+i really enjoy using i3 this way
+
+thanks for your hints ;)
+maybe i'll try it later
+jan
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000307.html">[i3] key for showing version
+</A></li>
+	<LI>Next message: <A HREF="000309.html">[i3] i3-discuss and i3-announce are now on Gmane too
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#308">[ date ]</a>
+              <a href="thread.html#308">[ thread ]</a>
+              <a href="subject.html#308">[ subject ]</a>
+              <a href="author.html#308">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

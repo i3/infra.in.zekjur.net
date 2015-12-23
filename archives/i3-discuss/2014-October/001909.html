@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Some workspaces not showing when undocked
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Some%20workspaces%20not%20showing%20when%20undocked&In-Reply-To=%3C1413235701.2906445.178545933.0733B5D9%40webmail.messagingengine.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001908.html">
+   <LINK REL="Next"  HREF="001910.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Some workspaces not showing when undocked</H1>
+    <B>Danny Jonstrup Krøger</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Some%20workspaces%20not%20showing%20when%20undocked&In-Reply-To=%3C1413235701.2906445.178545933.0733B5D9%40webmail.messagingengine.com%3E"
+       TITLE="[i3] Some workspaces not showing when undocked">mailinglist at kroeger.dk
+       </A><BR>
+    <I>Mon Oct 13 23:28:21 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001908.html">[i3] Scroll Events
+</A></li>
+        <LI>Next message: <A HREF="001910.html">[i3] i3-msg - move all/some workspaces to another output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1909">[ date ]</a>
+              <a href="thread.html#1909">[ thread ]</a>
+              <a href="subject.html#1909">[ subject ]</a>
+              <a href="author.html#1909">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Sorry for the late follow-up.
+
+Thanks for your suggestions.
+
+I did some further investigation to find the culprit and I jumped the
+gun
+quite a bit around the randr changes being the issue. 
+I disabled most parts of my config and slowly added things until the
+issue appeared.
+The setting that causes the issue is &quot;focus_follows_mouse no&quot; which is
+really odd since I have used that setting in the past without issues.
+
+If I remove &quot;focus_follows_mouse no&quot; from my config everything works
+perfectly.
+
+The above has been tested with the laptop not being docked, and the
+config part sending a workspace to a give output has been disabled
+
+Best Regards
+Danny Jonstrup Krøger
+
+On Sun, Sep 28, 2014, at 17:05, Michael Stapelberg wrote:
+&gt;<i> My guess is that something goes wrong when setting your display
+</I>&gt;<i> settings on undock.
+</I>&gt;<i> 
+</I>&gt;<i> I’d start by logging a confirmation line to a file in your
+</I>&gt;<i> undock-script so that you know it gets executed.
+</I>&gt;<i> 
+</I>&gt;<i> Also, I’d check the i3 log, see <A HREF="http://i3wm.org/docs/debugging.html,">http://i3wm.org/docs/debugging.html,</A>
+</I>&gt;<i> and check whether the randr settings are as you expect them after
+</I>&gt;<i> undocking.
+</I>&gt;<i> 
+</I>&gt;<i> Instead of logging out and in again, try changing your settings using
+</I>&gt;<i> xrandr.
+</I>&gt;<i> 
+</I>&gt;<i> On Sun, Sep 28, 2014 at 11:12 AM, Danny Jonstrup Krøger
+</I>&gt;<i> &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">mailinglist at kroeger.dk</A>&gt; wrote:
+</I>&gt;<i> &gt; Hi.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I'm using a laptop, which is connected to two other screens when docked. I
+</I>&gt;<i> &gt; have assigned the workspaces to the following screens:
+</I>&gt;<i> &gt; # eDP1 = laptop
+</I>&gt;<i> &gt; # DP2 &amp; DP1 = external screens.
+</I>&gt;<i> &gt; workspace 1 output DP2
+</I>&gt;<i> &gt; workspace 2 output DP2
+</I>&gt;<i> &gt; workspace 3 output DP2
+</I>&gt;<i> &gt; workspace 4 output DP1
+</I>&gt;<i> &gt; workspace 5 output DP1
+</I>&gt;<i> &gt; workspace 6 output DP1
+</I>&gt;<i> &gt; workspace 7 output eDP1
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; When undocking I run the following randr command to switch off the other
+</I>&gt;<i> &gt; screens:
+</I>&gt;<i> &gt; $xrandr --output VIRTUAL1 --off --output eDP1 --mode 1920x1080 --pos 0x0
+</I>&gt;<i> &gt; --rotate normal --output DP1 --off --output ↪HDMI2 --off --output HDMI1
+</I>&gt;<i> &gt; --off --output DP2 --off
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; However I often experience that I'm unable to go to other workspaces than 1
+</I>&gt;<i> &gt; &amp; 7 when undocked. Sometimes 2-6 works, but it seems to be working quite
+</I>&gt;<i> &gt; randomly. It doesn't help either if I log out and in again.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; When searching for people having the same issue it seems that i3 should be
+</I>&gt;<i> &gt; handling this scenario without issues, so I'm sure there is something I have
+</I>&gt;<i> &gt; overlooked.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Any ideas on how to get this working properly?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Best Regards
+</I>&gt;<i> &gt; Danny Jonstrup Krøger
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Michael
+</I></PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001908.html">[i3] Scroll Events
+</A></li>
+	<LI>Next message: <A HREF="001910.html">[i3] i3-msg - move all/some workspaces to another output
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1909">[ date ]</a>
+              <a href="thread.html#1909">[ thread ]</a>
+              <a href="subject.html#1909">[ subject ]</a>
+              <a href="author.html#1909">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

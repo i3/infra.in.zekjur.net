@@ -1,0 +1,27 @@
+<tt>
+&lt;div&nbsp;dir=&quot;ltr&quot;&gt;Hi,&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&nbsp;style&gt;Thanks&nbsp;for&nbsp;the&nbsp;reply.&lt;/div&gt;&lt;div&nbsp;style&gt;&lt;br&gt;&lt;/div&gt;&lt;div&nbsp;style&gt;Would&nbsp;you&nbsp;have&nbsp;a&nbsp;wrapper&nbsp;example&nbsp;for&nbsp;that? &lt;/div&gt;&lt;div&nbsp;style&gt;&lt;br&gt;&lt;/div&gt;&lt;div&nbsp;style&gt;If&nbsp;I&nbsp;understood&nbsp;right,&nbsp;the&nbsp;idea&nbsp;would&nbsp;be&nbsp;to&nbsp;wrap&nbsp;i3&nbsp;with&nbsp;another&nbsp;application,&nbsp;running:&lt;/div&gt;<br>
+<br>
+&lt;div&nbsp;style&gt;-&nbsp;execute&nbsp;pre-lock&nbsp;commands&lt;/div&gt;&lt;div&nbsp;style&gt;-&nbsp;fork&nbsp;i3lock&lt;/div&gt;&lt;div&nbsp;style&gt;-&nbsp;get&nbsp;pid&lt;/div&gt;&lt;div&nbsp;style&gt;-&nbsp;waitpid&nbsp;until&nbsp;it&nbsp;is&nbsp;finished&lt;/div&gt;&lt;div&nbsp;style&gt;-&nbsp;execute&nbsp;post-lock&nbsp;commands&lt;/div&gt;&lt;div&nbsp;style&gt;&lt;br&gt;&lt;/div&gt;&lt;div&nbsp;style&gt;<br>
+<br>
+is&nbsp;that&nbsp;it?&nbsp;Looks&nbsp;good&nbsp;to&nbsp;me! &lt;/div&gt;&lt;/div&gt;&lt;div&nbsp;class=&quot;gmail_extra&quot;&gt;&lt;br&nbsp;clear=&quot;all&quot;&gt;&lt;div&gt;&lt;div&nbsp;dir=&quot;ltr&quot;&gt;&lt;br&gt;&lt;span&nbsp;style=&quot;font-family:courier&nbsp;new,monospace&quot;&gt;--&lt;/span&gt;&lt;br&nbsp;style=&quot;font-family:courier&nbsp;new,monospace&quot;&gt;&lt;b&nbsp;style=&quot;font-family:courier&nbsp;new,monospace&quot;&gt;Bruno&nbsp;Braga&lt;/b&gt;&lt;br&nbsp;style=&quot;font-family:courier&nbsp;new,monospace&quot;&gt;<br>
+<br>
+&lt;a&nbsp;style=&quot;font-family:courier&nbsp;new,monospace&quot;&nbsp;href=&quot;http://www.brunobraga.net&quot;&nbsp;target=&quot;_blank&quot;&gt;www.brunobraga.net&lt;/a&gt;&lt;br&nbsp;style=&quot;font-family:courier&nbsp;new,monospace&quot;&gt;&lt;a&nbsp;style=&quot;font-family:courier&nbsp;new,monospace&quot;&nbsp;href=&quot;mailto:bruno.braga@gmail.com&quot;&nbsp;target=&quot;_blank&quot;&gt;bruno.braga@gmail.com&lt;/a&gt;&lt;/div&gt;<br>
+<br>
+&lt;/div&gt;<br>
+&lt;br&gt;&lt;br&gt;&lt;div&nbsp;class=&quot;gmail_quote&quot;&gt;On&nbsp;Fri,&nbsp;Apr&nbsp;5,&nbsp;2013&nbsp;at&nbsp;4:33&nbsp;PM,&nbsp;Bas&nbsp;Pape&nbsp;&lt;span&nbsp;dir=&quot;ltr&quot;&gt;&lt;&lt;a&nbsp;href=&quot;mailto:baspape@gmail.com&quot;&nbsp;target=&quot;_blank&quot;&gt;baspape@gmail.com&lt;/a&gt;&gt;&lt;/span&gt;&nbsp;wrote:&lt;br&gt;&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;<br>
+<br>
+2013/4/5&nbsp;BRAGA,&nbsp;Bruno&nbsp;&lt;&lt;a&nbsp;href=&quot;mailto:bruno.braga@gmail.com&quot;&gt;bruno.braga@gmail.com&lt;/a&gt;&gt;:&lt;br&gt;<br>
+&lt;div&nbsp;class=&quot;im&quot;&gt;&gt;&nbsp;I&nbsp;basically&nbsp;have&nbsp;a&nbsp;bindsym&nbsp;to&nbsp;Ctrl+Alt+L&nbsp;for&nbsp;i3lock,&nbsp;and&nbsp;could&nbsp;easily&nbsp;wrap&lt;br&gt;<br>
+&gt;&nbsp;into&nbsp;a&nbsp;script&nbsp;to&nbsp;do&nbsp;a&nbsp;pre-process&nbsp;hook&nbsp;to&nbsp;do&nbsp;stuff&nbsp;then&nbsp;call&nbsp;i3lock...&nbsp;but&lt;br&gt;<br>
+&gt;&nbsp;once&nbsp;i3lock&nbsp;finishes&nbsp;(I&nbsp;type&nbsp;in&nbsp;the&nbsp;correct&nbsp;password),&nbsp;I&nbsp;can&nbsp;not&nbsp;reach&nbsp;that&lt;br&gt;<br>
+&gt;&nbsp;event&nbsp;to&nbsp;run&nbsp;a&nbsp;post-process&nbsp;script,&nbsp;can&nbsp;I?&lt;br&gt;<br>
+&lt;br&gt;<br>
+&lt;/div&gt;You&nbsp;can&nbsp;either&nbsp;run&nbsp;i3lock&nbsp;in&nbsp;the&nbsp;foreground&nbsp;(would&nbsp;disable&nbsp;the&lt;br&gt;<br>
+possiblity&nbsp;to&nbsp;suspend&nbsp;etc.&nbsp;after&nbsp;locking);&nbsp;or&nbsp;save&nbsp;i3lock&#39;s&nbsp;pid&nbsp;(after&lt;br&gt;<br>
+forking)&nbsp;and&nbsp;use&nbsp;waitpid&nbsp;to&nbsp;wait&nbsp;for&nbsp;it&nbsp;to&nbsp;exit.&lt;br&gt;<br>
+&lt;br&gt;<br>
+--&lt;br&gt;<br>
+Tucos&lt;br&gt;<br>
+&lt;/blockquote&gt;&lt;/div&gt;&lt;br&gt;&lt;/div&gt;<br>
+
+</tt>

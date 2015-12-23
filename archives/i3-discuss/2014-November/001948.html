@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3bar multi-monitor setup
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3bar%20multi-monitor%20setup&In-Reply-To=%3C546E7E2A.8030006%40hunsicker.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001947.html">
+   <LINK REL="Next"  HREF="001949.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3bar multi-monitor setup</H1>
+    <B>Marco Hunsicker</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3bar%20multi-monitor%20setup&In-Reply-To=%3C546E7E2A.8030006%40hunsicker.de%3E"
+       TITLE="[i3] i3bar multi-monitor setup">i3 at hunsicker.de
+       </A><BR>
+    <I>Fri Nov 21 00:50:02 CET 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001947.html">[i3] memory display
+</A></li>
+        <LI>Next message: <A HREF="001949.html">[i3] i3bar multi-monitor setup
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1948">[ date ]</a>
+              <a href="thread.html#1948">[ thread ]</a>
+              <a href="subject.html#1948">[ subject ]</a>
+              <a href="author.html#1948">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Howdy,
+
+I have a question regarding the configuration of i3bar with multiple 
+monitors.
+
+I'm running a somewhat unusual setup with 3 monitors in pivot mode. 
+Total screen size is 3600x1920, but in order to be able to stretch my 
+IDE across 2 monitors I'm using the fake-outputs option to form just 2 
+workspaces:
+
+     fake-outputs 1200x1920+0+0,2400x1920+1200+0
+
+This works really great for the most part, but duplicates the output of 
+the i3bar configuration to a certain degree across the monitors. The 
+date is displayed twice etc.
+
+That's why I wanted to use different i3bar instances for the different 
+outputs.
+
+xrandr reveals:
+
+Screen 0: minimum 8 x 8, current 3600 x 1920, maximum 16384 x 16384
+DVI-I-0 disconnected
+DVI-I-1 connected 1200x1920+1200+0 left
+[...]
+HDMI-0 connected 1200x1920+0+0 left
+[...]
+HDMI-1 disconnected
+DVI-D-0 connected 1200x1920+2400+0 left
+[...]
+
+So, HDMI-0 is the leftmost monitor. DVI-I-1 and DVI-D-0 are the 2 other 
+monitors that form a single workspace.
+
+According to the documentation I was thinking that adding the &quot;output&quot; 
+option to the &quot;bar&quot; section would limit i3bar to that output. But I 
+can't get it to work.
+
+If I try to limit the output to just the leftmost output like this:
+
+bar {
+     output HDMI-0
+     ...
+}
+
+the bar disappears completely! No matter what I tried, adding an 
+&quot;output&quot; option always leaves me with i3bar disappearing!
+
+Am I doing something wrong? Or is this kind of setup not possible?
+
+
+I'm using i3 version 4.8 (2014-06-15, branch &quot;4.8&quot;) running the Nvidia 
+binary driver 340.58 on Debian Wheezy.
+
+If any further information is required, just let me know. Thanks in advance.
+
+Cheers,
+
+Marco
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001947.html">[i3] memory display
+</A></li>
+	<LI>Next message: <A HREF="001949.html">[i3] i3bar multi-monitor setup
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1948">[ date ]</a>
+              <a href="thread.html#1948">[ thread ]</a>
+              <a href="subject.html#1948">[ subject ]</a>
+              <a href="author.html#1948">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

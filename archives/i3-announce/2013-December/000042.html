@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3 announcement] i3 v4.7 released
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-announce%40infra.in.zekjur.net?Subject=Re%3A%20%5Bi3%20announcement%5D%20i3%20v4.7%20released&In-Reply-To=%3Cx6sitksjzd.fsf%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3 announcement] i3 v4.7 released</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-announce%40infra.in.zekjur.net?Subject=Re%3A%20%5Bi3%20announcement%5D%20i3%20v4.7%20released&In-Reply-To=%3Cx6sitksjzd.fsf%40midna.zekjur.net%3E"
+       TITLE="[i3 announcement] i3 v4.7 released">michael at i3wm.org
+       </A><BR>
+    <I>Sun Dec 22 21:34:30 CET 2013</I>
+    <P><UL>
+        
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#42">[ date ]</a>
+              <a href="thread.html#42">[ thread ]</a>
+              <a href="subject.html#42">[ subject ]</a>
+              <a href="author.html#42">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I just released i3 v4.7. Release notes follow:
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Release notes for i3 v4.7    &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+This is the i3 v4.7. This version is considered stable. All users of i3 are
+strongly encouraged to upgrade.
+
+This release features a number of documentation improvements, better error
+messages in various places, better tray compatibility in i3bar, and a number of
+bugfixes.
+
+Relevant from a packaging point of view is that we have switched to the new
+xcb-util-cursor library to get rid of libXcursor. The last remaining big piece
+of Xlib code now is XKB, which we may be able to tackle in upcoming releases
+thanks to the just released libxcb 1.10.
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Changes in v4.7            &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+  &#8226; docs/userguide: clarify variable parsing
+  &#8226; docs/userguide: clarify urgent_workspace
+  &#8226; docs/userguide: add proper quoting for rename sample command
+  &#8226; docs/userguide: clarify multiple criteria
+  &#8226; docs/userguide: userguide: explain the difference between comma and semicolon for command chaining
+  &#8226; docs/hacking-howto: update to reflect parser changes
+  &#8226; man/i3-dump-log: document -f
+  &#8226; switch from libXcursor to xcb-util-cursor
+  &#8226; Respect workspace numbers when looking for a free workspace name
+  &#8226; Revert &quot;raise fullscreen windows on top of all other X11 windows&quot;
+  &#8226; i3bar: Create pixmaps using the real bar height, rather than screen height
+  &#8226; Add scratchpad bindings to the default config
+  &#8226; Close all children when closing a workspace
+  &#8226; i3bar: Add new bar.binding_mode_indicator configuration
+  &#8226; Improve error message when $XDG_RUNTIME_DIR is not writable
+  &#8226; libi3/font: Draw the text at the expected place
+  &#8226; libi3/font: Set DPI for the pango context
+  &#8226; Add ability to escape out of a mouse-resize operation
+  &#8226; Do not resize/reposition floating containers when moving them to scratchpad
+  &#8226; i3-nagbar: Set button inner-width to the width of the label
+  &#8226; Assigned windows open urgent when not visible
+  &#8226; i3bar: Only configure tray on own outputs
+  &#8226; Command 'move &lt;direction&gt;' moves across outputs
+  &#8226; i3bar: Handle DestroyNotify events
+  &#8226; i3bar: Realign tray clients on map/unmap notify
+  &#8226; i3bar: Group child processes for signalling
+  &#8226; i3bar: Print error message when status_command fails
+  &#8226; Remove references to PATH_MAX macro for GNU/Hurd
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Bugfixes                   &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+  &#8226; update root geometry on output changes for &#8220;fullscreen global&#8221;
+  &#8226; don&#8217;t flatten tabbed/stacked containers
+  &#8226; Fix handling of new windows with WM_STATE_FULLSCREEN
+  &#8226; correctly recognize assigned windows as urgent
+  &#8226; Fix keyboard and mouse resize in nested containers
+  &#8226; Reply to _NET_REQUEST_FRAME_EXTENTS correctly
+  &#8226; Fix command parser: resizing tiling windows
+  &#8226; Fix output retrieval for floating cons
+  &#8226; Use _PATH_BSHELL to ensure using a bourne shell
+  &#8226; Instead of crashing, return DRAG_ABORT on UnmapNotify from drag_pointer
+  &#8226; Remove-child callback skips output content cons
+  &#8226; ignore _NET_ACTIVE_WINDOW for scratchpad windows
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Thanks!                    &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+Thanks for testing, bugfixes, discussions and everything I forgot go out to:
+
+Alexander Neumann, badboy, Baptiste Daroussin, Bas Pape, Deiz, Franck Michea,
+Jean-Philippe Ouellet, jj, jookia, kaersten, Lancelot SIX, Leo Gaspard,
+mistnim, Peter Maatman, Quentin Glidic, Sebastian Ullrich, Slava, syl20bnr,
+Tony Crisci, Trung Ngo, Vivien Didelot, Xarthisius
+
+I want to specifically thank Tony Crisci for the very valuable help with
+responding to bugreports in our bugtracker. Thank you!
+
+-- Michael Stapelberg, 2013-12-22
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#42">[ date ]</a>
+              <a href="thread.html#42">[ thread ]</a>
+              <a href="subject.html#42">[ subject ]</a>
+              <a href="author.html#42">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-announce">More information about the i3-announce
+mailing list</a><br>
+</body></html>

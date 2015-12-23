@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Can't figure out a way to redirect screen session to	workspace
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Can%27t%20figure%20out%20a%20way%20to%20redirect%20screen%20session%20to%0A%09workspace&In-Reply-To=%3CCAKneAXkSbLfBm7miEF7ogNB%2BXNSJUV6uVt4rzDuvfxwxxMnK%2Bw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000891.html">
+   <LINK REL="Next"  HREF="000893.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Can't figure out a way to redirect screen session to	workspace</H1>
+    <B>Jan Krcmar</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Can%27t%20figure%20out%20a%20way%20to%20redirect%20screen%20session%20to%0A%09workspace&In-Reply-To=%3CCAKneAXkSbLfBm7miEF7ogNB%2BXNSJUV6uVt4rzDuvfxwxxMnK%2Bw%40mail.gmail.com%3E"
+       TITLE="[i3] Can't figure out a way to redirect screen session to	workspace">honza801 at gmail.com
+       </A><BR>
+    <I>Wed Sep  5 15:44:17 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000891.html">[i3] Can't figure out a way to redirect screen session to workspace
+</A></li>
+        <LI>Next message: <A HREF="000893.html">[i3] Can't figure out a way to redirect screen session to	workspace
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#892">[ date ]</a>
+              <a href="thread.html#892">[ thread ]</a>
+              <a href="subject.html#892">[ subject ]</a>
+              <a href="author.html#892">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>hi,
+
+try
+assign [title=&quot;mcabber&quot;] 2
+
+some applications change their WM_NAME after start...
+
+cheers
+fous
+
+2012/9/5 Lukas J&#252;nger &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">autonomy at tvk.rwth-aachen.de</A>&gt;:
+&gt;<i> Hi guys,
+</I>&gt;<i>
+</I>&gt;<i> I somehow can't figure out a way to make my mcabber screen session pop
+</I>&gt;<i> up on workspace 2. Here is the part of my conf:
+</I>&gt;<i>
+</I>&gt;<i> assign [class=&quot;Firefox&quot;] 1
+</I>&gt;<i> assign [title=&quot;[screen 0: mcabber] &quot;] 2
+</I>&gt;<i> assign [class=&quot;Thunderbird&quot;] 3
+</I>&gt;<i> exec firefox
+</I>&gt;<i> exec jabmcab
+</I>&gt;<i> exec thunderbird
+</I>&gt;<i> exec --no-startup-id nitrogen --restore
+</I>&gt;<i>
+</I>&gt;<i> And here is the xprop of the mcabber window:
+</I>&gt;<i>
+</I>&gt;<i> WM_STATE(WM_STATE):
+</I>&gt;<i>                 window state: Normal
+</I>&gt;<i>                 icon window: 0x0
+</I>&gt;<i> _NET_WM_PID(CARDINAL) = 11948
+</I>&gt;<i> WM_PROTOCOLS(ATOM): protocols  WM_DELETE_WINDOW, _NET_WM_PING
+</I>&gt;<i> WM_LOCALE_NAME(STRING) = &quot;de_DE.utf8&quot;
+</I>&gt;<i> WM_CLASS(STRING) = &quot;urxvt&quot;, &quot;URxvt&quot;
+</I>&gt;<i> WM_HINTS(WM_HINTS):
+</I>&gt;<i>                 Client accepts input or input focus: True
+</I>&gt;<i>                 Initial state is Normal State.
+</I>&gt;<i>                 window id # of group leader: 0xa00009
+</I>&gt;<i> WM_NORMAL_HINTS(WM_SIZE_HINTS):
+</I>&gt;<i>                 program specified minimum size: 12 by 18
+</I>&gt;<i>                 program specified resize increment: 8 by 14
+</I>&gt;<i>                 program specified base size: 4 by 4
+</I>&gt;<i>                 window gravity: NorthWest
+</I>&gt;<i> WM_CLIENT_MACHINE(STRING) = &quot;bla bla taken out&quot;
+</I>&gt;<i> WM_COMMAND(STRING) = { &quot;urxvt&quot;, &quot;-e&quot;, &quot;zsh&quot;, &quot;-c&quot;, &quot;screen -rx mcabber
+</I>&gt;<i> || screen -S mcabber \\mcabber&quot; }
+</I>&gt;<i> _NET_WM_ICON_NAME(UTF8_STRING) = &quot;zsh&quot;
+</I>&gt;<i> WM_ICON_NAME(STRING) = &quot;zsh&quot;
+</I>&gt;<i> _NET_WM_NAME(UTF8_STRING) = &quot;[screen 0: mcabber] &quot;
+</I>&gt;<i> WM_NAME(STRING) = &quot;[screen 0: mcabber] &quot;
+</I>&gt;<i>
+</I>&gt;<i> Can you give me a little hint? If i leave out the whitespace in
+</I>&gt;<i>
+</I>&gt;<i> assign [title=&quot;[screen 0: mcabber] &quot;] 2
+</I>&gt;<i>
+</I>&gt;<i> all my urxvt windows pop up on workspace 2.
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i> Lukas
+</I></PRE>
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000891.html">[i3] Can't figure out a way to redirect screen session to workspace
+</A></li>
+	<LI>Next message: <A HREF="000893.html">[i3] Can't figure out a way to redirect screen session to	workspace
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#892">[ date ]</a>
+              <a href="thread.html#892">[ thread ]</a>
+              <a href="subject.html#892">[ subject ]</a>
+              <a href="author.html#892">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

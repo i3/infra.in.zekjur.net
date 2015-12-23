@@ -1,0 +1,58 @@
+From 869951f5141db9fba3497a96d9ee82916831364d Mon Sep 17 00:00:00 2001
+From: darkraven <drdarkraven@gmail.com>
+Date: Wed, 22 Feb 2012 17:13:40 +0800
+Subject: [PATCH] i3bar fix
+
+---
+ i3bar/src/xcb.c |   20 +++++++++-----------
+ 1 files changed, 9 insertions(+), 11 deletions(-)
+
+diff --git a/i3bar/src/xcb.c b/i3bar/src/xcb.c
+index 84f43fe..0b947fb 100644
+--- a/i3bar/src/xcb.c
++++ b/i3bar/src/xcb.c
+@@ -60,6 +60,7 @@ static i3Font font;
+ Display          *xkb_dpy;
+ int              xkb_event_base;
+ int              mod_pressed = 0;
++bool             bar_hidden = false;
+ 
+ /* Because the statusline is the same on all outputs, we have
+  * global buffer to render it on */
+@@ -1457,8 +1458,10 @@ void draw_bars() {
+                 border_color = colors.urgent_ws_border;
+                 /* The urgent-hint should get noticed, so we unhide the bars shortly */
+                 has_urgent = true;
+-                free(last_urgent_ws);
+-                last_urgent_ws = strdup(ws_walk->name);
++                if (!ws_walk->focused) {
++                    free(last_urgent_ws);
++                    last_urgent_ws = strdup(ws_walk->name);
++                }
+                 unhide_bars();
+             }
+             uint32_t mask = XCB_GC_FOREGROUND | XCB_GC_BACKGROUND;
+@@ -1490,16 +1493,11 @@ void draw_bars() {
+             i += 10 + ws_walk->name_width + 1;
+         }
+ 
+-        if(!has_urgent && !mod_pressed) {
+-            if(last_urgent_ws){
+-                if(walks_away){
+-                    /* Navigated away from the urgent workspace */
++        if(!has_urgent && !mod_pressed && walks_away) {
++                /* Navigated away from the urgent workspace */
++                if(last_urgent_ws)
+                     free(last_urgent_ws);
+-                    last_urgent_ws = NULL;
+-                    hide_bars();
+-                }
+-            } else
+-                /* No urgent and modifier is not pressed */
++                last_urgent_ws = NULL;
+                 hide_bars();
+         }
+ 
+-- 
+1.7.9.1
+

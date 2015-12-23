@@ -1,0 +1,61 @@
+<tt>
+&lt;div&nbsp;dir=&quot;ltr&quot;&gt;&lt;div&gt;Sorry,&nbsp;I&nbsp;didn&#39;t&nbsp;read&nbsp;your&nbsp;message&nbsp;well.&nbsp; I&#39;ve&nbsp;no&nbsp;idea&nbsp;how&nbsp;to&nbsp;make&nbsp;mod+1&nbsp;switch&nbsp;to&nbsp;workspace&nbsp;1&nbsp;or&nbsp;11&nbsp;depending&nbsp;on&nbsp;which&nbsp;monitor&nbsp;you&#39;re&nbsp;on.&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;For&nbsp;completeness,&nbsp;but&nbsp;not&nbsp;answering&nbsp;your&nbsp;question,&nbsp;here&#39;s&nbsp;what&nbsp;I&nbsp;use&nbsp;for&nbsp;workspaces&nbsp;1&nbsp;and&nbsp;11:&lt;/div&gt;<br>
+<br>
+&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;blockquote&nbsp;style=&quot;margin:0px&nbsp;0px&nbsp;0px&nbsp;40px;border:none;padding:0px&quot;&gt;&lt;div&gt;set&nbsp;$mod&nbsp;Mod4&lt;/div&gt;&lt;div&gt;bindsym&nbsp;$mod+1&nbsp;workspace&nbsp;number&nbsp;1&lt;/div&gt;&lt;div&gt;bindsym&nbsp;$mod+Control+1&nbsp;workspace&nbsp;number&nbsp;11&lt;br&gt;&lt;/div&gt;&lt;/blockquote&gt;<br>
+<br>
+&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Brian&lt;/div&gt;&lt;/div&gt;&lt;div&nbsp;class=&quot;gmail_extra&quot;&gt;&lt;br&gt;&lt;br&gt;&lt;div&nbsp;class=&quot;gmail_quote&quot;&gt;On&nbsp;Fri,&nbsp;Apr&nbsp;11,&nbsp;2014&nbsp;at&nbsp;3:59&nbsp;PM,&nbsp;Eric&nbsp;Roseman&nbsp;&lt;span&nbsp;dir=&quot;ltr&quot;&gt;&lt;&lt;a&nbsp;href=&quot;mailto:Eric.Roseman@colorado.edu&quot;&nbsp;target=&quot;_blank&quot;&gt;Eric.Roseman@colorado.edu&lt;/a&gt;&gt;&lt;/span&gt;&nbsp;wrote:&lt;br&gt;<br>
+<br>
+&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;Thanks&nbsp;for&nbsp;the&nbsp;input.&nbsp;I&nbsp;tried&nbsp;this&nbsp;and&nbsp;I&#39;m&nbsp;not&nbsp;sure&nbsp;how&nbsp;to&nbsp;switch&nbsp;to&lt;br&gt;<br>
+workspaces&nbsp;11-20.&nbsp;What&nbsp;I&#39;m&nbsp;trying&nbsp;to&nbsp;do&nbsp;is&nbsp;have&nbsp;workspace&nbsp;1-10&nbsp;per&lt;br&gt;<br>
+monitor,&nbsp;and&nbsp;a&nbsp;mod+2&nbsp;or&nbsp;mod+3&nbsp;would&nbsp;focus&nbsp;the&nbsp;#2&nbsp;or&nbsp;#3&nbsp;workspace&nbsp;of&nbsp;the&lt;br&gt;<br>
+current&nbsp;monitor.&lt;br&gt;<br>
+&lt;br&gt;<br>
+Thanks,&lt;br&gt;<br>
+Eric&lt;br&gt;<br>
+&lt;div&nbsp;class=&quot;&quot;&gt;&lt;br&gt;<br>
+&lt;br&gt;<br>
+&gt;&nbsp;I&nbsp;use&nbsp;something&nbsp;like&nbsp;this:&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp;set&nbsp;$dpyLeft&nbsp;DP1&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp;set&nbsp;$dpyRight&nbsp;eDP1&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp;set&nbsp;$mymod&nbsp;Control+Mod1&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp;bindsym&nbsp;$mymod+Right&nbsp;focus&nbsp;right&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp;bindsym&nbsp;$mymod+Left&nbsp;focus&nbsp;left&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp;workspace&nbsp;1&nbsp;output&nbsp;$dpyLeft&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp;workspace&nbsp;2&nbsp;output&nbsp;$dpyLeft&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp;#&nbsp; &nbsp; &nbsp; ...&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp;workspace&nbsp;10&nbsp;output&nbsp;$dpyLeft&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp;#&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp;workspace&nbsp;11&nbsp;output&nbsp;$dpyRight&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp;workspace&nbsp;12&nbsp;output&nbsp;$dpyRight&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp;#&nbsp; &nbsp; &nbsp; ...&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp;workspace&nbsp;20&nbsp;output&nbsp;$dpyRight&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&nbsp;Brian&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&lt;/div&gt;&lt;div&nbsp;class=&quot;&quot;&gt;&gt;&nbsp;On&nbsp;Fri,&nbsp;Apr&nbsp;11,&nbsp;2014&nbsp;at&nbsp;2:05&nbsp;PM,&nbsp;Eric&nbsp;Roseman&nbsp;&lt;[1]&lt;a&nbsp;href=&quot;mailto:Eric.Roseman@colorado.edu&quot;&gt;Eric.Roseman@colorado.edu&lt;/a&gt;&gt;&nbsp;wrote:&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp;In&nbsp;a&nbsp;multi&nbsp;monitor&nbsp;setup,&nbsp;is&nbsp;it&nbsp;possible&nbsp;to&nbsp;configure&nbsp;the&nbsp;workspaces&nbsp;to&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp;be&nbsp;dependent&nbsp;of&nbsp;the&nbsp;monitor?&nbsp;For&nbsp;instance,&nbsp;say&nbsp;there&nbsp;are&nbsp;two&nbsp;or&nbsp;three&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp;monitors,&nbsp;is&nbsp;it&nbsp;configurable&nbsp;to&nbsp;have&nbsp;ten&nbsp;workspaces&nbsp;per&nbsp;monitor&nbsp;such&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp;that&nbsp;movement&nbsp;between&nbsp;the&nbsp;monitors&nbsp;can&nbsp;be&nbsp;done&nbsp;with&nbsp;a&nbsp;$mod+left&nbsp;or&nbsp;right,&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp;and&nbsp;$mod+{0-9}&nbsp;would&nbsp;switch&nbsp;to&nbsp;the&nbsp;workspace&nbsp;of&nbsp;the&nbsp;focused&nbsp;monitor?&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp;Thanks,&lt;br&gt;<br>
+&gt;&nbsp; &nbsp; &nbsp;Eric&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&lt;/div&gt;&gt;&nbsp;References:&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&nbsp;[1]&nbsp;mailto:&lt;a&nbsp;href=&quot;mailto:Eric.Roseman@colorado.edu&quot;&gt;Eric.Roseman@colorado.edu&lt;/a&gt;&lt;br&gt;<br>
+&lt;/blockquote&gt;&lt;/div&gt;&lt;br&gt;&lt;/div&gt;<br>
+
+</tt>

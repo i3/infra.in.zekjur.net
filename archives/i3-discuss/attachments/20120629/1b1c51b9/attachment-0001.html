@@ -1,0 +1,33 @@
+<tt>
+&lt;br&gt;&lt;div&nbsp;class=&quot;gmail_quote&quot;&gt;On&nbsp;Fri,&nbsp;Jun&nbsp;29,&nbsp;2012&nbsp;at&nbsp;10:29&nbsp;AM,&nbsp;Fernando&nbsp;Lemos&nbsp;&lt;span&nbsp;dir=&quot;ltr&quot;&gt;&lt;&lt;a&nbsp;href=&quot;mailto:fernandotcl@i3wm.org&quot;&nbsp;target=&quot;_blank&quot;&gt;fernandotcl@i3wm.org&lt;/a&gt;&gt;&lt;/span&gt;&nbsp;wrote:&lt;br&gt;&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;<br>
+<br>
+&lt;div&nbsp;class=&quot;im&quot;&gt;On&nbsp;Thu,&nbsp;Jun&nbsp;28,&nbsp;2012&nbsp;at&nbsp;6:04&nbsp;AM,&nbsp;DR&nbsp;&lt;&lt;a&nbsp;href=&quot;mailto:drdarkraven@gmail.com&quot;&gt;drdarkraven@gmail.com&lt;/a&gt;&gt;&nbsp;wrote:&lt;br&gt;<br>
+&gt;&nbsp;On&nbsp;Sun,&nbsp;Jun&nbsp;24,&nbsp;2012&nbsp;at&nbsp;8:53&nbsp;PM,&nbsp;Michael&nbsp;Stapelberg&nbsp;&lt;&lt;a&nbsp;href=&quot;mailto:michael@i3wm.org&quot;&gt;michael@i3wm.org&lt;/a&gt;&gt;&lt;br&gt;<br>
+&lt;/div&gt;[...]&lt;br&gt;<br>
+&lt;div&nbsp;class=&quot;im&quot;&gt;&gt;&gt;&nbsp;I&nbsp;don’t&nbsp;understand&nbsp;why&nbsp;you&nbsp;need&nbsp;this&nbsp;distinction.&nbsp;For&nbsp;which&nbsp;feature&lt;br&gt;<br>
+&gt;&gt;&nbsp;precisely&nbsp;is&nbsp;it&nbsp;important&nbsp;that&nbsp;the&nbsp;X11&nbsp;representation&nbsp;is&nbsp;most&nbsp;likely&nbsp;(!)&lt;br&gt;<br>
+&gt;&gt;&nbsp;changed?&nbsp;Could&nbsp;you&nbsp;elaborate&nbsp;a&nbsp;bit&nbsp;please?&lt;br&gt;<br>
+&lt;/div&gt;[...]&lt;br&gt;<br>
+&lt;div&nbsp;class=&quot;im&quot;&gt;&gt;&nbsp;(I&nbsp;don&#39;t&nbsp;know,&nbsp;but&nbsp;could&nbsp;the&nbsp;X11&nbsp;representation&nbsp;be&nbsp;unchanged&nbsp;after&nbsp;a&lt;br&gt;<br>
+&gt;&nbsp;tree_render()?)&lt;br&gt;<br>
+&lt;br&gt;<br>
+&lt;/div&gt;From&nbsp;what&nbsp;I&nbsp;can&nbsp;tell,&nbsp;i3&nbsp;just&nbsp;calls&nbsp;xcb_flush,&nbsp;which&nbsp;means&nbsp;all&lt;br&gt;<br>
+commands&nbsp;were&nbsp;sent&nbsp;to&nbsp;the&nbsp;server&nbsp;[1]&nbsp;(though&nbsp;I&nbsp;think&nbsp;in&nbsp;theory&nbsp;).&nbsp;Now&lt;br&gt;<br>
+what&nbsp;you&nbsp;wanted&nbsp;is&nbsp;probably&nbsp;something&nbsp;akin&nbsp;to&nbsp;XSync,&nbsp;which&nbsp;means&nbsp;the&lt;br&gt;<br>
+server&nbsp;has&nbsp;received&nbsp;*and*&nbsp;processed&nbsp;the&nbsp;commands&nbsp;[2]. &lt;/blockquote&gt;&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;<br>
+&lt;br&gt;<br>
+There&#39;s&nbsp;no&nbsp;xcb_sync,&nbsp;but&nbsp;I&nbsp;think&nbsp;anything&nbsp;you&nbsp;&quot;get&quot;&nbsp;from&nbsp;the&nbsp;server&lt;br&gt;<br>
+would&nbsp;&quot;sync&quot;&nbsp;the&nbsp;connection&nbsp;like&nbsp;XSync,&nbsp;if&nbsp;I&nbsp;understand&nbsp;how&nbsp;X&nbsp;works&lt;br&gt;<br>
+(and&nbsp;that&#39;s&nbsp;probably&nbsp;where&nbsp;Michael&nbsp;drew&nbsp;inspiration&nbsp;for&nbsp;sync_with_i3&lt;br&gt;<br>
+in&nbsp;the&nbsp;testcases).&nbsp;So&nbsp;yes,&nbsp;the&nbsp;server&nbsp;representation&nbsp;could&nbsp;be&lt;br&gt;<br>
+unchanged&nbsp;after&nbsp;a&nbsp;tree_render.&nbsp;It&nbsp;all&nbsp;depends&nbsp;if&nbsp;you&nbsp;get&nbsp;anything&nbsp;back&lt;br&gt;<br>
+from&nbsp;X&nbsp;in&nbsp;tree_render&nbsp;*after*&nbsp;you&nbsp;xcb_flushed&nbsp;the&nbsp;commands&nbsp;that&nbsp;you&lt;br&gt;<br>
+wanted&nbsp;to&nbsp;flush&nbsp;in&nbsp;order&nbsp;to&nbsp;change&nbsp;the&nbsp;server&nbsp;representation&nbsp;the&nbsp;way&lt;br&gt;<br>
+you&nbsp;intended.&nbsp;So&nbsp;maybe&nbsp;you&#39;re&nbsp;just&nbsp;narrowing&nbsp;the&nbsp;window&nbsp;for&nbsp;a&nbsp;race&lt;br&gt;<br>
+condition.&lt;br&gt;&lt;/blockquote&gt;&lt;div&gt;So&nbsp;could&nbsp;we&nbsp;just&nbsp;use&nbsp;xcb_aux_sync()&nbsp;(or&nbsp;similar&nbsp;approach)? &lt;/div&gt;&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;<br>
+&lt;br&gt;<br>
+[1]:&nbsp;&lt;a&nbsp;href=&quot;http://xcb.freedesktop.org/PublicApi/#index13h2&quot;&nbsp;target=&quot;_blank&quot;&gt;http://xcb.freedesktop.org/PublicApi/#index13h2&lt;/a&gt;&lt;br&gt;<br>
+[2]:&nbsp;&lt;a&nbsp;href=&quot;http://tronche.com/gui/x/xlib/event-handling/XSync.html&quot;&nbsp;target=&quot;_blank&quot;&gt;http://tronche.com/gui/x/xlib/event-handling/XSync.html&lt;/a&gt;&lt;br&gt;<br>
+&lt;/blockquote&gt;&lt;/div&gt;&lt;br&gt;<br>
+
+</tt>

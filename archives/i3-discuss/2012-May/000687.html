@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Unicode in Window Title
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Unicode%20in%20Window%20Title&In-Reply-To=%3CCAB%2BhAsUpAznXTK4M0YVoYt-QfD9tn-BdQrrs5o3dKYyQmsOxqA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000686.html">
+   <LINK REL="Next"  HREF="000689.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Unicode in Window Title</H1>
+    <B>zeroxia</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Unicode%20in%20Window%20Title&In-Reply-To=%3CCAB%2BhAsUpAznXTK4M0YVoYt-QfD9tn-BdQrrs5o3dKYyQmsOxqA%40mail.gmail.com%3E"
+       TITLE="[i3] Unicode in Window Title">zeroxia at gmail.com
+       </A><BR>
+    <I>Fri May 18 03:56:29 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000686.html">[i3] Unicode in Window Title
+</A></li>
+        <LI>Next message: <A HREF="000689.html">[i3] Unicode in Window Title
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#687">[ date ]</a>
+              <a href="thread.html#687">[ thread ]</a>
+              <a href="subject.html#687">[ subject ]</a>
+              <a href="author.html#687">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I use this settings for font in ~/.config/i3/config:
+font -wenquanyi-wenquanyi bitmap song-medium-r-normal--0-0-75-75-p-0-iso10646-1
+
+There is a snapshot, I grabbed some random Japanese text and made a
+directory, then cd into it to display the text in the window title:
+<A HREF="http://ww3.sinaimg.cn/large/61260048gw1dt28l6s221j.jpg">http://ww3.sinaimg.cn/large/61260048gw1dt28l6s221j.jpg</A>
+
+The font should be installed from one of these packages, but I don't
+know exactly which, because I installed all of them:
+xfonts-intl-chinese-big - International fonts for X -- Chinese big
+xfonts-intl-chinese - International fonts for X -- Chinese
+ttf-wqy-microhei - A droid derived Sans-Seri style CJK font
+ttf-wqy-zenhei - &quot;WenQuanYi Zen Hei&quot; A Hei-Ti Style (sans-serif) Chinese font
+xfonts-wqy - WenQuanYi Bitmap Song CJK font for X
+
+By the way, the font setting for urxvt is as follows:
+URxvt.font:			-misc-fixed-medium-r-normal--15-140-75-75-c-90-iso10646-1,-wenquanyi-wenquanyi
+bitmap song-medium-r-normal--13-130-75-75-p-80-iso10646-1
+
+I think the &quot;fixed&quot; typeface may not have non-latin glyphs?
+
+Regards,
+Xia.
+
+On Fri, May 18, 2012 at 8:26 AM, BRAGA, Bruno &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">bruno.braga at gmail.com</A>&gt; wrote:
+&gt;<i> Hi Michael,
+</I>&gt;<i>
+</I>&gt;<i> Somehow I lost this message here. Sorry for the late reply.
+</I>&gt;<i>
+</I>&gt;<i> I just wondered that, because if the ISO10646, both Chinese or Japanese (or
+</I>&gt;<i> any other language character for that matter) could be properly rendered,
+</I>&gt;<i> the same way the browser is capable of doing it.
+</I>&gt;<i>
+</I>&gt;<i> It actually does not bother me that much, but it would be nice to solve
+</I>&gt;<i> this, which increases odds for more international adoption.
+</I>&gt;<i>
+</I>&gt;<i> What would be your suggestion to handle this? Any ideas?
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Braga, Bruno
+</I>&gt;<i> www.brunobraga.net
+</I>&gt;<i> <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">bruno.braga at gmail.com</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Thu, Apr 12, 2012 at 12:55 AM, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt;
+</I>&gt;<i> wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hi Bruno,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Excerpts from BRAGA, Bruno's message of 2012-04-11 16:53:11 +0200:
+</I>&gt;&gt;<i> &gt; # font for window titles. ISO 10646 = Unicode
+</I>&gt;&gt;<i> &gt; font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+</I>&gt;&gt;<i> &gt; Do you guys know what could I be missing?
+</I>&gt;&gt;<i> Probably the font does not include these Japanese glyphs?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Best regards,
+</I>&gt;&gt;<i> Michael
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+
+-- 
+Regards,
+Xia Zuoling
+<A HREF="http://zeroxia.org/blog/">http://zeroxia.org/blog/</A>
+
+QQ: 153570344
+MSN: <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">zerox at live.com</A>
+The world is beautiful for you.
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000686.html">[i3] Unicode in Window Title
+</A></li>
+	<LI>Next message: <A HREF="000689.html">[i3] Unicode in Window Title
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#687">[ date ]</a>
+              <a href="thread.html#687">[ thread ]</a>
+              <a href="subject.html#687">[ subject ]</a>
+              <a href="author.html#687">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

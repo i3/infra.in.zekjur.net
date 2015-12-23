@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Please test i3lock from git
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Please%20test%20i3lock%20from%20git&In-Reply-To=%3C1319985773-sup-905%40stapelberg.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000309.html">
+   <LINK REL="Next"  HREF="000311.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Please test i3lock from git</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Please%20test%20i3lock%20from%20git&In-Reply-To=%3C1319985773-sup-905%40stapelberg.de%3E"
+       TITLE="[i3] Please test i3lock from git">michael+i3 at stapelberg.de
+       </A><BR>
+    <I>Sun Oct 30 15:48:30 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000309.html">[i3] i3-discuss and i3-announce are now on Gmane too
+</A></li>
+        <LI>Next message: <A HREF="000311.html">[i3] Please test i3lock from git
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#310">[ date ]</a>
+              <a href="thread.html#310">[ thread ]</a>
+              <a href="subject.html#310">[ subject ]</a>
+              <a href="author.html#310">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Recently, there have been two commits to i3lock which are rather important:
+
+a803ba931e74e6f99a478584e1280626c0c880e3
+    Bugfix: Don&#8217;t re-grab pointer/keyboard on MappingNotify (Thanks wilmer)
+
+8e153411b507b499e3bd12bbc1ca67e592cb4657
+    Correctly handle Mode_switch/ISO_Level3_Shift (Thanks bacardi55)
+
+The first one is security relevant (but not critical) and the second one might
+fix problems for you if you are using a keyboard layout that makes use of
+Mode_switch or ISO_Level3_Shift and you are using a character which requires
+one of these modifiers in your password.
+
+Regardless of whether you think the commits affect you, it would be great if
+you could install i3lock from git and check that it still works for you. Please
+send me a short email if it works and a more detailed one if it doesn&#8217;t :).
+
+Instructions for installing it from git:
+
+    $ git clone <A HREF="git://code.i3wm.org/i3lock">git://code.i3wm.org/i3lock</A>
+    $ cd i3lock
+    $ make
+    $ sudo make install
+
+If you are using Debian, you can install the build dependencies using sudo
+apt-get build-dep i3lock.
+
+I am planning to release i3lock v2.2 in a few days (unless any new problems
+come up now).
+
+Thanks in advance,
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000309.html">[i3] i3-discuss and i3-announce are now on Gmane too
+</A></li>
+	<LI>Next message: <A HREF="000311.html">[i3] Please test i3lock from git
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#310">[ date ]</a>
+              <a href="thread.html#310">[ thread ]</a>
+              <a href="subject.html#310">[ subject ]</a>
+              <a href="author.html#310">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

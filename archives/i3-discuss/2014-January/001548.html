@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Obsolete focus change?
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Obsolete%20focus%20change%3F&In-Reply-To=%3Cx6wqhuh4p5.fsf%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001546.html">
+   <LINK REL="Next"  HREF="001549.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Obsolete focus change?</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Obsolete%20focus%20change%3F&In-Reply-To=%3Cx6wqhuh4p5.fsf%40midna.zekjur.net%3E"
+       TITLE="[i3] Obsolete focus change?">michael at i3wm.org
+       </A><BR>
+    <I>Mon Jan 20 19:46:14 CET 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001546.html">[i3] Obsolete focus change?
+</A></li>
+        <LI>Next message: <A HREF="001549.html">[i3] Obsolete focus change?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1548">[ date ]</a>
+              <a href="thread.html#1548">[ thread ]</a>
+              <a href="subject.html#1548">[ subject ]</a>
+              <a href="author.html#1548">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Marco,
+
+Marco Hunsicker &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3 at hunsicker.de</A>&gt; writes:
+&gt;<i> During testing of my IPC patch, I've found an edge case that might be 
+</I>&gt;<i> worthwhile to investigate.
+</I>&gt;<i>
+</I>&gt;<i> If a window currently has the focus and the mouse is placed within the 
+</I>&gt;<i> window bounds, moving the mouse over (not beyond) the window border 
+</I>&gt;<i> triggers a focus change although the window is already focused!
+</I>Yeah, because those are different X11 windows and i3 gets an EnterNotify
+event.
+
+&gt;<i> As I don't know whether this behavior is intentional, I've addressed 
+</I>&gt;<i> this use case specifically for my code path in con.c-&gt;con_focus() to 
+</I>&gt;<i> avoid sending pointless window events. Might be possible to extend the 
+</I>&gt;<i> checking to the whole method to spare some cycles.
+</I>Well, focus will not actually be updated, i.e. no communication from i3
+to X11 happens because of our state machine model. con_focus() and
+rendering the tree are both supposed to work at any time and be pretty
+fast, so it&#8217;s not a big concern.
+
+In case you feel strongly about this, you could send a patch which would
+short-circuit this code path and then try all the weird corner cases we
+have (various layouts, decoration styles, mouse transitions between
+monitors, etc.). Personally, I don&#8217;t think that&#8217;s worth it.
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001546.html">[i3] Obsolete focus change?
+</A></li>
+	<LI>Next message: <A HREF="001549.html">[i3] Obsolete focus change?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1548">[ date ]</a>
+              <a href="thread.html#1548">[ thread ]</a>
+              <a href="subject.html#1548">[ subject ]</a>
+              <a href="author.html#1548">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

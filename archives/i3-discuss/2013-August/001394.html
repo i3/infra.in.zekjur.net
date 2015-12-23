@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Right click on i3bar to switch back doesn&#8217;t work anymore
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%0A%20%3D%3Futf-8%3Fq%3FRight_click_on_i3bar_to_switch_back_doesn%3DE2%3D80%3D99%3F%3D%0A%20%3D%3Futf-8%3Fq%3Ft_work_anymore%3F%3D&In-Reply-To=%3C52064D9E.8060602%40enkore.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001395.html">
+   <LINK REL="Next"  HREF="001396.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Right click on i3bar to switch back doesn&#8217;t work anymore</H1>
+    <B>mabe</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%0A%20%3D%3Futf-8%3Fq%3FRight_click_on_i3bar_to_switch_back_doesn%3DE2%3D80%3D99%3F%3D%0A%20%3D%3Futf-8%3Fq%3Ft_work_anymore%3F%3D&In-Reply-To=%3C52064D9E.8060602%40enkore.de%3E"
+       TITLE="[i3] Right click on i3bar to switch back doesn&#8217;t work anymore">public at enkore.de
+       </A><BR>
+    <I>Sat Aug 10 16:26:38 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001395.html">[i3] Right click on i3bar to switch back doesn&#8217;t work anymore
+</A></li>
+        <LI>Next message: <A HREF="001396.html">[i3] Right click on i3bar to switch back doesn&#8217;t work anymore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1394">[ date ]</a>
+              <a href="thread.html#1394">[ thread ]</a>
+              <a href="subject.html#1394">[ subject ]</a>
+              <a href="author.html#1394">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Hmm, I just took a look at the relevant part of the source (that
+should be in i3bar/src/xcb.c in handle_button) and don't see anything
+handling a right click, besides click events.
+
+git diff 13f4a9f..5adb09 -- xcb.c (the first rev is 4.5.1, the second
+the rev immediately before click events were added) gives no changes
+at all. In 13f4a9f I don't see anything handling a right click either,
+btw.
+
+What version of i3/i3bar where you using prior to 4.6?
+
+On 08/10/2013 04:09 PM, Profpatsch wrote:
+&gt;<i> Up until this version I could right-click the i3bar to switch back
+</I>&gt;<i> to the last workspace with my config (the switch-back feature for
+</I>&gt;<i> the currently active number turned on).
+</I>&gt;<i> 
+</I>&gt;<i> I read something about how i3bar is now able to process click
+</I>&gt;<i> events but couldn&#8217;t find anything in the manpages for i3bar and
+</I>&gt;<i> i3.
+</I>&gt;<i> 
+</I>&gt;<i> What changed? Can this be enabled again, or are there even cooler 
+</I>&gt;<i> things possible now?
+</I>&gt;<i> 
+</I>
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBAgAGBQJSBk2dAAoJEAOmTcUxK/sw/McP/1KOacgPE9fog9NGeb1vrYZd
+dHuDgS0AOF7FoY5Y20ITe/OrMxHUDHDx/hB0cn7fhUbkdgQDHL7z2n1LUtlq7NiT
+hCvHHRela+dr/gt0t5X1/wgvQ+//OvBZ06ISWVZvFq3HF9le9TA9tW0vWgiholYh
+VOfTgPw8VvQvCU+6Oezdn/JBPtw28zTWy78T+QPYxbAdUXn3Ni4uo/KvCVqStVQd
+VaK/e6y81FyhY7av0oiADroIidfIphxaO6BiKyni4EptiUMauO1PKjzABIeY5+zA
+QthTuL1E5BRU8TkJFyFD5atXKw4cRBwWZEtd2elo/VElkMfPIH/SQW7toZBd8mrD
+JzNhxqSVkJGQQp1qdmRm+iRor+nxbhCvz6UfSjuS9oknqxlaaNGEOyrMTzG+0nma
+nOjE75XcBu78KwYKqJTRBZuncDkwtROKLfuSiBD/MWIPPD1v5IoWezSvwrnzbPTo
+pGJrAdG2EGusvZLPKFv/1mECyawsxWNrGH9FlPRT0l8ejJMW/0zogZTUzw5OEZ16
+Yi41UTfrtkFT5puw8g6nsoySw3yX52WVy2owQyrNxhFU6hZvWhATivLA2wE1p4W1
+HffVij2+gltsNW66GE5EhAzjhjTOAeqxSBysKhMuyAsOS7bmoYf+gNsnQ2cOa75N
+1bYNdHRKZAW5h5RIRdn6
+=NtOp
+-----END PGP SIGNATURE-----
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001395.html">[i3] Right click on i3bar to switch back doesn&#8217;t work anymore
+</A></li>
+	<LI>Next message: <A HREF="001396.html">[i3] Right click on i3bar to switch back doesn&#8217;t work anymore
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1394">[ date ]</a>
+              <a href="thread.html#1394">[ thread ]</a>
+              <a href="subject.html#1394">[ subject ]</a>
+              <a href="author.html#1394">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

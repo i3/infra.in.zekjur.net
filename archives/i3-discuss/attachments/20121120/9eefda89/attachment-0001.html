@@ -1,0 +1,57 @@
+<tt>
+I&nbsp;figured&nbsp;there&nbsp;was&nbsp;a&nbsp;better&nbsp;way&nbsp;to&nbsp;do&nbsp;this,&nbsp;thanks&nbsp;for&nbsp;the&nbsp;suggestions&nbsp;:)&nbsp; I&nbsp;submitted&nbsp;these&nbsp;more&nbsp;for&nbsp;comments&nbsp;than&nbsp;for&nbsp;&quot;please&nbsp;merge&nbsp;as&nbsp;is&quot;&nbsp;anyway,&nbsp;so&nbsp;that&#39;s&nbsp;helpful.&nbsp; I&#39;ll&nbsp;play&nbsp;with&nbsp;it&nbsp;more&nbsp;when&nbsp;I&nbsp;get&nbsp;some&nbsp;spare&nbsp;time&nbsp;in&nbsp;a&nbsp;couple&nbsp;weeks.&lt;div&gt;<br>
+&lt;br&gt;&lt;/div&gt;&lt;div&gt;Thanks,&lt;/div&gt;&lt;div&gt;Kevin&lt;br&gt;&lt;br&gt;&lt;div&nbsp;class=&quot;gmail_quote&quot;&gt;On&nbsp;Tue,&nbsp;Nov&nbsp;20,&nbsp;2012&nbsp;at&nbsp;3:28&nbsp;AM,&nbsp;Michael&nbsp;Stapelberg&nbsp;&lt;span&nbsp;dir=&quot;ltr&quot;&gt;&lt;&lt;a&nbsp;href=&quot;mailto:michael@i3wm.org&quot;&nbsp;target=&quot;_blank&quot;&gt;michael@i3wm.org&lt;/a&gt;&gt;&lt;/span&gt;&nbsp;wrote:&lt;br&gt;<br>
+&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;Hi&nbsp;Kevin,&lt;br&gt;<br>
+&lt;div&nbsp;class=&quot;im&quot;&gt;&lt;br&gt;<br>
+Kevin&nbsp;Murphy&nbsp;&lt;&lt;a&nbsp;href=&quot;mailto:kemurphy.cmu@gmail.com&quot;&gt;kemurphy.cmu@gmail.com&lt;/a&gt;&gt;&nbsp;writes:&lt;br&gt;<br>
+&gt;&nbsp;+/**&nbsp;Request&nbsp;the&nbsp;id&nbsp;and&nbsp;title&nbsp;of&nbsp;the&nbsp;focused&nbsp;window&nbsp;*/&lt;br&gt;<br>
+&gt;&nbsp;+#define&nbsp;I3_IPC_MESSAGE_TYPE_GET_FOCUS&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;8&lt;br&gt;<br>
+&lt;/div&gt;I’d&nbsp;prefer&nbsp;this&nbsp;to&nbsp;be&nbsp;&quot;GET_FOCUSED&quot;,&nbsp;just&nbsp;because&nbsp;getting&nbsp;the&nbsp;x11&nbsp;focus&lt;br&gt;<br>
+is&nbsp;a&nbsp;trivial&nbsp;thing&nbsp;to&nbsp;do&nbsp;already&nbsp;for&nbsp;which&nbsp;you&nbsp;wouldn’t&nbsp;need&nbsp;window&lt;br&gt;<br>
+manager&nbsp;support.&lt;br&gt;<br>
+&lt;div&nbsp;class=&quot;im&quot;&gt;&lt;br&gt;<br>
+&gt;&nbsp;+&nbsp; &nbsp; ipc_send_event(&quot;focus&quot;,&nbsp;I3_IPC_EVENT_FOCUS,&lt;br&gt;<br>
+&gt;&nbsp;&quot;{\&quot;change\&quot;:\&quot;window\&quot;}&quot;);&lt;br&gt;<br>
+&lt;/div&gt;Is&nbsp;there&nbsp;a&nbsp;reason&nbsp;why&nbsp;you&nbsp;don’t&nbsp;include&nbsp;the&nbsp;properties&nbsp;you&nbsp;send&nbsp;in&lt;br&gt;<br>
+GET_FOCUS&nbsp;replies&nbsp;right&nbsp;here?&nbsp;You&nbsp;could&nbsp;avoid&nbsp;one&nbsp;extra&nbsp;round-trip&nbsp;(and&lt;br&gt;<br>
+race&nbsp;conditions!)&nbsp;with&nbsp;that.&lt;br&gt;<br>
+&lt;div&nbsp;class=&quot;im&quot;&gt;&lt;br&gt;<br>
+&gt;&nbsp;+&nbsp; &nbsp; if&nbsp;(con&nbsp;==&nbsp;focused)&lt;br&gt;<br>
+&gt;&nbsp;+&nbsp; &nbsp; &nbsp; &nbsp; ipc_send_event(&quot;focus&quot;,&nbsp;I3_IPC_EVENT_FOCUS,&lt;br&gt;<br>
+&gt;&nbsp;&quot;{\&quot;change\&quot;:\&quot;title\&quot;}&quot;);&lt;br&gt;<br>
+&lt;/div&gt;Same&nbsp;here.&lt;br&gt;<br>
+&lt;div&nbsp;class=&quot;im&quot;&gt;&lt;br&gt;<br>
+&gt;&nbsp;+&nbsp; &nbsp; y(map_open);&lt;br&gt;<br>
+&gt;&nbsp;+&lt;br&gt;<br>
+&gt;&nbsp;+&nbsp; &nbsp; ystr(&quot;id&quot;);&lt;br&gt;<br>
+&gt;&nbsp;+&nbsp; &nbsp; if&nbsp;(focused-&gt;window&nbsp;!=&nbsp;NULL)&nbsp;{&lt;br&gt;<br>
+&gt;&nbsp;+&nbsp; &nbsp; &nbsp; &nbsp; y(integer,&nbsp;focused-&gt;window-&gt;id);&lt;br&gt;<br>
+&gt;&nbsp;+&nbsp; &nbsp; }&nbsp;else&nbsp;{&lt;br&gt;<br>
+&gt;&nbsp;+&nbsp; &nbsp; &nbsp; &nbsp; y(integer,&nbsp;focused-&gt;frame);&lt;br&gt;<br>
+&gt;&nbsp;+&nbsp; &nbsp; }&lt;br&gt;<br>
+&gt;&nbsp;+&lt;br&gt;<br>
+&gt;&nbsp;+&nbsp; &nbsp; ystr(&quot;title&quot;);&lt;br&gt;<br>
+&gt;&nbsp;+&nbsp; &nbsp; if&nbsp;(focused-&gt;window&nbsp;&amp;&amp;&nbsp;focused-&gt;window-&gt;name)&lt;br&gt;<br>
+&gt;&nbsp;+&nbsp; &nbsp; &nbsp; &nbsp; ystr(i3string_as_utf8(focused-&gt;window-&gt;name));&lt;br&gt;<br>
+&gt;&nbsp;+&nbsp; &nbsp; else&nbsp;if&nbsp;(focused-&gt;type&nbsp;!=&nbsp;CT_WORKSPACE&nbsp;&amp;&amp;&nbsp;focused-&gt;name)&lt;br&gt;<br>
+&gt;&nbsp;+&nbsp; &nbsp; &nbsp; &nbsp; ystr(focused-&gt;name);&lt;br&gt;<br>
+&gt;&nbsp;+&nbsp; &nbsp; else&lt;br&gt;<br>
+&gt;&nbsp;+&nbsp; &nbsp; &nbsp; &nbsp; ystr(&quot;&quot;);&lt;br&gt;<br>
+&gt;&nbsp;+&lt;br&gt;<br>
+&gt;&nbsp;+&nbsp; &nbsp; y(map_close);&lt;br&gt;<br>
+&lt;/div&gt;Is&nbsp;there&nbsp;a&nbsp;reason&nbsp;to&nbsp;not&nbsp;use&nbsp;dump_node?&nbsp;Actually,&nbsp;is&nbsp;there&nbsp;a&nbsp;reason&nbsp;to&lt;br&gt;<br>
+not&nbsp;use&nbsp;the&nbsp;GET_TREE&nbsp;ipc&nbsp;request&nbsp;and&nbsp;then&nbsp;filter&nbsp;for&nbsp;the&nbsp;focused&nbsp;node&lt;br&gt;<br>
+(which&nbsp;is&nbsp;trivial)?&nbsp;It&nbsp;includes&nbsp;the&nbsp;same&nbsp;properties.&lt;br&gt;<br>
+&lt;br&gt;<br>
+I&nbsp;think&nbsp;the&nbsp;event&nbsp;part&nbsp;of&nbsp;this&nbsp;is&nbsp;rather&nbsp;nice,&nbsp;but&nbsp;the&nbsp;request/reply&nbsp;is&lt;br&gt;<br>
+unnecessary.&nbsp;You&nbsp;might&nbsp;want&nbsp;to&nbsp;have&nbsp;a&nbsp;look&nbsp;at&lt;br&gt;<br>
+workspace.c:ipc_send_workspace_focus_event&nbsp;to&nbsp;see&nbsp;how&nbsp;other&nbsp;events&lt;br&gt;<br>
+include&nbsp;the&nbsp;entire&nbsp;sub-tree.&nbsp;Using&nbsp;this&nbsp;technique&nbsp;would&nbsp;lead&nbsp;to&nbsp;a&nbsp;more&lt;br&gt;<br>
+consistent&nbsp;IPC&nbsp;interface&nbsp;than&nbsp;your&nbsp;suggestion.&lt;br&gt;<br>
+&lt;span&nbsp;class=&quot;HOEnZb&quot;&gt;&lt;font&nbsp;color=&quot;#888888&quot;&gt;&lt;br&gt;<br>
+--&lt;br&gt;<br>
+Best&nbsp;regards,&lt;br&gt;<br>
+Michael&lt;br&gt;<br>
+&lt;/font&gt;&lt;/span&gt;&lt;/blockquote&gt;&lt;/div&gt;&lt;br&gt;&lt;/div&gt;<br>
+
+</tt>

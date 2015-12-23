@@ -1,0 +1,197 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] key bindings not working
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20key%20bindings%20not%20working&In-Reply-To=%3C20130714165124.0f3fc321%40debelianear%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001354.html">
+   <LINK REL="Next"  HREF="001333.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] key bindings not working</H1>
+    <B>Mateusz Poszwa</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20key%20bindings%20not%20working&In-Reply-To=%3C20130714165124.0f3fc321%40debelianear%3E"
+       TITLE="[i3] key bindings not working">old4 at o2.pl
+       </A><BR>
+    <I>Sun Jul 14 16:51:24 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001354.html">[i3] key bindings not working
+</A></li>
+        <LI>Next message: <A HREF="001333.html">[i3] How to make floating window with border
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1357">[ date ]</a>
+              <a href="thread.html#1357">[ thread ]</a>
+              <a href="subject.html#1357">[ subject ]</a>
+              <a href="author.html#1357">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, 13 Jul 2013 04:45:56 +0200
+lee &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">lee at yun.yagibdah.de</A>&gt; wrote:
+
+&gt;<i> Mateusz Poszwa &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">old4 at o2.pl</A>&gt; writes:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; On Fri, 12 Jul 2013 01:08:03 +0200
+</I>&gt;<i> &gt; lee &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">lee at yun.yagibdah.de</A>&gt; wrote:
+</I>&gt;<i> &gt;&gt; My understanding was that you need to use the actual key symbol (as used
+</I>&gt;<i> &gt;&gt; in xmodmap) that is being produced.  For example, when you have
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; bindsym $mod+Shift+J move left
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; a capital 'J' is being produced.  When you have the some binding without
+</I>&gt;<i> &gt;&gt; Shift, like
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; bindsym $mod+j move left
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; it's a small 'j' because Shift isn't pressed.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &#8222;
+</I>&gt;<i> &gt; bindsym $mod+Shift+j move left
+</I>&gt;<i> &gt; &#8221;
+</I>&gt;<i> &gt; would work too. Maybe the names are case insensitive?
+</I>&gt;<i> 
+</I>&gt;<i> Maybe they are, though the documentation indicates that you need to use
+</I>&gt;<i> the key symbols that are being produced.
+</I>
+It does not state if the keys should be produced with
+or without modifiers. I agree this may need clarification.
+
+&gt;<i> &gt;&gt; This shows throughout the default configuration file.  The documentation
+</I>&gt;<i> &gt;&gt; says:
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; ,---- [ <A HREF="http://i3wm.org/docs/userguide.html#keybindings">http://i3wm.org/docs/userguide.html#keybindings</A>]
+</I>&gt;<i> &gt;&gt; |
+</I>&gt;<i> &gt;&gt; | A keysym (key symbol) is a description for a specific symbol, like &quot;a&quot;
+</I>&gt;<i> &gt;&gt; | or &quot;b&quot;, but also more strange ones like &quot;underscore&quot; instead of
+</I>&gt;<i> &gt;&gt; | &quot;_&quot;. These are the ones you use in Xmodmap to remap your keys. To get
+</I>&gt;<i> &gt;&gt; | the current mapping of your keys, use xmodmap -pke. To interactively
+</I>&gt;<i> &gt;&gt; | enter a key and see what keysym it is configured to, use xev.
+</I>&gt;<i> &gt;&gt; |
+</I>&gt;<i> &gt;&gt; `----
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; I have been using xev to verify that pressing 'AltGr+&lt;Minus Key&gt;' and
+</I>&gt;<i> &gt;&gt; 'AltGr+Shift+&lt;Minus Key&gt;' do yield 'periodcentered' and 'abovedot',
+</I>&gt;<i> &gt;&gt; respectively.  (Those are now intercepted by i3.)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I don't think so, but I may be wrong.
+</I>&gt;<i> 
+</I>&gt;<i> Those symbols aren't typed anymore when I press the keys, so yes,
+</I>&gt;<i> really, i3 must be intercepting them.
+</I>
+Sounds like a bug to me&#8230;
+
+&gt;<i> &gt; If it was as you say, you could write
+</I>&gt;<i> &gt; &#8222;
+</I>&gt;<i> &gt; bindsym abovedot workspace prev
+</I>&gt;<i> &gt; &#8221;
+</I>&gt;<i> &gt; instead of
+</I>&gt;<i> &gt; &#8222;
+</I>&gt;<i> &gt; bindsym $mod+Shift+minus workspace prev
+</I>&gt;<i> &gt; &#8221;
+</I>&gt;<i> &gt; To be honest, I haven't checked if the former works.
+</I>&gt;<i> &gt; You can do it as an exercise and let me know if you succeed. ;-)
+</I>&gt;<i> &gt; I'd be surprised, but I don't say it's impossible.
+</I>&gt;<i> 
+</I>&gt;<i> That's an interesting idea indeed :)  I tried it and it doesn't work.
+</I>
+Thanks for checking. ;-)
+
+&gt;<i> &gt;&gt; Actually, 'Shift+&lt;Minus Key&gt;' produces an underscore.  How come that
+</I>&gt;<i> &gt;&gt; 'AltGr+Shift+minus' even works?  Shouldn't that rather be
+</I>&gt;<i> &gt;&gt; 'AltGr+Shift+underscore'?[1]
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I think i3 maps keysyms (&#8222;plain&#8221; keysyms &#8212; without modifiers)
+</I>&gt;<i> &gt; to keycodes and applies modifiers itself.
+</I>&gt;<i> 
+</I>&gt;<i> Going by the documentation, the key codes seem to be irrelevant unless
+</I>&gt;<i> you use 'bindcode' instead of 'bindsym'.  I guess if I changed my
+</I>&gt;<i> xmodmap so that '-' (minus) is on the key that's labeled 'J', I'd have
+</I>&gt;<i> to press AltGr+j instead of AltGr+&lt;minus&gt;.
+</I>&gt;<i> 
+</I>&gt;<i> This is pretty confusing ...
+</I>
+You are right. I checked that a moment ago.
+
+&gt;<i> &gt;&gt; &gt; As a side note, I don't think using AltGr as a modifier is a good idea&#8230;
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; How come you think so?  It works great and allows for some easy
+</I>&gt;<i> &gt;&gt; one-handed i3-operations.  Since I have modified my xmodmap so that I
+</I>&gt;<i> &gt;&gt; can type braces and brackets without pressing AltGr, there are only four
+</I>&gt;<i> &gt;&gt; keys that come to mind for which I need AltGr: '@', '|', '&#223;' and '\'.
+</I>&gt;<i> &gt;&gt; That leaves me pretty much all of the other 98 keys to bind i3 stuff to
+</I>&gt;<i> &gt;&gt; :)  Do you know of any application which would be aware that there's such
+</I>&gt;<i> &gt;&gt; a thing as an AltGr key?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; How about '&#246;'? ;-P
+</I>&gt;<i> 
+</I>&gt;<i> What about it?
+</I>
+Ah, nothing. I thought one needs AltGr for it. I stand corrected. :-)
+
+&gt;<i> &gt; You are right. It seems good in you case. I use the Colemak keyboard
+</I>&gt;<i> &gt; layout, which uses AltGr heavily for diacritics input, and there's
+</I>&gt;<i> &gt; quite many of them in Polish.
+</I>&gt;<i> 
+</I>&gt;<i> Ah I only write English and German, so I'm not missing any letters with
+</I>&gt;<i> the keyboard as is.  The only thing is that there are some like '/', '~'
+</I>&gt;<i> and brackets that are at very inconvenient locations with a default
+</I>&gt;<i> German layout, so I changed that.
+</I>&gt;<i> 
+</I>&gt;<i> &gt; As for AltGr-aware applications, probably some old games may use that
+</I>&gt;<i> &gt; key.
+</I>&gt;<i> 
+</I>&gt;<i> Hm, none that does comes to mind ...
+</I>
+Tomb Raider maybe? Never mind. It's a very, very rare case.
+
+&gt;<i> &gt;&gt; (I'm using a Model M keyboard that doesn't have the obsolete keys newer
+</I>&gt;<i> &gt;&gt; ones have, so there aren't any keys around Space, Alt, AltGr and Ctrl
+</I>&gt;<i> &gt;&gt; that would get persistently in the way.)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I have plenty of &#8222;obsolete&#8221; keys on my TypeMatrix 2020,
+</I>&gt;<i> &gt; such as Super (captioned &#8222;Start&#8221;), which I use for i3's bindings,
+</I>&gt;<i> &gt; or Caps Lock, which I have bound a minus to. ;-)
+</I>&gt;<i> 
+</I>&gt;<i> That looks like an interesting keyboard :)  I wish I could have one with
+</I>&gt;<i> 122 keys, but it seems that there are hardware issues preventing that.
+</I>
+So many keys&#8230; It makes me recall this one:
+<A HREF="http://mykeyboard.co.uk/microswitch/">http://mykeyboard.co.uk/microswitch/</A>
+
+-- 
+Mateusz Poszwa
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001354.html">[i3] key bindings not working
+</A></li>
+	<LI>Next message: <A HREF="001333.html">[i3] How to make floating window with border
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1357">[ date ]</a>
+              <a href="thread.html#1357">[ thread ]</a>
+              <a href="subject.html#1357">[ subject ]</a>
+              <a href="author.html#1357">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

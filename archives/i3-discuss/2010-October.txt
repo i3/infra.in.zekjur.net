@@ -1,0 +1,173 @@
+From jeff at jibson.com  Fri Oct  1 17:13:38 2010
+From: jeff at jibson.com (Jeff Jibson)
+Date: Fri, 1 Oct 2010 09:13:38 -0600
+Subject: [i3] problems getting a status bar on both displays with dual
+	monitors
+Message-ID: <AANLkTi=nHn=Jffe8zypWryy03iAu=-PJCMAfhi5BKFNP@mail.gmail.com>
+
+I am trying to get a status bar on both displays.  I want to them
+docked if possible.  Any suggestions?
+
+
+When I tried:
+
+    exec conky -c ~/.i3/status-dzen2.conkyrc | i3-wsbar -c "dzen2
+-dock -ta r -xs 1" --output-on LVDS1
+    exec conky -c ~/.i3/status-dzen2.conkyrc | i3-wsbar -c "dzen2
+-dock -ta r -xs 2" --output-on VGA1
+or
+    exec conky -c ~/.i3/status-dzen2.conkyrc | dzen2 -dock -ta r -xs 1
+    exec conky -c ~/.i3/status-dzen2.conkyrc | dzen2 -dock -ta r -xs 2
+
+It displays the status bars for VGA1 correctly on the bottom.  It
+displays the dzen2 bar for LVDS1 on VGA1 at what looks like 768
+pixels.
+
+
+I tried:
+
+    exec conky -c ~/.i3/status-dzen2.conkyrc | i3-wsbar -c "dzen2
+-dock -ta r -xs 1"
+    exec conky -c ~/.i3/status-dzen2.conkyrc | i3-wsbar -c "dzen2
+-dock -ta r -xs 2"
+
+This gets 2 status bars on the bottom and 2 status bars 768 pixels
+down from the top.
+
+
+I tried:
+
+    exec conky -c ~/.i3/status-dzen2.conkyrc | i3-wsbar -c "dzen2
+-dock -ta r" --output-on LVDS1
+    exec conky -c ~/.i3/status-dzen2.conkyrc | i3-wsbar -c "dzen2
+-dock -ta r" --output-on VGA1
+or
+    exec conky -c ~/.i3/status-dzen2.conkyrc | dzen2 -dock -ta r
+    exec conky -c ~/.i3/status-dzen2.conkyrc | dzen2 -dock -ta r
+
+This puts both status bars on the bottom of VGA1.
+
+
+
+My laptop has the built in display (LVDS1) and above it an external
+monitor (VGA1) with an Intel GMA 4500MHD GPU :
+
+Screen 0: minimum 320 x 200, current 1680 x 1818, maximum 8192 x 8192
+VGA1 connected 1680x1050+0+0 (normal left inverted right x axis y
+axis) 408mm x 306mm
+   1680x1050      60.0*+
+...
+LVDS1 connected 1366x768+0+1050 (normal left inverted right x axis y
+axis) 256mm x 144mm
+   1366x768       60.0*+
+...
+
+
+From michael+i3 at stapelberg.de  Sun Oct 17 23:44:32 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 17 Oct 2010 23:44:32 +0200
+Subject: [i3] New communication channels: Blog and Twitter
+Message-ID: <1287351608-sup-8463@midna.zekjur.net>
+
+Hi,
+
+to get information out there more easily, I decided it?s time to set up two new
+communication channels: There is a new blog called "What?s new?" which will
+inform about the development of i3. You can subscribe to it via its ATOM feed.
+
+Additionally, for all the web 2.0 guys, I created the twitter account @i3wm
+which will post links to the blog, new releases and more. In order to spread
+the word, please follow and retweet if you are using twitter.
+
+The links for these channels are:
+ ? http://i3.zekjur.net/blog/
+ ? http://twitter.com/i3wm
+
+Best regards,
+Michael
+
+
+From jeff at jibson.com  Thu Oct 28 06:59:26 2010
+From: jeff at jibson.com (Jeff Jibson)
+Date: Wed, 27 Oct 2010 22:59:26 -0600
+Subject: [i3] problems getting a status bar on both displays with dual
+	monitors
+In-Reply-To: <AANLkTi=nHn=Jffe8zypWryy03iAu=-PJCMAfhi5BKFNP@mail.gmail.com>
+References: <AANLkTi=nHn=Jffe8zypWryy03iAu=-PJCMAfhi5BKFNP@mail.gmail.com>
+Message-ID: <AANLkTinc5LaPXiCShzqrrL0uJG_7QnL__pUOPK+0GuMr@mail.gmail.com>
+
+On Fri, Oct 1, 2010 at 09:13, Jeff Jibson <jeff at jibson.com> wrote:
+> I am trying to get a status bar on both displays. ?I want to them
+> docked if possible. ?Any suggestions?
+>
+>
+> When I tried:
+>
+> ? ?exec conky -c ~/.i3/status-dzen2.conkyrc | i3-wsbar -c "dzen2
+> -dock -ta r -xs 1" --output-on LVDS1
+> ? ?exec conky -c ~/.i3/status-dzen2.conkyrc | i3-wsbar -c "dzen2
+> -dock -ta r -xs 2" --output-on VGA1
+> or
+> ? ?exec conky -c ~/.i3/status-dzen2.conkyrc | dzen2 -dock -ta r -xs 1
+> ? ?exec conky -c ~/.i3/status-dzen2.conkyrc | dzen2 -dock -ta r -xs 2
+>
+> It displays the status bars for VGA1 correctly on the bottom. ?It
+> displays the dzen2 bar for LVDS1 on VGA1 at what looks like 768
+> pixels.
+>
+>
+
+It appears this is only a problem when running a screen above or below.
+
+I have this in my .xinitrc:
+
+MON="$(xrandr | grep ' connected' | grep -v LVDS1 | cut -f1 -d' ')"
+RES="$(xrandr | grep -A1 """$MON connected""" | tail -1 | cut -f4 -d' ')"
+if [ $MON ] ; then xrandr --output LVDS1 --mode 1366x768 --primary
+--output $MON --mode $RES --left-of LVDS1 ; fi
+
+This will works.  But, if I have --above (or --below) instead of
+--left-of it doesn't.
+
+Is this a bug with i3 or randr 1.3?
+
+>
+> My laptop has the built in display (LVDS1) and above it an external
+> monitor (VGA1) with an Intel GMA 4500MHD GPU :
+>
+> Screen 0: minimum 320 x 200, current 1680 x 1818, maximum 8192 x 8192
+> VGA1 connected 1680x1050+0+0 (normal left inverted right x axis y
+> axis) 408mm x 306mm
+> ? 1680x1050 ? ? ?60.0*+
+> ...
+> LVDS1 connected 1366x768+0+1050 (normal left inverted right x axis y
+> axis) 256mm x 144mm
+> ? 1366x768 ? ? ? 60.0*+
+> ...
+>
+
+
+From michael+i3 at stapelberg.de  Thu Oct 28 09:42:03 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Thu, 28 Oct 2010 09:42:03 +0200
+Subject: [i3] problems getting a status bar on both displays with dual
+	monitors
+In-Reply-To: <AANLkTinc5LaPXiCShzqrrL0uJG_7QnL__pUOPK+0GuMr@mail.gmail.com>
+References: <AANLkTi=nHn=Jffe8zypWryy03iAu=-PJCMAfhi5BKFNP@mail.gmail.com>
+	<AANLkTinc5LaPXiCShzqrrL0uJG_7QnL__pUOPK+0GuMr@mail.gmail.com>
+Message-ID: <1288251675-sup-6022@midna.zekjur.net>
+
+Hi Jeff,
+
+Excerpts from Jeff Jibson's message of 2010-10-28 06:59:26 +0200:
+> It appears this is only a problem when running a screen above or below.
+Yep, just yesterday I also tried this and noticed the problems. You should have
+mentioned your exact monitor setup in the first place ;-).
+
+> Is this a bug with i3 or randr 1.3?
+Very likely i3.
+
+Best regards,
+Michael
+
+

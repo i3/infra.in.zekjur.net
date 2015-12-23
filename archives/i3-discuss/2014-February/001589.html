@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3status only displays the temperature from one sensor
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3status%20only%20displays%20the%20temperature%20from%20one%20sensor&In-Reply-To=%3C530B9D62.5080406%40hunsicker.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001588.html">
+   <LINK REL="Next"  HREF="001590.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3status only displays the temperature from one sensor</H1>
+    <B>Marco Hunsicker</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3status%20only%20displays%20the%20temperature%20from%20one%20sensor&In-Reply-To=%3C530B9D62.5080406%40hunsicker.de%3E"
+       TITLE="[i3] i3status only displays the temperature from one sensor">i3 at hunsicker.de
+       </A><BR>
+    <I>Mon Feb 24 20:28:34 CET 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001588.html">[i3] i3status only displays the temperature from one sensor
+</A></li>
+        <LI>Next message: <A HREF="001590.html">[i3] [i3status] Don't display vertical separators
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1589">[ date ]</a>
+              <a href="thread.html#1589">[ thread ]</a>
+              <a href="subject.html#1589">[ subject ]</a>
+              <a href="author.html#1589">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;&gt;<i>       if (path == NULL) {
+</I>&gt;&gt;<i>           if (thermal_zone == NULL) {
+</I>&gt;&gt;<i>               if (path == NULL)
+</I>&gt;&gt;<i>                   asprintf(&amp;thermal_zone, THERMAL_ZONE, zone);
+</I>&gt;&gt;<i>               else
+</I>&gt;&gt;<i>                   asprintf(&amp;thermal_zone, path, zone);
+</I>&gt;&gt;<i>           }
+</I>&gt;&gt;<i>           path = thermal_zone;
+</I>&gt;&gt;<i>       }
+</I>
+&gt;<i> I think your code will actually not work properly either, because
+</I>&gt;<i> thermal_zone is a static variable. I think you&#8217;ll need to kill that
+</I>&gt;<i> variable entirely to make multiple instances of the cpu_temperature
+</I>&gt;<i> module work.
+</I>
+I think inlining the variable is the right thing to do:
+
+         char *thermal_zone;
+
+         if (path == NULL)
+                 asprintf(&amp;thermal_zone, THERMAL_ZONE, zone);
+         else
+                 asprintf(&amp;thermal_zone, path, zone);
+
+         path = thermal_zone;
+
+	[...]
+
+	free(thermal_zone);
+
+
+This way multiple instances work - with our without parameter substitution.
+
+Cheers,
+   Marco
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001588.html">[i3] i3status only displays the temperature from one sensor
+</A></li>
+	<LI>Next message: <A HREF="001590.html">[i3] [i3status] Don't display vertical separators
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1589">[ date ]</a>
+              <a href="thread.html#1589">[ thread ]</a>
+              <a href="subject.html#1589">[ subject ]</a>
+              <a href="author.html#1589">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

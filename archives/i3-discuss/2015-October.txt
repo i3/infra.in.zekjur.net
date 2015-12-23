@@ -1,0 +1,2524 @@
+From smilingmolecule at web.de  Thu Oct  1 10:34:44 2015
+From: smilingmolecule at web.de (Robert Grah)
+Date: Thu, 01 Oct 2015 10:34:44 +0200
+Subject: [i3] managing wifi with i3
+Message-ID: <150228a0db8.120c5d6fb467.2524676750396045260@web.de>
+
+
+
+Hey there,
+
+
+
+I am having some problems getting wifi to work in i3. I tried to add
+
+
+
+exec--no-startup-id nm-applet
+to my config and this braught me the icon, but it can not find any wifi networks.
+
+It seems that there are some problems with the session or similar. I also tried wicd or gnome-network-manager all without results. 
+
+
+
+I am using Ubuntu 15.04 and i3 4.10.4.
+
+
+
+Any ideas?
+
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151001/fb1dca37/attachment.html>
+
+From admin at airblader.de  Thu Oct  1 10:36:05 2015
+From: admin at airblader.de (=?UTF-8?Q?Ingo_B=c3=bcrk?=)
+Date: Thu, 1 Oct 2015 10:36:05 +0200
+Subject: [i3] managing wifi with i3
+In-Reply-To: <150228a0db8.120c5d6fb467.2524676750396045260@web.de>
+References: <150228a0db8.120c5d6fb467.2524676750396045260@web.de>
+Message-ID: <560CF075.60103@airblader.de>
+
+The window manager is neither responsible nor involved in network
+management at all, so I'm afraid you're looking in the wrong direction here.
+
+On 10/01/2015 10:34 AM, Robert Grah wrote:
+>
+> Hey there,
+>
+>
+>
+> I am having some problems getting wifi to work in i3. I tried to add
+>
+>
+>
+> exec--no-startup-id nm-applet
+> to my config and this braught me the icon, but it can not find any wifi networks.
+>
+> It seems that there are some problems with the session or similar. I also tried wicd or gnome-network-manager all without results. 
+>
+>
+>
+> I am using Ubuntu 15.04 and i3 4.10.4.
+>
+>
+>
+> Any ideas?
+>
+>
+>
+>
+
+
+From jeff at purple.com  Thu Oct  1 10:41:53 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Thu, 1 Oct 2015 10:41:53 +0200
+Subject: [i3] managing wifi with i3
+In-Reply-To: <560CF075.60103@airblader.de>
+References: <150228a0db8.120c5d6fb467.2524676750396045260@web.de>
+ <560CF075.60103@airblader.de>
+Message-ID: <CAM4Y7zwohpmg63LZxbG3Sd4Q02KP=Anse_rwUORkHOTmEij80Q@mail.gmail.com>
+
+I have the following in my ~/.xsessionrc, and it works correctly:
+
+if [ "X$DESKTOP_SESSION" = Xi3 ]; then
+    nm-applet &
+    # and other stuff
+fi
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only when I'm in the UK
+
+*http://www.ml-week.com/fr/* <http://www.ml-week.com/fr/>*     2-5 novembre
+2015*
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+
+On 1 October 2015 at 10:36, Ingo Bürk <admin at airblader.de> wrote:
+
+> The window manager is neither responsible nor involved in network
+> management at all, so I'm afraid you're looking in the wrong direction
+> here.
+>
+> On 10/01/2015 10:34 AM, Robert Grah wrote:
+> >
+> > Hey there,
+> >
+> >
+> >
+> > I am having some problems getting wifi to work in i3. I tried to add
+> >
+> >
+> >
+> > exec--no-startup-id nm-applet
+> > to my config and this braught me the icon, but it can not find any wifi
+> networks.
+> >
+> > It seems that there are some problems with the session or similar. I
+> also tried wicd or gnome-network-manager all without results.
+> >
+> >
+> >
+> > I am using Ubuntu 15.04 and i3 4.10.4.
+> >
+> >
+> >
+> > Any ideas?
+> >
+> >
+> >
+> >
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151001/b9ad0727/attachment.html>
+
+From garbytrash at gmail.com  Thu Oct  1 12:36:36 2015
+From: garbytrash at gmail.com (Zenny)
+Date: Thu, 1 Oct 2015 12:36:36 +0200
+Subject: [i3] Mouse capture problem i3 and OBS
+Message-ID: <CACuV5sD_iH9Ce+=uidsj=4nd0h0PedSdfozVjg+cqu-T910ANA@mail.gmail.com>
+
+Hi,
+
+Having problem with redundant mouse capture in OBS running with i3-wm.
+
+When the mouse is moved to change some recording settings in the OBS
+interface at the bottom or in the canvas, the mouse movement for those
+modifications gets displayed in the canvas and gets recorded in the
+final input, even when there is no source of screen capture of the
+machine in which OBS is running.
+
+This problem is only when in the tabbed mode, but not in the tiling
+mode of i3-wm. By changing the tabbed mode ($MOD+w) to tiling mode
+($MOD+e), the mouse movements for OBS settings modifications
+disappears and that is what actually desired.
+
+Posted a bug report to OBS guys:
+https://obsproject.com/mantis/view.php?id=340 and posting here if that
+has to anything with i3-wm?
+
+Thanks!
+
+/z
+
+From michael at i3wm.org  Thu Oct  1 18:30:47 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 1 Oct 2015 18:30:47 +0200
+Subject: [i3] Mouse capture problem i3 and OBS
+In-Reply-To: <CACuV5sD_iH9Ce+=uidsj=4nd0h0PedSdfozVjg+cqu-T910ANA@mail.gmail.com>
+References: <CACuV5sD_iH9Ce+=uidsj=4nd0h0PedSdfozVjg+cqu-T910ANA@mail.gmail.com>
+Message-ID: <CANnVG6=Hyo5ecapZ3E9XPKH+U4modEmjX+yMG_xwPBHui-DEqw@mail.gmail.com>
+
+Have you tried reproducing this problem with any other window manager that
+offers a tabbed mode?
+
+On Thu, Oct 1, 2015 at 12:36 PM, Zenny <garbytrash at gmail.com> wrote:
+
+> Hi,
+>
+> Having problem with redundant mouse capture in OBS running with i3-wm.
+>
+> When the mouse is moved to change some recording settings in the OBS
+> interface at the bottom or in the canvas, the mouse movement for those
+> modifications gets displayed in the canvas and gets recorded in the
+> final input, even when there is no source of screen capture of the
+> machine in which OBS is running.
+>
+> This problem is only when in the tabbed mode, but not in the tiling
+> mode of i3-wm. By changing the tabbed mode ($MOD+w) to tiling mode
+> ($MOD+e), the mouse movements for OBS settings modifications
+> disappears and that is what actually desired.
+>
+> Posted a bug report to OBS guys:
+> https://obsproject.com/mantis/view.php?id=340 and posting here if that
+> has to anything with i3-wm?
+>
+> Thanks!
+>
+> /z
+>
+
+
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151001/0af3d690/attachment.html>
+
+From i3wm at rusu.info  Thu Oct  1 21:13:49 2015
+From: i3wm at rusu.info (Valentin Rusu)
+Date: Thu, 1 Oct 2015 22:13:49 +0300
+Subject: [i3] managing wifi with i3
+In-Reply-To: <CAM4Y7zwohpmg63LZxbG3Sd4Q02KP=Anse_rwUORkHOTmEij80Q@mail.gmail.com>
+References: <150228a0db8.120c5d6fb467.2524676750396045260@web.de>
+ <560CF075.60103@airblader.de>
+ <CAM4Y7zwohpmg63LZxbG3Sd4Q02KP=Anse_rwUORkHOTmEij80Q@mail.gmail.com>
+Message-ID: <20151001191349.GB27683@sisif.rusu.info>
+
+I use wicd instead of NetworkManager and I'm very happy with it. It
+would connect as soon as I login in text mode, so by the time I3 is up,
+the connection is already there.
+
+* Jeff Abrahamson <jeff at purple.com> [2015-10-01 10:41:53 +0200]:
+
+> I have the following in my ~/.xsessionrc, and it works correctly:
+> 
+> if [ "X$DESKTOP_SESSION" = Xi3 ]; then
+>     nm-applet &
+>     # and other stuff
+> fi
+> 
+> Jeff Abrahamson
+> +33 6 24 40 01 57
+> +44 7920 594 255    <-- only when I'm in the UK
+> 
+> *http://www.ml-week.com/fr/* <http://www.ml-week.com/fr/>*     2-5 novembre
+> 2015*
+> 
+> http://jeff.purple.com/
+> http://blog.purple.com/jeff/
+> 
+> On 1 October 2015 at 10:36, Ingo Bürk <admin at airblader.de> wrote:
+> 
+> > The window manager is neither responsible nor involved in network
+> > management at all, so I'm afraid you're looking in the wrong direction
+> > here.
+> >
+> > On 10/01/2015 10:34 AM, Robert Grah wrote:
+> > >
+> > > Hey there,
+> > >
+> > >
+> > >
+> > > I am having some problems getting wifi to work in i3. I tried to add
+> > >
+> > >
+> > >
+> > > exec--no-startup-id nm-applet
+> > > to my config and this braught me the icon, but it can not find any wifi
+> > networks.
+> > >
+> > > It seems that there are some problems with the session or similar. I
+> > also tried wicd or gnome-network-manager all without results.
+> > >
+> > >
+> > >
+> > > I am using Ubuntu 15.04 and i3 4.10.4.
+> > >
+> > >
+> > >
+> > > Any ideas?
+> > >
+> > >
+> > >
+> > >
+> >
+> >
+
+-- 
+Valentin Rusu
+IRC: valir
+
+From jeffrubic at gmail.com  Thu Oct  1 21:53:37 2015
+From: jeffrubic at gmail.com (Jeff Bauer)
+Date: Thu, 1 Oct 2015 14:53:37 -0500
+Subject: [i3] managing wifi with i3
+In-Reply-To: <20151001191349.GB27683@sisif.rusu.info>
+References: <150228a0db8.120c5d6fb467.2524676750396045260@web.de>
+ <560CF075.60103@airblader.de>
+ <CAM4Y7zwohpmg63LZxbG3Sd4Q02KP=Anse_rwUORkHOTmEij80Q@mail.gmail.com>
+ <20151001191349.GB27683@sisif.rusu.info>
+Message-ID: <20151001195337.GC6406@waldo.rubic.com>
+
+I use wicd with i3, but it always fails when I attempt to connect to a network
+that requires authentication (virtually all of them, these days).  There's some
+error in the Python code that I have tracked down yet, so I log into new
+networks with nm-applet the first time, then with wicd thereafter.
+
+-Jeff
+
+
+On Thu, Oct 01, 2015 at 10:13:49PM +0300, Valentin Rusu wrote:
+> I use wicd instead of NetworkManager and I'm very happy with it. It
+> would connect as soon as I login in text mode, so by the time I3 is up,
+> the connection is already there.
+>
+> * Jeff Abrahamson <jeff at purple.com> [2015-10-01 10:41:53 +0200]:
+>
+> > I have the following in my ~/.xsessionrc, and it works correctly:
+> >
+> > if [ "X$DESKTOP_SESSION" = Xi3 ]; then
+> >     nm-applet &
+> >     # and other stuff
+> > fi
+> >
+> > Jeff Abrahamson
+> > +33 6 24 40 01 57
+> > +44 7920 594 255    <-- only when I'm in the UK
+> >
+> > *http://www.ml-week.com/fr/* <http://www.ml-week.com/fr/>*     2-5 novembre
+> > 2015*
+> >
+> > http://jeff.purple.com/
+> > http://blog.purple.com/jeff/
+> >
+> > On 1 October 2015 at 10:36, Ingo Bürk <admin at airblader.de> wrote:
+> >
+> > > The window manager is neither responsible nor involved in network
+> > > management at all, so I'm afraid you're looking in the wrong direction
+> > > here.
+> > >
+> > > On 10/01/2015 10:34 AM, Robert Grah wrote:
+> > > >
+> > > > Hey there,
+> > > >
+> > > >
+> > > >
+> > > > I am having some problems getting wifi to work in i3. I tried to add
+> > > >
+> > > >
+> > > >
+> > > > exec--no-startup-id nm-applet
+> > > > to my config and this braught me the icon, but it can not find any wifi
+> > > networks.
+> > > >
+> > > > It seems that there are some problems with the session or similar. I
+> > > also tried wicd or gnome-network-manager all without results.
+> > > >
+> > > >
+> > > >
+> > > > I am using Ubuntu 15.04 and i3 4.10.4.
+> > > >
+> > > >
+> > > >
+> > > > Any ideas?
+> > > >
+> > > >
+> > > >
+> > > >
+> > >
+> > >
+>
+> --
+> Valentin Rusu
+> IRC: valir
+
+From jeff at purple.com  Fri Oct  2 11:12:43 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Fri, 2 Oct 2015 11:12:43 +0200
+Subject: [i3] Killing a window's process
+Message-ID: <CAM4Y7zzrLiZ-TLB05-z8RwogLNy-FMSt5_K8Ymo6q9y6qrbHUQ@mail.gmail.com>
+
+I have a window whose process is not responding.  No problem, i3 lets me
+kill windows, so I type that key combination.  Usually it works, but this
+time it doesn't.
+
+My work-around is to use wininfo to find the window id of the dead but
+mapped thing, bc to convert to decimal, use "ps aeww | grep" to find the
+process with that window id in its environment, then send it a kill -15
+(does nothing visible) and then a kill -9 (still mapped, but process now
+shows as defunct).
+
+
+So the* problem* (obviously not critical, since I have a work-around) is
+how could I have avoided the wininfo -> ps -> bc -> kill thing.  Looking at
+the code, it looks like i3's kill window is cmd_kill
+<https://github.com/i3/i3/blob/next/src/commands.c#L1298>() in commands.c.
+(How can that get called with kill_mode_str == "client"?)  The chain is
+then to call tree_close_con
+<https://github.com/i3/i3/blob/next/src/tree.c#L369>() -> tree_close
+<https://github.com/i3/i3/blob/next/src/tree.c#L192>() -> x_window_kill
+<https://github.com/i3/i3/blob/next/src/x.c#L283>() -> one_of {
+xcb_destroy_window
+<http://www.x.org/archive/current/doc/man/man3/xcb_destroy_window.3.xhtml>(),
+xcb_kill_client
+<http://www.x.org/archive/current/doc/man/man3/xcb_kill_client.3.xhtml>() }.
+
+I think to answer that I'l have to run i3 with logging so I can see which
+path it's taking at the end.  And wait for an appropriately hung process.
+My initial hypothesis is that the window supports WM_DELETE_WINDOW but,
+since the proc is hung, it never processes it.
+
+
+Anyway, thanks for any insights.  Clearly this is as much about me learning
+as anything else.
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only when I'm in the UK
+
+*http://www.ml-week.com/fr/* <http://www.ml-week.com/fr/>*     2-5 novembre
+2015*
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151002/11817745/attachment.html>
+
+From admin at airblader.de  Fri Oct  2 11:18:57 2015
+From: admin at airblader.de (=?UTF-8?Q?Ingo_B=c3=bcrk?=)
+Date: Fri, 2 Oct 2015 11:18:57 +0200
+Subject: [i3] Killing a window's process
+In-Reply-To: <CAM4Y7zzrLiZ-TLB05-z8RwogLNy-FMSt5_K8Ymo6q9y6qrbHUQ@mail.gmail.com>
+References: <CAM4Y7zzrLiZ-TLB05-z8RwogLNy-FMSt5_K8Ymo6q9y6qrbHUQ@mail.gmail.com>
+Message-ID: <560E4C01.2010905@airblader.de>
+
+xkill?
+
+On 10/02/2015 11:12 AM, Jeff Abrahamson wrote:
+> I have a window whose process is not responding.  No problem, i3 lets me
+> kill windows, so I type that key combination.  Usually it works, but this
+> time it doesn't.
+>
+> My work-around is to use wininfo to find the window id of the dead but
+> mapped thing, bc to convert to decimal, use "ps aeww | grep" to find the
+> process with that window id in its environment, then send it a kill -15
+> (does nothing visible) and then a kill -9 (still mapped, but process now
+> shows as defunct).
+>
+>
+> So the* problem* (obviously not critical, since I have a work-around) is
+> how could I have avoided the wininfo -> ps -> bc -> kill thing.  Looking at
+> the code, it looks like i3's kill window is cmd_kill
+> <https://github.com/i3/i3/blob/next/src/commands.c#L1298>() in commands.c.
+> (How can that get called with kill_mode_str == "client"?)  The chain is
+> then to call tree_close_con
+> <https://github.com/i3/i3/blob/next/src/tree.c#L369>() -> tree_close
+> <https://github.com/i3/i3/blob/next/src/tree.c#L192>() -> x_window_kill
+> <https://github.com/i3/i3/blob/next/src/x.c#L283>() -> one_of {
+> xcb_destroy_window
+> <http://www.x.org/archive/current/doc/man/man3/xcb_destroy_window.3.xhtml>(),
+> xcb_kill_client
+> <http://www.x.org/archive/current/doc/man/man3/xcb_kill_client.3.xhtml>() }.
+>
+> I think to answer that I'l have to run i3 with logging so I can see which
+> path it's taking at the end.  And wait for an appropriately hung process.
+> My initial hypothesis is that the window supports WM_DELETE_WINDOW but,
+> since the proc is hung, it never processes it.
+>
+>
+> Anyway, thanks for any insights.  Clearly this is as much about me learning
+> as anything else.
+>
+> Jeff Abrahamson
+> +33 6 24 40 01 57
+> +44 7920 594 255    <-- only when I'm in the UK
+>
+> *http://www.ml-week.com/fr/* <http://www.ml-week.com/fr/>*     2-5 novembre
+> 2015*
+>
+> http://jeff.purple.com/
+> http://blog.purple.com/jeff/
+>
+
+
+From jeff at purple.com  Fri Oct  2 11:28:24 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Fri, 2 Oct 2015 11:28:24 +0200
+Subject: [i3] Killing a window's process
+In-Reply-To: <560E4C01.2010905@airblader.de>
+References: <CAM4Y7zzrLiZ-TLB05-z8RwogLNy-FMSt5_K8Ymo6q9y6qrbHUQ@mail.gmail.com>
+ <560E4C01.2010905@airblader.de>
+Message-ID: <CAM4Y7zyDk7i=de0GxYNQZvDFw_nGCE5vOu374zhN__-bacWPMw@mail.gmail.com>
+
+Ah, why, yes, that would have worked.  Thanks.
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only when I'm in the UK
+
+*http://www.ml-week.com/fr/* <http://www.ml-week.com/fr/>*     2-5 novembre
+2015*
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+
+On 2 October 2015 at 11:18, Ingo Bürk <admin at airblader.de> wrote:
+
+> xkill?
+>
+> On 10/02/2015 11:12 AM, Jeff Abrahamson wrote:
+> > I have a window whose process is not responding.  No problem, i3 lets me
+> > kill windows, so I type that key combination.  Usually it works, but this
+> > time it doesn't.
+> >
+> > My work-around is to use wininfo to find the window id of the dead but
+> > mapped thing, bc to convert to decimal, use "ps aeww | grep" to find the
+> > process with that window id in its environment, then send it a kill -15
+> > (does nothing visible) and then a kill -9 (still mapped, but process now
+> > shows as defunct).
+> >
+> >
+> > So the* problem* (obviously not critical, since I have a work-around) is
+> > how could I have avoided the wininfo -> ps -> bc -> kill thing.  Looking
+> at
+> > the code, it looks like i3's kill window is cmd_kill
+> > <https://github.com/i3/i3/blob/next/src/commands.c#L1298>() in
+> commands.c.
+> > (How can that get called with kill_mode_str == "client"?)  The chain is
+> > then to call tree_close_con
+> > <https://github.com/i3/i3/blob/next/src/tree.c#L369>() -> tree_close
+> > <https://github.com/i3/i3/blob/next/src/tree.c#L192>() -> x_window_kill
+> > <https://github.com/i3/i3/blob/next/src/x.c#L283>() -> one_of {
+> > xcb_destroy_window
+> > <
+> http://www.x.org/archive/current/doc/man/man3/xcb_destroy_window.3.xhtml
+> >(),
+> > xcb_kill_client
+> > <http://www.x.org/archive/current/doc/man/man3/xcb_kill_client.3.xhtml>()
+> }.
+> >
+> > I think to answer that I'l have to run i3 with logging so I can see which
+> > path it's taking at the end.  And wait for an appropriately hung process.
+> > My initial hypothesis is that the window supports WM_DELETE_WINDOW but,
+> > since the proc is hung, it never processes it.
+> >
+> >
+> > Anyway, thanks for any insights.  Clearly this is as much about me
+> learning
+> > as anything else.
+> >
+> > Jeff Abrahamson
+> > +33 6 24 40 01 57
+> > +44 7920 594 255    <-- only when I'm in the UK
+> >
+> > *http://www.ml-week.com/fr/* <http://www.ml-week.com/fr/>*     2-5
+> novembre
+> > 2015*
+> >
+> > http://jeff.purple.com/
+> > http://blog.purple.com/jeff/
+> >
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151002/fec517aa/attachment-0001.html>
+
+From i3wm at rusu.info  Sat Oct  3 08:50:20 2015
+From: i3wm at rusu.info (Valentin Rusu)
+Date: Sat, 3 Oct 2015 09:50:20 +0300
+Subject: [i3] managing wifi with i3
+In-Reply-To: <20151001195337.GC6406@waldo.rubic.com>
+References: <150228a0db8.120c5d6fb467.2524676750396045260@web.de>
+ <560CF075.60103@airblader.de>
+ <CAM4Y7zwohpmg63LZxbG3Sd4Q02KP=Anse_rwUORkHOTmEij80Q@mail.gmail.com>
+ <20151001191349.GB27683@sisif.rusu.info>
+ <20151001195337.GC6406@waldo.rubic.com>
+Message-ID: <20151003065020.GB668@sisif.rusu.info>
+
+No problem with that on ArchLinux.
+However, wicd-curses crashes when the connection is up, but by that time
+I no longer need it so that won't bother me ;-)
+
+* Jeff Bauer <jeffrubic at gmail.com> [2015-10-01 14:53:37 -0500]:
+
+> I use wicd with i3, but it always fails when I attempt to connect to a network
+> that requires authentication (virtually all of them, these days).  There's some
+> error in the Python code that I have tracked down yet, so I log into new
+> networks with nm-applet the first time, then with wicd thereafter.
+> 
+> -Jeff
+> 
+> 
+> On Thu, Oct 01, 2015 at 10:13:49PM +0300, Valentin Rusu wrote:
+> > I use wicd instead of NetworkManager and I'm very happy with it. It
+> > would connect as soon as I login in text mode, so by the time I3 is up,
+> > the connection is already there.
+> >
+> > * Jeff Abrahamson <jeff at purple.com> [2015-10-01 10:41:53 +0200]:
+> >
+> > > I have the following in my ~/.xsessionrc, and it works correctly:
+> > >
+> > > if [ "X$DESKTOP_SESSION" = Xi3 ]; then
+> > >     nm-applet &
+> > >     # and other stuff
+> > > fi
+> > >
+> > > Jeff Abrahamson
+> > > +33 6 24 40 01 57
+> > > +44 7920 594 255    <-- only when I'm in the UK
+> > >
+> > > *http://www.ml-week.com/fr/* <http://www.ml-week.com/fr/>*     2-5 novembre
+> > > 2015*
+> > >
+> > > http://jeff.purple.com/
+> > > http://blog.purple.com/jeff/
+> > >
+> > > On 1 October 2015 at 10:36, Ingo Bürk <admin at airblader.de> wrote:
+> > >
+> > > > The window manager is neither responsible nor involved in network
+> > > > management at all, so I'm afraid you're looking in the wrong direction
+> > > > here.
+> > > >
+> > > > On 10/01/2015 10:34 AM, Robert Grah wrote:
+> > > > >
+> > > > > Hey there,
+> > > > >
+> > > > >
+> > > > >
+> > > > > I am having some problems getting wifi to work in i3. I tried to add
+> > > > >
+> > > > >
+> > > > >
+> > > > > exec--no-startup-id nm-applet
+> > > > > to my config and this braught me the icon, but it can not find any wifi
+> > > > networks.
+> > > > >
+> > > > > It seems that there are some problems with the session or similar. I
+> > > > also tried wicd or gnome-network-manager all without results.
+> > > > >
+> > > > >
+> > > > >
+> > > > > I am using Ubuntu 15.04 and i3 4.10.4.
+> > > > >
+> > > > >
+> > > > >
+> > > > > Any ideas?
+> > > > >
+> > > > >
+> > > > >
+> > > > >
+> > > >
+> > > >
+> >
+> > --
+> > Valentin Rusu
+> > IRC: valir
+
+-- 
+Valentin Rusu
+IRC: valir
+
+From mart at martlubbers.net  Sat Oct  3 09:00:17 2015
+From: mart at martlubbers.net (Mart Lubbers)
+Date: Sat, 03 Oct 2015 09:00:17 +0200
+Subject: [i3] managing wifi with i3
+In-Reply-To: <20151003065020.GB668@sisif.rusu.info>
+References: <150228a0db8.120c5d6fb467.2524676750396045260@web.de>
+ <560CF075.60103@airblader.de>
+ <CAM4Y7zwohpmg63LZxbG3Sd4Q02KP=Anse_rwUORkHOTmEij80Q@mail.gmail.com>
+ <20151001191349.GB27683@sisif.rusu.info>
+ <20151001195337.GC6406@waldo.rubic.com>
+ <20151003065020.GB668@sisif.rusu.info>
+Message-ID: <DCB466EB-8DDF-4355-82BF-B984471F3AD5@martlubbers.net>
+
+I use netctltray. A simple netctl profile switcher with a tray icon.
+https://aur.archlinux.org/packages/netctltray/
+
+Works great and no bloat.
+
+On 3 October 2015 08:50:20 CEST, Valentin Rusu <i3wm at rusu.info> wrote:
+>No problem with that on ArchLinux.
+>However, wicd-curses crashes when the connection is up, but by that
+>time
+>I no longer need it so that won't bother me ;-)
+>
+>* Jeff Bauer <jeffrubic at gmail.com> [2015-10-01 14:53:37 -0500]:
+>
+>> I use wicd with i3, but it always fails when I attempt to connect to
+>a network
+>> that requires authentication (virtually all of them, these days). 
+>There's some
+>> error in the Python code that I have tracked down yet, so I log into
+>new
+>> networks with nm-applet the first time, then with wicd thereafter.
+>> 
+>> -Jeff
+>> 
+>> 
+>> On Thu, Oct 01, 2015 at 10:13:49PM +0300, Valentin Rusu wrote:
+>> > I use wicd instead of NetworkManager and I'm very happy with it. It
+>> > would connect as soon as I login in text mode, so by the time I3 is
+>up,
+>> > the connection is already there.
+>> >
+>> > * Jeff Abrahamson <jeff at purple.com> [2015-10-01 10:41:53 +0200]:
+>> >
+>> > > I have the following in my ~/.xsessionrc, and it works correctly:
+>> > >
+>> > > if [ "X$DESKTOP_SESSION" = Xi3 ]; then
+>> > >     nm-applet &
+>> > >     # and other stuff
+>> > > fi
+>> > >
+>> > > Jeff Abrahamson
+>> > > +33 6 24 40 01 57
+>> > > +44 7920 594 255    <-- only when I'm in the UK
+>> > >
+>> > > *http://www.ml-week.com/fr/* <http://www.ml-week.com/fr/>*    
+>2-5 novembre
+>> > > 2015*
+>> > >
+>> > > http://jeff.purple.com/
+>> > > http://blog.purple.com/jeff/
+>> > >
+>> > > On 1 October 2015 at 10:36, Ingo Bürk <admin at airblader.de> wrote:
+>> > >
+>> > > > The window manager is neither responsible nor involved in
+>network
+>> > > > management at all, so I'm afraid you're looking in the wrong
+>direction
+>> > > > here.
+>> > > >
+>> > > > On 10/01/2015 10:34 AM, Robert Grah wrote:
+>> > > > >
+>> > > > > Hey there,
+>> > > > >
+>> > > > >
+>> > > > >
+>> > > > > I am having some problems getting wifi to work in i3. I tried
+>to add
+>> > > > >
+>> > > > >
+>> > > > >
+>> > > > > exec--no-startup-id nm-applet
+>> > > > > to my config and this braught me the icon, but it can not
+>find any wifi
+>> > > > networks.
+>> > > > >
+>> > > > > It seems that there are some problems with the session or
+>similar. I
+>> > > > also tried wicd or gnome-network-manager all without results.
+>> > > > >
+>> > > > >
+>> > > > >
+>> > > > > I am using Ubuntu 15.04 and i3 4.10.4.
+>> > > > >
+>> > > > >
+>> > > > >
+>> > > > > Any ideas?
+>> > > > >
+>> > > > >
+>> > > > >
+>> > > > >
+>> > > >
+>> > > >
+>> >
+>> > --
+>> > Valentin Rusu
+>> > IRC: valir
+>
+>-- 
+>Valentin Rusu
+>IRC: valir
+
+-- 
+Sent from my Android device with K-9 Mail. Please excuse my brevity.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151003/658f25f6/attachment.html>
+
+From garbytrash at gmail.com  Sun Oct  4 08:08:02 2015
+From: garbytrash at gmail.com (Zenny)
+Date: Sun, 4 Oct 2015 08:08:02 +0200
+Subject: [i3] Mouse capture problem i3 and OBS
+In-Reply-To: <CANnVG6=Hyo5ecapZ3E9XPKH+U4modEmjX+yMG_xwPBHui-DEqw@mail.gmail.com>
+References: <CACuV5sD_iH9Ce+=uidsj=4nd0h0PedSdfozVjg+cqu-T910ANA@mail.gmail.com>
+ <CANnVG6=Hyo5ecapZ3E9XPKH+U4modEmjX+yMG_xwPBHui-DEqw@mail.gmail.com>
+Message-ID: <CACuV5sARJOzq0QiietnLk2uQJVbp0uoCOCL8qk838+fjYkBdkw@mail.gmail.com>
+
+I tried with others and with the same effect. So the culprit lies in
+OBS, I guess. Sorry for the false alarm.
+
+On 10/1/15, Michael Stapelberg <michael at i3wm.org> wrote:
+> Have you tried reproducing this problem with any other window manager that
+> offers a tabbed mode?
+>
+> On Thu, Oct 1, 2015 at 12:36 PM, Zenny <garbytrash at gmail.com> wrote:
+>
+>> Hi,
+>>
+>> Having problem with redundant mouse capture in OBS running with i3-wm.
+>>
+>> When the mouse is moved to change some recording settings in the OBS
+>> interface at the bottom or in the canvas, the mouse movement for those
+>> modifications gets displayed in the canvas and gets recorded in the
+>> final input, even when there is no source of screen capture of the
+>> machine in which OBS is running.
+>>
+>> This problem is only when in the tabbed mode, but not in the tiling
+>> mode of i3-wm. By changing the tabbed mode ($MOD+w) to tiling mode
+>> ($MOD+e), the mouse movements for OBS settings modifications
+>> disappears and that is what actually desired.
+>>
+>> Posted a bug report to OBS guys:
+>> https://obsproject.com/mantis/view.php?id=340 and posting here if that
+>> has to anything with i3-wm?
+>>
+>> Thanks!
+>>
+>> /z
+>>
+>
+>
+>
+> --
+> Best regards,
+> Michael
+>
+
+From ilaq241 at gmail.com  Tue Oct 13 05:31:37 2015
+From: ilaq241 at gmail.com (Matt Ilacqua)
+Date: Mon, 12 Oct 2015 23:31:37 -0400
+Subject: [i3] Problems getting Ubuntu repository working
+Message-ID: <CACSEOCdDgUqc2fRbWKfKH5nhRwr_F+MjziA8uO59hihSt1CQsg@mail.gmail.com>
+
+Realized my version of i3 is 4.7.2 and that the sur5r repository wasn't
+working for me. I'm using xubuntu 14.04 LTS
+
+Here's what I see with apt-get update:
+
+Ign http://debian.sur5r.net -c InRelease
+
+Ign http://debian.sur5r.net -c Release.gpg
+Ign http://debian.sur5r.net -c Release
+Err http://debian.sur5r.net -c/-s) i386 Packages
+  404  Not Found [IP: 217.8.49.41 80]
+Err http://debian.sur5r.net -c/universe i386 Packages
+  404  Not Found [IP: 217.8.49.41 80]
+Ign http://debian.sur5r.net -c/-s) Translation-en_US
+Ign http://debian.sur5r.net -c/-s) Translation-en
+Ign http://debian.sur5r.net -c/universe Translation-en_US
+
+Ign http://debian.sur5r.net -c/universe Translation-en
+
+W: Failed to fetch
+http://debian.sur5r.net/i3/dists/-c/-s)/binary-i386/Packages  404  Not
+Found [IP: 217.8.49.41 80]
+
+W: Failed to fetch
+http://debian.sur5r.net/i3/dists/-c/universe/binary-i386/Packages  404  Not
+Found [IP: 217.8.49.41 80]
+
+E: Some index files failed to download. They have been ignored, or old ones
+used instead.
+
+And in my /etc/apt/sources.list file I have:
+
+deb http://debian.sur5r.net/i3/  -c -s) universe
+
+I also tried directly copying "deb http://debian.sur5r.net/i3/ $(lsb_release
+-c -s) universe" right into sources.list and am still getting 404's in my
+sudo apt-get update.
+
+Any info or suggestions would be appreciated. Thanks!
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151012/3dfff66e/attachment.html>
+
+From michael at i3wm.org  Tue Oct 13 08:53:42 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 13 Oct 2015 08:53:42 +0200
+Subject: [i3] Problems getting Ubuntu repository working
+In-Reply-To: <CACSEOCdDgUqc2fRbWKfKH5nhRwr_F+MjziA8uO59hihSt1CQsg@mail.gmail.com>
+References: <CACSEOCdDgUqc2fRbWKfKH5nhRwr_F+MjziA8uO59hihSt1CQsg@mail.gmail.com>
+Message-ID: <CANnVG6krv7oum8zVjd=-cXhJrmbtgxUQPfssRuYtLafZebgtjg@mail.gmail.com>
+
+http://i3wm.org/docs/repositories.html lists:
+
+# echo "deb http://debian.sur5r.net/i3/ $(lsb_release -c -s) universe" >>
+/etc/apt/sources.list
+
+That command has to be executed. The $(lsb_release -c -s) part will be
+replaced by your Ubuntu version when you do that. It seems like you have
+not properly executed the command, based on the -c and -s flags showing up
+in your sources.list.
+
+On Tue, Oct 13, 2015 at 5:31 AM, Matt Ilacqua <ilaq241 at gmail.com> wrote:
+
+> Realized my version of i3 is 4.7.2 and that the sur5r repository wasn't
+> working for me. I'm using xubuntu 14.04 LTS
+>
+> Here's what I see with apt-get update:
+>
+> Ign http://debian.sur5r.net -c InRelease
+>
+> Ign http://debian.sur5r.net -c Release.gpg
+> Ign http://debian.sur5r.net -c Release
+> Err http://debian.sur5r.net -c/-s) i386 Packages
+>   404  Not Found [IP: 217.8.49.41 80]
+> Err http://debian.sur5r.net -c/universe i386 Packages
+>   404  Not Found [IP: 217.8.49.41 80]
+> Ign http://debian.sur5r.net -c/-s) Translation-en_US
+> Ign http://debian.sur5r.net -c/-s) Translation-en
+> Ign http://debian.sur5r.net -c/universe Translation-en_US
+>
+> Ign http://debian.sur5r.net -c/universe Translation-en
+>
+> W: Failed to fetch
+> http://debian.sur5r.net/i3/dists/-c/-s)/binary-i386/Packages  404  Not
+> Found [IP: 217.8.49.41 80]
+>
+> W: Failed to fetch
+> http://debian.sur5r.net/i3/dists/-c/universe/binary-i386/Packages  404
+>  Not Found [IP: 217.8.49.41 80]
+>
+> E: Some index files failed to download. They have been ignored, or old
+> ones used instead.
+>
+> And in my /etc/apt/sources.list file I have:
+>
+> deb http://debian.sur5r.net/i3/  -c -s) universe
+>
+> I also tried directly copying "deb http://debian.sur5r.net/i3/ $(lsb_release
+> -c -s) universe" right into sources.list and am still getting 404's in my
+> sudo apt-get update.
+>
+> Any info or suggestions would be appreciated. Thanks!
+>
+
+
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151013/9fb95cbc/attachment.html>
+
+From smilingmolecule at web.de  Tue Oct 13 16:47:34 2015
+From: smilingmolecule at web.de (Robert Grah)
+Date: Tue, 13 Oct 2015 16:47:34 +0200
+Subject: [i3] managing wifi with i3
+In-Reply-To: <DCB466EB-8DDF-4355-82BF-B984471F3AD5@martlubbers.net>
+References: <150228a0db8.120c5d6fb467.2524676750396045260@web.de>
+ <560CF075.60103@airblader.de>
+ <CAM4Y7zwohpmg63LZxbG3Sd4Q02KP=Anse_rwUORkHOTmEij80Q@mail.gmail.com>
+ <20151001191349.GB27683@sisif.rusu.info>
+ <20151001195337.GC6406@waldo.rubic.com>
+ <20151003065020.GB668@sisif.rusu.info>
+ <DCB466EB-8DDF-4355-82BF-B984471F3AD5@martlubbers.net>
+Message-ID: <15061abb3eb.f92f877e43296.6661296519769071952@web.de>
+
+thanks guys,
+
+
+
+you helped me a lot!
+
+
+
+
+
+
+
+
+
+ ---- On Sa, 03 Okt 2015 09:00:17 +0200 Mart Lubbers &lt;mart at martlubbers.net&gt; wrote ----
+
+
+
+
+I use netctltray. A simple netctl profile switcher with a tray icon.
+
+ https://aur.archlinux.org/packages/netctltray/
+
+ 
+
+ Works great and no bloat.
+
+
+
+On 3 October 2015 08:50:20 CEST, Valentin Rusu &lt;i3wm at rusu.info&gt; wrote:
+
+No problem with that on ArchLinux.
+
+However, wicd-curses crashes when the connection is up, but by that time
+
+I no longer need it so that won't bother me ;-)
+
+
+
+* Jeff Bauer &lt;jeffrubic at gmail.com&gt; [2015-10-01 14:53:37 -0500]:
+
+
+
+I use wicd with i3, but it always fails when I attempt to connect to a network
+
+ that requires authentication (virtually all of them, these days). There's some
+
+ error in the Python code that I have tracked down yet, so I log into new
+
+ networks with nm-applet the first time, then with wicd thereafter.
+
+ 
+
+ -Jeff
+
+ 
+
+ 
+
+ On Thu, Oct 01, 2015 at 10:13:49PM +0300, Valentin Rusu wrote:
+
+I use wicd instead of NetworkManager and I'm very happy with it. It
+
+ would connect as soon as I login in text mode, so by the time I3 is up,
+
+ the connection is already there.
+
+
+
+ * Jeff Abrahamson &lt;jeff at purple.com&gt; [2015-10-01 10:41:53 +0200]:
+
+
+
+I have the following in my ~/.xsessionrc, and it works correctly:
+
+
+
+ if [ "X$DESKTOP_SESSION" = Xi3 ]; then
+
+ nm-applet &amp;
+
+ # and other stuff
+
+ fi
+
+
+
+ Jeff Abrahamson
+
+ +33 6 24 40 01 57
+
+ +44 7920 594 255 &lt;-- only when I'm in the UK
+
+
+
+ *http://www.ml-week.com/fr/* &lt;http://www.ml-week.com/fr/&gt;* 2-5 novembre
+
+ 2015*
+
+
+
+ http://jeff.purple.com/
+
+ http://blog.purple.com/jeff/
+
+
+
+ On 1 October 2015 at 10:36, Ingo Bürk &lt;admin at airblader.de&gt; wrote:
+
+
+
+The window manager is neither responsible nor involved in network
+
+ management at all, so I'm afraid you're looking in the wrong direction
+
+ here.
+
+
+
+ On 10/01/2015 10:34 AM, Robert Grah wrote:
+
+
+
+ Hey there,
+
+
+
+
+
+
+
+ I am having some problems getting wifi to work in i3. I tried to add
+
+
+
+
+
+
+
+ exec--no-startup-id nm-applet
+
+ to my config and this braught me the icon, but it can not find any wifi
+
+networks.
+
+
+
+ It seems that there are some problems with the session or similar. I
+
+also tried wicd or gnome-network-manager all without results.
+
+
+
+
+
+
+
+ I am using Ubuntu 15.04 and i3 4.10.4.
+
+
+
+
+
+
+
+ Any ideas?
+
+
+
+
+
+
+
+
+
+
+
+
+
+ --
+
+ Valentin Rusu
+
+ IRC: valir
+
+
+
+
+ -- 
+
+ Sent from my Android device with K-9 Mail. Please excuse my brevity.
+
+
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151013/900710bd/attachment.html>
+
+From ilaq241 at gmail.com  Tue Oct 13 21:59:49 2015
+From: ilaq241 at gmail.com (Matt Ilacqua)
+Date: Tue, 13 Oct 2015 15:59:49 -0400
+Subject: [i3] Problems getting Ubuntu repository working
+Message-ID: <CACSEOCcyFhybatxnCL-4NZ2D8aQ8BCQpfjrFzL5d6AZum7qy=g@mail.gmail.com>
+
+Thanks. Not sure what I did before, but executing that command with sudo -i
+solved the problem.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151013/7945c766/attachment.html>
+
+From frederik at ofb.net  Wed Oct 14 01:08:40 2015
+From: frederik at ofb.net (Frederik Eaton)
+Date: Tue, 13 Oct 2015 16:08:40 -0700
+Subject: [i3] i3 new user experiences summary
+Message-ID: <20151013230840.GA17629@ofb.net>
+
+Hello All!
+
+I just switched from Notion to i3 about a month ago. In general it's
+been a positive experience, I especially appreciate the smaller
+configuration file, the more sensible default bindings, the ability to
+put windows in a tree (if that's the correct word).
+
+After settling in, I made a quick list of some issues I ran into and
+wanted to report back to the developers.
+
+- As a user of the Dvorak keyboard layout, I was confused by the
+  result of running i3-config-wizard. I can see how h,t,n,s could be
+  used for navigation, but many of the remaining key bindings don't
+  make sense - why should 'd' split horizontally, or 'p' restart? This
+  wasn't really explained to me through the process of installing and
+  trying out the software. I ended up having to revert most of the
+  bindings to the Qwerty defaults. I think the wizard made things more
+  difficult in the end.
+
+- Coming from Notion, I would have expected the default window layout
+  to be tabbed. At first I thought that i3 didn't support a tabbed
+  layout, because when I first started it (with killall notion; i3), I
+  ended up with 10 unusably-narrow windows. I still don't know how to
+  make tabbing the default - when I open windows on a new workspace,
+  they always come up split. If I kill and restart i3, then everything
+  comes up split (and uselessly narrow).
+
+- I had to ask the IRC channel for the name of the key binding to turn
+  a dialog box into a window - perhaps the documentation should be
+  improved so new users can avoid this hurdle (e.g. under TERMINOLOGY
+  in the man page, there could be an entry explaining that a "Floating
+  Window" is something like a dialog box).
+
+- Even after learning the "floating toggle" binding it sometimes
+  becomes annoying or confusing to have to press it each time - for
+  instance if I have to print a lot of stuff in Firefox, but I
+  sometimes want to navigate to other windows when the print dialog is
+  open. I also sometimes accidentally turn Firefox into a floating
+  window when I'm doing this, and then I wonder where all the other
+  windows went.... I would appreciate an option to have dialogs always
+  come up as windows by default.
+
+- "focus right" is not always the reverse of "focus left". For
+  instance, if the rightmost tab is split horizontally, then one
+  command will cycle through all the windows, but the other will get
+  stuck cycling through the children of the tab which has been split.
+  Same with "focus up" and "focus down" in the stacking layout, when a
+  child is split vertically. It seems it would be cleaner to have
+  these pairs be strict opposites.
+
+- I like that "i3-nagbar" is available to display error messages, but
+  I don't know how to close it with my keyboard... seems like I have
+  to use my mouse to close it. I'd prefer to avoid the mouse...!
+
+
+Well, I hope this isn't too much stuff at once. I'm happy with i3 so
+even if you don't fix any of these problems, I'll still use it. As I
+mentioned above, I just wanted to report back since it's not always
+easy to anticipate how new users will experience a piece of software.
+
+Thanks for all your hard work in developing i3!
+
+Best wishes,
+
+Frederik
+
+From michael at i3wm.org  Wed Oct 14 08:13:12 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 14 Oct 2015 08:13:12 +0200
+Subject: [i3] i3 new user experiences summary
+In-Reply-To: <20151013230840.GA17629@ofb.net>
+References: <20151013230840.GA17629@ofb.net>
+Message-ID: <CANnVG6=Txr66xcvMBqGC5hxmdSSRD+_1ufd0_j1teHg8LApT=A@mail.gmail.com>
+
+Thanks for writing this up. Answers inline.
+
+On Wed, Oct 14, 2015 at 1:08 AM, Frederik Eaton <frederik at ofb.net> wrote:
+
+> Hello All!
+>
+> I just switched from Notion to i3 about a month ago. In general it's
+> been a positive experience, I especially appreciate the smaller
+> configuration file, the more sensible default bindings, the ability to
+> put windows in a tree (if that's the correct word).
+>
+> After settling in, I made a quick list of some issues I ran into and
+> wanted to report back to the developers.
+>
+> - As a user of the Dvorak keyboard layout, I was confused by the
+>   result of running i3-config-wizard. I can see how h,t,n,s could be
+>   used for navigation, but many of the remaining key bindings don't
+>   make sense - why should 'd' split horizontally, or 'p' restart? This
+>   wasn't really explained to me through the process of installing and
+>   trying out the software. I ended up having to revert most of the
+>   bindings to the Qwerty defaults. I think the wizard made things more
+>   difficult in the end.
+>
+
+The key _positions_ make some sense, the key mnemonics likely don’t. I
+don’t think this is a big problem, as users are very likely to change their
+config file anyway. Also, you’re free to use/not use the wizard as you see
+fit — for most users, using the wizard seems to be the best solution, which
+is why it’s started by default.
+
+
+>
+> - Coming from Notion, I would have expected the default window layout
+>   to be tabbed. At first I thought that i3 didn't support a tabbed
+>   layout, because when I first started it (with killall notion; i3), I
+>   ended up with 10 unusably-narrow windows. I still don't know how to
+>   make tabbing the default - when I open windows on a new workspace,
+>   they always come up split. If I kill and restart i3, then everything
+>   comes up split (and uselessly narrow).
+>
+
+Does “workspace_layout tabbed” do what you want?
+
+
+>
+> - I had to ask the IRC channel for the name of the key binding to turn
+>   a dialog box into a window - perhaps the documentation should be
+>   improved so new users can avoid this hurdle (e.g. under TERMINOLOGY
+>   in the man page, there could be an entry explaining that a "Floating
+>   Window" is something like a dialog box).
+>
+
+Can you please send a pull request for https://github.com/i3/i3 which adds
+an explanation where you think it makes sense?
+
+
+>
+> - Even after learning the "floating toggle" binding it sometimes
+>   becomes annoying or confusing to have to press it each time - for
+>   instance if I have to print a lot of stuff in Firefox, but I
+>   sometimes want to navigate to other windows when the print dialog is
+>   open. I also sometimes accidentally turn Firefox into a floating
+>   window when I'm doing this, and then I wonder where all the other
+>   windows went.... I would appreciate an option to have dialogs always
+>   come up as windows by default.
+>
+
+If the print dialog is clearly meant to be floating, Firefox should set the
+appropriate window hints. Since you describe you have to manually make it
+floating, apparently Firefox doesn’t. You should file a Firefox bug, but
+you can work around this with a for_window rule, see
+http://i3wm.org/docs/userguide.html#_arbitrary_commands_for_specific_windows_for_window
+
+
+>
+> - "focus right" is not always the reverse of "focus left". For
+>   instance, if the rightmost tab is split horizontally, then one
+>   command will cycle through all the windows, but the other will get
+>   stuck cycling through the children of the tab which has been split.
+>   Same with "focus up" and "focus down" in the stacking layout, when a
+>   child is split vertically. It seems it would be cleaner to have
+>   these pairs be strict opposites.
+>
+
+There are several places where the directional commands don’t strictly
+operate on the tree and hence focus left/right are not always direct
+opposites. We believe that bottomline, this makes it easier for users. Even
+if it didn’t make it easier for users, changing it now would be very
+disruptive to existing users, so I don’t think we can do much about it.
+
+If you feel strongly, you might be able to implement your own logic using
+the IPC interface: http://i3wm.org/docs/ipc.html
+
+
+>
+> - I like that "i3-nagbar" is available to display error messages, but
+>   I don't know how to close it with my keyboard... seems like I have
+>   to use my mouse to close it. I'd prefer to avoid the mouse...!
+>
+
+It’s designed to nag you, so this is working as intended :).
+
+
+>
+>
+> Well, I hope this isn't too much stuff at once. I'm happy with i3 so
+> even if you don't fix any of these problems, I'll still use it. As I
+> mentioned above, I just wanted to report back since it's not always
+> easy to anticipate how new users will experience a piece of software.
+>
+> Thanks for all your hard work in developing i3!
+>
+> Best wishes,
+>
+> Frederik
+>
+
+
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151014/88f1401f/attachment-0001.html>
+
+From layus.on at gmail.com  Wed Oct 14 08:35:45 2015
+From: layus.on at gmail.com (Layus)
+Date: Wed, 14 Oct 2015 08:35:45 +0200
+Subject: [i3] i3 new user experiences summary
+In-Reply-To: <CANnVG6=Txr66xcvMBqGC5hxmdSSRD+_1ufd0_j1teHg8LApT=A@mail.gmail.com>
+References: <20151013230840.GA17629@ofb.net>
+ <CANnVG6=Txr66xcvMBqGC5hxmdSSRD+_1ufd0_j1teHg8LApT=A@mail.gmail.com>
+Message-ID: <561DF7C1.8060103@gmail.com>
+
+Nice to have such clear remarks from a new  (power)user.
+
+I just wanted to add some clarifications/coments.
+
+On 14/10/15 08:13, Michael Stapelberg wrote:
+> Thanks for writing this up. Answers inline.
+>
+> On Wed, Oct 14, 2015 at 1:08 AM, Frederik Eaton <frederik at ofb.net 
+> <mailto:frederik at ofb.net>> wrote:
+>
+>     Hello All!
+>
+>     I just switched from Notion to i3 about a month ago. In general it's
+>     been a positive experience, I especially appreciate the smaller
+>     configuration file, the more sensible default bindings, the ability to
+>     put windows in a tree (if that's the correct word).
+>
+>     After settling in, I made a quick list of some issues I ran into and
+>     wanted to report back to the developers.
+>
+>     - As a user of the Dvorak keyboard layout, I was confused by the
+>       result of running i3-config-wizard. I can see how h,t,n,s could be
+>       used for navigation, but many of the remaining key bindings don't
+>       make sense - why should 'd' split horizontally, or 'p' restart? This
+>       wasn't really explained to me through the process of installing and
+>       trying out the software. I ended up having to revert most of the
+>       bindings to the Qwerty defaults. I think the wizard made things more
+>       difficult in the end.
+>
+>
+> The key _positions_ make some sense, the key mnemonics likely don’t. I 
+> don’t think this is a big problem, as users are very likely to change 
+> their config file anyway. Also, you’re free to use/not use the wizard 
+> as you see fit — for most users, using the wizard seems to be the best 
+> solution, which is why it’s started by default.
+It is always difficult to mix the key positions and values and to pipck 
+reasonable defaults.
+On azerty, I want to use hjkl for navigation, but then h is no more 
+available for "horizontal split".
+
+Also, it is easier to have the same bindings on all installations, even 
+if misplaced.
+This way, the tutorials can assume that the users all have Mod+p for 
+restart.
+If you are experienced enough to change the default bindings, then you 
+are experienced enough to transpose the tutorials :-)
+
+As usual, ideas on improving the bindings are welcome.
+>
+>
+>     - Coming from Notion, I would have expected the default window layout
+>       to be tabbed. At first I thought that i3 didn't support a tabbed
+>       layout, because when I first started it (with killall notion; i3), I
+>       ended up with 10 unusably-narrow windows. I still don't know how to
+>       make tabbing the default - when I open windows on a new workspace,
+>       they always come up split. If I kill and restart i3, then everything
+>       comes up split (and uselessly narrow).
+>
+>
+> Does “workspace_layout tabbed” do what you want?
+Also, killing then starting i3 is not a common operation.
+You might prefer reload and/or restart as they preserve the layout.
+>
+>
+>     - I had to ask the IRC channel for the name of the key binding to turn
+>       a dialog box into a window - perhaps the documentation should be
+>       improved so new users can avoid this hurdle (e.g. under TERMINOLOGY
+>       in the man page, there could be an entry explaining that a "Floating
+>       Window" is something like a dialog box).
+>
+>
+> Can you please send a pull request for https://github.com/i3/i3 which 
+> adds an explanation where you think it makes sense?
+>
+>
+>     - Even after learning the "floating toggle" binding it sometimes
+>       becomes annoying or confusing to have to press it each time - for
+>       instance if I have to print a lot of stuff in Firefox, but I
+>       sometimes want to navigate to other windows when the print dialog is
+>       open. I also sometimes accidentally turn Firefox into a floating
+>       window when I'm doing this, and then I wonder where all the other
+>       windows went.... I would appreciate an option to have dialogs always
+>       come up as windows by default.
+>
+>
+> If the print dialog is clearly meant to be floating, Firefox should 
+> set the appropriate window hints. Since you describe you have to 
+> manually make it floating, apparently Firefox doesn’t. You should file 
+> a Firefox bug, but you can work around this with a for_window rule, 
+> see 
+> http://i3wm.org/docs/userguide.html#_arbitrary_commands_for_specific_windows_for_window
+i3 tries to be smart about which windows to keep floating.
+Basically, every window that specifically asks to be floating is kept 
+floating.
+
+If you want a drastic solution, add
+
+for_window [title=".*"] floating disable
+
+My config tends to add floating windows :
+
+for_window [title="Oz Browser"]       floating enable
+for_window [title="Super Hexagon"]    floating enable
+for_window [title="^SpaceChem$"]      floating enable
+for_window [class="Gnuplot"]          floating enable
+for_window [class="FLTK"]             floating enable
+#for_window [class="Graphviz"]         floating enable
+for_window [window_role="CallWindow"] floating enable
+
+>
+>     - "focus right" is not always the reverse of "focus left". For
+>       instance, if the rightmost tab is split horizontally, then one
+>       command will cycle through all the windows, but the other will get
+>       stuck cycling through the children of the tab which has been split.
+>       Same with "focus up" and "focus down" in the stacking layout, when a
+>       child is split vertically. It seems it would be cleaner to have
+>       these pairs be strict opposites.
+>
+>
+> There are several places where the directional commands don’t strictly 
+> operate on the tree and hence focus left/right are not always direct 
+> opposites. We believe that bottomline, this makes it easier for users. 
+> Even if it didn’t make it easier for users, changing it now would be 
+> very disruptive to existing users, so I don’t think we can do much 
+> about it.
+>
+> If you feel strongly, you might be able to implement your own logic 
+> using the IPC interface: http://i3wm.org/docs/ipc.html
+This works much like commant completion in zsh for example.
+The right arrow cycles only on the last line of completions.
+>
+>
+>     - I like that "i3-nagbar" is available to display error messages, but
+>       I don't know how to close it with my keyboard... seems like I have
+>       to use my mouse to close it. I'd prefer to avoid the mouse...!
+>
+>
+> It’s designed to nag you, so this is working as intended :).
+>
+>
+>
+>     Well, I hope this isn't too much stuff at once. I'm happy with i3 so
+>     even if you don't fix any of these problems, I'll still use it. As I
+>     mentioned above, I just wanted to report back since it's not always
+>     easy to anticipate how new users will experience a piece of software.
+>
+>     Thanks for all your hard work in developing i3!
+>
+>     Best wishes,
+>
+>     Frederik
+>
+>
+>
+>
+> -- 
+> Best regards,
+> Michael
+-- 
+Regards,
+Guillaume.
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151014/7b32d1b1/attachment.html>
+
+From taro.murao at gmail.com  Wed Oct 14 23:44:04 2015
+From: taro.murao at gmail.com (Taro Murao)
+Date: Wed, 14 Oct 2015 23:44:04 +0200
+Subject: [i3] Error: status_command process exited unexpectedly (exit 1)
+Message-ID: <CADuF0imbJmtgTLJQ0oyoFwoFEJuhsTLZy9wxYYOOdrK77nDyUQ@mail.gmail.com>
+
+Hello,
+
+    when I start i3status with i3 in bar {}, I get the error message: Error:
+    status_command process exited unexpectedly (exit 1). Can anyone help?
+
+    I followed the debugging instruction on
+http://i3wm.org/docs/debugging.html.
+    When the bar is displayed with
+
+    $ for c in $(i3-msg -t get_bar_config | python -c \ 'import
+    json,sys;print("\n".join(json.load(sys.stdin)))'); do \ (i3bar
+--bar_id=$c
+    >i3bar.$c.log 2>&1) & \ done;
+
+    The bar displays without error. I use Fish shell, Arch Linux and KDE.
+Below
+    is the log I obtained with "verbose yes", but the log probably contains
+no
+    error messages because I don't have the error when I restart i3bar this
+way.
+
+    i3status: trying to auto-detect output_format setting
+    i3status: auto-detected "i3bar"
+    [libi3] libi3/font.c Using Pango font monospace, size 8
+    [libi3] libi3/font.c X11 root window dictates 96.094581 DPI
+    [i3bar/src/xcb.c:1216] Calculated font height: 13
+    [i3bar/src/xcb.c:1342] Setting bar_fg = #FFFFFF as
+_NET_SYSTEM_TRAY_COLORS
+    [i3bar/src/xcb.c:985] received an xkb event
+    [i3bar/src/ipc.c:197] Got data!
+    [i3bar/src/ipc.c:63] Parsing outputs JSON...
+
+- Ignored:
+    [i3bar/src/ipc.c:65] Reconfiguring windows...
+    [i3bar/src/xcb.c:1488] Re-allocating statusline buffer,
+statusline_width =
+    0, root_screen->width_in_pixels = 1366
+    [i3bar/src/xcb.c:1583] Destroying window for output VIRTUAL1
+    [i3bar/src/xcb.c:1583] Destroying window for output VGA1
+    [i3bar/src/xcb.c:1583] Destroying window for output HDMI3
+    [i3bar/src/xcb.c:1583] Destroying window for output HDMI2
+    [i3bar/src/xcb.c:1583] Destroying window for output HDMI1
+    [i3bar/src/xcb.c:1583] Destroying window for output DP3
+    [i3bar/src/xcb.c:1583] Destroying window for output DP2
+    [i3bar/src/xcb.c:1583] Destroying window for output DP1
+    [i3bar/src/xcb.c:1588] Creating window for output LVDS1
+    [i3bar/src/xcb.c:1259] Initializing system tray functionality
+    [i3bar/src/xcb.c:1342] Setting bar_fg = #FFFFFF as
+_NET_SYSTEM_TRAY_COLORS
+    [i3bar/src/xcb.c:1793] Drawing bars...
+    [i3bar/src/xcb.c:1801] Output VIRTUAL1 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output VGA1 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output HDMI3 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output HDMI2 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output HDMI1 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output DP3 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output DP2 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output DP1 inactive, skipping...
+    [i3bar/src/ipc.c:197] Got data!
+    [i3bar/src/ipc.c:54] Got subscribe reply: {"success":true}
+    [i3bar/src/ipc.c:197] Got data!
+    [i3bar/src/ipc.c:43] Got workspace data!
+    [i3bar/src/workspaces.c:142] Got workspace canonical: 1, name: '1',
+    name_width: 7, glyphs: 1
+    [i3bar/src/workspaces.c:142] Got workspace canonical: 2, name: '2',
+    name_width: 7, glyphs: 1
+    [i3bar/src/xcb.c:1793] Drawing bars...
+    [i3bar/src/xcb.c:1801] Output VIRTUAL1 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output VGA1 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output HDMI3 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output HDMI2 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output HDMI1 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output DP3 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output DP2 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output DP1 inactive, skipping...
+    [i3bar/src/xcb.c:1825] Drawing button for WS 1 at x = 0, len = 7
+    [i3bar/src/xcb.c:1825] Drawing button for WS 2 at x = 18, len = 7
+    [i3bar/src/child.c:420] Detecting input type based on buffer
+*{"version":1}
+    [
+    *
+    [i3bar/src/xcb.c:1793] Drawing bars...
+    [i3bar/src/xcb.c:1801] Output VIRTUAL1 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output VGA1 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output HDMI3 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output HDMI2 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output HDMI1 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output DP3 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output DP2 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output DP1 inactive, skipping...
+    [i3bar/src/xcb.c:1825] Drawing button for WS 1 at x = 0, len = 7
+    [i3bar/src/xcb.c:1825] Drawing button for WS 2 at x = 18, len = 7
+    [i3bar/src/child.c:297] copying statusline_buffer to statusline_head
+    [i3bar/src/child.c:301] dumping statusline:
+    [i3bar/src/child.c:304] full_text =
+2001:4c50:d4d:1200:a288:b4ff:fe9d:be44
+    [i3bar/src/child.c:305] short_text = (null)
+    [i3bar/src/child.c:306] color = #00FF00
+    [i3bar/src/child.c:304] full_text = 148.6 GiB
+    [i3bar/src/child.c:305] short_text = (null)
+    [i3bar/src/child.c:306] color = (null)
+    [i3bar/src/child.c:304] full_text = DHCP: no
+    [i3bar/src/child.c:305] short_text = (null)
+    [i3bar/src/child.c:306] color = #FF0000
+    [i3bar/src/child.c:304] full_text = VPN: no
+    [i3bar/src/child.c:305] short_text = (null)
+    [i3bar/src/child.c:306] color = #FF0000
+    [i3bar/src/child.c:304] full_text = W: (066% at Tech_D0055186)
+192.168.0.1
+
+-- 
+Taro Murao | 村尾太郎
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151014/3d4e9af8/attachment.html>
+
+From michael at i3wm.org  Thu Oct 15 22:41:39 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 15 Oct 2015 22:41:39 +0200
+Subject: [i3] Error: status_command process exited unexpectedly (exit 1)
+In-Reply-To: <CADuF0imbJmtgTLJQ0oyoFwoFEJuhsTLZy9wxYYOOdrK77nDyUQ@mail.gmail.com>
+References: <CADuF0imbJmtgTLJQ0oyoFwoFEJuhsTLZy9wxYYOOdrK77nDyUQ@mail.gmail.com>
+Message-ID: <CANnVG6mkMTq6PPZnrdtunwcPqvncu4=53P7-ZSDe=h68MSCHFw@mail.gmail.com>
+
+Could you open an issue for this at https://github.com/i3/i3 please? We’d
+like to keep all bugs in one place.
+
+Also, please try changing your login shell from fish to bash before
+reporting, just so that you know whether fish is to blame here. We’ve
+certainly had trouble with fish before.
+
+On Wed, Oct 14, 2015 at 11:44 PM, Taro Murao <taro.murao at gmail.com> wrote:
+
+> Hello,
+>
+>     when I start i3status with i3 in bar {}, I get the error message:
+> Error:
+>     status_command process exited unexpectedly (exit 1). Can anyone help?
+>
+>     I followed the debugging instruction on
+> http://i3wm.org/docs/debugging.html.
+>     When the bar is displayed with
+>
+>     $ for c in $(i3-msg -t get_bar_config | python -c \ 'import
+>     json,sys;print("\n".join(json.load(sys.stdin)))'); do \ (i3bar
+> --bar_id=$c
+>     >i3bar.$c.log 2>&1) & \ done;
+>
+>     The bar displays without error. I use Fish shell, Arch Linux and KDE.
+> Below
+>     is the log I obtained with "verbose yes", but the log probably
+> contains no
+>     error messages because I don't have the error when I restart i3bar
+> this way.
+>
+>     i3status: trying to auto-detect output_format setting
+>     i3status: auto-detected "i3bar"
+>     [libi3] libi3/font.c Using Pango font monospace, size 8
+>     [libi3] libi3/font.c X11 root window dictates 96.094581 DPI
+>     [i3bar/src/xcb.c:1216] Calculated font height: 13
+>     [i3bar/src/xcb.c:1342] Setting bar_fg = #FFFFFF as
+> _NET_SYSTEM_TRAY_COLORS
+>     [i3bar/src/xcb.c:985] received an xkb event
+>     [i3bar/src/ipc.c:197] Got data!
+>     [i3bar/src/ipc.c:63] Parsing outputs JSON...
+>
+> - Ignored:
+>     [i3bar/src/ipc.c:65] Reconfiguring windows...
+>     [i3bar/src/xcb.c:1488] Re-allocating statusline buffer,
+> statusline_width =
+>     0, root_screen->width_in_pixels = 1366
+>     [i3bar/src/xcb.c:1583] Destroying window for output VIRTUAL1
+>     [i3bar/src/xcb.c:1583] Destroying window for output VGA1
+>     [i3bar/src/xcb.c:1583] Destroying window for output HDMI3
+>     [i3bar/src/xcb.c:1583] Destroying window for output HDMI2
+>     [i3bar/src/xcb.c:1583] Destroying window for output HDMI1
+>     [i3bar/src/xcb.c:1583] Destroying window for output DP3
+>     [i3bar/src/xcb.c:1583] Destroying window for output DP2
+>     [i3bar/src/xcb.c:1583] Destroying window for output DP1
+>     [i3bar/src/xcb.c:1588] Creating window for output LVDS1
+>     [i3bar/src/xcb.c:1259] Initializing system tray functionality
+>     [i3bar/src/xcb.c:1342] Setting bar_fg = #FFFFFF as
+> _NET_SYSTEM_TRAY_COLORS
+>     [i3bar/src/xcb.c:1793] Drawing bars...
+>     [i3bar/src/xcb.c:1801] Output VIRTUAL1 inactive, skipping...
+>     [i3bar/src/xcb.c:1801] Output VGA1 inactive, skipping...
+>     [i3bar/src/xcb.c:1801] Output HDMI3 inactive, skipping...
+>     [i3bar/src/xcb.c:1801] Output HDMI2 inactive, skipping...
+>     [i3bar/src/xcb.c:1801] Output HDMI1 inactive, skipping...
+>     [i3bar/src/xcb.c:1801] Output DP3 inactive, skipping...
+>     [i3bar/src/xcb.c:1801] Output DP2 inactive, skipping...
+>     [i3bar/src/xcb.c:1801] Output DP1 inactive, skipping...
+>     [i3bar/src/ipc.c:197] Got data!
+>     [i3bar/src/ipc.c:54] Got subscribe reply: {"success":true}
+>     [i3bar/src/ipc.c:197] Got data!
+>     [i3bar/src/ipc.c:43] Got workspace data!
+>     [i3bar/src/workspaces.c:142] Got workspace canonical: 1, name: '1',
+>     name_width: 7, glyphs: 1
+>     [i3bar/src/workspaces.c:142] Got workspace canonical: 2, name: '2',
+>     name_width: 7, glyphs: 1
+>     [i3bar/src/xcb.c:1793] Drawing bars...
+>     [i3bar/src/xcb.c:1801] Output VIRTUAL1 inactive, skipping...
+>     [i3bar/src/xcb.c:1801] Output VGA1 inactive, skipping...
+>     [i3bar/src/xcb.c:1801] Output HDMI3 inactive, skipping...
+>     [i3bar/src/xcb.c:1801] Output HDMI2 inactive, skipping...
+>     [i3bar/src/xcb.c:1801] Output HDMI1 inactive, skipping...
+>     [i3bar/src/xcb.c:1801] Output DP3 inactive, skipping...
+>     [i3bar/src/xcb.c:1801] Output DP2 inactive, skipping...
+>     [i3bar/src/xcb.c:1801] Output DP1 inactive, skipping...
+>     [i3bar/src/xcb.c:1825] Drawing button for WS 1 at x = 0, len = 7
+>     [i3bar/src/xcb.c:1825] Drawing button for WS 2 at x = 18, len = 7
+>     [i3bar/src/child.c:420] Detecting input type based on buffer
+> *{"version":1}
+>     [
+>     *
+>     [i3bar/src/xcb.c:1793] Drawing bars...
+>     [i3bar/src/xcb.c:1801] Output VIRTUAL1 inactive, skipping...
+>     [i3bar/src/xcb.c:1801] Output VGA1 inactive, skipping...
+>     [i3bar/src/xcb.c:1801] Output HDMI3 inactive, skipping...
+>     [i3bar/src/xcb.c:1801] Output HDMI2 inactive, skipping...
+>     [i3bar/src/xcb.c:1801] Output HDMI1 inactive, skipping...
+>     [i3bar/src/xcb.c:1801] Output DP3 inactive, skipping...
+>     [i3bar/src/xcb.c:1801] Output DP2 inactive, skipping...
+>     [i3bar/src/xcb.c:1801] Output DP1 inactive, skipping...
+>     [i3bar/src/xcb.c:1825] Drawing button for WS 1 at x = 0, len = 7
+>     [i3bar/src/xcb.c:1825] Drawing button for WS 2 at x = 18, len = 7
+>     [i3bar/src/child.c:297] copying statusline_buffer to statusline_head
+>     [i3bar/src/child.c:301] dumping statusline:
+>     [i3bar/src/child.c:304] full_text =
+> 2001:4c50:d4d:1200:a288:b4ff:fe9d:be44
+>     [i3bar/src/child.c:305] short_text = (null)
+>     [i3bar/src/child.c:306] color = #00FF00
+>     [i3bar/src/child.c:304] full_text = 148.6 GiB
+>     [i3bar/src/child.c:305] short_text = (null)
+>     [i3bar/src/child.c:306] color = (null)
+>     [i3bar/src/child.c:304] full_text = DHCP: no
+>     [i3bar/src/child.c:305] short_text = (null)
+>     [i3bar/src/child.c:306] color = #FF0000
+>     [i3bar/src/child.c:304] full_text = VPN: no
+>     [i3bar/src/child.c:305] short_text = (null)
+>     [i3bar/src/child.c:306] color = #FF0000
+>     [i3bar/src/child.c:304] full_text = W: (066% at Tech_D0055186)
+> 192.168.0.1
+>
+> --
+> Taro Murao | 村尾太郎
+>
+
+
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151015/5ff0c03b/attachment.html>
+
+From michael at i3wm.org  Fri Oct 16 20:08:28 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 16 Oct 2015 20:08:28 +0200
+Subject: [i3] i3 new user experiences summary
+In-Reply-To: <20151016093326.GA20345@ofb.net>
+References: <20151013230840.GA17629@ofb.net>
+ <CANnVG6=Txr66xcvMBqGC5hxmdSSRD+_1ufd0_j1teHg8LApT=A@mail.gmail.com>
+ <20151016093326.GA20345@ofb.net>
+Message-ID: <CANnVG6=uSrccvjNx_7+=ZejTx1CkmzrB_5LkKp1iSwPasYqVpA@mail.gmail.com>
+
+Thanks for taking the time to follow up. I hope my reply makes things more
+clear.
+
+On Fri, Oct 16, 2015 at 11:33 AM, <frederik at ofb.net> wrote:
+
+> Hi Michael,
+>
+> Thanks again for the great piece of software.
+>
+> I'm replying off-list because I didn't want to get into a public
+>
+
+I’m adding the list to CC again because I think the clarifications might be
+useful not only for you, but also for other people interested in the
+thread. I hope you don’t mind.
+
+
+> argument - at first I thought you were a troll, and then I saw that
+> you're the author of i3wm! :) Maybe I'm not realizing something about
+> my suggestions, but here is some more clarification in response to
+> your comments:
+>
+> (regarding i3-config-wizard)
+>
+> > The key _positions_ make some sense, the key mnemonics likely don’t.
+> > I don’t think this is a big problem, as users are very likely to
+> > change their config file anyway. Also, you’re free to use/not use
+> > the wizard as you see fit — for most users, using the wizard seems
+> > to be the best solution, which is why it’s started by default.
+>
+> If I recall, the wizard runs (or offers to run) by default, and
+> doesn't explain what it's doing, so new Dvorak users don't have a
+> warning of why the config file bindings look so strange - nor do they
+> have any indication that another option is available for obtaining a
+> default config. I don't know why you say it seems to be the best
+> solution for most users - obviously, most users are Qwerty users, for
+> whom the config wizard does almost nothing, it just queries the user
+> for a modifier key, IIRC.
+>
+
+It asks for the modifier key and creates the config file. Both of that
+could be achieved by using “sed 's/$mod Mod1/$mod Mod4/g' /etc/i3/config >
+~/.i3/config”, yes.
+
+The main point why the wizard starts by default is that the default config
+file has to use Mod1 (Alt by default) because there are computers which
+don’t have a physical Mod4 (Windows by default) key. We strongly want to
+encourage people to use Mod4 as a modifier, because that avoids clashes
+with key combinations that other software uses. At the same time, we cannot
+make the default config use Mod4, because then i3 would just not work on
+computers which lack the Windows key.
+
+
+>
+> I think we both understand the rationale of the config wizard: it
+> makes the navigation keys match up - but all the other keys become
+> wrong, which means that 95% (rough estimate) of the config file is
+>
+
+13 lines out of 69 lines in the i3 default config are bindings that use
+keys whose positions typically change depending on the layout — that’s not
+even 20% :).
+
+Regardless of the numbers, I think it boils down to personal preference: i3
+currently goes the route where the positions make some sense (navigation
+keys first and foremost, but also how the remaining keys are positioned).
+Some people might prefer the mnemonics to make sense. It’s impossible to
+please both crowds.
+
+
+> wrong. On my system, /etc/i3/config already has variable aliases for
+> the navigation keys, which seems like a much better solution (didn't
+> check whether this is part of the Arch package or your i3wm
+> distribution)
+>
+>     set $up l
+>     set $down k
+>     set $left j
+>     set $right semicolon
+>
+> Why would anyone not prefer to just have a copy of this file in ~/.i3/
+> to start out with?
+>
+> I'm not sure but it seems like Layus was also agreeing with me in his
+> reply: "Also, it is easier to have the same bindings on all
+> installations, even if misplaced. This way, the tutorials can assume
+> that the users all have Mod+p [sic] for restart."
+>
+> > Does “workspace_layout tabbed” do what you want?
+>
+> Yes, thank you!
+>
+> > Can you please send a pull request for https://github.com/i3/i3
+> > which adds an explanation where you think it makes sense?
+>
+> I'm not familiar with git but I'll give you a human-readable patch. In
+> the i3 man page, after:
+>
+>     Window
+>
+>         An X11 window, like the Firefox browser window or a terminal
+>         emulator.
+>
+> I would insert
+>
+>     Floating Window
+>
+>         A window which "floats" on top of other windows. This style is
+>         used by i3 to display X11 windows with type "dialog", such as
+>         the "Print" or "Open File" dialog boxes in many GUI
+>         applications. Use of floating windows can be fine-tuned with
+>         the for_window command (see HTML userguide).
+>
+> I think that should be more than enough - I originally became
+> frustrated when not finding the word "dialog" in the man page. I hope
+> the last sentence isn't out of place. If you want an actual patch for
+> that text, let me know.
+>
+
+https://github.com/i3/i3/commit/d56264e00185023d433a913ef468428d345a3c7a
+
+
+>
+> > > - Even after learning the "floating toggle" binding it sometimes
+> > >   becomes annoying or confusing to have to press it each time -
+> > >   for instance if I have to print a lot of stuff in Firefox, but I
+> > >   sometimes want to navigate to other windows when the print
+> > >   dialog is open. I also sometimes accidentally turn Firefox into
+> > >   a floating window when I'm doing this, and then I wonder where
+> > >   all the other windows went.... I would appreciate an option to
+> > >   have dialogs always come up as windows by default.
+>
+> > If the print dialog is clearly meant to be floating, Firefox should
+> > set the appropriate window hints. Since you describe you have to
+> > manually make it floating, apparently Firefox doesn’t. You should
+> > file a Firefox bug, but you can work around this with a for_window
+> > rule, see
+> >
+> http://i3wm.org/docs/userguide.html#_arbitrary_commands_for_specific_windows_for_window
+>
+> You misunderstood, sorry - I was intending to describe manually making
+> windows unfloating. I used the suggestion of Layus,
+>
+
+Ah, sorry, should have read more carefully.
+
+
+>
+> for_window [title=".*"] floating disable
+>
+> which works great. If I were you I might put a commented-out copy of
+> this line in the default config file, but then if I were you I
+>
+
+The default config file is intentionally kept rather short so as to not
+overwhelm users. I’m aware of software which goes the opposite route, e.g.
+the dovecot config file, which is a reference in which you can remove the
+comment sign in front of lots of examples. Again, this is just a matter of
+preference.
+
+While the use-case you have is certainly valid, consider that there are
+hundreds of equally valid use-cases. I don’t think listing them all in the
+default config file is a good idea.
+
+
+> wouldn't have written the floating window support, not to mention the
+> rest of the window manager. :)
+>
+> > > - "focus right" is not always the reverse of "focus left". For
+> > >   instance, if the rightmost tab is split horizontally, then one
+> > >   command will cycle through all the windows, but the other will
+> > >   get stuck cycling through the children of the tab which has been
+> > >   split. Same with "focus up" and "focus down" in the stacking
+> > >   layout, when a child is split vertically. It seems it would be
+> > >   cleaner to have these pairs be strict opposites.
+>
+> > There are several places where the directional commands don’t
+> > strictly operate on the tree and hence focus left/right are not
+> > always direct opposites. We believe that bottomline, this makes it
+> > easier for users. Even if it didn’t make it easier for users,
+> > changing it now would be very disruptive to existing users, so I
+> > don’t think we can do much about it. If you feel strongly, you might
+> > be able to implement your own logic using the IPC interface:
+> > http://i3wm.org/docs/ipc.html
+>
+> I'm not sure if you tried out my example. It seems quite weird that
+>
+
+I didn’t try it at the time, both because I’m usually very pressed on time,
+and also because I’m not good at understanding what people mean when they
+talk about window hierarchies. I tend to ask for specific commands to
+reproduce layouts.
+
+I take it you used <open window>, “layout tabbed”, <open window>, “splith”,
+<open window>.
+
+Note that in such a situation, you can use “focus parent” to get out of
+being stuck.
+
+
+> navigating the focus to the right gets stuck in a container only if
+> the container is (1) at the far right, and (2) has multiple child
+> windows. If the container is in the middle, or has only one child
+> window, then we can move out of it with 'focus right', but otherwise
+> we get stuck. Why? When you said "We believe that bottomline, this
+> makes it easier for users", I thought he's just trolling or being
+>
+
+To clarify, I didn’t mean to say “this specific behavior is easy for
+users”. What I was trying to convey is that the logic which the directional
+focus commands use is made such that many use-cases are intuitive (notably
+these which plenty of users reported as confusing). The price for that is
+that in some other situations, the logic is not ideal.
+
+
+> defensive or something. Also, the assertion that "changing it now
+> would be very disruptive to existing users" seems highly questionable
+> ("very"?). But maybe I'm just not smart enough to figure out the use
+>
+
+Empirically, we have enough users that almost every change which is not an
+addition of new behavior will affect existing users. Most of these changes
+affect edge cases, but changes to the focus command have a much bigger
+chance of being disruptive, just because every single i3 user uses the
+focus command. In addition, the focus command is not something about which
+you think before using it; it quickly goes into your muscle memory. I think
+it deserves special attention.
+
+i3’s take on backwards compatibility is rather strong. We try really hard
+to not break configuration files or existing workflows.
+
+
+> cases you have in mind. You don't have to waste your time explaining
+> it to me, I'm just communicating my reaction to you in case you wanted
+> to know.
+>
+> (regarding i3-nagbar)
+>
+> > It’s designed to nag you, so this is working as intended :).
+>
+> Are you really saying that your software is intended to be annoying?
+>
+
+In general, my software should be the opposite of annoying. In the case of
+i3-nagbar specifically, though, yes, it absolutely should be annoying. The
+reason depends on the occasion on which you get to see i3-nagbar:
+
+1. You have an error in your configfile: i3-nagbar nags you so that you
+don’t nag us. Historically, before we had i3-nagbar, a very frequent
+bugreport we’d get was caused by users who had a configuration file error
+and did not know about the logfile which i3 writes. Introducing i3-nagbar
+reduced these sorts of reports significantly.
+
+In case you were just editing your configfile and made a mistake, note that
+you don’t have to reach to your mouse: just fix your configfile, reload i3,
+i3-nagbar will be gone.
+
+2. Your config file is really old (i3 v3) and we’ve tried to migrate it to
+a v4 config file but couldn’t ensure that every directive you’ve had before
+could be successfully converted. This is a more debatable case. Our opinion
+is that you should be alerted prominently until your config file is in a
+working state again. Since you’ll see this message when you start up i3
+(not during your work), we think it’s better to spend a minute fixing the
+config file instead of realizing a feature doesn’t work while you are
+getting your actual work done.
+
+3. You use the default config file and pressed the keybinding to exit i3.
+People were occasionally hitting the keybinding by accident and were really
+disappointed by losing their entire session. Having i3-nagbar in here with
+its annoying confirmation fixes the problem — you have to be really unlucky
+or very sure to exit i3. If you dislike this behavior, please change your
+configfile to not use i3-nagbar.
+
+
+> You have so many enthusiastic users, I bet someone would be willing to
+> modify "move focus up" to focus the nagbar... but first you'd have to
+> solicit such a patch, of course...
+>
+> I noticed that in this FAQ entry
+>
+>
+> https://faq.i3wm.org/question/1977/why-is-the-i3-irc-channel-not-on-freenode/
+>
+> you said "By using a separate server, we separate the wheat from the
+> chaff: people who just join the channel easily to ask a troll question
+> don’t bother." - I guess this kind of device is potentially important
+> in all areas of a project, especially a free software project - so
+> perhaps some of i3's rough edges are serving the same purpose of
+> filtering out particular users, who would otherwise be a burden to
+> you. If that's necessary, so be it. Accepting that possibility, is
+> another reason why I replied off list to your comments.
+>
+> Take care,
+>
+> Frederick
+>
+
+
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151016/65825ad5/attachment-0001.html>
+
+From frederik at ofb.net  Mon Oct 19 19:07:30 2015
+From: frederik at ofb.net (frederik at ofb.net)
+Date: Mon, 19 Oct 2015 10:07:30 -0700
+Subject: [i3] i3 new user experiences summary
+In-Reply-To: <561DF7C1.8060103@gmail.com>
+References: <20151013230840.GA17629@ofb.net>
+ <CANnVG6=Txr66xcvMBqGC5hxmdSSRD+_1ufd0_j1teHg8LApT=A@mail.gmail.com>
+ <561DF7C1.8060103@gmail.com>
+Message-ID: <20151019170730.GA5061@ofb.net>
+
+Thank you, Layus, by the way, for your reply. I did end up using
+
+for_window [title=".*"] floating disable
+
+and appreciated the other information.
+
+Frederick
+
+From layus.on at gmail.com  Tue Oct 27 15:01:42 2015
+From: layus.on at gmail.com (Guillaume Maudoux (Layus))
+Date: Tue, 27 Oct 2015 15:01:42 +0100
+Subject: [i3] Debugging techniques.
+Message-ID: <562F83C6.2050204@gmail.com>
+
+Hello world!
+
+I am trying to enable debugging in i3, and I am confused by the number 
+of different options to do this.
+
+    command line          config option
+-- --------------------  -----------------------------
+1 i3 --shmlog-size=X shmlog on|off|toggle|<size>
+2  i3 -V ?
+3  i3 -d all             ?
+4  ? debuglog on|off|toggle
+
+So my question are:
+
+Which one is the recommended way ?
+Does `shmlog on` imply  `debuglog on` ?
+Does `-d all` imply `-V` ?
+What size do you recommend for the shmlog size ?
+May I assume that the config options cannot be used to debug issues 
+prior to loading the configuration file (nor issues while loading the 
+configuration file) ?
+Which of these options provide enough information for a bug report ? Is 
+-V enough ?
+
+It seems that shm logging is better in the sense that it does not 
+increase a log file size, but not as nice as it locks some memory space.
+What is the reason behind shm logging, instead of the usual logging to 
+file + logrotate ?
+
+Best regards,
+Layus.
+
+--
+PS: Some references
+http://i3wm.org/docs/debugging.html (--shmlog)
+http://i3wm.org/docs/debugging-release-version.html (-V, -d all)
+http://i3wm.org/docs/userguide.html#_enabling_debug_logging (debuglog, 
+shmlog)
+
+
+
+From michael at i3wm.org  Tue Oct 27 15:22:20 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 27 Oct 2015 07:22:20 -0700
+Subject: [i3] Debugging techniques.
+In-Reply-To: <562F83C6.2050204@gmail.com>
+References: <562F83C6.2050204@gmail.com>
+Message-ID: <CANnVG6=CU7KGxj9GYXEfCOC5TA7NTJL_CEH=Qsub_O_hktqZ9g@mail.gmail.com>
+
+On Tue, Oct 27, 2015 at 7:01 AM, Guillaume Maudoux (Layus) <
+layus.on at gmail.com> wrote:
+
+> Hello world!
+>
+> I am trying to enable debugging in i3, and I am confused by the number of
+> different options to do this.
+>
+>    command line          config option
+> -- --------------------  -----------------------------
+> 1 i3 --shmlog-size=X shmlog on|off|toggle|<size>
+>
+
+Note that “shmlog on|off|toggle|<size>” refers to a command, not a config
+directive.
+
+2  i3 -V ?
+>
+
+Errors (ELOG in the code) are always printed to stdout.
+Verbose log messages (LOG in the code) are printed to stdout if -V is
+enabled. Intended for curious users.
+Debug log messages (DLOG in the code) are printed if -d is enabled.
+
+
+> 3  i3 -d all             ?
+> 4  ? debuglog on|off|toggle
+>
+
+3 and 4 are the same setting. The “all” argument to -d is obsolete, but
+kept for backwards compatibility.
+
+See also https://github.com/i3/i3/issues/1823 for a related discussion.
+
+
+>
+> So my question are:
+>
+> Which one is the recommended way ?
+>
+
+The recommended way is to use an automatically built version from
+http://i3wm.org/docs/repositories.html (or i3-git if your package manager
+knows how to build automatically build software from git) because otherwise
+any of your findings will need to be confirmed again on a more recent
+version.
+
+These versions automatically enable debug logging to shared memory (they
+check whether they were built from a git version that is not a release
+version).
+
+
+> Does `shmlog on` imply  `debuglog on` ?
+>
+
+No.
+
+
+> Does `-d all` imply `-V` ?
+>
+
+No.
+
+
+> What size do you recommend for the shmlog size ?
+>
+
+25MB (arbitrarily chosen, but proven to be enough for all issues we’ve
+encountered so far).
+
+
+> May I assume that the config options cannot be used to debug issues prior
+> to loading the configuration file (nor issues while loading the
+> configuration file) ?
+>
+
+If you specify them as command-line parameters to i3, they will be active
+before loading the configuration file.
+
+
+> Which of these options provide enough information for a bug report ? Is -V
+> enough ?
+>
+
+Please use -V -d all, as per section 2 of
+http://i3wm.org/docs/debugging.html
+
+
+>
+> It seems that shm logging is better in the sense that it does not increase
+> a log file size, but not as nice as it locks some memory space.
+>
+
+Correct.
+
+
+> What is the reason behind shm logging, instead of the usual logging to
+> file + logrotate ?
+
+
+It’s easier for us to set aside a chunk of memory than to make sure that
+every user of i3 knows about having to logrotate a file away. Anecdotally,
+we’ve had a bunch of users whose hard drive (or RAM, in case of /tmp being
+on tmpfs) filled up because of an ever-growing i3 logfile.
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151027/27ff8b4a/attachment.html>
+
+From benjaminjkaiser at gmail.com  Fri Oct 30 12:38:45 2015
+From: benjaminjkaiser at gmail.com (Benjamin Kaiser)
+Date: Fri, 30 Oct 2015 11:38:45 +0000
+Subject: [i3] Weird keybinding issue after suspend
+Message-ID: <CAKV6X6wU04fFqnn=mQ_7V1PZJ9j0Lj60W0XT=pSKoQV_ym8DNA@mail.gmail.com>
+
+Hello,
+
+I've got a really weird issue that's been bothering me for perhaps the last
+6 months (before then it worked fine, perhaps could have been around when I
+switched to using my keyboard to suspend). Sometimes when I resume from
+suspend (I have i3lock launching at the same time as when I suspend) I can
+unlock my computer, but then no more keyboard events work. The keyboard
+remains active (lights on) and I can switch to a TTY, but none of the i3
+events fire. The only way I can fix it is to use the mouse (which is still
+working) to click on a workspace in the statusbar and then the keyboard
+responds again.
+
+ As mentioned above, it only happens sometimes, and as a fellow dev it
+really annoys me to no end when something is unreproducible. Things I have
+tried to reproduce are just suspending, then detaching my keyboard and
+attaching it again before resuming from suspend, but that doesn't trigger
+the issue. Just about the only common thing I can find is time (after being
+suspended for a long time, 12hours+, it seems to happen more frequently).
+
+One idea I've had is that because I use a keyboard shortcut to suspend
+(`bindsym --release $mod+Control+Shift+s exec "systemctl suspend; i3lock"`
+in my config, the --release was me weeks ago trying to rectify the issue,
+but it still persisted) i3wm is somehow holding onto the keyboard before
+flushing, but then post-suspend, i3lock takes the keyboards focus, i3wm
+holds onto an old un-flushed pointer to the keyboard (not sure if that is
+how that works) and doesn't refresh it upon i3lock giving up focus.
+>From searching around in the i3 source code, seeing the line in
+main.c:main() with the comment annotation
+    /* Grab the keyboard to get all input */
+    xcb_flush(conn);
+And that function also occuring in click.c:route_click() (i.e. when I click
+the workspaces in the status bar)
+    xcb_flush(conn);
+Maybe this is what is allowing the keyboard to work again. Is there some
+way this could be run upon i3lock giving up focus / i3wm resuming focus?
+
+Any help in solving this would be much appreciated!
+
+Here is some information about my system:
+Mouse: Razer Naga, (one with 12 buttons on side)
+Keyboard: ducky shine 3 with mini usb cable for connection (issue has
+occurred on my laptops internal keyboard also though)
+Distro: Arch Linux
+i3 Version: 4.11
+Kernel version: 4.2.3-1-ARCH
+
+Cheers,
+Ben Kaiser
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151030/7f50ed3d/attachment.html>
+
+From layus.on at gmail.com  Fri Oct 30 22:56:52 2015
+From: layus.on at gmail.com (Layus)
+Date: Fri, 30 Oct 2015 22:56:52 +0100
+Subject: [i3] Debugging techniques.
+In-Reply-To: <CANnVG6=CU7KGxj9GYXEfCOC5TA7NTJL_CEH=Qsub_O_hktqZ9g@mail.gmail.com>
+References: <562F83C6.2050204@gmail.com>
+ <CANnVG6=CU7KGxj9GYXEfCOC5TA7NTJL_CEH=Qsub_O_hktqZ9g@mail.gmail.com>
+Message-ID: <5633E7A4.1010201@gmail.com>
+
+Thank you for the detailed answer.
+
+I think I have sorted it all out.
+
+My use case is an i3 session started with some session manager like gdm 
+or kdm (or any other *dm).
+In that setup, the users have little access to the arguments passed to i3.
+
+Let's assume the system uses an i3 build from git at master.
+It should be sufficient to start i3 as "i3 --shmlog-size=25000000 -V -d 
+all" to get extended logs including the starting phase, and suitable for 
+bug reports.
+
+If users are annoyed by the memory usage, they can add 'exec 
+--no-startup-id i3-msg shmlog no' to their config.
+
+This way, I enable users to
+1) access complete logs suitable for debug without needing root access
+2) disable i3 logging if they do not want it
+
+If it is not an up-to-date git build, they can still use the logs it for 
+their own debug purposes.
+
+Do you think the idea of always starting i3 with the 
+"--shmlog-size=25000000 -V -d all" parameters makes sense ?
+
+-- 
+Regards,
+Layus
+
+On 27/10/15 15:22, Michael Stapelberg wrote:
+>
+>
+> On Tue, Oct 27, 2015 at 7:01 AM, Guillaume Maudoux (Layus) 
+> <layus.on at gmail.com> wrote:
+>
+>     Hello world!
+>
+>     I am trying to enable debugging in i3, and I am confused by the
+>     number of different options to do this.
+>
+>        command line          config option
+>     -- --------------------  -----------------------------
+>     1 i3 --shmlog-size=X shmlog on|off|toggle|<size>
+>
+>
+> Note that “shmlog on|off|toggle|<size>” refers to a command, not a 
+> config directive.
+>
+>     2 i3 -V ?
+>
+>
+> Errors (ELOG in the code) are always printed to stdout.
+> Verbose log messages (LOG in the code) are printed to stdout if -V is 
+> enabled. Intended for curious users.
+> Debug log messages (DLOG in the code) are printed if -d is enabled.
+>
+>     3 i3 -d all             ?
+>     4  ? debuglog on|off|toggle
+>
+>
+> 3 and 4 are the same setting. The “all” argument to -d is obsolete, 
+> but kept for backwards compatibility.
+>
+> See also https://github.com/i3/i3/issues/1823 for a related discussion.
+>
+>
+>     So my question are:
+>
+>     Which one is the recommended way ?
+>
+>
+> The recommended way is to use an automatically built version from 
+> http://i3wm.org/docs/repositories.html (or i3-git if your package 
+> manager knows how to build automatically build software from git) 
+> because otherwise any of your findings will need to be confirmed again 
+> on a more recent version.
+>
+> These versions automatically enable debug logging to shared memory 
+> (they check whether they were built from a git version that is not a 
+> release version).
+>
+>     Does `shmlog on` imply  `debuglog on` ?
+>
+>
+> No.
+>
+>     Does `-d all` imply `-V` ?
+>
+>
+> No.
+>
+>     What size do you recommend for the shmlog size ?
+>
+>
+> 25MB (arbitrarily chosen, but proven to be enough for all issues we’ve 
+> encountered so far).
+>
+>     May I assume that the config options cannot be used to debug
+>     issues prior to loading the configuration file (nor issues while
+>     loading the configuration file) ?
+>
+>
+> If you specify them as command-line parameters to i3, they will be 
+> active before loading the configuration file.
+>
+>     Which of these options provide enough information for a bug report
+>     ? Is -V enough ?
+>
+>
+> Please use -V -d all, as per section 2 of 
+> http://i3wm.org/docs/debugging.html
+>
+>
+>     It seems that shm logging is better in the sense that it does not
+>     increase a log file size, but not as nice as it locks some memory
+>     space.
+>
+>
+> Correct.
+>
+>     What is the reason behind shm logging, instead of the usual
+>     logging to file + logrotate ?
+>
+>
+> It’s easier for us to set aside a chunk of memory than to make sure 
+> that every user of i3 knows about having to logrotate a file away. 
+> Anecdotally, we’ve had a bunch of users whose hard drive (or RAM, in 
+> case of /tmp being on tmpfs) filled up because of an ever-growing i3 
+> logfile.
+>
+> -- 
+> Best regards,
+> Michael
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151030/62d7c040/attachment.html>
+

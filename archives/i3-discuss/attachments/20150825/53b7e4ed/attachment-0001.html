@@ -1,0 +1,46 @@
+<tt>
+&lt;div&nbsp;dir=&quot;ltr&quot;&gt;Excellent,&nbsp;thanks!&nbsp;I&nbsp;can&nbsp;manage&nbsp;to&nbsp;live&nbsp;with&nbsp;it&nbsp;until&nbsp;this&nbsp;hits&nbsp;a&nbsp;release.&nbsp;:)&lt;/div&gt;&lt;br&gt;&lt;div&nbsp;class=&quot;gmail_quote&quot;&gt;&lt;div&nbsp;dir=&quot;ltr&quot;&gt;On&nbsp;Mon,&nbsp;Aug&nbsp;24,&nbsp;2015&nbsp;at&nbsp;10:29&nbsp;PM&nbsp;Michael&nbsp;Stapelberg&nbsp;&lt;&lt;a&nbsp;href=&quot;mailto:michael@i3wm.org&quot;&gt;michael@i3wm.org&lt;/a&gt;&gt;&nbsp;wrote:&lt;br&gt;&lt;/div&gt;&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;See&nbsp;&lt;a&nbsp;href=&quot;https://github.com/i3/i3/pull/1638&quot;&nbsp;rel=&quot;noreferrer&quot;&nbsp;target=&quot;_blank&quot;&gt;https://github.com/i3/i3/pull/1638&lt;/a&gt;&nbsp;(not&nbsp;yet&nbsp;in&nbsp;any&nbsp;released&nbsp;version).&lt;br&gt;<br>
+&lt;br&gt;<br>
+Refer&nbsp;to&nbsp;&lt;a&nbsp;href=&quot;http://i3wm.org/docs/repositories.html&quot;&nbsp;rel=&quot;noreferrer&quot;&nbsp;target=&quot;_blank&quot;&gt;http://i3wm.org/docs/repositories.html&lt;/a&gt;&nbsp;for&nbsp;automatically&lt;br&gt;<br>
+built&nbsp;packages&nbsp;from&nbsp;git.&lt;br&gt;<br>
+&lt;br&gt;<br>
+On&nbsp;Mon,&nbsp;Aug&nbsp;24,&nbsp;2015&nbsp;at&nbsp;12:42&nbsp;PM,&nbsp;Bart&nbsp;Samwel&nbsp;&lt;&lt;a&nbsp;href=&quot;mailto:bsamwel@gmail.com&quot;&nbsp;target=&quot;_blank&quot;&gt;bsamwel@gmail.com&lt;/a&gt;&gt;&nbsp;wrote:&lt;br&gt;<br>
+&gt;&nbsp;I&nbsp;have&nbsp;a&nbsp;multi-monitor&nbsp;setup&nbsp;where&nbsp;I&nbsp;want&nbsp;to&nbsp;use&nbsp;*either*&nbsp;my&nbsp;laptop&nbsp;screen&lt;br&gt;<br>
+&gt;&nbsp;*or*&nbsp;my&nbsp;external&nbsp;monitor.&nbsp;I&#39;ve&nbsp;set&nbsp;up&nbsp;an&nbsp;&quot;autoxrandr&quot;&nbsp;script&nbsp;like&nbsp;this,&nbsp;to&lt;br&gt;<br>
+&gt;&nbsp;enable&nbsp;an&nbsp;external&nbsp;monitor&nbsp;if&nbsp;it&#39;s&nbsp;connected,&nbsp;and&nbsp;to&nbsp;enable&nbsp;the&nbsp;laptop&nbsp;panel&lt;br&gt;<br>
+&gt;&nbsp;otherwise:&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&nbsp;#!/bin/bash&lt;br&gt;<br>
+&gt;&nbsp;for&nbsp;output&nbsp;in&nbsp;$(xrandr&nbsp;|&nbsp;grep&nbsp;&#39;\Wconnected&#39;&nbsp;|&nbsp;awk&nbsp;&#39;{&nbsp;print&nbsp;$1&nbsp;}&#39;);&nbsp;do&lt;br&gt;<br>
+&gt; &nbsp; &nbsp; if&nbsp;[[&nbsp;!&nbsp;$output&nbsp;=~&nbsp;^LVDS.*$&nbsp;]];&nbsp;then&lt;br&gt;<br>
+&gt; &nbsp; &nbsp; &nbsp; &nbsp;other=$output&lt;br&gt;<br>
+&gt; &nbsp; &nbsp; fi&lt;br&gt;<br>
+&gt;&nbsp;done&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&nbsp;if&nbsp;[&nbsp;&quot;$other&quot;&nbsp;!=&nbsp;&quot;&quot;&nbsp;]&nbsp;;&nbsp;then&lt;br&gt;<br>
+&gt; &nbsp; xrandr&nbsp;--output&nbsp;$other&nbsp;--auto&nbsp;--primary&nbsp;--output&nbsp;LVDS1&nbsp;--off&lt;br&gt;<br>
+&gt;&nbsp;else&lt;br&gt;<br>
+&gt; &nbsp; xrandr&nbsp;--output&nbsp;LVDS1&nbsp;--auto&nbsp;--primary&lt;br&gt;<br>
+&gt;&nbsp;fi&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&nbsp;The&nbsp;trouble&nbsp;is&nbsp;that&nbsp;when&nbsp;the&nbsp;laptop&nbsp;is&nbsp;connected&nbsp;to&nbsp;an&nbsp;external&nbsp;screen,&nbsp;and&lt;br&gt;<br>
+&gt;&nbsp;when&nbsp;I&nbsp;turn&nbsp;the&nbsp;monitor&nbsp;off,&nbsp;it&nbsp;seems&nbsp;that&nbsp;i3&nbsp;exits.&nbsp;What&nbsp;I&nbsp;want&nbsp;instead&nbsp;is&lt;br&gt;<br>
+&gt;&nbsp;that&nbsp;it&nbsp;either&nbsp;keeps&nbsp;running&nbsp;so&nbsp;that&nbsp;I&nbsp;can&nbsp;switch&nbsp;the&nbsp;laptop&nbsp;screen&nbsp;on,&nbsp;or&lt;br&gt;<br>
+&gt;&nbsp;that&nbsp;I&nbsp;can&nbsp;configure&nbsp;it&nbsp;to&nbsp;automatically&nbsp;turn&nbsp;the&nbsp;laptop&nbsp;screen&nbsp;on.&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&nbsp;I&nbsp;have&nbsp;no&nbsp;clue&nbsp;where&nbsp;to&nbsp;debug&nbsp;this.&nbsp;This&nbsp;is&nbsp;on&nbsp;Ubuntu&nbsp;14.04&nbsp;and&nbsp;using&lt;br&gt;<br>
+&gt;&nbsp;lightdm.&nbsp;The&nbsp;lightdm&nbsp;logs&nbsp;say&nbsp;that&nbsp;the&nbsp;session&nbsp;(i3)&nbsp;exits&nbsp;and&nbsp;that&#39;s&nbsp;why&nbsp;its&lt;br&gt;<br>
+&gt;&nbsp;stopping&nbsp;the&nbsp;session.&nbsp;I&nbsp;don&#39;t&nbsp;think&nbsp;I&nbsp;can&nbsp;get&nbsp;i3&nbsp;logs&nbsp;using&nbsp;the&nbsp;instructions&lt;br&gt;<br>
+&gt;&nbsp;at&nbsp;&lt;a&nbsp;href=&quot;http://i3wm.org/docs/debugging.html&quot;&nbsp;rel=&quot;noreferrer&quot;&nbsp;target=&quot;_blank&quot;&gt;http://i3wm.org/docs/debugging.html&lt;/a&gt;&nbsp;because&nbsp;both&nbsp;i3&nbsp;and&nbsp;the&nbsp;X&nbsp;session&nbsp;are&lt;br&gt;<br>
+&gt;&nbsp;dead&nbsp;after&nbsp;this&nbsp;happens.&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&nbsp;Any&nbsp;idea&nbsp;what&nbsp;I&nbsp;could&nbsp;try&nbsp;here?&lt;br&gt;<br>
+&lt;br&gt;<br>
+&lt;br&gt;<br>
+&lt;br&gt;<br>
+--&lt;br&gt;<br>
+Best&nbsp;regards,&lt;br&gt;<br>
+Michael&lt;br&gt;<br>
+&lt;/blockquote&gt;&lt;/div&gt;<br>
+
+</tt>

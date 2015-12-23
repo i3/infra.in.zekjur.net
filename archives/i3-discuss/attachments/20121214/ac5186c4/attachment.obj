@@ -1,0 +1,34 @@
+From 348e080b72c3896d49bcda078802a8ea3428a9b6 Mon Sep 17 00:00:00 2001
+From: Axel Wagner <mail@merovius.de>
+Date: Fri, 14 Dec 2012 01:27:34 +0100
+Subject: [PATCH] i3-dump-log: Correct comment to reflect truth
+
+---
+ i3-dump-log/main.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/i3-dump-log/main.c b/i3-dump-log/main.c
+index 48465c7..4a11d21 100644
+--- a/i3-dump-log/main.c
++++ b/i3-dump-log/main.c
+@@ -121,7 +121,7 @@ int main(int argc, char *argv[]) {
+ 
+     struct stat statbuf;
+ 
+-    /* NB: While we must never read, we need O_RDWR for the pthread condvar. */
++    /* NB: While we must never write, we need O_RDWR for the pthread condvar. */
+     int logbuffer_shm = shm_open(shmname, O_RDWR, 0);
+     if (logbuffer_shm == -1)
+         err(EXIT_FAILURE, "Could not shm_open SHM segment for the i3 log (%s)", shmname);
+@@ -129,7 +129,7 @@ int main(int argc, char *argv[]) {
+     if (fstat(logbuffer_shm, &statbuf) != 0)
+         err(EXIT_FAILURE, "stat(%s)", shmname);
+ 
+-    /* NB: While we must never read, we need O_RDWR for the pthread condvar. */
++    /* NB: While we must never write, we need PROT_WRITE for the pthread condvar. */
+     logbuffer = mmap(NULL, statbuf.st_size, PROT_READ | PROT_WRITE, MAP_SHARED, logbuffer_shm, 0);
+     if (logbuffer == MAP_FAILED)
+         err(EXIT_FAILURE, "Could not mmap SHM segment for the i3 log");
+-- 
+1.7.10.4
+

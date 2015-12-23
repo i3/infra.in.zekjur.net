@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Starting applications on specific workspaces
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Starting%20applications%20on%20specific%20workspaces&In-Reply-To=%3CCAB-gU_tkGLRZMYd%2BHHwdnF0MpghoZtjT0f_jdqJOi97oOj_zyQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000483.html">
+   <LINK REL="Next"  HREF="000470.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Starting applications on specific workspaces</H1>
+    <B>Colin Kincaid Williams</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Starting%20applications%20on%20specific%20workspaces&In-Reply-To=%3CCAB-gU_tkGLRZMYd%2BHHwdnF0MpghoZtjT0f_jdqJOi97oOj_zyQ%40mail.gmail.com%3E"
+       TITLE="[i3] Starting applications on specific workspaces">discord at uw.edu
+       </A><BR>
+    <I>Sun Feb  5 22:59:22 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000483.html">[i3] first week impressions of using i3
+</A></li>
+        <LI>Next message: <A HREF="000470.html">[i3] Starting applications on specific workspaces
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#469">[ date ]</a>
+              <a href="thread.html#469">[ thread ]</a>
+              <a href="subject.html#469">[ subject ]</a>
+              <a href="author.html#469">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I'm trying to get a certain behavior out of I3. As an example, lets say I'd
+like to have a firefox browser window on workspace 3, a chromium browser
+window on workspace 9 , etc.  * However, I do not want to launch another
+firefox again and have it also appear on workspace 3 *.
+
+For some reason, each firefox has the same WM_CLASS class / instance fields
+on my debian system. Too bad they didn't append natural numbers to each
+instance: firefox1 for the first, firefox2 for the second , etc. This is
+not a problem with some of the terminal emulator's  e.g. gnome-terminal
+lets you set the WM_NAME window name, it remains static,  and we can assign
+to that. I tried using exec xprop -name ..... -set name .....  to set the
+window name for the browsers from the config file, but i get no such
+window. I believe this is because the window name changes, as mentioned in
+the user guide.
+
+ I can think of two ways to get my desired behavior to work. One  would be
+a on_workspace command which I would add to the config file and its
+signature would be &quot;on_workspace 9 exec chromium&quot; or something similar,
+with the expected behavior launching a chromium browser on workspace 9.
+Another way would be to change the exec command to pass back the window id,
+however I'm not sure this is possible, and it doesn't seem to go with the
+design plan for i3.  Can anybody suggest a way to achieve the behavior I'm
+looking for, or give me a pointer on how to implement the feature myself?
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120205/43c5cac8/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120205/43c5cac8/attachment.html</A>&gt;
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000483.html">[i3] first week impressions of using i3
+</A></li>
+	<LI>Next message: <A HREF="000470.html">[i3] Starting applications on specific workspaces
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#469">[ date ]</a>
+              <a href="thread.html#469">[ thread ]</a>
+              <a href="subject.html#469">[ subject ]</a>
+              <a href="author.html#469">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

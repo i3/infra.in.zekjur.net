@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Nested key bindings?
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Nested%20key%20bindings%3F&In-Reply-To=%3CAANLkTikt_%3DiFfwS_aiQXmOdNb9Cg2qK1%3DwbkMhgSXvGK%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000178.html">
+   <LINK REL="Next"  HREF="000180.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Nested key bindings?</H1>
+    <B>ari edelkind</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Nested%20key%20bindings%3F&In-Reply-To=%3CAANLkTikt_%3DiFfwS_aiQXmOdNb9Cg2qK1%3DwbkMhgSXvGK%40mail.gmail.com%3E"
+       TITLE="[i3] Nested key bindings?">edelkind+i3-discuss at gmail.com
+       </A><BR>
+    <I>Tue Jan 25 20:00:58 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000178.html">[i3] Nested key bindings?
+</A></li>
+        <LI>Next message: <A HREF="000180.html">[i3] Nested key bindings?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#179">[ date ]</a>
+              <a href="thread.html#179">[ thread ]</a>
+              <a href="subject.html#179">[ subject ]</a>
+              <a href="author.html#179">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;<i> The 'mode' binding is causing me problems... I can't seem to get the mode back to default. &#160;If I can make this work, I'll be a happy dood.
+</I>
+I'm not currently running i3, but you could try something like the
+following, using only i3's native commands:
+
+mode &quot;wsmode&quot; {
+    bind 10 exec sh -c &quot;i3-msg 1; i3-msg 'mode default'&quot;
+    bind 11 exec sh -c &quot;i3-msg 2; i3-msg 'mode default'&quot;
+    bind 12 exec sh -c &quot;i3-msg 3; i3-msg 'mode default'&quot;
+    bind 36 mode default
+}
+
+bindsym Mod4+w mode wsmode
+
+I seem to remember i3 having problems with executing an IPC-triggered
+mode switch, but that was a while ago, and it's possible that the
+issue has since been rectified (or that i'm simply smoking crack, and
+my memory is faulty).  Either way, with this method, you won't get a
+timeout unless you're pretty creative, and you won't get a
+default-mode-switch-on-unknown-key-press without a lot of superfluous
+key bindings.  Still, if you try it, let us know if it functions as
+expected.
+
+ari
+</PRE>
+
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000178.html">[i3] Nested key bindings?
+</A></li>
+	<LI>Next message: <A HREF="000180.html">[i3] Nested key bindings?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#179">[ date ]</a>
+              <a href="thread.html#179">[ thread ]</a>
+              <a href="subject.html#179">[ subject ]</a>
+              <a href="author.html#179">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

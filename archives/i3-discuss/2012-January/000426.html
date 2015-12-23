@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Java applications focus bug
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Java%20applications%20focus%20bug&In-Reply-To=%3C4F1FD0F8.1%40in.tum.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000425.html">
+   <LINK REL="Next"  HREF="000427.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Java applications focus bug</H1>
+    <B>Jonas Jelten</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Java%20applications%20focus%20bug&In-Reply-To=%3C4F1FD0F8.1%40in.tum.de%3E"
+       TITLE="[i3] Java applications focus bug">jelten at in.tum.de
+       </A><BR>
+    <I>Wed Jan 25 10:52:56 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000425.html">[i3] multiple x sessions
+</A></li>
+        <LI>Next message: <A HREF="000427.html">[i3] Java applications focus bug
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#426">[ date ]</a>
+              <a href="thread.html#426">[ thread ]</a>
+              <a href="subject.html#426">[ subject ]</a>
+              <a href="author.html#426">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Hi i3 users!
+
+
+I have encountered an annoying issue in i3:
+
+Java Textareas do not regain focus if they get blurred.
+
+Maybe it's a problem of the Java JVM, but as this bug is nonexistent
+under lxde or gnome,
+i think it could have to do with my i3.
+
+
+Please run this Java code and let me know if you have the same problem:
+
+==========================================
+
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
+/**
+ * Demonstrates the Java Textarea focus bug under i3
+ * @author Jonas Jelten
+ */
+public class WindowFocusBug {
+
+    public static void main(String[] args) {
+        WindowFocusBug b = new WindowFocusBug();
+    }
+
+    public WindowFocusBug() {
+        JFrame f = new JFrame(&quot;i3 java window focus bug test&quot;);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JTextArea a = new JTextArea(&quot;Welcome to the nasty Java window
+focus bug, this test application is by Jonas Jelten\r\n\r\n&quot;
+                + &quot;The bug occurs in the following applications, and it
+is extremely annoying:\r\n&quot;
+                + &quot;*  Minecraft\r\n* Netbeans\r\n* all other Java
+applications&quot;
+                + &quot;\r\n\r\nTry to reproduce it by changing something in
+this JTestArea, then switch to another window&quot;
+                + &quot;like Firefox or whatever, come back to this window
+and click in this text area again, and try to change something.&quot;
+                + &quot;\r\nI am not able to regain any focus to the textarea
+again, it seems to have turned read only.&quot;
+                + &quot;\r\n\r\n&quot;
+                + &quot;I have no idea whether this is i3's fault, or java's.
+please test it and figure it out.&quot;);
+        a.setLineWrap(true);
+        a.setWrapStyleWord(true);
+        JScrollPane p = new JScrollPane(a);
+       
+       
+        f.setSize(500, 400);
+        f.add(p);
+        f.pack();
+        f.setLocationRelativeTo(null);
+        f.setVisible(true);
+        f.requestFocus();
+
+
+    }
+}
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - <A HREF="http://enigmail.mozdev.org/">http://enigmail.mozdev.org/</A>
+
+iQIcBAEBAgAGBQJPH9D4AAoJEMCMsfQ1RG1iSWkQAKLJhUnY/J3t2osEnLMLjiu8
+uAtQrRxgKOEdCeZmK3CNv74i0S7xUWGWRkfmrXbwI1L5uM08SUPRQ7JYS8DSCyaf
+CoGCIsFCweLqHnhzn99cLDJXso59nM34vksCUgnfHhzmYqmtV2d1jh7RNkZbiyQc
+VClbfzghES4oU+OM1wqEXh5otiwHZ0EWlzQfUEzUoADDhzXwxp8TagmNjl4SuBSG
+1DZaJd+kJQSsiBKVMzgbgSBNOy8m3m6CkOUJfBHoWnUhZKTbWULNCOsS92LxMv9p
+wWm5bF5cgn38g7jZggs7ki7Ua67/HbvmJ8/aH4zFF0OL4buH13ihimP4xV5+hCvC
+ybN/gpLn7g/+r1TzJQVZI7CplEqIvKfNiUSgnCD5/p/r5BKZ+40GARG25zkMXMEO
+9/Kmz/Xa4gOgPJLibhFxIoGpTkc6wGrMMgJyMArj2RHsujEmJP+OJfNDIFru2T14
+CG46Teh4qznWcwfDfuBXeGM2R1UM3kgupRedCsZA4jP3EE7wfO50XwTM3aQ7jCBc
+JyHYr/PhSESMMkj2BdVl+da5uYwHL6sNsYEdDzplcoiEVEOetrB+qmTsUhdT6pEQ
+CG79iQH/GceeHe3vyvh/r96MoOBQt1HPKonxXI7cKTjTjHBTH6mX1dT9V7pwMtAm
+jEWQJks1Qc+t5kXDCHBg
+=xGQM
+-----END PGP SIGNATURE-----
+
+</PRE>
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000425.html">[i3] multiple x sessions
+</A></li>
+	<LI>Next message: <A HREF="000427.html">[i3] Java applications focus bug
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#426">[ date ]</a>
+              <a href="thread.html#426">[ thread ]</a>
+              <a href="subject.html#426">[ subject ]</a>
+              <a href="author.html#426">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

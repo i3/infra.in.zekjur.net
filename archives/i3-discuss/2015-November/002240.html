@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] ssh askpass window too small + &quot;sticks around&quot;
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20ssh%20askpass%20window%20too%20small%20%2B%20%22sticks%20around%22&In-Reply-To=%3C20151103164657.70803852%40dieter-m6800%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002239.html">
+   <LINK REL="Next"  HREF="002241.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] ssh askpass window too small + &quot;sticks around&quot;</H1>
+    <B>Dieter Plaetinck</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20ssh%20askpass%20window%20too%20small%20%2B%20%22sticks%20around%22&In-Reply-To=%3C20151103164657.70803852%40dieter-m6800%3E"
+       TITLE="[i3] ssh askpass window too small + &quot;sticks around&quot;">dieter at plaetinck.be
+       </A><BR>
+    <I>Tue Nov  3 22:46:57 CET 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002239.html">[i3] ssh askpass window too small + &quot;sticks around&quot;
+</A></li>
+        <LI>Next message: <A HREF="002241.html">[i3] ssh askpass window too small + &quot;sticks around&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2240">[ date ]</a>
+              <a href="thread.html#2240">[ thread ]</a>
+              <a href="subject.html#2240">[ subject ]</a>
+              <a href="author.html#2240">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I can confirm the first problem is gone (the window has the correct size) with 4.10.4
+However the ghosting problem still exists, though now it also has the correct size and a black background instead of grey like before.
+see <A HREF="http://i.imgur.com/2uF25R8.png">http://i.imgur.com/2uF25R8.png</A>
+
+still want me to do a bisect? for all versions i would just run make clean &amp;&amp; make &amp;&amp; restart x using the new i3 binary right? anything else needed?
+
+Dieter
+
+On Tue, 3 Nov 2015 16:05:31 -0500
+Ingo Bürk &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">admin at airblader.de</A>&gt; wrote:
+
+&gt;<i> Hi Dieter,
+</I>&gt;<i> 
+</I>&gt;<i> can you do the following?
+</I>&gt;<i> 
+</I>&gt;<i> 1) Downgrade to i3 4.10.4 and see if it fixes the problem. If so, please
+</I>&gt;<i> run a git bisect to figure out which commit broke it. If 4.10.4 has the
+</I>&gt;<i> same problem, try downgrading askpass or report a bug there.
+</I>&gt;<i> 2) Provide a complete i3 log file where you started it. See the
+</I>&gt;<i> debugging docs on the i3 website for information. Also provide the
+</I>&gt;<i> output of &quot;xprop&quot; and &quot;xwininfo -all&quot; when clicking on the opened
+</I>&gt;<i> askpass window.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Ingo
+</I>&gt;<i> 
+</I>&gt;<i> On 11/03/2015 03:32 PM, Dieter Plaetinck wrote:
+</I>&gt;<i> &gt; hello everyone,
+</I>&gt;<i> &gt; long time no see! i've been a long time i3 user but only since a recent upgrade i've started having issues with 
+</I>&gt;<i> &gt; ssh-askpass.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; to be specific, in my .xinitrc I have:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; i3 -d all &gt;&gt; ~/i3-out 2&gt;&gt; ~/i3-err &amp;
+</I>&gt;<i> &gt; waitpid=$!
+</I>&gt;<i> &gt; ssh-add ~/.ssh/id_rsa_dieter-ws-a7n8x-arch &lt; /dev/null
+</I>&gt;<i> &gt; (.. some more stuff)
+</I>&gt;<i> &gt; wait $waitpid
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; i posted my i3 config to <A HREF="https://gist.github.com/Dieterbe/d5870b230369818d2d47">https://gist.github.com/Dieterbe/d5870b230369818d2d47</A> (it's pretty much default, with a few extra binds and a different bar)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; the ssh-add spawns the x11-ssh-askpass program and since recently i've been seeing these two problems:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; screenshots of both issues @ <A HREF="http://imgur.com/a/TbNn1">http://imgur.com/a/TbNn1</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; 1) the window is way too small. it used to be just the right size for the popup.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; 2) after entering the password and hitting enter, a &quot;ghost&quot; of the window stays stuck in all of my i3 workspaces.
+</I>&gt;<i> &gt; those workspaces that have windows in them will have the windows cover it, but otherwise if i go to say workspace number 5 while no windows are there, it'll show a ghost of the ask pass window.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; any idea what might be the cause? i'm using 4.11
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; thanks,
+</I>&gt;<i> &gt; Dieter  
+</I>&gt;<i> 
+</I>
+</PRE>
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002239.html">[i3] ssh askpass window too small + &quot;sticks around&quot;
+</A></li>
+	<LI>Next message: <A HREF="002241.html">[i3] ssh askpass window too small + &quot;sticks around&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2240">[ date ]</a>
+              <a href="thread.html#2240">[ thread ]</a>
+              <a href="subject.html#2240">[ subject ]</a>
+              <a href="author.html#2240">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

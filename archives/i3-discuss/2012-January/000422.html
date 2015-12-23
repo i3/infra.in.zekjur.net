@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Help with configuration tweaking
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Help%20with%20configuration%20tweaking&In-Reply-To=%3CCANVYNa8sapf%2BmE8maOryr_NxBu_HiHvETt80750tWj6eVRMgNQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000421.html">
+   <LINK REL="Next"  HREF="000423.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Help with configuration tweaking</H1>
+    <B>Fernando Lemos</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Help%20with%20configuration%20tweaking&In-Reply-To=%3CCANVYNa8sapf%2BmE8maOryr_NxBu_HiHvETt80750tWj6eVRMgNQ%40mail.gmail.com%3E"
+       TITLE="[i3] Help with configuration tweaking">fernandotcl at gmail.com
+       </A><BR>
+    <I>Mon Jan 23 01:22:43 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000421.html">[i3] Help with configuration tweaking
+</A></li>
+        <LI>Next message: <A HREF="000423.html">[i3] multiple x sessions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#422">[ date ]</a>
+              <a href="thread.html#422">[ thread ]</a>
+              <a href="subject.html#422">[ subject ]</a>
+              <a href="author.html#422">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sun, Jan 22, 2012 at 9:58 PM, David Unric &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">dunric29a at gmail.com</A>&gt; wrote:
+&gt;<i> - when a new split-container is created, available space is divided&#160; by 50%
+</I>&gt;<i> . Can be configured to split by a custom ratio like 66/34 % or is this
+</I>&gt;<i> hard-coded in i3's sources ?
+</I>
+Well, not really &quot;hardcoded&quot;, each container starts up taking up 1/n
+of the available space in the parent container, where n is the number
+of children (including the container itself). That said, no, you can't
+change that now.
+
+&gt;<i> - how to feed i3bar by my own commands instead of i3status or conky output ?
+</I>&gt;<i> Some example how to display current date/time f.E. ? I did tried in
+</I>&gt;<i> ~/.i3/config
+</I>&gt;<i> ...
+</I>&gt;<i> bar {
+</I>&gt;<i> &#160;&#160;&#160; status_command date
+</I>&gt;<i> }
+</I>&gt;<i> ...
+</I>&gt;<i>
+</I>&gt;<i> but it didn't appeared in i3bar.
+</I>
+The status command isn't run once every now and then. It must display
+its output once and then every time this output changes. So what you
+want should probably be a script that does &quot;while true; do date; sleep
+1; done&quot;. This approach sucks, though, for a number of reasons. If you
+don't quite get why it sucks, please use something like i3status
+instead (you might want to pipe the i3status output and modify it as
+you see fit too).
+
+Regards,
+</PRE>
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000421.html">[i3] Help with configuration tweaking
+</A></li>
+	<LI>Next message: <A HREF="000423.html">[i3] multiple x sessions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#422">[ date ]</a>
+              <a href="thread.html#422">[ thread ]</a>
+              <a href="subject.html#422">[ subject ]</a>
+              <a href="author.html#422">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

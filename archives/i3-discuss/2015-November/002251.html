@@ -1,0 +1,303 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] ssh askpass window too small + &quot;sticks around&quot;
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20ssh%20askpass%20window%20too%20small%20%2B%20%22sticks%20around%22&In-Reply-To=%3C563B76CB.6090609%40airblader.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002250.html">
+   <LINK REL="Next"  HREF="002252.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] ssh askpass window too small + &quot;sticks around&quot;</H1>
+    <B>Ingo Bürk</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20ssh%20askpass%20window%20too%20small%20%2B%20%22sticks%20around%22&In-Reply-To=%3C563B76CB.6090609%40airblader.de%3E"
+       TITLE="[i3] ssh askpass window too small + &quot;sticks around&quot;">admin at airblader.de
+       </A><BR>
+    <I>Thu Nov  5 16:33:31 CET 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002250.html">[i3] ssh askpass window too small + &quot;sticks around&quot;
+</A></li>
+        <LI>Next message: <A HREF="002252.html">[i3] ssh askpass window too small + &quot;sticks around&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2251">[ date ]</a>
+              <a href="thread.html#2251">[ thread ]</a>
+              <a href="subject.html#2251">[ subject ]</a>
+              <a href="author.html#2251">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>No, it's not i3. It's the root window. Which means there is no actual
+keepass window. :) I'd try running a compositor and setting the
+background to see what that does. Making sure your graphics driver is up
+to date also won't hurt.
+
+
+Ingo
+
+On 11/04/2015 11:15 PM, Dieter Plaetinck wrote:
+&gt;<i> with background it looks like so (set via nitrogen)
+</I>&gt;<i> <A HREF="http://i.imgur.com/RX7syWq.png">http://i.imgur.com/RX7syWq.png</A>
+</I>&gt;<i> however it seems like if i set the background again after ssh-add finished, the background shows fine without the ghost window. not 100% sure yet on the conditions that trigger the issue. i can play with it a bit more and can probably succesfully work around it. (though it's still weird)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> process is no longer running:
+</I>&gt;<i> ~ ❯❯❯ ps aux | grep ssh-add
+</I>&gt;<i> dieter    4286  0.0  0.0  10728  2384 pts/3    S+   23:07   0:00 grep --color=auto ssh-add
+</I>&gt;<i> ~ ❯❯❯ ps aux | grep keepass
+</I>&gt;<i> dieter    4315  0.0  0.0  10728  2248 pts/3    S+   23:07   0:00 grep --color=auto keepass
+</I>&gt;<i> ~ ❯❯❯ ps aux | grep x11
+</I>&gt;<i> dieter    4352  0.0  0.0  10728  2140 pts/3    S+   23:07   0:00 grep --color=auto x11
+</I>&gt;<i> ~ ❯❯❯ 
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> when i run xprop and then click on the ghost window i get:
+</I>&gt;<i> ~ ❯❯❯ xprop
+</I>&gt;<i> GDK_VISUALS(INTEGER) = 233, 165
+</I>&gt;<i> _NET_DESKTOP_VIEWPORT(CARDINAL) = 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+</I>&gt;<i> _NET_DESKTOP_NAMES(UTF8_STRING) = &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;, &quot;7&quot;, &quot;8&quot;
+</I>&gt;<i> _NET_NUMBER_OF_DESKTOPS(CARDINAL) = 8
+</I>&gt;<i> _NET_CURRENT_DESKTOP(CARDINAL) = 5
+</I>&gt;<i> I3_SHMLOG_PATH(UTF8_STRING) = &quot;/i3-log-769&quot;
+</I>&gt;<i> I3_CONFIG_PATH(UTF8_STRING) = &quot;/home/dieter/.i3/config&quot;
+</I>&gt;<i> I3_PID(CARDINAL) = 769
+</I>&gt;<i> I3_SOCKET_PATH(UTF8_STRING) = &quot;/run/user/1011/i3/ipc-socket.769&quot;
+</I>&gt;<i> _NET_ACTIVE_WINDOW(WINDOW): window id # 0x0
+</I>&gt;<i> _NET_CLIENT_LIST(WINDOW): window id # 0x1000003, 0x1a00001, 0x180009b, 0x1400003, 0x2000007, 0x2400003, 0x2600003, 0x2800003
+</I>&gt;<i> _NET_CLIENT_LIST_STACKING(WINDOW): window id # 0x2000007, 0x2400003, 0x180009b, 0x2600003, 0x1a00001, 0x1000003, 0x2800003, 0x1400003
+</I>&gt;<i> _NET_SUPPORTED(ATOM) = _NET_SUPPORTED, _NET_SUPPORTING_WM_CHECK, _NET_WM_NAME, _NET_WM_VISIBLE_NAME, _NET_WM_MOVERESIZE, _NET_WM_STATE_STICKY, _NET_WM_STATE_FULLSCREEN, _NET_WM_STATE_DEMANDS_ATTENTION, _NET_WM_STATE_MODAL, _NET_WM_STATE_HIDDEN, _NET_WM_STATE, _NET_WM_WINDOW_TYPE, _NET_WM_WINDOW_TYPE_NORMAL, _NET_WM_WINDOW_TYPE_DOCK, _NET_WM_WINDOW_TYPE_DIALOG, _NET_WM_WINDOW_TYPE_UTILITY, _NET_WM_WINDOW_TYPE_TOOLBAR, _NET_WM_WINDOW_TYPE_SPLASH, _NET_WM_WINDOW_TYPE_MENU, _NET_WM_WINDOW_TYPE_DROPDOWN_MENU, _NET_WM_WINDOW_TYPE_POPUP_MENU, _NET_WM_WINDOW_TYPE_TOOLTIP, _NET_WM_DESKTOP, _NET_WM_STRUT_PARTIAL, _NET_CLIENT_LIST, _NET_CLIENT_LIST_STACKING, _NET_CURRENT_DESKTOP, _NET_NUMBER_OF_DESKTOPS, _NET_DESKTOP_NAMES, _NET_DESKTOP_VIEWPORT, _NET_ACTIVE_WINDOW, _NET_CLOSE_WINDOW
+</I>&gt;<i> _NET_WM_NAME(UTF8_STRING) = &quot;i3&quot;
+</I>&gt;<i> _NET_SUPPORTING_WM_CHECK(WINDOW): window id # 0x800062
+</I>&gt;<i> RESOURCE_MANAGER(STRING) = &quot;urxvt.font:\txft:Terminus\nx11-ssh-askpass*font:\t-*-dina-medium-r-*-*-12-*-*-*-*-*-*-*\nx11-ssh-askpass*background:\t#000000\nx11-ssh-askpass*foreground:\t#ffffff\nx11-ssh-askpass.Button*background:\t#000000\nx11-ssh-askpass.Indicator*foreground:\t#ff9900\nx11-ssh-askpass.Indicator*background:\t#090909\nx11-ssh-askpass*topShadowColor:\t#000000\nx11-ssh-askpass*bottomShadowColor:\t#000000\nx11-ssh-askpass.*borderWidth:\t1\n&quot;
+</I>&gt;<i> ESETROOT_PMAP_ID(PIXMAP): pixmap id # 0x600004
+</I>&gt;<i> _XROOTPMAP_ID(PIXMAP): pixmap id # 0x600004
+</I>&gt;<i> _XKB_RULES_NAMES(STRING) = &quot;evdev&quot;, &quot;pc105&quot;, &quot;dvorak&quot;, &quot;&quot;, &quot;&quot;
+</I>&gt;<i> XFree86_has_VT(INTEGER) = 1
+</I>&gt;<i> XFree86_VT(INTEGER) = 1
+</I>&gt;<i> ~ ❯❯❯ 
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> am i seeing this right? it's i3 itself?
+</I>&gt;<i>
+</I>&gt;<i> On Wed, 4 Nov 2015 09:43:45 -0500
+</I>&gt;<i> Ingo Bürk &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">admin at airblader.de</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Hi Dieter,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> sorry, I completely forgot about the second issue. Can you check whether
+</I>&gt;&gt;<i> there actually IS a window? For example, try pgrep-ing for keepass and
+</I>&gt;&gt;<i> also try &quot;xprop&quot;-selecting that window on an empty workspace (where it's
+</I>&gt;&gt;<i> not covered by other windows).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> If there isn't actually a window, this sounds like a typical graphics
+</I>&gt;&gt;<i> glitch. If you haven't set a background to your desktop yet, you should
+</I>&gt;&gt;<i> do this, even if you want it to be just black. See [1] for some
+</I>&gt;&gt;<i> orientation. If that's done and the issue persists, I'd try running a
+</I>&gt;&gt;<i> compositor (e.g., compton) if you aren't already. If it STILL persists
+</I>&gt;&gt;<i> after that, I would look into my graphics driver.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> However, if there actually IS a window, tell the keepass guys to look
+</I>&gt;&gt;<i> into it. :)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> [1]
+</I>&gt;&gt;<i> <A HREF="https://faq.i3wm.org/question/6/how-can-i-set-a-desktop-background-image-in-i3/">https://faq.i3wm.org/question/6/how-can-i-set-a-desktop-background-image-in-i3/</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Ingo
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On 11/03/2015 10:21 PM, Dieter Plaetinck wrote:
+</I>&gt;&gt;&gt;<i> btw i have configured the askpass window to have a 0px border,
+</I>&gt;&gt;&gt;<i> so the other problem (the &quot;ghosting&quot;) is now a little less annoying
+</I>&gt;&gt;&gt;<i> (looks like <A HREF="http://i.imgur.com/qgnOTaV.png">http://i.imgur.com/qgnOTaV.png</A> now)
+</I>&gt;&gt;&gt;<i> though it 'd be nice if we could solve this one too. any ideas ?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> On Tue, 3 Nov 2015 20:57:45 -0500
+</I>&gt;&gt;&gt;<i> Dieter Plaetinck &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">dieter at plaetinck.be</A>&gt; wrote:
+</I>&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;<i> thanks Ingo,
+</I>&gt;&gt;&gt;&gt;<i> reported @ <A HREF="https://bugzilla.mindrot.org/show_bug.cgi?id=2491">https://bugzilla.mindrot.org/show_bug.cgi?id=2491</A>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> btw I tried setting the window to 426x94 (cause those values appeared in other size hints)
+</I>&gt;&gt;&gt;&gt;<i> but that ended up being too low.  I just estimated a height and 115 seems to look good.
+</I>&gt;&gt;&gt;&gt;<i> I wonder why it hinted at 94..
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> On Tue, 3 Nov 2015 19:59:45 -0500
+</I>&gt;&gt;&gt;&gt;<i> Ingo Bürk &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">admin at airblader.de</A>&gt; wrote:
+</I>&gt;&gt;&gt;&gt;<i>  
+</I>&gt;&gt;&gt;&gt;&gt;<i> Hi,
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> one more thing, to make life easier for yourself you can either locally
+</I>&gt;&gt;&gt;&gt;&gt;<i> revert the commit or use a for_window directive matching that popup and
+</I>&gt;&gt;&gt;&gt;&gt;<i> do something like
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>     for_window [class=&quot;(?i)keepass&quot; …] resize set 500 300
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> Ingo
+</I>&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;<i> On 11/03/2015 07:43 PM, Ingo Bürk wrote:    
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Thanks! Yeah, the problem is that askpass specifies size flags in
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> WM_SIZE_HINTS, but doesn't set useful values (it just says 0x0). i3 then
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> falls back to the floating minimum size, which by default is 75x50. You
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> should file this as a bug against keepass. keepass should either not set
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> these flags in the size hints or give them a reasonable value.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> It should be noted that these values in the size hints are considered
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> obsolete[1], but that doesn't mean they won't (or shouldn't) be
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> interpreted. That's what the flag mask is for. :)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> [1]
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> <A HREF="https://tronche.com/gui/x/xlib/ICC/client-to-window-manager/wm-normal-hints.html">https://tronche.com/gui/x/xlib/ICC/client-to-window-manager/wm-normal-hints.html</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> Ingo
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;<i> On 11/03/2015 06:51 PM, Dieter Plaetinck wrote:      
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> the i3 log, obtained via i3-dump-log as described on the debugging web page.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> <A HREF="http://logs.i3wm.org/logs/5652536396611584.bz2">http://logs.i3wm.org/logs/5652536396611584.bz2</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> FWIW this was a minimal i3 session, i quit all my apps, just had a termite terminal so i could invoke ssh-add and the i3-dump-log, and it also had a bar running, but nothing else.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> xprop and xwininfo -all output: <A HREF="https://gist.github.com/Dieterbe/93ec75c6e891a04b8776">https://gist.github.com/Dieterbe/93ec75c6e891a04b8776</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> On Tue, 3 Nov 2015 18:09:10 -0500
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Ingo Bürk &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">admin at airblader.de</A>&gt; wrote:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>      
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Thanks. I sort of figured it'd be that commit. Can you please provide
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> the files I described earlier? This will likely be a bug in askpass. See
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> also the discussions in the end of <A HREF="https://github.com/i3/i3/issues/1970.">https://github.com/i3/i3/issues/1970.</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Ingo
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> On 11/03/2015 06:04 PM, Dieter Plaetinck wrote:      
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> thanks Ingo,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> due to i3's easy reloading and the fact that i could just run the ssh-add command in a terminal without restarting X, the bisect process was very easy and smooth.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> it found the commit. see below
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> d1262f2b6ae713266b5a1e8cab368333bb332033 is the first bad commit
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> commit d1262f2b6ae713266b5a1e8cab368333bb332033
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Author: Andrzej Pronobis &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">a.pronobis at gmail.com</A>&gt;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Date:   Sun Feb 1 17:04:41 2015 -0800
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>     Use WM_SIZE_HINTS whenever it's provided to set the geometry of floating windows.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> :040000 040000 e7c887b2b14e2b24830840133045fe0ba232c3e0 3dd6d2d2864ab7aaec50cb2bff93031170bd50e8 M	src
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> ~/w/e/i3 ❯❯❯ 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> On Tue, 3 Nov 2015 17:19:02 -0500
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Ingo Bürk &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">admin at airblader.de</A>&gt; wrote:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>        
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Yeah, a bisect would be useful. You need to run make clean &amp;&amp; make &amp;&amp;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> sudo make install (to actually install the new binary -- unless you
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> change your xinitrc to run the local file in your checkout instead).
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Restarting X isn't necessary, restarting i3 in-place would suffice. But
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> since you have wrapped askpass around the i3 session, you'll indeed
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> probably need to exit your X session and startx again.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Ingo
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> On 11/03/2015 04:46 PM, Dieter Plaetinck wrote:        
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> I can confirm the first problem is gone (the window has the correct size) with 4.10.4
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> However the ghosting problem still exists, though now it also has the correct size and a black background instead of grey like before.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> see <A HREF="http://i.imgur.com/2uF25R8.png">http://i.imgur.com/2uF25R8.png</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> still want me to do a bisect? for all versions i would just run make clean &amp;&amp; make &amp;&amp; restart x using the new i3 binary right? anything else needed?
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Dieter
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> On Tue, 3 Nov 2015 16:05:31 -0500
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Ingo Bürk &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">admin at airblader.de</A>&gt; wrote:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>          
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Hi Dieter,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> can you do the following?
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 1) Downgrade to i3 4.10.4 and see if it fixes the problem. If so, please
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> run a git bisect to figure out which commit broke it. If 4.10.4 has the
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> same problem, try downgrading askpass or report a bug there.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 2) Provide a complete i3 log file where you started it. See the
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> debugging docs on the i3 website for information. Also provide the
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> output of &quot;xprop&quot; and &quot;xwininfo -all&quot; when clicking on the opened
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> askpass window.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Ingo
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> On 11/03/2015 03:32 PM, Dieter Plaetinck wrote:          
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> hello everyone,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> long time no see! i've been a long time i3 user but only since a recent upgrade i've started having issues with 
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> ssh-askpass.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> to be specific, in my .xinitrc I have:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> i3 -d all &gt;&gt; ~/i3-out 2&gt;&gt; ~/i3-err &amp;
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> waitpid=$!
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> ssh-add ~/.ssh/id_rsa_dieter-ws-a7n8x-arch &lt; /dev/null
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> (.. some more stuff)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> wait $waitpid
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> i posted my i3 config to <A HREF="https://gist.github.com/Dieterbe/d5870b230369818d2d47">https://gist.github.com/Dieterbe/d5870b230369818d2d47</A> (it's pretty much default, with a few extra binds and a different bar)
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> the ssh-add spawns the x11-ssh-askpass program and since recently i've been seeing these two problems:
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> screenshots of both issues @ <A HREF="http://imgur.com/a/TbNn1">http://imgur.com/a/TbNn1</A>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 1) the window is way too small. it used to be just the right size for the popup.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> 2) after entering the password and hitting enter, a &quot;ghost&quot; of the window stays stuck in all of my i3 workspaces.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> those workspaces that have windows in them will have the windows cover it, but otherwise if i go to say workspace number 5 while no windows are there, it'll show a ghost of the ask pass window.
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> any idea what might be the cause? i'm using 4.11
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> thanks,
+</I>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;<i> Dieter            
+</I>&gt;&gt;&gt;&gt;&gt;<i>     
+</I>
+</PRE>
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002250.html">[i3] ssh askpass window too small + &quot;sticks around&quot;
+</A></li>
+	<LI>Next message: <A HREF="002252.html">[i3] ssh askpass window too small + &quot;sticks around&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2251">[ date ]</a>
+              <a href="thread.html#2251">[ thread ]</a>
+              <a href="subject.html#2251">[ subject ]</a>
+              <a href="author.html#2251">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

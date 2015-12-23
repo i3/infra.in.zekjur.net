@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Assign workspaces to outputs dynamically.
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Assign%20workspaces%20to%20outputs%20dynamically.&In-Reply-To=%3CCAEhzMJBAjr-DuAuA%2BwXgb-5zjsjb32FaGHksf5_2y%3Dn12zHTtg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001975.html">
+   <LINK REL="Next"  HREF="001981.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Assign workspaces to outputs dynamically.</H1>
+    <B>Serge van Ginderachter</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Assign%20workspaces%20to%20outputs%20dynamically.&In-Reply-To=%3CCAEhzMJBAjr-DuAuA%2BwXgb-5zjsjb32FaGHksf5_2y%3Dn12zHTtg%40mail.gmail.com%3E"
+       TITLE="[i3] Assign workspaces to outputs dynamically.">serge at vanginderachter.be
+       </A><BR>
+    <I>Tue Feb 17 21:31:28 CET 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001975.html">[i3] Assign workspaces to outputs dynamically.
+</A></li>
+        <LI>Next message: <A HREF="001981.html">[i3] Assign workspaces to outputs dynamically.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1976">[ date ]</a>
+              <a href="thread.html#1976">[ thread ]</a>
+              <a href="subject.html#1976">[ subject ]</a>
+              <a href="author.html#1976">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>fwiw, I use a script that detects things like which monitor is connected,
+and falls back to certain defaults, or can be forced to e.g. VGA display
+etc.
+
+    <A HREF="https://github.com/srvg/dotfiles/blob/master/bin/xdisp">https://github.com/srvg/dotfiles/blob/master/bin/xdisp</A>
+
+HTH,
+
+  Serge
+
+On 17 February 2015 at 21:24, Layus &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">layus.on at gmail.com</A>&gt; wrote:
+
+&gt;<i>  Hi,
+</I>&gt;<i>
+</I>&gt;<i> I use my laptop in three different environments with different randr
+</I>&gt;<i> outputs enabled.
+</I>&gt;<i> I often switch between environments, and could not configure i3 to place
+</I>&gt;<i> my workspaces on the desired outputs.
+</I>&gt;<i> My randr configuration is updated automatically on udev drm change events
+</I>&gt;<i> with autorandr &lt;<A HREF="http://github.com/wertarbyte/autorandr">http://github.com/wertarbyte/autorandr</A>&gt;.
+</I>&gt;<i> Is there some way to specify dynamic output bindings ?
+</I>&gt;<i>
+</I>&gt;<i> My three environments are pretty simple :
+</I>&gt;<i>
+</I>&gt;<i>    1. *Nomad (undocked)*
+</I>&gt;<i>       - eDP1 connected primary ← all workspaces
+</I>&gt;<i>     2. *Docked*
+</I>&gt;<i>       - eDP1 connected ← workspace 0
+</I>&gt;<i>       - DP1-1 connected primary ← all other workspaces
+</I>&gt;<i>     3. *Presentation*
+</I>&gt;<i>       - VGA1 connected ← workspace 0
+</I>&gt;<i>       - eDP1 connected primary ← all other workspaces
+</I>&gt;<i>
+</I>&gt;<i> My current config works for situation 1 and 2 :
+</I>&gt;<i>
+</I>&gt;<i> workspace 0 output eDP1
+</I>&gt;<i>
+</I>&gt;<i> workspace 1 output DP1-1
+</I>&gt;<i> workspace 2 output DP1-1
+</I>&gt;<i> workspace 3 output DP1-1
+</I>&gt;<i> workspace 4 output DP1-1
+</I>&gt;<i> workspace 5 output DP1-1
+</I>&gt;<i> workspace 6 output DP1-1
+</I>&gt;<i> workspace 7 output DP1-1
+</I>&gt;<i> workspace 8 output DP1-1
+</I>&gt;<i> workspace 9 output DP1-1
+</I>&gt;<i> workspace 10 output DP1-1
+</I>&gt;<i>
+</I>&gt;<i> This is already a hack because the configuration describes the *Docked*
+</I>&gt;<i> configuration.
+</I>&gt;<i> It incidentally works when *Undocked* because there is only one output,
+</I>&gt;<i> and all workspaces are mapped to it.
+</I>&gt;<i>
+</I>&gt;<i> It does not work at all for my presentation.
+</I>&gt;<i>
+</I>&gt;<i> One solution that would suit me would be to extend the workspace &lt;x&gt;
+</I>&gt;<i> output command to support multiple outputs in order of preference.
+</I>&gt;<i> for example, worspace 0 output(s) VGA1 eDP1 would place workspace 0 on
+</I>&gt;<i> the projector when available, and on eDP1 otherwise.
+</I>&gt;<i>
+</I>&gt;<i> Do you find this useful ?
+</I>&gt;<i>
+</I>&gt;<i> Layus.
+</I>&gt;<i> ​
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150217/93b6631b/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150217/93b6631b/attachment.html</A>&gt;
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001975.html">[i3] Assign workspaces to outputs dynamically.
+</A></li>
+	<LI>Next message: <A HREF="001981.html">[i3] Assign workspaces to outputs dynamically.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1976">[ date ]</a>
+              <a href="thread.html#1976">[ thread ]</a>
+              <a href="subject.html#1976">[ subject ]</a>
+              <a href="author.html#1976">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

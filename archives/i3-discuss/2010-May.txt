@@ -1,0 +1,209 @@
+From registration.i3 at seani.justemail.net  Sat May  8 15:17:45 2010
+From: registration.i3 at seani.justemail.net (registration.i3 at seani.justemail.net)
+Date: Sat, 08 May 2010 14:17:45 +0100
+Subject: [i3] Strategies for Session Management
+Message-ID: <1273324665.833.1374040601@webmail.messagingengine.com>
+
+I'm interested in simple ways to manage sessions / layouts in i3
+
+
+I'm not looking for any changes to be made to accommodate this sort of
+functionality, just some suggestions and clarifications for setting up a
+session in an efficient way. Strategies and best-practices if you like.
+
+
+My plan is to use startup commands in the config file in conjunction
+with a few manual commands to circumvent problems with timing etc. This
+means it isn't totally automatic, but I don't need that for the number
+of times I typically restart or reboot.
+
+
+
+So my plan is:
+
+
+1) As part of the config file, create and name workspaces, and split,
+arrange and attach clients to them. The clients in general will be the
+lowest resource client I can find, likely an xterm or similar.
+
+This should give me a set of empty placeholders ready to accept my
+"real" client apps.
+
+
+2) Again as part of my config file, "exec" all of the real applications
+I need, leaving them piling up on the first workspace. I'll just sit
+back and let them do their stuff so there shouldn't be timing issues
+
+
+3) When I'm satisfied most stuff has loaded, execute a bindsym'ed
+command to shift the clients from their default positions on the first
+workspace into the slots I've created for them in step 1 (and zap the
+unloved placeholder apps)
+
+
+
+I realise that some of this can be automated and examples of this are
+given in the documentation, but I couldn't see how I could, for
+instance, exec gPodder and Audacious, shift them to their own workspace,
+and arrange them split-screen side-by-side as part of the config /
+startup process.
+
+
+
+Does that seem like a sensible approach? And what gotcha should I look
+out for?
+
+
+As a bonus question, can I chain more than one i3 built-in command to a
+single binding, and can I execute i3 commands one after another just by
+adding them to the end of the config file?
+
+
+If it *is* possible to chain more than one command to a binding, how do
+I deal with parameters?
+
+
+
+Lastly, great work on i3; it's the first tiling manager that has *just*
+enough functionality to make abandoning the default on 10.04 pain-free
+and more efficient.
+
+
+From michael+i3 at stapelberg.de  Sun May  9 11:18:06 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 09 May 2010 11:18:06 +0200
+Subject: [i3] Strategies for Session Management
+In-Reply-To: <1273324665.833.1374040601@webmail.messagingengine.com>
+References: <1273324665.833.1374040601@webmail.messagingengine.com>
+Message-ID: <1273396516-sup-3339@midna.zekjur.net>
+
+Hi,
+
+Excerpts from registration.i3's message of 2010-05-08 15:17:45 +0200:
+> I realise that some of this can be automated and examples of this are
+> given in the documentation, but I couldn't see how I could, for
+> instance, exec gPodder and Audacious, shift them to their own workspace,
+> and arrange them split-screen side-by-side as part of the config /
+> startup process.
+Well, you can?t really do that at the moment. Of course, you can use a
+script and the IPC interface to send the same commands you would use
+interactively to move these windows, but that?s not really a good
+solution (although I know of at least one user who has a config like this).
+
+> As a bonus question, can I chain more than one i3 built-in command to a
+> single binding, and can I execute i3 commands one after another just by
+> adding them to the end of the config file?
+No you can?t do either.
+
+> If it *is* possible to chain more than one command to a binding, how do
+> I deal with parameters?
+What kind of parameters do you mean?
+
+In general, I would recommend you to wait for the next version of i3 (currently
+developed in the "tree" branch) which will have a lot of features in this
+respect (chaining of commands, matching specific windows with commands,
+having pre-defined layouts, session-saving, ?). On the other hand, it may
+take quite a while until it?s ready.
+
+Best regards,
+Michael
+
+
+From shinchyn at gmail.com  Sat May 15 07:20:42 2010
+From: shinchyn at gmail.com (Shin)
+Date: Sat, 15 May 2010 13:20:42 +0800
+Subject: [i3] Is i3 able to ?
+Message-ID: <AANLkTikmg1EOrVlJgrPJV8OsttQvDFizU40HHcZSuUT8@mail.gmail.com>
+
+Is i3 able to hide title bar completely ? Just like scrotwm ?
+  Thanks
+
+
+From aihal at lavabit.com  Sat May 15 10:38:52 2010
+From: aihal at lavabit.com (Ogion)
+Date: Sat, 15 May 2010 10:38:52 +0200
+Subject: [i3] Is i3 able to ?
+In-Reply-To: <AANLkTikmg1EOrVlJgrPJV8OsttQvDFizU40HHcZSuUT8@mail.gmail.com>
+References: <AANLkTikmg1EOrVlJgrPJV8OsttQvDFizU40HHcZSuUT8@mail.gmail.com>
+Message-ID: <20100515103852.07219482.aihal@lavabit.com>
+
+On Sat, 15 May 2010 13:20:42 +0800
+Shin <shinchyn at gmail.com> wrote:
+
+> Is i3 able to hide title bar completely ? Just like scrotwm ?
+>   Thanks
+
+The respective commands are bb (borderless), bn (normal border plus
+tite bar), bp (one pixel border). 
+Bind them to some keys you like and you can change them on the fly.
+
+-- 
+Ogion <aihal at lavabit.com>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 198 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100515/2fb3ba53/attachment.pgp>
+
+From badboy at archlinux.us  Sat May 15 13:24:13 2010
+From: badboy at archlinux.us (Jan-Erik Rediger)
+Date: Sat, 15 May 2010 13:24:13 +0200
+Subject: [i3] Is i3 able to ?
+In-Reply-To: <20100515103852.07219482.aihal@lavabit.com>
+References: <AANLkTikmg1EOrVlJgrPJV8OsttQvDFizU40HHcZSuUT8@mail.gmail.com>
+	<20100515103852.07219482.aihal@lavabit.com>
+Message-ID: <20100515112413.GA4982@harmless>
+
+On Sat, May 15, 2010 at 10:38:52AM +0200, Ogion wrote:
+> On Sat, 15 May 2010 13:20:42 +0800
+> Shin <shinchyn at gmail.com> wrote:
+> 
+> > Is i3 able to hide title bar completely ? Just like scrotwm ?
+> >   Thanks
+> 
+> The respective commands are bb (borderless), bn (normal border plus
+> tite bar), bp (one pixel border). 
+> Bind them to some keys you like and you can change them on the fly.
+and there's 'bt' to toggle between this 3 states.
+
+badboy_
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 198 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100515/677ebeac/attachment.pgp>
+
+From chaotic.anna at gmail.com  Sat May 22 12:37:30 2010
+From: chaotic.anna at gmail.com (anna)
+Date: Sat, 22 May 2010 13:37:30 +0300
+Subject: [i3] moving workspaces
+Message-ID: <20100522133730.75f80b45@harmont.zone>
+
+is it possible to move a workspace from one monitor to another? not
+just speficy a default in the config 
+
+
+From badboy at archlinux.us  Sat May 22 12:54:30 2010
+From: badboy at archlinux.us (Jan-Erik Rediger)
+Date: Sat, 22 May 2010 12:54:30 +0200
+Subject: [i3] moving workspaces
+In-Reply-To: <20100522133730.75f80b45@harmont.zone>
+References: <20100522133730.75f80b45@harmont.zone>
+Message-ID: <20100522105430.GA3265@harmless>
+
+On Sat, May 22, 2010 at 01:37:30PM +0300, anna wrote:
+> is it possible to move a workspace from one monitor to another? not
+> just speficy a default in the config 
+not yet, no.
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 198 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100522/948168c3/attachment.pgp>
+

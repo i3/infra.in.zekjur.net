@@ -1,0 +1,43 @@
+diff --git a/i3bar/src/child.c b/i3bar/src/child.c
+index 3f59d06..e10b39d 100644
+--- a/i3bar/src/child.c
++++ b/i3bar/src/child.c
+@@ -60,14 +60,13 @@ void stdin_io_cb(struct ev_loop *loop, ev_io *watcher, int revents) {
+     int buffer_len = STDIN_CHUNK_SIZE;
+     char *buffer = malloc(buffer_len);
+     buffer[0] = '\0';
++    int flags = fcntl(fd, F_GETFL);
++    
++    /* set non-blocking flag for the fd */
++    fcntl(fd, F_SETFL, flags & ~O_NONBLOCK);
+     while(1) {
+         n = read(fd, buffer + rec, buffer_len - rec);
+         if (n == -1) {
+-            if (errno == EAGAIN) {
+-                /* remove trailing newline and finish up */
+-                buffer[rec-1] = '\0';
+-                break;
+-            }
+             ELOG("read() failed!: %s\n", strerror(errno));
+             exit(EXIT_FAILURE);
+         }
+@@ -84,11 +83,19 @@ void stdin_io_cb(struct ev_loop *loop, ev_io *watcher, int revents) {
+         }
+         rec += n;
+ 
++        /* end of the reading cycle if there is \n present */
++        if (strchr(buffer, '\n') > 0) {
++                buffer[rec-1] = '\0';
++                break;
++        }
++
+         if (rec == buffer_len) {
+             buffer_len += STDIN_CHUNK_SIZE;
+             buffer = realloc(buffer, buffer_len);
+ 	    }
+     }
++    /* set the flags back */
++    fcntl(fd, F_SETFL, flags);
+     if (*buffer == '\0') {
+         FREE(buffer);
+         return;

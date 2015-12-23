@@ -1,0 +1,26 @@
+From 8aa263805a67dc21133ef7453df427e5f5777e73 Mon Sep 17 00:00:00 2001
+From: darkraven <drdarkraven@gmail.com>
+Date: Wed, 2 May 2012 23:31:39 +0800
+Subject: [PATCH 5/5] Improve event processing a bit.
+
+---
+ i3bar/src/workspaces.c |    3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/i3bar/src/workspaces.c b/i3bar/src/workspaces.c
+index 72217c7..222f35a 100644
+--- a/i3bar/src/workspaces.c
++++ b/i3bar/src/workspaces.c
+@@ -450,6 +450,9 @@ void parse_workspaces_event_json(char *json) {
+     } else if (0 == strcmp(param.change, "invisible")) {
+         param.workspace->visible = false;
+         draw_bars();
++    } else {
++        //Unhandled workspace event, send GET_WORKSPACES message to i3
++        i3_send_msg(I3_IPC_MESSAGE_TYPE_GET_WORKSPACES, NULL);
+     }
+ }
+ 
+-- 
+1.7.10
+

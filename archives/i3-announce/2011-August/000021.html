@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3 announcement] i3 v4.0.2 released
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-announce%40infra.in.zekjur.net?Subject=Re%3A%20%5Bi3%20announcement%5D%20i3%20v4.0.2%20released&In-Reply-To=%3C1314555046-sup-7548%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000020.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3 announcement] i3 v4.0.2 released</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-announce%40infra.in.zekjur.net?Subject=Re%3A%20%5Bi3%20announcement%5D%20i3%20v4.0.2%20released&In-Reply-To=%3C1314555046-sup-7548%40midna.zekjur.net%3E"
+       TITLE="[i3 announcement] i3 v4.0.2 released">michael+i3 at stapelberg.de
+       </A><BR>
+    <I>Sun Aug 28 20:11:29 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000020.html">[i3 announcement] i3 v4.0.1 released
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#21">[ date ]</a>
+              <a href="thread.html#21">[ thread ]</a>
+              <a href="subject.html#21">[ subject ]</a>
+              <a href="author.html#21">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I just released i3 v4.0.2. The release notes follow:
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Release notes for i3 v4.0.2 &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+This is the third release of the new major version of i3, v4.0.2. It is a
+bugfix release and considered stable. A lot of bugs and suggestions have been
+reported since the release of v4.0.1. This release fixes 44 bugs and includes a
+few other minor improvements.
+
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Changes in v4.0.2          &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+  &#8226; i3-config-wizard: handle mouse button clicks on &lt;win&gt; and &lt;alt&gt; texts
+  &#8226; i3-config-wizard: check the modifier mapping to decide whether to use Mod1
+    or Mod4
+  &#8226; migrate-config: use \s, be a bit more whitespace tolerant
+  &#8226; userguide: s/mod+h/mod+s for stacking
+  &#8226; userguide: provide the default colors in the colors example
+  &#8226; userguide: document force_focus_wrapping directive
+  &#8226; userguide: properly document the resize command
+  &#8226; userguide: properly document command chaining and criteria
+  &#8226; Bugfix: Correctly bind on multiple keycodes if a symbol has more than one
+  &#8226; Bugfix: Allow multiple criteria in 'for_window'
+  &#8226; Bugfix: Ensure a minimum size when using the 'resize' command
+  &#8226; Bugfix: Start on the first named workspace, not always on '1'
+  &#8226; Bugfix: Fix resize command with direction != up for floating windows
+  &#8226; Bugfix: Correctly set the _NET_CLIENT_LIST_STACKING hint (chromium tabbar)
+  &#8226; Bugfix: 'workspace &lt;next|prev&gt;' now takes all outputs into account
+  &#8226; Bugfix: i3-wsbar: make workspace names clickable again
+  &#8226; Bugfix: i3-wsbar: correctly handle EOF on stdin
+  &#8226; Bugfix: i3-wsbar: display a separator between workspaces of each output
+  &#8226; Bugfix: Correctly handle the 'instance' criterion (WM_CLASS)
+  &#8226; Bugfix: Use correct format string in load_layout (fixes crash in restart)
+  &#8226; Bugfix: Fix border rendering (border lines were &quot;cutting&quot; through)
+  &#8226; Bugfix: Raise floating windows immediately when dragging/resizing
+  &#8226; Bugfix: Make focus switching work accross outputs again
+  &#8226; Bugfix: migration-script: handle resize top/bottom correctly
+  &#8226; Bugfix: Fix focus issue when moving containers to workspaces
+  &#8226; Bugfix: Warp cursor when changing outputs again
+  &#8226; Bugfix: i3bar: fix switching to workspaces with extremely long names
+  &#8226; Bugfix: i3bar: fix switching to workspaces &quot;next&quot; and &quot;prev&quot;
+  &#8226; Bugfix: i3bar: Correctly allocate pixmap for statuslines which are longer
+    than the screen
+  &#8226; Bugfix: i3bar: set statusline = NULL on EOF / SIGCHLD
+  &#8226; Bugfix: Correctly initialize the verbose flag
+  &#8226; Bugfix: Don&#8217;t start with workspace 'next' when the command 'workspace next'
+    is bound in the config file
+  &#8226; Bugfix: Set focus to where the mouse pointer is when starting
+  &#8226; Bugfix: Don&#8217;t change focus when assigned windows start on invisible
+    workspaces
+  &#8226; Bugfix: Don&#8217;t use absolute paths for exec in the config file
+  &#8226; Bugfix: Fix crash when using 'focus mode_toggle' on an empty workspace
+  &#8226; Bugfix: Make the 'resize' command work inside tabbed/stacked cons
+  &#8226; Bugfix: Correctly place floating windows on their appropriate output
+  &#8226; Bugfix: Fix coordinates when moving a floating window to a different output
+  &#8226; Bugfix: Correctly keep focus when moving non-leaf windows
+  &#8226; Bugfix: Accept '\t' in the set command
+  &#8226; Bugfix: Only consider tiling windows when attaching tiling windows to a
+    workspace
+  &#8226; Bugfix: Correctly render containers when a split container is focused
+  &#8226; Bugfix: Correctly recognize duplicate workspace assignments
+  &#8226; Bugfix: Re-enable X11 Eventmask &#8226;after&#8226; pushing all the X11 changes
+  &#8226; Bugfix: Fix focus stealing with assignments of floating windows
+  &#8226; Bugfix: Re-implement reconfiguring height of dock windows
+  &#8226; Bugfix: IPC: return name_json if available
+  &#8226; Bugfix: Make 'floating enable' check for dock windows
+
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Thanks!                    &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+Thanks go out to the following contributors / reporters:
+
+  andi, Atsutane, BeF, ccount, cls, edelkind, eeemsi, f8l, ioflag, Jan, kraM,
+  marforio, Merovius, Moredread, mseed, Niklas, nutron, pnutzh4x0r, rogutes,
+  Sander, sbedivere, sur5r, thomasba, tilman, Tim, ubitux
+
+-- Michael Stapelberg, 2011-08-28
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000020.html">[i3 announcement] i3 v4.0.1 released
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#21">[ date ]</a>
+              <a href="thread.html#21">[ thread ]</a>
+              <a href="subject.html#21">[ subject ]</a>
+              <a href="author.html#21">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-announce">More information about the i3-announce
+mailing list</a><br>
+</body></html>

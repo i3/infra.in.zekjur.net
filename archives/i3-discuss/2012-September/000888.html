@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [RFC]render.c cleanup.
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BRFC%5Drender.c%20cleanup.&In-Reply-To=%3C20120902222820.21042.65253%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000889.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [RFC]render.c cleanup.</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BRFC%5Drender.c%20cleanup.&In-Reply-To=%3C20120902222820.21042.65253%40midna.zekjur.net%3E"
+       TITLE="[i3] [RFC]render.c cleanup.">michael at i3wm.org
+       </A><BR>
+    <I>Mon Sep  3 00:28:20 CEST 2012</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000889.html">[i3] [RFC]render.c cleanup.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#888">[ date ]</a>
+              <a href="thread.html#888">[ thread ]</a>
+              <a href="subject.html#888">[ subject ]</a>
+              <a href="author.html#888">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi darkraven,
+
+Quoting DR (2012-08-20 17:52:16)
+&gt;<i> This patch clean up some of the render.c logic, make way for implement
+</I>&gt;<i> popup-while-fullscreen behavior.
+</I>&gt;<i> 
+</I>&gt;<i> This patch hasn't been heavily tested. So maybe this patch would change the
+</I>&gt;<i> rendering result under some circumstance.
+</I>First of all, I apologize for taking so long to comment on this patch.
+I want to clearly point out why reviewing your patches is really hard
+for me and what you can do to improve the situation.
+
+The patch which you posted has multiple issues:
+
+1) The commit title is absolutely meaningless. &quot;make render_con logic
+   more clearer&quot; is a subjective thing. While it&#8217;s okay as a title, you
+   absolutely need to provide a description consisting of the individual
+   changes you have done. It would be even better if the individual
+   changes were individual commits, but I don&#8217;t pose that as a
+   requirement.
+
+   An example for a good description would be:
+   &quot;Refactored identical code from render_x and render_y into new
+   function render_xy_common(), no functional changes at all.&quot;
+
+2) You introduce new unnecessary whitespace (first hunk,
+   src/render.c:24).
+
+3) You change our if (fullscreen) { &#8230;; return; } block to if
+   (!fullscreen){ /* other stuff */ } &#8230;; without any obvious reason.
+   Why? Returning early is good style and consistently used within i3.
+   Also, we use blanks before brackets.
+
+4) More importantly, you refactor two loops into one, but this breaks
+   things! The first loop only cares for cons with -&gt;type ==
+   CT_DOCKAREA, the second one handles all cons.
+
+5) I can&#8217;t really figure out what the rest of your changes do. They seem
+   to move code around, but it&#8217;s not clear based on the diff. You really
+   should provide an explanation and/or split it up into multiple
+   smaller commits.
+
+I also want to point out that similar comments have been made multiple
+times before in your threads:
+
+<A HREF="http://article.gmane.org/gmane.comp.window-managers.i3.general/200">http://article.gmane.org/gmane.comp.window-managers.i3.general/200</A>
+<A HREF="http://article.gmane.org/gmane.comp.window-managers.i3.general/343">http://article.gmane.org/gmane.comp.window-managers.i3.general/343</A>
+<A HREF="http://article.gmane.org/gmane.comp.window-managers.i3.general/279">http://article.gmane.org/gmane.comp.window-managers.i3.general/279</A>
+
+Why do you keep sending patches like these and don&#8217;t pay attention to
+the things we point you to? This makes the whole reviewing and merging
+workflow really hard :-/.
+
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000889.html">[i3] [RFC]render.c cleanup.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#888">[ date ]</a>
+              <a href="thread.html#888">[ thread ]</a>
+              <a href="subject.html#888">[ subject ]</a>
+              <a href="author.html#888">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] pan icon in display
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20pan%20icon%20in%20display&In-Reply-To=%3C1315226362-sup-9046%40stapelberg.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000284.html">
+   <LINK REL="Next"  HREF="000287.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] pan icon in display</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20pan%20icon%20in%20display&In-Reply-To=%3C1315226362-sup-9046%40stapelberg.de%3E"
+       TITLE="[i3] pan icon in display">michael+i3 at stapelberg.de
+       </A><BR>
+    <I>Mon Sep  5 14:43:53 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000284.html">[i3] i3-input command building
+</A></li>
+        <LI>Next message: <A HREF="000287.html">[i3] pan icon in display
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#285">[ date ]</a>
+              <a href="thread.html#285">[ thread ]</a>
+              <a href="subject.html#285">[ subject ]</a>
+              <a href="author.html#285">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Miguel,
+
+Thanks for your mail.
+
+Excerpts from Miguel de Val-Borro's message of 2011-08-28 23:24:36 +0200:
+&gt;<i> The pan icon in Imagemagick's display should appear only when the size
+</I>&gt;<i> of the image is largen than the screen. However in i3 the panning icon
+</I>&gt;<i> also appears when the image is smaller than the screen.  Please find
+</I>Indeed, I can reproduce that (open 'display' in a floating window, the floating
+window will end up having a smaller rectangle than the app requested).
+
+I created a ticket to track this: <A HREF="http://bugs.i3wm.org/ticket/513">http://bugs.i3wm.org/ticket/513</A>
+
+&gt;<i> attached the relevant part of my logfile with verbose output. Another
+</I>&gt;<i> perhaps unrelated problem is that display opens the image with
+</I>&gt;<i> coordinates 640,640 by default in i3 so in this example I have used
+</I>&gt;<i> 'display -geometry +0+0' to center the image.
+</I>One of the problems with ImageMagick&#8217;s initial geometry seems to be that it is
+not multi-monitor aware. However, judging from your logfile, you only have a
+single monitor with 1280x1024 pixels. I&#8217;m not sure why ImageMagick requests
+(640,640)&#8230;
+
+Best regards,
+Michael
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000284.html">[i3] i3-input command building
+</A></li>
+	<LI>Next message: <A HREF="000287.html">[i3] pan icon in display
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#285">[ date ]</a>
+              <a href="thread.html#285">[ thread ]</a>
+              <a href="subject.html#285">[ subject ]</a>
+              <a href="author.html#285">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

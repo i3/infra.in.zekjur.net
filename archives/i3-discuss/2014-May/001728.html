@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] segfaults with libxcb-1.10
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20segfaults%20with%20libxcb-1.10&In-Reply-To=%3Cm2a9a450d1.fsf%40informatik.uni-tuebingen.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001719.html">
+   <LINK REL="Next"  HREF="001720.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] segfaults with libxcb-1.10</H1>
+    <B>Marcus Crestani</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20segfaults%20with%20libxcb-1.10&In-Reply-To=%3Cm2a9a450d1.fsf%40informatik.uni-tuebingen.de%3E"
+       TITLE="[i3] segfaults with libxcb-1.10">crestani at informatik.uni-tuebingen.de
+       </A><BR>
+    <I>Mon May 26 11:56:58 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001719.html">[i3] segfaults with libxcb-1.10
+</A></li>
+        <LI>Next message: <A HREF="001720.html">[i3] Weather forecast for i3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1728">[ date ]</a>
+              <a href="thread.html#1728">[ thread ]</a>
+              <a href="subject.html#1728">[ subject ]</a>
+              <a href="author.html#1728">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;&gt;&gt;&gt;&gt;<i>&quot;MC&quot; == Marcus Crestani &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">crestani at informatik.uni-tuebingen.de</A>&gt; writes:
+</I>MC&gt; Thread 0 Crashed:: Dispatch queue: com.apple.main-thread
+MC&gt; 0   ???                           	0x0000000100000000 0 + 4294967296
+MC&gt; 1   libxcb.1.dylib                	0x0000000110152f24 get_socket_back + 139
+MC&gt; 2   libxcb.1.dylib                	0x00000001101534ae xcb_send_request + 935
+MC&gt; 3   libxcb.1.dylib                	0x0000000110159784 xcb_intern_atom + 197
+MC&gt; 4   libstartup-notification-1.0.dylib	0x000000010fd3d37e sn_xcb_display_new + 78
+MC&gt; 5   i3                            	0x000000010f6d4e30 main + 4000
+MC&gt; 6   libdyld.dylib                 	0x00007fff906185fd start + 1
+MC&gt; Has anybody else seen this problem with libxcb-1.10 on OS X or other
+MC&gt; platforms?  Is this most likely caused by XQuartz, libxcb, libsn, or i3?
+
+Since nobody seems to have run into this problem, I started digging
+deeper.  The problem was caused by my setup, I realized that I was
+linking against libsn that itself was linking against a rather old
+libxcb-1.6.  Rebuilding libsn and linking it against libxcb-1.10 fixed
+the problem.  Sorry for the noise.
+
+-- 
+Marcus
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001719.html">[i3] segfaults with libxcb-1.10
+</A></li>
+	<LI>Next message: <A HREF="001720.html">[i3] Weather forecast for i3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1728">[ date ]</a>
+              <a href="thread.html#1728">[ thread ]</a>
+              <a href="subject.html#1728">[ subject ]</a>
+              <a href="author.html#1728">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,278 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Detecting screen locked
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Detecting%20screen%20locked&In-Reply-To=%3CCANnVG6kNvbn5FvtAoPmnVFqJy12UvndJoTQPGAmu1Hgr2muYSQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002072.html">
+   <LINK REL="Next"  HREF="002074.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Detecting screen locked</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Detecting%20screen%20locked&In-Reply-To=%3CCANnVG6kNvbn5FvtAoPmnVFqJy12UvndJoTQPGAmu1Hgr2muYSQ%40mail.gmail.com%3E"
+       TITLE="[i3] Detecting screen locked">michael at i3wm.org
+       </A><BR>
+    <I>Fri Apr 17 12:50:54 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002072.html">[i3] Detecting screen locked
+</A></li>
+        <LI>Next message: <A HREF="002074.html">[i3] i3 upgrade failure on trusty
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2073">[ date ]</a>
+              <a href="thread.html#2073">[ thread ]</a>
+              <a href="subject.html#2073">[ subject ]</a>
+              <a href="author.html#2073">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, Apr 17, 2015 at 3:00 AM, Jeff Abrahamson &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jeff at purple.com</A>&gt; wrote:
+&gt;<i> Thanks.  I understand (and a bit better, now) why strace/ptrace may have
+</I>&gt;<i> problems with a program that calls setuid.  On the other hand, i3lock
+</I>&gt;<i> doesn't have the setuid bit set, and the strace logs do not show an attempt
+</I>&gt;<i> to call strace.
+</I>&gt;<i>
+</I>&gt;<i> [S-18]<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jeff at siegfried</A>:~ $ stat /usr/bin/i3lock
+</I>&gt;<i>   File: ‘/usr/bin/i3lock’
+</I>&gt;<i>   Size: 31912           Blocks: 64         IO Block: 4096   regular file
+</I>&gt;<i> Device: fc01h/64513d    Inode: 1575208     Links: 1
+</I>&gt;<i> Access: (0755/-rwxr-xr-x)  Uid: (    0/    root)   Gid: (    0/    root)
+</I>&gt;<i> Access: 2015-04-16 20:02:56.634223226 +0200
+</I>&gt;<i> Modify: 2014-07-19 01:13:09.000000000 +0200
+</I>&gt;<i> Change: 2015-03-04 15:18:43.959784604 +0100
+</I>&gt;<i>  Birth: -
+</I>&gt;<i> [S-18]<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jeff at siegfried</A>:~ $ grep setuid /tmp/i3lock-log-1429256*
+</I>&gt;<i> 1,[S-18] <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jeff at siegfried</A>:~ $
+</I>&gt;<i>
+</I>&gt;<i> This said, if something PAM did when I logged in affects the behavior of
+</I>&gt;<i> stracing i3lock, I do not think I will try to figure out what PAM has done.
+</I>&gt;<i> ;-)  But I still find it odd that i3lock would interpret keystrokes
+</I>&gt;<i> differently under strace or not based on what I know so far.
+</I>
+It doesn’t. I’m saying the PAM stack (outside of i3’s code) likely
+requires setuid permission for some modules (most likely pam_unix).
+
+&gt;<i>
+</I>&gt;<i> Well, I will debug what I can.  Maybe I will compile an i3lock with
+</I>&gt;<i> scaffolding over the weekend to see what I can learn.
+</I>&gt;<i>
+</I>&gt;<i> Thanks again.
+</I>&gt;<i>
+</I>&gt;<i> Jeff Abrahamson
+</I>&gt;<i> +33 6 24 40 01 57
+</I>&gt;<i> +44 7920 594 255    &lt;-- only if I'm in the UK
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://jeff.purple.com/">http://jeff.purple.com/</A>
+</I>&gt;<i> <A HREF="http://blog.purple.com/jeff/">http://blog.purple.com/jeff/</A>
+</I>&gt;<i>
+</I>&gt;<i> On 17 April 2015 at 11:47, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt; wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> See <A HREF="http://superuser.com/a/248127">http://superuser.com/a/248127</A> for why setuid is ignored when
+</I>&gt;&gt;<i> running under strace.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Given that you run i3lock on linux, it might be PAM which uses setuid
+</I>&gt;&gt;<i> in some of its modules.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Fri, Apr 17, 2015 at 1:20 AM, Jeff Abrahamson &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jeff at purple.com</A>&gt; wrote:
+</I>&gt;&gt;<i> &gt; Interesting.  How does setuid have this effect on i3lock but only under
+</I>&gt;&gt;<i> &gt; strace?
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; Any idea where the setuid is coming from or how to find out?  The system
+</I>&gt;&gt;<i> &gt; is
+</I>&gt;&gt;<i> &gt; pretty vanilla ubuntu 14.10 (they have a good installer) aside from
+</I>&gt;&gt;<i> &gt; running
+</I>&gt;&gt;<i> &gt; i3 instead of gnome.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; The exec path that's visible once I'm logged in is lightdm -&gt; lightdm
+</I>&gt;&gt;<i> &gt; --sesion-child -&gt; i3.  I see that i3 parents what is executed due to
+</I>&gt;&gt;<i> &gt; .xsessionrc.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; I'll try to gather traces with -p, but this will depend on me thinking
+</I>&gt;&gt;<i> &gt; to
+</I>&gt;&gt;<i> &gt; trace i3lock from a vt before unlocking the screen.  My apologies in
+</I>&gt;&gt;<i> &gt; advance
+</I>&gt;&gt;<i> &gt; if I take a long time to catch the occasional errant process that way.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; And thanks for your ever prompt assistance and insights.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; Jeff Abrahamson
+</I>&gt;&gt;<i> &gt; +33 6 24 40 01 57
+</I>&gt;&gt;<i> &gt; +44 7920 594 255    &lt;-- only if I'm in the UK
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; <A HREF="http://jeff.purple.com/">http://jeff.purple.com/</A>
+</I>&gt;&gt;<i> &gt; <A HREF="http://blog.purple.com/jeff/">http://blog.purple.com/jeff/</A>
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; On 17 April 2015 at 10:09, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt; wrote:
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; Ugh, then you’re running it in a setuid setup. You’ll need to start
+</I>&gt;&gt;<i> &gt;&gt; i3lock
+</I>&gt;&gt;<i> &gt;&gt; and then attach strace afterwards using -p.
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; On Fri, Apr 17, 2015 at 9:56 AM, Jeff Abrahamson &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jeff at purple.com</A>&gt;
+</I>&gt;&gt;<i> &gt;&gt; wrote:
+</I>&gt;&gt;<i> &gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt; I invoke i3lock at the commandline thus:
+</I>&gt;&gt;<i> &gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt; [S-18]<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jeff at siegfried</A>:gtd $ strace -o/tmp/i3lock-log-$(date +%s) -f -s
+</I>&gt;&gt;<i> &gt;&gt;&gt; 2048 -tt  i3lock --dpms --inactivity-timeout 10 --color=220022
+</I>&gt;&gt;<i> &gt;&gt;&gt; [S-18]<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jeff at siegfried</A>:gtd $
+</I>&gt;&gt;<i> &gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt; and the result is that i3lock does not recognize my password.  It does
+</I>&gt;&gt;<i> &gt;&gt;&gt; echo my typing, it just always says fail.  I switch to a vt, login,
+</I>&gt;&gt;<i> &gt;&gt;&gt; and kill
+</I>&gt;&gt;<i> &gt;&gt;&gt; it.
+</I>&gt;&gt;<i> &gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt; Jeff Abrahamson
+</I>&gt;&gt;<i> &gt;&gt;&gt; +33 6 24 40 01 57
+</I>&gt;&gt;<i> &gt;&gt;&gt; +44 7920 594 255    &lt;-- only if I'm in the UK
+</I>&gt;&gt;<i> &gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt; <A HREF="http://jeff.purple.com/">http://jeff.purple.com/</A>
+</I>&gt;&gt;<i> &gt;&gt;&gt; <A HREF="http://blog.purple.com/jeff/">http://blog.purple.com/jeff/</A>
+</I>&gt;&gt;<i> &gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt; On 17 April 2015 at 09:39, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt; wrote:
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt; Yes, but also use -f (to follow child processes) and -s 2048 (to
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt; increase the size of strings) and -tt (to get timing).
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt; On Fri, Apr 17, 2015 at 9:23 AM, Jeff Abrahamson &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jeff at purple.com</A>&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt; wrote:
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt; Sure thing.
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt; Just to be clear, do you mean that instead of launching &quot;i3lock ..&quot;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt; I
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt; substitute &quot;strace -o/tmp/i3lock-log-$(date +%s) i3lock ...&quot;?
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt; Jeff Abrahamson
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt; +33 6 24 40 01 57
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt; +44 7920 594 255    &lt;-- only if I'm in the UK
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt; <A HREF="http://jeff.purple.com/">http://jeff.purple.com/</A>
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt; <A HREF="http://blog.purple.com/jeff/">http://blog.purple.com/jeff/</A>
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt; On 17 April 2015 at 09:19, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt; wrote:
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt; i3lock shouldn’t hang around. Can you start stracing all your
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt; i3lock
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt; instances automatically and provide the corresponding strace output
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt; of a
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt; hung instance in a bugreport?
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt; On Fri, Apr 17, 2015 at 9:04 AM, Jeff Abrahamson &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jeff at purple.com</A>&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt; wrote:
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; I have a maintenance function that ought not bother spinning the
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; CPU
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; if the screen is locked.  It checks this thus:
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; if pidof i3lock &gt;/dev/null; then
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt;     ...
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; This is i3-specific, which is sad, but not a huge problem.  What
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; is a
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; problem is that i3lock sometimes hangs around even though I think
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; it should
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; exit on unlock.  And, indeed, most of the time it does exit on
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; unlock.  Once
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; in a while, I find I have one or even several i3lock processes
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; hanging
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; around.
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; I either lock my screen explicitly
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; bindsym $mod+Control+L exec i3lock --dpms --inactivity-timeout 10
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; --color=220022
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; or else it's done by inactivity
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; xautolock -detectsleep \
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt;     -time 3 -locker &quot;i3lock --dpms --color=220022
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; --inactivity-timeout 10 --nofork&quot;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; This question thus has two parts:
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; 1. Am I doing something wrong that I sometimes have multiple
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; i3lock
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; instances?
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; 2. Is there a better way to detect screen lock than pidof i3lock?
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; Jeff Abrahamson
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; +33 6 24 40 01 57
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; +44 7920 594 255    &lt;-- only if I'm in the UK
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; <A HREF="http://jeff.purple.com/">http://jeff.purple.com/</A>
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;&gt; <A HREF="http://blog.purple.com/jeff/">http://blog.purple.com/jeff/</A>
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt; --
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt; Best regards,
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;&gt; Michael
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt; --
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt; Best regards,
+</I>&gt;&gt;<i> &gt;&gt;&gt;&gt; Michael
+</I>&gt;&gt;<i> &gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; --
+</I>&gt;&gt;<i> &gt;&gt; Best regards,
+</I>&gt;&gt;<i> &gt;&gt; Michael
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i> Best regards,
+</I>&gt;&gt;<i> Michael
+</I>&gt;<i>
+</I>&gt;<i>
+</I>
+
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002072.html">[i3] Detecting screen locked
+</A></li>
+	<LI>Next message: <A HREF="002074.html">[i3] i3 upgrade failure on trusty
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2073">[ date ]</a>
+              <a href="thread.html#2073">[ thread ]</a>
+              <a href="subject.html#2073">[ subject ]</a>
+              <a href="author.html#2073">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

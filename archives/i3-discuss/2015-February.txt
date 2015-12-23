@@ -1,0 +1,1585 @@
+From michael at i3wm.org  Wed Feb  4 11:05:27 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 4 Feb 2015 11:05:27 +0100
+Subject: [i3] All i3 git repositories are now on GitHub
+Message-ID: <CANnVG6kBxOf=qyBX9s963Dx5tA8wATpG7MhsDZOW0f8o5PxADQ@mail.gmail.com>
+
+Hey,
+
+For various reasons, I’d like to minimize the number of critical
+services I host (and the number of custom solutions for common tasks).
+Therefore, I’ve moved all i3 repositories to GitHub.
+
+Instead of submitting patches on cr.i3wm.org, please send a pull
+request for the corresponding repository on https://github.com/i3.
+
+http://bugs.i3wm.org is now a redirect to
+https://github.com/i3/i3/issues, and all existing tickets have been
+imported.
+
+I’ll keep the existing repository locations around as best-effort
+mirrors (which automatically pull from GitHub). All past reviews on
+cr.i3wm.org are kept so that history stays available.
+
+-- 
+Best regards,
+Michael
+
+From layus.on at gmail.com  Tue Feb 17 21:24:49 2015
+From: layus.on at gmail.com (Layus)
+Date: Tue, 17 Feb 2015 21:24:49 +0100
+Subject: [i3] Assign workspaces to outputs dynamically.
+Message-ID: <54E3A391.1000401@gmail.com>
+
+Hi,
+
+I use my laptop in three different environments with different randr 
+outputs enabled.
+I often switch between environments, and could not configure i3 to place 
+my workspaces on the desired outputs.
+My randr configuration is updated automatically on udev drm change 
+events with autorandr <http://github.com/wertarbyte/autorandr>.
+Is there some way to specify dynamic output bindings ?
+
+My three environments are pretty simple :
+
+ 1. /Nomad (undocked)/
+      * eDP1 connected primary ← all workspaces
+ 2. /Docked/
+      * eDP1 connected ← workspace 0
+      * DP1-1 connected primary ← all other workspaces
+ 3. /Presentation/
+      * VGA1 connected ← workspace 0
+      * eDP1 connected primary ← all other workspaces
+
+My current config works for situation 1 and 2 :
+
+|workspace 0 output eDP1
+
+workspace 1 output DP1-1
+workspace 2 output DP1-1
+workspace 3 output DP1-1
+workspace 4 output DP1-1
+workspace 5 output DP1-1
+workspace 6 output DP1-1
+workspace 7 output DP1-1
+workspace 8 output DP1-1
+workspace 9 output DP1-1
+workspace 10 output DP1-1
+|
+
+This is already a hack because the configuration describes the /Docked/ 
+configuration.
+It incidentally works when /Undocked/ because there is only one output, 
+and all workspaces are mapped to it.
+
+It does not work at all for my presentation.
+
+One solution that would suit me would be to extend the |workspace <x> 
+output| command to support multiple outputs in order of preference.
+for example, |worspace 0 output(s) VGA1 eDP1| would place workspace 0 on 
+the projector when available, and on eDP1 otherwise.
+
+Do you find this useful ?
+
+Layus.
+
+​
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150217/de2979f3/attachment.html>
+
+From serge at vanginderachter.be  Tue Feb 17 21:31:28 2015
+From: serge at vanginderachter.be (Serge van Ginderachter)
+Date: Tue, 17 Feb 2015 21:31:28 +0100
+Subject: [i3] Assign workspaces to outputs dynamically.
+In-Reply-To: <54E3A391.1000401@gmail.com>
+References: <54E3A391.1000401@gmail.com>
+Message-ID: <CAEhzMJBAjr-DuAuA+wXgb-5zjsjb32FaGHksf5_2y=n12zHTtg@mail.gmail.com>
+
+fwiw, I use a script that detects things like which monitor is connected,
+and falls back to certain defaults, or can be forced to e.g. VGA display
+etc.
+
+    https://github.com/srvg/dotfiles/blob/master/bin/xdisp
+
+HTH,
+
+  Serge
+
+On 17 February 2015 at 21:24, Layus <layus.on at gmail.com> wrote:
+
+>  Hi,
+>
+> I use my laptop in three different environments with different randr
+> outputs enabled.
+> I often switch between environments, and could not configure i3 to place
+> my workspaces on the desired outputs.
+> My randr configuration is updated automatically on udev drm change events
+> with autorandr <http://github.com/wertarbyte/autorandr>.
+> Is there some way to specify dynamic output bindings ?
+>
+> My three environments are pretty simple :
+>
+>    1. *Nomad (undocked)*
+>       - eDP1 connected primary ← all workspaces
+>     2. *Docked*
+>       - eDP1 connected ← workspace 0
+>       - DP1-1 connected primary ← all other workspaces
+>     3. *Presentation*
+>       - VGA1 connected ← workspace 0
+>       - eDP1 connected primary ← all other workspaces
+>
+> My current config works for situation 1 and 2 :
+>
+> workspace 0 output eDP1
+>
+> workspace 1 output DP1-1
+> workspace 2 output DP1-1
+> workspace 3 output DP1-1
+> workspace 4 output DP1-1
+> workspace 5 output DP1-1
+> workspace 6 output DP1-1
+> workspace 7 output DP1-1
+> workspace 8 output DP1-1
+> workspace 9 output DP1-1
+> workspace 10 output DP1-1
+>
+> This is already a hack because the configuration describes the *Docked*
+> configuration.
+> It incidentally works when *Undocked* because there is only one output,
+> and all workspaces are mapped to it.
+>
+> It does not work at all for my presentation.
+>
+> One solution that would suit me would be to extend the workspace <x>
+> output command to support multiple outputs in order of preference.
+> for example, worspace 0 output(s) VGA1 eDP1 would place workspace 0 on
+> the projector when available, and on eDP1 otherwise.
+>
+> Do you find this useful ?
+>
+> Layus.
+> ​
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150217/93b6631b/attachment.html>
+
+From bigby.james at dimthoughts.com  Fri Feb 20 17:16:54 2015
+From: bigby.james at dimthoughts.com (Bigby James)
+Date: Fri, 20 Feb 2015 10:16:54 -0600
+Subject: [i3] Code for titlebar borders
+Message-ID: <20150220161654.GA3723@workbox.Home>
+
+Howdy-ha, all. This message is basically a rehash of a question I asked on the
+FAQ.[1] It didn't get any responses, so I'm just giving this list a shot to see
+if anyone can point me in the right direction.
+
+I'm looking for the portion of the i3 source code that controls the thickness
+(height) of the titlebar borders, in the hopes of increasing that thickness. The
+goal is to make the border slight thicker in order to make it more prominent,
+making it another indicator of the focus status of a window rather than a mere
+aesthetic supplement to the background color of the window's titlebar (although
+I also think it would look nice; it's not *just* a practical thing ;) ).
+
+I'm not much of a coder, so the closest related thing I've found that seems
+relevant is the following snippet from '<i3_source_root>/src/x.c':
+
+> /* 5: draw two unconnected horizontal lines in border color */
+> xcb_change_gc(conn, parent->pm_gc, XCB_GC_FOREGROUND, (uint32_t[])
+> {p->color->border});
+> Rect *dr = &(con->deco_rect);
+> int deco_diff_l = 2;
+> int deco_diff_r = 2;
+> if (parent->layout == L_TABBED) {
+>     if (TAILQ_PREV(con, nodes_head, nodes) != NULL)
+>         deco_diff_l = 0;
+>     if (TAILQ_NEXT(con, nodes) != NULL)
+>         deco_diff_r = 0;
+> }
+> 
+> xcb_segment_t segments[] = {
+>     {dr->x, dr->y,
+>     dr->x + dr->width - 1, dr->y},
+>     {dr->x + deco_diff_l, dr->y + dr->height - 1,
+>     dr->x - deco_diff_r + dr->width - 1,
+>     dr->y + dr->height - 1}};
+> xcb_poly_segment(conn, parent->pixmap, parent->pm_gc, 2, segments);
+
+This mostly seems to control the position and padding of the border, but not its
+thickness/height, so I feel like it's the wrong place to look.  If anyone can
+either correct me if I'm wrong or let me know where in the code to look, I'd
+appreciate it.  Thanks for your time; take care.
+
+- Bigby
+
+[1]: https://faq.i3wm.org/question/5385/code-for-window-title-border/
+
+-- 
+"A common mistake that people make when trying to design something completely
+foolproof is to underestimate the ingenuity of complete fools." - Douglas Adams
+
+
+From jeff at purple.com  Sat Feb 21 08:45:37 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Fri, 20 Feb 2015 21:45:37 -1000
+Subject: [i3] I3 and emacs
+Message-ID: <CAM4Y7zxsKHgTHnf3U2HwVUem=HZE9+7xdeBv8OX_utHLsPwSeg@mail.gmail.com>
+
+I'd like to use I3 and emacs. I don't have a spare modifier key on my
+keyboard, so I'd like to use a prefix key. Maybe I missed it in the docs,
+in which case, please accept my apologies. (I've only just begun to look at
+the source.)
+
+1. Is there support for this currently in I3?
+
+2. If not, is there interest in a patch?
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only if I'm in the UK
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150220/789db209/attachment.html>
+
+From michael at i3wm.org  Sat Feb 21 11:19:54 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 21 Feb 2015 11:19:54 +0100
+Subject: [i3] Code for titlebar borders
+In-Reply-To: <20150220161654.GA3723@workbox.Home>
+References: <20150220161654.GA3723@workbox.Home>
+Message-ID: <CANnVG6k5_i6UAPc5R1_gcH7H_WT_hwYrnpW-OQbEcCRRe3ag3A@mail.gmail.com>
+
+Are you aware of
+http://i3wm.org/docs/userguide.html#_border_style_for_new_windows,
+specifically something like “new_window pixel 4”?
+
+To answer your actual question: I think
+https://github.com/i3/i3/blob/fbe25297b7921c390bcdac846710667fc04569f8/src/con.c#L1130
+is what you’re looking for.
+
+On Fri, Feb 20, 2015 at 5:16 PM, Bigby James
+<bigby.james at dimthoughts.com> wrote:
+> Howdy-ha, all. This message is basically a rehash of a question I asked on the
+> FAQ.[1] It didn't get any responses, so I'm just giving this list a shot to see
+> if anyone can point me in the right direction.
+>
+> I'm looking for the portion of the i3 source code that controls the thickness
+> (height) of the titlebar borders, in the hopes of increasing that thickness. The
+> goal is to make the border slight thicker in order to make it more prominent,
+> making it another indicator of the focus status of a window rather than a mere
+> aesthetic supplement to the background color of the window's titlebar (although
+> I also think it would look nice; it's not *just* a practical thing ;) ).
+>
+> I'm not much of a coder, so the closest related thing I've found that seems
+> relevant is the following snippet from '<i3_source_root>/src/x.c':
+>
+>> /* 5: draw two unconnected horizontal lines in border color */
+>> xcb_change_gc(conn, parent->pm_gc, XCB_GC_FOREGROUND, (uint32_t[])
+>> {p->color->border});
+>> Rect *dr = &(con->deco_rect);
+>> int deco_diff_l = 2;
+>> int deco_diff_r = 2;
+>> if (parent->layout == L_TABBED) {
+>>     if (TAILQ_PREV(con, nodes_head, nodes) != NULL)
+>>         deco_diff_l = 0;
+>>     if (TAILQ_NEXT(con, nodes) != NULL)
+>>         deco_diff_r = 0;
+>> }
+>>
+>> xcb_segment_t segments[] = {
+>>     {dr->x, dr->y,
+>>     dr->x + dr->width - 1, dr->y},
+>>     {dr->x + deco_diff_l, dr->y + dr->height - 1,
+>>     dr->x - deco_diff_r + dr->width - 1,
+>>     dr->y + dr->height - 1}};
+>> xcb_poly_segment(conn, parent->pixmap, parent->pm_gc, 2, segments);
+>
+> This mostly seems to control the position and padding of the border, but not its
+> thickness/height, so I feel like it's the wrong place to look.  If anyone can
+> either correct me if I'm wrong or let me know where in the code to look, I'd
+> appreciate it.  Thanks for your time; take care.
+>
+> - Bigby
+>
+> [1]: https://faq.i3wm.org/question/5385/code-for-window-title-border/
+>
+> --
+> "A common mistake that people make when trying to design something completely
+> foolproof is to underestimate the ingenuity of complete fools." - Douglas Adams
+>
+
+
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Sat Feb 21 11:22:40 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 21 Feb 2015 11:22:40 +0100
+Subject: [i3] I3 and emacs
+In-Reply-To: <CAM4Y7zxsKHgTHnf3U2HwVUem=HZE9+7xdeBv8OX_utHLsPwSeg@mail.gmail.com>
+References: <CAM4Y7zxsKHgTHnf3U2HwVUem=HZE9+7xdeBv8OX_utHLsPwSeg@mail.gmail.com>
+Message-ID: <CANnVG6nQ-26obrQGJR6Q2ZQKksJUhuE=UZcMff38kft+VN-eyA@mail.gmail.com>
+
+See https://faq.i3wm.org/question/360/emacs-like-keybinding/
+
+On Sat, Feb 21, 2015 at 8:45 AM, Jeff Abrahamson <jeff at purple.com> wrote:
+> I'd like to use I3 and emacs. I don't have a spare modifier key on my
+> keyboard, so I'd like to use a prefix key. Maybe I missed it in the docs, in
+> which case, please accept my apologies. (I've only just begun to look at the
+> source.)
+>
+> 1. Is there support for this currently in I3?
+>
+> 2. If not, is there interest in a patch?
+>
+> Jeff Abrahamson
+> +33 6 24 40 01 57
+> +44 7920 594 255    <-- only if I'm in the UK
+>
+> http://jeff.purple.com/
+> http://blog.purple.com/jeff/
+
+
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Sat Feb 21 11:25:48 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 21 Feb 2015 11:25:48 +0100
+Subject: [i3] Assign workspaces to outputs dynamically.
+In-Reply-To: <CAEhzMJBAjr-DuAuA+wXgb-5zjsjb32FaGHksf5_2y=n12zHTtg@mail.gmail.com>
+References: <54E3A391.1000401@gmail.com>
+ <CAEhzMJBAjr-DuAuA+wXgb-5zjsjb32FaGHksf5_2y=n12zHTtg@mail.gmail.com>
+Message-ID: <CANnVG6mGRHaOqWCgQqLE_syhbOUPWurpE8xDm31JJuzhBo1aTg@mail.gmail.com>
+
+For the level of customization you describe, you’ll need to create a
+simple script that generates/puts together your config file. See e.g.
+https://faq.i3wm.org/question/1367/anyway-to-include-in-config-file/
+
+On Tue, Feb 17, 2015 at 9:31 PM, Serge van Ginderachter
+<serge at vanginderachter.be> wrote:
+> fwiw, I use a script that detects things like which monitor is connected,
+> and falls back to certain defaults, or can be forced to e.g. VGA display
+> etc.
+>
+>     https://github.com/srvg/dotfiles/blob/master/bin/xdisp
+>
+> HTH,
+>
+>   Serge
+>
+> On 17 February 2015 at 21:24, Layus <layus.on at gmail.com> wrote:
+>>
+>> Hi,
+>>
+>> I use my laptop in three different environments with different randr
+>> outputs enabled.
+>> I often switch between environments, and could not configure i3 to place
+>> my workspaces on the desired outputs.
+>> My randr configuration is updated automatically on udev drm change events
+>> with autorandr.
+>> Is there some way to specify dynamic output bindings ?
+>>
+>> My three environments are pretty simple :
+>>
+>> Nomad (undocked)
+>>
+>> eDP1 connected primary ← all workspaces
+>>
+>> Docked
+>>
+>> eDP1 connected ← workspace 0
+>> DP1-1 connected primary ← all other workspaces
+>>
+>> Presentation
+>>
+>> VGA1 connected ← workspace 0
+>> eDP1 connected primary ← all other workspaces
+>>
+>> My current config works for situation 1 and 2 :
+>>
+>> workspace 0 output eDP1
+>>
+>> workspace 1 output DP1-1
+>> workspace 2 output DP1-1
+>> workspace 3 output DP1-1
+>> workspace 4 output DP1-1
+>> workspace 5 output DP1-1
+>> workspace 6 output DP1-1
+>> workspace 7 output DP1-1
+>> workspace 8 output DP1-1
+>> workspace 9 output DP1-1
+>> workspace 10 output DP1-1
+>>
+>> This is already a hack because the configuration describes the Docked
+>> configuration.
+>> It incidentally works when Undocked because there is only one output, and
+>> all workspaces are mapped to it.
+>>
+>> It does not work at all for my presentation.
+>>
+>> One solution that would suit me would be to extend the workspace <x>
+>> output command to support multiple outputs in order of preference.
+>> for example, worspace 0 output(s) VGA1 eDP1 would place workspace 0 on the
+>> projector when available, and on eDP1 otherwise.
+>>
+>> Do you find this useful ?
+>>
+>> Layus.
+>
+>
+
+
+
+-- 
+Best regards,
+Michael
+
+From layus.on at gmail.com  Sat Feb 21 11:40:10 2015
+From: layus.on at gmail.com (Layus)
+Date: Sat, 21 Feb 2015 11:40:10 +0100
+Subject: [i3] Assign workspaces to outputs dynamically.
+In-Reply-To: <CAEhzMJBAjr-DuAuA+wXgb-5zjsjb32FaGHksf5_2y=n12zHTtg@mail.gmail.com>
+References: <54E3A391.1000401@gmail.com>
+ <CAEhzMJBAjr-DuAuA+wXgb-5zjsjb32FaGHksf5_2y=n12zHTtg@mail.gmail.com>
+Message-ID: <54E8608A.6040507@gmail.com>
+
+Hi,
+
+The configuration directive |workspace 1 output DP1-1| seems to have no 
+“command” counterpart.
+(i.e. i3-msg workspace 1 output DP1-1 creates a new workspace named “1 
+output DP1-1”)
+
+This means that I am unable to remap dynamically workspaces to outputs.
+Am I missing some option or should I fill a feature request/provide a 
+patch ?
+
+@Serge:
+Thank you for your response.
+
+I have looked into autorandr, and it does indeed provide a postswitch hook.
+I have added some reconfiguration for i3 there (see my postswitch file 
+https://gist.github.com/layus/89a6bb8feebe6c1f96d2)
+
+Regards,
+Layus
+
+Le 17/02/15 21:31, Serge van Ginderachter a écrit :
+
+> fwiw, I use a script that detects things like which monitor is 
+> connected, and falls back to certain defaults, or can be forced to 
+> e.g. VGA display etc.
+>
+> https://github.com/srvg/dotfiles/blob/master/bin/xdisp
+>
+> HTH,
+>
+>   Serge
+>
+> On 17 February 2015 at 21:24, Layus <layus.on at gmail.com 
+> <mailto:layus.on at gmail.com>> wrote:
+>
+>     Hi,
+>
+>     I use my laptop in three different environments with different
+>     randr outputs enabled.
+>     I often switch between environments, and could not configure i3 to
+>     place my workspaces on the desired outputs.
+>     My randr configuration is updated automatically on udev drm change
+>     events with autorandr <http://github.com/wertarbyte/autorandr>.
+>     Is there some way to specify dynamic output bindings ?
+>
+>     My three environments are pretty simple :
+>
+>      1. /Nomad (undocked)/
+>           * eDP1 connected primary ← all workspaces
+>      2. /Docked/
+>           * eDP1 connected ← workspace 0
+>           * DP1-1 connected primary ← all other workspaces
+>      3. /Presentation/
+>           * VGA1 connected ← workspace 0
+>           * eDP1 connected primary ← all other workspaces
+>
+>     My current config works for situation 1 and 2 :
+>
+>     |workspace 0 output eDP1
+>
+>     workspace 1 output DP1-1
+>     workspace 2 output DP1-1
+>     workspace 3 output DP1-1
+>     workspace 4 output DP1-1
+>     workspace 5 output DP1-1
+>     workspace 6 output DP1-1
+>     workspace 7 output DP1-1
+>     workspace 8 output DP1-1
+>     workspace 9 output DP1-1
+>     workspace 10 output DP1-1
+>     |
+>
+>     This is already a hack because the configuration describes the
+>     /Docked/ configuration.
+>     It incidentally works when /Undocked/ because there is only one
+>     output, and all workspaces are mapped to it.
+>
+>     It does not work at all for my presentation.
+>
+>     One solution that would suit me would be to extend the |workspace
+>     <x> output| command to support multiple outputs in order of
+>     preference.
+>     for example, |worspace 0 output(s) VGA1 eDP1| would place
+>     workspace 0 on the projector when available, and on eDP1 otherwise.
+>
+>     Do you find this useful ?
+>
+>     Layus.
+>
+>     ​
+>
+>
+​
+
+​
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150221/edb6e5ce/attachment-0001.html>
+
+From michael at i3wm.org  Sat Feb 21 11:45:30 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 21 Feb 2015 11:45:30 +0100
+Subject: [i3] Assign workspaces to outputs dynamically.
+In-Reply-To: <54E8608A.6040507@gmail.com>
+References: <54E3A391.1000401@gmail.com>
+ <CAEhzMJBAjr-DuAuA+wXgb-5zjsjb32FaGHksf5_2y=n12zHTtg@mail.gmail.com>
+ <54E8608A.6040507@gmail.com>
+Message-ID: <CANnVG6nxab_Tr5tuExqsf8-1LYOX9ETTwJNQLTEyMk+0L0321Q@mail.gmail.com>
+
+On Sat, Feb 21, 2015 at 11:40 AM, Layus <layus.on at gmail.com> wrote:
+> Hi,
+>
+> The configuration directive workspace 1 output DP1-1 seems to have no
+> “command” counterpart.
+> (i.e. i3-msg workspace 1 output DP1-1 creates a new workspace named “1
+> output DP1-1”)
+>
+> This means that I am unable to remap dynamically workspaces to outputs.
+> Am I missing some option or should I fill a feature request/provide a patch
+> ?
+
+It does, see http://i3wm.org/docs/userguide.html#_moving_containers_workspaces_to_randr_outputs
+
+>
+> @Serge:
+> Thank you for your response.
+>
+> I have looked into autorandr, and it does indeed provide a postswitch hook.
+> I have added some reconfiguration for i3 there (see my postswitch file
+> https://gist.github.com/layus/89a6bb8feebe6c1f96d2)
+>
+> Regards,
+> Layus
+>
+> Le 17/02/15 21:31, Serge van Ginderachter a écrit :
+>
+> fwiw, I use a script that detects things like which monitor is connected,
+> and falls back to certain defaults, or can be forced to e.g. VGA display
+> etc.
+>
+>     https://github.com/srvg/dotfiles/blob/master/bin/xdisp
+>
+> HTH,
+>
+>   Serge
+>
+> On 17 February 2015 at 21:24, Layus <layus.on at gmail.com> wrote:
+>>
+>> Hi,
+>>
+>> I use my laptop in three different environments with different randr
+>> outputs enabled.
+>> I often switch between environments, and could not configure i3 to place
+>> my workspaces on the desired outputs.
+>> My randr configuration is updated automatically on udev drm change events
+>> with autorandr.
+>> Is there some way to specify dynamic output bindings ?
+>>
+>> My three environments are pretty simple :
+>>
+>> Nomad (undocked)
+>>
+>> eDP1 connected primary ← all workspaces
+>>
+>> Docked
+>>
+>> eDP1 connected ← workspace 0
+>> DP1-1 connected primary ← all other workspaces
+>>
+>> Presentation
+>>
+>> VGA1 connected ← workspace 0
+>> eDP1 connected primary ← all other workspaces
+>>
+>> My current config works for situation 1 and 2 :
+>>
+>> workspace 0 output eDP1
+>>
+>> workspace 1 output DP1-1
+>> workspace 2 output DP1-1
+>> workspace 3 output DP1-1
+>> workspace 4 output DP1-1
+>> workspace 5 output DP1-1
+>> workspace 6 output DP1-1
+>> workspace 7 output DP1-1
+>> workspace 8 output DP1-1
+>> workspace 9 output DP1-1
+>> workspace 10 output DP1-1
+>>
+>> This is already a hack because the configuration describes the Docked
+>> configuration.
+>> It incidentally works when Undocked because there is only one output, and
+>> all workspaces are mapped to it.
+>>
+>> It does not work at all for my presentation.
+>>
+>> One solution that would suit me would be to extend the workspace <x>
+>> output command to support multiple outputs in order of preference.
+>> for example, worspace 0 output(s) VGA1 eDP1 would place workspace 0 on the
+>> projector when available, and on eDP1 otherwise.
+>>
+>> Do you find this useful ?
+>>
+>> Layus.
+>
+>
+
+-- 
+Best regards,
+Michael
+
+From layus.on at gmail.com  Sat Feb 21 11:47:18 2015
+From: layus.on at gmail.com (Layus)
+Date: Sat, 21 Feb 2015 11:47:18 +0100
+Subject: [i3] Assign workspaces to outputs dynamically.
+In-Reply-To: <CANnVG6mGRHaOqWCgQqLE_syhbOUPWurpE8xDm31JJuzhBo1aTg@mail.gmail.com>
+References: <54E3A391.1000401@gmail.com>
+ <CAEhzMJBAjr-DuAuA+wXgb-5zjsjb32FaGHksf5_2y=n12zHTtg@mail.gmail.com>
+ <CANnVG6mGRHaOqWCgQqLE_syhbOUPWurpE8xDm31JJuzhBo1aTg@mail.gmail.com>
+Message-ID: <54E86236.1090603@gmail.com>
+
+@Michael,
+
+You mean that I should rewrite .i3/config and reload (restart?) i3 every 
+time I detect a monitor change, right ?
+
+This seems a bit overkill but might just work.
+I will try that on Monday.
+
+Le 21/02/15 11:25, Michael Stapelberg a écrit :
+> For the level of customization you describe, you’ll need to create a
+> simple script that generates/puts together your config file. See e.g.
+> https://faq.i3wm.org/question/1367/anyway-to-include-in-config-file/
+>
+> On Tue, Feb 17, 2015 at 9:31 PM, Serge van Ginderachter
+> <serge at vanginderachter.be> wrote:
+>> fwiw, I use a script that detects things like which monitor is connected,
+>> and falls back to certain defaults, or can be forced to e.g. VGA display
+>> etc.
+>>
+>>      https://github.com/srvg/dotfiles/blob/master/bin/xdisp
+>>
+>> HTH,
+>>
+>>    Serge
+>>
+>> On 17 February 2015 at 21:24, Layus <layus.on at gmail.com> wrote:
+>>> Hi,
+>>>
+>>> I use my laptop in three different environments with different randr
+>>> outputs enabled.
+>>> I often switch between environments, and could not configure i3 to place
+>>> my workspaces on the desired outputs.
+>>> My randr configuration is updated automatically on udev drm change events
+>>> with autorandr.
+>>> Is there some way to specify dynamic output bindings ?
+>>>
+>>> My three environments are pretty simple :
+>>>
+>>> Nomad (undocked)
+>>>
+>>> eDP1 connected primary ← all workspaces
+>>>
+>>> Docked
+>>>
+>>> eDP1 connected ← workspace 0
+>>> DP1-1 connected primary ← all other workspaces
+>>>
+>>> Presentation
+>>>
+>>> VGA1 connected ← workspace 0
+>>> eDP1 connected primary ← all other workspaces
+>>>
+>>> My current config works for situation 1 and 2 :
+>>>
+>>> workspace 0 output eDP1
+>>>
+>>> workspace 1 output DP1-1
+>>> workspace 2 output DP1-1
+>>> workspace 3 output DP1-1
+>>> workspace 4 output DP1-1
+>>> workspace 5 output DP1-1
+>>> workspace 6 output DP1-1
+>>> workspace 7 output DP1-1
+>>> workspace 8 output DP1-1
+>>> workspace 9 output DP1-1
+>>> workspace 10 output DP1-1
+>>>
+>>> This is already a hack because the configuration describes the Docked
+>>> configuration.
+>>> It incidentally works when Undocked because there is only one output, and
+>>> all workspaces are mapped to it.
+>>>
+>>> It does not work at all for my presentation.
+>>>
+>>> One solution that would suit me would be to extend the workspace <x>
+>>> output command to support multiple outputs in order of preference.
+>>> for example, worspace 0 output(s) VGA1 eDP1 would place workspace 0 on the
+>>> projector when available, and on eDP1 otherwise.
+>>>
+>>> Do you find this useful ?
+>>>
+>>> Layus.
+>>
+>
+>
+
+
+From michael at i3wm.org  Sat Feb 21 12:05:07 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 21 Feb 2015 12:05:07 +0100
+Subject: [i3] Assign workspaces to outputs dynamically.
+In-Reply-To: <54E86236.1090603@gmail.com>
+References: <54E3A391.1000401@gmail.com>
+ <CAEhzMJBAjr-DuAuA+wXgb-5zjsjb32FaGHksf5_2y=n12zHTtg@mail.gmail.com>
+ <CANnVG6mGRHaOqWCgQqLE_syhbOUPWurpE8xDm31JJuzhBo1aTg@mail.gmail.com>
+ <54E86236.1090603@gmail.com>
+Message-ID: <CANnVG6natQYkCSmTfK=-cmaaGCd9QsGUm20ywUjTEkYiDObtyg@mail.gmail.com>
+
+Correct. I’m not sure if reload does the trick or if a restart is
+required. In case reload is not sufficient, I bet TonyC is interested
+in fixing that ;).
+
+On Sat, Feb 21, 2015 at 11:47 AM, Layus <layus.on at gmail.com> wrote:
+> @Michael,
+>
+> You mean that I should rewrite .i3/config and reload (restart?) i3 every
+> time I detect a monitor change, right ?
+>
+> This seems a bit overkill but might just work.
+> I will try that on Monday.
+>
+> Le 21/02/15 11:25, Michael Stapelberg a écrit :
+>
+>> For the level of customization you describe, you’ll need to create a
+>> simple script that generates/puts together your config file. See e.g.
+>> https://faq.i3wm.org/question/1367/anyway-to-include-in-config-file/
+>>
+>> On Tue, Feb 17, 2015 at 9:31 PM, Serge van Ginderachter
+>> <serge at vanginderachter.be> wrote:
+>>>
+>>> fwiw, I use a script that detects things like which monitor is connected,
+>>> and falls back to certain defaults, or can be forced to e.g. VGA display
+>>> etc.
+>>>
+>>>      https://github.com/srvg/dotfiles/blob/master/bin/xdisp
+>>>
+>>> HTH,
+>>>
+>>>    Serge
+>>>
+>>> On 17 February 2015 at 21:24, Layus <layus.on at gmail.com> wrote:
+>>>>
+>>>> Hi,
+>>>>
+>>>> I use my laptop in three different environments with different randr
+>>>> outputs enabled.
+>>>> I often switch between environments, and could not configure i3 to place
+>>>> my workspaces on the desired outputs.
+>>>> My randr configuration is updated automatically on udev drm change
+>>>> events
+>>>> with autorandr.
+>>>> Is there some way to specify dynamic output bindings ?
+>>>>
+>>>> My three environments are pretty simple :
+>>>>
+>>>> Nomad (undocked)
+>>>>
+>>>> eDP1 connected primary ← all workspaces
+>>>>
+>>>> Docked
+>>>>
+>>>> eDP1 connected ← workspace 0
+>>>> DP1-1 connected primary ← all other workspaces
+>>>>
+>>>> Presentation
+>>>>
+>>>> VGA1 connected ← workspace 0
+>>>> eDP1 connected primary ← all other workspaces
+>>>>
+>>>> My current config works for situation 1 and 2 :
+>>>>
+>>>> workspace 0 output eDP1
+>>>>
+>>>> workspace 1 output DP1-1
+>>>> workspace 2 output DP1-1
+>>>> workspace 3 output DP1-1
+>>>> workspace 4 output DP1-1
+>>>> workspace 5 output DP1-1
+>>>> workspace 6 output DP1-1
+>>>> workspace 7 output DP1-1
+>>>> workspace 8 output DP1-1
+>>>> workspace 9 output DP1-1
+>>>> workspace 10 output DP1-1
+>>>>
+>>>> This is already a hack because the configuration describes the Docked
+>>>> configuration.
+>>>> It incidentally works when Undocked because there is only one output,
+>>>> and
+>>>> all workspaces are mapped to it.
+>>>>
+>>>> It does not work at all for my presentation.
+>>>>
+>>>> One solution that would suit me would be to extend the workspace <x>
+>>>> output command to support multiple outputs in order of preference.
+>>>> for example, worspace 0 output(s) VGA1 eDP1 would place workspace 0 on
+>>>> the
+>>>> projector when available, and on eDP1 otherwise.
+>>>>
+>>>> Do you find this useful ?
+>>>>
+>>>> Layus.
+>>>
+>>>
+>>
+>>
+>
+
+
+
+-- 
+Best regards,
+Michael
+
+From bigby.james at dimthoughts.com  Sat Feb 21 19:48:29 2015
+From: bigby.james at dimthoughts.com (Bigby James)
+Date: Sat, 21 Feb 2015 12:48:29 -0600
+Subject: [i3] Code for titlebar borders
+In-Reply-To: <CANnVG6k5_i6UAPc5R1_gcH7H_WT_hwYrnpW-OQbEcCRRe3ag3A@mail.gmail.com>
+References: <20150220161654.GA3723@workbox.Home>
+ <CANnVG6k5_i6UAPc5R1_gcH7H_WT_hwYrnpW-OQbEcCRRe3ag3A@mail.gmail.com>
+Message-ID: <20150221184829.GA8483@workbox.Home>
+
+On 02/21, Michael Stapelberg wrote:
+> Are you aware of
+> http://i3wm.org/docs/userguide.html#_border_style_for_new_windows,
+> specifically something like “new_window pixel 4”?
+
+Yes I am. I'm referring to the two horizontal lines drawn across the top and
+bottom edges of the titlebar (affected by the "border" color setting), *not* the
+container frame (affected by the "background" color setting). Confusion no doubt
+arises from the fact that "border" has two distinct meanings in i3 parlance.
+
+-- 
+"A common mistake that people make when trying to design something completely
+foolproof is to underestimate the ingenuity of complete fools." - Douglas Adams
+
+
+From michael at i3wm.org  Sat Feb 21 20:30:52 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 21 Feb 2015 20:30:52 +0100
+Subject: [i3] Code for titlebar borders
+In-Reply-To: <20150221184829.GA8483@workbox.Home>
+References: <20150220161654.GA3723@workbox.Home>
+ <CANnVG6k5_i6UAPc5R1_gcH7H_WT_hwYrnpW-OQbEcCRRe3ag3A@mail.gmail.com>
+ <20150221184829.GA8483@workbox.Home>
+Message-ID: <CANnVG6=hd2qM_HxcpbXkH9UijxRpALB8NBdY0E1JFJzA6cf0YQ@mail.gmail.com>
+
+I see. But then you’ve been looking at the right thing all along.
+
+On Sat, Feb 21, 2015 at 7:48 PM, Bigby James
+<bigby.james at dimthoughts.com> wrote:
+> On 02/21, Michael Stapelberg wrote:
+>> Are you aware of
+>> http://i3wm.org/docs/userguide.html#_border_style_for_new_windows,
+>> specifically something like “new_window pixel 4”?
+>
+> Yes I am. I'm referring to the two horizontal lines drawn across the top and
+> bottom edges of the titlebar (affected by the "border" color setting), *not* the
+> container frame (affected by the "background" color setting). Confusion no doubt
+> arises from the fact that "border" has two distinct meanings in i3 parlance.
+>
+> --
+> "A common mistake that people make when trying to design something completely
+> foolproof is to underestimate the ingenuity of complete fools." - Douglas Adams
+>
+
+
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Sat Feb 21 22:29:23 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 21 Feb 2015 22:29:23 +0100
+Subject: [i3] Call for testing: upcoming i3 4.9 release
+Message-ID: <CANnVG6kspw=GKtMyeuEqXsY5nKvvyDDD3JxHt3J++_2eAgTvng@mail.gmail.com>
+
+Hey,
+
+it’s been quite a while since the i3 4.8 release, so it’s time to do
+another release soon :).
+
+If you are not running a version of i3 built from the “next” branch,
+please upgrade and help us test :). You can check which version you
+are running by using i3 --moreversion. See also
+http://i3wm.org/docs/debugging.html
+
+To obtain a version built from “next”, check out
+http://i3wm.org/docs/repositories.html if you are using Debian or a
+derivative. For Arch Linux (and possibly others), install i3-git.
+
+In case you encounter any bug that wasn’t there in 4.8, please report
+it at https://github.com/i3/i3
+
+I’m planning to release in a week from now, i.e. on 2015-02-28.
+
+Thanks!
+
+-- 
+Best regards,
+Michael
+
+From baptiste.daroussin at gmail.com  Sun Feb 22 01:01:22 2015
+From: baptiste.daroussin at gmail.com (Baptiste Daroussin)
+Date: Sun, 22 Feb 2015 01:01:22 +0100
+Subject: [i3] Call for testing: upcoming i3 4.9 release
+In-Reply-To: <CANnVG6kspw=GKtMyeuEqXsY5nKvvyDDD3JxHt3J++_2eAgTvng@mail.gmail.com>
+References: <CANnVG6kspw=GKtMyeuEqXsY5nKvvyDDD3JxHt3J++_2eAgTvng@mail.gmail.com>
+Message-ID: <CAPKC6oKBLDXdBLQsJ1emZs+wMxnS_z_53=tkaxXW-QvasuzP=Q@mail.gmail.com>
+
+2015-02-21 22:29 GMT+01:00 Michael Stapelberg <michael at i3wm.org>:
+> Hey,
+>
+> it’s been quite a while since the i3 4.8 release, so it’s time to do
+> another release soon :).
+>
+> If you are not running a version of i3 built from the “next” branch,
+> please upgrade and help us test :). You can check which version you
+> are running by using i3 --moreversion. See also
+> http://i3wm.org/docs/debugging.html
+>
+> To obtain a version built from “next”, check out
+> http://i3wm.org/docs/repositories.html if you are using Debian or a
+> derivative. For Arch Linux (and possibly others), install i3-git.
+>
+> In case you encounter any bug that wasn’t there in 4.8, please report
+> it at https://github.com/i3/i3
+>
+> I’m planning to release in a week from now, i.e. on 2015-02-28.
+>
+> Thanks!
+>
+Works great on FreeBSD thanks !
+
+Best regards,
+Bapt
+
+From fh at fhaun.de  Sun Feb 22 11:20:58 2015
+From: fh at fhaun.de (Frank Haun)
+Date: Sun, 22 Feb 2015 11:20:58 +0100
+Subject: [i3] Call for testing: upcoming i3 4.9 release
+References: <CANnVG6kspw=GKtMyeuEqXsY5nKvvyDDD3JxHt3J++_2eAgTvng@mail.gmail.com>
+Message-ID: <87vbiu4585.fsf@m7002.fhaun.de>
+
+Michael Stapelberg <michael at i3wm.org> writes:
+
+> If you are not running a version of i3 built from the “next” branch,
+> please upgrade and help us test :).
+
+Is there a quick solution to compile the latest i3 on debian/wheezy?
+
+| ../i3/src/bindings.c:11:33: fatal error: xkbcommon/xkbcommon.h: Datei
+| oder Verzeichnis nicht gefunden
+
+Seems xkbcommon is not available for wheezy and there is no backport.
+
+Frank
+
+From michael at i3wm.org  Sun Feb 22 11:47:33 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 22 Feb 2015 11:47:33 +0100
+Subject: [i3] Call for testing: upcoming i3 4.9 release
+In-Reply-To: <87vbiu4585.fsf@m7002.fhaun.de>
+References: <CANnVG6kspw=GKtMyeuEqXsY5nKvvyDDD3JxHt3J++_2eAgTvng@mail.gmail.com>
+ <87vbiu4585.fsf@m7002.fhaun.de>
+Message-ID: <CANnVG6=ygkf4z6UqMnrEJ_zKBAsdPd25tzshi6cNzwR9WgxjtA@mail.gmail.com>
+
+Not that I know of. I might create a backport once 4.9 is actually released.
+
+On Sun, Feb 22, 2015 at 11:20 AM, Frank Haun <fh at fhaun.de> wrote:
+> Michael Stapelberg <michael at i3wm.org> writes:
+>
+>> If you are not running a version of i3 built from the “next” branch,
+>> please upgrade and help us test :).
+>
+> Is there a quick solution to compile the latest i3 on debian/wheezy?
+>
+> | ../i3/src/bindings.c:11:33: fatal error: xkbcommon/xkbcommon.h: Datei
+> | oder Verzeichnis nicht gefunden
+>
+> Seems xkbcommon is not available for wheezy and there is no backport.
+>
+> Frank
+
+
+
+-- 
+Best regards,
+Michael
+
+From fh at fhaun.de  Sun Feb 22 21:39:02 2015
+From: fh at fhaun.de (Frank Haun)
+Date: Sun, 22 Feb 2015 21:39:02 +0100
+Subject: [i3] Call for testing: upcoming i3 4.9 release
+In-Reply-To: <CANnVG6=ygkf4z6UqMnrEJ_zKBAsdPd25tzshi6cNzwR9WgxjtA@mail.gmail.com>
+ (Michael Stapelberg's message of "Sun, 22 Feb 2015 11:47:33 +0100")
+References: <CANnVG6kspw=GKtMyeuEqXsY5nKvvyDDD3JxHt3J++_2eAgTvng@mail.gmail.com>
+ <87vbiu4585.fsf@m7002.fhaun.de>
+ <CANnVG6=ygkf4z6UqMnrEJ_zKBAsdPd25tzshi6cNzwR9WgxjtA@mail.gmail.com>
+Message-ID: <878ufp65qx.fsf@m7002.fhaun.de>
+
+Michael Stapelberg <michael at i3wm.org> writes:
+
+> Not that I know of. I might create a backport once 4.9 is actually
+> released.
+
+Ah ok. Thanks.
+
+Frank
+
+> On Sun, Feb 22, 2015 at 11:20 AM, Frank Haun <fh at fhaun.de> wrote:
+>> Michael Stapelberg <michael at i3wm.org> writes:
+>>
+>>> If you are not running a version of i3 built from the “next” branch,
+>>> please upgrade and help us test :).
+>>
+>> Is there a quick solution to compile the latest i3 on debian/wheezy?
+>>
+>> | ../i3/src/bindings.c:11:33: fatal error: xkbcommon/xkbcommon.h: Datei
+>> | oder Verzeichnis nicht gefunden
+>>
+>> Seems xkbcommon is not available for wheezy and there is no backport.
+
+From cwa at pipeline.com  Tue Feb 24 18:12:04 2015
+From: cwa at pipeline.com (Chris Atkinson)
+Date: Tue, 24 Feb 2015 12:12:04 -0500
+Subject: [i3] Call for testing: upcoming i3 4.9 release
+In-Reply-To: <CANnVG6kspw=GKtMyeuEqXsY5nKvvyDDD3JxHt3J++_2eAgTvng@mail.gmail.com>
+Message-ID: <20150224121204.355017fb@asarum>
+
+Hi Michael,
+
+Builds and runs in Arch 64 current to commit d5ec59e ("Merge pull
+request #1486 from acrisci/feature/docs-xvfb-tests") using the
+stock i3-git PKGBUILD from the AUR.[1]
+
+Is there any particular functionality you would like tested or
+additional information regarding my setup you would find useful?
+
+Regards,
+
+[1] Note that the Arch PKGBUILD requires xcb-util-cursor-git and thus
+xcb-util-cursor is the git version current to commit f03cc27 ("darwin:
+Use OSByteOrder.h rather than CF").
+
+From michael at stapelberg.ch  Tue Feb 24 20:24:06 2015
+From: michael at stapelberg.ch (Michael Stapelberg)
+Date: Tue, 24 Feb 2015 20:24:06 +0100
+Subject: [i3] Call for testing: upcoming i3 4.9 release
+In-Reply-To: <20150224121204.355017fb@asarum>
+References: <CANnVG6kspw=GKtMyeuEqXsY5nKvvyDDD3JxHt3J++_2eAgTvng@mail.gmail.com>
+ <20150224121204.355017fb@asarum>
+Message-ID: <CANnVG6kvTk6dyCi=goOnbAJ6HUjJ5NS8DOq9XqbOJ0jURUo=bg@mail.gmail.com>
+
+No particular functionality, and thanks for the report.
+
+On Tue, Feb 24, 2015 at 6:12 PM, Chris Atkinson <cwa at pipeline.com> wrote:
+> Hi Michael,
+>
+> Builds and runs in Arch 64 current to commit d5ec59e ("Merge pull
+> request #1486 from acrisci/feature/docs-xvfb-tests") using the
+> stock i3-git PKGBUILD from the AUR.[1]
+>
+> Is there any particular functionality you would like tested or
+> additional information regarding my setup you would find useful?
+>
+> Regards,
+>
+> [1] Note that the Arch PKGBUILD requires xcb-util-cursor-git and thus
+> xcb-util-cursor is the git version current to commit f03cc27 ("darwin:
+> Use OSByteOrder.h rather than CF").
+
+
+
+-- 
+Best regards,
+Michael
+
+From mherda at gmail.com  Tue Feb 24 21:51:50 2015
+From: mherda at gmail.com (Marcin Herda)
+Date: Tue, 24 Feb 2015 20:51:50 +0000
+Subject: [i3] Call for testing: upcoming i3 4.9 release
+In-Reply-To: <CANnVG6kvTk6dyCi=goOnbAJ6HUjJ5NS8DOq9XqbOJ0jURUo=bg@mail.gmail.com>
+References: <CANnVG6kspw=GKtMyeuEqXsY5nKvvyDDD3JxHt3J++_2eAgTvng@mail.gmail.com>
+ <20150224121204.355017fb@asarum>
+ <CANnVG6kvTk6dyCi=goOnbAJ6HUjJ5NS8DOq9XqbOJ0jURUo=bg@mail.gmail.com>
+Message-ID: <54ECE466.405@gmail.com>
+
+Hi Michael and all,
+
+I have just tried to test i3-next on my Slackware system. The error I 
+get is:
+
+cc -DI3_VERSION=\"'4.8-168-gd5ec59e (2015-02-22, branch \"next\")'\" 
+-DMAJOR_VERSION=4 -DMINOR_VERSION=8 -DPATCH_VERSION=0 
+-DSYSCONFDIR=\"/etc\" -DI3__FILE__=__FILE__ -DPCRE_HAS_UCP=1 
+-DPANGO_SUPPORT=1 -D_GNU_SOURCE -I/usr/include/cairo 
+-I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include 
+-I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng14 
+-I/usr/include/libdrm   -pthread -I/usr/include/pango-1.0 
+-I/usr/include/cairo -I/usr/include/glib-2.0 
+-I/usr/lib64/glib-2.0/include -I/usr/include/pixman-1 
+-I/usr/include/freetype2 -I/usr/include/libpng14 -I/usr/include/libdrm   
+-I/usr/include/yajl -I/usr/include/startup-notification-1.0   -std=c99 
+-Wall -Wunused-value -Iinclude -O2 -fPIC  -c -o src/bindings.o 
+../i3/src/bindings.c
+../i3/src/bindings.c: In function ‘translate_keysyms’:
+../i3/src/bindings.c:269:53: error: ‘XKB_KEYSYM_NO_FLAGS’ undeclared 
+(first use in this function)
+          keysym = xkb_keysym_from_name(bind->symbol, XKB_KEYSYM_NO_FLAGS);
+                                                      ^
+../i3/src/bindings.c:269:53: note: each undeclared identifier is 
+reported only once for each function it appears in
+make: *** [src/bindings.o] Error 1
+
+Do I need to recompile any of the dependencies or is there a new one to 
+be added?
+
+Thank you very much.
+
+regards
+Marcin
+
+
+
+On 24/02/15 19:24, Michael Stapelberg wrote:
+> No particular functionality, and thanks for the report.
+>
+> On Tue, Feb 24, 2015 at 6:12 PM, Chris Atkinson <cwa at pipeline.com> wrote:
+>> Hi Michael,
+>>
+>> Builds and runs in Arch 64 current to commit d5ec59e ("Merge pull
+>> request #1486 from acrisci/feature/docs-xvfb-tests") using the
+>> stock i3-git PKGBUILD from the AUR.[1]
+>>
+>> Is there any particular functionality you would like tested or
+>> additional information regarding my setup you would find useful?
+>>
+>> Regards,
+>>
+>> [1] Note that the Arch PKGBUILD requires xcb-util-cursor-git and thus
+>> xcb-util-cursor is the git version current to commit f03cc27 ("darwin:
+>> Use OSByteOrder.h rather than CF").
+>
+>
+
+
+From michael at stapelberg.ch  Tue Feb 24 21:54:55 2015
+From: michael at stapelberg.ch (Michael Stapelberg)
+Date: Tue, 24 Feb 2015 21:54:55 +0100
+Subject: [i3] Call for testing: upcoming i3 4.9 release
+In-Reply-To: <54ECE466.405@gmail.com>
+References: <CANnVG6kspw=GKtMyeuEqXsY5nKvvyDDD3JxHt3J++_2eAgTvng@mail.gmail.com>
+ <20150224121204.355017fb@asarum>
+ <CANnVG6kvTk6dyCi=goOnbAJ6HUjJ5NS8DOq9XqbOJ0jURUo=bg@mail.gmail.com>
+ <54ECE466.405@gmail.com>
+Message-ID: <CANnVG6n9g3S+2LLBvkg-uSOGBo0BKesfge8f+sSwL=W1jiHi1Q@mail.gmail.com>
+
+See https://github.com/i3/i3/blob/next/DEPENDS — I think your version
+of libxkbcommon is too old.
+
+On Tue, Feb 24, 2015 at 9:51 PM, Marcin Herda <mherda at gmail.com> wrote:
+> Hi Michael and all,
+>
+> I have just tried to test i3-next on my Slackware system. The error I get
+> is:
+>
+> cc -DI3_VERSION=\"'4.8-168-gd5ec59e (2015-02-22, branch \"next\")'\"
+> -DMAJOR_VERSION=4 -DMINOR_VERSION=8 -DPATCH_VERSION=0 -DSYSCONFDIR=\"/etc\"
+> -DI3__FILE__=__FILE__ -DPCRE_HAS_UCP=1 -DPANGO_SUPPORT=1 -D_GNU_SOURCE
+> -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include
+> -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng14
+> -I/usr/include/libdrm   -pthread -I/usr/include/pango-1.0
+> -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include
+> -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng14
+> -I/usr/include/libdrm   -I/usr/include/yajl
+> -I/usr/include/startup-notification-1.0   -std=c99 -Wall -Wunused-value
+> -Iinclude -O2 -fPIC  -c -o src/bindings.o ../i3/src/bindings.c
+> ../i3/src/bindings.c: In function ‘translate_keysyms’:
+> ../i3/src/bindings.c:269:53: error: ‘XKB_KEYSYM_NO_FLAGS’ undeclared (first
+> use in this function)
+>          keysym = xkb_keysym_from_name(bind->symbol, XKB_KEYSYM_NO_FLAGS);
+>                                                      ^
+> ../i3/src/bindings.c:269:53: note: each undeclared identifier is reported
+> only once for each function it appears in
+> make: *** [src/bindings.o] Error 1
+>
+> Do I need to recompile any of the dependencies or is there a new one to be
+> added?
+>
+> Thank you very much.
+>
+> regards
+> Marcin
+>
+>
+>
+>
+> On 24/02/15 19:24, Michael Stapelberg wrote:
+>>
+>> No particular functionality, and thanks for the report.
+>>
+>> On Tue, Feb 24, 2015 at 6:12 PM, Chris Atkinson <cwa at pipeline.com> wrote:
+>>>
+>>> Hi Michael,
+>>>
+>>> Builds and runs in Arch 64 current to commit d5ec59e ("Merge pull
+>>> request #1486 from acrisci/feature/docs-xvfb-tests") using the
+>>> stock i3-git PKGBUILD from the AUR.[1]
+>>>
+>>> Is there any particular functionality you would like tested or
+>>> additional information regarding my setup you would find useful?
+>>>
+>>> Regards,
+>>>
+>>> [1] Note that the Arch PKGBUILD requires xcb-util-cursor-git and thus
+>>> xcb-util-cursor is the git version current to commit f03cc27 ("darwin:
+>>> Use OSByteOrder.h rather than CF").
+>>
+>>
+>>
+>
+
+
+
+-- 
+Best regards,
+Michael
+
+From mherda at gmail.com  Wed Feb 25 00:36:27 2015
+From: mherda at gmail.com (Marcin Herda)
+Date: Tue, 24 Feb 2015 23:36:27 +0000
+Subject: [i3] Call for testing: upcoming i3 4.9 release
+In-Reply-To: <CANnVG6n9g3S+2LLBvkg-uSOGBo0BKesfge8f+sSwL=W1jiHi1Q@mail.gmail.com>
+References: <CANnVG6kspw=GKtMyeuEqXsY5nKvvyDDD3JxHt3J++_2eAgTvng@mail.gmail.com>
+ <20150224121204.355017fb@asarum>
+ <CANnVG6kvTk6dyCi=goOnbAJ6HUjJ5NS8DOq9XqbOJ0jURUo=bg@mail.gmail.com>
+ <54ECE466.405@gmail.com>
+ <CANnVG6n9g3S+2LLBvkg-uSOGBo0BKesfge8f+sSwL=W1jiHi1Q@mail.gmail.com>
+Message-ID: <54ED0AFB.6070709@gmail.com>
+
+Thanks a lot, Michael. That was it.
+
+On 24/02/15 20:54, Michael Stapelberg wrote:
+> See https://github.com/i3/i3/blob/next/DEPENDS — I think your version
+> of libxkbcommon is too old.
+>
+> On Tue, Feb 24, 2015 at 9:51 PM, Marcin Herda <mherda at gmail.com> wrote:
+>> Hi Michael and all,
+>>
+>> I have just tried to test i3-next on my Slackware system. The error I get
+>> is:
+>>
+>> cc -DI3_VERSION=\"'4.8-168-gd5ec59e (2015-02-22, branch \"next\")'\"
+>> -DMAJOR_VERSION=4 -DMINOR_VERSION=8 -DPATCH_VERSION=0 -DSYSCONFDIR=\"/etc\"
+>> -DI3__FILE__=__FILE__ -DPCRE_HAS_UCP=1 -DPANGO_SUPPORT=1 -D_GNU_SOURCE
+>> -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include
+>> -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng14
+>> -I/usr/include/libdrm   -pthread -I/usr/include/pango-1.0
+>> -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include
+>> -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng14
+>> -I/usr/include/libdrm   -I/usr/include/yajl
+>> -I/usr/include/startup-notification-1.0   -std=c99 -Wall -Wunused-value
+>> -Iinclude -O2 -fPIC  -c -o src/bindings.o ../i3/src/bindings.c
+>> ../i3/src/bindings.c: In function ‘translate_keysyms’:
+>> ../i3/src/bindings.c:269:53: error: ‘XKB_KEYSYM_NO_FLAGS’ undeclared (first
+>> use in this function)
+>>           keysym = xkb_keysym_from_name(bind->symbol, XKB_KEYSYM_NO_FLAGS);
+>>                                                       ^
+>> ../i3/src/bindings.c:269:53: note: each undeclared identifier is reported
+>> only once for each function it appears in
+>> make: *** [src/bindings.o] Error 1
+>>
+>> Do I need to recompile any of the dependencies or is there a new one to be
+>> added?
+>>
+>> Thank you very much.
+>>
+>> regards
+>> Marcin
+>>
+>>
+>>
+>>
+>> On 24/02/15 19:24, Michael Stapelberg wrote:
+>>> No particular functionality, and thanks for the report.
+>>>
+>>> On Tue, Feb 24, 2015 at 6:12 PM, Chris Atkinson <cwa at pipeline.com> wrote:
+>>>> Hi Michael,
+>>>>
+>>>> Builds and runs in Arch 64 current to commit d5ec59e ("Merge pull
+>>>> request #1486 from acrisci/feature/docs-xvfb-tests") using the
+>>>> stock i3-git PKGBUILD from the AUR.[1]
+>>>>
+>>>> Is there any particular functionality you would like tested or
+>>>> additional information regarding my setup you would find useful?
+>>>>
+>>>> Regards,
+>>>>
+>>>> [1] Note that the Arch PKGBUILD requires xcb-util-cursor-git and thus
+>>>> xcb-util-cursor is the git version current to commit f03cc27 ("darwin:
+>>>> Use OSByteOrder.h rather than CF").
+>>>
+>>>
+>
+>
+
+
+From dcoppa at gmail.com  Wed Feb 25 09:43:10 2015
+From: dcoppa at gmail.com (David Coppa)
+Date: Wed, 25 Feb 2015 09:43:10 +0100
+Subject: [i3] Call for testing: upcoming i3 4.9 release
+In-Reply-To: <CAPKC6oKBLDXdBLQsJ1emZs+wMxnS_z_53=tkaxXW-QvasuzP=Q@mail.gmail.com>
+References: <CANnVG6kspw=GKtMyeuEqXsY5nKvvyDDD3JxHt3J++_2eAgTvng@mail.gmail.com>
+ <CAPKC6oKBLDXdBLQsJ1emZs+wMxnS_z_53=tkaxXW-QvasuzP=Q@mail.gmail.com>
+Message-ID: <CABM=MFKM_UhBCA=sX_E8QA93RNpFc+d1A-Zda9yoKMwLc=4jVg@mail.gmail.com>
+
+On Sun, Feb 22, 2015 at 1:01 AM, Baptiste Daroussin
+<baptiste.daroussin at gmail.com> wrote:
+
+> Works great on FreeBSD thanks !
+
+And on OpenBSD too.
+
+There's a new dependency on libxkbcommon, is it right?
+
+Cheers!
+David
+-- 
+"If you try a few times and give up, you'll never get there. But if
+you keep at it... There's a lot of problems in the world which can
+really be solved by applying two or three times the persistence that
+other people will."
+                -- Stewart Nelson
+
+From michael at stapelberg.ch  Wed Feb 25 10:02:58 2015
+From: michael at stapelberg.ch (Michael Stapelberg)
+Date: Wed, 25 Feb 2015 10:02:58 +0100
+Subject: [i3] Call for testing: upcoming i3 4.9 release
+In-Reply-To: <CABM=MFKM_UhBCA=sX_E8QA93RNpFc+d1A-Zda9yoKMwLc=4jVg@mail.gmail.com>
+References: <CANnVG6kspw=GKtMyeuEqXsY5nKvvyDDD3JxHt3J++_2eAgTvng@mail.gmail.com>
+ <CAPKC6oKBLDXdBLQsJ1emZs+wMxnS_z_53=tkaxXW-QvasuzP=Q@mail.gmail.com>
+ <CABM=MFKM_UhBCA=sX_E8QA93RNpFc+d1A-Zda9yoKMwLc=4jVg@mail.gmail.com>
+Message-ID: <CANnVG6nioO_yc2p=vW0cRBu0+2PDpUz5ZsOfYdNDR1J8xCvrQQ@mail.gmail.com>
+
+Yes, we already spoke about it in this thread.
+
+On Wed, Feb 25, 2015 at 9:43 AM, David Coppa <dcoppa at gmail.com> wrote:
+> On Sun, Feb 22, 2015 at 1:01 AM, Baptiste Daroussin
+> <baptiste.daroussin at gmail.com> wrote:
+>
+>> Works great on FreeBSD thanks !
+>
+> And on OpenBSD too.
+>
+> There's a new dependency on libxkbcommon, is it right?
+>
+> Cheers!
+> David
+> --
+> "If you try a few times and give up, you'll never get there. But if
+> you keep at it... There's a lot of problems in the world which can
+> really be solved by applying two or three times the persistence that
+> other people will."
+>                 -- Stewart Nelson
+
+
+
+-- 
+Best regards,
+Michael
+
+From baptiste.daroussin at gmail.com  Wed Feb 25 10:03:05 2015
+From: baptiste.daroussin at gmail.com (Baptiste Daroussin)
+Date: Wed, 25 Feb 2015 10:03:05 +0100
+Subject: [i3] Call for testing: upcoming i3 4.9 release
+In-Reply-To: <CABM=MFKM_UhBCA=sX_E8QA93RNpFc+d1A-Zda9yoKMwLc=4jVg@mail.gmail.com>
+References: <CANnVG6kspw=GKtMyeuEqXsY5nKvvyDDD3JxHt3J++_2eAgTvng@mail.gmail.com>
+ <CAPKC6oKBLDXdBLQsJ1emZs+wMxnS_z_53=tkaxXW-QvasuzP=Q@mail.gmail.com>
+ <CABM=MFKM_UhBCA=sX_E8QA93RNpFc+d1A-Zda9yoKMwLc=4jVg@mail.gmail.com>
+Message-ID: <CAPKC6oK_Pr+vikJ_rhDcTB2NbCLD1sib_v+vc2N+R4zupQoJRg@mail.gmail.com>
+
+2015-02-25 9:43 GMT+01:00 David Coppa <dcoppa at gmail.com>:
+> On Sun, Feb 22, 2015 at 1:01 AM, Baptiste Daroussin
+> <baptiste.daroussin at gmail.com> wrote:
+>
+>> Works great on FreeBSD thanks !
+>
+> And on OpenBSD too.
+>
+> There's a new dependency on libxkbcommon, is it right?
+>
+Yup
+
+Bapt
+
+From layus.on at gmail.com  Thu Feb 26 14:36:08 2015
+From: layus.on at gmail.com (Guillaume Maudoux (Layus))
+Date: Thu, 26 Feb 2015 14:36:08 +0100
+Subject: [i3] Assign workspaces to outputs dynamically.
+In-Reply-To: <CANnVG6natQYkCSmTfK=-cmaaGCd9QsGUm20ywUjTEkYiDObtyg@mail.gmail.com>
+References: <54E3A391.1000401@gmail.com>
+ <CAEhzMJBAjr-DuAuA+wXgb-5zjsjb32FaGHksf5_2y=n12zHTtg@mail.gmail.com>
+ <CANnVG6mGRHaOqWCgQqLE_syhbOUPWurpE8xDm31JJuzhBo1aTg@mail.gmail.com>
+ <54E86236.1090603@gmail.com>
+ <CANnVG6natQYkCSmTfK=-cmaaGCd9QsGUm20ywUjTEkYiDObtyg@mail.gmail.com>
+Message-ID: <54EF2148.8080303@gmail.com>
+
+Ok, reached a stable solution.
+A restart is needed because otherwise the missing (i3)bars for the new 
+display are not started.
+
+If some are interested, here is the gist : 
+https://gist.github.com/layus/89a6bb8feebe6c1f96d2#file-postswitch
+
+Layus.
+
+PS : No bug yet with the "next" branch :)
+
+Le 21/02/15 12:05, Michael Stapelberg a écrit :
+> Correct. I’m not sure if reload does the trick or if a restart is
+> required. In case reload is not sufficient, I bet TonyC is interested
+> in fixing that ;).
+>
+> On Sat, Feb 21, 2015 at 11:47 AM, Layus <layus.on at gmail.com> wrote:
+>> @Michael,
+>>
+>> You mean that I should rewrite .i3/config and reload (restart?) i3 every
+>> time I detect a monitor change, right ?
+>>
+>> This seems a bit overkill but might just work.
+>> I will try that on Monday.
+>>
+>> Le 21/02/15 11:25, Michael Stapelberg a écrit :
+>>
+>>> For the level of customization you describe, you’ll need to create a
+>>> simple script that generates/puts together your config file. See e.g.
+>>> https://faq.i3wm.org/question/1367/anyway-to-include-in-config-file/
+>>>
+>>> On Tue, Feb 17, 2015 at 9:31 PM, Serge van Ginderachter
+>>> <serge at vanginderachter.be> wrote:
+>>>> fwiw, I use a script that detects things like which monitor is connected,
+>>>> and falls back to certain defaults, or can be forced to e.g. VGA display
+>>>> etc.
+>>>>
+>>>>       https://github.com/srvg/dotfiles/blob/master/bin/xdisp
+>>>>
+>>>> HTH,
+>>>>
+>>>>     Serge
+>>>>
+>>>> On 17 February 2015 at 21:24, Layus <layus.on at gmail.com> wrote:
+>>>>> Hi,
+>>>>>
+>>>>> I use my laptop in three different environments with different randr
+>>>>> outputs enabled.
+>>>>> I often switch between environments, and could not configure i3 to place
+>>>>> my workspaces on the desired outputs.
+>>>>> My randr configuration is updated automatically on udev drm change
+>>>>> events
+>>>>> with autorandr.
+>>>>> Is there some way to specify dynamic output bindings ?
+>>>>>
+>>>>> My three environments are pretty simple :
+>>>>>
+>>>>> Nomad (undocked)
+>>>>>
+>>>>> eDP1 connected primary ← all workspaces
+>>>>>
+>>>>> Docked
+>>>>>
+>>>>> eDP1 connected ← workspace 0
+>>>>> DP1-1 connected primary ← all other workspaces
+>>>>>
+>>>>> Presentation
+>>>>>
+>>>>> VGA1 connected ← workspace 0
+>>>>> eDP1 connected primary ← all other workspaces
+>>>>>
+>>>>> My current config works for situation 1 and 2 :
+>>>>>
+>>>>> workspace 0 output eDP1
+>>>>>
+>>>>> workspace 1 output DP1-1
+>>>>> workspace 2 output DP1-1
+>>>>> workspace 3 output DP1-1
+>>>>> workspace 4 output DP1-1
+>>>>> workspace 5 output DP1-1
+>>>>> workspace 6 output DP1-1
+>>>>> workspace 7 output DP1-1
+>>>>> workspace 8 output DP1-1
+>>>>> workspace 9 output DP1-1
+>>>>> workspace 10 output DP1-1
+>>>>>
+>>>>> This is already a hack because the configuration describes the Docked
+>>>>> configuration.
+>>>>> It incidentally works when Undocked because there is only one output,
+>>>>> and
+>>>>> all workspaces are mapped to it.
+>>>>>
+>>>>> It does not work at all for my presentation.
+>>>>>
+>>>>> One solution that would suit me would be to extend the workspace <x>
+>>>>> output command to support multiple outputs in order of preference.
+>>>>> for example, worspace 0 output(s) VGA1 eDP1 would place workspace 0 on
+>>>>> the
+>>>>> projector when available, and on eDP1 otherwise.
+>>>>>
+>>>>> Do you find this useful ?
+>>>>>
+>>>>> Layus.
+>>>>
+>>>
+>
+>
+
+

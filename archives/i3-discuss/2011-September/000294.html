@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Switching workspaces when mouse touch the border of it
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Switching%20workspaces%20when%20mouse%20touch%20the%20border%20of%20it&In-Reply-To=%3Calpine.LNX.2.02.1109241252120.24084%40myhost%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000291.html">
+   <LINK REL="Next"  HREF="000295.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Switching workspaces when mouse touch the border of it</H1>
+    <B>Bernhard Guillon</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Switching%20workspaces%20when%20mouse%20touch%20the%20border%20of%20it&In-Reply-To=%3Calpine.LNX.2.02.1109241252120.24084%40myhost%3E"
+       TITLE="[i3] Switching workspaces when mouse touch the border of it">Bernhard.Guillon at opensimpad.org
+       </A><BR>
+    <I>Sat Sep 24 13:08:19 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000291.html">[i3] default_orientation configuration
+</A></li>
+        <LI>Next message: <A HREF="000295.html">[i3] Switching workspaces when mouse touch the border of it
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#294">[ date ]</a>
+              <a href="thread.html#294">[ thread ]</a>
+              <a href="subject.html#294">[ subject ]</a>
+              <a href="author.html#294">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+I want i3 to switch the workspace when I move the mouse pointer at the 
+border of the screen. It should then get to the next/prev workspace, warp the 
+pointer to the &quot;oposit x&quot; position and set the container beneath active.
+
+Here is some sloppy code to show you what I mean:
+
+diff --git a/src/handlers.c b/src/handlers.c
+index 6b79ed4..87bca5b 100644
+--- a/src/handlers.c
++++ b/src/handlers.c
+@@ -259,6 +259,20 @@ static int 
+handle_motion_notify(xcb_motion_notify_event_t *event) {
+          return 1;
+      }
+
++    /* see if we need to switch the workspace */
++    if (0 == event-&gt;root_x) {
++        workspace_prev();
++        xcb_warp_pointer(conn, XCB_NONE, root, 0, 0, 0, 0, 
+root_screen-&gt;width_in_pixels-2, event-&gt;root_y);
++    }
++
++    if (root_screen-&gt;width_in_pixels-1 &lt;= event-&gt;root_x) {
++        workspace_next();
++        xcb_warp_pointer(conn, XCB_NONE, root, 0, 0, 0, 0, 1, 
+event-&gt;root_y);
++    }
++
++    /* refresh the screen */
++    tree_render();
++
+      return 1;
+  }
+
+This code of course does not set the container active and has some more 
+disadvantages. I can only test the behaviour on a single screen computer 
+because I do not own one with two screens. So if you have a dual screen 
+set up it might drive you crazy ;)
+
+Can you give me some advice on how to implement this feature best. It 
+might also be a good idea to make it an option. How should I call that 
+option?
+
+Best regards,
+Bernhard
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000291.html">[i3] default_orientation configuration
+</A></li>
+	<LI>Next message: <A HREF="000295.html">[i3] Switching workspaces when mouse touch the border of it
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#294">[ date ]</a>
+              <a href="thread.html#294">[ thread ]</a>
+              <a href="subject.html#294">[ subject ]</a>
+              <a href="author.html#294">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

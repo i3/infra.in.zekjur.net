@@ -1,0 +1,487 @@
+From sylvain.benner at gmail.com  Tue Oct  1 01:52:49 2013
+From: sylvain.benner at gmail.com (Sylvain Benner)
+Date: Mon, 30 Sep 2013 19:52:49 -0400
+Subject: [i3] keeping one window protected?
+In-Reply-To: <m2bo3anwek.fsf@damtp.cam.ac.uk>
+References: <m2bo3anwek.fsf@damtp.cam.ac.uk>
+Message-ID: <CAGb_FfYG9LAsNh+W42debnZqA8rjL9POk=G0c0AwY3ZLG3HAFQ@mail.gmail.com>
+
+Hi Stephen,
+
+Let me rephrase your asking: If you have the focus on emacs and open an
+application you want it to not resize the emacs window.
+If this is correct then this is not possible in i3 without a patch or
+script, there is no such thing as a sticky/protected container which can
+freeze its structure and delegate it to the next container (or create a new
+one if required).
+
+Michael what do you think about such a feature ? It captures the feeling of
+one property of slave/master in some other WM but still let the user to do
+it when and where it wants it which fits the philosophy of i3 in my
+opinion. The tricky part is the visual clue about such containers/windows.
+
+-syl20bnr-
+
+
+On Mon, Sep 30, 2013 at 11:48 AM, Stephen Eglen
+<S.J.Eglen at damtp.cam.ac.uk>wrote:
+
+> Hello,
+>
+> I'm just experimenting with i3wm, as my first tiling manager.  Is the
+> following possible?
+>
+> Within workspace 1, I'd like to have my Emacs window on the left half of
+> the window, and keep it 'pinned there' to half the screen.  On the right
+> hand half, I'd like the remaining space to be used by whatever
+> application (a terminal, Firefox, evince) needs it -- and those other
+> windows exist in e.g. tabbed mode.
+>
+> What I don't want to happen is for Emacs to shrink as other applications
+> get added to workspace one.  Does that make sense?
+>
+> Thanks for a great piece of software.
+>
+> Stephen Eglen
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130930/6cd09d68/attachment.html>
+
+From public at enkore.de  Tue Oct  1 01:55:53 2013
+From: public at enkore.de (mabe)
+Date: Tue, 01 Oct 2013 01:55:53 +0200
+Subject: [i3] keeping one window protected?
+In-Reply-To: <CAGb_FfYG9LAsNh+W42debnZqA8rjL9POk=G0c0AwY3ZLG3HAFQ@mail.gmail.com>
+References: <m2bo3anwek.fsf@damtp.cam.ac.uk>
+ <CAGb_FfYG9LAsNh+W42debnZqA8rjL9POk=G0c0AwY3ZLG3HAFQ@mail.gmail.com>
+Message-ID: <524A0F89.7060709@enkore.de>
+
+About the visual hint: how about doing this via a separate window
+class/tag (like focused, unfocused, urgent etc.)?
+
+On 10/01/2013 01:52 AM, Sylvain Benner wrote:
+> Hi Stephen,
+> 
+> Let me rephrase your asking: If you have the focus on emacs and open an
+> application you want it to not resize the emacs window.
+> If this is correct then this is not possible in i3 without a patch or
+> script, there is no such thing as a sticky/protected container which can
+> freeze its structure and delegate it to the next container (or create a
+> new one if required).
+> 
+> Michael what do you think about such a feature ? It captures the feeling
+> of one property of slave/master in some other WM but still let the user
+> to do it when and where it wants it which fits the philosophy of i3 in
+> my opinion. The tricky part is the visual clue about such
+> containers/windows.
+> 
+> -syl20bnr-
+> 
+> 
+> On Mon, Sep 30, 2013 at 11:48 AM, Stephen Eglen
+> <S.J.Eglen at damtp.cam.ac.uk <mailto:S.J.Eglen at damtp.cam.ac.uk>> wrote:
+> 
+>     Hello,
+> 
+>     I'm just experimenting with i3wm, as my first tiling manager.  Is the
+>     following possible?
+> 
+>     Within workspace 1, I'd like to have my Emacs window on the left half of
+>     the window, and keep it 'pinned there' to half the screen.  On the right
+>     hand half, I'd like the remaining space to be used by whatever
+>     application (a terminal, Firefox, evince) needs it -- and those other
+>     windows exist in e.g. tabbed mode.
+> 
+>     What I don't want to happen is for Emacs to shrink as other applications
+>     get added to workspace one.  Does that make sense?
+> 
+>     Thanks for a great piece of software.
+> 
+>     Stephen Eglen
+> 
+> 
+
+
+From michael at i3wm.org  Tue Oct  1 07:07:43 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 01 Oct 2013 07:07:43 +0200
+Subject: [i3] keeping one window protected?
+In-Reply-To: <CAGb_FfYG9LAsNh+W42debnZqA8rjL9POk=G0c0AwY3ZLG3HAFQ@mail.gmail.com>
+References: <m2bo3anwek.fsf@damtp.cam.ac.uk>
+ <CAGb_FfYG9LAsNh+W42debnZqA8rjL9POk=G0c0AwY3ZLG3HAFQ@mail.gmail.com>
+Message-ID: <x67gdx1sv4.fsf@midna.lan>
+
+Hi Sylvain,
+
+Sylvain Benner <sylvain.benner at gmail.com> writes:
+> Let me rephrase your asking: If you have the focus on emacs and open an
+> application you want it to not resize the emacs window.
+> If this is correct then this is not possible in i3 without a patch or
+> script, there is no such thing as a sticky/protected container which can
+> freeze its structure and delegate it to the next container (or create a new
+> one if required).
+>
+> Michael what do you think about such a feature ? It captures the feeling of
+> one property of slave/master in some other WM but still let the user to do
+> it when and where it wants it which fits the philosophy of i3 in my
+> opinion. The tricky part is the visual clue about such containers/windows.
+I don?t see that as a good feature for i3. It does not strike me as
+particularly useful, and it is solving an issue that only exists for
+newcomers to i3.
+
+-- 
+Best regards,
+Michael
+
+From sylvain.benner at gmail.com  Tue Oct  1 12:17:19 2013
+From: sylvain.benner at gmail.com (Sylvain Benner)
+Date: Tue, 1 Oct 2013 06:17:19 -0400
+Subject: [i3] keeping one window protected?
+In-Reply-To: <x67gdx1sv4.fsf@midna.lan>
+References: <m2bo3anwek.fsf@damtp.cam.ac.uk>
+ <CAGb_FfYG9LAsNh+W42debnZqA8rjL9POk=G0c0AwY3ZLG3HAFQ@mail.gmail.com>
+ <x67gdx1sv4.fsf@midna.lan>
+Message-ID: <CAGb_FfaSfHM1tZ+tRj71bJQTsrYQUPT3MXriRENo6Hs7Ki7MyA@mail.gmail.com>
+
+Hi Michael,
+
+True, moving the focus achieve this.
+
+Le mardi 1 octobre 2013, Michael Stapelberg a ?crit :
+
+> Hi Sylvain,
+>
+> Sylvain Benner <sylvain.benner at gmail.com <javascript:;>> writes:
+> > Let me rephrase your asking: If you have the focus on emacs and open an
+> > application you want it to not resize the emacs window.
+> > If this is correct then this is not possible in i3 without a patch or
+> > script, there is no such thing as a sticky/protected container which can
+> > freeze its structure and delegate it to the next container (or create a
+> new
+> > one if required).
+> >
+> > Michael what do you think about such a feature ? It captures the feeling
+> of
+> > one property of slave/master in some other WM but still let the user to
+> do
+> > it when and where it wants it which fits the philosophy of i3 in my
+> > opinion. The tricky part is the visual clue about such
+> containers/windows.
+> I don?t see that as a good feature for i3. It does not strike me as
+> particularly useful, and it is solving an issue that only exists for
+> newcomers to i3.
+>
+> --
+> Best regards,
+> Michael
+>
+
+
+-- 
+-syl20bnr-
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20131001/a9a90729/attachment.html>
+
+From S.J.Eglen at damtp.cam.ac.uk  Tue Oct  1 14:08:54 2013
+From: S.J.Eglen at damtp.cam.ac.uk (Stephen Eglen)
+Date: Tue, 01 Oct 2013 13:08:54 +0100
+Subject: [i3] keeping one window protected?
+In-Reply-To: <CAGb_FfYG9LAsNh+W42debnZqA8rjL9POk=G0c0AwY3ZLG3HAFQ@mail.gmail.com>
+References: <m2bo3anwek.fsf@damtp.cam.ac.uk>
+ <CAGb_FfYG9LAsNh+W42debnZqA8rjL9POk=G0c0AwY3ZLG3HAFQ@mail.gmail.com>
+Message-ID: <85y56dqjl5.fsf@damtp.cam.ac.uk>
+
+
+>
+> Let me rephrase your asking: If you have the focus on emacs and open an
+> application you want it to not resize the emacs window.
+> If this is correct then this is not possible in i3 without a patch or
+> script, there is no such thing as a sticky/protected container which can
+> freeze its structure and delegate it to the next container (or create a new
+> one if required).
+
+Thanks Sylvain, yes, this is the sort of thing I was thinking of.  Never
+mind if it is not available in i3, I am just experimenting!
+Thanks, Stephen
+
+From eeno at cox.net  Tue Oct  1 20:13:19 2013
+From: eeno at cox.net (eeno)
+Date: Tue, 1 Oct 2013 11:13:19 -0700
+Subject: [i3] keeping one window protected?
+In-Reply-To: <x67gdx1sv4.fsf@midna.lan>
+References: <m2bo3anwek.fsf@damtp.cam.ac.uk>
+ <CAGb_FfYG9LAsNh+W42debnZqA8rjL9POk=G0c0AwY3ZLG3HAFQ@mail.gmail.com>
+ <x67gdx1sv4.fsf@midna.lan>
+Message-ID: <20131001181319.GA20533@anton>
+
+I actually like this idea myself, and I've been using i3 exclusively for a 
+few months now, and i3 was my first entry into tiling wms. I still
+consider myself a novice though - I think I've basically learned just 
+enough work fairly comfortably, but have no doubt acquired a few bad habits
+and gaping holes in my understanding along the way. So excuse me if I 
+misuse terms or show any obvious signs of luser. (:
+
+To use Sylvain's summary: "a sticky/protected container which can freeze its 
+structure and delegate it to the next container (or create a new one if required)."
+
+... is something I would be able to immediately put to use in my usual
+workfow.
+
+In particular, the IntelliJ Idea editor is difficult to work with due to
+the way it opens new editor windows. I want to have the main application
+window remain ever-present to the left-half portion of my screen in
+stacking mode, while each new editor window I open should appear to the 
+right-half, also in stacking mode. So that each successive new editor
+window opens to the right of the main application window, and is 
+stacked below one another.
+
+I believe that the feature in question would really make the above
+scenario convenient and straight-forward, and doesn't require extra
+keystrokes/commands or configuration to utilize other than the single 
+'sticky/protected' command.
+
+
+Kind regards!
+
+
+
+On Tue, Oct 01, 2013 at 07:07:43AM +0200, Michael Stapelberg wrote:
+> Hi Sylvain,
+> 
+> Sylvain Benner <sylvain.benner at gmail.com> writes:
+> > Let me rephrase your asking: If you have the focus on emacs and open an
+> > application you want it to not resize the emacs window.
+> > If this is correct then this is not possible in i3 without a patch or
+> > script, there is no such thing as a sticky/protected container which can
+> > freeze its structure and delegate it to the next container (or create a new
+> > one if required).
+> >
+> > Michael what do you think about such a feature ? It captures the feeling of
+> > one property of slave/master in some other WM but still let the user to do
+> > it when and where it wants it which fits the philosophy of i3 in my
+> > opinion. The tricky part is the visual clue about such containers/windows.
+> I don?t see that as a good feature for i3. It does not strike me as
+> particularly useful, and it is solving an issue that only exists for
+> newcomers to i3.
+> 
+> -- 
+> Best regards,
+> Michael
+
+From okraits at arcor.de  Sun Oct  6 11:38:39 2013
+From: okraits at arcor.de (Oliver Kraitschy)
+Date: Sun, 6 Oct 2013 11:38:39 +0200
+Subject: [i3] i3-theme script and a small collection of themes
+In-Reply-To: <20130919073832.GC5861@cisa85.de>
+References: <20130918022152.GA5861@cisa85.de> <20130919073832.GC5861@cisa85.de>
+Message-ID: <20131006093839.GI23862@cisa85.de>
+
+Hi all,
+
+FYI, the script with all themes is now available
+on github:
+
+https://github.com/okraits/j4-make-config
+
+It has been renamed to j4-make-config to make clear that
+it is not an official i3 project and to prepare it for
+integration into http://www.j4tools.org/.
+
+Greetings,
+
+Oliver
+
+On Thu, Sep 19, 2013 at 09:38:33AM +0200, Oliver Kraitschy wrote:
+> Hi all,
+> 
+> FYI, there's a new version of the script with more themes available at
+> 
+> http://www.okraits.de/upload/i3-theme-0.4.tar.gz
+> 
+> Please check the README for the changelog.
+> 
+> I will add an i3-theme section to my website http://okraits.de where the newest version will be available.
+> 
+> Greetings,
+> 
+> Oliver
+> 
+> On Wed, Sep 18, 2013 at 04:21:53AM +0200, Oliver Kraitschy wrote:
+> > Dear i3 community,
+> > 
+> > i have developed a script named i3-theme. Its purpose is
+> > to easily set and switch between several sets of
+> > configuration options ("themes") for the i3 window
+> > manager. These sets of configuration options are supposed
+> > to contain options regarding the looks of the window
+> > manager, that is window colors, borderstyle, i3bar colors,
+> > fonts, etc.
+> > There's a bunch of theme files which are distributed
+> > together with the i3-theme script to give the user a
+> > variety of configurations to choose from.
+> > 
+> > The tarball containing the script, the themes and a README
+> > can be found at:
+> > 
+> > http://www.okraits.de/upload/i3-theme-0.3.tar.gz
+> > 
+> > Please feel free to send me feedback and contributions
+> > regarding bugreports, feature requests, improvements,
+> > themes, etc. via mail at okraits at arcor.de. You can also
+> > contact me on irc.twice-irc.de in #i3.
+> > 
+> > I'm looking forward to your feedback.
+> > 
+> > Greetings,
+> > 
+> > Oliver
+
+From mail at profpatsch.de  Sun Oct  6 18:56:57 2013
+From: mail at profpatsch.de (Profpatsch)
+Date: Sun, 6 Oct 2013 18:56:57 +0200
+Subject: [i3] i3-theme script and a small collection of themes
+In-Reply-To: <20131006093839.GI23862@cisa85.de>
+References: <20130918022152.GA5861@cisa85.de> <20130919073832.GC5861@cisa85.de>
+ <20131006093839.GI23862@cisa85.de>
+Message-ID: <20131006165657.GA9168@nyx>
+
+On 13-10-06 11:38am, Oliver Kraitschy wrote:
+> integration into http://www.j4tools.org/.
+
+Thanks for pointing me to j4tools. Finally dmenu opens fast. That?s
+great!
+
+-- 
+Proudly written in Mutt with Vim on Archlinux.
+Q: Why is this email five sentences or less?
+A: http://five.sentenc.es
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 836 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20131006/e8b03d0f/attachment.sig>
+
+From mail at profpatsch.de  Tue Oct  8 12:42:01 2013
+From: mail at profpatsch.de (Profpatsch)
+Date: Tue, 8 Oct 2013 12:42:01 +0200
+Subject: [i3] =?utf-8?q?Behaviour_of_=E2=80=9CJump_to_last_workspace?=
+ =?utf-8?q?=E2=80=9D_with_multiple_windows?=
+Message-ID: <20131008104201.GB7022@nyx>
+
+When I?m on multiple monitors, the ?hit the same number key to jump to
+the last workspace? is straightforward and simple.
+
+Yet, when I?m on monitor #1 and want to quickly check something different
+on #2, I normally intuitively hit the same key again and expect it to
+jump back to the previous workspace on #2. But it instead focuses the
+workspace from which I came, on monitor #1.
+
+In case the workpace I jump to is already on monitor #2, hitting the key
+again I expect it to jump back to #1 (which, of course, it does right
+now).
+
+Does anyone else have the same problem? Could this be implemented to be
+available via rc?
+
+-- 
+Proudly written in Mutt with Vim on Archlinux.
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 836 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20131008/2db73313/attachment.sig>
+
+From devel-lists at codyps.com  Thu Oct 17 23:59:29 2013
+From: devel-lists at codyps.com (Cody P Schafer)
+Date: Thu, 17 Oct 2013 14:59:29 -0700
+Subject: [i3] Dissolve container?
+In-Reply-To: <523F2D8B.1070803@enkore.de>
+References: <523F2D8B.1070803@enkore.de>
+Message-ID: <52605DC1.7070509@codyps.com>
+
+On 09/22/2013 10:48 AM, [mabe] wrote:
+> I wondered if there is a command to remove a container and move all
+> children to the parent of the now removed container?
+>
+> [mabe]
+>
+
+I'm also interested in this. I end up with nested containers that I 
+don't need, but getting them to go away generally involves messing up 
+and then restoring my layout.
+
+From zeus at ibs.dn.ua  Thu Oct 31 08:18:10 2013
+From: zeus at ibs.dn.ua (Zeus Panchenko)
+Date: Thu, 31 Oct 2013 09:18:10 +0200
+Subject: [i3] urgency hint
+Message-ID: <20131031091810.18007@relay.ibs.dn.ua>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+hi,
+
+urgency hint in xorg is not set by events from firefox
+(download complition) and emacs for me 
+
+please, help to discover the problem?
+
+
+FreeBSD 9.2 amd64
+i3 version 4.6 (2013-08-07, branch "tags/4.6")
+firefox-23.0.1
+emacs-24.3
+
+
+
+P.S. though I receive correct i3 behaviour when from the different to
+emacs desktop I do:
+
+emacsclient -e "(x-urgency-hint (selected-frame) t)"
+
+and the hint is set (desktop with emacs is lighted with red (in my case))
+
+emacsclient -e "(x-urgency-hint (selected-frame) nil)"
+
+hint unset
+
+- -- 
+Zeus V. Panchenko				jid:zeus at im.ibs.dn.ua
+IT Dpt., I.B.S. LLC					  GMT+2 (EET)
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.19 (FreeBSD)
+
+iEYEARECAAYFAlJyBDIACgkQr3jpPg/3oyoSCwCfVeaHIsW23oGzCw7vBOh/YkKl
+8J8An0Wyr8GMolujyjjBVT4OsdbikFxQ
+=mCTu
+-----END PGP SIGNATURE-----
+
+From michael at i3wm.org  Thu Oct 31 20:40:01 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 31 Oct 2013 20:40:01 +0100
+Subject: [i3] urgency hint
+In-Reply-To: <20131031091810.18007@relay.ibs.dn.ua>
+References: <20131031091810.18007@relay.ibs.dn.ua>
+Message-ID: <x661sdw7ou.fsf@midna.lan>
+
+Hi Zeus,
+
+Zeus Panchenko <zeus at ibs.dn.ua> writes:
+> urgency hint in xorg is not set by events from firefox
+> (download complition) and emacs for me 
+>
+> please, help to discover the problem?
+Please post a logfile of this happening. Remember to keep the session
+(and thus the logfile) minimal and compress it using bzip2. See also
+http://i3wm.org/docs/debugging.html
+
+-- 
+Best regards,
+Michael
+

@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Troubles using Mod4
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Troubles%20using%20Mod4&In-Reply-To=%3C5581B702.8030507%40yahoo.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002117.html">
+   <LINK REL="Next"  HREF="002105.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Troubles using Mod4</H1>
+    <B>Nicolas Bercher</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Troubles%20using%20Mod4&In-Reply-To=%3C5581B702.8030507%40yahoo.fr%3E"
+       TITLE="[i3] Troubles using Mod4">nbercher at yahoo.fr
+       </A><BR>
+    <I>Wed Jun 17 20:05:54 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002117.html">[i3] i3 4.10.2 i3-save-tree perl module missing
+</A></li>
+        <LI>Next message: <A HREF="002105.html">[i3] Troubles using Mod4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2104">[ date ]</a>
+              <a href="thread.html#2104">[ thread ]</a>
+              <a href="subject.html#2104">[ subject ]</a>
+              <a href="author.html#2104">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I have troubles using Mod4+&lt;any&gt;.
+
+Here is my configuration sample:
+
+   bindsym Mod4+Up exec alsa-volume-increase
+   bindsym Mod4+Down exec alsa-volume-decrease
+   bindsym Mod4+m exec alsa-volume-toggle-mute
+
+where alsa-volume-* are bash script that do work very well
+from the shell.
+
+I've checked (and fixed) under xmodmap the association of Mod4 to
+Super_L (and Super_R is fine also):
+
+   $ xmodmap -pm
+   xmodmap:  up to 3 keys per modifier, (keycodes in parentheses):
+
+   shift       Shift_L (0x32),  Shift_R (0x3e)
+   lock        Caps_Lock (0x42)
+   control     Control_L (0x25),  Control_R (0x69)
+   mod1        Alt_L (0x40),  Meta_L (0xcd)
+   mod2        Num_Lock (0x4d)
+   mod3
+   mod4        Super_L (0x85),  Super_R (0x86),  Super_L (0xce)
+   mod5        ISO_Level3_Shift (0x5c),  Mode_switch (0xcb)
+
+And xev says me (for a press-release sequence on &quot;Win Left&quot;):
+
+   KeyPress event, serial 32, synthetic NO, window 0x3c00001,
+       root 0xcb, subw 0x0, time 29561418, (238,-7), root:(1202,721),
+       state 0x0, keycode 133 (keysym 0xffeb, Super_L), same_screen YES,
+       XLookupString gives 0 bytes:
+       XmbLookupString gives 0 bytes:
+       XFilterEvent returns: False
+
+   KeyRelease event, serial 32, synthetic NO, window 0x3c00001,
+       root 0xcb, subw 0x0, time 29562442, (238,-7), root:(1202,721),
+       state 0x40, keycode 133 (keysym 0xffeb, Super_L), same_screen YES,
+       XLookupString gives 0 bytes:
+       XFilterEvent returns: False
+
+Under xev, is it normal that I get two different key codes for Super_L,
+namely 0x85 and 0xce?
+
+Do any one knows what's wrong?
+
+Thanks a lot,
+Nicolas
+</PRE>
+
+
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002117.html">[i3] i3 4.10.2 i3-save-tree perl module missing
+</A></li>
+	<LI>Next message: <A HREF="002105.html">[i3] Troubles using Mod4
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2104">[ date ]</a>
+              <a href="thread.html#2104">[ thread ]</a>
+              <a href="subject.html#2104">[ subject ]</a>
+              <a href="author.html#2104">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

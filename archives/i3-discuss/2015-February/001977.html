@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Code for titlebar borders
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Code%20for%20titlebar%20borders&In-Reply-To=%3C20150220161654.GA3723%40workbox.Home%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001983.html">
+   <LINK REL="Next"  HREF="001979.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Code for titlebar borders</H1>
+    <B>Bigby James</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Code%20for%20titlebar%20borders&In-Reply-To=%3C20150220161654.GA3723%40workbox.Home%3E"
+       TITLE="[i3] Code for titlebar borders">bigby.james at dimthoughts.com
+       </A><BR>
+    <I>Fri Feb 20 17:16:54 CET 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001983.html">[i3] Assign workspaces to outputs dynamically.
+</A></li>
+        <LI>Next message: <A HREF="001979.html">[i3] Code for titlebar borders
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1977">[ date ]</a>
+              <a href="thread.html#1977">[ thread ]</a>
+              <a href="subject.html#1977">[ subject ]</a>
+              <a href="author.html#1977">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Howdy-ha, all. This message is basically a rehash of a question I asked on the
+FAQ.[1] It didn't get any responses, so I'm just giving this list a shot to see
+if anyone can point me in the right direction.
+
+I'm looking for the portion of the i3 source code that controls the thickness
+(height) of the titlebar borders, in the hopes of increasing that thickness. The
+goal is to make the border slight thicker in order to make it more prominent,
+making it another indicator of the focus status of a window rather than a mere
+aesthetic supplement to the background color of the window's titlebar (although
+I also think it would look nice; it's not *just* a practical thing ;) ).
+
+I'm not much of a coder, so the closest related thing I've found that seems
+relevant is the following snippet from '&lt;i3_source_root&gt;/src/x.c':
+
+&gt;<i> /* 5: draw two unconnected horizontal lines in border color */
+</I>&gt;<i> xcb_change_gc(conn, parent-&gt;pm_gc, XCB_GC_FOREGROUND, (uint32_t[])
+</I>&gt;<i> {p-&gt;color-&gt;border});
+</I>&gt;<i> Rect *dr = &amp;(con-&gt;deco_rect);
+</I>&gt;<i> int deco_diff_l = 2;
+</I>&gt;<i> int deco_diff_r = 2;
+</I>&gt;<i> if (parent-&gt;layout == L_TABBED) {
+</I>&gt;<i>     if (TAILQ_PREV(con, nodes_head, nodes) != NULL)
+</I>&gt;<i>         deco_diff_l = 0;
+</I>&gt;<i>     if (TAILQ_NEXT(con, nodes) != NULL)
+</I>&gt;<i>         deco_diff_r = 0;
+</I>&gt;<i> }
+</I>&gt;<i> 
+</I>&gt;<i> xcb_segment_t segments[] = {
+</I>&gt;<i>     {dr-&gt;x, dr-&gt;y,
+</I>&gt;<i>     dr-&gt;x + dr-&gt;width - 1, dr-&gt;y},
+</I>&gt;<i>     {dr-&gt;x + deco_diff_l, dr-&gt;y + dr-&gt;height - 1,
+</I>&gt;<i>     dr-&gt;x - deco_diff_r + dr-&gt;width - 1,
+</I>&gt;<i>     dr-&gt;y + dr-&gt;height - 1}};
+</I>&gt;<i> xcb_poly_segment(conn, parent-&gt;pixmap, parent-&gt;pm_gc, 2, segments);
+</I>
+This mostly seems to control the position and padding of the border, but not its
+thickness/height, so I feel like it's the wrong place to look.  If anyone can
+either correct me if I'm wrong or let me know where in the code to look, I'd
+appreciate it.  Thanks for your time; take care.
+
+- Bigby
+
+[1]: <A HREF="https://faq.i3wm.org/question/5385/code-for-window-title-border/">https://faq.i3wm.org/question/5385/code-for-window-title-border/</A>
+
+-- 
+&quot;A common mistake that people make when trying to design something completely
+foolproof is to underestimate the ingenuity of complete fools.&quot; - Douglas Adams
+
+</PRE>
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001983.html">[i3] Assign workspaces to outputs dynamically.
+</A></li>
+	<LI>Next message: <A HREF="001979.html">[i3] Code for titlebar borders
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1977">[ date ]</a>
+              <a href="thread.html#1977">[ thread ]</a>
+              <a href="subject.html#1977">[ subject ]</a>
+              <a href="author.html#1977">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

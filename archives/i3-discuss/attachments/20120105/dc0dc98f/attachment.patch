@@ -1,0 +1,30 @@
+>From a885bbe9f87e518f7ca5f8ca436e7dc77c45dd7e Mon Sep 17 00:00:00 2001
+From: Aaron Small <a.small@unb.ca>
+Date: Thu, 5 Jan 2012 15:06:59 -0500
+Subject: [PATCH] Draw a box around the title
+
+---
+ src/x.c |    7 ++++++-
+ 1 files changed, 6 insertions(+), 1 deletions(-)
+
+diff --git a/src/x.c b/src/x.c
+index e8bfaeb..9aa1e81 100644
+--- a/src/x.c
++++ b/src/x.c
+@@ -407,7 +407,12 @@ void x_draw_decoration(Con *con) {
+     };
+     xcb_poly_segment(conn, parent->pixmap, parent->pm_gc, 2, segments);
+ 
+-    /* 6: draw the title */
++    /* 6: draw the title box */
++    xcb_rectangle_t brect = { con->deco_rect.x, con->deco_rect.y + 1, con->deco_rect.width - 2, con->deco_rect.height - 2 };
++    xcb_change_gc(conn, parent->pm_gc, XCB_GC_FOREGROUND, (uint32_t[]){ p->color->text });
++    xcb_poly_rectangle(conn, parent->pixmap, parent->pm_gc, 1, &brect);
++
++    /* 7: draw the title */
+     uint32_t mask = XCB_GC_FOREGROUND | XCB_GC_BACKGROUND | XCB_GC_FONT;
+     uint32_t values[] = { p->color->text, p->color->background, config.font.id };
+     xcb_change_gc(conn, parent->pm_gc, mask, values);
+-- 
+1.7.7.3
+

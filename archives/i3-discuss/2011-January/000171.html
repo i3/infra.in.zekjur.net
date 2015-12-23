@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] Build fix: Explicitly include stdint.h before	cfgparse.tab.h
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Build%20fix%3A%20Explicitly%20include%20stdint.h%20before%0A%09cfgparse.tab.h&In-Reply-To=%3C1295719409-9505-1-git-send-email-kubito%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000170.html">
+   <LINK REL="Next"  HREF="000199.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] Build fix: Explicitly include stdint.h before	cfgparse.tab.h</H1>
+    <B>Raphael Kubo da Costa</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Build%20fix%3A%20Explicitly%20include%20stdint.h%20before%0A%09cfgparse.tab.h&In-Reply-To=%3C1295719409-9505-1-git-send-email-kubito%40gmail.com%3E"
+       TITLE="[i3] [PATCH] Build fix: Explicitly include stdint.h before	cfgparse.tab.h">kubito at gmail.com
+       </A><BR>
+    <I>Sat Jan 22 19:03:29 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000170.html">[i3] [PATCH] Build fix: Include xcb/xcb.h before cfgparse.tab.h.
+</A></li>
+        <LI>Next message: <A HREF="000199.html">[i3] Testmail
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#171">[ date ]</a>
+              <a href="thread.html#171">[ thread ]</a>
+              <a href="subject.html#171">[ subject ]</a>
+              <a href="author.html#171">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>cfgparse.tab.h uses uint32_t, which is defined in stdint.h.
+
+Should fix the build of 3.&#949;-bf2 on FreeBSD.
+
+Signed-off-by: Raphael Kubo da Costa &lt;<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">kubito at gmail.com</A>&gt;
+---
+ src/cfgparse.l |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/src/cfgparse.l b/src/cfgparse.l
+index 0c0cee7..2d31913 100644
+--- a/src/cfgparse.l
++++ b/src/cfgparse.l
+@@ -10,6 +10,7 @@
+  */
+ #include &lt;stdio.h&gt;
+ #include &lt;string.h&gt;
++#include &lt;stdint.h&gt; /* Defines uint32_t, required by cfgparse.tab.h */
+ #include &quot;cfgparse.tab.h&quot;
+ #include &lt;xcb/xcb.h&gt;
+ 
+-- 
+1.7.3.5
+
+
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000170.html">[i3] [PATCH] Build fix: Include xcb/xcb.h before cfgparse.tab.h.
+</A></li>
+	<LI>Next message: <A HREF="000199.html">[i3] Testmail
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#171">[ date ]</a>
+              <a href="thread.html#171">[ thread ]</a>
+              <a href="subject.html#171">[ subject ]</a>
+              <a href="author.html#171">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

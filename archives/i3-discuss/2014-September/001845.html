@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3-msg focus parent - odd error
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3-msg%20focus%20parent%20-%20odd%20error&In-Reply-To=%3C85EA6F68AC24DA48B220EBEA7A8C08B81B50652B%40corpmail01.corp.sensis.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001844.html">
+   <LINK REL="Next"  HREF="001847.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3-msg focus parent - odd error</H1>
+    <B>Sargrad, Dave</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3-msg%20focus%20parent%20-%20odd%20error&In-Reply-To=%3C85EA6F68AC24DA48B220EBEA7A8C08B81B50652B%40corpmail01.corp.sensis.com%3E"
+       TITLE="[i3] i3-msg focus parent - odd error">Dave.Sargrad at saabsensis.com
+       </A><BR>
+    <I>Tue Sep  9 22:06:16 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001844.html">[i3] i3-msg focus parent - odd error
+</A></li>
+        <LI>Next message: <A HREF="001847.html">[i3] i3-msg focus parent - odd error
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1845">[ date ]</a>
+              <a href="thread.html#1845">[ thread ]</a>
+              <a href="subject.html#1845">[ subject ]</a>
+              <a href="author.html#1845">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Actually with further experimentation, I think that the &quot;funny error&quot; always occurs when I have arrived at a containing workspace.
+
+Assuming that this is true, then it should then be easy for me to simply check for the first failure to focus a parent.
+
+
+Is there a way to query i3 for the currently focused object? If so then that would be a further check that I can make to ensure that the object with focus is of type &quot;workspace&quot;.
+
+-----Original Message-----
+From: Sargrad, Dave 
+Sent: Tuesday, September 09, 2014 3:58 PM
+To: <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>
+Subject: i3-msg focus parent - odd error
+
+Michael,
+Thank you for the suggestion relative to using &quot;focus parent&quot;
+
+As you see in the following output, I certainly can focus parent (to an extent), yet after a couple calls to focus parent I see an odd error. Furthermore this error does not always occur when I have arrived at the workspace level. I could be at a parent container that is within the workspace.
+
+<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at example</A>:~$ DISPLAY=:0.0 i3-msg focus parent [{&quot;success&quot;:true}] <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ubuntu at example</A>:~$ DISPLAY=:0.0 i3-msg focus parent
+ERROR: Your command: (null)
+ERROR:               (null)
+ERROR: (null)
+[{&quot;success&quot;:false}]
+
+
+I'm trying to figure out when I &quot;arrive at the workspace level&quot;. Keep in mind that I am running this script without actually having the visual feedback of the desktop to tell me that I am at the workspace level.
+
+It would be much easier if I could focus the workspace by name (this does not seem to be an option): 
+                i3-msg focus workspace 2
+
+What is the proper way for me to script &quot;focus the parent till you arrive at a containing workspace&quot;?
+
+Thanks.
+
+---------------------------------------------------------------------------------------------
+
+Message: 4
+Date: Mon, 8 Sep 2014 19:44:09 +0200
+From: Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt;
+To: &quot;Discussions/Questions about the i3 window manager&quot;
+	&lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss at i3.zekjur.net</A>&gt;
+Subject: Re: [i3] using i3-msg to close entire workspace
+Message-ID:
+	&lt;CANnVG6kSyfSgmoXK3LFpv6YO9K1DSvu51HyHv9QA=<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">DFkRB9_pg at mail.gmail.com</A>&gt;
+Content-Type: text/plain; charset=UTF-8
+
+On Mon, Sep 8, 2014 at 6:11 PM, Sargrad, Dave &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">Dave.Sargrad at saabsensis.com</A>&gt; wrote:
+&gt;<i> I am looking for a way to use i3-msg to close an entire workspace.
+</I>Use “focus parent” until you arrive at the workspace level, then use “kill”.
+
+&gt;<i>
+</I>&gt;<i> So far I've not found the way to do this. Can someone please let me know if this is easy to do.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> -
+</I>&gt;<i> This message is intended only for the addressee and may contain information that is company confidential or privileged.  Any technical data in this message may be exported only in accordance with the U.S. International Traffic in Arms Regulations (22 CFR Parts 120-130) or the Export Administration Regulations (15 CFR Parts 730-774). Unauthorized use is strictly prohibited and may be unlawful. If you are not the intended recipient, or the person responsible for delivering to the intended recipient, you should not read, copy, disclose or otherwise use this message. If you have received this email in error, please delete it, and advise the sender immediately.
+</I>&gt;<i> -
+</I>
+
+
+--
+Best regards,
+Michael
+
+
+-
+This message is intended only for the addressee and may contain information that is company confidential or privileged.  Any technical data in this message may be exported only in accordance with the U.S. International Traffic in Arms Regulations (22 CFR Parts 120-130) or the Export Administration Regulations (15 CFR Parts 730-774). Unauthorized use is strictly prohibited and may be unlawful. If you are not the intended recipient, or the person responsible for delivering to the intended recipient, you should not read, copy, disclose or otherwise use this message. If you have received this email in error, please delete it, and advise the sender immediately. 
+-          
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001844.html">[i3] i3-msg focus parent - odd error
+</A></li>
+	<LI>Next message: <A HREF="001847.html">[i3] i3-msg focus parent - odd error
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1845">[ date ]</a>
+              <a href="thread.html#1845">[ thread ]</a>
+              <a href="subject.html#1845">[ subject ]</a>
+              <a href="author.html#1845">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Building the latest i3 on RHEL 6
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Building%20the%20latest%20i3%20on%20RHEL%206&In-Reply-To=%3CCAHyBj%3D9oKHSikgPCwr8t2c7jDLUwiq%3Do%2BrmBTF%2BspWmQnBTW8g%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001196.html">
+   <LINK REL="Next"  HREF="001198.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Building the latest i3 on RHEL 6</H1>
+    <B>Dustin Jerome</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Building%20the%20latest%20i3%20on%20RHEL%206&In-Reply-To=%3CCAHyBj%3D9oKHSikgPCwr8t2c7jDLUwiq%3Do%2BrmBTF%2BspWmQnBTW8g%40mail.gmail.com%3E"
+       TITLE="[i3] Building the latest i3 on RHEL 6">dustyjerome at gmail.com
+       </A><BR>
+    <I>Wed Feb 27 16:31:37 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001196.html">[i3] Building the latest i3 on RHEL 6
+</A></li>
+        <LI>Next message: <A HREF="001198.html">[i3] Building the latest i3 on RHEL 6
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1197">[ date ]</a>
+              <a href="thread.html#1197">[ thread ]</a>
+              <a href="subject.html#1197">[ subject ]</a>
+              <a href="author.html#1197">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Michael,
+
+You would be correct. I thought I had built xcb-util but seem to have
+gotten sidetracked and it never happened. It is giving me the following
+error when trying to build xcb-util:
+
+$ ./autogen.sh
+autoreconf: Entering directory `.'
+autoreconf: configure.ac: not using Gettext
+autoreconf: running: aclocal -I m4
+autoreconf: configure.ac: tracing
+autoreconf: configure.ac: not using Libtool
+autoreconf: running: /usr/bin/autoconf
+autoreconf: configure.ac: not using Autoheader
+autoreconf: running: automake --add-missing --copy --no-force
+src/Makefile.am:1: Libtool library used but `LIBTOOL' is undefined
+src/Makefile.am:1:   The usual way to define `LIBTOOL' is to add
+`AC_PROG_LIBTOOL'
+src/Makefile.am:1:   to `configure.ac' and run `aclocal' and `autoconf'
+again.
+src/Makefile.am:1:   If `AC_PROG_LIBTOOL' is in `configure.ac', make sure
+src/Makefile.am:1:   its definition is in aclocal's search path.
+src/Makefile.am:13: `xcbinclude_HEADERS' is used but `xcbincludedir' is
+undefined
+Makefile.am:5: `pkgconfig_DATA' is used but `pkgconfigdir' is undefined
+autoreconf: automake failed with exit status: 1
+
+Having never used pkg-config before I'm not quite sure what it wants.
+
+I found this: <A HREF="https://bugs.freedesktop.org/show_bug.cgi?id=39019">https://bugs.freedesktop.org/show_bug.cgi?id=39019</A> and
+followed the directions in the last comment, but still am getting the same
+error.
+
+Any assistance is appreciated.
+
+
+On Wed, Feb 27, 2013 at 8:39 AM, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt;wrote:
+
+&gt;<i> Hi Dustin,
+</I>&gt;<i>
+</I>&gt;<i> Dustin Jerome &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">dustyjerome at gmail.com</A>&gt; writes:
+</I>&gt;<i> &gt; [i3] CC src/con.c
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; ../i3/src/con.c: In function &#8216;con_toggle_fullscreen&#8217;:
+</I>&gt;<i> &gt; ../i3/src/con.c:615: error: &#8216;ATOM&#8217; undeclared (first use in this
+</I>&gt;<i> function)
+</I>&gt;<i> &gt; ../i3/src/con.c:615: error: (Each undeclared identifier is reported only
+</I>&gt;<i> &gt; once
+</I>&gt;<i> &gt; ../i3/src/con.c:615: error: for each function it appears in.)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; make: *** [src/con.o] Error 1
+</I>&gt;<i> This implies that include/xcb_compat.h is used, which will be enabled
+</I>&gt;<i> when i3 doesn&#8217;t find the pkg-config file for &#8220;xcb-util&#8221;. So, it seems
+</I>&gt;<i> like you are missing the development headers for xcb-util.
+</I>&gt;<i>
+</I>&gt;<i> &gt; As a test I attempted to change XCB_ATOM_ATOM to XCB_ATOM and that
+</I>&gt;<i> actually
+</I>&gt;<i> &gt; allowed me to successfully compile the con.c file (I'm assuming it
+</I>&gt;<i> Beware! This is wrong. XCB_ATOM is a constant which identifies the X11
+</I>&gt;<i> opcode, not the X11 atom value. It is either XCB_ATOM_ATOM (in recent
+</I>&gt;<i> xcb) or ATOM (in older versions of xcb).
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Michael
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130227/6c98eed4/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130227/6c98eed4/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001196.html">[i3] Building the latest i3 on RHEL 6
+</A></li>
+	<LI>Next message: <A HREF="001198.html">[i3] Building the latest i3 on RHEL 6
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1197">[ date ]</a>
+              <a href="thread.html#1197">[ thread ]</a>
+              <a href="subject.html#1197">[ subject ]</a>
+              <a href="author.html#1197">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

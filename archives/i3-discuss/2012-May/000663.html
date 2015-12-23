@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Gnome-less wm
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Gnome-less%20wm&In-Reply-To=%3CCAAuVr70yLQsrMkz3zZDB2Xb-JgB66YPmavawGOY1N8ccjc%2Bd_Q%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000659.html">
+   <LINK REL="Next"  HREF="000662.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Gnome-less wm</H1>
+    <B>BRAGA, Bruno</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Gnome-less%20wm&In-Reply-To=%3CCAAuVr70yLQsrMkz3zZDB2Xb-JgB66YPmavawGOY1N8ccjc%2Bd_Q%40mail.gmail.com%3E"
+       TITLE="[i3] Gnome-less wm">bruno.braga at gmail.com
+       </A><BR>
+    <I>Sat May 12 15:58:36 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000659.html">[i3] Gnome-less wm
+</A></li>
+        <LI>Next message: <A HREF="000662.html">[i3] Gnome-less wm
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#663">[ date ]</a>
+              <a href="thread.html#663">[ thread ]</a>
+              <a href="subject.html#663">[ subject ]</a>
+              <a href="author.html#663">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hei Fernando,
+
+Thanks! Some comments in-line...
+
+On Sat, May 12, 2012 at 1:00 PM, Fernando Lemos &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">fernandotcl at i3wm.org</A>&gt;wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Fri, May 11, 2012 at 7:17 AM, Alex V. Koval &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">alex at ua2web.com</A>&gt; wrote:
+</I>&gt;<i> &lt;snip&gt;
+</I>&gt;<i>
+</I>&gt;<i> Some alternatives that work well with i3:
+</I>&gt;<i>
+</I>&gt;<i> &gt;  3. Wicd as network manager.
+</I>&gt;<i>
+</I>&gt;<i> Gnome's NetworkManager also works great. Invoke nm-applet from the i3
+</I>&gt;<i> config and you'll get a tray icon (the same tray icon you get in
+</I>&gt;<i> Gnome). I think  wicd has a GUI too, but I never tried wicd.
+</I>&gt;<i>
+</I>
+I had some issues with nm because of my drivers, and decided to give it a
+try to wicd... it is working great (you have more powerful stuff on it, and
+the freaking icon shows up in the i3 bar). But somehow, when the network is
+down, it leaves dirt in the ifconfig, so the i3status still thinks I am
+connected, until I force a ifconfig down... this is weird, but I haven't
+looked into it in details yet.
+
+
+&gt;<i>
+</I>&gt;<i> &gt;  7. Parcellite.
+</I>&gt;<i>
+</I>&gt;<i> This is great if you want to merge the X copy and paste buffer with
+</I>&gt;<i> the toolkit's ^C + ^V buffers (Windows-like, perhaps more familiar
+</I>&gt;<i> shortcuts). Clipboard history too.
+</I>&gt;<i>
+</I>
+The gnome-terminal accepts ctrl+shift+c/v, which is pretty handy (the
+original ctrl+c is used to break/stop scripts/programs)... do you know a
+mapping in xterm in similar way?
+
+
+&gt;<i>
+</I>&gt;<i> &gt;  12. direct control of brightness from python script
+</I>&gt;<i>
+</I>&gt;<i> Note that this is not required for all setups.
+</I>&gt;<i>
+</I>
+Yeah, it seems to be the way to do this... :S
+
+
+&gt;<i>
+</I>&gt;<i> &gt;  13. same about sound volume
+</I>&gt;<i>
+</I>&gt;<i> This can be done from scripts, or you can use a program like
+</I>&gt;<i> volumeicon-alsa. With volumeicon-alsa, you also get a tray icon.
+</I>&gt;<i>
+</I>&gt;<i> I'm totally biased here, but if you're running PulseAudio, I recommend
+</I>&gt;<i> pa-applet. As with volumeicon-alsa, you can control the volume with
+</I>&gt;<i> the multimedia keys in your keyboard or by interacting with the tray
+</I>&gt;<i> icon, and you can also use the tray icon to change the audio
+</I>&gt;<i> configuration. E.g., you can choose between HDMI or laptop speakers
+</I>&gt;<i> using the tray icon (no need to restart programs, thanks to
+</I>&gt;<i> PulseAudio's magic).
+</I>&gt;<i>
+</I>
+I really liked it! the gnome-sound-applet also worked for me, but the icon
+size is too large for i3bar, so it would not show up (like nm-applet).
+This one here goes to my list of startup programs! :-)
+
+
+&gt;<i> &gt;  14. a set of programs to sleep, restore, add/remove external monitor
+</I>&gt;<i>
+</I>&gt;<i> I use a script for handling other outputs. I'm not entirely happy with
+</I>&gt;<i> it, but for the time being it works okay:
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://pastebin.com/uiF1by2w">http://pastebin.com/uiF1by2w</A>
+</I>&gt;<i>
+</I>&gt;<i> I plan to come up with something more flexible eventually, perhaps in
+</I>&gt;<i> the form of another tray icon. If anybody knows of an existing
+</I>&gt;<i> solution, please let me know.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>This one here is still a bit fuzzy for me... I am just using the
+gnome-settings-daemon, and everything magically works... trying to do it
+manually ws a bit pain, but I got it working with the pm-suspend command
+(sudo required).
+
+Thanks for your input here!
+
+BRUNO
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120512/b5c6e9bc/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120512/b5c6e9bc/attachment.html</A>&gt;
+</PRE>
+
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000659.html">[i3] Gnome-less wm
+</A></li>
+	<LI>Next message: <A HREF="000662.html">[i3] Gnome-less wm
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#663">[ date ]</a>
+              <a href="thread.html#663">[ thread ]</a>
+              <a href="subject.html#663">[ subject ]</a>
+              <a href="author.html#663">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

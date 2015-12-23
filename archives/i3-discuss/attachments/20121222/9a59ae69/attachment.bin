@@ -1,0 +1,25 @@
+>From 3292d5d68aead981ec4cb783a0c846167e0fb231 Mon Sep 17 00:00:00 2001
+From: Gereon Kremer <gereon.kremer@rwth-aachen.de>
+Date: Sat, 22 Dec 2012 19:06:53 +0100
+Subject: [PATCH 2/2] changing volume color from bad to degraded if muted
+
+---
+ src/print_volume.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/print_volume.c b/src/print_volume.c
+index 080dea2..cf42f3e 100644
+--- a/src/print_volume.c
++++ b/src/print_volume.c
+@@ -157,7 +157,7 @@ void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *
+ 		if ((err = snd_mixer_selem_get_playback_switch(hdl->elem, 0, &pbval)) < 0)
+ 			fprintf (stderr, "i3status: ALSA: playback_switch: %s\n", snd_strerror(err));
+ 		if (!pbval)  {
+-			START_COLOR("color_bad");
++			START_COLOR("color_degraded");
+ 			avg = 0;
+ 		}
+ 	}
+-- 
+1.7.10.4
+

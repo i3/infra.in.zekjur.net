@@ -1,0 +1,317 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] Transparency support
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Transparency%20support&In-Reply-To=%3Cop.v8b5j5am735up4%40sraven%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000418.html">
+   <LINK REL="Next"  HREF="000431.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] Transparency support</H1>
+    <B>Raven </B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Transparency%20support&In-Reply-To=%3Cop.v8b5j5am735up4%40sraven%3E"
+       TITLE="[i3] [PATCH] Transparency support">drdarkraven at gmail.com
+       </A><BR>
+    <I>Thu Jan 19 15:37:12 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000418.html">[i3] [PATCH] Transparency support
+</A></li>
+        <LI>Next message: <A HREF="000431.html">[i3] [PATCH] Transparency support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#419">[ date ]</a>
+              <a href="thread.html#419">[ thread ]</a>
+              <a href="subject.html#419">[ subject ]</a>
+              <a href="author.html#419">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>rebased onto next, and here is the patch:
+
+diff --git a/include/i3.h b/include/i3.h
+index d645325..313c68a 100644
+--- a/include/i3.h
++++ b/include/i3.h
+@@ -48,6 +48,9 @@ extern TAILQ_HEAD(ws_assignments_head,  
+Workspace_Assignment) ws_assignments;
+  extern TAILQ_HEAD(assignments_head, Assignment) assignments;
+  extern SLIST_HEAD(stack_wins_head, Stack_Window) stack_wins;
+  extern xcb_screen_t *root_screen;
++extern xcb_colormap_t default_colormap;
++extern xcb_visualtype_t *default_visual;
++extern uint8_t default_depth;
+  extern uint8_t root_depth;
+  extern bool xcursor_supported, xkb_supported;
+  extern xcb_window_t root;
+diff --git a/src/main.c b/src/main.c
+index 32073d2..6642d8b 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -50,6 +50,9 @@ xcb_timestamp_t last_timestamp = XCB_CURRENT_TIME;
+
+  xcb_screen_t *root_screen;
+  xcb_window_t root;
++xcb_visualtype_t *default_visual = NULL;
++xcb_colormap_t default_colormap = 0;
++uint8_t default_depth;
+  uint8_t root_depth;
+
+  struct ev_loop *main_loop;
+@@ -234,6 +237,43 @@ static void handle_signal(int sig, siginfo_t *info,  
+void *data) {
+      raise(sig);
+  }
+
++static xcb_visualtype_t *get_argb_visual(xcb_screen_t *s) {
++    xcb_depth_iterator_t depth_iter =  
+xcb_screen_allowed_depths_iterator(s);
++
++    if(depth_iter.data)
++        for(; depth_iter.rem; xcb_depth_next(&amp;depth_iter))
++            if(depth_iter.data-&gt;depth == 32)
++                for(xcb_visualtype_iterator_t visual_iter =  
+xcb_depth_visuals_iterator(depth_iter.data);
++                    visual_iter.rem; xcb_visualtype_next(&amp;visual_iter))
++                    return visual_iter.data;
++
++    return NULL;
++}
++
++static uint8_t get_visual_depth(xcb_screen_t *s, xcb_visualid_t vis) {
++    xcb_depth_iterator_t depth_iter =  
+xcb_screen_allowed_depths_iterator(s);
++
++    if(depth_iter.data)
++        for(; depth_iter.rem; xcb_depth_next (&amp;depth_iter))
++            for(xcb_visualtype_iterator_t visual_iter =  
+xcb_depth_visuals_iterator(depth_iter.data);
++                visual_iter.rem; xcb_visualtype_next (&amp;visual_iter))
++                if(vis == visual_iter.data-&gt;visual_id)
++                    return depth_iter.data-&gt;depth;
++    return 24;
++}
++
++static xcb_visualtype_t *get_default_visual(xcb_screen_t *s) {
++    xcb_depth_iterator_t depth_iter =  
+xcb_screen_allowed_depths_iterator(s);
++
++    if(depth_iter.data)
++        for(; depth_iter.rem; xcb_depth_next (&amp;depth_iter))
++            for(xcb_visualtype_iterator_t visual_iter =  
+xcb_depth_visuals_iterator(depth_iter.data);
++                visual_iter.rem; xcb_visualtype_next (&amp;visual_iter))
++                if(s-&gt;root_visual == visual_iter.data-&gt;visual_id)
++                    return visual_iter.data;
++
++    return NULL;
++}
+  int main(int argc, char *argv[]) {
+      char *override_configpath = NULL;
+      bool autostart = true;
+@@ -528,6 +568,25 @@ int main(int argc, char *argv[]) {
+      }
+      DLOG(&quot;root geometry reply: (%d, %d) %d x %d\n&quot;, greply-&gt;x, greply-&gt;y,  
+greply-&gt;width, greply-&gt;height);
+
++
++    /* Acquire a argb visual */
++    default_visual = get_argb_visual(root_screen);
++    if(!default_visual)
++        default_visual = get_default_visual(root_screen);
++    if (!default_visual) {
++        ELOG(&quot;No available visual found, exiting\n&quot;);
++        return 1;
++    }
++    default_depth = get_visual_depth(root_screen,  
+default_visual-&gt;visual_id);
++    /* Acquire corresponding colormap */
++    default_colormap = root_screen-&gt;default_colormap;
++    if(default_depth != root_depth) {
++        default_colormap = xcb_generate_id(conn);
++        xcb_create_colormap(conn, XCB_COLORMAP_ALLOC_NONE,
++            default_colormap, root,
++            default_visual-&gt;visual_id);
++    }
++
+      /* Place requests for the atoms we need as soon as possible */
+      #define xmacro(atom) \
+          xcb_intern_atom_cookie_t atom ## _cookie = xcb_intern_atom(conn,  
+0, strlen(#atom), #atom);
+diff --git a/src/sighandler.c b/src/sighandler.c
+index 4a0c13b..7f8ef51 100644
+--- a/src/sighandler.c
++++ b/src/sighandler.c
+@@ -162,7 +162,7 @@ void handle_signal(int sig, siginfo_t *info, void  
+*data) {
+          /* Create pixmap */
+          pixmap = xcb_generate_id(conn);
+          pixmap_gc = xcb_generate_id(conn);
+-        xcb_create_pixmap(conn, root_depth, pixmap, win, width, height);
++        xcb_create_pixmap(conn, default_depth, pixmap, win, width,  
+height);
+          xcb_create_gc(conn, pixmap_gc, pixmap, 0, 0);
+
+          /* Grab the keyboard to get all input */
+diff --git a/src/x.c b/src/x.c
+index e5853fb..8a2aedb 100644
+--- a/src/x.c
++++ b/src/x.c
+@@ -90,15 +90,24 @@ void x_con_init(Con *con) {
+       * get the initial geometry right */
+
+      uint32_t mask = 0;
+-    uint32_t values[2];
++    uint32_t values[5];
++
++    mask |= XCB_CW_BACK_PIXEL;
++    values[0] = root_screen-&gt;black_pixel;
++
++    mask |= XCB_CW_BORDER_PIXEL;
++    values[1] = root_screen-&gt;black_pixel;
+
+      /* our own frames should not be managed */
+      mask |= XCB_CW_OVERRIDE_REDIRECT;
+-    values[0] = 1;
++    values[2] = 1;
+
+      /* see include/xcb.h for the FRAME_EVENT_MASK */
+      mask |= XCB_CW_EVENT_MASK;
+-    values[1] = FRAME_EVENT_MASK &amp; ~XCB_EVENT_MASK_ENTER_WINDOW;
++    values[3] = FRAME_EVENT_MASK &amp; ~XCB_EVENT_MASK_ENTER_WINDOW;
++
++    mask |= XCB_CW_COLORMAP;
++    values[4] = default_colormap;
+
+      Rect dims = { -15, -15, 10, 10 };
+      con-&gt;frame = create_window(conn, dims, XCB_WINDOW_CLASS_INPUT_OUTPUT,  
+XCURSOR_CURSOR_POINTER, false, mask, values);
+@@ -561,7 +570,7 @@ void x_push_node(Con *con) {
+                  xcb_free_pixmap(conn, con-&gt;pixmap);
+                  xcb_free_gc(conn, con-&gt;pm_gc);
+              }
+-            xcb_create_pixmap(conn, root_depth, con-&gt;pixmap, con-&gt;frame,  
+rect.width, rect.height);
++            xcb_create_pixmap(conn, default_depth, con-&gt;pixmap,  
+con-&gt;frame, rect.width, rect.height);
+              /* For the graphics context, we disable GraphicsExposure  
+events.
+               * Those will be sent when a CopyArea request cannot be  
+fulfilled
+               * properly due to parts of the source being unmapped or  
+otherwise
+diff --git a/src/xcb.c b/src/xcb.c
+index 48906a2..1583782 100644
+--- a/src/xcb.c
++++ b/src/xcb.c
+@@ -21,7 +21,8 @@ xcb_window_t create_window(xcb_connection_t *conn, Rect  
+dims, uint16_t window_cl
+      xcb_window_t result = xcb_generate_id(conn);
+
+      /* If the window class is XCB_WINDOW_CLASS_INPUT_ONLY, depth has to  
+be 0 */
+-    uint16_t depth = (window_class == XCB_WINDOW_CLASS_INPUT_ONLY ? 0 :  
+XCB_COPY_FROM_PARENT);
++    uint16_t depth = (window_class == XCB_WINDOW_CLASS_INPUT_ONLY ? 0 :  
+default_depth);
++    xcb_visualid_t visual_id= (window_class ==  
+XCB_WINDOW_CLASS_INPUT_ONLY ? XCB_WINDOW_CLASS_COPY_FROM_PARENT :  
+default_visual-&gt;visual_id);
+
+      xcb_create_window(conn,
+              depth,
+@@ -30,7 +31,7 @@ xcb_window_t create_window(xcb_connection_t *conn, Rect  
+dims, uint16_t window_cl
+              dims.x, dims.y, dims.width, dims.height, /* dimensions */
+              0, /* border = 0, we draw our own */
+              window_class,
+-            XCB_WINDOW_CLASS_COPY_FROM_PARENT, /* copy visual from parent  
+*/
++            visual_id,
+              mask,
+              values);
+
+-- 
+1.7.8.4
+
+
+On Wed, 18 Jan 2012 08:12:37 +0800, Fernando Lemos &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">fernandotcl at gmail.com</A>&gt;  
+wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Mon, Jan 16, 2012 at 7:08 AM, DR &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">drdarkraven at gmail.com</A>&gt; wrote:
+</I>&gt;&gt;&gt;<i> You might want to adapt the code to the i3 style. Take a look at other
+</I>&gt;&gt;&gt;<i> functions, conditionals and for loops. Also, those function names
+</I>&gt;&gt;&gt;<i> might not be ideal.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I don't quite understand i3's coding style or naming conventions, are
+</I>&gt;&gt;<i> there any documents explaining this?
+</I>&gt;<i>
+</I>&gt;<i> I'm afraid not. Make sure you read the hacking how-to, but I don't
+</I>&gt;<i> think it mentions those conventions. This should be quite simple,
+</I>&gt;<i> though. Just copy the style you see in other functions. Do you have
+</I>&gt;<i> any specific questions? One thing in particular would be the spacing
+</I>&gt;<i> between &quot;if (&quot; and &quot;if(&quot;.
+</I>&gt;<i>
+</I>&gt;&gt;&gt;<i> If we can't find an ARGB visual, i3 will segfault. Is an ARGB visual
+</I>&gt;&gt;&gt;<i> always going to be present? If yes, then please use asserts to
+</I>&gt;&gt;&gt;<i> indicate that. Otherwise handle the cases where we can't find an ARGB
+</I>&gt;&gt;&gt;<i> visual.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I'll fix this.
+</I>&gt;<i>
+</I>&gt;<i> I noticed you sent an incremental patch. It looks ok to me, could you
+</I>&gt;<i> please post a diff against next so it would be easier to review?
+</I>&gt;<i>
+</I>&gt;&gt;&gt;<i> I'd also prefer if you renamed default_* to argb_*, since I plan to
+</I>&gt;&gt;&gt;<i> introduce vars like root_visual_type for Pango support, and that can
+</I>&gt;&gt;&gt;<i> be confusing.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The default_* is actually the default, since default_visual,
+</I>&gt;&gt;<i> default_depth will be applied to every single window. I think it will
+</I>&gt;&gt;<i> not be confused with root_visual_type, if root_visual_type means
+</I>&gt;&gt;<i> visual type of the root window.
+</I>&gt;<i>
+</I>&gt;<i> Cool, the naming you went with in your incremental patch makes sense to  
+</I>&gt;<i> me.
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>
+
+-- 
+Using Opera's revolutionary email client: <A HREF="http://www.opera.com/mail/">http://www.opera.com/mail/</A>
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000418.html">[i3] [PATCH] Transparency support
+</A></li>
+	<LI>Next message: <A HREF="000431.html">[i3] [PATCH] Transparency support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#419">[ date ]</a>
+              <a href="thread.html#419">[ thread ]</a>
+              <a href="subject.html#419">[ subject ]</a>
+              <a href="author.html#419">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

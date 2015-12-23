@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] How to display in `i3bar` (via `i3status`) the amount of free memory
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20How%20to%20display%20in%20%60i3bar%60%20%28via%20%60i3status%60%29%20the%20amount%20of%0A%20free%20memory&In-Reply-To=%3CCAPAw0WosXT7SNQPSf4CBd6%2Bi9OQZ8sEbOfeDumrrKNub4TPdDw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002202.html">
+   <LINK REL="Next"  HREF="002205.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] How to display in `i3bar` (via `i3status`) the amount of free memory</H1>
+    <B>Jeff Jibson</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20How%20to%20display%20in%20%60i3bar%60%20%28via%20%60i3status%60%29%20the%20amount%20of%0A%20free%20memory&In-Reply-To=%3CCAPAw0WosXT7SNQPSf4CBd6%2Bi9OQZ8sEbOfeDumrrKNub4TPdDw%40mail.gmail.com%3E"
+       TITLE="[i3] How to display in `i3bar` (via `i3status`) the amount of free memory">jeff at jibson.com
+       </A><BR>
+    <I>Wed Sep 16 14:41:47 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002202.html">[i3] How to display in `i3bar` (via `i3status`) the amount of free memory
+</A></li>
+        <LI>Next message: <A HREF="002205.html">[i3] How to display in `i3bar` (via `i3status`) the amount of free memory
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2203">[ date ]</a>
+              <a href="thread.html#2203">[ thread ]</a>
+              <a href="subject.html#2203">[ subject ]</a>
+              <a href="author.html#2203">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, Sep 16, 2015 at 6:22 AM, Ciprian Dorin Craciun &lt;
+<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ciprian.craciun at gmail.com</A>&gt; wrote:
+&gt;<i>
+</I>&gt;<i> On Wed, Sep 16, 2015 at 2:26 PM, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt;
+</I>wrote:
+&gt;<i> &gt; The recommended way is to wrap i3status as described in its manpage.
+</I>&gt;<i>
+</I>&gt;<i> The whole purpose of `i3status` is that it's lightweight both in terms
+</I>&gt;<i> of resources and OS calls.  Wrapping it in a script that each second
+</I>&gt;<i> spawns a bunch of processes just to add memory usage is counter to its
+</I>&gt;<i> purpose...
+</I>&gt;<i>
+</I>&gt;<i> ...
+</I>
+
+&gt;<i>
+</I>&gt;<i> However I would like to ask the developers to please reconsider adding
+</I>&gt;<i> such a basic and useful piece of information.  (But as said I'll live
+</I>&gt;<i> this here.)
+</I>&gt;<i>
+</I>&gt;<i> Thanks for i3,
+</I>&gt;<i> Ciprian.
+</I>
+
+There are several alternatives to i3status.  I haven't had time to try any
+of them.  I have been using conky for years, so I use it.
+
+In my config file I have:
+
+bar {
+    output             HDMI1
+    tray_output        HDMI1
+    status_command     conky -c ~/.i3/conkyrc.left
+    mode               dock
+    position           bottom
+    workspace_buttons  yes
+    font               $font
+
+    colors {
+    background         $root
+    statusline         $foreground
+    focused_workspace  $foreground $focused   $foreground
+    active_workspace   $foreground $active    $foreground
+    inactive_workspace $foreground $unfocused $foreground
+    urgent_workspace   $urgentfg   $urgentbg  $urgentfg
+    }
+}
+
+I have two monitors.  Both conky files have the following settings at the
+top of the file:
+
+background no
+use_xft yes
+out_to_console yes
+out_to_x no
+update_interval 2
+total_run_times 0
+double_buffer yes
+border_inner_margin 0
+border_outer_margin 0
+use_spacer none
+if_up_strictness address
+short_units yes
+
+In file for my left monitor I have:
+
+TEXT
+BKK ${tztime UTC-7 %T} \
+ CCSD ${tztime PST8PDT %T} \
+ PT-0{1,2,3} ${tztime MST7MDT %T}    |    \
+en01 ${addr eno1} ${downspeed eno1} ${upspeed eno1}  \
+ ${if_up tun0}  tun0 ${addr tun0} ${downspeed tun0} ${upspeed tun0}
+ ${endif} \
+ port ${tcp_portmon 1 65535 count}    |    \
+$nodename ($kernel) $uptime \
+ ${time %F %T}
+
+In the file for the right monitor I have:
+
+TEXT
+CLP $cpu=${cpu cpu0}+${cpu cpu1} \
+ $loadavg \
+ $running_processes / $processes    |    \
+MS $mem/$memmax ($memperc%) \
+ $swap/$swapmax ($swapperc%)    |    \
+D / ${fs_used /}/${fs_size /}    |    \
+G ${execi 50 if pgrep sandbox &gt; /dev/null ; then genlop -cn | grep
+'Currently merging'  ; else echo -n Las Sync: ; ~/.i3/lastsync.sh ; fi}
+ |    \
+HKUT $nodename ($kernel) $uptime \
+ ${time %T}
+
+Some of this is specific to gentoo and needs gentools.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150916/6e7ec35e/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150916/6e7ec35e/attachment.html</A>&gt;
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002202.html">[i3] How to display in `i3bar` (via `i3status`) the amount of free memory
+</A></li>
+	<LI>Next message: <A HREF="002205.html">[i3] How to display in `i3bar` (via `i3status`) the amount of free memory
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2203">[ date ]</a>
+              <a href="thread.html#2203">[ thread ]</a>
+              <a href="subject.html#2203">[ subject ]</a>
+              <a href="author.html#2203">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

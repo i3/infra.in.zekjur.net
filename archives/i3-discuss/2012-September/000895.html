@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] RFC: Ignoring size increment hints for tiling windows
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20RFC%3A%20Ignoring%20size%20increment%20hints%20for%20tiling%20windows&In-Reply-To=%3C20120905154131.18527.89884%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000896.html">
+   <LINK REL="Next"  HREF="000897.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] RFC: Ignoring size increment hints for tiling windows</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20RFC%3A%20Ignoring%20size%20increment%20hints%20for%20tiling%20windows&In-Reply-To=%3C20120905154131.18527.89884%40midna.zekjur.net%3E"
+       TITLE="[i3] RFC: Ignoring size increment hints for tiling windows">michael at i3wm.org
+       </A><BR>
+    <I>Wed Sep  5 17:41:31 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000896.html">[i3] Can't figure out a way to redirect screen session to	workspace
+</A></li>
+        <LI>Next message: <A HREF="000897.html">[i3] RFC: Ignoring size increment hints for tiling windows
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#895">[ date ]</a>
+              <a href="thread.html#895">[ thread ]</a>
+              <a href="subject.html#895">[ subject ]</a>
+              <a href="author.html#895">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+as many of you might have noticed, terminal emulators such as urxvt set
+an X11 hint for getting resized only in increments of a specific size
+(for example in increments of 13 px, if one line in your font size is 13
+px high).
+
+Oftentimes, the available space cannot be evenly divided by the resize
+increment hint, and therefore you get little borders at the bottom or
+right of a window.
+
+Until now, we thought that this is just the way it is, but it turns out
+that all terminal emulators I have tested (urxvt, xterm, gnome-terminal,
+ROXterm) cope with whatever size one assigns them, that is, they still
+work if i3 entirely ignores the size increment hint.
+
+As I&#8217;ve mentioned in <A HREF="http://bugs.i3wm.org/query/ticket/540#comment:7,">http://bugs.i3wm.org/query/ticket/540#comment:7,</A>
+Openbox ignores the size increment hint when windows are in fullscreen
+for several years and that seems to work just fine.
+
+Therefore, I&#8217;m announcing that we will ignore size increment hints for
+tiling windows (NOT for floating windows such as GIMP toolbar windows)
+in i3 4.3 UNLESS somebody has a good reason against that. In case you
+have a good reason against it, please tell me/us ASAP.
+
+In case you want to test whether your favorite terminal emulator still
+works fine, apply ignore-size-increment-hints.patch (attached) and
+check. In case you test one which was not mentioned in this thread
+before, feel free to post your results.
+
+Best regards,
+Michael
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: ignore-size-increment-hints.patch
+Type: text/x-diff
+Size: 698 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120905/bb5973dc/attachment.patch">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120905/bb5973dc/attachment.patch</A>&gt;
+</PRE>
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000896.html">[i3] Can't figure out a way to redirect screen session to	workspace
+</A></li>
+	<LI>Next message: <A HREF="000897.html">[i3] RFC: Ignoring size increment hints for tiling windows
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#895">[ date ]</a>
+              <a href="thread.html#895">[ thread ]</a>
+              <a href="subject.html#895">[ subject ]</a>
+              <a href="author.html#895">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

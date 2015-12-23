@@ -1,0 +1,1834 @@
+From michael at i3wm.org  Sat Jan  5 08:39:02 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 05 Jan 2013 08:39:02 +0100
+Subject: [i3] i3status: Color for muted volume
+In-Reply-To: <50D5F846.8040807@rwth-aachen.de>
+References: <50D5F846.8040807@rwth-aachen.de>
+Message-ID: <x6d2xkjcyx.fsf@midna.zekjur.net>
+
+Hi Gereon,
+
+Sorry for replying so late.
+
+Gereon Kremer <gereon.kremer at rwth-aachen.de> writes:
+> in the current version i3status, the volume is red (i.e. has color_bad)
+> if muted. While I think it is useful to use different colors for "muted"
+> and "volume X", I don't unterstand why we use "bad" here instead of
+> "degraded.
+>
+> Is there any particular reason for this?
+> If not: I have attached a patch :-)
+Historical reasons: ?degraded? was introduced later than ?bad?.
+
+Your patch is merged, thanks.
+
+-- 
+Best regards,
+Michael
+
+From chriskgnr at yahoo.gr  Wed Jan  9 19:02:23 2013
+From: chriskgnr at yahoo.gr (=?iso-8859-7?B?1/He8/Tv8iDK7/Th7PDf9PPn8g==?=)
+Date: Wed, 9 Jan 2013 18:02:23 +0000 (GMT)
+Subject: [i3] i3 with x2go server
+Message-ID: <1357754543.95940.YahooMailClassic@web172003.mail.ir2.yahoo.com>
+
+Hello from Greece!We have setup an x2go client on a windows xp pc, and we are trying to establish a connection with an x2go server pc with debian stable and i3 ?on it. While it seems that the connection is established between the client and the server, the i3 gui pop-up on the client screen for a second or two, but then it close. The log file with the error is the following:
+XSession-x2go: X session started for chriskgnr at Tue Jan? 8 17:54:52?
+UTC 2013
+font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+??? Found binding mod64 with key 41 and command f
+??? Found binding mod64 with key 43 and command s
+??? Found binding mod64 with key 25 and command T
+??? Found binding mod64 with key 26 and command d
+??? Found binding mod65 with key 65 and command t
+??? Found binding mod64 with key 28 and command focus ft
+??? Found binding mod64 with key 44 and command h
+??? Found binding mod64 with key 45 and command j
+??? Found binding mod64 with key 46 and command k
+??? Found binding mod64 with key 47 and command l
+??? Found symbolic mod64 with key Left and command h
+??? Found symbolic mod64 with key Down and command j
+??? Found symbolic mod64 with key Up and command k
+??? Found symbolic mod64 with key Right and command l
+??? Found binding mod32 with key 44 and command wch
+??? Found binding mod32 with key 45 and command wcj
+??? Found binding mod32 with key 46 and command wck
+??? Found binding mod32 with key 47 and command wcl
+??? Found symbolic mod32 with key Left and command wch
+??? Found symbolic mod32 with key Down and command wcj
+??? Found symbolic mod32 with key Up and command wck
+??? Found symbolic mod32 with key Right and command wcl
+??? Found binding mod68 with key 44 and command sh
+??? Found binding mod68 with key 45 and command sj
+??? Found binding mod68 with key 46 and command sk
+??? Found binding mod68 with key 47 and command sl
+??? Found symbolic mod68 with key Left and command sh
+??? Found symbolic mod68 with key Down and command sj
+??? Found symbolic mod68 with key Up and command sk
+??? Found symbolic mod68 with key Right and command sl
+??? Found binding mod65 with key 44 and command mh
+??? Found binding mod65 with key 45 and command mj
+??? Found binding mod65 with key 46 and command mk
+??? Found binding mod65 with key 47 and command ml
+??? Found symbolic mod65 with key Left and command mh
+??? Found symbolic mod65 with key Down and command mj
+??? Found symbolic mod65 with key Up and command mk
+??? Found symbolic mod65 with key Right and command ml
+??? Found binding mod33 with key 44 and command wcmh
+??? Found binding mod33 with key 45 and command wcmj
+??? Found binding mod33 with key 46 and command wcmk
+??? Found binding mod33 with key 47 and command wcml
+??? Found binding mod64 with key 10 and command 1
+??? Found binding mod64 with key 11 and command 2
+??? Found binding mod64 with key 12 and command 3
+??? Found binding mod64 with key 13 and command 4
+??? Found binding mod64 with key 14 and command 5
+??? Found binding mod64 with key 15 and command 6
+??? Found binding mod64 with key 16 and command 7
+??? Found binding mod64 with key 17 and command 8
+??? Found binding mod64 with key 18 and command 9
+??? Found binding mod64 with key 19 and command 10
+??? Found binding mod65 with key 10 and command m1
+??? Found binding mod65 with key 11 and command m2
+??? Found binding mod65 with key 12 and command m3
+??? Found binding mod65 with key 13 and command m4
+??? Found binding mod65 with key 14 and command m5
+??? Found binding mod65 with key 15 and command m6
+??? Found binding mod65 with key 16 and command m7
+??? Found binding mod65 with key 17 and command m8
+??? Found binding mod65 with key 18 and command m9
+??? Found binding mod65 with key 19 and command m10
+??? Found binding mod64 with key 36 and command exec?
+/usr/bin/x-terminal-emulator
+??? Found binding mod65 with key 24 and command kill
+??? Found binding mod64 with key 55 and command exec /usr/bin/dmenu_run
+??? Found binding mod65 with key 26 and command exit
+??? Found binding mod65 with key 27 and command restart
+ERROR: Could not open font (X error 15)
+Can you help us with this error?
+Regards,Christos.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130109/f237e655/attachment-0001.html>
+
+From michael at i3wm.org  Wed Jan  9 20:48:34 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 09 Jan 2013 20:48:34 +0100
+Subject: [i3] i3 with x2go server
+In-Reply-To: <1357754543.95940.YahooMailClassic@web172003.mail.ir2.yahoo.com>
+References: <1357754543.95940.YahooMailClassic@web172003.mail.ir2.yahoo.com>
+Message-ID: <x6lic2dtnx.fsf@midna.zekjur.net>
+
+Hi ???????,
+
+??????? ??????????? <chriskgnr at yahoo.gr> writes:
+> ERROR: Could not open font (X error 15)
+This error indicates that the font you specified in the configuration
+file is not actually installed.
+
+In case you are using the default config, install the Debian package
+xfonts-base.
+
+i3-wm has ?Recommands: xfonts-base? so I suppose you disabled
+recommendations in apt.
+
+-- 
+Best regards,
+Michael
+
+From dcoppa at gmail.com  Thu Jan 10 09:50:28 2013
+From: dcoppa at gmail.com (David Coppa)
+Date: Thu, 10 Jan 2013 09:50:28 +0100
+Subject: [i3] [PATCH] Minor fix for libi3/ipc_send_message.c
+Message-ID: <CABM=MFL0QGzdMLqxwSgoqstoeMSK4KKAQ+gMhiguFah8Og2nTw@mail.gmail.com>
+
+Hi,
+
+imho there's no need to copy so much for the ipc magic code.
+
+This sync libi3/ipc_send_message.c with what i3bar/src/ipc.c does.
+
+Ciao,
+David
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: ipc_send_message-minor-fix.diff
+Type: application/octet-stream
+Size: 810 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130110/79a63715/attachment.obj>
+
+From fernandotcl at i3wm.org  Thu Jan 10 22:38:39 2013
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Thu, 10 Jan 2013 19:38:39 -0200
+Subject: [i3] [PATCH] Minor fix for libi3/ipc_send_message.c
+In-Reply-To: <CABM=MFL0QGzdMLqxwSgoqstoeMSK4KKAQ+gMhiguFah8Og2nTw@mail.gmail.com>
+References: <CABM=MFL0QGzdMLqxwSgoqstoeMSK4KKAQ+gMhiguFah8Og2nTw@mail.gmail.com>
+Message-ID: <CANVYNa-5fSot2-4NNo1D=dbWPZjKpBgWsyVNcuY956mpafRPOg@mail.gmail.com>
+
+2013/1/10 David Coppa <dcoppa at gmail.com>
+
+> Hi,
+>
+> imho there's no need to copy so much for the ipc magic code.
+>
+
+Hi, That's not how strncpy works. The third argument to strncpy is there to
+prevent the buffer from overflowing. Use strncpy with buffer_size - 1 as
+the third argument unless you know what you're doing.
+
+
+This sync libi3/ipc_send_message.c with what i3bar/src/ipc.c does.
+>
+
+That code is using strncpy the wrong way. It's also incorrectly passing len
+to strncpy, as the walk pointer has advanced and len hasn't been updated.
+While that won't make i3bar crash if the math there is right, it's not
+really correct code. Check with Michael first, but I believe he would
+accept a patch that fixes that.
+
+Regards,
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130110/514fdab6/attachment.html>
+
+From fernandotcl at i3wm.org  Thu Jan 10 22:40:26 2013
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Thu, 10 Jan 2013 19:40:26 -0200
+Subject: [i3] [PATCH] Minor fix for libi3/ipc_send_message.c
+In-Reply-To: <CANVYNa-5fSot2-4NNo1D=dbWPZjKpBgWsyVNcuY956mpafRPOg@mail.gmail.com>
+References: <CABM=MFL0QGzdMLqxwSgoqstoeMSK4KKAQ+gMhiguFah8Og2nTw@mail.gmail.com>
+ <CANVYNa-5fSot2-4NNo1D=dbWPZjKpBgWsyVNcuY956mpafRPOg@mail.gmail.com>
+Message-ID: <CANVYNa8j-ghzXnyTt+sj27ox4b8OSsW7mBa=Ca0Em-snGa04hg@mail.gmail.com>
+
+2013/1/10 Fernando Lemos <fernandotcl at i3wm.org>
+
+> 2013/1/10 David Coppa <dcoppa at gmail.com>
+>
+>> This sync libi3/ipc_send_message.c with what i3bar/src/ipc.c does.
+>>
+>
+> That code is using strncpy the wrong way. It's also incorrectly passing
+> len to strncpy, as the walk pointer has advanced and len hasn't been
+> updated. While that won't make i3bar crash if the math there is right, it's
+> not really correct code. Check with Michael first, but I believe he would
+> accept a patch that fixes that.
+>
+
+Actually, looking at it again, len = strlen(payload), so len is fine as
+it's what's left in the buffer. The first strncpy is still wrong, though.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130110/b9a62d22/attachment.html>
+
+From dcoppa at gmail.com  Fri Jan 11 09:55:18 2013
+From: dcoppa at gmail.com (David Coppa)
+Date: Fri, 11 Jan 2013 09:55:18 +0100
+Subject: [i3] [PATCH] Minor fix for libi3/ipc_send_message.c
+In-Reply-To: <CANVYNa-5fSot2-4NNo1D=dbWPZjKpBgWsyVNcuY956mpafRPOg@mail.gmail.com>
+References: <CABM=MFL0QGzdMLqxwSgoqstoeMSK4KKAQ+gMhiguFah8Og2nTw@mail.gmail.com>
+ <CANVYNa-5fSot2-4NNo1D=dbWPZjKpBgWsyVNcuY956mpafRPOg@mail.gmail.com>
+Message-ID: <CABM=MFKUvysr5AKf7aENeydoeGTg_Fmci6uVfb3JO9d3R7u_UQ@mail.gmail.com>
+
+On Thu, Jan 10, 2013 at 10:38 PM, Fernando Lemos <fernandotcl at i3wm.org> wrote:
+> 2013/1/10 David Coppa <dcoppa at gmail.com>
+>>
+>> Hi,
+>>
+>> imho there's no need to copy so much for the ipc magic code.
+>
+>
+> Hi, That's not how strncpy works. The third argument to strncpy is there to
+> prevent the buffer from overflowing. Use strncpy with buffer_size - 1 as the
+> third argument unless you know what you're doing.
+
+I3_IPC_MAGIC is:
+
+#define I3_IPC_MAGIC "i3-ipc"
+
+And then you have:
+
+int buffer_size = strlen(I3_IPC_MAGIC) + sizeof(uint32_t) +
+sizeof(uint32_t) + message_size;
+char msg[buffer_size];
+char *walk = msg;
+strncpy(walk, I3_IPC_MAGIC, strlen(I3_IPC_MAGIC));
+...
+
+So imho it's not possible to overflow the buffer here.
+
+Btw, I think the "big plan" is to make i3bar use the IPC related
+functions from libi3, instead of rolling its own, to avoid code
+duplication. I think this happened because i3bar initially was a
+third-party project that later got merged into i3.
+
+Cheers,
+David
+
+From fernandotcl at i3wm.org  Fri Jan 11 12:54:50 2013
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Fri, 11 Jan 2013 09:54:50 -0200
+Subject: [i3] [PATCH] Minor fix for libi3/ipc_send_message.c
+In-Reply-To: <CABM=MFKUvysr5AKf7aENeydoeGTg_Fmci6uVfb3JO9d3R7u_UQ@mail.gmail.com>
+References: <CABM=MFL0QGzdMLqxwSgoqstoeMSK4KKAQ+gMhiguFah8Og2nTw@mail.gmail.com>
+ <CANVYNa-5fSot2-4NNo1D=dbWPZjKpBgWsyVNcuY956mpafRPOg@mail.gmail.com>
+ <CABM=MFKUvysr5AKf7aENeydoeGTg_Fmci6uVfb3JO9d3R7u_UQ@mail.gmail.com>
+Message-ID: <CANVYNa-Hxs2iaACdKiYC8TBrr36uTaTLXAACBQg4aTD8moM+wg@mail.gmail.com>
+
+2013/1/11 David Coppa <dcoppa at gmail.com>
+
+> On Thu, Jan 10, 2013 at 10:38 PM, Fernando Lemos <fernandotcl at i3wm.org>
+> wrote:
+> > 2013/1/10 David Coppa <dcoppa at gmail.com>
+> >>
+> >> Hi,
+> >>
+> >> imho there's no need to copy so much for the ipc magic code.
+> >
+> >
+> > Hi, That's not how strncpy works. The third argument to strncpy is there
+> to
+> > prevent the buffer from overflowing. Use strncpy with buffer_size - 1 as
+> the
+> > third argument unless you know what you're doing.
+>
+> I3_IPC_MAGIC is:
+>
+> #define I3_IPC_MAGIC "i3-ipc"
+>
+> And then you have:
+>
+> int buffer_size = strlen(I3_IPC_MAGIC) + sizeof(uint32_t) +
+> sizeof(uint32_t) + message_size;
+> char msg[buffer_size];
+> char *walk = msg;
+> strncpy(walk, I3_IPC_MAGIC, strlen(I3_IPC_MAGIC));
+> ...
+>
+> So imho it's not possible to overflow the buffer here.
+>
+
+That doesn't matter. strncpy is designed to prevent buffer overflows. If
+you don't specify buffer_size - 1, you're misusing it.
+
+If you don't care about overflows, use strcpy instead, or even memcpy. But
+you have to have a reason to get rid of the buffer overflow protection
+(e.g., this is a hot code path that *needs* to be optimized and strncpy
+*is* the bottleneck).
+
+Even though there's no buffer overflow possibility now, it's unlikely, but
+maybe some day there will be. Or maybe this code will get copied and pasted
+somewhere where there might be a buffer overflow. strncpy just makes sense,
+you need a reason to replace it with strcpy.
+
+
+>
+> Btw, I think the "big plan" is to make i3bar use the IPC related
+> functions from libi3, instead of rolling its own, to avoid code
+> duplication. I think this happened because i3bar initially was a
+> third-party project that later got merged into i3.
+>
+
+Yep, that sounds great to me.
+
+Regards,
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130111/cfe6d63a/attachment.html>
+
+From michael at i3wm.org  Fri Jan 11 19:14:12 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 11 Jan 2013 19:14:12 +0100
+Subject: [i3] [PATCH] Minor fix for libi3/ipc_send_message.c
+In-Reply-To: <CANVYNa-Hxs2iaACdKiYC8TBrr36uTaTLXAACBQg4aTD8moM+wg@mail.gmail.com>
+References: <CABM=MFL0QGzdMLqxwSgoqstoeMSK4KKAQ+gMhiguFah8Og2nTw@mail.gmail.com>
+ <CANVYNa-5fSot2-4NNo1D=dbWPZjKpBgWsyVNcuY956mpafRPOg@mail.gmail.com>
+ <CABM=MFKUvysr5AKf7aENeydoeGTg_Fmci6uVfb3JO9d3R7u_UQ@mail.gmail.com>
+ <CANVYNa-Hxs2iaACdKiYC8TBrr36uTaTLXAACBQg4aTD8moM+wg@mail.gmail.com>
+Message-ID: <x6vcb3twnf.fsf@midna.zekjur.net>
+
+Hi Fernando, David,
+
+I have pushed a commit which uses an entirely different way of
+formatting the message and sending it: http://c.i3wm.org/7b0d75e, see
+http://code.stapelberg.de/git/i3/tree/libi3/ipc_send_message.c?h=next
+for the new code.
+
+While the two loops are somewhat ugly (see the comment), at least we
+don?t allocate a variable amount of stack memory anymore and save all
+those strncpy() and memcpy() calls :-).
+
+-- 
+Best regards,
+Michael
+
+From layus.on at gmail.com  Sat Jan 12 14:11:02 2013
+From: layus.on at gmail.com (Layus)
+Date: Sat, 12 Jan 2013 14:11:02 +0100
+Subject: [i3] [Ticket 591] Killing workspaces does not work.
+Message-ID: <50F160E6.6070809@gmail.com>
+
+Hi,
+
+I have added some comments about ticket 591 
+<http://bugs.i3wm.org/report/ticket/591#comment:4> on the bug tracker (I 
+tried myself on it because of the "easy" tag).
+As I know that it is not frequently checked, I post something here too.
+
+Any hint, help or final decision about closing this ticket is welcome.
+
+Regards,
+Guillaume.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130112/a6d369fa/attachment.html>
+
+From joepvandelft at xs4all.nl  Sat Jan 12 23:27:53 2013
+From: joepvandelft at xs4all.nl (Joep van Delft)
+Date: Sat, 12 Jan 2013 23:27:53 +0100
+Subject: [i3] [Ticket 591] Killing workspaces does not work.
+In-Reply-To: <50F160E6.6070809@gmail.com>
+References: <50F160E6.6070809@gmail.com>
+Message-ID: <20130112232753.653faf5f@xs4all.nl>
+
+Hello Layus, 
+
+On Sat, 12 Jan 2013 14:11:02 +0100
+Layus <layus.on at gmail.com> wrote:
+
+> As I know that it is not frequently checked, I post something here
+> too.
+
+I have the following link in my feed reader: 
+
+http://bugs.i3wm.org/query/report/2?asc=1&format=rss
+
+It also updates with a new comment (though the comment itself does
+not get included, anyone found a better link?). 
+
+Kind regards, 
+
+
+Joep
+
+From emikulic at gmail.com  Sun Jan 13 12:41:26 2013
+From: emikulic at gmail.com (Emil Mikulic)
+Date: Sun, 13 Jan 2013 22:41:26 +1100
+Subject: [i3] [PATCH] Additional GNOME integration.
+Message-ID: <CA+bNT6-+KT2b5zZa5-3fC__jyhozA8GRfYOYmnvNQ6S5Qh30pQ@mail.gmail.com>
+
+This adds an "i3-gnome" session which is i3 but with a bunch of
+GNOME-isms like gnome-screensaver, the gnome session exit dialog with
+shutdown/restart options, and, most excitingly, laptop suspend and
+resume that Just Works(tm)
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Additional-GNOME-integration.patch
+Type: application/octet-stream
+Size: 4609 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130113/93ed971e/attachment.obj>
+
+From emikulic at gmail.com  Sun Jan 13 14:22:38 2013
+From: emikulic at gmail.com (Emil Mikulic)
+Date: Mon, 14 Jan 2013 00:22:38 +1100
+Subject: [i3] [i3status] [PATCH 1/3] Make sure colorful_output variable is
+	initialized.
+Message-ID: <CA+bNT680SjN49jjNieqS=6LvxDK0WFhHYHr-NPqdWXAC571EvA@mail.gmail.com>
+
+Found with clang static analyzer. Some re-ordering of code to make it
+more obvious.
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Make-sure-colorful_output-variable-is-initialized.patch
+Type: application/octet-stream
+Size: 1758 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130114/13c3a29c/attachment.obj>
+
+From emikulic at gmail.com  Sun Jan 13 14:23:16 2013
+From: emikulic at gmail.com (Emil Mikulic)
+Date: Mon, 14 Jan 2013 00:23:16 +1100
+Subject: [i3] [i3status] [PATCH 2/3] src/*.c depends on include/i3status.h
+Message-ID: <CA+bNT6_B=e3Rg7urZwnSG7s2MyBCCTWXApk+y7oCB1VHpfENKw@mail.gmail.com>
+
+Minor nit.
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0002-src-.c-depends-on-include-i3status.h.patch
+Type: application/octet-stream
+Size: 612 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130114/c5cfedb1/attachment.obj>
+
+From emikulic at gmail.com  Sun Jan 13 14:24:05 2013
+From: emikulic at gmail.com (Emil Mikulic)
+Date: Mon, 14 Jan 2013 00:24:05 +1100
+Subject: [i3] [i3status] [PATCH 3/3] Support multiple times with different
+	timezones.
+Message-ID: <CA+bNT6_wWV4T0=d5+_2607nt-BFPgSm1jwDWDz410Hkw_q6q5Q@mail.gmail.com>
+
+I really want this. :)
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0003-Support-multiple-times-with-different-timezones.patch
+Type: application/octet-stream
+Size: 8037 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130114/3b3b2016/attachment-0001.obj>
+
+From michael at i3wm.org  Sun Jan 13 15:11:38 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 13 Jan 2013 15:11:38 +0100
+Subject: [i3] FYI: patch reviews continue in 7 days
+Message-ID: <x6ehhptbol.fsf@midna.zekjur.net>
+
+Hi everyone,
+
+I am aware that there are several patches which are awaiting
+review. It?s currently a pretty busy week for me, so I will not promise
+to review anything within the next 7 days.
+
+Thanks for your patience.
+
+-- 
+Best regards,
+Michael
+
+From gkeramidas at gmail.com  Sun Jan 13 18:34:46 2013
+From: gkeramidas at gmail.com (Giorgos Keramidas)
+Date: Sun, 13 Jan 2013 18:34:46 +0100
+Subject: [i3] [PATCH] Additional GNOME integration.
+In-Reply-To: <CA+bNT6-+KT2b5zZa5-3fC__jyhozA8GRfYOYmnvNQ6S5Qh30pQ@mail.gmail.com>
+References: <CA+bNT6-+KT2b5zZa5-3fC__jyhozA8GRfYOYmnvNQ6S5Qh30pQ@mail.gmail.com>
+Message-ID: <CAKR2__2tajCTQSj+PYJmWzECS_zf8sUP-tioco3YC9MNgN0NxQ@mail.gmail.com>
+
+Hi Emil,
+
+This sounds amazing. Especially the suspend/resume support.
+
+I already have a setup for Gnome/i3 similar to the one I described here:
+http://keramida.wordpress.com/2012/10/18/awesome-wm-in-ubuntu-12-04/
+
+I'll be patching your version in my laptop, and give it a try.
+Anything particular you'd like me to pay attention too/for?
+
+
+
+On Sun, Jan 13, 2013 at 12:41 PM, Emil Mikulic <emikulic at gmail.com> wrote:
+
+> This adds an "i3-gnome" session which is i3 but with a bunch of
+> GNOME-isms like gnome-screensaver, the gnome session exit dialog with
+> shutdown/restart options, and, most excitingly, laptop suspend and
+> resume that Just Works(tm)
+>
+
+
+
+-- 
+Giorgos Keramidas; gkeramidas at gmail.com
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130113/78829d10/attachment.html>
+
+From xancorreu at gmail.com  Thu Jan 17 20:39:06 2013
+From: xancorreu at gmail.com (xancorreu)
+Date: Thu, 17 Jan 2013 20:39:06 +0100
+Subject: [i3] Color of border of windows title
+Message-ID: <50F8535A.5010905@gmail.com>
+
+Hi,
+
+I use i3. First of all, good job. What I like of i3 is the possibility 
+of having Mod + W mode in which all windows are "separated". I think 
+this marks the difference between other tilling WM and i3. Moreover, the 
+wizard and selection of Mods keys and easy combination of Mod+Return is 
+good (other tilling wm make you type complicated sequence of keys). Ah!, 
+and Mod+d is awesome! ;-)
+
+Well, I just want to know how can I change the color of the borders of 
+window title (in Mod+W mode). I see there is a grey (possibly 1px) 
+segments. I just see in in Mod+w mode (nope in Mod+e...). In Mod+s also 
+it appears.
+
+I read the docs, and no mention of that.
+
+Thanks in advance,
+Xan.
+
+From michael at i3wm.org  Thu Jan 17 21:04:59 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 17 Jan 2013 21:04:59 +0100
+Subject: [i3] Color of border of windows title
+In-Reply-To: <50F8535A.5010905@gmail.com>
+References: <50F8535A.5010905@gmail.com>
+Message-ID: <x6sj5zshhw.fsf@midna.zekjur.net>
+
+Hi Xan,
+
+xancorreu <xancorreu at gmail.com> writes:
+> Well, I just want to know how can I change the color of the borders of 
+> window title (in Mod+W mode). I see there is a grey (possibly 1px) 
+> segments. I just see in in Mod+w mode (nope in Mod+e...). In Mod+s also 
+> it appears.
+>
+> I read the docs, and no mention of that.
+http://i3wm.org/docs/userguide.html#_changing_colors
+
+?Note that for the window decorations, the color around the child window
+is the background color, and the border color is only the two thin lines
+at the top of the window.?
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Thu Jan 17 23:03:08 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 17 Jan 2013 23:03:08 +0100
+Subject: [i3] Color of border of windows title
+In-Reply-To: <50F86A7E.6080908@gmail.com>
+References: <50F8535A.5010905@gmail.com> <x6sj5zshhw.fsf@midna.zekjur.net>
+ <50F86A7E.6080908@gmail.com>
+Message-ID: <x6622v5uxv.fsf@midna.zekjur.net>
+
+Hi Xan,
+
+xancorreu <xancorreu at gmail.com> writes:
+>> http://i3wm.org/docs/userguide.html#_changing_colors
+>>
+>> ?Note that for the window decorations, the color around the child window
+>> is the background color, and the border color is only the two thin lines
+>> at the top of the window.?
+>>
+> Thanks for fast answering. I read this document. But I don't see any 
+> mention to the border of title.
+> With your words, I deduce that frame title color in Mode+W is border 
+> color? Is it true?
+My words are a quote from that section of the userguide.
+
+The answer to your question is ?yes?, but you could also just have tried
+it yourself?
+
+-- 
+Best regards,
+Michael
+
+From chris at illco.de  Fri Jan 18 09:04:54 2013
+From: chris at illco.de (Chris Down)
+Date: Fri, 18 Jan 2013 16:04:54 +0800
+Subject: [i3] [PATCH] i3-sensible-* fixups
+Message-ID: <CAL4mb5a3JofciNCQVD3AMKJvh5VywLt9bpycMh_gHF2kVkhMQA@mail.gmail.com>
+
+On some esoteric systems, `which' does not return a non-zero exit code
+when it cannot locate an executable in the user's $PATH, `command' is
+generally safer. Also included two other small fixups (if you want me
+to submit these separately please let me know): proper quoting on all
+variables, and a message when no suitable program can be located.
+
+diff --git a/i3-sensible-editor b/i3-sensible-editor
+index b3afceb..391b017 100755
+--- a/i3-sensible-editor
++++ b/i3-sensible-editor
+@@ -9,8 +9,11 @@
+ # mechanism to find the preferred editor
+
+ # Hopefully one of these is installed (no flamewars about preference please!):
+-for editor in $VISUAL $EDITOR nano vim vi emacs pico qe mg jed gedit
+mc-edit; do
+-    if which $editor > /dev/null 2>&1; then
+-        exec $editor "$@"
++for editor in "$VISUAL" "$EDITOR" nano vim vi emacs pico qe mg jed
+gedit mc-edit; do
++    if command -v "$editor" > /dev/null 2>&1; then
++        exec "$editor" "$@"
+     fi
+ done
++
++echo "Could not find a sensible editor!" >&2
++exit 1
+diff --git a/i3-sensible-pager b/i3-sensible-pager
+index df46325..7326e28 100755
+--- a/i3-sensible-pager
++++ b/i3-sensible-pager
+@@ -11,8 +11,11 @@
+ # Hopefully one of these is installed (no flamewars about preference please!):
+ # We don't use 'more' because it will exit if the file is too short.
+ # Worst case scenario we'll open the file in your editor.
+-for pager in $PAGER less most w3m i3-sensible-editor; do
+-    if which $pager > /dev/null 2>&1; then
+-        exec $pager "$@"
++for pager in "$PAGER" less most w3m i3-sensible-editor; do
++    if command -v "$pager" > /dev/null 2>&1; then
++        exec "$pager" "$@"
+     fi
+ done
++
++echo "Could not find a sensible pager!" >&2
++exit 1
+diff --git a/i3-sensible-terminal b/i3-sensible-terminal
+index fddefae..21c964b 100755
+--- a/i3-sensible-terminal
++++ b/i3-sensible-terminal
+@@ -8,8 +8,11 @@
+ # Distributions/packagers should enhance this script with a
+ # distribution-specific mechanism to find the preferred terminal emulator. On
+ # Debian, there is the x-terminal-emulator symlink for example.
+-for terminal in $TERMINAL urxvt rxvt terminator Eterm aterm xterm
+gnome-terminal roxterm xfce4-terminal; do
+-    if which $terminal > /dev/null 2>&1; then
+-        exec $terminal "$@"
++for terminal in "$TERMINAL" urxvt rxvt terminator Eterm aterm xterm
+gnome-terminal roxterm xfce4-terminal; do
++    if command -v "$terminal" > /dev/null 2>&1; then
++        exec "$terminal" "$@"
+     fi
+ done
++
++echo "Could not find a sensible terminal!" >&2
++exit 1
+
+Hopefully the whitespace in this email won't get mangled, although I'm
+using a webmail client, so who knows.
+
+Chris
+
+From michael at i3wm.org  Fri Jan 18 11:45:47 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 18 Jan 2013 11:45:47 +0100
+Subject: [i3] [PATCH] i3-sensible-* fixups
+In-Reply-To: <CAL4mb5a3JofciNCQVD3AMKJvh5VywLt9bpycMh_gHF2kVkhMQA@mail.gmail.com>
+References: <CAL4mb5a3JofciNCQVD3AMKJvh5VywLt9bpycMh_gHF2kVkhMQA@mail.gmail.com>
+Message-ID: <x6r4libwh0.fsf@midna.zekjur.net>
+
+Hi Chris,
+
+Chris Down <chris at illco.de> writes:
+> On some esoteric systems, `which' does not return a non-zero exit code
+On which esoteric system precisely are you running i3?
+
+> when it cannot locate an executable in the user's $PATH, `command' is
+> generally safer. Also included two other small fixups (if you want me
+> to submit these separately please let me know): proper quoting on all
+> variables, and a message when no suitable program can be located.
+Funny, I didn?t even know about ?command? until now! :-)
+
+Could you please re-submit your patches using ?git format-patch? and
+using separate commits for each issue?
+
+Thanks!
+
+-- 
+Best regards,
+Michael
+
+From kanvuanza at gmail.com  Sun Jan 20 05:52:02 2013
+From: kanvuanza at gmail.com (Pedro Lacerda)
+Date: Sun, 20 Jan 2013 01:52:02 -0300
+Subject: [i3] Setup layout beforehand
+Message-ID: <CALqes9-4+cSAVTcXgbP_bQ4Y9Q9cRsn5HC0Q1=ZpZ-KNvXXEGQ@mail.gmail.com>
+
+I use VMD, a program with multiple windows that must be launched from a
+terminal.
+
+When it starts two windows are opened instantly giving me no time to switch
+the layout beforehand. Assuming a new workspace, I want to launch VMD, hide
+the terminal (put in stack or tabbed mode) and set the remaining windows in
+horizontal mode.
+
+Simply put, I need to open an terminal and launch VMD (two windows
+simultaneously). My desired layout is:
+
+      stack
+     /     \
+terminal  h-split
+           /   \
+         VMD1 VMD2
+
+-- 
+abra?os,
+Pedro Lacerda
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130120/621ea978/attachment.html>
+
+From old4 at o2.pl  Sun Jan 20 14:27:38 2013
+From: old4 at o2.pl (Mateusz Poszwa)
+Date: Sun, 20 Jan 2013 14:27:38 +0100
+Subject: [i3] Setup layout beforehand
+In-Reply-To: <CALqes9-4+cSAVTcXgbP_bQ4Y9Q9cRsn5HC0Q1=ZpZ-KNvXXEGQ@mail.gmail.com>
+References: <CALqes9-4+cSAVTcXgbP_bQ4Y9Q9cRsn5HC0Q1=ZpZ-KNvXXEGQ@mail.gmail.com>
+Message-ID: <20130120142738.7dc527a5@debelianear>
+
+On Sun, 20 Jan 2013 01:52:02 -0300
+Pedro Lacerda <kanvuanza at gmail.com> wrote:
+
+> I use VMD, a program with multiple windows that must be launched from a
+> terminal.
+> 
+> When it starts two windows are opened instantly giving me no time to switch
+> the layout beforehand. Assuming a new workspace, I want to launch VMD, hide
+> the terminal (put in stack or tabbed mode) and set the remaining windows in
+> horizontal mode.
+> 
+> Simply put, I need to open an terminal and launch VMD (two windows
+> simultaneously). My desired layout is:
+> 
+>       stack
+>      /     \
+> terminal  h-split
+>            /   \
+>          VMD1 VMD2
+> 
+
+Hello.
+
+I guess your question is: ?How to get this layout before launching VMD??
+I think it's not possible (though I may be wrong,
+since I don't know if layout saving is implemented),
+but I can tell you how to get this layout after launching the program.
+
+1. With open terminal, switch to stacked mode (?layout tabbed?)
+2. Launch VMD
+3. With one of the VMD's windows focussed, split horizontally (?splith?)
+4. Focus the other VMD's window (probably ?focus left?)
+5. Move the window into the split window (probably ?move right?)
+
+Putting a for_window with splith command into your config
+could help to do this automatically for two windows,
+but that's a really ugly workaround.
+
+Before you start to fiddle with your configuration,
+can you tell why that program has to be launched from the terminal?
+If it doesn't require input and it doesn't output important data,
+I don't see the need for it to be launched from the terminal.
+
+
+Regards
+
+-- 
+Mateusz Poszwa
+
+From kanvuanza at gmail.com  Sun Jan 20 15:52:15 2013
+From: kanvuanza at gmail.com (Pedro Lacerda)
+Date: Sun, 20 Jan 2013 11:52:15 -0300
+Subject: [i3] Setup layout beforehand
+In-Reply-To: <20130120142738.7dc527a5@debelianear>
+References: <CALqes9-4+cSAVTcXgbP_bQ4Y9Q9cRsn5HC0Q1=ZpZ-KNvXXEGQ@mail.gmail.com>
+ <20130120142738.7dc527a5@debelianear>
+Message-ID: <CALqes99kA0_CRfy=dSCY6KWG5y72B9w5scCOgWEKnsgR-FnvWA@mail.gmail.com>
+
+On Sun, Jan 20, 2013 at 10:27 AM, Mateusz Poszwa <old4 at o2.pl> wrote:
+
+> On Sun, 20 Jan 2013 01:52:02 -0300
+> Pedro Lacerda <kanvuanza at gmail.com> wrote:
+>
+> > I use VMD, a program with multiple windows that must be launched from a
+> > terminal.
+> >
+> > When it starts two windows are opened instantly giving me no time to
+> switch
+> > the layout beforehand. Assuming a new workspace, I want to launch VMD,
+> hide
+> > the terminal (put in stack or tabbed mode) and set the remaining windows
+> in
+> > horizontal mode.
+> >
+> > Simply put, I need to open an terminal and launch VMD (two windows
+> > simultaneously). My desired layout is:
+> >
+> >       stack
+> >      /     \
+> > terminal  h-split
+> >            /   \
+> >          VMD1 VMD2
+> >
+>
+> Hello.
+>
+> I guess your question is: ?How to get this layout before launching VMD??
+> I think it's not possible (though I may be wrong,
+> since I don't know if layout saving is implemented),
+> but I can tell you how to get this layout after launching the program.
+>
+> 1. With open terminal, switch to stacked mode (?layout tabbed?)
+> 2. Launch VMD
+> 3. With one of the VMD's windows focussed, split horizontally (?splith?)
+> 4. Focus the other VMD's window (probably ?focus left?)
+> 5. Move the window into the split window (probably ?move right?)
+>
+> Putting a for_window with splith command into your config
+> could help to do this automatically for two windows,
+> but that's a really ugly workaround.
+>
+> Before you start to fiddle with your configuration,
+> can you tell why that program has to be launched from the terminal?
+> If it doesn't require input and it doesn't output important data,
+> I don't see the need for it to be launched from the terminal.
+>
+
+Great, this works.
+
+It has very little use as it has a dedicated Tk console window, but
+only there
+some error explanations are showed. Earlier versions didn't require the
+terminal open, now it simply didn't starts without it.
+
+I tried to disown the program, but it closes?! Do you know how to circumvent
+this?
+
+Best regards.
+
+-- 
+abra?os,
+Pedro Lacerda
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130120/82cefa50/attachment.html>
+
+From old4 at o2.pl  Sun Jan 20 16:26:07 2013
+From: old4 at o2.pl (Mateusz Poszwa)
+Date: Sun, 20 Jan 2013 16:26:07 +0100
+Subject: [i3] Setup layout beforehand
+In-Reply-To: <CALqes99kA0_CRfy=dSCY6KWG5y72B9w5scCOgWEKnsgR-FnvWA@mail.gmail.com>
+References: <CALqes9-4+cSAVTcXgbP_bQ4Y9Q9cRsn5HC0Q1=ZpZ-KNvXXEGQ@mail.gmail.com>
+ <20130120142738.7dc527a5@debelianear>
+ <CALqes99kA0_CRfy=dSCY6KWG5y72B9w5scCOgWEKnsgR-FnvWA@mail.gmail.com>
+Message-ID: <20130120162607.64b449e1@debelianear>
+
+On Sun, 20 Jan 2013 11:52:15 -0300
+Pedro Lacerda <kanvuanza at gmail.com> wrote:
+
+> On Sun, Jan 20, 2013 at 10:27 AM, Mateusz Poszwa <old4 at o2.pl> wrote:
+> 
+> > On Sun, 20 Jan 2013 01:52:02 -0300
+> > Pedro Lacerda <kanvuanza at gmail.com> wrote:
+> >
+> > > I use VMD, a program with multiple windows that must be launched from a
+> > > terminal.
+> > >
+> > > When it starts two windows are opened instantly giving me no time to
+> > switch
+> > > the layout beforehand. Assuming a new workspace, I want to launch VMD,
+> > hide
+> > > the terminal (put in stack or tabbed mode) and set the remaining windows
+> > in
+> > > horizontal mode.
+> > >
+> > > Simply put, I need to open an terminal and launch VMD (two windows
+> > > simultaneously). My desired layout is:
+> > >
+> > >       stack
+> > >      /     \
+> > > terminal  h-split
+> > >            /   \
+> > >          VMD1 VMD2
+> > >
+> >
+> > Hello.
+> >
+> > I guess your question is: ?How to get this layout before launching VMD??
+> > I think it's not possible (though I may be wrong,
+> > since I don't know if layout saving is implemented),
+> > but I can tell you how to get this layout after launching the program.
+> >
+> > 1. With open terminal, switch to stacked mode (?layout tabbed?)
+> > 2. Launch VMD
+> > 3. With one of the VMD's windows focussed, split horizontally (?splith?)
+> > 4. Focus the other VMD's window (probably ?focus left?)
+> > 5. Move the window into the split window (probably ?move right?)
+> >
+> > Putting a for_window with splith command into your config
+> > could help to do this automatically for two windows,
+> > but that's a really ugly workaround.
+> >
+> > Before you start to fiddle with your configuration,
+> > can you tell why that program has to be launched from the terminal?
+> > If it doesn't require input and it doesn't output important data,
+> > I don't see the need for it to be launched from the terminal.
+> >
+> 
+> Great, this works.
+> 
+> It has very little use as it has a dedicated Tk console window, but
+> only there
+> some error explanations are showed. Earlier versions didn't require the
+> terminal open, now it simply didn't starts without it.
+> 
+> I tried to disown the program, but it closes?! Do you know how to circumvent
+> this?
+> 
+> Best regards.
+> 
+
+You can use nohup, dtach, probably some multiplexers like tmux, screen?
+When using nohup you can get the output again with ?tail -f nohup.out?.
+Refer to the manpages of the commands for information about using them.
+
+Good luck. ;-)
+
+-- 
+Mateusz Poszwa
+
+From tailinchu at gmail.com  Mon Jan 21 12:20:12 2013
+From: tailinchu at gmail.com (Tai-Lin Chu)
+Date: Mon, 21 Jan 2013 03:20:12 -0800
+Subject: [i3] idea on default layout orientation: complete binary tree model
+Message-ID: <CABf5LwBRczVixnvVD1G1RaQQTjm_F3y_ptmT0xO+MdxZg6jDuw@mail.gmail.com>
+
+at this moment i3wm has 4 layouts: 1. splitv 2. splith 3. tabbed 4. stacked.
+
+But I think we should remove 1 and 2 because this default setting
+ is useless. Our screen has limited width or height, so splitting more
+than 2 times will make nothing readable.
+
+Instead, I purpose complete binary tree model. this will replace the
+default 1 and 2.
+
+the new behaviour for splitv will be like this if I have 4 windows opened:
+
+          v
+       h    h
+     1  3 2  4
+
+the new behaviour for splith is simply:
+           h
+       v    v
+     1  3 2  4
+
+
+when we insert a new node (windows) for splith
+           h
+       v    v
+     h  3 2  4
+    1 5
+
+if you are curious, how we get 1324 instead of 1234:
+
+     h
+    1 2
+
+     h
+   v  2
+  1 3
+
+          h
+       v    v
+     1  3 2  4
+
+From knopwob at googlemail.com  Mon Jan 21 13:06:04 2013
+From: knopwob at googlemail.com (Sascha Kruse)
+Date: Mon, 21 Jan 2013 13:06:04 +0100
+Subject: [i3] idea on default layout orientation: complete binary tree
+ model
+In-Reply-To: <CABf5LwBRczVixnvVD1G1RaQQTjm_F3y_ptmT0xO+MdxZg6jDuw@mail.gmail.com>
+References: <CABf5LwBRczVixnvVD1G1RaQQTjm_F3y_ptmT0xO+MdxZg6jDuw@mail.gmail.com>
+Message-ID: <20130121120604.GA7351@thinky.rts.uni-hannover.de>
+
+On Mon, Jan 21, 2013 at 03:20:12AM -0800, Tai-Lin Chu wrote:
+> at this moment i3wm has 4 layouts: 1. splitv 2. splith 3. tabbed 4. stacked.
+>
+> But I think we should remove 1 and 2 because this default setting
+>  is useless. Our screen has limited width or height, so splitting more
+> than 2 times will make nothing readable.
+
+There are usecases where more than 2 splits are fine and useable.
+On my big 1920x1080 monitor I can comfortably use 3 or 4 columns
+depending on what I'm doing.
+
+And it looks like you're assuming that the splits are always evenly
+sized which is not the case. Think for example about a small column
+which contains pidgin's buddy list. Then on most displays there's still
+enough place for two other columns.
+
+So I'm against removing splitv and splith. But I don't have anything
+against adding your suggestion as an _additional_ layout.
+
+BTW. didn't i3 have at one point the behaviour that it would toggle
+between splitv and splith depending on which side was bigger? Or am I
+confusing this with another window manager?
+
+greetings,
+Sascha Kruse
+
+From xianglingzhu at gmail.com  Mon Jan 21 14:06:20 2013
+From: xianglingzhu at gmail.com (Lingzhu Xiang)
+Date: Mon, 21 Jan 2013 21:06:20 +0800
+Subject: [i3] idea on default layout orientation: complete binary tree
+	model
+In-Reply-To: <CABf5LwBRczVixnvVD1G1RaQQTjm_F3y_ptmT0xO+MdxZg6jDuw@mail.gmail.com>
+References: <CABf5LwBRczVixnvVD1G1RaQQTjm_F3y_ptmT0xO+MdxZg6jDuw@mail.gmail.com>
+Message-ID: <CACnaKDRxEziNDx2pt0_zN8kRB+Vm0DJTY8b5A4RhX+1HoU_MPA@mail.gmail.com>
+
+On Mon, Jan 21, 2013 at 7:20 PM, Tai-Lin Chu <tailinchu at gmail.com> wrote:
+> at this moment i3wm has 4 layouts: 1. splitv 2. splith 3. tabbed 4. stacked.
+>
+> But I think we should remove 1 and 2 because this default setting
+>  is useless. Our screen has limited width or height, so splitting more
+> than 2 times will make nothing readable.
+
+I have a slightly larger screen so I enjoy a 3x2 grid. Cognitive
+psychology argues our short-term memory can only efficiently manage no
+more than seven objects anyway. So I propose 6 windows in a workspace
+should be enough for common use cases.
+
+Given no more than 6 windows, there are only a few types of layout to choose.
+
+> Instead, I purpose complete binary tree model. this will replace the
+> default 1 and 2.
+
+I do like the idea to allow user to fine-grain tune the layout with
+tree structure that describes the position of each window. i3's layout
+commands are powerful, but so far I feel manual layout management at
+runtime counterproductive. I have a lot of time thinking about layout
+preference, but when I'm using it, I just want to $mod+Return to make
+windows pop up immediately and start working. So it would be ideal if
+I can save my layout preference in configuration and stop worrying
+about it at runtime.
+
+
+Lingzhu Xiang
+
+From gereon.kremer at rwth-aachen.de  Mon Jan 21 18:17:27 2013
+From: gereon.kremer at rwth-aachen.de (Gereon Kremer)
+Date: Mon, 21 Jan 2013 18:17:27 +0100
+Subject: [i3] idea on default layout orientation: complete binary tree
+	model
+In-Reply-To: <CACnaKDRxEziNDx2pt0_zN8kRB+Vm0DJTY8b5A4RhX+1HoU_MPA@mail.gmail.com>
+References: <CABf5LwBRczVixnvVD1G1RaQQTjm_F3y_ptmT0xO+MdxZg6jDuw@mail.gmail.com>
+ <CACnaKDRxEziNDx2pt0_zN8kRB+Vm0DJTY8b5A4RhX+1HoU_MPA@mail.gmail.com>
+Message-ID: <50FD7827.9030307@rwth-aachen.de>
+
+Hi,
+
+I'm not too fond of this binary tree idea: It has no real gain (at least 
+not for me), as it can't do anything one could not achieve with a single 
+keystroke before opening a new window. (i.e. switching to splitv / 
+splith). But it takes aways some possibilities, for example having more 
+than two containers each taking the full height.
+
+I also thought about presets, as "presets for workspace layouts" is one 
+feature I really miss in i3. What I'd like to have is the following:
+My workspace 1 always contains pidgin (left, ~20%) and thunderbird 
+(right, rest of screen). I have not yet been able to create a config 
+such that when I start those programs (in arbitrary order) they are 
+placed as described.
+I guess it'd need some kind of "want have"-size, such that when a 
+container has the possibility to resize (because a new container 
+appeared), it resizes to the "want have"-size (or some intermediate 
+values, if multiple "want have"-sizes do not allow for an "optimal" 
+placement.
+Maybe, we should fork this thread? :-)
+
+Gereon
+
+On 21.01.2013 14:06, Lingzhu Xiang wrote:
+> On Mon, Jan 21, 2013 at 7:20 PM, Tai-Lin Chu<tailinchu at gmail.com>  wrote:
+>> at this moment i3wm has 4 layouts: 1. splitv 2. splith 3. tabbed 4. stacked.
+>>
+>> But I think we should remove 1 and 2 because this default setting
+>>   is useless. Our screen has limited width or height, so splitting more
+>> than 2 times will make nothing readable.
+> I have a slightly larger screen so I enjoy a 3x2 grid. Cognitive
+> psychology argues our short-term memory can only efficiently manage no
+> more than seven objects anyway. So I propose 6 windows in a workspace
+> should be enough for common use cases.
+>
+> Given no more than 6 windows, there are only a few types of layout to choose.
+>
+>> Instead, I purpose complete binary tree model. this will replace the
+>> default 1 and 2.
+> I do like the idea to allow user to fine-grain tune the layout with
+> tree structure that describes the position of each window. i3's layout
+> commands are powerful, but so far I feel manual layout management at
+> runtime counterproductive. I have a lot of time thinking about layout
+> preference, but when I'm using it, I just want to $mod+Return to make
+> windows pop up immediately and start working. So it would be ideal if
+> I can save my layout preference in configuration and stop worrying
+> about it at runtime.
+>
+>
+> Lingzhu Xiang
+
+From keramida at ceid.upatras.gr  Mon Jan 21 20:36:34 2013
+From: keramida at ceid.upatras.gr (Giorgos Keramidas)
+Date: Mon, 21 Jan 2013 20:36:34 +0100
+Subject: [i3] idea on default layout orientation: complete binary tree
+	model
+In-Reply-To: <50FD7827.9030307@rwth-aachen.de> (Gereon Kremer's message of
+ "Mon, 21 Jan 2013 18:17:27 +0100")
+References: <CABf5LwBRczVixnvVD1G1RaQQTjm_F3y_ptmT0xO+MdxZg6jDuw@mail.gmail.com>
+ <CACnaKDRxEziNDx2pt0_zN8kRB+Vm0DJTY8b5A4RhX+1HoU_MPA@mail.gmail.com>
+ <50FD7827.9030307@rwth-aachen.de>
+Message-ID: <87libmmipp.fsf@kobe.laptop>
+
+On Mon, 21 Jan 2013 18:17:27 +0100,
+Gereon Kremer <gereon.kremer at rwth-aachen.de> wrote:
+> I also thought about presets, as "presets for workspace layouts" is
+> one feature I really miss in i3. What I'd like to have is the
+> following: My workspace 1 always contains pidgin (left, ~20%) and
+> thunderbird (right, rest of screen). I have not yet been able to
+> create a config such that when I start those programs (in arbitrary
+> order) they are placed as described.
+>
+> I guess it'd need some kind of "want have"-size, such that when a
+> container has the possibility to resize (because a new container
+> appeared), it resizes to the "want have"-size (or some intermediate
+> values, if multiple "want have"-sizes do not allow for an "optimal"
+> placement.  Maybe, we should fork this thread? :-)
+
+That sounds like an interesting idea. We do call our client-window
+buckets 'containers', so there's nothing that stops someone from going
+off and implementing something like CSS width/height specifiers with
+values that are either (a) a percentage of the screen size, or (b) a
+percentage of the parent container size.
+
+Then an appropriately written for_window rule would be able to apply
+startup size hints on a per-application basis, e.g.:
+
+    # Start pidgin windows at 20% of parent container width and full
+    # screen height, if possible.
+    for_window [class="Pidgin"] width='0.20' screen_height="100%"
+
+Implementing the full blown layout specifications possible with CSS
+would probably be overkill, but I am guessing we can go a very long way
+without _all_ the bells and whistles.  Even with just _one_ size-related
+hint, that depends on parent container size, we can do a lot of stuff.
+
+
+From tailinchu at gmail.com  Mon Jan 21 20:41:07 2013
+From: tailinchu at gmail.com (Tai-Lin Chu)
+Date: Mon, 21 Jan 2013 11:41:07 -0800
+Subject: [i3] idea on default layout orientation: complete binary tree
+	model
+In-Reply-To: <CABf5LwBRczVixnvVD1G1RaQQTjm_F3y_ptmT0xO+MdxZg6jDuw@mail.gmail.com>
+References: <CABf5LwBRczVixnvVD1G1RaQQTjm_F3y_ptmT0xO+MdxZg6jDuw@mail.gmail.com>
+Message-ID: <CABf5LwDZotr_=c7aYWzveSoHaBKxhQZtnpBYWfhHSwg0ow+fbw@mail.gmail.com>
+
+1. I dont think there is a option for auto toggle between splitv and
+splith. maybe you mean default_orientation auto? but it is statically
+determined by the screen size in the beginning. (p.s. maybe awesome
+wm?)
+
+2. I forget to talk about the benefits in my last post. let's analyze a bit:
+* when we continuously use mod+ return, both stacking and tabbed
+result in a readable window size. however splitvh does not. I know
+someone mentioned that if the screen is large enough, you can actually
+split 3 or 4 times. but the property of complete binary tree is that
+all windows (except those in the deepest level) should have about the
+same window size. if you keep splitting more windows, the property
+ensures that all windows do not get ridiculously tall or fat. (if you
+still want to split 3, 4 times, you can manually move the new windows.
+but i dont think cbtree is less readable.)
+
+* as mentioned, this actually benefits people who have smaller screen
+(12 in x 8 in) like me. I cannot do splitv because this makes windows
+too fat, one splith is ok but more than that makes the windows too
+thin. because i have to move things around, this is
+counter-productive. (I now stay with tabbed, but by default it is hard
+to look at 2 windows together)
+
+* split v and split h comment is still there. but by default splitv
+splith orientation are not that useful (for reason above).  The
+purpose of default orientation is that it reduces work for users, so
+cbtree model is just about right.
+
+
+
+
+
+
+On Mon, Jan 21, 2013 at 3:20 AM, Tai-Lin Chu <tailinchu at gmail.com> wrote:
+> at this moment i3wm has 4 layouts: 1. splitv 2. splith 3. tabbed 4. stacked.
+>
+> But I think we should remove 1 and 2 because this default setting
+>  is useless. Our screen has limited width or height, so splitting more
+> than 2 times will make nothing readable.
+>
+> Instead, I purpose complete binary tree model. this will replace the
+> default 1 and 2.
+>
+> the new behaviour for splitv will be like this if I have 4 windows opened:
+>
+>           v
+>        h    h
+>      1  3 2  4
+>
+> the new behaviour for splith is simply:
+>            h
+>        v    v
+>      1  3 2  4
+>
+>
+> when we insert a new node (windows) for splith
+>            h
+>        v    v
+>      h  3 2  4
+>     1 5
+>
+> if you are curious, how we get 1324 instead of 1234:
+>
+>      h
+>     1 2
+>
+>      h
+>    v  2
+>   1 3
+>
+>           h
+>        v    v
+>      1  3 2  4
+
+From michael at i3wm.org  Tue Jan 22 06:50:10 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 22 Jan 2013 06:50:10 +0100
+Subject: [i3] idea on default layout orientation: complete binary tree
+	model
+In-Reply-To: <CABf5LwBRczVixnvVD1G1RaQQTjm_F3y_ptmT0xO+MdxZg6jDuw@mail.gmail.com>
+References: <CABf5LwBRczVixnvVD1G1RaQQTjm_F3y_ptmT0xO+MdxZg6jDuw@mail.gmail.com>
+Message-ID: <x61uddsr59.fsf@midna.zekjur.net>
+
+Hi Tai-Lin,
+
+Your proposal is an interesting thought experiment, but as pointed out
+by others in this thread, I think it neglects some use cases.
+
+Additionally, introducing _yet another_ layout mode is really not
+something I am interested in doing. I think i3 already offers a lot of
+ways in which it can be used, possibly even too many already.
+
+Since you mention that you find i3?s way of managing windows rather
+counter-productive, I?d recommend looking at automatic tiling window
+managers such as XMonad, which I hear is very customizable, too, so
+maybe that is a better base for your idea.
+
+-- 
+Best regards,
+Michael
+
+From old4 at o2.pl  Tue Jan 22 19:58:49 2013
+From: old4 at o2.pl (Mateusz Poszwa)
+Date: Tue, 22 Jan 2013 19:58:49 +0100
+Subject: [i3] idea on default layout orientation: complete binary tree
+ model
+In-Reply-To: <20130121120604.GA7351@thinky.rts.uni-hannover.de>
+References: <CABf5LwBRczVixnvVD1G1RaQQTjm_F3y_ptmT0xO+MdxZg6jDuw@mail.gmail.com>
+ <20130121120604.GA7351@thinky.rts.uni-hannover.de>
+Message-ID: <20130122195849.4ad7571a@debelianear>
+
+On Mon, 21 Jan 2013 13:06:04 +0100
+Sascha Kruse <knopwob at googlemail.com> wrote:
+
+???8<???
+> BTW. didn't i3 have at one point the behaviour that it would toggle
+> between splitv and splith depending on which side was bigger? Or am I
+> confusing this with another window manager?
+> 
+> greetings,
+> Sascha Kruse
+
+It was suggested here:
+http://bugs.i3wm.org/ticket/ticket/464#comment:7
+? but I don't think it was implemented.
+
+Regards
+
+-- 
+Mateusz Poszwa
+
+From michael at i3wm.org  Wed Jan 23 20:45:39 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 23 Jan 2013 20:45:39 +0100
+Subject: [i3] [PATCH] Customizable click actions on i3bar
+In-Reply-To: <CAH2Exs5uGNH++SzB4pPYwexBk8bbXW9QrDzzB40MyFa55oNDjA@mail.gmail.com>
+References: <CAH2Exs5uGNH++SzB4pPYwexBk8bbXW9QrDzzB40MyFa55oNDjA@mail.gmail.com>
+Message-ID: <x6ham7r8d8.fsf@midna.zekjur.net>
+
+Hi Francisco,
+
+"Francisco J. V?zquez" <fjvazquezaraujo at gmail.com> writes:
+> I made this patch that allows i3status to pass a "command" option for
+> each module, to be executed on mouse click. This is the i3 part.
+Sorry for taking so long to respond to your mail.
+
+It seems like you did not use git to create these patches. Could you
+please do that and then submit your patches to http://cr.i3wm.org/?
+
+Thanks!
+
+-- 
+Best regards,
+Michael
+
+From tailinchu at gmail.com  Fri Jan 25 00:35:47 2013
+From: tailinchu at gmail.com (Tai-Lin Chu)
+Date: Thu, 24 Jan 2013 15:35:47 -0800
+Subject: [i3] idea on default layout orientation: complete binary tree model
+Message-ID: <CABf5LwCerhCyWNNqZ6Ytp=cfeQpX8HVW4pJ4rOF8+r9TPHUgBA@mail.gmail.com>
+
+after I read the bug tracker, I still think it is possible to
+implement this feature.
+
+I liked the idea of using w/h > 1? splith : splitv to implement this
+because this allows us to existing feature and will not introduce too
+much new things.
+
+anyone?
+
+From joepvandelft at xs4all.nl  Fri Jan 25 01:12:45 2013
+From: joepvandelft at xs4all.nl (Joep van Delft)
+Date: Fri, 25 Jan 2013 01:12:45 +0100
+Subject: [i3] idea on default layout orientation: complete binary tree
+ model
+In-Reply-To: <CABf5LwCerhCyWNNqZ6Ytp=cfeQpX8HVW4pJ4rOF8+r9TPHUgBA@mail.gmail.com>
+References: <CABf5LwCerhCyWNNqZ6Ytp=cfeQpX8HVW4pJ4rOF8+r9TPHUgBA@mail.gmail.com>
+Message-ID: <20130125011245.62023f14@xs4all.nl>
+
+Hi Tai-Lin, 
+
+I don't know what you are talking about. Two times 'this' without
+providing context. Leave at least the email header intact if you are
+picking up an old discussion. And provide links to stuff you refer
+to. Thanks. 
+
+As from what I _guess_ to be what you're desiring: Isn't the `layout
+toggle split`-command ($mod+e in current default config) enough for a
+manual tiler? 
+
+Cheers, 
+
+	joep
+
+
+
+On Thu, 24 Jan 2013 15:35:47 -0800
+Tai-Lin Chu <tailinchu at gmail.com> wrote:
+
+> after I read the bug tracker, I still think it is possible to
+> implement this feature.
+> 
+> I liked the idea of using w/h > 1? splith : splitv to implement this
+> because this allows us to existing feature and will not introduce
+> too much new things.
+> 
+> anyone?
+
+
+From tailinchu at gmail.com  Fri Jan 25 10:20:04 2013
+From: tailinchu at gmail.com (Tai-Lin Chu)
+Date: Fri, 25 Jan 2013 09:20:04 +0000 (UTC)
+Subject: [i3] Invitation to connect on LinkedIn
+Message-ID: <172307822.5952026.1359105604589.JavaMail.app@ela4-app2321.prod>
+
+LinkedIn
+------------
+
+
+
+I'd like to add you to my professional network on LinkedIn.
+
+- Tai-Lin
+
+Tai-Lin Chu
+Software Developer at KokoChe
+San Francisco Bay Area
+
+Confirm that you know Tai-Lin Chu:
+https://www.linkedin.com/e/lmtb4n-hcd4dw4n-1m/isd/10698993901/j2QlrSTp/?hs=false&tok=3GUC_TY3RMERA1
+
+--
+You are receiving Invitation to Connect emails. Click to unsubscribe:
+http://www.linkedin.com/e/lmtb4n-hcd4dw4n-1m/qdIGuP9RqO2GrLfvqaTaxRNX2T2WwasFW0Ckf0/goo/i3-discuss%40i3%2Ezekjur%2Enet/20061/I3551927640_1/?hs=false&tok=3-XN5hLlFMERA1
+
+(c) 2012 LinkedIn Corporation. 2029 Stierlin Ct, Mountain View, CA 94043, USA.
+
+
+  
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130125/e550aedb/attachment.html>
+
+From michael at i3wm.org  Fri Jan 25 11:19:35 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 25 Jan 2013 11:19:35 +0100
+Subject: [i3] [i3status] [PATCH 1/3] Make sure colorful_output variable
+	is initialized.
+In-Reply-To: <CA+bNT680SjN49jjNieqS=6LvxDK0WFhHYHr-NPqdWXAC571EvA@mail.gmail.com>
+References: <CA+bNT680SjN49jjNieqS=6LvxDK0WFhHYHr-NPqdWXAC571EvA@mail.gmail.com>
+Message-ID: <x6obgdpnt4.fsf@midna.zekjur.net>
+
+Hi Emil,
+
+Emil Mikulic <emikulic at gmail.com> writes:
+> Found with clang static analyzer. Some re-ordering of code to make it
+> more obvious.
+The review takes place at http://cr.i3wm.org/patch/14
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Fri Jan 25 11:32:14 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 25 Jan 2013 11:32:14 +0100
+Subject: [i3] [i3status] [PATCH 3/3] Support multiple times with
+	different timezones.
+In-Reply-To: <CA+bNT6_wWV4T0=d5+_2607nt-BFPgSm1jwDWDz410Hkw_q6q5Q@mail.gmail.com>
+References: <CA+bNT6_wWV4T0=d5+_2607nt-BFPgSm1jwDWDz410Hkw_q6q5Q@mail.gmail.com>
+Message-ID: <x6libhpn81.fsf@midna.zekjur.net>
+
+Hi Emil,
+
+Emil Mikulic <emikulic at gmail.com> writes:
+
+> I really want this. :)
+The review takes place at http://cr.i3wm.org/patch/16
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Fri Jan 25 11:35:20 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 25 Jan 2013 11:35:20 +0100
+Subject: [i3] [PATCH] Additional GNOME integration.
+In-Reply-To: <CA+bNT6-+KT2b5zZa5-3fC__jyhozA8GRfYOYmnvNQ6S5Qh30pQ@mail.gmail.com>
+References: <CA+bNT6-+KT2b5zZa5-3fC__jyhozA8GRfYOYmnvNQ6S5Qh30pQ@mail.gmail.com>
+Message-ID: <x6ip6lpn2v.fsf@midna.zekjur.net>
+
+Hi Emil,
+
+Emil Mikulic <emikulic at gmail.com> writes:
+> This adds an "i3-gnome" session which is i3 but with a bunch of
+> GNOME-isms like gnome-screensaver, the gnome session exit dialog with
+> shutdown/restart options, and, most excitingly, laptop suspend and
+> resume that Just Works(tm)
+The review takes place at http://cr.i3wm.org/patch/17
+
+-- 
+Best regards,
+Michael
+
+From mhcerri at gmail.com  Fri Jan 25 12:02:49 2013
+From: mhcerri at gmail.com (Marcelo Cerri)
+Date: Fri, 25 Jan 2013 09:02:49 -0200
+Subject: [i3] [i3status] [PATCH 3/3] Support multiple times with
+	different timezones.
+In-Reply-To: <x6libhpn81.fsf@midna.zekjur.net>
+References: <CA+bNT6_wWV4T0=d5+_2607nt-BFPgSm1jwDWDz410Hkw_q6q5Q@mail.gmail.com>
+ <x6libhpn81.fsf@midna.zekjur.net>
+Message-ID: <CACg2Y9ttsK1GrWLP-W5WYTgoWkC1YwDBUXX_rO80SQmnAjQKdQ@mail.gmail.com>
+
+Hi Michael,
+
+I also would like to have such feature in my i3status and sometime ago I
+made a similar change, adding CFGF_MULTI to time config, but I didn't
+submit a patch because I knew it would be rejected because this breaks
+compatibility with existing config files.
+
+Is there any chance of some variation of it be accepted? Maybe a new module
+just for that? The existing "time" module would remain intact (maybe
+sharing some code with the new module) and the new module would always
+require a timezone, maybe as its title. It can be named "tz_time" or
+something like that.
+
+Regards,
+Marcelo
+
+
+On Fri, Jan 25, 2013 at 8:32 AM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Emil,
+>
+> Emil Mikulic <emikulic at gmail.com> writes:
+>
+> > I really want this. :)
+> The review takes place at http://cr.i3wm.org/patch/16
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130125/cd7bcb67/attachment.html>
+
+From michael at i3wm.org  Fri Jan 25 12:50:50 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 25 Jan 2013 12:50:50 +0100
+Subject: [i3] [i3status] [PATCH 3/3] Support multiple times with
+	different timezones.
+In-Reply-To: <CACg2Y9ttsK1GrWLP-W5WYTgoWkC1YwDBUXX_rO80SQmnAjQKdQ@mail.gmail.com>
+References: <CA+bNT6_wWV4T0=d5+_2607nt-BFPgSm1jwDWDz410Hkw_q6q5Q@mail.gmail.com>
+ <x6libhpn81.fsf@midna.zekjur.net>
+ <CACg2Y9ttsK1GrWLP-W5WYTgoWkC1YwDBUXX_rO80SQmnAjQKdQ@mail.gmail.com>
+Message-ID: <x6fw1ppjl1.fsf@midna.zekjur.net>
+
+Hi Marcelo,
+
+Marcelo Cerri <mhcerri at gmail.com> writes:
+> Is there any chance of some variation of it be accepted? Maybe a new module
+> just for that? The existing "time" module would remain intact (maybe
+> sharing some code with the new module) and the new module would always
+> require a timezone, maybe as its title. It can be named "tz_time" or
+> something like that.
+Using a new module is definitely the way to go. Nevertheless, I don?t
+really want to add such a feature. As I mentioned in the review, it?s
+_trivial_ to achieve this with a simple wrapper script, after all you
+just need a ?TZ=foo date? call. Having it in i3status itself is far more
+complex and I?m not convinced that this is worth the effort.
+
+-- 
+Best regards,
+Michael
+
+From pfsmorigo at gmail.com  Fri Jan 25 14:05:48 2013
+From: pfsmorigo at gmail.com (Paulo Flabiano Smorigo)
+Date: Fri, 25 Jan 2013 11:05:48 -0200
+Subject: [i3] [i3status] [PATCH 3/3] Support multiple times with
+	different timezones.
+In-Reply-To: <x6fw1ppjl1.fsf@midna.zekjur.net>
+References: <CA+bNT6_wWV4T0=d5+_2607nt-BFPgSm1jwDWDz410Hkw_q6q5Q@mail.gmail.com>
+ <x6libhpn81.fsf@midna.zekjur.net>
+ <CACg2Y9ttsK1GrWLP-W5WYTgoWkC1YwDBUXX_rO80SQmnAjQKdQ@mail.gmail.com>
+ <x6fw1ppjl1.fsf@midna.zekjur.net>
+Message-ID: <CABaM_XtdTvPf+TKbVz-CVxASZ-CTwv5cJMywcfEoK40bQGPLKw@mail.gmail.com>
+
+Hi Michael,
+
+On Fri, Jan 25, 2013 at 9:50 AM, Michael Stapelberg <michael at i3wm.org> wrote:
+> Hi Marcelo,
+>
+> Marcelo Cerri <mhcerri at gmail.com> writes:
+>> Is there any chance of some variation of it be accepted? Maybe a new module
+>> just for that? The existing "time" module would remain intact (maybe
+>> sharing some code with the new module) and the new module would always
+>> require a timezone, maybe as its title. It can be named "tz_time" or
+>> something like that.
+> Using a new module is definitely the way to go. Nevertheless, I don?t
+> really want to add such a feature. As I mentioned in the review, it?s
+> _trivial_ to achieve this with a simple wrapper script, after all you
+> just need a ?TZ=foo date? call. Having it in i3status itself is far more
+> complex and I?m not convinced that this is worth the effort.
+>
+> --
+> Best regards,
+> Michael
+
+Hi Michael,
+
+I would like to see something like this in i3status. My current setup
+shows three different time zones using your approach but if I have an
+option to setup it up inside i3status would be nicer...
+
+Best regards,
+Paulo
+
+From emikulic at gmail.com  Mon Jan 28 10:31:25 2013
+From: emikulic at gmail.com (Emil Mikulic)
+Date: Mon, 28 Jan 2013 20:31:25 +1100
+Subject: [i3] [i3status] [PATCH 3/3] Support multiple times with
+	different timezones.
+In-Reply-To: <x6fw1ppjl1.fsf@midna.zekjur.net>
+References: <CA+bNT6_wWV4T0=d5+_2607nt-BFPgSm1jwDWDz410Hkw_q6q5Q@mail.gmail.com>
+ <x6libhpn81.fsf@midna.zekjur.net>
+ <CACg2Y9ttsK1GrWLP-W5WYTgoWkC1YwDBUXX_rO80SQmnAjQKdQ@mail.gmail.com>
+ <x6fw1ppjl1.fsf@midna.zekjur.net>
+Message-ID: <CA+bNT6_+n2WbhL2YUjFgOv1jH5Xxyd=rydwuJ5OypYC58t8xkQ@mail.gmail.com>
+
+On Fri, Jan 25, 2013 at 10:50 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Marcelo,
+>
+> Marcelo Cerri <mhcerri at gmail.com> writes:
+> > Is there any chance of some variation of it be accepted? Maybe a new
+> module
+> > just for that? The existing "time" module would remain intact (maybe
+> > sharing some code with the new module) and the new module would always
+> > require a timezone, maybe as its title. It can be named "tz_time" or
+> > something like that.
+> Using a new module is definitely the way to go. Nevertheless, I don?t
+> really want to add such a feature. As I mentioned in the review, it?s
+> _trivial_ to achieve this with a simple wrapper script, after all you
+> just need a ?TZ=foo date? call. Having it in i3status itself is far more
+> complex and I?m not convinced that this is worth the effort.
+>
+
+A simple wrapper script won't preserve the formatting magic, and will be
+even less efficient than the tz_set() juggling.
+
+I really need multiple clocks, but ultimately it's your call, and I
+appreciate that you're trying to keep i3status minimal and efficient.
+
+If you change your mind, let me know and I can rework the patch to use a
+different module name or whatever will make it less offensive. :)
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130128/8ceb8309/attachment.html>
+
+From supernathansunshine at gmail.com  Mon Jan 28 11:20:12 2013
+From: supernathansunshine at gmail.com (Nathan Sunshine)
+Date: Mon, 28 Jan 2013 15:50:12 +0530
+Subject: [i3] [i3status] [PATCH 3/3] Support multiple times with
+	different timezones.
+In-Reply-To: <CA+bNT6_+n2WbhL2YUjFgOv1jH5Xxyd=rydwuJ5OypYC58t8xkQ@mail.gmail.com>
+References: <CA+bNT6_wWV4T0=d5+_2607nt-BFPgSm1jwDWDz410Hkw_q6q5Q@mail.gmail.com>
+ <x6libhpn81.fsf@midna.zekjur.net>
+ <CACg2Y9ttsK1GrWLP-W5WYTgoWkC1YwDBUXX_rO80SQmnAjQKdQ@mail.gmail.com>
+ <x6fw1ppjl1.fsf@midna.zekjur.net>
+ <CA+bNT6_+n2WbhL2YUjFgOv1jH5Xxyd=rydwuJ5OypYC58t8xkQ@mail.gmail.com>
+Message-ID: <CAJ5GXRqkUfvrFanXp92H5LXLMFBSJf5KYQ4+zZA-vKpVKGFSMQ@mail.gmail.com>
+
+I'm just a casual i3 lover who likes to see updates. As an ex-pat, multiple
+time zone clocks would make my life.
+
+On Monday, January 28, 2013, Emil Mikulic wrote:
+
+> On Fri, Jan 25, 2013 at 10:50 PM, Michael Stapelberg <michael at i3wm.org<javascript:_e({}, 'cvml', 'michael at i3wm.org');>
+> > wrote:
+>
+>> Hi Marcelo,
+>>
+>> Marcelo Cerri <mhcerri at gmail.com <javascript:_e({}, 'cvml',
+>> 'mhcerri at gmail.com');>> writes:
+>> > Is there any chance of some variation of it be accepted? Maybe a new
+>> module
+>> > just for that? The existing "time" module would remain intact (maybe
+>> > sharing some code with the new module) and the new module would always
+>> > require a timezone, maybe as its title. It can be named "tz_time" or
+>> > something like that.
+>> Using a new module is definitely the way to go. Nevertheless, I don?t
+>> really want to add such a feature. As I mentioned in the review, it?s
+>> _trivial_ to achieve this with a simple wrapper script, after all you
+>> just need a ?TZ=foo date? call. Having it in i3status itself is far more
+>> complex and I?m not convinced that this is worth the effort.
+>>
+>
+> A simple wrapper script won't preserve the formatting magic, and will be
+> even less efficient than the tz_set() juggling.
+>
+> I really need multiple clocks, but ultimately it's your call, and I
+> appreciate that you're trying to keep i3status minimal and efficient.
+>
+> If you change your mind, let me know and I can rework the patch to use a
+> different module name or whatever will make it less offensive. :)
+>
+
+
+-- 
+"Super" Nathan Weber
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130128/6b711691/attachment.html>
+
+From michael at i3wm.org  Mon Jan 28 11:32:41 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 28 Jan 2013 11:32:41 +0100
+Subject: [i3] [i3status] [PATCH 3/3] Support multiple times with
+	different timezones.
+In-Reply-To: <CA+bNT6_+n2WbhL2YUjFgOv1jH5Xxyd=rydwuJ5OypYC58t8xkQ@mail.gmail.com>
+References: <CA+bNT6_wWV4T0=d5+_2607nt-BFPgSm1jwDWDz410Hkw_q6q5Q@mail.gmail.com>
+ <x6libhpn81.fsf@midna.zekjur.net>
+ <CACg2Y9ttsK1GrWLP-W5WYTgoWkC1YwDBUXX_rO80SQmnAjQKdQ@mail.gmail.com>
+ <x6fw1ppjl1.fsf@midna.zekjur.net>
+ <CA+bNT6_+n2WbhL2YUjFgOv1jH5Xxyd=rydwuJ5OypYC58t8xkQ@mail.gmail.com>
+Message-ID: <x6ham1oawm.fsf@midna.zekjur.net>
+
+Hi Emil,
+
+Emil Mikulic <emikulic at gmail.com> writes:
+> A simple wrapper script won't preserve the formatting magic, and will be
+> even less efficient than the tz_set() juggling.
+It does; we have examples for how to properly wrap i3status in its
+contrib/ folder.
+
+> If you change your mind, let me know and I can rework the patch to use a
+> different module name or whatever will make it less offensive. :)
+Given that a few other people haven spoken up stating they need the
+feature, too, I?m willing to give a new patch a chance. I suggest
+?tztime? as module name. Please make it as efficient as the old ?time?
+module currently is. Once you are done, submit it to http://cr.i3wm.org/
+
+-- 
+Best regards,
+Michael
+
+From emikulic at gmail.com  Mon Jan 28 12:40:34 2013
+From: emikulic at gmail.com (Emil Mikulic)
+Date: Mon, 28 Jan 2013 22:40:34 +1100
+Subject: [i3] [i3status] [PATCH 3/3] Support multiple times with
+	different timezones.
+In-Reply-To: <x6ham1oawm.fsf@midna.zekjur.net>
+References: <CA+bNT6_wWV4T0=d5+_2607nt-BFPgSm1jwDWDz410Hkw_q6q5Q@mail.gmail.com>
+ <x6libhpn81.fsf@midna.zekjur.net>
+ <CACg2Y9ttsK1GrWLP-W5WYTgoWkC1YwDBUXX_rO80SQmnAjQKdQ@mail.gmail.com>
+ <x6fw1ppjl1.fsf@midna.zekjur.net>
+ <CA+bNT6_+n2WbhL2YUjFgOv1jH5Xxyd=rydwuJ5OypYC58t8xkQ@mail.gmail.com>
+ <x6ham1oawm.fsf@midna.zekjur.net>
+Message-ID: <CA+bNT69z3dU2xbOo9UPF6FqYC-mrbA9aYGTmNO8NhZuA7MGmyA@mail.gmail.com>
+
+On Mon, Jan 28, 2013 at 9:32 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Emil,
+>
+> Emil Mikulic <emikulic at gmail.com> writes:
+> > A simple wrapper script won't preserve the formatting magic, and will be
+> > even less efficient than the tz_set() juggling.
+> It does; we have examples for how to properly wrap i3status in its
+> contrib/ folder.
+>
+
+I stand corrected.
+
+(last time I played this game, I wrote a *cough* much simpler one) :)
+
+
+>
+> > If you change your mind, let me know and I can rework the patch to use a
+> > different module name or whatever will make it less offensive. :)
+> Given that a few other people haven spoken up stating they need the
+> feature, too, I?m willing to give a new patch a chance. I suggest
+> ?tztime? as module name. Please make it as efficient as the old ?time?
+> module currently is. Once you are done, submit it to http://cr.i3wm.org/
+>
+
+How about this: http://cr.i3wm.org/patch/27
+
+I added some debugging printfs() (not included in the patch) and verified
+that it doesn't call tzset() unnecessarily. (I'm hoping this is what you
+meant by efficient)
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130128/aebb5c0f/attachment.html>
+
+From dme at dme.org  Mon Jan 28 12:13:27 2013
+From: dme at dme.org (David Edmondson)
+Date: Mon, 28 Jan 2013 11:13:27 +0000
+Subject: [i3] [i3status] [PATCH 3/3] Support multiple times with
+	different timezones.
+References: <CA+bNT6_wWV4T0=d5+_2607nt-BFPgSm1jwDWDz410Hkw_q6q5Q@mail.gmail.com>
+ <x6libhpn81.fsf@midna.zekjur.net>
+ <CACg2Y9ttsK1GrWLP-W5WYTgoWkC1YwDBUXX_rO80SQmnAjQKdQ@mail.gmail.com>
+ <x6fw1ppjl1.fsf@midna.zekjur.net>
+ <CA+bNT6_+n2WbhL2YUjFgOv1jH5Xxyd=rydwuJ5OypYC58t8xkQ@mail.gmail.com>
+Message-ID: <cunsj5lftm0.fsf@gag-halfrunt.hh.sledj.net>
+
+On Mon, Jan 28 2013, Emil Mikulic wrote:
+> I really need multiple clocks, but ultimately it's your call, and I
+> appreciate that you're trying to keep i3status minimal and efficient.
+
+Not an immediate solution for you, but when i3status didn't do what I
+wanted I wrote a simple replacement[1] in Python. It's messy and much of
+the use of sub-shells should be replaced, but it's a conversion of an
+older script and works for now.
+
+Footnotes: 
+[1]  http://dme.org/data/paste/update-i3bar.html
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 197 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130128/2685e1d5/attachment.sig>
+

@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [solved] Troubles using Mod4
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5Bsolved%5D%20Troubles%20using%20Mod4&In-Reply-To=%3C5581F252.4010607%40yahoo.fr%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002109.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [solved] Troubles using Mod4</H1>
+    <B>Nicolas Bercher</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5Bsolved%5D%20Troubles%20using%20Mod4&In-Reply-To=%3C5581F252.4010607%40yahoo.fr%3E"
+       TITLE="[i3] [solved] Troubles using Mod4">nbercher at yahoo.fr
+       </A><BR>
+    <I>Thu Jun 18 00:18:58 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002109.html">[i3] Troubles using Mod4
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2112">[ date ]</a>
+              <a href="thread.html#2112">[ thread ]</a>
+              <a href="subject.html#2112">[ subject ]</a>
+              <a href="author.html#2112">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>OK, in the end, I had no trouble with Mod4 at all.
+
+It's just that every binding I had trouble with were using Mod4!
+
+My issue was related to PATH to properly populated before i3 is fired,
+and this is because I was giving a try to xdm at the same time.
+For a reason I do not fully understand yet, xdm does not make use of
+/etc/profile (and thus ignores /etc/profile.d/*.sh) nor user-defined
+PATH (but maybe this is a collateral effect of /etc/profile.d/*.sh
+being ignored).
+
+In the end, I switched back to my previous DM, that is kdm-trinity.
+
+It's a long PATH to the zenity, but it worth it.  A lot.
+
+Thanks to everybody here!
+Nicolas
+
+On 17/06/2015 20:05, Nicolas Bercher wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I have troubles using Mod4+&lt;any&gt;.
+</I>&gt;<i>
+</I>&gt;<i> Here is my configuration sample:
+</I>&gt;<i>
+</I>&gt;<i> bindsym Mod4+Up exec alsa-volume-increase bindsym Mod4+Down exec
+</I>&gt;<i> alsa-volume-decrease bindsym Mod4+m exec alsa-volume-toggle-mute
+</I>&gt;<i>
+</I>&gt;<i> where alsa-volume-* are bash script that do work very well from the
+</I>&gt;<i> shell.
+</I>&gt;<i>
+</I>&gt;<i> I've checked (and fixed) under xmodmap the association of Mod4 to
+</I>&gt;<i> Super_L (and Super_R is fine also):
+</I>&gt;<i>
+</I>&gt;<i> $ xmodmap -pm xmodmap:  up to 3 keys per modifier, (keycodes in
+</I>&gt;<i> parentheses):
+</I>&gt;<i>
+</I>&gt;<i> shift       Shift_L (0x32),  Shift_R (0x3e) lock        Caps_Lock
+</I>&gt;<i> (0x42) control     Control_L (0x25),  Control_R (0x69) mod1
+</I>&gt;<i> Alt_L (0x40),  Meta_L (0xcd) mod2        Num_Lock (0x4d) mod3 mod4
+</I>&gt;<i> Super_L (0x85),  Super_R (0x86),  Super_L (0xce) mod5
+</I>&gt;<i> ISO_Level3_Shift (0x5c),  Mode_switch (0xcb)
+</I>&gt;<i>
+</I>&gt;<i> And xev says me (for a press-release sequence on &quot;Win Left&quot;):
+</I>&gt;<i>
+</I>&gt;<i> KeyPress event, serial 32, synthetic NO, window 0x3c00001, root 0xcb,
+</I>&gt;<i> subw 0x0, time 29561418, (238,-7), root:(1202,721), state 0x0,
+</I>&gt;<i> keycode 133 (keysym 0xffeb, Super_L), same_screen YES, XLookupString
+</I>&gt;<i> gives 0 bytes: XmbLookupString gives 0 bytes: XFilterEvent returns:
+</I>&gt;<i> False
+</I>&gt;<i>
+</I>&gt;<i> KeyRelease event, serial 32, synthetic NO, window 0x3c00001, root
+</I>&gt;<i> 0xcb, subw 0x0, time 29562442, (238,-7), root:(1202,721), state 0x40,
+</I>&gt;<i> keycode 133 (keysym 0xffeb, Super_L), same_screen YES, XLookupString
+</I>&gt;<i> gives 0 bytes: XFilterEvent returns: False
+</I>&gt;<i>
+</I>&gt;<i> Under xev, is it normal that I get two different key codes for
+</I>&gt;<i> Super_L, namely 0x85 and 0xce?
+</I>&gt;<i>
+</I>&gt;<i> Do any one knows what's wrong?
+</I>&gt;<i>
+</I>&gt;<i> Thanks a lot, Nicolas
+</I>
+</PRE>
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002109.html">[i3] Troubles using Mod4
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2112">[ date ]</a>
+              <a href="thread.html#2112">[ thread ]</a>
+              <a href="subject.html#2112">[ subject ]</a>
+              <a href="author.html#2112">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

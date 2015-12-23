@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Problems setting multi monitor
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Problems%20setting%20multi%20monitor&In-Reply-To=%3C2307213.YLSeVjEmtn%40asaru%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002131.html">
+   <LINK REL="Next"  HREF="002133.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Problems setting multi monitor</H1>
+    <B>Florian Lindner</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Problems%20setting%20multi%20monitor&In-Reply-To=%3C2307213.YLSeVjEmtn%40asaru%3E"
+       TITLE="[i3] Problems setting multi monitor">mailinglists at xgm.de
+       </A><BR>
+    <I>Tue Aug 11 13:54:17 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002131.html">[i3] Problems setting multi monitor
+</A></li>
+        <LI>Next message: <A HREF="002133.html">[i3] Problems setting multi monitor
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2132">[ date ]</a>
+              <a href="thread.html#2132">[ thread ]</a>
+              <a href="subject.html#2132">[ subject ]</a>
+              <a href="author.html#2132">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Am Montag, 10. August 2015, 18:30:13 schrieb Anton Löfgren:
+&gt;<i> AFAIK, the shebang must be an absolute path. That is, you'll probably have more luck replacing #!env with #!/usr/bin/env.
+</I>
+It seemed to be a problem with PATH. Starting /usr/bin/python explicitly makes it work.
+ 
+&gt;<i> How do you call it standalone? I'm assuming by invoking python manually. 
+</I>
+No, without python.
+
+
+Some more questions:
+
+*) The monitor in the middle is set primary and assigned workspace 2. Howeve the i3-nagbar always appears at workspace 1 (left of 2). How can I make the nagbar appears on the primary output?
+
+*) For setting my backgrounds I use feh:
+
+exec --no-startup-id feh --randomize --bg-max Bilder/Backgrounds 
+
+This works fine if executed in a shell, after i3 startup. Each display is assigned a different background image, if the aspect ratio does not fit there are black bars. But if I put in my i3 config it behaves differently. It gives each screen the same background image. Instead of black bars there is another image under it when aspect ration does not fit. This question may not fit here, but maybe someone has an idea...
+
+*) 
+bar {
+        status_command i3status
+        # tray_output primary
+}
+
+puts the tray output on workspace 3, left of my primary. Activating the tray_output primary and restart (mod+shift+r) and it works like it should, tray on the primary. But a real restart (exit and log in again) screws it. There are no tray icons at all. The owncloud client (which is started using dex -ae i3) opens in a window, instead minmized. However, all programs that should appear in the tray are running (klipper, kmix)
+
+Sorry for putting so much questions at you ;-)
+
+Thanks!
+Florian
+
+&gt;<i> 
+</I>&gt;<i> /Anton 
+</I>&gt;<i> 
+</I>&gt;<i> On August 10, 2015 3:48:36 PM CEST, Florian Lindner &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">mailinglists at xgm.de</A>&gt; wrote:
+</I>&gt;<i> &gt;Hello,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;I try to launch an xrandr script to set the multi monitor
+</I>&gt;<i> &gt;configuration. The script works when called standalone after i3
+</I>&gt;<i> &gt;startup, but not at startup
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;#!env python
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;import functools, subprocess, sys
+</I>&gt;<i> &gt;call = functools.partial(subprocess.check_call, shell=True)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;call(&quot;sleep 3&quot;)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;if sys.argv[1] == &quot;uni&quot;:
+</I>&gt;<i> &gt;    call(&quot;xrandr --output DP2-2 --auto --primary&quot;)
+</I>&gt;<i> &gt;    call(&quot;xrandr --output eDP1  --auto --left-of DP2-2&quot;)
+</I>&gt;<i> &gt;    call(&quot;xrandr --output HDMI1 --auto --right-of DP2-2&quot;)
+</I>&gt;<i> &gt;    
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;The sleep 3 I put just to test, shouldn't be needed.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;It is launched as my first exec in my i3 config:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;exec --no-startup-id /home/florian/software/bin/screen_config uni
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;but seems to have no effect at all, configuration is not changed.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;What can be the problem there?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;Thanks,
+</I>&gt;<i> &gt;Florian
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I></PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002131.html">[i3] Problems setting multi monitor
+</A></li>
+	<LI>Next message: <A HREF="002133.html">[i3] Problems setting multi monitor
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2132">[ date ]</a>
+              <a href="thread.html#2132">[ thread ]</a>
+              <a href="subject.html#2132">[ subject ]</a>
+              <a href="author.html#2132">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

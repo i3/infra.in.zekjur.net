@@ -1,0 +1,46 @@
+From 21d568b2375e39590390eb06d9d9fa0ac7279d14 Mon Sep 17 00:00:00 2001
+From: Marcos Moyano <marcos@anue.biz>
+Date: Thu, 27 Sep 2012 06:20:29 -0300
+Subject: [PATCH] Handle raising floating containers on focus both through the
+ mouse and the keyboard.
+
+---
+ src/handlers.c | 6 ++++++
+ src/tree.c     | 4 ++++
+ 2 files changed, 10 insertions(+)
+
+diff --git a/src/handlers.c b/src/handlers.c
+index 21a8734..92d97e8 100644
+--- a/src/handlers.c
++++ b/src/handlers.c
+@@ -189,6 +189,12 @@ static void handle_enter_notify(xcb_enter_notify_event_t *event) {
+     if (ws != con_get_workspace(focused))
+         workspace_show(ws);
+ 
++    /* See if we moved to a floating container */
++    if(con_is_floating(con)) {
++        Con *floatingcon = con_inside_floating(con);
++        floating_raise_con(floatingcon);
++    }
++
+     focused_id = XCB_NONE;
+     con_focus(con_descend_focused(con));
+     tree_render();
+diff --git a/src/tree.c b/src/tree.c
+index 321bc78..963c454 100644
+--- a/src/tree.c
++++ b/src/tree.c
+@@ -520,6 +520,10 @@ static bool _tree_next(Con *con, char way, orientation_t orientation, bool wrap)
+             if (!next)
+                 return false;
+ 
++            /* For floating containers, we also want the next container to raise */
++            Con *floatingcon = con_inside_floating(next);
++            floating_raise_con(floatingcon);
++
+             con_focus(con_descend_focused(next));
+             return true;
+         } else {
+-- 
+1.7.12.1
+

@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Multiple Xscreens without Xinerama/XrandR
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Multiple%20Xscreens%20without%20Xinerama/XrandR&In-Reply-To=%3CCACjNC%2BrxnZWwSyoNWRenhY4ZujXgJMT9EDOY7YFegmKcO%2Bka0A%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000642.html">
+   <LINK REL="Next"  HREF="000645.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Multiple Xscreens without Xinerama/XrandR</H1>
+    <B>Lukas Sabota</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Multiple%20Xscreens%20without%20Xinerama/XrandR&In-Reply-To=%3CCACjNC%2BrxnZWwSyoNWRenhY4ZujXgJMT9EDOY7YFegmKcO%2Bka0A%40mail.gmail.com%3E"
+       TITLE="[i3] Multiple Xscreens without Xinerama/XrandR">ltsmooth42 at gmail.com
+       </A><BR>
+    <I>Fri Apr 27 19:20:45 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000642.html">[i3] Multiple Xscreens without Xinerama/XrandR
+</A></li>
+        <LI>Next message: <A HREF="000645.html">[i3] IPC interface - reply format change for command message type
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#647">[ date ]</a>
+              <a href="thread.html#647">[ thread ]</a>
+              <a href="subject.html#647">[ subject ]</a>
+              <a href="author.html#647">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, Apr 26, 2012 at 4:35 PM, Lukas Sabota &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ltsmooth42 at gmail.com</A>&gt; wrote:
+
+&gt;<i>
+</I>&gt;&gt;<i> Quoting Lukas Sabota (2012-04-26 20:21:42)
+</I>&gt;&gt;<i> &gt; However, I would much rather have separate X screens with Xinerama
+</I>&gt;&gt;<i> disabled,
+</I>&gt;&gt;<i> &gt; each running their own i3 instance.  In an attempt to try this, I
+</I>&gt;&gt;<i> configured i3
+</I>&gt;&gt;<i> &gt; to spawn on each of my DISPLAYs (:0.0 :0.1 :0.2) in my &quot;.xinitrc&quot; file.
+</I>&gt;&gt;<i>  This
+</I>&gt;&gt;<i> &gt; sucessfully spawned i3 instances on each of my X screens -- however I am
+</I>&gt;&gt;<i> &gt; experiencing input problems.  Keyboard shortcuts only seem to work on a
+</I>&gt;&gt;<i> single
+</I>&gt;&gt;<i> &gt; i3 instance.  The other two i3 instances that are spawned are unusable
+</I>&gt;&gt;<i> since
+</I>&gt;&gt;<i> &gt; one i3 instance catches all of the keyboard events.
+</I>&gt;&gt;<i> Are you using the latest version of i3? If not, upgrade. If that doesn&#8217;t
+</I>&gt;&gt;<i> help,
+</I>&gt;&gt;<i> please come to IRC so that we can debug the problem more interactively.
+</I>&gt;&gt;<i> Mailing
+</I>&gt;&gt;<i> lists are tedious.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hello Michael,
+</I>&gt;<i>
+</I>&gt;<i> I am using i3-wm 4.2-1 along with xorg 1.12.1 on Arch Linux.  I'm idling
+</I>&gt;<i> in the channel atm (prg318) .  Hopefully between the two of us and others
+</I>&gt;<i> in IRC we can diagnose the issue!
+</I>&gt;<i>
+</I>
+Hello,
+
+Michael was nice enough to help me diagnose this issue in IRC and find a
+suitable workaround for the issue.  Just to clarify the issue:
+
+After starting i3 on three separate x screens (no xinerama), all keyboard
+commands (mod+enter etc) will only trigger events on ONE of the 3 xscreens
+regardless of where the cursor was.
+
+A suitable workaround is to use the &quot;swarp&quot; utility.  After moving the
+cursor to another xscreen/i3 session using &quot;swarp&quot;, the screen can be used
+perusual (the screen where the cursor is located will handle the keyboard
+events).  For example, after running &quot;startx&quot; my keyboard focus will only
+direct to screen :0.0.  After running the following command, keyboard input
+will be accept on :0.1 when the cursor is located on that screen:
+
+  DISPLAY=:0.1 swarp 50 50
+
+I plan to work some &quot;swarp&quot; commands into my xinitrc so that after
+&quot;startx&quot;, input is handled properly.  I hope this may be found useful for
+someone in the future with a similar configuration as mine.
+
+Thanks again Michael for taking the time to assist me in diagnosing this
+issue!
+
+Best Regards,
+Lukas Sabota
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120427/20bf4c4c/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120427/20bf4c4c/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000642.html">[i3] Multiple Xscreens without Xinerama/XrandR
+</A></li>
+	<LI>Next message: <A HREF="000645.html">[i3] IPC interface - reply format change for command message type
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#647">[ date ]</a>
+              <a href="thread.html#647">[ thread ]</a>
+              <a href="subject.html#647">[ subject ]</a>
+              <a href="author.html#647">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] Block outward events while processing commands.
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Block%20outward%20events%20while%20processing%20commands.&In-Reply-To=%3CCAMJW5%3D0mS3AmuOn7mXZ8qKG%3DpxrYY8SvgRT8fy0DGwac73Vbtg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000763.html">
+   <LINK REL="Next"  HREF="000765.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] Block outward events while processing commands.</H1>
+    <B>DR</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Block%20outward%20events%20while%20processing%20commands.&In-Reply-To=%3CCAMJW5%3D0mS3AmuOn7mXZ8qKG%3DpxrYY8SvgRT8fy0DGwac73Vbtg%40mail.gmail.com%3E"
+       TITLE="[i3] [PATCH] Block outward events while processing commands.">drdarkraven at gmail.com
+       </A><BR>
+    <I>Sat Jun 30 16:30:49 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000763.html">[i3] [PATCH] Block outward events while processing commands.
+</A></li>
+        <LI>Next message: <A HREF="000765.html">[i3] [PATCH] Block outward events while processing commands.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#764">[ date ]</a>
+              <a href="thread.html#764">[ thread ]</a>
+              <a href="subject.html#764">[ subject ]</a>
+              <a href="author.html#764">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, Jun 30, 2012 at 7:00 PM, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt;wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Quoting Michael Stapelberg (2012-06-29 11:53:46)
+</I>&gt;<i> &gt; I&#8217;ll read your e-mail explanation and will try to reproduce your
+</I>&gt;<i> &gt; original problem, then come up with a better reply. Give me a few hours
+</I>&gt;<i> &gt; ;-).
+</I>&gt;<i> Unfortunately, I haven&#8217;t found the original description of the problem
+</I>&gt;<i> you were referring to. I&#8217;ve searched the bugtracker and my emails, but I
+</I>&gt;<i> guess we only talked about it on IRC?
+</I>&gt;<i>
+</I>&gt;<i> Anyway, I assume the problem is that i3bar sends the workspace command
+</I>&gt;<i> to i3 and then unhides, which generates an EnterNotify event for a
+</I>&gt;<i> window on the current workspace. i3 then gets scheduled, sees the
+</I>&gt;<i> workspace command, switches to the target workspace and then processes
+</I>&gt;<i> the EnterNotify event, which leads to switching back to the old
+</I>&gt;<i> workspace.
+</I>&gt;<i>
+</I>&gt;<i> To avoid this situation, I would recommend the following:
+</I>&gt;<i> After sending the workspace command, i3bar needs to perform a
+</I>&gt;<i> sync_with_i3 sequence, as used in the testcases (see [1]) and
+</I>&gt;<i> documented at [2]. Afterwards, i3bar can be sure that X11 has been
+</I>&gt;<i> updated and it can safely unmap itself.
+</I>&gt;<i>
+</I>&gt;<i> As for the situation where other clients send a workspace event and
+</I>&gt;<i> i3bar unmaps in such a timeframe that the same race condition is
+</I>&gt;<i> triggered, the other client has to perform a sync_with_i3, too. In
+</I>&gt;<i> addition, it has to call xcb_grab_server() before sending the workspace
+</I>&gt;<i> event and xcb_ungrab_server() after the sync_with_i3. This will
+</I>&gt;<i> guarantee that no Unmap-requests by i3bar will be processed by X11 in
+</I>&gt;<i> the meantime.
+</I>&gt;<i>
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Michael
+</I>&gt;<i>
+</I>&gt;<i> [1] <A HREF="http://code.stapelberg.de/git/i3/tree/testcases/lib/i3test.pm#n401">http://code.stapelberg.de/git/i3/tree/testcases/lib/i3test.pm#n401</A>
+</I>&gt;<i> [2] <A HREF="http://i3wm.org/docs/testsuite.html#i3_sync">http://i3wm.org/docs/testsuite.html#i3_sync</A>
+</I>
+
+Cool.
+
+This should solve the problem, but wouldn't my solution make things simpler?
+
+PS. I have had a little thought about the situation you suggest where X
+representation is not changed after tree_render(). Wouldn't the unmap
+command sent by i3bar queued after those sent by i3 in Xorg buffer? If so,
+it won't be a problem.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120630/3622ba10/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120630/3622ba10/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000763.html">[i3] [PATCH] Block outward events while processing commands.
+</A></li>
+	<LI>Next message: <A HREF="000765.html">[i3] [PATCH] Block outward events while processing commands.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#764">[ date ]</a>
+              <a href="thread.html#764">[ thread ]</a>
+              <a href="subject.html#764">[ subject ]</a>
+              <a href="author.html#764">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

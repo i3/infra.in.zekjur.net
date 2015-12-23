@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Issues with sur5r-keyring package
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Issues%20with%20sur5r-keyring%20package&In-Reply-To=%3CCAAuVr718_n_J5ak0T3Gw81qFKo_4wq_uGaf8DuRGfKg%3Dmh4cQw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001220.html">
+   <LINK REL="Next"  HREF="001214.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Issues with sur5r-keyring package</H1>
+    <B>BRAGA, Bruno</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Issues%20with%20sur5r-keyring%20package&In-Reply-To=%3CCAAuVr718_n_J5ak0T3Gw81qFKo_4wq_uGaf8DuRGfKg%3Dmh4cQw%40mail.gmail.com%3E"
+       TITLE="[i3] Issues with sur5r-keyring package">bruno.braga at gmail.com
+       </A><BR>
+    <I>Thu Mar 14 02:40:09 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001220.html">[i3] Problem with i3 urgency hints
+</A></li>
+        <LI>Next message: <A HREF="001214.html">[i3] Issues with sur5r-keyring package
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1213">[ date ]</a>
+              <a href="thread.html#1213">[ thread ]</a>
+              <a href="subject.html#1213">[ subject ]</a>
+              <a href="author.html#1213">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I was running an apt-get update, when I noticed the following error:
+
+$ sudo apt-get update
+....
+Reading package lists... Done
+W: A error occurred during the signature verification. The repository is
+not updated and the previous index files will be used. GPG error:
+<A HREF="http://debian.sur5r.net">http://debian.sur5r.net</A> precise Release: The following signatures couldn't
+be verified because the public key is not available: NO_PUBKEY
+AE8A0CF86298B4A2
+
+W: Failed to fetch <A HREF="http://debian.sur5r.net/i3/dists/precise/Release">http://debian.sur5r.net/i3/dists/precise/Release</A>
+
+W: Some index files failed to download. They have been ignored, or old ones
+used instead.
+
+-------------
+
+I reinstalled the key, and noticed a GPG error:
+
+$ sudo apt-get --allow-unauthenticated install sur5r-keyring
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following NEW packages will be installed:
+  sur5r-keyring
+0 upgraded, 1 newly installed, 0 to remove and 361 not upgraded.
+Need to get 2,756 B of archives.
+After this operation, 16.4 kB of additional disk space will be used.
+WARNING: The following packages cannot be authenticated!
+  sur5r-keyring
+Authentication warning overridden.
+Get:1 <A HREF="http://debian.sur5r.net/i3/">http://debian.sur5r.net/i3/</A> precise/universe sur5r-keyring all
+2012.02.07 [2,756 B]
+Fetched 2,756 B in 2s (1,179 B/s)
+Selecting previously unselected package sur5r-keyring.
+(Reading database ... 472001 files and directories currently installed.)
+Unpacking sur5r-keyring (from .../sur5r-keyring_2012.02.07_all.deb) ...
+Setting up sur5r-keyring (2012.02.07) ...
+OK
+gpg: key &quot;69D5E78E&quot; not found: eof
+gpg: 69D5E78E: delete key failed: eof
+gpg: key &quot;8C2F2403&quot; not found: eof
+gpg: 8C2F2403: delete key failed: eof
+
+-------------
+
+Any ideas to fix that?
+
+Thanks,
+
+
+------------- my machine details -------------
+
+$ lsb_release -a
+No LSB modules are available.
+Distributor ID: Ubuntu
+Description: Ubuntu 12.04.1 LTS
+Release: 12.04
+Codename: precise
+
+$ uname -a
+Linux development3 3.2.0-24-generic-pae #39-Ubuntu SMP Mon May 21 18:54:21
+UTC 2012 i686 i686 i386 GNU/Linux
+
+ $ i3 --version
+i3 version 4.2 (2012-04-25, branch &quot;release-4.2&quot;) &#169; 2009-2012 Michael
+Stapelberg and contributors
+
+------------- my machine details -------------
+
+--
+*Bruno Braga*
+www.brunobraga.net
+<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">bruno.braga at gmail.com</A>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130314/bd9b94cc/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130314/bd9b94cc/attachment.html</A>&gt;
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001220.html">[i3] Problem with i3 urgency hints
+</A></li>
+	<LI>Next message: <A HREF="001214.html">[i3] Issues with sur5r-keyring package
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1213">[ date ]</a>
+              <a href="thread.html#1213">[ thread ]</a>
+              <a href="subject.html#1213">[ subject ]</a>
+              <a href="author.html#1213">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

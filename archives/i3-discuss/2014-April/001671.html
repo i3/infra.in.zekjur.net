@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] monitor dependent workspaces
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20monitor%20dependent%20workspaces&In-Reply-To=%3CCAPUwkJKaFJEnNXmzxvQCw%3DOX2Z8a8KS_ew8UjB0haaUA9uEGLw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001670.html">
+   <LINK REL="Next"  HREF="001672.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] monitor dependent workspaces</H1>
+    <B>Brian Grossman</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20monitor%20dependent%20workspaces&In-Reply-To=%3CCAPUwkJKaFJEnNXmzxvQCw%3DOX2Z8a8KS_ew8UjB0haaUA9uEGLw%40mail.gmail.com%3E"
+       TITLE="[i3] monitor dependent workspaces">brian.grossman+i3-discuss at gmail.com
+       </A><BR>
+    <I>Fri Apr 11 22:47:09 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001670.html">[i3] monitor dependent workspaces
+</A></li>
+        <LI>Next message: <A HREF="001672.html">[i3] monitor dependent workspaces
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1671">[ date ]</a>
+              <a href="thread.html#1671">[ thread ]</a>
+              <a href="subject.html#1671">[ subject ]</a>
+              <a href="author.html#1671">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I use something like this:
+
+set $dpyLeft DP1
+set $dpyRight eDP1
+set $mymod Control+Mod1
+
+bindsym $mymod+Right focus right
+bindsym $mymod+Left focus left
+
+workspace 1 output $dpyLeft
+workspace 2 output $dpyLeft
+#      ...
+workspace 10 output $dpyLeft
+#
+workspace 11 output $dpyRight
+workspace 12 output $dpyRight
+#      ...
+workspace 20 output $dpyRight
+
+
+
+Brian
+
+
+
+On Fri, Apr 11, 2014 at 2:05 PM, Eric Roseman &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">Eric.Roseman at colorado.edu</A>&gt;wrote:
+
+&gt;<i> In a multi monitor setup, is it possible to configure the workspaces to
+</I>&gt;<i> be dependent of the monitor? For instance, say there are two or three
+</I>&gt;<i> monitors, is it configurable to have ten workspaces per monitor such
+</I>&gt;<i> that movement between the monitors can be done with a $mod+left or right,
+</I>&gt;<i> and $mod+{0-9} would switch to the workspace of the focused monitor?
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i> Eric
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140411/6f351ea6/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140411/6f351ea6/attachment.html</A>&gt;
+</PRE>
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001670.html">[i3] monitor dependent workspaces
+</A></li>
+	<LI>Next message: <A HREF="001672.html">[i3] monitor dependent workspaces
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1671">[ date ]</a>
+              <a href="thread.html#1671">[ thread ]</a>
+              <a href="subject.html#1671">[ subject ]</a>
+              <a href="author.html#1671">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

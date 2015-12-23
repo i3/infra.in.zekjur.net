@@ -1,0 +1,4351 @@
+From ultrabug at ultrabug.net  Fri Mar  1 16:52:55 2013
+From: ultrabug at ultrabug.net (Ultrabug)
+Date: Fri, 01 Mar 2013 16:52:55 +0100
+Subject: [i3] Introducing py3status
+Message-ID: <5130CED7.50005@ultrabug.net>
+
+Dear i3wm list,
+
+I am pleased to announce a new user-contributed project named py3status.
+
+http://i3wm.org/docs/user-contributed/py3status.html
+
+py3status gives you an easy and flexible way to display your own stuff 
+in your i3barby wrapping your current i3status configuration. You can 
+read more details on the project's wiki.
+
+https://github.com/ultrabug/py3status/wiki
+
+Feel free to propose or ask if you have some ideas of useful 
+modules/plugins we could add to the project for everyone's usage, I'm 
+open to suggestions.
+
+I hope this little contribution will help some of us i3wm users to 
+quickly and efficiently hack their i3bar:)
+
+Ultrabug
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130301/4fc5b3fd/attachment.html>
+
+From c1b3rh4ck at gmail.com  Fri Mar  1 18:20:06 2013
+From: c1b3rh4ck at gmail.com (c1b3rh4ck)
+Date: Fri, 1 Mar 2013 12:20:06 -0500
+Subject: [i3] Introducing py3status
+In-Reply-To: <5130CED7.50005@ultrabug.net>
+References: <5130CED7.50005@ultrabug.net>
+Message-ID: <CADx9LRPfJYgVPny-3MjUbVqskUu-XbRqDiQ9EQbMFaqAU=8AyA@mail.gmail.com>
+
+2013/3/1 Ultrabug <ultrabug at ultrabug.net>
+
+>  Dear i3wm list,
+>
+> I am pleased to announce a new user-contributed project named py3status.
+>
+>     http://i3wm.org/docs/user-contributed/py3status.html
+>
+> py3status gives you an easy and flexible way to display your own stuff in
+> your i3bar by wrapping your current i3status configuration. You can read
+> more details on the project's wiki.
+>
+>     https://github.com/ultrabug/py3status/wiki
+>
+> Feel free to propose or ask if you have some ideas of useful
+> modules/plugins we could add to the project for everyone's usage, I'm
+> open to suggestions.
+>
+> I hope this little contribution will help some of us i3wm users to
+> quickly and efficiently hack their i3bar :)
+>
+> Ultrabug
+>
+
+Nice. i will test it and let you know how was it.
+
+
+-- 
+*Quien se infiltra en la oscuridad ,es Quien encuentra la verdad .Lao Tse *
+Debian User
+Penetration Testing
+Colombian Security Enthusiast :-D
+Gnu/LinuxUser #506301
+------------------------------------
+Puffy Loves
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130301/3d6b4816/attachment.html>
+
+From mateusz at loskot.net  Fri Mar  1 18:33:02 2013
+From: mateusz at loskot.net (Mateusz Loskot)
+Date: Fri, 1 Mar 2013 17:33:02 +0000
+Subject: [i3] Introducing py3status
+In-Reply-To: <5130CED7.50005@ultrabug.net>
+References: <5130CED7.50005@ultrabug.net>
+Message-ID: <CABUeae8GLh5AJ9EQruuku87MO+khYji0JKN47sgf23WG9xEETg@mail.gmail.com>
+
+On 1 March 2013 15:52, Ultrabug <ultrabug at ultrabug.net> wrote:
+> py3status gives you an easy and flexible way to display your own stuff in
+> your i3bar by wrapping your current i3status configuration. You can read
+> more details on the project's wiki.
+>
+>     https://github.com/ultrabug/py3status/wiki
+
+Really nice work and useful utility.
+
+Best regard,
+-- 
+Mateusz Loskot, http://mateusz.loskot.net
+
+From fabian at anue.biz  Mon Mar  4 05:55:45 2013
+From: fabian at anue.biz (=?ISO-8859-1?Q?Fabi=E1n_Ezequiel_Gallina?=)
+Date: Mon, 04 Mar 2013 01:55:45 -0300
+Subject: [i3] Failing tests on master and ticket #807.
+Message-ID: <51342951.5020905@anue.biz>
+
+Hi,
+
+I've been studying the code-base and started working on ticket #807[0]. 
+At the moment I have a working implementation and got acquainted with 
+the basics for writing and running tests.
+
+After running the test-suite, to see how much stuff I broke, I got 
+several failures; so I reverted my changes, recompiled i3 and re-ran the 
+suite just in case. Unfortunately I found out tests were also failing in 
+the current master branch.
+
+I'm attaching the complete-run.log in the hope it will help to fix the 
+testcases.
+
+BTW I updated the ticket with the patch, comments and suggestions are 
+appreciated.
+
+
+
+[0] http://bugs.i3wm.org/report/ticket/807
+
+
+Regards,
+
+-- 
+Fabi?n E. Gallina
+Co-Founder of Anue
+http://www.anue.biz/
+
+-------------- next part --------------
+[:1] t/000-load-deps.t: starting
+[:2] t/171-config-migrate.t: starting
+[:3] t/165-for_window.t: starting
+[:4] t/132-move-workspace.t: starting
+[:1] t/000-load-deps.t: finished
+[:1] t/505-scratchpad-resolution.t: starting
+[:1] t/505-scratchpad-resolution.t: finished
+[:1] t/141-resize.t: starting
+[:4] t/132-move-workspace.t: finished
+[:4] t/506-focus-right.t: starting
+[:1] t/141-resize.t: finished
+[:1] t/135-floating-focus.t: starting
+[:4] t/506-focus-right.t: finished
+[:4] t/185-scratchpad.t: starting
+[:3] t/165-for_window.t: finished
+[:3] t/167-workspace_layout.t: starting
+[:1] t/135-floating-focus.t: finished
+[:1] t/201-config-parser.t: starting
+[:3] t/167-workspace_layout.t: finished
+[:3] t/176-workspace-baf.t: starting
+[:4] t/185-scratchpad.t: finished
+[:4] t/200-urgency-timer.t: starting
+[:1] t/201-config-parser.t: finished
+[:1] t/166-assign.t: starting
+[:3] t/176-workspace-baf.t: finished
+[:3] t/117-workspace.t: starting
+[:2] t/171-config-migrate.t: finished
+[:2] t/187-commands-parser.t: starting
+[:4] t/200-urgency-timer.t: finished
+[:4] t/177-bar-config.t: starting
+[:1] t/166-assign.t: finished
+[:1] t/156-fullscreen-focus.t: starting
+[:3] t/117-workspace.t: finished
+[:3] t/189-floating-constraints.t: starting
+[:4] t/177-bar-config.t: finished
+[:4] t/113-urgent.t: starting
+[:2] t/187-commands-parser.t: finished
+[:2] t/174-border-config.t: starting
+[:1] t/156-fullscreen-focus.t: finished
+[:1] t/170-force_focus_wrapping.t: starting
+[:3] t/189-floating-constraints.t: finished
+[:3] t/510-focus-across-outputs.t: starting
+[:4] t/113-urgent.t: finished
+[:4] t/175-startup-notification.t: starting
+[:2] t/174-border-config.t: finished
+[:2] t/150-regress-dock-restart.t: starting
+[:1] t/170-force_focus_wrapping.t: finished
+[:1] t/164-kill-win-vs-client.t: starting
+[:3] t/510-focus-across-outputs.t: finished
+[:3] t/194-regress-floating-size.t: starting
+[:4] t/175-startup-notification.t: finished
+[:4] t/136-floating-ws-empty.t: starting
+[:2] t/150-regress-dock-restart.t: finished
+[:2] t/121-next-prev.t: starting
+[:4] t/136-floating-ws-empty.t: finished
+[:4] t/183-config-variables.t: starting
+[:2] t/121-next-prev.t: finished
+[:2] t/120-multiple-cmds.t: starting
+[:1] t/164-kill-win-vs-client.t: finished
+[:1] t/124-move.t: starting
+[:3] t/194-regress-floating-size.t: finished
+[:3] t/100-fullscreen.t: starting
+[:4] t/183-config-variables.t: finished
+[:4] t/501-scratchpad.t: starting
+[:2] t/120-multiple-cmds.t: finished
+[:2] t/504-move-workspace-to-output.t: starting
+[:1] t/124-move.t: finished
+[:1] t/172-start-on-named-ws.t: starting
+[:3] t/100-fullscreen.t: finished
+[:3] t/139-ws-numbers.t: starting
+[:1] t/172-start-on-named-ws.t: finished
+[:1] t/168-regress-fullscreen-restart.t: starting
+[:2] t/504-move-workspace-to-output.t: finished
+[:2] t/192-layout.t: starting
+[:4] t/501-scratchpad.t: finished
+[:4] t/122-split.t: starting
+[:4] t/122-split.t: finished
+[:4] t/188-regress-focus-restart.t: starting
+[:2] t/192-layout.t: finished
+[:2] t/119-match.t: starting
+[:3] t/139-ws-numbers.t: finished
+[:3] t/161-regress-borders-restart.t: starting
+[:3] t/161-regress-borders-restart.t: finished
+[:3] t/503-workspace.t: starting
+[:1] t/168-regress-fullscreen-restart.t: finished
+[:1] t/102-dock.t: starting
+[:4] t/188-regress-focus-restart.t: finished
+[:4] t/159-socketpaths.t: starting
+[:2] t/119-match.t: finished
+[:2] t/111-goto.t: starting
+[:1] t/102-dock.t: finished
+[:1] t/129-focus-after-close.t: starting
+[:3] t/503-workspace.t: finished
+[:3] t/138-floating-attach.t: starting
+[:4] t/159-socketpaths.t: finished
+[:4] t/130-close-empty-split.t: starting
+[:2] t/111-goto.t: finished
+[:2] t/112-floating-resize.t: starting
+[:3] t/138-floating-attach.t: finished
+[:3] t/144-regress-floating-resize.t: starting
+[:2] t/112-floating-resize.t: finished
+[:2] t/147-regress-floatingmove.t: starting
+[:1] t/129-focus-after-close.t: finished
+[:1] t/163-wm-state.t: starting
+[:4] t/130-close-empty-split.t: finished
+[:4] t/195-net-active-window.t: starting
+[:2] t/147-regress-floatingmove.t: finished
+[:2] t/118-openkill.t: starting
+[:1] t/163-wm-state.t: finished
+[:1] t/101-focus.t: starting
+[:3] t/144-regress-floating-resize.t: finished
+[:3] t/114-client-leader.t: starting
+[:4] t/195-net-active-window.t: finished
+[:4] t/127-regress-floating-parent.t: starting
+[:2] t/118-openkill.t: finished
+[:2] t/140-focus-lost.t: starting
+[:3] t/114-client-leader.t: finished
+[:3] t/173-regress-focus-assign.t: starting
+[:1] t/101-focus.t: finished
+[:1] t/184-regress-float-split-resize.t: starting
+[:4] t/127-regress-floating-parent.t: finished
+[:4] t/005-floating.t: starting
+[:3] t/173-regress-focus-assign.t: finished
+[:3] t/104-focus-stack.t: starting
+[:2] t/140-focus-lost.t: finished
+[:2] t/502-focus-output.t: starting
+[:4] t/005-floating.t: finished
+[:4] t/197-regression-move-vanish.t: starting
+[:1] t/184-regress-float-split-resize.t: finished
+[:1] t/143-regress-floating-restart.t: starting
+[:3] t/104-focus-stack.t: finished
+[:3] t/148-regress-floatingmovews.t: starting
+[:4] t/197-regression-move-vanish.t: finished
+[:4] t/186-regress-assign-focus-parent.t: starting
+[:2] t/502-focus-output.t: finished
+[:2] t/146-floating-reinsert.t: starting
+[:1] t/143-regress-floating-restart.t: finished
+[:1] t/198-regression-scratchpad-crash.t: starting
+[:3] t/148-regress-floatingmovews.t: finished
+[:3] t/508-move-workspace-focus.t: starting
+[:2] t/146-floating-reinsert.t: finished
+[:2] t/511-scratchpad-configure-request.t: starting
+[:4] t/186-regress-assign-focus-parent.t: finished
+[:4] t/133-size-hints.t: starting
+[:1] t/198-regression-scratchpad-crash.t: finished
+[:1] t/169-border-toggle.t: starting
+[:3] t/508-move-workspace-focus.t: finished
+[:3] t/509-workspace_layout.t: starting
+[:2] t/511-scratchpad-configure-request.t: finished
+[:2] t/131-stacking-order.t: starting
+[:1] t/169-border-toggle.t: finished
+[:1] t/154-regress-multiple-dock.t: starting
+[:4] t/133-size-hints.t: finished
+[:4] t/162-regress-dock-urgent.t: starting
+[:3] t/509-workspace_layout.t: finished
+[:3] t/191-resize-levels.t: starting
+[:4] t/162-regress-dock-urgent.t: finished
+[:4] t/126-regress-close.t: starting
+[:1] t/154-regress-multiple-dock.t: finished
+[:1] t/001-tile.t: starting
+[:2] t/131-stacking-order.t: finished
+[:2] t/153-floating-originalsize.t: starting
+[:4] t/126-regress-close.t: finished
+[:4] t/182-regress-focus-dock.t: starting
+[:3] t/191-resize-levels.t: finished
+[:3] t/142-regress-move-floating.t: starting
+[:1] t/001-tile.t: finished
+[:1] t/151-regress-float-size.t: starting
+[:4] t/182-regress-focus-dock.t: finished
+[:4] t/190-scratchpad-diff-ws.t: starting
+[:2] t/153-floating-originalsize.t: finished
+[:2] t/180-fd-leaks.t: starting
+[:3] t/142-regress-move-floating.t: finished
+[:3] t/003-ipc.t: starting
+[:1] t/151-regress-float-size.t: finished
+[:1] t/128-open-order.t: starting
+[:4] t/190-scratchpad-diff-ws.t: finished
+[:4] t/199-ipc-mode-event.t: starting
+[:2] t/180-fd-leaks.t: finished
+[:2] t/203-regress-assign-and-move.t: starting
+[:3] t/003-ipc.t: finished
+[:3] t/196-randr-output-names.t: starting
+[:1] t/128-open-order.t: finished
+[:1] t/103-move.t: starting
+[:4] t/199-ipc-mode-event.t: finished
+[:4] t/181-regress-float-border.t: starting
+[:2] t/203-regress-assign-and-move.t: finished
+[:2] t/174-regress-focus-toggle.t: starting
+[:3] t/196-randr-output-names.t: finished
+[:3] t/179-regress-multiple-ws.t: starting
+[:1] t/103-move.t: finished
+[:1] t/115-ipc-workspaces.t: starting
+[:4] t/181-regress-float-border.t: finished
+[:4] t/137-floating-unmap.t: starting
+[:2] t/174-regress-focus-toggle.t: finished
+[:2] t/178-regress-workspace-open.t: starting
+[:1] t/115-ipc-workspaces.t: finished
+[:1] t/002-i3-sync.t: starting
+[:3] t/179-regress-multiple-ws.t: finished
+[:3] t/173-get-marks.t: starting
+[:2] t/178-regress-workspace-open.t: finished
+[:2] t/105-stacking.t: starting
+[:4] t/137-floating-unmap.t: finished
+[:4] t/134-invalid-command.t: starting
+[:1] t/002-i3-sync.t: finished
+[:1] t/145-flattening.t: starting
+[:3] t/173-get-marks.t: finished
+[:3] t/004-unmanaged.t: starting
+[:2] t/105-stacking.t: finished
+[:2] t/507-workspace-move-crash.t: starting
+[:4] t/134-invalid-command.t: finished
+[:4] t/193-ipc-version.t: starting
+[:3] t/004-unmanaged.t: finished
+[:3] t/500-multi-monitor.t: starting
+[:1] t/145-flattening.t: finished
+[:1] t/155-floating-split-size.t: starting
+[:2] t/507-workspace-move-crash.t: finished
+[:2] t/116-nestedcons.t: starting
+[:3] t/500-multi-monitor.t: finished
+[:3] t/158-wm_take_focus.t: starting
+[:4] t/193-ipc-version.t: finished
+[:4] t/152-regress-level-up.t: starting
+[:1] t/155-floating-split-size.t: finished
+[:2] t/116-nestedcons.t: finished
+[:4] t/152-regress-level-up.t: finished
+[:3] t/158-wm_take_focus.t: finished
+output for t/000-load-deps.t:
+ok 1 - use X11::XCB::Connection;
+ok 2 - use X11::XCB::Window;
+ok 3 - use AnyEvent;
+ok 4 - use AnyEvent::I3;
+ok 5 - use IPC::Run;
+ok 6 - use ExtUtils::PkgConfig;
+ok 7 - use Inline;
+ok 8 - use Test::More;
+1..8
+
+output for t/505-scratchpad-resolution.t:
+ok 1 - Workspace /tmp/n5gDWiDqQe exists
+ok 2 - no nodes on this ws
+ok 3 - Workspace /tmp/n5gDWiDqQe exists
+ok 4 - one node on this ws
+ok 5 - Workspace /tmp/n5gDWiDqQe exists
+ok 6 - no nodes on this ws
+ok 7 - one floating node on this ws
+ok 8 - one floating node on this ws
+ok 9 - scratchpad window did not move
+ok 10 - one floating node on this ws
+ok 11 - scratchpad window did not move
+ok 12 - one floating node on this ws
+ok 13 - scratchpad window did not move
+ok 14 - one floating node on this ws
+ok 15 - scratchpad window did not move
+ok 16 - one floating node on this ws
+ok 17 - scratchpad window did not move
+ok 18 - one floating node on this ws
+ok 19 - scratchpad window did not move
+ok 20 - one floating node on this ws
+ok 21 - scratchpad window did not move
+ok 22 - one floating node on this ws
+ok 23 - scratchpad window did not move
+ok 24 - one floating node on this ws
+ok 25 - scratchpad window did not move
+ok 26 - one floating node on this ws
+ok 27 - scratchpad window did not move
+ok 28 - one floating node on this ws
+ok 29 - scratchpad window did not move
+ok 30 - one floating node on this ws
+ok 31 - scratchpad window did not move
+ok 32 - one floating node on this ws
+ok 33 - scratchpad window did not move
+ok 34 - one floating node on this ws
+ok 35 - scratchpad window did not move
+ok 36 - one floating node on this ws
+ok 37 - scratchpad window did not move
+ok 38 - one floating node on this ws
+ok 39 - scratchpad window did not move
+ok 40 - one floating node on this ws
+ok 41 - scratchpad window did not move
+ok 42 - one floating node on this ws
+ok 43 - scratchpad window did not move
+ok 44 - one floating node on this ws
+ok 45 - scratchpad window did not move
+ok 46 - Workspace /tmp/HihSoLRzwm exists
+ok 47 - no nodes on this ws
+ok 48 - Workspace /tmp/HihSoLRzwm exists
+ok 49 - one node on this ws
+ok 50 - Workspace /tmp/HihSoLRzwm exists
+ok 51 - no nodes on this ws
+ok 52 - one floating node on this ws
+ok 53 - one floating node on this ws
+ok 54 - scratchpad window did not move
+ok 55 - one floating node on this ws
+ok 56 - scratchpad window did not move
+ok 57 - one floating node on this ws
+ok 58 - scratchpad window did not move
+ok 59 - one floating node on this ws
+ok 60 - scratchpad window did not move
+ok 61 - one floating node on this ws
+ok 62 - scratchpad window did not move
+ok 63 - one floating node on this ws
+ok 64 - scratchpad window did not move
+ok 65 - one floating node on this ws
+ok 66 - scratchpad window did not move
+ok 67 - one floating node on this ws
+ok 68 - scratchpad window did not move
+ok 69 - one floating node on this ws
+ok 70 - scratchpad window did not move
+ok 71 - one floating node on this ws
+ok 72 - scratchpad window did not move
+ok 73 - one floating node on this ws
+ok 74 - scratchpad window did not move
+ok 75 - one floating node on this ws
+ok 76 - scratchpad window did not move
+ok 77 - one floating node on this ws
+ok 78 - scratchpad window did not move
+ok 79 - one floating node on this ws
+ok 80 - scratchpad window did not move
+ok 81 - one floating node on this ws
+ok 82 - scratchpad window did not move
+ok 83 - one floating node on this ws
+ok 84 - scratchpad window did not move
+ok 85 - one floating node on this ws
+ok 86 - scratchpad window did not move
+ok 87 - one floating node on this ws
+ok 88 - scratchpad window did not move
+ok 89 - one floating node on this ws
+ok 90 - scratchpad window did not move
+Exiting i3 cleanly...
+1..90
+
+output for t/132-move-workspace.t:
+ok 1 - Workspace /tmp/7n5gDWiDqQ exists
+ok 2 - no containers yet
+ok 3 - Workspace /tmp/7n5gDWiDqQ exists
+ok 4 - two containers on first ws
+ok 5 - Workspace /tmp/emHihSoLRz exists
+ok 6 - no containers on second ws yet
+ok 7 - Workspace /tmp/7n5gDWiDqQ exists
+ok 8 - one container on first ws anymore
+ok 9 - Workspace /tmp/emHihSoLRz exists
+ok 10 - one container on second ws
+ok 11 - same container on different ws
+ok 12 - first container focused on first ws
+ok 13 - Workspace /tmp/wmLABDOlNJ exists
+ok 14 - no containers yet
+ok 15 - Workspace /tmp/wmLABDOlNJ exists
+ok 16 - two containers on first ws
+ok 17 - Workspace /tmp/0N2etesxJD exists
+ok 18 - no containers on second ws yet
+ok 19 - Workspace /tmp/wmLABDOlNJ exists
+ok 20 - one container on first ws anymore
+ok 21 - Workspace /tmp/0N2etesxJD exists
+ok 22 - one container on second ws
+ok 23 - same container on different ws
+ok 24 - first container focused on first ws
+ok 25 - Workspace /tmp/zQjHzePp9y exists
+ok 26 - no containers yet
+ok 27 - Workspace /tmp/zQjHzePp9y exists
+ok 28 - two containers on first ws
+ok 29 - Workspace /tmp/tILiTUKXWy exists
+ok 30 - no containers on second ws yet
+ok 31 - Workspace /tmp/zQjHzePp9y exists
+ok 32 - one container on first ws anymore
+ok 33 - Workspace /tmp/tILiTUKXWy exists
+ok 34 - one container on second ws
+ok 35 - same container on different ws
+ok 36 - first container focused on first ws
+ok 37 - Workspace /tmp/Z8mmXMGfVB exists
+ok 38 - no containers yet
+ok 39 - Workspace /tmp/Z8mmXMGfVB exists
+ok 40 - two containers on first ws
+ok 41 - Workspace /tmp/kdWGQwJP8d exists
+ok 42 - no containers on second ws yet
+ok 43 - Workspace /tmp/Z8mmXMGfVB exists
+ok 44 - one container on first ws anymore
+ok 45 - Workspace /tmp/kdWGQwJP8d exists
+ok 46 - one container on second ws
+ok 47 - same container on different ws
+ok 48 - first container focused on first ws
+ok 49 - Workspace 13: meh exists
+ok 50 - one container on 13: meh
+ok 51 - workspace 13 does not exist yet
+ok 52 - Workspace 13: meh exists
+ok 53 - one container on 13: meh
+ok 54 - Workspace 12 exists
+ok 55 - no container on 12 anymore
+ok 56 - workspace 13 does still not exist
+ok 57 - Workspace 15: meh exists
+ok 58 - one container on 15: meh
+ok 59 - workspace 15 does not exist yet
+ok 60 - workspace 15: duh does not exist yet
+ok 61 - Workspace 15: meh exists
+ok 62 - two containers on 15: meh
+ok 63 - Workspace 14 exists
+ok 64 - no container on 14 anymore
+ok 65 - workspace 15 does still not exist
+ok 66 - workspace 15 does still not exist
+ok 67 - Workspace /tmp/xZhLwb99td exists
+ok 68 - no containers yet
+ok 69 - Workspace /tmp/xZhLwb99td exists
+ok 70 - two containers
+ok 71 - Workspace /tmp/4QHUVlbrYV exists
+ok 72 - no containers yet
+ok 73 - Workspace /tmp/4QHUVlbrYV exists
+ok 74 - one container on second ws
+ok 75 - Workspace /tmp/xZhLwb99td exists
+ok 76 - one container on first ws
+ok 77 - Workspace /tmp/4QHUVlbrYV exists
+ok 78 - two containers on second ws
+ok 79 - Workspace /tmp/xZhLwb99td exists
+ok 80 - three containers on first ws
+ok 81 - Workspace /tmp/4QHUVlbrYV exists
+ok 82 - no containers on second ws
+ok 83 - Workspace /tmp/Y_nBZ9P29U exists
+ok 84 - one container on first ws
+ok 85 - Workspace /tmp/OaJ8UGo7ZV exists
+ok 86 - no containers yet
+ok 87 - Workspace /tmp/OaJ8UGo7ZV exists
+ok 88 - one container on second ws
+ok 89 - Workspace /tmp/OaJ8UGo7ZV exists
+ok 90 - no containers on second ws
+ok 91 - no nodes on workspace
+ok 92 - one floating node on workspace
+ok 93 - no nodes on workspace
+ok 94 - one floating node on workspace
+ok 95 - Workspace 16 exists
+ok 96 - one node on ws 16
+ok 97 - Workspace 16 exists
+ok 98 - two nodes on ws 16
+ok 99 - workspace 17 does not exist yet
+ok 100 - workspace 17 created by moving
+ok 101 - one node on ws 16
+ok 102 - Workspace /tmp/hI6ZXyQRL2 exists
+ok 103 - one container on first ws
+ok 104 - Workspace /tmp/4IdwDWBMuH exists
+ok 105 - one container on second ws
+ok 106 - Workspace /tmp/4IdwDWBMuH exists
+ok 107 - two containers on second ws
+ok 108 - Workspace /tmp/hI6ZXyQRL2 exists
+ok 109 - two child containers on first ws
+ok 110 - four total containers on first ws
+ok 111 - Workspace /tmp/4IdwDWBMuH exists
+ok 112 - no containers on second ws
+ok 113 - Workspace /tmp/0ArWZ090s9 exists
+ok 114 - one container on first ws
+ok 115 - number of containers in first ws unchanged
+ok 116 - Workspace /tmp/Jm11vnyObc exists
+ok 117 - one container on first ws
+ok 118 - Workspace /tmp/ReLj6TM6wr exists
+ok 119 - one container on second ws
+ok 120 - Workspace /tmp/ReLj6TM6wr exists
+ok 121 - two containers on second ws
+ok 122 - Workspace /tmp/Jm11vnyObc exists
+ok 123 - two child containers on first ws
+ok 124 - four total containers on first ws
+ok 125 - Workspace /tmp/ReLj6TM6wr exists
+ok 126 - no containers on second ws
+ok 127 - Workspace 18 exists
+ok 128 - one container on ws 18
+ok 129 - Workspace 19 exists
+ok 130 - one container on ws 19
+ok 131 - Workspace 19 exists
+ok 132 - two containers on ws 19
+ok 133 - Workspace 18 exists
+ok 134 - two child containers on ws 18
+ok 135 - four total containers on ws 18
+ok 136 - Workspace 19 exists
+ok 137 - no containers on ws 19
+ok 138 - Workspace /tmp/reNQPGAgzF exists
+ok 139 - one container on first workspace
+ok 140 - two floating nodes on first workspace
+ok 141 - Workspace /tmp/lsedJCbeK3 exists
+ok 142 - one container on second workspace
+ok 143 - two floating nodes on second workspace
+ok 144 - Workspace /tmp/9QjGhbwYHn exists
+ok 145 - no regular nodes on first workspace
+ok 146 - one floating node on first workspace
+ok 147 - Workspace /tmp/ypk83DKbNw exists
+ok 148 - no regular nodes on second workspace
+ok 149 - one floating node on second workspace
+1..149
+
+output for t/141-resize.t:
+"my" variable $left masks earlier declaration in same scope at ./t/141-resize.t line 264.
+"my" variable $right masks earlier declaration in same scope at ./t/141-resize.t line 265.
+# top = 4194304, bottom = 4194305
+ok 1 - Bottom window focused
+ok 2 - top window got only 25%
+ok 3 - bottom window got 75%
+ok 4 - top window got only 25%
+ok 5 - bottom window got 75%
+ok 6 - top window got 50%
+ok 7 - bottom window got 50%
+ok 8 - top window got 25%
+ok 9 - bottom window got 75%
+ok 10 - left window got 50%
+ok 11 - right window got 50%
+ok 12 - left window got 25%
+ok 13 - right window got 75%
+ok 14 - left window got 25%
+ok 15 - right window got 75%
+ok 16 - first window got 16%
+ok 17 - second window got 16%
+ok 18 - third window got 16%
+ok 19 - fourth window got 50%
+ok 20 - first window got 16%
+ok 21 - second window got 16%
+ok 22 - third window got 16%
+ok 23 - fourth window got 50%
+ok 24 - one floating node on this ws
+ok 25 - y smaller than before
+ok 26 - y exactly 10 px smaller
+ok 27 - x untouched
+ok 28 - height bigger than before
+ok 29 - height exactly 10 px higher
+ok 30 - x untouched
+ok 31 - y smaller than before
+ok 32 - y exactly 10 px smaller
+ok 33 - x untouched
+ok 34 - height bigger than before
+ok 35 - height exactly 10 px higher
+ok 36 - x untouched
+ok 37 - x smaller than before
+ok 38 - width bigger than before
+ok 39 - x the same as before
+ok 40 - y the same as before
+ok 41 - width bigger than before
+ok 42 - height the same as before
+ok 43 - x the same as before
+ok 44 - y the same as before
+ok 45 - height bigger than before
+ok 46 - width the same as before
+ok 47 - x the same as before
+ok 48 - y the same as before
+ok 49 - height the same as before
+ok 50 - width bigger than before
+ok 51 - x the same as before
+ok 52 - y the same as before
+ok 53 - height the same as before
+ok 54 - width smaller than before
+ok 55 - x the same as before
+ok 56 - y the same as before
+ok 57 - height bigger than before
+ok 58 - width the same as before
+ok 59 - x the same as before
+ok 60 - y the same as before
+ok 61 - height smaller than before
+ok 62 - width the same as before
+ok 63 - height of right container unchanged
+ok 64 - height of left container changed
+1..64
+
+output for t/506-focus-right.t:
+ok 1 - right window focused
+ok 2 - left window focused
+ok 3 - right window focused
+ok 4 - left window focused (wrapping)
+ok 5 - right window focused (wrapping)
+ok 6 - right window still focused
+ok 7 - right window still focused
+ok 8 - i3 still lives
+Exiting i3 cleanly...
+ok 9 - right window focused
+ok 10 - left window focused
+ok 11 - right window focused
+ok 12 - left window focused (wrapping)
+ok 13 - right window focused (wrapping)
+ok 14 - right window still focused
+ok 15 - right window still focused
+ok 16 - i3 still lives
+Exiting i3 cleanly...
+ok 17 - right window focused
+ok 18 - left window focused
+ok 19 - right window focused
+ok 20 - left window focused (wrapping)
+ok 21 - right window focused (wrapping)
+ok 22 - right window still focused
+ok 23 - right window still focused
+ok 24 - i3 still lives
+Exiting i3 cleanly...
+ok 25 - focus on fake-0
+ok 26 - focus on fake-1
+ok 27 - focus on fake-2
+ok 28 - focus on fake-1
+ok 29 - focus on fake-0
+ok 30 - focus on fake-2 (wrapping)
+ok 31 - focus on fake-0 (wrapping)
+Exiting i3 cleanly...
+1..31
+
+output for t/165-for_window.t:
+ok 1 - one node on this workspace now
+ok 2 - normal border
+ok 3 - no more nodes
+# content = $VAR1 = [];
+ok 4 - one node on this workspace now
+ok 5 - no border
+ok 6 - no more nodes
+Exiting i3 cleanly...
+ok 7 - one node on this workspace now
+ok 8 - normal border
+ok 9 - no border
+ok 10 - border reset to normal
+ok 11 - still normal border
+ok 12 - no more nodes
+Exiting i3 cleanly...
+ok 13 - one node on this workspace now
+ok 14 - no border
+ok 15 - two nodes
+ok 16 - no border
+ok 17 - normal border
+ok 18 - first one not focused
+ok 19 - first node focused
+Exiting i3 cleanly...
+ok 20 - one node on this workspace now
+ok 21 - no border
+ok 22 - no nodes on this workspace now
+ok 23 - one node on this workspace now
+ok 24 - no border
+Exiting i3 cleanly...
+ok 25 - one node on this workspace now
+ok 26 - normal border, not matched
+Exiting i3 cleanly...
+ok 27 - one node on this workspace now
+ok 28 - no border
+Exiting i3 cleanly...
+ok 29 - one node on this workspace now
+ok 30 - normal border
+Exiting i3 cleanly...
+ok 31 - one node on this workspace now
+ok 32 - no border (window_role)
+Exiting i3 cleanly...
+ok 33 - one node on this workspace now
+ok 34 - normal border (window_role 2)
+ok 35 - one node on this workspace now
+ok 36 - no border (window_role 2)
+Exiting i3 cleanly...
+1..36
+
+output for t/135-floating-focus.t:
+ok 1 - second window focused
+ok 2 - second window still focused after mode toggle
+ok 3 - last container focused
+ok 4 - second con focused
+ok 5 - second con still focused after killing third
+ok 6 - last container focused
+ok 7 - second con focused
+ok 8 - third con focused
+ok 9 - first con focused after killing all floating cons
+ok 10 - last container focused
+ok 11 - second con focused
+ok 12 - third con focused
+ok 13 - first con focused after killing all floating cons
+ok 14 - second container focused
+ok 15 - second container focused
+ok 16 - first (tiling) container focused
+ok 17 - second (floating) container focused
+ok 18 - second (floating) container still focused
+ok 19 - first (tiling) container focused
+ok 20 - second (floating) container focused
+ok 21 - third container focused
+ok 22 - second container focused
+ok 23 - first container focused
+ok 24 - focus wrapped to third container
+ok 25 - focus wrapped to first container
+ok 26 - focus on second container
+ok 27 - floating window focused
+ok 28 - workspace is focused
+ok 29 - floating window focused
+1..29
+
+output for t/167-workspace_layout.t:
+ok 1 - no containers yet
+ok 2 - second window focused
+ok 3 - two containers opened
+ok 4 - layout not stacked
+ok 5 - layout not stacked
+Exiting i3 cleanly...
+ok 6 - no containers yet
+ok 7 - second window focused
+ok 8 - one con at workspace level
+ok 9 - layout stacked
+ok 10 - two cons at workspace level after focus parent
+ok 11 - layout stacked
+ok 12 - layout stacked
+ok 13 - three cons at workspace level after move
+ok 14 - layout stacked
+ok 15 - layout stacked
+ok 16 - layout stacked
+ok 17 - two cons at workspace level after moving back
+ok 18 - layout stacked
+ok 19 - layout stacked
+ok 20 - still two cons on this workspace
+ok 21 - layout stacked
+ok 22 - layout stacked
+ok 23 - one con on target workspace
+ok 24 - layout stacked
+ok 25 - second window focused
+ok 26 - one con at workspace level
+ok 27 - layout stacked
+Exiting i3 cleanly...
+1..27
+
+output for t/185-scratchpad.t:
+ok 1 - root node is the first thing we get
+ok 2 - output __i3 found
+ok 3 - __i3_scratch workspace found
+ok 4 - __i3 not in GET_OUTPUTS
+ok 5 - __i3_scratch ws not in GET_WORKSPACES
+ok 6 - __i3_scratch ws not focused
+ok 7 - __i3_scratch ws still not focused
+ok 8 - __i3_scratch ws empty
+ok 9 - __i3_scratch ws empty
+ok 10 - __i3_scratch ws empty
+ok 11 - __i3_scratch ws empty
+ok 12 - precisely one window on current ws
+ok 13 - scratchpad_state none
+ok 14 - __i3_scratch contains our window
+ok 15 - no window on current ws anymore
+ok 16 - scratchpad_state fresh
+ok 17 - __i3 output not focused
+ok 18 - __i3 not in GET_OUTPUTS
+ok 19 - __i3_scratch ws not in GET_WORKSPACES
+ok 20 - focus changed
+ok 21 - __i3_scratch is now empty
+ok 22 - scratch width is 50%
+ok 23 - scratch height is 75%
+ok 24 - scratch window centered horizontally
+ok 25 - scratch window centered vertically
+ok 26 - __i3_scratch contains our window
+ok 27 - scratchpad_state changed
+ok 28 - __i3_scratch contains both windows
+ok 29 - changed window first
+ok 30 - fresh window is second
+ok 31 - changed window first
+ok 32 - fresh window second
+ok 33 - focus changed
+ok 34 - scratch width is 50%
+ok 35 - scratch height is 75%
+ok 36 - scratch window centered horizontally
+ok 37 - scratch window centered vertically
+ok 38 - focus changed
+ok 39 - focus changed
+ok 40 - focus changed
+ok 41 - non-matching criteria have no effect
+ok 42 - matching criteria works
+ok 43 - matching criteria works
+ok 44 - focus restored
+ok 45 - focus still ok
+ok 46 - focus unchanged
+ok 47 - scratchpad window shown
+ok 48 - x position changed
+ok 49 - position/size the same
+ok 50 - scratchpad window hidden
+ok 51 - precisely one window on current ws
+ok 52 - i3 still lives
+ok 53 - number of nodes matches (0)
+ok 54 - number of floating nodes matches (2)
+ok 55 - still precisely one window on current ws
+ok 56 - still no floating windows on current ws
+ok 57 - still precisely one window on current ws
+ok 58 - precisely one floating windows on current ws
+ok 59 - scratchpad_state is "changed"
+ok 60 - i3 still lives
+ok 61 - i3 still lives
+ok 62 - no windows on ws
+ok 63 - no floating windows on ws
+ok 64 - no windows on ws
+ok 65 - one floating windows on ws
+ok 66 - no windows on ws
+ok 67 - one floating windows on ws
+ok 68 - focus changed
+ok 69 - i3 still lives
+ok 70 - no windows on ws
+ok 71 - no floating windows on ws
+ok 72 - no windows on ws
+ok 73 - one floating windows on ws
+ok 74 - no windows on ws
+ok 75 - one floating windows on ws
+ok 76 - focus changed
+1..76
+
+output for t/201-config-parser.t:
+ok 1 - single number (move workspace 3) ok
+ok 2 - exec okay
+ok 3 - for_window okay
+ok 4 - for_window okay
+ok 5 - floating_minimum_size ok
+ok 6 - floating_modifier ok
+ok 7 - default_orientation ok
+ok 8 - workspace_layout ok
+ok 9 - workspace assignment ok
+ok 10 - new_window ok
+ok 11 - hide_edge_borders ok
+ok 12 - focus_follows_mouse ok
+ok 13 - force_display_urgency_hint ok
+ok 14 - force_display_urgency_hint ok
+ok 15 - force_display_urgency_hint ok
+ok 16 - force_display_urgency_hint ok
+ok 17 - workspace ok
+ok 18 - ipc-socket ok
+ok 19 - colors ok
+ok 20 - errors dont harm subsequent statements
+ok 21 - errors dont harm subsequent statements
+ok 22 - error message (2+2 context) ok
+ok 23 - error message (0+0 context) ok
+ok 24 - error message (1+0 context) ok
+ok 25 - error message (0+1 context) ok
+ok 26 - error message (0+2 context) ok
+ok 27 - error message (mode block) ok
+ok 28 - error message (bar block) ok
+1..28
+
+output for t/176-workspace-baf.t:
+ok 1 - first workspace focused
+ok 2 - second workspace focused
+ok 3 - third workspace focused
+ok 4 - second workspace focused
+ok 5 - second workspace still focused
+ok 6 - one container on ws 1 before moving
+ok 7 - two containers on ws 1 before moving
+ok 8 - one container on ws 2 before moving
+ok 9 - still one container
+Exiting i3 cleanly...
+ok 10 - first workspace focused
+ok 11 - second workspace focused
+ok 12 - third workspace focused
+ok 13 - second workspace focused
+ok 14 - one container on ws 2 before moving
+ok 15 - two containers on ws 2
+ok 16 - workspace 5 focused
+ok 17 - workspace 6 focused
+ok 18 - workspace 5 focused again
+ok 19 - workspace 5 still focused
+ok 20 - workspace 6 now focused
+ok 21 - workspace 5 focused again
+ok 22 - workspace 6 now focused
+Exiting i3 cleanly...
+1..22
+
+output for t/171-config-migrate.t:
+ok 1 - font directive unchanged
+ok 2 - floating_modifier unchanged
+ok 3 - focus_follows_mouse unchanged
+ok 4 - ipc-socket unchanged
+ok 5 - ipc_socket unchanged
+ok 6 - exec unchanged
+ok 7 - set unchanged
+ok 8 - assign unchanged
+ok 9 - assign unchanged
+ok 10 - client.focused unchanged
+ok 11 - client.focused_inactive unchanged
+ok 12 - client.unfocused unchanged
+ok 13 - client.urgent unchanged
+ok 14 - client.background unchanged
+ok 15 - no bar. lines
+ok 16 - note bar. removed
+ok 17 - new_container changed
+ok 18 - workspace_bar removed
+ok 19 - no workspace_bar in the output
+ok 20 - new_window changed
+ok 21 - new_window bb changed
+ok 22 - new_window bn changed
+ok 23 - new_window bp changed
+ok 24 - exec unchanged
+ok 25 - mark unchanged
+ok 26 - restart unchanged
+ok 27 - reload unchanged
+ok 28 - exit unchanged
+ok 29 - stack-limit unchanged
+ok 30 - stack-limit unchanged
+ok 31 - bind changed to bindcode
+ok 32 - mode asdf unchanged
+ok 33 - mode default unchanged
+ok 34 - closing mode bracket still there
+ok 35 - s replaced
+ok 36 - d replaced
+ok 37 - T replaced
+ok 38 - f replaced
+ok 39 - fg replaced
+ok 40 - t replaced
+ok 41 - h replaced
+ok 42 - j replaced
+ok 43 - k replaced
+ok 44 - l replaced
+ok 45 - mh replaced
+ok 46 - mj replaced
+ok 47 - mk replaced
+ok 48 - ml replaced
+ok 49 - bn replaced
+ok 50 - bp replaced
+ok 51 - bb replaced
+ok 52 - bt replaced
+ok 53 - with container replaced with focus parent; focus left
+ok 54 - with container replaced with focus parent; move right
+ok 55 - kill unchanged
+ok 56 - nw replaced
+ok 57 - pw replaced
+ok 58 - goto replaced
+ok 59 - focus [number] gone
+ok 60 - focus floating unchanged
+ok 61 - focus tiling unchanged
+ok 62 - focus ft changed
+ok 63 - resize left changed
+ok 64 - resize top changed
+ok 65 - resize right changed
+ok 66 - resize bottom changed
+ok 67 - resize left changed
+ok 68 - jump to workspace removed
+ok 69 - jump to workspace + col/row removed
+ok 70 - jump changed
+ok 71 - jump changed
+ok 72 - workspace assignment unchanged
+ok 73 - workspace name not present
+ok 74 - note present
+ok 75 - workspace name not present
+ok 76 - named workspace in bindings
+ok 77 - workspace name not present
+ok 78 - named workspace in bindings
+ok 79 - workspace changed
+ok 80 - move workspace changed
+ok 81 - workspace name not present
+ok 82 - move to named workspace in bindings
+ok 83 - i3bar added
+ok 84 - i3bar added
+ok 85 - no i3bar added
+ok 86 - mode got quotes
+1..86
+
+output for t/200-urgency-timer.t:
+ok 1 - window not focused
+ok 2 - window marked as urgent
+ok 3 - window still marked as urgent
+ok 4 - window not marked as urgent anymore
+ok 5 - window 2 focused
+ok 6 - window 1 marked as urgent
+ok 7 - window 2 focused
+ok 8 - window 1 still marked as urgent
+ok 9 - window 1 not marked as urgent anymore
+ok 10 - no urgent windows on workspace /tmp/DOlNJ0N2et
+ok 11 - more than one urgent window on workspace /tmp/DOlNJ0N2et
+ok 12 - no more urgent windows on workspace /tmp/DOlNJ0N2et
+Exiting i3 cleanly...
+1..12
+
+output for t/166-assign.t:
+ok 1 - no containers yet
+ok 2 - special window got managed to current (random) workspace
+Exiting i3 cleanly...
+ok 3 - no containers yet
+ok 4 - targetws does not exist yet
+ok 5 - still no containers
+ok 6 - targetws exists
+Exiting i3 cleanly...
+ok 7 - targetws does not exist yet
+ok 8 - no containers on targetws yet
+ok 9 - one container on targetws
+ok 10 - no containers yet
+ok 11 - targetws does not exist yet
+ok 12 - still no containers
+ok 13 - two containers on targetws
+Exiting i3 cleanly...
+ok 14 - no containers yet
+ok 15 - targetws does not exist yet
+ok 16 - no tiling cons
+ok 17 - one floating con
+Exiting i3 cleanly...
+ok 18 - no containers yet
+ok 19 - one dock client yet
+ok 20 - no tiling cons
+ok 21 - one floating con
+ok 22 - one dock client now
+ok 23 - i3 still lives
+Exiting i3 cleanly...
+1..23
+
+output for t/117-workspace.t:
+ok 1 - workspace created
+# Other temporary workspace name: /tmp/emHihSoLRz
+ok 2 - old workspace cleaned up
+ok 3 - other workspace still exists
+ok 4 - workspace "next" does not exist
+ok 5 - workspace created
+ok 6 - workspace tmp still exists
+ok 7 - workspace otmp created
+ok 8 - focused workspace is otmp
+ok 9 - focused workspace is tmp after workspace prev
+ok 10 - focused workspace is otmp after workspace next
+ok 11 - focused workspace is 1 after workspace next
+ok 12 - focused workspace is tmp after workspace next
+ok 13 - focused workspace is otmp after workspace next
+ok 14 - focused workspace is tmp after workspace prev
+ok 15 - focused workspace is tmp after workspace prev
+ok 16 - focused workspace is otmp after workspace prev
+ok 17 - workspace "next" exists
+ok 18 - now on workspace next
+ok 19 - workspace "prev" exists
+ok 20 - now on workspace prev
+ok 21 - workspace 3: /tmp/7n5gDWiDqQ was created
+ok 22 - workspace number is 3
+ok 23 - workspace 0: /tmp/7n5gDWiDqQ was created
+ok 24 - workspace number is 0
+ok 25 - workspace aa: /tmp/7n5gDWiDqQ was created
+ok 26 - workspace number is -1
+ok 27 - workspace 4 does not exist
+ok 28 - workspace 4: foo does not exist yet
+ok 29 - workspace 4: foo was created
+ok 30 - workspace 4: foo still open
+ok 31 - now on workspace 4: foo
+ok 32 - workspace 4 still does not exist
+ok 33 - workspace 5 does not exist
+ok 34 - workspace 5 was created
+ok 35 - workspace 7 does not exist
+ok 36 - workspace 7: bar does not exist
+ok 37 - workspace 7: foo does not exist yet
+ok 38 - workspace 7: foo was created
+ok 39 - workspace 7: foo still open
+ok 40 - now on workspace 7: foo
+ok 41 - workspace 7 still does not exist
+ok 42 - workspace 7: bar still does not exist
+ok 43 - workspace 8: foo does not exist
+ok 44 - workspace 8: foo was created
+ok 45 - workspace numbers sorted
+ok 46 - now on workspace 9
+ok 47 - workspace 12 does not exist yet
+ok 48 - workspace 9 does not exist anymore
+ok 49 - now on workspace 12
+ok 50 - number correctly changed
+ok 51 - workspace numbers sorted
+ok 52 - now on workspace 9: foo
+ok 53 - workspace 11: bar does not exist yet
+ok 54 - workspace 9 does not exist anymore
+ok 55 - now on workspace 10
+ok 56 - number correctly changed
+ok 57 - workspace numbers sorted
+ok 58 - now on workspace bleh
+ok 59 - workspace qux does not exist yet
+ok 60 - workspace 9 does not exist anymore
+ok 61 - now on workspace qux
+ok 62 - number correctly changed
+ok 63 - workspace numbers sorted
+ok 64 - now on workspace 4711
+ok 65 - workspace 42 does not exist yet
+ok 66 - workspace 4711 does not exist anymore
+ok 67 - now on workspace 42
+ok 68 - number correctly changed
+ok 69 - workspace numbers sorted
+ok 70 - now on workspace to
+ok 71 - workspace to does not exist yet
+ok 72 - workspace bla does not exist anymore
+ok 73 - now on workspace to
+ok 74 - workspace to does not exist anymore
+ok 75 - now on workspace bla
+ok 76 - workspace bla does not exist anymore
+ok 77 - now on workspace to
+ok 78 - renaming workspace to an already existing one failed
+ok 79 - renaming workspace which does not exist failed
+1..79
+
+output for t/177-bar-config.t:
+ok 1 - no bars configured
+Exiting i3 cleanly...
+ok 2 - one bar configured
+ok 3 - status_command correct
+ok 4 - verbose off by default
+ok 5 - workspace buttons enabled per default
+ok 6 - dock mode by default
+ok 7 - position bottom by default
+ok 8 - still one bar configured
+Exiting i3 cleanly...
+ok 9 - one bar configured
+ok 10 - status_command correct
+ok 11 - verbose on
+ok 12 - workspace buttons disabled
+ok 13 - dock mode
+ok 14 - position top
+ok 15 - outputs ok
+ok 16 - tray_output ok
+ok 17 - font ok
+ok 18 - socket_path ok
+ok 19 - colors ok
+Exiting i3 cleanly...
+ok 20 - two bars configured
+ok 21 - bar IDs are different
+ok 22 - outputs different
+Exiting i3 cleanly...
+ok 23 - status_command correct
+ok 24 - background color ok
+Exiting i3 cleanly...
+ok 25 - one bar configured
+ok 26 - status_command correct
+ok 27 - verbose on
+ok 28 - workspace buttons disabled
+ok 29 - dock mode
+ok 30 - position top
+ok 31 - outputs ok
+ok 32 - tray_output ok
+ok 33 - font ok
+ok 34 - socket_path ok
+ok 35 - (old) colors ok
+Exiting i3 cleanly...
+1..35
+
+output for t/187-commands-parser.t:
+ok 1 - single number (move workspace 3) ok
+ok 2 - move ok
+ok 3 - multiple ops (move workspace 3: foobar, nop foo) ok
+ok 4 - exec ok
+ok 5 - simple resize ok
+ok 6 - trailing comma resize ok
+ok 7 - trailing semicolon resize ok
+ok 8 - criteria focus ok
+ok 9 - criteria focus ok
+ok 10 - criteria focus ok
+ok 11 - criteria focus ok
+ok 12 - quoted criteria focus ok
+ok 13 - trailing whitespace stripped off ok
+ok 14 - trailing whitespace stripped off ok
+ok 15 - error for unknown literal ok
+ok 16 - error for unknown literal ok
+ok 17 - Command with simple double quotes ok
+ok 18 - Command without ending double quotes ok
+ok 19 - Command with escaped double quotes ok
+1..19
+
+output for t/156-fullscreen-focus.t:
+ok 1 - left window focused
+# left = 4194304
+# right = 4194306
+# third = 4194307
+ok 2 - third window focused
+ok 3 - precisely one window
+ok 4 - fullscreen window focused
+ok 5 - precisely two windows
+ok 6 - id unchanged
+ok 7 - fullscreen window focused
+ok 8 - upper right window focused
+ok 9 - bottom right window focused
+ok 10 - bottom right window no longer focused
+ok 11 - bottom right window focused again
+ok 12 - prevented focus change to left window
+ok 13 - allowed focus up
+ok 14 - allowed focus down
+ok 15 - prevented focus left
+ok 16 - prevented focus right
+ok 17 - allowed focus wrap (down)
+ok 18 - allowed focus wrap (up)
+ok 19 - prevented focus change to different ws
+ok 20 - upper right window focused
+ok 21 - bottom right window focused
+ok 22 - bottom right window no longer focused
+ok 23 - bottom right window focused again
+ok 24 - prevented focus change to left window
+ok 25 - allowed focus up
+ok 26 - allowed focus down
+ok 27 - allowed focus wrap (down)
+ok 28 - allowed focus wrap (up)
+ok 29 - focus left wrapped (no-op)
+ok 30 - allowed focus change to different ws
+ok 31 - focused back into fullscreen container
+ok 32 - allowed focus change to different ws by id
+ok 33 - upper right window focused
+ok 34 - bottom right window focused
+ok 35 - focus did not leave parent container (1)
+ok 36 - focus did not leave parent container (2)
+ok 37 - focus did not leave parent container (3)
+ok 38 - focus did not leave parent container (4)
+ok 39 - prevented move left
+ok 40 - prevented move right
+ok 41 - prevented move down
+ok 42 - prevented move up
+ok 43 - did not prevent move to workspace by name
+ok 44 - did not prevent move to workspace by position
+ok 45 - prevented move to workspace by name
+ok 46 - prevented move to workspace by position
+Exiting i3 cleanly...
+1..46
+
+output for t/189-floating-constraints.t:
+ok 1 - width = 60
+ok 2 - height = 40
+Exiting i3 cleanly...
+ok 3 - width = 50
+ok 4 - height = 40
+Exiting i3 cleanly...
+ok 5 - width = 100
+ok 6 - height = 100
+Exiting i3 cleanly...
+ok 7 - width < 2048
+ok 8 - height < 2048
+Exiting i3 cleanly...
+ok 9 - width = 2048
+ok 10 - height = 2048
+Exiting i3 cleanly...
+ok 11 - width = 60
+ok 12 - height = 50
+Exiting i3 cleanly...
+ok 13 - width = 100
+ok 14 - height = 100
+ok 15 - window did not move when trying to resize
+ok 16 - window did not move when trying to resize
+Exiting i3 cleanly...
+1..16
+
+output for t/113-urgent.t:
+ok 1 - no window got the urgent flag
+ok 2 - top window is marked urgent
+ok 3 - bottom window is not marked urgent
+ok 4 - exactly one window got the urgent flag
+ok 5 - no window got the urgent flag after focusing
+ok 6 - no window got the urgent flag after re-setting urgency hint
+ok 7 - urgent flag not set on workspace
+ok 8 - urgent flag set on workspace
+ok 9 - urgent flag not set on workspace after switching
+ok 10 - new window focused
+ok 11 - window no longer focused
+ok 12 - urgent window focused
+ok 13 - new window focused again
+ok 14 - latest urgent window focused
+ok 15 - second urgent window focused
+ok 16 - new window focused again
+ok 17 - oldest urgent window focused
+ok 18 - oldest urgent window focused
+ok 19 - no window got the urgent flag
+ok 20 - 2 windows and 3 split containers got the urgent flag
+ok 21 - 1 window and 3 split containers got the urgent flag
+ok 22 - All urgent flags got cleared
+ok 23 - i3 still lives
+Exiting i3 cleanly...
+1..23
+
+output for t/174-border-config.t:
+ok 1 - no containers yet
+ok 2 - one container opened
+ok 3 - border normal by default
+Exiting i3 cleanly...
+ok 4 - no containers yet
+ok 5 - one container opened
+ok 6 - border pixel by default
+ok 7 - border width pixels -1 (default)
+Exiting i3 cleanly...
+ok 8 - no containers yet
+ok 9 - one floating container opened
+ok 10 - border normal by default
+Exiting i3 cleanly...
+ok 11 - no containers yet
+ok 12 - one floating container opened
+ok 13 - border pixel by default
+Exiting i3 cleanly...
+1..13
+
+output for t/170-force_focus_wrapping.t:
+ok 1 - no containers yet
+ok 2 - third window focused
+ok 3 - second window focused
+ok 4 - first window focused
+ok 5 - second window focused
+ok 6 - third window focused
+Exiting i3 cleanly...
+ok 7 - no containers yet
+ok 8 - third window focused
+ok 9 - second window focused
+ok 10 - first window focused
+ok 11 - second window focused
+ok 12 - first window focused
+Exiting i3 cleanly...
+1..12
+
+output for t/510-focus-across-outputs.t:
+not ok 1 - second window focused
+
+#   Failed test 'second window focused'
+#   at ./t/510-focus-across-outputs.t line 89.
+#          got: '305'
+#     expected: '4194305'
+not ok 2 - seventh window focused
+
+#   Failed test 'seventh window focused'
+#   at ./t/510-focus-across-outputs.t line 94.
+#          got: '305'
+#     expected: '4194311'
+not ok 3 - sixth window focused
+
+#   Failed test 'sixth window focused'
+#   at ./t/510-focus-across-outputs.t line 99.
+#          got: '305'
+#     expected: '4194310'
+not ok 4 - second window focused
+
+#   Failed test 'second window focused'
+#   at ./t/510-focus-across-outputs.t line 104.
+#          got: '305'
+#     expected: '4194305'
+ok 5 - third window focused
+not ok 6 - eighth window focused
+
+#   Failed test 'eighth window focused'
+#   at ./t/510-focus-across-outputs.t line 120.
+#          got: '305'
+#     expected: '4194312'
+not ok 7 - second window focused
+
+#   Failed test 'second window focused'
+#   at ./t/510-focus-across-outputs.t line 128.
+#          got: '305'
+#     expected: '4194305'
+not ok 8 - sixth window focused
+
+#   Failed test 'sixth window focused'
+#   at ./t/510-focus-across-outputs.t line 133.
+#          got: '305'
+#     expected: '4194310'
+not ok 9 - sixth window focused
+
+#   Failed test 'sixth window focused'
+#   at ./t/510-focus-across-outputs.t line 138.
+#          got: '305'
+#     expected: '4194310'
+not ok 10 - second window focused
+
+#   Failed test 'second window focused'
+#   at ./t/510-focus-across-outputs.t line 142.
+#          got: '305'
+#     expected: '4194305'
+Exiting i3 cleanly...
+1..10
+
+output for t/175-startup-notification.t:
+ok 1 - Workspace /tmp/7n5gDWiDqQ exists
+ok 2 - no containers on this workspace yet
+ok 3 - startup_id not empty
+ok 4 - libstartup-notification returns the same id
+ok 5 - Workspace /tmp/wmLABDOlNJ exists
+ok 6 - no containers on the second workspace yet
+ok 7 - Workspace /tmp/wmLABDOlNJ exists
+ok 8 - still no containers on the second workspace
+ok 9 - Workspace /tmp/7n5gDWiDqQ exists
+ok 10 - one container on the first workspace
+ok 11 - Workspace /tmp/wmLABDOlNJ exists
+ok 12 - still no containers on the second workspace
+ok 13 - Workspace /tmp/7n5gDWiDqQ exists
+ok 14 - two containers on the first workspace
+ok 15 - Workspace /tmp/7n5gDWiDqQ exists
+ok 16 - three containers on the first workspace
+ok 17 - Workspace /tmp/wmLABDOlNJ exists
+ok 18 - one container on the second workspace
+ok 19 - Workspace /tmp/tesxJDzQjH exists
+ok 20 - one container on the third workspace
+ok 21 - Workspace /tmp/tesxJDzQjH exists
+ok 22 - two containers on the third workspace
+ok 23 - startup_id empty
+ok 24 - startup_id empty
+1..24
+
+output for t/150-regress-dock-restart.t:
+ok 1 - no dock clients yet
+ok 2 - one dock client found
+ok 3 - dock node has unchanged height
+ok 4 - i3 still lives
+ok 5 - one dock client found
+ok 6 - dock node has unchanged height after restart
+ok 7 - no dock clients found
+ok 8 - one dock client found
+ok 9 - dock node has unchanged height
+ok 10 - one dock client found
+ok 11 - dock node has unchanged height
+1..11
+
+output for t/136-floating-ws-empty.t:
+screen = 0
+ok 1 - workspace /tmp/7n5gDWiDqQ exists
+ok 2 - Window is mapped
+ok 3 - new workspace /tmp/emHihSoLRz exists
+ok 4 - old workspace /tmp/7n5gDWiDqQ still exists
+ok 5 - workspace /tmp/wmLABDOlNJ exists
+ok 6 - Window is mapped
+ok 7 - Window is mapped
+ok 8 - new workspace /tmp/0N2etesxJD exists
+ok 9 - old workspace /tmp/wmLABDOlNJ still exists
+ok 10 - new workspace /tmp/0N2etesxJD exists
+ok 11 - old workspace /tmp/wmLABDOlNJ still exists
+1..11
+
+output for t/121-next-prev.t:
+ok 1 - focus did not change with only one con
+ok 2 - focus did not change with only one con
+ok 3 - new container is focused
+ok 4 - new container is focused
+ok 5 - focus did change
+ok 6 - left container focused (wrapping)
+ok 7 - middle container focused
+ok 8 - right container focused
+ok 9 - middle container focused
+ok 10 - left container focused
+ok 11 - right container focused
+ok 12 - middle container focused
+1..12
+
+output for t/164-kill-win-vs-client.t:
+ok 1 - no containers yet
+ok 2 - second window focused
+ok 3 - two containers opened
+ok 4 - one container left after killing
+ok 5 - no containers yet
+ok 6 - second window focused
+ok 7 - two containers opened
+ok 8 - one container left after killing
+ok 9 - no containers yet
+ok 10 - second window focused
+ok 11 - two containers opened
+ok 12 - no containers left after killing
+1..12
+
+output for t/194-regress-floating-size.t:
+# testing without new_window
+ok 1 - Window is mapped
+ok 2 - requested width kept
+ok 3 - requested height kept
+Exiting i3 cleanly...
+# testing with new_window 1pixel
+ok 4 - Window is mapped
+ok 5 - requested width kept
+ok 6 - requested height kept
+Exiting i3 cleanly...
+# testing with new_window normal
+ok 7 - Window is mapped
+ok 8 - requested width kept
+ok 9 - requested height kept
+Exiting i3 cleanly...
+# testing with new_window none
+ok 10 - Window is mapped
+ok 11 - requested width kept
+ok 12 - requested height kept
+Exiting i3 cleanly...
+1..12
+
+output for t/183-config-variables.t:
+ok 1 - one node on this workspace now
+Exiting i3 cleanly...
+ok 2 - normal border
+ok 3 - one node on this workspace now
+Exiting i3 cleanly...
+ok 4 - no border
+ok 5 - one node on this workspace now
+Exiting i3 cleanly...
+ok 6 - no border
+1..6
+
+output for t/120-multiple-cmds.t:
+ok 1 - two containers opened
+ok 2 - both containers killed (cmd = kill;kill)
+ok 3 - two containers opened
+ok 4 - both containers killed (cmd = kill; kill)
+ok 5 - two containers opened
+ok 6 - both containers killed (cmd = kill ; kill)
+ok 7 - two containers opened
+ok 8 - both containers killed (cmd = kill ;kill)
+ok 9 - two containers opened
+ok 10 - both containers killed (cmd = kill  ;kill)
+ok 11 - two containers opened
+ok 12 - both containers killed (cmd = kill  ;  kill)
+ok 13 - two containers opened
+ok 14 - both containers killed (cmd = kill;	kill)
+ok 15 - two containers opened
+ok 16 - both containers killed (cmd = kill	;kill)
+ok 17 - two containers opened
+ok 18 - both containers killed (cmd = kill	;	kill)
+ok 19 - two containers opened
+ok 20 - both containers killed (cmd = kill	 ;	kill)
+ok 21 - two containers opened
+ok 22 - both containers killed (cmd = kill	 ;	 kill)
+ok 23 - two containers opened
+ok 24 - both containers killed (cmd = kill 	 ; 	 kill)
+ok 25 - workspace does not exist yet
+ok 26 - workspace exists after moving
+ok 27 - workspace does not exist yet
+ok 28 - workspace exists after moving
+ok 29 - i3 still lives
+ok 30 - got one command reply
+ok 31 - reply has success == false
+1..31
+
+output for t/124-move.t:
+ok 1 - one container on this workspace
+ok 2 - workspace unmodified after useless moves
+ok 3 - two containers on this workspace
+ok 4 - first container unmodified
+ok 5 - first container modified
+ok 6 - first container unmodified
+ok 7 - first container modified
+ok 8 - first container unmodified
+ok 9 - three containers on this workspace
+ok 10 - only two containers on this workspace
+ok 11 - second container on top
+ok 12 - third container on bottom
+ok 13 - third container on top
+ok 14 - second container on bottom
+ok 15 - Workspace /tmp/7n5gDWiDqQ exists
+ok 16 - three containers after moving left
+ok 17 - Workspace /tmp/7n5gDWiDqQ exists
+ok 18 - two containers after moving right (flattening)
+ok 19 - Workspace /tmp/emHihSoLRz exists
+ok 20 - only one node on this workspace
+ok 21 - moved 10 px to the left
+ok 22 - y not changed
+ok 23 - width not changed
+ok 24 - height not changed
+ok 25 - moved 10 px to the right
+ok 26 - y not changed
+ok 27 - width not changed
+ok 28 - height not changed
+ok 29 - x not changed
+ok 30 - moved 10 px up
+ok 31 - width not changed
+ok 32 - height not changed
+ok 33 - x not changed
+ok 34 - moved 10 px up
+ok 35 - width not changed
+ok 36 - height not changed
+ok 37 - moved 20 px to the left
+ok 38 - y not changed
+ok 39 - width not changed
+ok 40 - height not changed
+ok 41 - moved to position 5 x
+ok 42 - moved to position 15 y
+ok 43 - moved to center at position 601 x
+ok 44 - moved to center at position 477 y
+1..44
+
+output for t/100-fullscreen.t:
+ok 1 - The object isa X11::XCB::Window
+ok 2 - rect unmodified before mapping
+ok 3 - Window got repositioned
+ok 4 - Window got repositioned after fullscreen
+ok 5 - x coordinate fullscreen
+ok 6 - y coordinate fullscreen
+ok 7 - width coordinate fullscreen
+ok 8 - height coordinate fullscreen
+ok 9 - rect unmodified before mapping
+ok 10 - Window got repositioned after fullscreen
+ok 11 - Window is mapped after opening it in fullscreen mode
+ok 12 - x coordinate fullscreen
+ok 13 - y coordinate fullscreen
+ok 14 - width coordinate fullscreen
+ok 15 - height coordinate fullscreen
+ok 16 - window not mapped while fullscreen window active
+ok 17 - Window got repositioned
+ok 18 - amount of fullscreen windows
+ok 19 - amount of fullscreen windows
+ok 20 - window mapped after other fullscreen ended
+ok 21 - amount of fullscreen windows after disabling
+ok 22 - amount of fullscreen windows after fullscreen command
+ok 23 - amount of fullscreen windows after fullscreen command
+ok 24 - other window focused
+ok 25 - window focused
+ok 26 - fullscreen window focused
+ok 27 - fullscreen window still focused
+ok 28 - one fullscreen window on second ws
+ok 29 - no fullscreen windows on second ws
+ok 30 - one fullscreen window on first ws
+ok 31 - no fullscreen windows on first ws
+1..31
+
+output for t/172-start-on-named-ws.t:
+ok 1 - i3 starts on workspace 1 without any configuration
+Exiting i3 cleanly...
+ok 2 - i3 starts on named workspace foobar
+Exiting i3 cleanly...
+ok 3 - i3 starts on named workspace foobar
+Exiting i3 cleanly...
+1..3
+
+output for t/504-move-workspace-to-output.t:
+ok 1 - starting on workspace 1
+ok 2 - workspace 2 on second output
+ok 3 - back on workspace 1
+ok 4 - workspace 5 focused
+ok 5 - workspace 5 on fake-0
+ok 6 - workspace 5 now on fake-1
+ok 7 - only workspace 1 remaining on fake-0
+ok 8 - workspace 1 now on fake-1
+ok 9 - workspace 2 created on fake-0
+ok 10 - workspace 5 back on fake-0
+ok 11 - x coordinate changed
+ok 12 - y coordinate unchanged
+ok 13 - width unchanged
+ok 14 - height unchanged
+ok 15 - empty_ws on fake-0
+ok 16 - other_output_ws on fake-1
+ok 17 - empty_ws not on fake-0
+ok 18 - empty_ws not on fake-1
+ok 19 - other_output_ws on fake-0
+Exiting i3 cleanly...
+1..19
+
+output for t/501-scratchpad.t:
+ok 1 - Workspace /tmp/7n5gDWiDqQ exists
+ok 2 - no nodes on this ws
+ok 3 - Workspace /tmp/7n5gDWiDqQ exists
+ok 4 - one nodes on this ws
+ok 5 - Workspace /tmp/7n5gDWiDqQ exists
+ok 6 - no nodes on this ws
+ok 7 - Workspace /tmp/7n5gDWiDqQ exists
+ok 8 - no nodes on this ws
+ok 9 - one floating node on this ws
+ok 10 - Workspace /tmp/emHihSoLRz exists
+ok 11 - no nodes on this ws
+ok 12 - Workspace /tmp/emHihSoLRz exists
+ok 13 - one nodes on this ws
+ok 14 - Workspace /tmp/emHihSoLRz exists
+ok 15 - no nodes on this ws
+ok 16 - Workspace /tmp/emHihSoLRz exists
+ok 17 - no nodes on this ws
+ok 18 - one floating node on this ws
+ok 19 - Workspace /tmp/wmLABDOlNJ exists
+ok 20 - no nodes on this ws
+ok 21 - Workspace /tmp/wmLABDOlNJ exists
+ok 22 - one nodes on this ws
+ok 23 - Workspace /tmp/wmLABDOlNJ exists
+ok 24 - no nodes on this ws
+ok 25 - Workspace /tmp/0N2etesxJD exists
+ok 26 - no nodes on this ws
+ok 27 - one floating node on this ws
+ok 28 - x within bounds
+ok 29 - y within bounds
+ok 30 - width within bounds
+ok 31 - height within bounds
+ok 32 - Workspace /tmp/zQjHzePp9y exists
+ok 33 - no nodes on this ws
+ok 34 - Workspace /tmp/zQjHzePp9y exists
+ok 35 - one nodes on this ws
+ok 36 - Workspace /tmp/zQjHzePp9y exists
+ok 37 - no nodes on this ws
+ok 38 - Workspace /tmp/tILiTUKXWy exists
+ok 39 - no nodes on this ws
+ok 40 - one floating node on this ws
+ok 41 - x within bounds
+ok 42 - y within bounds
+ok 43 - width within bounds
+ok 44 - height within bounds
+Exiting i3 cleanly...
+1..44
+
+output for t/122-split.t:
+ok 1 - orientation horizontal by default
+ok 2 - split v changes workspace orientation
+ok 3 - two containers on workspace level
+ok 4 - first container has no children
+ok 5 - second container has no children (yet)
+ok 6 - two containers on workspace level
+ok 7 - first container has no children
+ok 8 - second container was replaced
+ok 9 - orientation is horizontal
+ok 10 - second container has 2 children
+ok 11 - found old second container
+ok 12 - orientation horizontal by default
+ok 13 - split v changes workspace orientation
+ok 14 - two containers on workspace level
+ok 15 - first container has no children
+ok 16 - second container has no children (yet)
+ok 17 - two containers on workspace level
+ok 18 - first container has no children
+ok 19 - second container was replaced
+ok 20 - orientation is horizontal
+ok 21 - second container has 2 children
+ok 22 - found old second container
+ok 23 - orientation horizontal by default
+ok 24 - split v changes workspace orientation
+ok 25 - not more windows after splitting again
+ok 26 - Precisely one container on this ws
+ok 27 - Still one container on this ws
+ok 28 - Stacked con has one child node
+ok 29 - Still one container on this ws
+ok 30 - Stacked con still has one child node
+ok 31 - exactly one output (testcase not multi-monitor capable)
+ok 32 - content container layout ok
+ok 33 - exactly one output (testcase not multi-monitor capable)
+ok 34 - content container layout still ok
+1..34
+
+output for t/192-layout.t:
+ok 1 - layout is splitv currently
+ok 2 - layout now stacked
+ok 3 - layout now tabbed
+ok 4 - layout now splitv again
+ok 5 - layout now splith
+ok 6 - layout now splitv
+ok 7 - layout now splith
+ok 8 - layout now stacked
+ok 9 - layout now tabbed
+ok 10 - layout now splith
+ok 11 - layout now stacked
+ok 12 - layout now tabbed
+ok 13 - layout now splith
+ok 14 - layout now splitv
+ok 15 - layout now stacked
+ok 16 - layout now tabbed
+ok 17 - layout now splith
+ok 18 - layout now splitv
+1..18
+
+output for t/139-ws-numbers.t:
+ok 1 - workspace order alright before testing
+ok 2 - ws 93 found by num
+ok 3 - workspace order alright after opening 93
+ok 4 - workspace order alright after opening 92
+ok 5 - workspace order alright after opening 94
+ok 6 - workspace order alright after opening 96
+ok 7 - workspace order alright after opening foo
+ok 8 - workspace order alright after opening 91
+1..8
+
+output for t/161-regress-borders-restart.t:
+ok 1 - border style normal
+ok 2 - border style 1pixel after changing
+ok 3 - i3 still lives
+ok 4 - border style still 1pixel after restart
+1..4
+
+output for t/168-regress-fullscreen-restart.t:
+ok 1 - i3 still lives
+1..1
+
+output for t/188-regress-focus-restart.t:
+ok 1 - two tiling nodes on workspace
+ok 2 - first node name ok
+ok 3 - second node name ok
+ok 4 - first node focused
+ok 5 - second node second in focus stack
+ok 6 - i3 still lives
+ok 7 - still two tiling nodes on workspace
+ok 8 - first node name ok
+ok 9 - second node name ok
+ok 10 - first node focused
+ok 11 - second node second in focus stack
+1..11
+
+output for t/119-match.t:
+ok 1 - no containers yet
+ok 2 - window mapped
+ok 3 - Workspace /tmp/7n5gDWiDqQ exists
+ok 4 - window still there
+ok 5 - Workspace /tmp/7n5gDWiDqQ exists
+ok 6 - window killed
+ok 7 - left window mapped
+ok 8 - right window mapped
+ok 9 - Workspace /tmp/mHihSoLRzw exists
+ok 10 - two windows opened
+ok 11 - Workspace /tmp/mHihSoLRzw exists
+ok 12 - one window still there
+ok 13 - left window mapped
+ok 14 - Workspace /tmp/LABDOlNJ0N exists
+ok 15 - window opened
+ok 16 - Workspace /tmp/LABDOlNJ0N exists
+ok 17 - window killed
+ok 18 - left window mapped
+ok 19 - Workspace /tmp/etesxJDzQj exists
+ok 20 - window opened
+ok 21 - Workspace /tmp/etesxJDzQj exists
+ok 22 - window killed
+1..22
+
+output for t/102-dock.t:
+ok 1 - no dock clients yet
+ok 2 - dock client is as wide as the screen
+ok 3 - height is unchanged
+ok 4 - one dock client found
+ok 5 - dock node placed at x=0
+ok 6 - dock node placed at y=0
+ok 7 - dock node as wide as the screen
+ok 8 - dock node has unchanged height
+ok 9 - one dock client found
+ok 10 - dock node placed at x=0
+ok 11 - dock node placed at y=0
+ok 12 - dock node as wide as the screen
+ok 13 - dock height changed
+ok 14 - no more dock clients
+ok 15 - dock client is as wide as the screen
+ok 16 - height is unchanged
+ok 17 - dock client on bottom
+ok 18 - no more dock clients
+ok 19 - dock client on top
+ok 20 - no more dock clients
+ok 21 - dock client on bottom
+ok 22 - i3 still lives
+1..22
+
+output for t/503-workspace.t:
+ok 1 - starting on workspace 1
+ok 2 - workspace 2 on second output
+ok 3 - back on workspace 1
+ok 4 - workspace 2 focused
+ok 5 - workspace 5 focused
+not ok 6 - workspace 5 focused
+
+#   Failed test 'workspace 5 focused'
+#   at ./t/503-workspace.t line 74.
+#          got: '1'
+#     expected: '5'
+not ok 7 - workspace 1 focused
+
+#   Failed test 'workspace 1 focused'
+#   at ./t/503-workspace.t line 76.
+#          got: '5'
+#     expected: '1'
+not ok 8 - workspace 5 focused
+
+#   Failed test 'workspace 5 focused'
+#   at ./t/503-workspace.t line 79.
+#          got: '1'
+#     expected: '5'
+not ok 9 - workspace 1 focused
+
+#   Failed test 'workspace 1 focused'
+#   at ./t/503-workspace.t line 81.
+#          got: '5'
+#     expected: '1'
+ok 10 - workspace 2 focused
+Exiting i3 cleanly...
+1..10
+
+output for t/159-socketpaths.t:
+ok 1 - temp directory matches expected pattern
+ok 2 - folder /tmp/i3-fgallina.LhtWns exists
+ok 3 - file /tmp/i3-fgallina.LhtWns/ipc-socket.9323 exists and is a socket
+Exiting i3 cleanly...
+ok 4 - /tmp/7n5gDWiDqQ/i3 does not exist yet
+ok 5 - /tmp/7n5gDWiDqQ/i3 exists and is a directory
+ok 6 - file /tmp/7n5gDWiDqQ/i3/ipc-socket.9326 exists and is a socket
+Exiting i3 cleanly...
+ok 7 - /tmp/SoLRzwmLAB/config.sock does not exist yet
+ok 8 - file /tmp/SoLRzwmLAB/config.sock exists and is a socket
+Exiting i3 cleanly...
+1..8
+
+output for t/111-goto.t:
+ok 1 - Latest window focused
+ok 2 - Middle window focused
+ok 3 - focus unchanged
+ok 4 - Top window focused
+ok 5 - goto worked
+ok 6 - Top window focused
+ok 7 - goto worked
+ok 8 - Top window focused
+ok 9 - focus unchanged after goto
+ok 10 - mid window focused
+ok 11 - goto worked
+ok 12 - tmp2 now focused
+ok 13 - tmp now focused
+1..13
+
+output for t/138-floating-attach.t:
+ok 1 - Window is mapped
+ok 2 - one floating node
+ok 3 - no tiling nodes
+ok 4 - one tiling node
+ok 5 - no floating nodes so far
+ok 6 - one tiling node (stacked con)
+ok 7 - Window is mapped
+ok 8 - one floating nodes
+ok 9 - one tiling node (stacked con)
+ok 10 - one floating nodes
+ok 11 - one tiling node (stacked con)
+1..11
+
+output for t/112-floating-resize.t:
+ok 1 - Rects are equal after configurerequest
+ok 2 - width != 300
+ok 3 - height != 500
+ok 4 - width = 300
+ok 5 - height = 500
+ok 6 - width != 300
+ok 7 - height != 500
+ok 8 - width = 300
+ok 9 - height = 500
+ok 10 - width != 300
+ok 11 - height != 500
+ok 12 - width = 300
+ok 13 - height = 500
+ok 14 - X not moved out of bounds
+ok 15 - Y not moved out of bounds
+1..15
+
+output for t/129-focus-after-close.t:
+ok 1 - no containers yet
+ok 2 - split container not focused
+ok 3 - split container focused after focus parent
+ok 4 - different container focused
+ok 5 - second container found
+ok 6 - second container focused
+ok 7 - no containers yet
+ok 8 - top right container focused (in focus stack)
+ok 9 - top right container really has focus
+ok 10 - no containers yet
+ok 11 - middle container focused
+1..11
+
+output for t/130-close-empty-split.t:
+ok 1 - no containers yet
+ok 2 - split container not focused
+ok 3 - different container focused
+ok 4 - split container closed
+ok 5 - no containers yet
+ok 6 - split container not focused
+ok 7 - different container focused
+ok 8 - split container closed
+1..8
+
+output for t/147-regress-floatingmove.t:
+ok 1 - i3 still lives
+ok 2 - i3 still lives
+1..2
+
+output for t/163-wm-state.t:
+ok 1 - WM_STATE normal
+ok 2 - WM_STATE withdrawn
+1..2
+
+output for t/144-regress-floating-resize.t:
+ok 1 - combined container width is still equal
+1..1
+
+output for t/195-net-active-window.t:
+ok 1 - window 2 has focus
+ok 2 - window 1 has focus
+ok 3 - window 3 has focus
+ok 4 - window 3 still has focus
+1..4
+
+output for t/118-openkill.t:
+ok 1 - no containers yet
+ok 2 - container opened
+ok 3 - container killed
+ok 4 - two containers opened
+ok 5 - one container killed
+ok 6 - correct window killed
+1..6
+
+output for t/114-client-leader.t:
+ok 1 - child window mapped
+ok 2 - Child X >= right container X
+ok 3 - second child window mapped
+ok 4 - child above left window
+ok 5 - transient window mapped
+ok 6 - i3 did not map it to (0x0)
+ok 7 # skip (workspace placement by client_leader not yet implemented)
+ok 8 # skip (workspace placement by client_leader not yet implemented)
+ok 9 # skip (workspace placement by client_leader not yet implemented)
+1..9
+
+output for t/101-focus.t:
+ok 1 - Latest window focused
+ok 2 - Middle window focused
+ok 3 - Top window focused
+ok 4 - Bottom window focused (wrapping to the top works)
+ok 5 - Top window focused (wrapping to the bottom works)
+1..5
+
+output for t/127-regress-floating-parent.t:
+# focused floating: 31804928
+ok 1 - old container focused
+ok 2 - old container focused
+ok 3 - floating window focused
+ok 4 - i3 still lives
+1..4
+
+output for t/173-regress-focus-assign.t:
+ok 1 - no containers yet
+ok 2 - current workspace focused
+ok 3 - special window not on current workspace
+ok 4 - special window on targetws
+ok 5 - current workspace still focused
+ok 6 - special window not on current workspace
+ok 7 - special window on targetws
+ok 8 - current workspace still focused
+Exiting i3 cleanly...
+1..8
+
+output for t/140-focus-lost.t:
+# left = 6291456, mid = 6291457, right = 6291458
+ok 1 - Right window focused
+ok 2 - Mid window focused
+ok 3 - Mid window focused
+1..3
+
+output for t/005-floating.t:
+ok 1 - The object isa X11::XCB::Window
+ok 2 - Window is mapped
+ok 3 - i3 raised the width to 75
+ok 4 - i3 raised the height to 50
+ok 5 - i3 did not map it to (0x0)
+ok 6 - The object isa X11::XCB::Window
+ok 7 - i3 let the width at 80
+ok 8 - i3 let the height at 90
+ok 9 - i3 mapped it to x=20
+ok 10 - i3 mapped it to y=20
+ok 11 - The object isa X11::XCB::Window
+ok 12 - i3 let the width at 80
+ok 13 - i3 let the height at 90
+1..13
+
+output for t/184-regress-float-split-resize.t:
+ok 1 - i3 still lives
+1..1
+
+output for t/104-focus-stack.t:
+ok 1 - floating window focused
+ok 2 - Focus correctly restored
+1..2
+
+output for t/197-regression-move-vanish.t:
+ok 1 - Workspace /tmp/7n5gDWiDqQ exists
+ok 2 - two windows on workspace level
+ok 3 - Workspace /tmp/7n5gDWiDqQ exists
+ok 4 - still two windows on workspace level
+1..4
+
+output for t/502-focus-output.t:
+ok 1 - focus on first output
+ok 2 - focus on second output
+ok 3 - focus on first output again
+ok 4 - focus back on second output
+ok 5 - focus on first output again
+ok 6 - focus still on first output
+ok 7 - focus still on first output
+ok 8 - focus on second output
+ok 9 - focus on first output
+Exiting i3 cleanly...
+1..9
+
+output for t/143-regress-floating-restart.t:
+ok 1 - no tiling nodes
+ok 2 - precisely one floating node
+# Checking if i3 still lives
+ok 3 - i3 still lives
+ok 4 - no tiling nodes
+ok 5 - precisely one floating node
+1..5
+
+output for t/148-regress-floatingmovews.t:
+ok 1 - floating client correctly focused
+1..1
+
+output for t/146-floating-reinsert.t:
+ok 1 - Window is mapped
+ok 2 - two windows in split con
+ok 3 - three windows in split con after floating toggle
+1..3
+
+output for t/186-regress-assign-focus-parent.t:
+ok 1 - Workspace targetws exists
+ok 2 - precisely one window
+ok 3 - Workspace targetws exists
+ok 4 - precisely two windows
+ok 5 - Workspace targetws exists
+ok 6 - still two windows
+ok 7 - Workspace targetws exists
+ok 8 - new window opened next to last one
+Exiting i3 cleanly...
+1..8
+
+output for t/198-regression-scratchpad-crash.t:
+ok 1 - i3 still lives
+1..1
+
+output for t/508-move-workspace-focus.t:
+ok 1 - floating window still focused
+Exiting i3 cleanly...
+1..1
+
+output for t/511-scratchpad-configure-request.t:
+ok 1 - scratchpad window still in scratchpad after ConfigureRequest
+ok 2 - scratchpad window still in scratchpad after ConfigureRequest
+Exiting i3 cleanly...
+1..2
+
+output for t/169-border-toggle.t:
+ok 1 - one container on this workspace
+ok 2 - border style normal
+ok 3 - border style 1pixel
+ok 4 - border width = 1px
+ok 5 - border style none
+ok 6 - border width = 0px
+ok 7 - border style back to normal
+ok 8 - border width = 2px
+ok 9 - border style none
+ok 10 - border width = 0px
+ok 11 - border style 1pixel
+ok 12 - border width = 1px
+ok 13 - border style back to normal
+ok 14 - border width = 2px
+1..14
+
+output for t/133-size-hints.t:
+ok 1 - no containers yet
+# Aspect ratio = 2
+ok 2 - Aspect ratio about 2.0
+1..2
+
+output for t/509-workspace_layout.t:
+ok 1 - starting on workspace 1
+ok 2 - workspace layout is "tabbed"
+Exiting i3 cleanly...
+1..2
+
+output for t/162-regress-dock-urgent.t:
+ok 1 - no dock clients yet
+ok 2 - one dock client found
+ok 3 - dock node has unchanged height
+ok 4 - i3 still lives
+1..4
+
+output for t/154-regress-multiple-dock.t:
+ok 1 - no dock clients yet
+ok 2 - i3 still lives
+1..2
+
+output for t/131-stacking-order.t:
+ok 1 - no containers yet
+ok 2 - two different containers opened
+ok 3 - second container still focused
+ok 4 - first container focused
+ok 5 - second container focused again
+ok 6 - first container focused
+ok 7 - second container focused again
+1..7
+
+output for t/126-regress-close.t:
+ok 1 - i3 still lives
+1..1
+
+output for t/191-resize-levels.t:
+ok 1 - middle window focused
+ok 2 - left container got only 25%
+ok 3 - right container got 75%
+1..3
+
+output for t/001-tile.t:
+ok 1 - The object isa X11::XCB::Window
+ok 2 - rect unmodified before mapping
+ok 3 - Window got repositioned
+1..3
+
+output for t/182-regress-focus-dock.t:
+ok 1 - i3 still lives
+1..1
+
+output for t/153-floating-originalsize.t:
+ok 1 - Window is mapped
+ok 2 - i3 raised the width
+ok 3 - i3 raised the height
+# new width: 400
+# new height: 150
+ok 4 - width now > 380
+ok 5 - width now < 420
+ok 6 - height now > 130
+ok 7 - height now < 170
+1..7
+
+output for t/142-regress-move-floating.t:
+ok 1 - i3 still lives
+1..1
+
+output for t/151-regress-float-size.t:
+ok 1 - i3 still lives
+1..1
+
+output for t/190-scratchpad-diff-ws.t:
+ok 1 - Workspace /tmp/7n5gDWiDqQ exists
+ok 2 - one window on current ws
+ok 3 - i3 still lives
+1..3
+
+output for t/180-fd-leaks.t:
+ok 1 - No file descriptors leaked
+1..1
+
+output for t/003-ipc.t:
+ok 1 - Focus changed
+1..1
+
+output for t/128-open-order.t:
+ok 1 - no containers yet
+ok 2 - containers opened
+ok 3 - different container focused
+ok 4 - three containers opened
+ok 5 - first container unmodified
+ok 6 - second container replaced
+ok 7 - third container unmodified
+1..7
+
+output for t/199-ipc-mode-event.t:
+ok 1 - Mode event received
+Exiting i3 cleanly...
+1..1
+
+output for t/203-regress-assign-and-move.t:
+ok 1 - i3 still lives
+Exiting i3 cleanly...
+1..1
+
+output for t/196-randr-output-names.t:
+ok 1 - no errors in i3 -C
+1..1
+
+output for t/103-move.t:
+1..8
+ok 1 - use X11::XCB::Connection;
+ok 2 # skip Testcase not yet modified for new move concept
+ok 3 # skip Testcase not yet modified for new move concept
+ok 4 # skip Testcase not yet modified for new move concept
+ok 5 # skip Testcase not yet modified for new move concept
+ok 6 # skip Testcase not yet modified for new move concept
+ok 7 # skip Testcase not yet modified for new move concept
+ok 8 # skip Testcase not yet modified for new move concept
+
+output for t/181-regress-float-border.t:
+ok 1 - width correct
+ok 2 - height correct
+ok 3 - width correct
+ok 4 - height correct
+1..4
+
+output for t/174-regress-focus-toggle.t:
+ok 1 - i3 still lives
+1..1
+
+output for t/115-ipc-workspaces.t:
+ok 1 - Workspace "init" event received
+ok 2 - Workspace "focus" event received
+ok 3 - Workspace "empty" event received
+1..3
+
+output for t/179-regress-multiple-ws.t:
+ok 1 - Workspace /tmp/emHihSoLRz exists
+ok 2 - one container
+ok 3 - Workspace /tmp/7n5gDWiDqQ exists
+ok 4 - one container on old ws
+ok 5 - Workspace /tmp/7n5gDWiDqQ exists
+ok 6 - container moved away
+1..6
+
+output for t/178-regress-workspace-open.t:
+ok 1 - workspace closed
+1..1
+
+output for t/137-floating-unmap.t:
+ok 1 - Window is mapped
+ok 2 - Window is not mapped after switching ws
+1..2
+
+output for t/002-i3-sync.t:
+ok 1 - syncing was successful
+1..1
+
+output for t/173-get-marks.t:
+ok 1 - no marks set so far
+ok 2 - mark foo set
+ok 3 - mark gone
+1..3
+
+output for t/105-stacking.t:
+1..22
+ok 1 - use X11::XCB::Connection;
+ok 2 # skip stacking test not yet updated
+ok 3 # skip stacking test not yet updated
+ok 4 # skip stacking test not yet updated
+ok 5 # skip stacking test not yet updated
+ok 6 # skip stacking test not yet updated
+ok 7 # skip stacking test not yet updated
+ok 8 # skip stacking test not yet updated
+ok 9 # skip stacking test not yet updated
+ok 10 # skip stacking test not yet updated
+ok 11 # skip stacking test not yet updated
+ok 12 # skip stacking test not yet updated
+ok 13 # skip stacking test not yet updated
+ok 14 # skip stacking test not yet updated
+ok 15 # skip stacking test not yet updated
+ok 16 # skip stacking test not yet updated
+ok 17 # skip stacking test not yet updated
+ok 18 # skip stacking test not yet updated
+ok 19 # skip stacking test not yet updated
+ok 20 # skip stacking test not yet updated
+ok 21 # skip stacking test not yet updated
+ok 22 # skip stacking test not yet updated
+
+output for t/134-invalid-command.t:
+ok 1 - i3 still lives
+1..1
+
+output for t/004-unmanaged.t:
+ok 1 - The object isa X11::XCB::Window
+ok 2 - rect unmodified before mapping
+ok 3 - The object isa X11::XCB::Rect
+ok 4 - window untouched
+1..4
+
+output for t/145-flattening.t:
+ok 1 - workspace layout is splith
+ok 2 - all three windows on workspace level
+1..2
+
+output for t/507-workspace-move-crash.t:
+ok 1 - starting on workspace 1
+ok 2 - i3 still lives
+Exiting i3 cleanly...
+1..2
+
+output for t/500-multi-monitor.t:
+ok 1 - multi-monitor outputs ok
+Exiting i3 cleanly...
+1..1
+
+output for t/193-ipc-version.t:
+ok 1 - major version is 4
+ok 2 - minor version > 0
+ok 3 - minor version is an integer
+ok 4 - patch version is an integer
+ok 5 - human readable version contains branch name
+1..5
+
+output for t/155-floating-split-size.t:
+ok 1 - width now > 480
+ok 2 - width now < 520
+ok 3 - width now > 50
+ok 4 - width now < 130
+1..4
+
+output for t/116-nestedcons.t:
+ok 1 - root node OK
+ok 2 - root node has at least one leaf
+ok 3 - all nodes are of type CT_OUTPUT
+ok 4 - no CT_OUTPUT contains a window
+ok 5 - all nodes have at least one leaf (workspace)
+ok 6 - all workspaces are of type CT_WORKSPACE
+ok 7 - no CT_OUTPUT contains a window
+1..7
+
+output for t/152-regress-level-up.t:
+ok 1 - i3 still lives
+1..1
+
+output for t/158-wm_take_focus.t:
+    ok 1 - did not receive ClientMessage
+    1..1
+ok 1 - Window without WM_TAKE_FOCUS
+    ok 1 - got ClientMessage with WM_TAKE_FOCUS atom
+    1..1
+ok 2 - Window with WM_TAKE_FOCUS
+1..2
+
+
+From michael at i3wm.org  Mon Mar  4 11:37:32 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 04 Mar 2013 11:37:32 +0100
+Subject: [i3] Failing tests on master and ticket #807.
+In-Reply-To: <51342951.5020905@anue.biz>
+References: <51342951.5020905@anue.biz>
+Message-ID: <x6a9qje9hv.fsf@midna.zekjur.net>
+
+Hi Fabi?n,
+
+Fabi?n Ezequiel Gallina <fabian at anue.biz> writes:
+> After running the test-suite, to see how much stuff I broke, I got 
+> several failures; so I reverted my changes, recompiled i3 and re-ran the 
+> suite just in case. Unfortunately I found out tests were also failing in 
+> the current master branch.
+Please always work on the ?next? branch, master is bugfix-only. The
+testsuite regularly gets improvements, which are only available in the
+next branch.
+
+> BTW I updated the ticket with the patch, comments and suggestions are 
+> appreciated.
+As I posted in the ticket, please post the patch at http://cr.i3wm.org/
+instead.
+
+-- 
+Best regards,
+Michael
+
+From fabian at anue.biz  Mon Mar  4 22:36:58 2013
+From: fabian at anue.biz (=?UTF-8?B?RmFiacOhbiBFemVxdWllbCBHYWxsaW5h?=)
+Date: Mon, 04 Mar 2013 18:36:58 -0300
+Subject: [i3] Failing tests on master and ticket #807.
+In-Reply-To: <x6a9qje9hv.fsf@midna.zekjur.net>
+References: <51342951.5020905@anue.biz> <x6a9qje9hv.fsf@midna.zekjur.net>
+Message-ID: <513513FA.1000008@anue.biz>
+
+On 03/04/2013 07:37 AM, Michael Stapelberg wrote:
+> Please always work on the ?next? branch, master is bugfix-only. The
+> testsuite regularly gets improvements, which are only available in the
+> next branch.
+Is this documented somewhere? If it's not, I think it's worth mentioning 
+the development workflow in the hacking howto.
+> As I posted in the ticket, please post the patch at 
+> http://cr.i3wm.org/ instead. 
+Done. But I also realized you closed #807 as invalid. I think it's worth 
+to keep the bug open until some resolution is taken with regards to the 
+provided patches.
+
+
+Regards,
+
+-- 
+Fabi?n E. Gallina
+Co-Founder of Anue
+http://www.anue.biz/
+
+
+From andreas at andreasbuhr.de  Thu Mar  7 12:24:56 2013
+From: andreas at andreasbuhr.de (Andreas Buhr)
+Date: Thu, 07 Mar 2013 12:24:56 +0100
+Subject: [i3] Problem with i3 and mathematica
+Message-ID: <51387908.5000704@andreasbuhr.de>
+
+Hi there,
+
+I do have a question about the usage of i3, maybe you can help me?
+
+I am trying to use the software "Mathematica", but there are issues:
+When opening the help/documentation, a window opens. This window seems 
+to be floating. I can interact with this window using my mouse, but it 
+seems to not receive keyboard events. Any keyboard event seem to arrive 
+at another window, usually the one behind the mathematica help. Also the 
+window is visible on all workspaces and I did not find a way to close it.
+
+Others have reported this to Wolfram:
+http://forums.wolfram.com/student-support/topics/109180
+
+I have tried to un-float the window by mod-shift-space, but also this 
+command was applied to the window *behind* the help-window.
+
+Any ideas?
+If I can help in fixing this problem in any
+
+thanks a lot in advance,
+Andreas
+
+From michael at i3wm.org  Thu Mar  7 14:29:36 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 07 Mar 2013 14:29:36 +0100
+Subject: [i3] Problem with i3 and mathematica
+In-Reply-To: <51387908.5000704@andreasbuhr.de>
+References: <51387908.5000704@andreasbuhr.de>
+Message-ID: <x6y5dzjq2n.fsf@midna.zekjur.net>
+
+Hi Andreas,
+
+There is a ticket for that:
+
+http://bugs.i3wm.org/report/ticket/787
+
+I have no further ideas on how to debug this, given that I don?t have
+access to that software (or its source code, which would be helpful?).
+
+-- 
+Best regards,
+Michael
+
+From just.mychris at googlemail.com  Fri Mar  8 20:54:30 2013
+From: just.mychris at googlemail.com (Christoph)
+Date: Fri, 8 Mar 2013 20:54:30 +0100
+Subject: [i3] Problem with i3 urgency hints
+Message-ID: <CAK9rt1o655jWyQBZELBM9OaP8nyq29p5+7uHy6d=A6R0cKicQA@mail.gmail.com>
+
+Hi there,
+
+I have some problems, configuring the urgency hint with i3.
+
+I have configured the indicators in i3 and i3bar, added the urgency hints
+in urxvt and in the bash prompt. Everything works fine, but the behaviour
+is quiet strange. If I open another i3-sensible-terminal with the
+configured key binding, some of the terminals which are already present on
+the workspace get the urgency hint. It does not depend on how i open up the
+terminal (with key binding, with command from one of the old terminals or
+with dmenu, all the same).
+
+I could figure out some sort of pattern. The hint goes up the layout tree,
+but sometimes skips a node. For example if I open five terminals in a row,
+the first 3 got the hint, but the 4 not (and the 5 of course not, because
+its focused). It is quiet random, cause if I do the same thing on another
+workspace again, it might be that all 4 "old" terminals got the hint.
+
+Is the behaviour that the urgency hint goes up the tree as expected? How
+can I prevent the hint from beeing populated to the parent if I have
+focused the current window, like when I open a new terminal? Running i3
+version 4.4-145-g8327f83 (2013-03-03, branch "next"). Same behaviour on
+stable release.
+
+Thanks, chris
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130308/e82d3a71/attachment.html>
+
+From bruno.braga at gmail.com  Thu Mar 14 02:40:09 2013
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Thu, 14 Mar 2013 11:40:09 +1000
+Subject: [i3] Issues with sur5r-keyring package
+Message-ID: <CAAuVr718_n_J5ak0T3Gw81qFKo_4wq_uGaf8DuRGfKg=mh4cQw@mail.gmail.com>
+
+Hi,
+
+I was running an apt-get update, when I noticed the following error:
+
+$ sudo apt-get update
+....
+Reading package lists... Done
+W: A error occurred during the signature verification. The repository is
+not updated and the previous index files will be used. GPG error:
+http://debian.sur5r.net precise Release: The following signatures couldn't
+be verified because the public key is not available: NO_PUBKEY
+AE8A0CF86298B4A2
+
+W: Failed to fetch http://debian.sur5r.net/i3/dists/precise/Release
+
+W: Some index files failed to download. They have been ignored, or old ones
+used instead.
+
+-------------
+
+I reinstalled the key, and noticed a GPG error:
+
+$ sudo apt-get --allow-unauthenticated install sur5r-keyring
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+The following NEW packages will be installed:
+  sur5r-keyring
+0 upgraded, 1 newly installed, 0 to remove and 361 not upgraded.
+Need to get 2,756 B of archives.
+After this operation, 16.4 kB of additional disk space will be used.
+WARNING: The following packages cannot be authenticated!
+  sur5r-keyring
+Authentication warning overridden.
+Get:1 http://debian.sur5r.net/i3/ precise/universe sur5r-keyring all
+2012.02.07 [2,756 B]
+Fetched 2,756 B in 2s (1,179 B/s)
+Selecting previously unselected package sur5r-keyring.
+(Reading database ... 472001 files and directories currently installed.)
+Unpacking sur5r-keyring (from .../sur5r-keyring_2012.02.07_all.deb) ...
+Setting up sur5r-keyring (2012.02.07) ...
+OK
+gpg: key "69D5E78E" not found: eof
+gpg: 69D5E78E: delete key failed: eof
+gpg: key "8C2F2403" not found: eof
+gpg: 8C2F2403: delete key failed: eof
+
+-------------
+
+Any ideas to fix that?
+
+Thanks,
+
+
+------------- my machine details -------------
+
+$ lsb_release -a
+No LSB modules are available.
+Distributor ID: Ubuntu
+Description: Ubuntu 12.04.1 LTS
+Release: 12.04
+Codename: precise
+
+$ uname -a
+Linux development3 3.2.0-24-generic-pae #39-Ubuntu SMP Mon May 21 18:54:21
+UTC 2012 i686 i686 i386 GNU/Linux
+
+ $ i3 --version
+i3 version 4.2 (2012-04-25, branch "release-4.2") ? 2009-2012 Michael
+Stapelberg and contributors
+
+------------- my machine details -------------
+
+--
+*Bruno Braga*
+www.brunobraga.net
+bruno.braga at gmail.com
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130314/bd9b94cc/attachment.html>
+
+From miodrag.milic at gmail.com  Thu Mar 14 07:16:30 2013
+From: miodrag.milic at gmail.com (Miodrag =?utf-8?B?TWlsacSH?=)
+Date: Thu, 14 Mar 2013 07:16:30 +0100
+Subject: [i3] Issues with sur5r-keyring package
+In-Reply-To: <CAAuVr718_n_J5ak0T3Gw81qFKo_4wq_uGaf8DuRGfKg=mh4cQw@mail.gmail.com>
+References: <CAAuVr718_n_J5ak0T3Gw81qFKo_4wq_uGaf8DuRGfKg=mh4cQw@mail.gmail.com>
+Message-ID: <20130314061630.GA5034@gmail.com>
+
+The very same thing happened to me. After just running empty gpg it created few files and I repeated procedure without any errors. I am using Ubuntu repository for i3.
+
+
+On Thu, Mar 14, 2013 at 11:40:09AM +1000, BRAGA, Bruno wrote:
+> Hi,
+> 
+> I was running an apt-get update, when I noticed the following error:
+> 
+> $ sudo apt-get update
+> ....
+> Reading package lists... Done
+> W: A error occurred during the signature verification. The repository is
+> not updated and the previous index files will be used. GPG error:
+> http://debian.sur5r.net precise Release: The following signatures couldn't
+> be verified because the public key is not available: NO_PUBKEY
+> AE8A0CF86298B4A2
+> 
+> W: Failed to fetch http://debian.sur5r.net/i3/dists/precise/Release
+> 
+> W: Some index files failed to download. They have been ignored, or old ones
+> used instead.
+> 
+> -------------
+> 
+> I reinstalled the key, and noticed a GPG error:
+> 
+> $ sudo apt-get --allow-unauthenticated install sur5r-keyring
+> Reading package lists... Done
+> Building dependency tree
+> Reading state information... Done
+> The following NEW packages will be installed:
+>   sur5r-keyring
+> 0 upgraded, 1 newly installed, 0 to remove and 361 not upgraded.
+> Need to get 2,756 B of archives.
+> After this operation, 16.4 kB of additional disk space will be used.
+> WARNING: The following packages cannot be authenticated!
+>   sur5r-keyring
+> Authentication warning overridden.
+> Get:1 http://debian.sur5r.net/i3/ precise/universe sur5r-keyring all
+> 2012.02.07 [2,756 B]
+> Fetched 2,756 B in 2s (1,179 B/s)
+> Selecting previously unselected package sur5r-keyring.
+> (Reading database ... 472001 files and directories currently installed.)
+> Unpacking sur5r-keyring (from .../sur5r-keyring_2012.02.07_all.deb) ...
+> Setting up sur5r-keyring (2012.02.07) ...
+> OK
+> gpg: key "69D5E78E" not found: eof
+> gpg: 69D5E78E: delete key failed: eof
+> gpg: key "8C2F2403" not found: eof
+> gpg: 8C2F2403: delete key failed: eof
+> 
+> -------------
+> 
+> Any ideas to fix that?
+> 
+> Thanks,
+> 
+> 
+> ------------- my machine details -------------
+> 
+> $ lsb_release -a
+> No LSB modules are available.
+> Distributor ID: Ubuntu
+> Description: Ubuntu 12.04.1 LTS
+> Release: 12.04
+> Codename: precise
+> 
+> $ uname -a
+> Linux development3 3.2.0-24-generic-pae #39-Ubuntu SMP Mon May 21 18:54:21
+> UTC 2012 i686 i686 i386 GNU/Linux
+> 
+>  $ i3 --version
+> i3 version 4.2 (2012-04-25, branch "release-4.2") ? 2009-2012 Michael
+> Stapelberg and contributors
+> 
+> ------------- my machine details -------------
+> 
+> --
+> *Bruno Braga*
+> www.brunobraga.net
+> bruno.braga at gmail.com
+
+From michael at i3wm.org  Thu Mar 14 07:34:51 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 14 Mar 2013 07:34:51 +0100
+Subject: [i3] Issues with sur5r-keyring package
+In-Reply-To: <CAAuVr718_n_J5ak0T3Gw81qFKo_4wq_uGaf8DuRGfKg=mh4cQw@mail.gmail.com>
+References: <CAAuVr718_n_J5ak0T3Gw81qFKo_4wq_uGaf8DuRGfKg=mh4cQw@mail.gmail.com>
+Message-ID: <x6zjy6v69g.fsf@midna.zekjur.net>
+
+Hi Bruno,
+
+http://bugs.i3wm.org/report/ticket/965
+
+-- 
+Best regards,
+Michael
+
+From bruno.braga at gmail.com  Thu Mar 14 08:34:36 2013
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Thu, 14 Mar 2013 17:34:36 +1000
+Subject: [i3] Issues with sur5r-keyring package
+In-Reply-To: <x6zjy6v69g.fsf@midna.zekjur.net>
+References: <CAAuVr718_n_J5ak0T3Gw81qFKo_4wq_uGaf8DuRGfKg=mh4cQw@mail.gmail.com>
+ <x6zjy6v69g.fsf@midna.zekjur.net>
+Message-ID: <CAAuVr72EucyADKWmLFGYmvgEe=xRraHcmtXN_w8PjdX=13OhMQ@mail.gmail.com>
+
+Thanks Michael...
+
+After removing the files, it worked fine.
+
+Regards,
+
+
+--
+*Bruno Braga*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Thu, Mar 14, 2013 at 4:34 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Bruno,
+>
+> http://bugs.i3wm.org/report/ticket/965
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130314/7cc4db9e/attachment.html>
+
+From crestani at informatik.uni-tuebingen.de  Thu Mar 14 10:17:04 2013
+From: crestani at informatik.uni-tuebingen.de (Marcus Crestani)
+Date: Thu, 14 Mar 2013 10:17:04 +0100
+Subject: [i3] [i3 announcement] i3 v4.5 released
+In-Reply-To: <x6mwu8hhnb.fsf@midna.zekjur.net> (Michael Stapelberg's message
+ of "Tue, 12 Mar 2013 14:28:08 +0100")
+References: <x6mwu8hhnb.fsf@midna.zekjur.net>
+Message-ID: <m2k3pa5oj3.fsf@informatik.uni-tuebingen.de>
+
+>>>>>"MS" == Michael Stapelberg <michael at i3wm.org> writes:
+MS> I just released i3 v4.5. Here are the release notes:
+
+I needed to add YAJL_CFLAGS to i3-msg.mk to be able to build under
+latest Mac OS X, see attached patch.
+
+Thanks a lot for the release!
+
+-- 
+Marcus
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Add-YAJL_CFLAGS-to-i3-msg.mk.patch
+Type: text/x-patch
+Size: 774 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130314/509c65be/attachment.bin>
+
+From michael at i3wm.org  Thu Mar 14 13:18:44 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 14 Mar 2013 13:18:44 +0100
+Subject: [i3] Please submit to cr.i3wm.org
+In-Reply-To: <m2k3pa5oj3.fsf@informatik.uni-tuebingen.de>
+References: <x6mwu8hhnb.fsf@midna.zekjur.net>
+ <m2k3pa5oj3.fsf@informatik.uni-tuebingen.de>
+Message-ID: <x6r4jiuqcb.fsf@midna.zekjur.net>
+
+Hi Marcus,
+
+Marcus Crestani <crestani at informatik.uni-tuebingen.de> writes:
+> I needed to add YAJL_CFLAGS to i3-msg.mk to be able to build under
+> latest Mac OS X, see attached patch.
+Can you submit this patch to http://cr.i3wm.org/ please? Thanks.
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Thu Mar 14 14:24:10 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 14 Mar 2013 14:24:10 +0100
+Subject: [i3] Failing tests on master and ticket #807.
+In-Reply-To: <513513FA.1000008@anue.biz>
+References: <51342951.5020905@anue.biz> <x6a9qje9hv.fsf@midna.zekjur.net>
+ <513513FA.1000008@anue.biz>
+Message-ID: <x6hakeunb9.fsf@midna.zekjur.net>
+
+Hi Fabi?n,
+
+Fabi?n Ezequiel Gallina <fabian at anue.biz> writes:
+> Is this documented somewhere? If it's not, I think it's worth mentioning 
+> the development workflow in the hacking howto.
+cr.i3wm.org tells you to use the ?next? branch, but I will add it to the
+hacking-howto.
+
+> Done. But I also realized you closed #807 as invalid. I think it's worth 
+> to keep the bug open until some resolution is taken with regards to the 
+> provided patches.
+I can?t keep too many tickets open, it exceeds my mental capacity. We
+already have too many.
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Thu Mar 14 14:29:18 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 14 Mar 2013 14:29:18 +0100
+Subject: [i3] Problem with i3 urgency hints
+In-Reply-To: <CAK9rt1o655jWyQBZELBM9OaP8nyq29p5+7uHy6d=A6R0cKicQA@mail.gmail.com>
+References: <CAK9rt1o655jWyQBZELBM9OaP8nyq29p5+7uHy6d=A6R0cKicQA@mail.gmail.com>
+Message-ID: <x6ehfiun2p.fsf@midna.zekjur.net>
+
+Hi Christoph,
+
+Christoph <just.mychris at googlemail.com> writes:
+> I could figure out some sort of pattern. The hint goes up the layout tree,
+> but sometimes skips a node. For example if I open five terminals in a row,
+> the first 3 got the hint, but the 4 not (and the 5 of course not, because
+> its focused). It is quiet random, cause if I do the same thing on another
+> workspace again, it might be that all 4 "old" terminals got the hint.
+Can you please file a ticket at http://bugs.i3wm.org/? What you
+described here does not sound like expected behavior.
+
+-- 
+Best regards,
+Michael
+
+From eeno at cox.net  Sat Mar 16 20:16:53 2013
+From: eeno at cox.net (eeno)
+Date: Sat, 16 Mar 2013 12:16:53 -0700
+Subject: [i3] decent kde integration with i3?
+Message-ID: <20130316191653.GA1274@anton>
+
+
+Hello list members!
+
+I've been running and enjoying i3 for a few months now and 
+have been very pleased with it.  Prior to i3, I was using
+a minimal kde session + kwin; and I find that I still want
+to use some of the conveniences/features/apps I enjoyed in
+kde.
+
+So I managed to get kde to use i3wm as alternative to kwin
+last night, however I'm running into issues - I'm hoping
+someone here might have some suggestions or comments:
+
+#1 - attempting to run krunner always crashes i3 (v. 4.5)
+
+#2 - I can't see any of the system-tray items unless I
+     run a plasma panel - I don't see how to get kde
+     plasma tray items in the i3bar
+
+#3 - I'm having a tough time figuring out how to properly
+     exit kde when i3 is the wm: if I mod-alt-e to exit
+     i3, then things hang in an F'd up state because i3
+     exited, but kde is still lingering
+
+
+Basically, I'd like to just use i3wm for its window-handling
+and management, but I'd like to use as much of kde and 
+kde-integration as possible.
+
+
+So I guess I can list this another way - what I'd like to 
+be able to do:
+
+* access system-tray stuff either via a kde panel, or via
+  i3bar/i3status.
+
+* execute krunner without crashes, possibly use krunner
+  in lieue of dmenu if possible.
+
+* be able to properly exit/logout-of the kde session
+
+
+Anyone else using i3 as an alternative to kwin in a mostly 
+kde environment, primarily for i3's tiling window management 
+features?
+
+
+Thanks for any assistance, much appreciated! I did spend
+quite a bit of time last night experimenting and hunting
+google and forums for solutions, but to no avail.
+
+
+
+From mariusmuja at gmail.com  Wed Mar 20 18:56:40 2013
+From: mariusmuja at gmail.com (Marius Muja)
+Date: Wed, 20 Mar 2013 10:56:40 -0700
+Subject: [i3] decent kde integration with i3?
+In-Reply-To: <20130316191653.GA1274@anton>
+References: <20130316191653.GA1274@anton>
+Message-ID: <CAEFYCXP2WzDP1ar5LuNpK-tbnk77ok6VruKBfO3Kqqs_6aUHOw@mail.gmail.com>
+
+Hi,
+
+I'm running kde with i3 as window manager and it's working very well. I did
+have to make a few changes to i3 to make them play nicely together, which
+I'll describe below.
+
+First of all to tell kde to use i3 instead of kwin I used the KDEWM
+environment variable which is set inside the .kde/env/set_window_manager.sh
+shell script.
+
+Inside i3's config file I have added the following commands to prevent
+various kde pop-ups from being decorated/tiled:
+
+for_window [class="Plasma-desktop"] border none
+for_window [class="krunner"] border none
+for_window [class="Kmix"] floating enable;
+for_window [class="Plasmoidviewer"] floating enable;
+for_window [class="Klipper"] floating enable; border none
+
+Lastly, I have a set of patches on top of the i3 next branch (they should
+apply fine on top of 4.5 as well), which I'm attaching to this email. Not
+all are needed for kde/i3 integration, I'm including all of them here
+because I don't have time to check if they apply cleanly when some are
+missing.
+
+0001-Fix-crash-in-some-situations.patch
+This should fix the krunner crash.
+
+0002-Added-support-for-window-icons-_NET_WM_ICON-property.patch
+This adds support for displaying the window icons (_NET_WM_ICON) on the
+window's title. I find that when I have many windows in tabbed/stacked mode
+it's much quicker to find some window if there are icons next to the window
+titles. Not needed for kde/i3 integration.
+
+0003-Close-window-s-on-middle-click.patch
+This added support for closing a window by middle clicking on it's title.
+Not needed for kde/i3 integration.
+
+0004-Don-t-manage-desktop-type-windows-only-map-them.patch
+This adds "support" for desktop windows(_NET_WM_WINDOW_TYPE_DESKTOP) by
+just mapping them instead of managing them.
+
+0005-Handling-_NET_WM_STATE_STAYS_ON_TOP-window-state-use.patch
+Implements support for _NET_WM_STATE_STAYS_ON_TOP window states (useful for
+most KDE4 popups).
+
+0006-Allow-focusing-to-change-to-worskpaces-that-are-not-.patch
+Allows focus change to workspaces that are not visible. Not needed for
+kde/i3 integration.
+
+0007-Workaround-for-resize-to-work-while-krunner-is-start.patch
+Window resizing using the mouse doesn't work while krunner is started. This
+patch is a workaround to fix that.
+
+0008-Fix-for-invisible-borders-after-restart-when-composi.patch
+I using a compositor, after restarting i3 some window borders become
+invisible. This patch is a workaround to fix that, not needed for kde/i3
+integration.
+
+
+Hope this helps,
+Marius
+
+
+
+
+> Basically, I'd like to just use i3wm for its window-handling
+> and management, but I'd like to use as much of kde and
+> kde-integration as possible.
+>
+>
+> So I guess I can list this another way - what I'd like to
+> be able to do:
+>
+> * access system-tray stuff either via a kde panel, or via
+>   i3bar/i3status.
+>
+> * execute krunner without crashes, possibly use krunner
+>   in lieue of dmenu if possible.
+>
+> * be able to properly exit/logout-of the kde session
+>
+>
+> Anyone else using i3 as an alternative to kwin in a mostly
+> kde environment, primarily for i3's tiling window management
+> features?
+>
+>
+> Thanks for any assistance, much appreciated! I did spend
+> quite a bit of time last night experimenting and hunting
+> google and forums for solutions, but to no avail.
+>
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0001.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Fix-crash-in-some-situations.patch
+Type: application/octet-stream
+Size: 754 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0008.obj>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0002-Added-support-for-window-icons-_NET_WM_ICON-property.patch
+Type: application/octet-stream
+Size: 10949 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0009.obj>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0003-Close-window-s-on-middle-click.patch
+Type: application/octet-stream
+Size: 975 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0010.obj>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0004-Don-t-manage-desktop-type-windows-only-map-them.patch
+Type: application/octet-stream
+Size: 1654 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0011.obj>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0005-Handling-_NET_WM_STATE_STAYS_ON_TOP-window-state-use.patch
+Type: application/octet-stream
+Size: 2714 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0012.obj>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0006-Allow-focusing-to-change-to-worskpaces-that-are-not-.patch
+Type: application/octet-stream
+Size: 1597 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0013.obj>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0007-Workaround-for-resize-to-work-while-krunner-is-start.patch
+Type: application/octet-stream
+Size: 1672 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0014.obj>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0008-Fix-for-invisible-borders-after-restart-when-composi.patch
+Type: application/octet-stream
+Size: 1547 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0015.obj>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: set_window_manager.sh
+Type: application/x-sh
+Size: 25 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/fd603478/attachment-0001.sh>
+
+From eeno at cox.net  Wed Mar 20 20:38:25 2013
+From: eeno at cox.net (eeno)
+Date: Wed, 20 Mar 2013 12:38:25 -0700
+Subject: [i3] decent kde integration with i3?
+In-Reply-To: <CAEFYCXP2WzDP1ar5LuNpK-tbnk77ok6VruKBfO3Kqqs_6aUHOw@mail.gmail.com>
+References: <20130316191653.GA1274@anton>
+ <CAEFYCXP2WzDP1ar5LuNpK-tbnk77ok6VruKBfO3Kqqs_6aUHOw@mail.gmail.com>
+Message-ID: <20130320193825.GA579@anton>
+
+Marius you are a gentleman, and a scholar! Thanks for taking the time to
+produce & provide these patches and info - very much appreciated!
+
+I'll apply these over the weekend, and will send a response with my
+results to the list just for follow-up. I'm wondering, you said:
+
+> I have a set of patches on top of the i3 next branch 
+
+... does this mean I can simply compile from git to get these changes
+rather than applying them manually? 
+
+
+
+On Wed, Mar 20, 2013 at 10:56:40AM -0700, Marius Muja wrote:
+> Hi,
+> 
+> I'm running kde with i3 as window manager and it's working very well. I did
+> have to make a few changes to i3 to make them play nicely together, which I'll
+> describe below.
+> 
+> First of all to tell kde to use i3 instead of kwin I used the KDEWM environment
+> variable which is set inside the .kde/env/set_window_manager.sh shell script.
+> 
+> Inside i3's config file I have added the following commands to prevent various
+> kde pop-ups from being decorated/tiled:
+> 
+> for_window [class="Plasma-desktop"] border none
+> for_window [class="krunner"] border none
+> for_window [class="Kmix"] floating enable;
+> for_window [class="Plasmoidviewer"] floating enable;
+> for_window [class="Klipper"] floating enable; border none
+> 
+> Lastly, I have a set of patches on top of the i3 next branch (they should apply
+> fine on top of 4.5 as well), which I'm attaching to this email. Not all are
+> needed for kde/i3 integration, I'm including all of them here because I don't
+> have time to check if they apply cleanly when some are missing.
+> 
+> 0001-Fix-crash-in-some-situations.patch 
+> This should fix the krunner crash.
+> 
+> 0002-Added-support-for-window-icons-_NET_WM_ICON-property.patch
+> This adds support for displaying the window icons (_NET_WM_ICON) on the
+> window's title. I find that when I have many windows in tabbed/stacked mode
+> it's much quicker to find some window if there are icons next to the window
+> titles. Not needed for kde/i3 integration.
+> 
+> 0003-Close-window-s-on-middle-click.patch
+> This added support for closing a window by middle clicking on it's title. Not
+> needed for kde/i3 integration.
+> 
+> 0004-Don-t-manage-desktop-type-windows-only-map-them.patch
+> This adds "support" for desktop windows(_NET_WM_WINDOW_TYPE_DESKTOP) by just
+> mapping them instead of managing them.
+> 
+> 0005-Handling-_NET_WM_STATE_STAYS_ON_TOP-window-state-use.patch
+> Implements support for _NET_WM_STATE_STAYS_ON_TOP window states (useful for
+> most KDE4 popups).
+> 
+> 0006-Allow-focusing-to-change-to-worskpaces-that-are-not-.patch
+> Allows focus change to workspaces that are not visible. Not needed for kde/i3
+> integration.
+> 
+> 0007-Workaround-for-resize-to-work-while-krunner-is-start.patch
+> Window resizing using the mouse doesn't work while krunner is started. This
+> patch is a workaround to fix that.
+> 
+> 0008-Fix-for-invisible-borders-after-restart-when-composi.patch
+> I using a compositor, after restarting i3 some window borders become invisible.
+> This patch is a workaround to fix that, not needed for kde/i3 integration.
+> 
+> 
+> Hope this helps,
+> Marius
+> 
+
+From mariusmuja at gmail.com  Wed Mar 20 21:00:17 2013
+From: mariusmuja at gmail.com (Marius Muja)
+Date: Wed, 20 Mar 2013 13:00:17 -0700
+Subject: [i3] decent kde integration with i3?
+In-Reply-To: <20130320193825.GA579@anton>
+References: <20130316191653.GA1274@anton>
+ <CAEFYCXP2WzDP1ar5LuNpK-tbnk77ok6VruKBfO3Kqqs_6aUHOw@mail.gmail.com>
+ <20130320193825.GA579@anton>
+Message-ID: <CAEFYCXOfuM6iadwt=4OTO4+Krc62mA_W5-0A96nqHNUm8HVzWg@mail.gmail.com>
+
+On Wed, Mar 20, 2013 at 12:38 PM, eeno <eeno at cox.net> wrote:
+
+> Marius you are a gentleman, and a scholar! Thanks for taking the time to
+> produce & provide these patches and info - very much appreciated!
+>
+> I'll apply these over the weekend, and will send a response with my
+> results to the list just for follow-up. I'm wondering, you said:
+>
+> > I have a set of patches on top of the i3 next branch
+>
+> ... does this mean I can simply compile from git to get these changes
+> rather than applying them manually?
+>
+
+No, you need to clone the next branch from git and apply the patches on top
+of that. Basically, you need to do this:
+
+git clone -b next git://code.i3wm.org/i3
+cd i3
+# copy the patches inside the i3 directory
+git am *.patch
+make
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130320/cd54b4f0/attachment.html>
+
+From eeno at cox.net  Wed Mar 20 23:43:51 2013
+From: eeno at cox.net (eeno)
+Date: Wed, 20 Mar 2013 15:43:51 -0700
+Subject: [i3] decent kde integration with i3?
+In-Reply-To: <CAEFYCXOfuM6iadwt=4OTO4+Krc62mA_W5-0A96nqHNUm8HVzWg@mail.gmail.com>
+References: <20130316191653.GA1274@anton>
+ <CAEFYCXP2WzDP1ar5LuNpK-tbnk77ok6VruKBfO3Kqqs_6aUHOw@mail.gmail.com>
+ <20130320193825.GA579@anton>
+ <CAEFYCXOfuM6iadwt=4OTO4+Krc62mA_W5-0A96nqHNUm8HVzWg@mail.gmail.com>
+Message-ID: <20130320224351.GB579@anton>
+
+On Wed, Mar 20, 2013 at 01:00:17PM -0700, Marius Muja wrote:
+> On Wed, Mar 20, 2013 at 12:38 PM, eeno <eeno at cox.net> wrote:
+<snip>
+>     ... does this mean I can simply compile from git to get these changes
+>     rather than applying them manually?
+> 
+> No, you need to clone the next branch from git and apply the patches on top of
+> that. Basically, you need to do this:
+> 
+> git clone -b next git://code.i3wm.org/i3
+> cd i3
+> # copy the patches inside the i3 directory
+> git am *.patch
+> make
+>
+
+Understood - thanks!
+
+
+
+
+From famcool at gmail.com  Thu Mar 21 04:16:32 2013
+From: famcool at gmail.com (Fam Zheng)
+Date: Thu, 21 Mar 2013 11:16:32 +0800
+Subject: [i3] i3bar POC: workspace button with focused window name
+Message-ID: <CABgc4wQgNVYAJZD_52jTMhNii6B0Co4b0PSok70ekZjt_xrfiQ@mail.gmail.com>
+
+Hi all,
+
+I'm a new user to i3 and just got some thought on the i3bar ws area.
+
+I always forget what window I put into which workspace. It will be
+very helpful if I can see something without switching to it to check
+out. Tmux is the example here, where I can rename the current window
+to mark what's the topic of the contained windows.
+
+For i3, a static title is easily achieved by mapping key
+Mod-{1,2,3...} to a name.
+    bindsym $mod+1 workspace 1 - terminal
+    bindsym $mod+1 workspace 2 - web
+
+So I can get workspaces as "1 - terminal", "2 - web"... However this
+is not flexible at all, what if I want another combination and
+workspace type?
+
+The behavior of i3bar could be modified to include the currently
+focused window title on each ws button. Such that when I run urxvt in
+ws 1 and chrome in ws 2, I'll get two ws buttons like:
+
+[ 1: fam at localhost:~ ] [ 2: Wikipedia - Google Chrome ]
+
+Of course a bar option can be added too to enable/disable this
+feature. Or even give some sophisticated format option for the title,
+and also enable user to manually rename it. Would this feature be
+useful?
+
+To do this we need to add a few new events trigger and maybe a "title"
+field in get_workspace msg. I already have a demo modification for you
+to test how it feels, based on master. Now my life with many
+workspaces is much easier. :)
+
+https://github.com/famousz/i3/tree/i3bar-ws
+
+Welcome to give any feedback!
+
+Best regards!
+Fam Zheng
+
+From mail at merovius.de  Thu Mar 21 11:31:43 2013
+From: mail at merovius.de (Axel Wagner)
+Date: Thu, 21 Mar 2013 11:31:43 +0100
+Subject: [i3] i3bar POC: workspace button with focused window name
+In-Reply-To: <CABgc4wQgNVYAJZD_52jTMhNii6B0Co4b0PSok70ekZjt_xrfiQ@mail.gmail.com>
+References: <CABgc4wQgNVYAJZD_52jTMhNii6B0Co4b0PSok70ekZjt_xrfiQ@mail.gmail.com>
+Message-ID: <1363861028-sup-5904@merovius.de>
+
+Hi,
+
+Excerpts from Fam Zheng's message of 2013-03-21 04:16:32 +0100:
+> Of course a bar option can be added too to enable/disable this
+> feature. Or even give some sophisticated format option for the title,
+> and also enable user to manually rename it. Would this feature be
+> useful?
+> 
+> To do this we need to add a few new events trigger and maybe a "title"
+> field in get_workspace msg. I already have a demo modification for you
+> to test how it feels, based on master. Now my life with many
+> workspaces is much easier. :)
+
+I think the only modification needed to i3 would be a focus-change-event
+(and maybe with a little hack not even that) and what you want can be
+entirely done with an ipc-script, no modifications to i3bar necessary.
+
+So I would do it like that: Have a daemon running that listens for focus
+events, everytime such an event is triggered, get the current
+workspaces, find out for each one, what window is currently focused
+(maybe the focus event could include the ?change?-data which would make
+this step unnecessary) and change the title of that workspace to the
+title of that window.
+
+As I said, I think it could also be possible with a little ?hack?: By
+using the workspace-event you could change the title everytime you
+change away from a ws. Then you would have accurately titles for every
+ws _not_ currently focused, which should be enough for getting an
+overview.
+
+I think i3bar is definitely the wrong place to do what you want, though
+it is a good idea.
+Doing it in i3 (by including an option to change the ws-title to the
+currently focused window) would be better, because then the feature
+would be available to users of alternative ws-bars, if they exist. But
+this would still be a lot of complexity added to i3 in C for something,
+that can be done with IPC and a scripting-language.
+Implementing the focus-change-event you should do in any case, imho,
+because I ran over a few usecases which would profit from that in my
+time.
+
+
+Regards,
+
+Axel
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 198 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130321/a9a9b9ed/attachment.sig>
+
+From famcool at gmail.com  Thu Mar 21 13:27:27 2013
+From: famcool at gmail.com (Fam Zheng)
+Date: Thu, 21 Mar 2013 20:27:27 +0800
+Subject: [i3] i3bar POC: workspace button with focused window name
+In-Reply-To: <1363861028-sup-5904@merovius.de>
+References: <CABgc4wQgNVYAJZD_52jTMhNii6B0Co4b0PSok70ekZjt_xrfiQ@mail.gmail.com>
+ <1363861028-sup-5904@merovius.de>
+Message-ID: <CABgc4wQt8_4NfpyJak6h6Uwbqh8F-NBAOFYDhcREJGfyAD23xg@mail.gmail.com>
+
+On Thu, Mar 21, 2013 at 6:31 PM, Axel Wagner <mail at merovius.de> wrote:
+> Hi,
+>
+> Excerpts from Fam Zheng's message of 2013-03-21 04:16:32 +0100:
+>> Of course a bar option can be added too to enable/disable this
+>> feature. Or even give some sophisticated format option for the title,
+>> and also enable user to manually rename it. Would this feature be
+>> useful?
+>>
+>> To do this we need to add a few new events trigger and maybe a "title"
+>> field in get_workspace msg. I already have a demo modification for you
+>> to test how it feels, based on master. Now my life with many
+>> workspaces is much easier. :)
+>
+> I think the only modification needed to i3 would be a focus-change-event
+> (and maybe with a little hack not even that) and what you want can be
+> entirely done with an ipc-script, no modifications to i3bar necessary.
+>
+> So I would do it like that: Have a daemon running that listens for focus
+> events, everytime such an event is triggered, get the current
+> workspaces, find out for each one, what window is currently focused
+> (maybe the focus event could include the ?change?-data which would make
+> this step unnecessary) and change the title of that workspace to the
+> title of that window.
+
+
+>
+> As I said, I think it could also be possible with a little ?hack?: By
+> using the workspace-event you could change the title everytime you
+> change away from a ws. Then you would have accurately titles for every
+> ws _not_ currently focused, which should be enough for getting an
+> overview.
+>
+> I think i3bar is definitely the wrong place to do what you want, though
+> it is a good idea.
+> Doing it in i3 (by including an option to change the ws-title to the
+> currently focused window) would be better, because then the feature
+> would be available to users of alternative ws-bars, if they exist. But
+> this would still be a lot of complexity added to i3 in C for something,
+> that can be done with IPC and a scripting-language.
+> Implementing the focus-change-event you should do in any case, imho,
+> because I ran over a few usecases which would profit from that in my
+> time.
+
+Event is the easiest part, just send an event at the end of `con_focus
+for window, as well as handle_destroy_notify_event,
+handle_windowname_change, would suffice.
+
+Renaming would be trickier, that would need a remap of key binding
+too, which sounds not so neat. IMO "name" of ws and "caption" or
+"title" of ws should be isolated, because mixing ws identifier and
+it's display is not a good idea, despite the complexity for the
+"ipc-script" to decompose and extract the original ws name, and query
+and parse the whole tree, and then remap all the keybindings to this
+workspace (would be a nightmare if many bindings refer to it) for each
+change.
+
+The thing will be much easier if i3 adds a "caption" property to ws,
+so that i3bar and other bars can optionally render it to user, and
+this also benefits that renaming a workspace becomes more
+straightforward (no longer messing any keybinding). Maybe I'm too used
+to tmux.
+
+This is <100 LOC for both i3 and i3bar changes, if this feature is
+demanded, I can post my patch for review.
+
+>
+>
+> Regards,
+>
+> Axel
+
+From haptix at web.de  Thu Mar 21 13:37:06 2013
+From: haptix at web.de (justus jonas)
+Date: Thu, 21 Mar 2013 13:37:06 +0100
+Subject: [i3] i3bar POC: workspace button with focused window name
+In-Reply-To: <CABgc4wQt8_4NfpyJak6h6Uwbqh8F-NBAOFYDhcREJGfyAD23xg@mail.gmail.com>
+References: <CABgc4wQgNVYAJZD_52jTMhNii6B0Co4b0PSok70ekZjt_xrfiQ@mail.gmail.com>
+ <1363861028-sup-5904@merovius.de>
+ <CABgc4wQt8_4NfpyJak6h6Uwbqh8F-NBAOFYDhcREJGfyAD23xg@mail.gmail.com>
+Message-ID: <514AFEF2.5080503@web.de>
+
+Hi,
+
+Am 21.03.2013 13:27, schrieb Fam Zheng:
+> On Thu, Mar 21, 2013 at 6:31 PM, Axel Wagner <mail at merovius.de> wrote:
+>> Hi,
+>>
+>> Excerpts from Fam Zheng's message of 2013-03-21 04:16:32 +0100:
+>>> Of course a bar option can be added too to enable/disable this
+>>> feature. Or even give some sophisticated format option for the title,
+>>> and also enable user to manually rename it. Would this feature be
+>>> useful?
+>>>
+>>> To do this we need to add a few new events trigger and maybe a "title"
+>>> field in get_workspace msg. I already have a demo modification for you
+>>> to test how it feels, based on master. Now my life with many
+>>> workspaces is much easier. :)
+>>
+>> I think the only modification needed to i3 would be a focus-change-event
+>> (and maybe with a little hack not even that) and what you want can be
+>> entirely done with an ipc-script, no modifications to i3bar necessary.
+>>
+>> So I would do it like that: Have a daemon running that listens for focus
+>> events, everytime such an event is triggered, get the current
+>> workspaces, find out for each one, what window is currently focused
+>> (maybe the focus event could include the ?change?-data which would make
+>> this step unnecessary) and change the title of that workspace to the
+>> title of that window.
+>
+>
+>>
+>> As I said, I think it could also be possible with a little ?hack?: By
+>> using the workspace-event you could change the title everytime you
+>> change away from a ws. Then you would have accurately titles for every
+>> ws _not_ currently focused, which should be enough for getting an
+>> overview.
+>>
+>> I think i3bar is definitely the wrong place to do what you want, though
+>> it is a good idea.
+>> Doing it in i3 (by including an option to change the ws-title to the
+>> currently focused window) would be better, because then the feature
+>> would be available to users of alternative ws-bars, if they exist. But
+>> this would still be a lot of complexity added to i3 in C for something,
+>> that can be done with IPC and a scripting-language.
+>> Implementing the focus-change-event you should do in any case, imho,
+>> because I ran over a few usecases which would profit from that in my
+>> time.
+>
+> Event is the easiest part, just send an event at the end of `con_focus
+> for window, as well as handle_destroy_notify_event,
+> handle_windowname_change, would suffice.
+>
+> Renaming would be trickier, that would need a remap of key binding
+> too, which sounds not so neat. IMO "name" of ws and "caption" or
+> "title" of ws should be isolated, because mixing ws identifier and
+> it's display is not a good idea, despite the complexity for the
+> "ipc-script" to decompose and extract the original ws name, and query
+> and parse the whole tree, and then remap all the keybindings to this
+> workspace (would be a nightmare if many bindings refer to it) for each
+> change.
+>
+
+actually, you would not need to change your keybinding. you could use 
+the i3-command "workspace number <ws-id>" in your config file. Let's 
+assume you have workspaces "1: www" and "2: mail". Then configure your 
+workspace switchting keys to the following commands:
+	bindsym $mod+$1 workspace number 1: www
+	bindsym $mod+$2 workspace number 2: mail
+
+if you now rename the current workspace (e.g. 1: www) with "rename 
+workspace to '1: foo'", you can still access this workspace with your 
+configured keybinding.
+
+
+> The thing will be much easier if i3 adds a "caption" property to ws,
+> so that i3bar and other bars can optionally render it to user, and
+> this also benefits that renaming a workspace becomes more
+> straightforward (no longer messing any keybinding). Maybe I'm too used
+> to tmux.
+>
+> This is <100 LOC for both i3 and i3bar changes, if this feature is
+> demanded, I can post my patch for review.
+>
+>>
+>>
+>> Regards,
+>>
+>> Axel
+
+best
+johannes
+
+
+From famcool at gmail.com  Thu Mar 21 13:48:26 2013
+From: famcool at gmail.com (Fam Zheng)
+Date: Thu, 21 Mar 2013 20:48:26 +0800
+Subject: [i3] i3bar POC: workspace button with focused window name
+In-Reply-To: <514AFEF2.5080503@web.de>
+References: <CABgc4wQgNVYAJZD_52jTMhNii6B0Co4b0PSok70ekZjt_xrfiQ@mail.gmail.com>
+ <1363861028-sup-5904@merovius.de>
+ <CABgc4wQt8_4NfpyJak6h6Uwbqh8F-NBAOFYDhcREJGfyAD23xg@mail.gmail.com>
+ <514AFEF2.5080503@web.de>
+Message-ID: <CABgc4wS385xrLUNXtvuTZ2YN9HbAJT0+sJTBUc0c+pPquyYxaQ@mail.gmail.com>
+
+Thanks for that! `workspace number #` is a nice syntax!
+
+Best regards!
+Fam Zheng
+
+
+On Thu, Mar 21, 2013 at 8:37 PM, justus jonas <haptix at web.de> wrote:
+> Hi,
+>
+> Am 21.03.2013 13:27, schrieb Fam Zheng:
+>
+>> On Thu, Mar 21, 2013 at 6:31 PM, Axel Wagner <mail at merovius.de> wrote:
+>>>
+>>> Hi,
+>>>
+>>> Excerpts from Fam Zheng's message of 2013-03-21 04:16:32 +0100:
+>>>>
+>>>> Of course a bar option can be added too to enable/disable this
+>>>> feature. Or even give some sophisticated format option for the title,
+>>>> and also enable user to manually rename it. Would this feature be
+>>>> useful?
+>>>>
+>>>> To do this we need to add a few new events trigger and maybe a "title"
+>>>> field in get_workspace msg. I already have a demo modification for you
+>>>> to test how it feels, based on master. Now my life with many
+>>>> workspaces is much easier. :)
+>>>
+>>>
+>>> I think the only modification needed to i3 would be a focus-change-event
+>>> (and maybe with a little hack not even that) and what you want can be
+>>> entirely done with an ipc-script, no modifications to i3bar necessary.
+>>>
+>>> So I would do it like that: Have a daemon running that listens for focus
+>>> events, everytime such an event is triggered, get the current
+>>> workspaces, find out for each one, what window is currently focused
+>>> (maybe the focus event could include the ?change?-data which would make
+>>> this step unnecessary) and change the title of that workspace to the
+>>> title of that window.
+>>
+>>
+>>
+>>>
+>>> As I said, I think it could also be possible with a little ?hack?: By
+>>> using the workspace-event you could change the title everytime you
+>>> change away from a ws. Then you would have accurately titles for every
+>>> ws _not_ currently focused, which should be enough for getting an
+>>> overview.
+>>>
+>>> I think i3bar is definitely the wrong place to do what you want, though
+>>> it is a good idea.
+>>> Doing it in i3 (by including an option to change the ws-title to the
+>>> currently focused window) would be better, because then the feature
+>>> would be available to users of alternative ws-bars, if they exist. But
+>>> this would still be a lot of complexity added to i3 in C for something,
+>>> that can be done with IPC and a scripting-language.
+>>> Implementing the focus-change-event you should do in any case, imho,
+>>> because I ran over a few usecases which would profit from that in my
+>>> time.
+>>
+>>
+>> Event is the easiest part, just send an event at the end of `con_focus
+>> for window, as well as handle_destroy_notify_event,
+>> handle_windowname_change, would suffice.
+>>
+>> Renaming would be trickier, that would need a remap of key binding
+>> too, which sounds not so neat. IMO "name" of ws and "caption" or
+>> "title" of ws should be isolated, because mixing ws identifier and
+>> it's display is not a good idea, despite the complexity for the
+>> "ipc-script" to decompose and extract the original ws name, and query
+>> and parse the whole tree, and then remap all the keybindings to this
+>> workspace (would be a nightmare if many bindings refer to it) for each
+>> change.
+>>
+>
+> actually, you would not need to change your keybinding. you could use the
+> i3-command "workspace number <ws-id>" in your config file. Let's assume you
+> have workspaces "1: www" and "2: mail". Then configure your workspace
+> switchting keys to the following commands:
+>         bindsym $mod+$1 workspace number 1: www
+>         bindsym $mod+$2 workspace number 2: mail
+>
+> if you now rename the current workspace (e.g. 1: www) with "rename workspace
+> to '1: foo'", you can still access this workspace with your configured
+> keybinding.
+>
+>
+>
+>> The thing will be much easier if i3 adds a "caption" property to ws,
+>> so that i3bar and other bars can optionally render it to user, and
+>> this also benefits that renaming a workspace becomes more
+>> straightforward (no longer messing any keybinding). Maybe I'm too used
+>> to tmux.
+>>
+>> This is <100 LOC for both i3 and i3bar changes, if this feature is
+>> demanded, I can post my patch for review.
+>>
+>>>
+>>>
+>>> Regards,
+>>>
+>>> Axel
+>
+>
+> best
+> johannes
+>
+
+From mail at merovius.de  Thu Mar 21 14:13:41 2013
+From: mail at merovius.de (Axel Wagner)
+Date: Thu, 21 Mar 2013 14:13:41 +0100
+Subject: [i3] i3bar POC: workspace button with focused window name
+In-Reply-To: <CABgc4wS385xrLUNXtvuTZ2YN9HbAJT0+sJTBUc0c+pPquyYxaQ@mail.gmail.com>
+References: <CABgc4wQgNVYAJZD_52jTMhNii6B0Co4b0PSok70ekZjt_xrfiQ@mail.gmail.com>
+ <1363861028-sup-5904@merovius.de>
+ <CABgc4wQt8_4NfpyJak6h6Uwbqh8F-NBAOFYDhcREJGfyAD23xg@mail.gmail.com>
+ <514AFEF2.5080503@web.de>
+ <CABgc4wS385xrLUNXtvuTZ2YN9HbAJT0+sJTBUc0c+pPquyYxaQ@mail.gmail.com>
+Message-ID: <1363870839-sup-4251@merovius.de>
+
+Hi,
+
+what justus said was also my first reaction. Everything you explained in
+your second mail is pretty much implemented conceptually, with the
+?caption? being called name and ?identifier? being the number.
+The complexity of the needed ipc-script is reduced accordingly, you only
+need something like:
+while true:
+    wait_for_event
+    workspaces = get_workspaces
+    for each workspace:
+        active_con = null
+        for each container:
+            if container.focused:
+                active_con = container
+                break
+        workspace.rename("%d: %s", workspace.number, active_con.title)
+
+With one of the libraries existing that encapsulate the
+i3-protocol a working script should not be very much longer than the
+pseudocode above (I'm actually not sure wether the number-syntax works
+in the rename command, if not, that would be a nice thing to implement
+too, imho ;).
+
+I also presume that a change as you originally proposed would not be
+accepted in the mainline i3, for the reasons I mentioned, but I only
+extrapolate from similar proposals in the past.
+
+Kind regards,
+
+Axel
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 198 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130321/648986c8/attachment.sig>
+
+From famcool at gmail.com  Thu Mar 21 14:41:34 2013
+From: famcool at gmail.com (Fam Zheng)
+Date: Thu, 21 Mar 2013 21:41:34 +0800
+Subject: [i3] i3bar POC: workspace button with focused window name
+In-Reply-To: <1363870839-sup-4251@merovius.de>
+References: <CABgc4wQgNVYAJZD_52jTMhNii6B0Co4b0PSok70ekZjt_xrfiQ@mail.gmail.com>
+ <1363861028-sup-5904@merovius.de>
+ <CABgc4wQt8_4NfpyJak6h6Uwbqh8F-NBAOFYDhcREJGfyAD23xg@mail.gmail.com>
+ <514AFEF2.5080503@web.de>
+ <CABgc4wS385xrLUNXtvuTZ2YN9HbAJT0+sJTBUc0c+pPquyYxaQ@mail.gmail.com>
+ <1363870839-sup-4251@merovius.de>
+Message-ID: <CABgc4wTw5HDtouk7zPtc=me7kH-ycz5cK14QTW6wGWCqb1BmaA@mail.gmail.com>
+
+OK, I get it. So the remaining is events, and possibly number syntax in rename.
+
+Best regards!
+Fam Zheng
+
+
+On Thu, Mar 21, 2013 at 9:13 PM, Axel Wagner <mail at merovius.de> wrote:
+> Hi,
+>
+> what justus said was also my first reaction. Everything you explained in
+> your second mail is pretty much implemented conceptually, with the
+> ?caption? being called name and ?identifier? being the number.
+> The complexity of the needed ipc-script is reduced accordingly, you only
+> need something like:
+> while true:
+>     wait_for_event
+>     workspaces = get_workspaces
+>     for each workspace:
+>         active_con = null
+>         for each container:
+>             if container.focused:
+>                 active_con = container
+>                 break
+>         workspace.rename("%d: %s", workspace.number, active_con.title)
+>
+> With one of the libraries existing that encapsulate the
+> i3-protocol a working script should not be very much longer than the
+> pseudocode above (I'm actually not sure wether the number-syntax works
+> in the rename command, if not, that would be a nice thing to implement
+> too, imho ;).
+>
+> I also presume that a change as you originally proposed would not be
+> accepted in the mainline i3, for the reasons I mentioned, but I only
+> extrapolate from similar proposals in the past.
+>
+> Kind regards,
+>
+> Axel
+
+From ultrabug at ultrabug.net  Thu Mar 21 19:23:33 2013
+From: ultrabug at ultrabug.net (Ultrabug)
+Date: Thu, 21 Mar 2013 19:23:33 +0100
+Subject: [i3] i3bar POC: workspace button with focused window name
+In-Reply-To: <CABgc4wTw5HDtouk7zPtc=me7kH-ycz5cK14QTW6wGWCqb1BmaA@mail.gmail.com>
+References: <CABgc4wQgNVYAJZD_52jTMhNii6B0Co4b0PSok70ekZjt_xrfiQ@mail.gmail.com>
+ <1363861028-sup-5904@merovius.de>
+ <CABgc4wQt8_4NfpyJak6h6Uwbqh8F-NBAOFYDhcREJGfyAD23xg@mail.gmail.com>
+ <514AFEF2.5080503@web.de>
+ <CABgc4wS385xrLUNXtvuTZ2YN9HbAJT0+sJTBUc0c+pPquyYxaQ@mail.gmail.com>
+ <1363870839-sup-4251@merovius.de>
+ <CABgc4wTw5HDtouk7zPtc=me7kH-ycz5cK14QTW6wGWCqb1BmaA@mail.gmail.com>
+Message-ID: <514B5025.5070008@ultrabug.net>
+
+Hi,
+
+On 21/03/2013 14:41, Fam Zheng wrote:
+> OK, I get it. So the remaining is events, and possibly number syntax in rename.
+>
+> Best regards!
+> Fam Zheng
+>
+>
+> On Thu, Mar 21, 2013 at 9:13 PM, Axel Wagner <mail at merovius.de> wrote:
+>> Hi,
+>>
+>> what justus said was also my first reaction. Everything you explained in
+>> your second mail is pretty much implemented conceptually, with the
+>> ?caption? being called name and ?identifier? being the number.
+>> The complexity of the needed ipc-script is reduced accordingly, you only
+>> need something like:
+>> while true:
+>>      wait_for_event
+>>      workspaces = get_workspaces
+>>      for each workspace:
+>>          active_con = null
+>>          for each container:
+>>              if container.focused:
+>>                  active_con = container
+>>                  break
+>>          workspace.rename("%d: %s", workspace.number, active_con.title)
+>>
+>> With one of the libraries existing that encapsulate the
+>> i3-protocol a working script should not be very much longer than the
+>> pseudocode above (I'm actually not sure wether the number-syntax works
+>> in the rename command, if not, that would be a nice thing to implement
+>> too, imho ;).
+You got my mind running on this, I thought this would be easily done 
+with a custom class using py3status [1] :)
+I'm glad to attach the implementation, it works great and should answer 
+your initial request.
+
+Basically, with a standard 1sec interval py3status usage, you will have 
+a pretty responsive renaming going on. Few thoughts if we wanted to push 
+it further :
+     - We could an event subscription to handle this in a thread
+     - We could avoid using i3-py by using the standard i3-msg so this 
+wouldn't need any dependency and would work out of the box
+
+  [1] https://github.com/ultrabug/py3status
+
+One limitation which I didnt have the time to try to fix is that 
+renaming the workspaces breaks the window assignment you may have 
+configured.
+>> I also presume that a change as you originally proposed would not be
+>> accepted in the mainline i3, for the reasons I mentioned, but I only
+>> extrapolate from similar proposals in the past.
+>>
+>> Kind regards,
+>>
+>> Axel
+Hope this helps
+
+Ultrabug
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: rename_workspace.py
+Type: text/x-python
+Size: 1890 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130321/ab9dc089/attachment-0001.py>
+
+From ultrabug at ultrabug.net  Thu Mar 21 19:27:38 2013
+From: ultrabug at ultrabug.net (Ultrabug)
+Date: Thu, 21 Mar 2013 19:27:38 +0100
+Subject: [i3] i3bar POC: workspace button with focused window name
+In-Reply-To: <514B5025.5070008@ultrabug.net>
+References: <CABgc4wQgNVYAJZD_52jTMhNii6B0Co4b0PSok70ekZjt_xrfiQ@mail.gmail.com>
+ <1363861028-sup-5904@merovius.de>
+ <CABgc4wQt8_4NfpyJak6h6Uwbqh8F-NBAOFYDhcREJGfyAD23xg@mail.gmail.com>
+ <514AFEF2.5080503@web.de>
+ <CABgc4wS385xrLUNXtvuTZ2YN9HbAJT0+sJTBUc0c+pPquyYxaQ@mail.gmail.com>
+ <1363870839-sup-4251@merovius.de>
+ <CABgc4wTw5HDtouk7zPtc=me7kH-ycz5cK14QTW6wGWCqb1BmaA@mail.gmail.com>
+ <514B5025.5070008@ultrabug.net>
+Message-ID: <514B511A.3040703@ultrabug.net>
+
+Sorry, I left my debug stuff at the end of the script, here's the real 
+py file.. :-/
+
+On 21/03/2013 19:23, Ultrabug wrote:
+> Hi,
+>
+> On 21/03/2013 14:41, Fam Zheng wrote:
+>> OK, I get it. So the remaining is events, and possibly number syntax 
+>> in rename.
+>>
+>> Best regards!
+>> Fam Zheng
+>>
+>>
+>> On Thu, Mar 21, 2013 at 9:13 PM, Axel Wagner <mail at merovius.de> wrote:
+>>> Hi,
+>>>
+>>> what justus said was also my first reaction. Everything you 
+>>> explained in
+>>> your second mail is pretty much implemented conceptually, with the
+>>> ?caption? being called name and ?identifier? being the number.
+>>> The complexity of the needed ipc-script is reduced accordingly, you 
+>>> only
+>>> need something like:
+>>> while true:
+>>>      wait_for_event
+>>>      workspaces = get_workspaces
+>>>      for each workspace:
+>>>          active_con = null
+>>>          for each container:
+>>>              if container.focused:
+>>>                  active_con = container
+>>>                  break
+>>>          workspace.rename("%d: %s", workspace.number, active_con.title)
+>>>
+>>> With one of the libraries existing that encapsulate the
+>>> i3-protocol a working script should not be very much longer than the
+>>> pseudocode above (I'm actually not sure wether the number-syntax works
+>>> in the rename command, if not, that would be a nice thing to implement
+>>> too, imho ;).
+> You got my mind running on this, I thought this would be easily done 
+> with a custom class using py3status [1] :)
+> I'm glad to attach the implementation, it works great and should 
+> answer your initial request.
+>
+> Basically, with a standard 1sec interval py3status usage, you will 
+> have a pretty responsive renaming going on. Few thoughts if we wanted 
+> to push it further :
+>     - We could an event subscription to handle this in a thread
+>     - We could avoid using i3-py by using the standard i3-msg so this 
+> wouldn't need any dependency and would work out of the box
+>
+>  [1] https://github.com/ultrabug/py3status
+>
+> One limitation which I didnt have the time to try to fix is that 
+> renaming the workspaces breaks the window assignment you may have 
+> configured.
+>>> I also presume that a change as you originally proposed would not be
+>>> accepted in the mainline i3, for the reasons I mentioned, but I only
+>>> extrapolate from similar proposals in the past.
+>>>
+>>> Kind regards,
+>>>
+>>> Axel
+> Hope this helps
+>
+> Ultrabug
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: rename_workspace.py
+Type: text/x-python
+Size: 1846 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130321/f718163d/attachment.py>
+
+From michael at i3wm.org  Mon Mar 25 10:58:30 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 25 Mar 2013 10:58:30 +0100
+Subject: [i3] Scheduled maintenance of *.i3wm.org on 2013-03-29
+Message-ID: <x61ub3aji1.fsf@midna.zekjur.net>
+
+Hi,
+
+my hosting provider is physically relocating my dedicated server
+starting at 2013-03-29 22:00 CET. He says that all servers will be
+running again starting from 2013-03-30 08:30 CET.
+
+The following services will be affected:
+? faq.i3wm.org
+? bugs.i3wm.org
+? cr.i3wm.org
+? the i3-discuss mailing list
+
+The following services should not be affected:
+? I?ll try to host www.i3wm.org via cloudflare, and if cloudflare?s
+  offline mode works, you should be able to read the docs online at
+  least.
+? The IRC channel #i3 should still be available.
+
+Please do not report any problems with any i3 service during that
+downtime and please refer people to this message in case they ask.
+
+-- 
+Best regards,
+Michael
+
+From philippe.virouleau at imag.fr  Tue Mar 26 14:12:03 2013
+From: philippe.virouleau at imag.fr (Philippe Virouleau)
+Date: Tue, 26 Mar 2013 14:12:03 +0100
+Subject: [i3] Correct scratchpad show behaviour ?
+Message-ID: <51519EA3.2070707@imag.fr>
+
+I was experimenting some things with the scratchpad feature, and the 
+following totally messed up my current workspace :
+
+bindsym $mod+Shift+P [title=".*"] scratchpad show
+
+If you re-start i3 with an empty scratchpad, open some windows, then 
+switch to another workspace and press mod+shift+P, all the windows (even 
+if they are not in the scratchpad) will come to that workspace (without 
+being switched to floating windows).
+However if you add some windows to the scratchpad, then restart i3 and 
+do the previous manipulation, only windows from the scratchpad will come 
+to the workspace.
+It looks like in some cases i3 doesn't check properly if the matching 
+windows are in the scratchpad.
+
+I don't think it's the expected behaviour so I'm posting this here.
+
+Regards,
+Philippe
+
+-- 
+Philippe Virouleau
+IJD INRIA - ?quipe MOAIS
+
+
+From marcos at anue.biz  Tue Mar 26 16:31:13 2013
+From: marcos at anue.biz (Marcos Moyano)
+Date: Tue, 26 Mar 2013 12:31:13 -0300
+Subject: [i3] Correct scratchpad show behaviour ?
+In-Reply-To: <51519EA3.2070707@imag.fr>
+References: <51519EA3.2070707@imag.fr>
+Message-ID: <CANxNxiCJSt5kF_--DRFbv_AYrDSzx_Ni=-uB+DAdP2P8qnt4qw@mail.gmail.com>
+
+I was able to reproduce this. Also, I wrote this patch that fixes it:
+http://cr.i3wm.org/patch/113
+
+I'm not sure why can't I test against current->con->scratchpad_state being
+other than 0. That was my original approach, but after logging the value,
+it always return 0 on every match. Any idea?
+
+Rgds,
+Marcos
+
+On Tue, Mar 26, 2013 at 10:12 AM, Philippe Virouleau <
+philippe.virouleau at imag.fr> wrote:
+
+> I was experimenting some things with the scratchpad feature, and the
+> following totally messed up my current workspace :
+>
+> bindsym $mod+Shift+P [title=".*"] scratchpad show
+>
+> If you re-start i3 with an empty scratchpad, open some windows, then
+> switch to another workspace and press mod+shift+P, all the windows (even if
+> they are not in the scratchpad) will come to that workspace (without being
+> switched to floating windows).
+> However if you add some windows to the scratchpad, then restart i3 and do
+> the previous manipulation, only windows from the scratchpad will come to
+> the workspace.
+> It looks like in some cases i3 doesn't check properly if the matching
+> windows are in the scratchpad.
+>
+> I don't think it's the expected behaviour so I'm posting this here.
+>
+> Regards,
+> Philippe
+>
+> --
+> Philippe Virouleau
+> IJD INRIA - ?quipe MOAIS
+>
+>
+
+
+-- 
+Marcos Moyano
+Co-Founder of Anue
+Skype: marcosmoyano
+http://www.anue.biz/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130326/565753cb/attachment.html>
+
+From philippe.virouleau at imag.fr  Tue Mar 26 18:44:17 2013
+From: philippe.virouleau at imag.fr (Philippe Virouleau)
+Date: Tue, 26 Mar 2013 18:44:17 +0100
+Subject: [i3] Correct scratchpad show behaviour ?
+In-Reply-To: <CANxNxiCJSt5kF_--DRFbv_AYrDSzx_Ni=-uB+DAdP2P8qnt4qw@mail.gmail.com>
+References: <51519EA3.2070707@imag.fr>
+ <CANxNxiCJSt5kF_--DRFbv_AYrDSzx_Ni=-uB+DAdP2P8qnt4qw@mail.gmail.com>
+Message-ID: <5151DE71.1090901@imag.fr>
+
+Thanks for the answer, actually your fix doesn't work when you have 
+floating windows that are not in the scratchpad.
+
+Actually you can test for the scratchpad_state by taking the parent :
+"(current->con->parent->scratchpad_state != SCRATCHPAD_NONE)" does the 
+trick.
+But there was also some missing tests in scratchpad_show function, since 
+two of the "If this was 'scratchpad show' without criteria" doesn't 
+check that the given parameter "con" is null.
+I don't know exactly what to do with my commit, I assume I should submit 
+it to the code review so that's what I will do.
+
+Regards,
+Philippe
+
+On 26/03/2013 16:31, Marcos Moyano wrote:
+> I was able to reproduce this. Also, I wrote this patch that fixes it:
+> http://cr.i3wm.org/patch/113
+>
+> I'm not sure why can't I test against current->con->scratchpad_state 
+> being other than 0. That was my original approach, but after logging 
+> the value, it always return 0 on every match. Any idea?
+>
+> Rgds,
+> Marcos
+>
+> On Tue, Mar 26, 2013 at 10:12 AM, Philippe Virouleau 
+> <philippe.virouleau at imag.fr <mailto:philippe.virouleau at imag.fr>> wrote:
+>
+>     I was experimenting some things with the scratchpad feature, and
+>     the following totally messed up my current workspace :
+>
+>     bindsym $mod+Shift+P [title=".*"] scratchpad show
+>
+>     If you re-start i3 with an empty scratchpad, open some windows,
+>     then switch to another workspace and press mod+shift+P, all the
+>     windows (even if they are not in the scratchpad) will come to that
+>     workspace (without being switched to floating windows).
+>     However if you add some windows to the scratchpad, then restart i3
+>     and do the previous manipulation, only windows from the scratchpad
+>     will come to the workspace.
+>     It looks like in some cases i3 doesn't check properly if the
+>     matching windows are in the scratchpad.
+>
+>     I don't think it's the expected behaviour so I'm posting this here.
+>
+>     Regards,
+>     Philippe
+>
+>     -- 
+>     Philippe Virouleau
+>     IJD INRIA - ?quipe MOAIS
+>
+>
+>
+>
+> -- 
+> Marcos Moyano
+> Co-Founder of Anue
+> Skype: marcosmoyano
+> http://www.anue.biz/
+
+
+-- 
+Philippe Virouleau
+IJD INRIA - ?quipe MOAIS
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130326/ab25edd4/attachment.html>
+
+From veljko3 at gmail.com  Wed Mar 27 14:53:15 2013
+From: veljko3 at gmail.com (Veljko)
+Date: Wed, 27 Mar 2013 14:53:15 +0100
+Subject: [i3] Status bar - wifi
+Message-ID: <20130327135315.GB6674@angelina>
+
+Hi,
+
+I'm trying to set wifi status to be displayed in status bar, but it's
+not working. In Debian, my wireless interface is wlan0 and it is
+working, but in Slackware it's eth1 and it's not working. 
+
+I edited i3status.conf and replaced default wlan0 with eth1, but no
+results. It always displays "W: down" although I'm connected. 
+
+Regards,
+Veljkol
+
+
+From michael at i3wm.org  Wed Mar 27 14:59:07 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 27 Mar 2013 14:59:07 +0100
+Subject: [i3] Status bar - wifi
+In-Reply-To: <20130327135315.GB6674@angelina>
+References: <20130327135315.GB6674@angelina>
+Message-ID: <x6d2ul6j10.fsf@midna.zekjur.net>
+
+Hi Veljko,
+
+Veljko <veljko3 at gmail.com> writes:
+> I edited i3status.conf and replaced default wlan0 with eth1, but no
+> results. It always displays "W: down" although I'm connected. 
+You most likely did not edit all the places. Note that you need to also
+edit the ?order? directive (e.g. ?order += "wireless wlan0"?).
+
+-- 
+Best regards,
+Michael
+
+From veljko3 at gmail.com  Wed Mar 27 15:17:13 2013
+From: veljko3 at gmail.com (Veljko)
+Date: Wed, 27 Mar 2013 15:17:13 +0100
+Subject: [i3] Status bar - wifi
+In-Reply-To: <x6d2ul6j10.fsf@midna.zekjur.net>
+References: <20130327135315.GB6674@angelina> <x6d2ul6j10.fsf@midna.zekjur.net>
+Message-ID: <20130327141713.GA19128@angelina>
+
+On Wed, Mar 27, 2013 at 02:59:07PM +0100, Michael Stapelberg wrote:
+> Hi Veljko,
+> 
+> Veljko <veljko3 at gmail.com> writes:
+> > I edited i3status.conf and replaced default wlan0 with eth1, but no
+> > results. It always displays "W: down" although I'm connected. 
+> You most likely did not edit all the places. Note that you need to also
+> edit the ?order? directive (e.g. ?order += "wireless wlan0"?).
+
+Hi Michael,
+
+Actually, I think I did.
+
+order += "wireless eth1"
+
+and 
+
+wireless eth1 {
+        format_up = "W: (%quality at %essid) %ip"
+	format_down = "W: down"
+}
+
+Is there any other place that need to be edited?
+
+Regards,
+Veljko
+
+From michael at i3wm.org  Wed Mar 27 17:05:45 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 27 Mar 2013 17:05:45 +0100
+Subject: [i3] Status bar - wifi
+In-Reply-To: <20130327141713.GA19128@angelina>
+References: <20130327135315.GB6674@angelina> <x6d2ul6j10.fsf@midna.zekjur.net>
+ <20130327141713.GA19128@angelina>
+Message-ID: <x6a9po7rqe.fsf@midna.zekjur.net>
+
+Hi Veljko,
+
+Veljko <veljko3 at gmail.com> writes:
+> Actually, I think I did.
+>
+> order += "wireless eth1"
+>
+> and 
+>
+> wireless eth1 {
+>         format_up = "W: (%quality at %essid) %ip"
+> 	format_down = "W: down"
+> }
+That looks correct.
+
+Can you file a ticket at http://bugs.i3wm.org and attach an strace
+output of i3status? Use ?strace -f -o /tmp/st.txt -s2048 i3status?,
+cancel with Ctrl+C after a few seconds, bzip2 /tmp/st.txt and upload
+/tmp/st.txt.bz2.
+
+-- 
+Best regards,
+Michael
+
+From veljko3 at gmail.com  Wed Mar 27 17:39:56 2013
+From: veljko3 at gmail.com (Veljko)
+Date: Wed, 27 Mar 2013 17:39:56 +0100
+Subject: [i3] Status bar - wifi
+In-Reply-To: <x6a9po7rqe.fsf@midna.zekjur.net>
+References: <20130327135315.GB6674@angelina> <x6d2ul6j10.fsf@midna.zekjur.net>
+ <20130327141713.GA19128@angelina> <x6a9po7rqe.fsf@midna.zekjur.net>
+Message-ID: <20130327163955.GB19128@angelina>
+
+On Wed, Mar 27, 2013 at 05:05:45PM +0100, Michael Stapelberg wrote:
+> That looks correct.
+> 
+> Can you file a ticket at http://bugs.i3wm.org and attach an strace
+> output of i3status? Use ?strace -f -o /tmp/st.txt -s2048 i3status?,
+> cancel with Ctrl+C after a few seconds, bzip2 /tmp/st.txt and upload
+> /tmp/st.txt.bz2.
+
+I tried that, but it seams that my version of i3 is not supported. I'm
+using i3 v4.2. I'll try to upgrade to see if that will solve the
+problem.
+
+Regards,
+Veljko
+

@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Building the latest i3 on RHEL 6
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Building%20the%20latest%20i3%20on%20RHEL%206&In-Reply-To=%3Cx6wqttes7d.fsf%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001195.html">
+   <LINK REL="Next"  HREF="001197.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Building the latest i3 on RHEL 6</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Building%20the%20latest%20i3%20on%20RHEL%206&In-Reply-To=%3Cx6wqttes7d.fsf%40midna.zekjur.net%3E"
+       TITLE="[i3] Building the latest i3 on RHEL 6">michael at i3wm.org
+       </A><BR>
+    <I>Wed Feb 27 15:39:50 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001195.html">[i3] Building the latest i3 on RHEL 6
+</A></li>
+        <LI>Next message: <A HREF="001197.html">[i3] Building the latest i3 on RHEL 6
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1196">[ date ]</a>
+              <a href="thread.html#1196">[ thread ]</a>
+              <a href="subject.html#1196">[ subject ]</a>
+              <a href="author.html#1196">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Dustin,
+
+Dustin Jerome &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">dustyjerome at gmail.com</A>&gt; writes:
+&gt;<i> [i3] CC src/con.c
+</I>&gt;<i>
+</I>&gt;<i> ../i3/src/con.c: In function &#8216;con_toggle_fullscreen&#8217;:
+</I>&gt;<i> ../i3/src/con.c:615: error: &#8216;ATOM&#8217; undeclared (first use in this function)
+</I>&gt;<i> ../i3/src/con.c:615: error: (Each undeclared identifier is reported only
+</I>&gt;<i> once
+</I>&gt;<i> ../i3/src/con.c:615: error: for each function it appears in.)
+</I>&gt;<i>
+</I>&gt;<i> make: *** [src/con.o] Error 1
+</I>This implies that include/xcb_compat.h is used, which will be enabled
+when i3 doesn&#8217;t find the pkg-config file for &#8220;xcb-util&#8221;. So, it seems
+like you are missing the development headers for xcb-util.
+
+&gt;<i> As a test I attempted to change XCB_ATOM_ATOM to XCB_ATOM and that actually
+</I>&gt;<i> allowed me to successfully compile the con.c file (I'm assuming it
+</I>Beware! This is wrong. XCB_ATOM is a constant which identifies the X11
+opcode, not the X11 atom value. It is either XCB_ATOM_ATOM (in recent
+xcb) or ATOM (in older versions of xcb).
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001195.html">[i3] Building the latest i3 on RHEL 6
+</A></li>
+	<LI>Next message: <A HREF="001197.html">[i3] Building the latest i3 on RHEL 6
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1196">[ date ]</a>
+              <a href="thread.html#1196">[ thread ]</a>
+              <a href="subject.html#1196">[ subject ]</a>
+              <a href="author.html#1196">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

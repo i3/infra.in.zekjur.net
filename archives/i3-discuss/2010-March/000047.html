@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [Xcb] Problem with dock windows and libxcb-icccm
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BXcb%5D%20Problem%20with%20dock%20windows%20and%20libxcb-icccm&In-Reply-To=%3Ce2ed954f1003100333w6d5badbft7435128e7f8d498%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000046.html">
+   <LINK REL="Next"  HREF="000049.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [Xcb] Problem with dock windows and libxcb-icccm</H1>
+    <B>Jamey Sharp</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BXcb%5D%20Problem%20with%20dock%20windows%20and%20libxcb-icccm&In-Reply-To=%3Ce2ed954f1003100333w6d5badbft7435128e7f8d498%40mail.gmail.com%3E"
+       TITLE="[i3] [Xcb] Problem with dock windows and libxcb-icccm">jamey at minilop.net
+       </A><BR>
+    <I>Wed Mar 10 12:33:19 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000046.html">[i3] Problem with dock windows and libxcb-icccm
+</A></li>
+        <LI>Next message: <A HREF="000049.html">[i3] [Xcb] Problem with dock windows and libxcb-icccm
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#47">[ date ]</a>
+              <a href="thread.html#47">[ thread ]</a>
+              <a href="subject.html#47">[ subject ]</a>
+              <a href="author.html#47">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Wed, Mar 10, 2010 at 2:55 AM, David Coppa &lt;<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">dcoppa at gmail.com</A>&gt; wrote:
+&gt;<i> These type of windows have xcb_get_property_value_length(reply) = 0,
+</I>&gt;<i> while all other windows have 72.
+</I>
+Presumably, because the property isn't present on those windows, which
+would mean the type is None and the format, bytes-after, and length
+are all zero.
+
+&gt;<i> This causes a floating-point exception in the
+</I>&gt;<i> xcb_get_wm_size_hints_from_reply function, making i3 crash.
+</I>&gt;<i>
+</I>&gt;<i> #0 &#160;0x0f5635a4 in xcb_get_wm_size_hints_from_reply (hints=0xcfbc8070,
+</I>&gt;<i> &#160; &#160;reply=0x8593fc20) at /usr/xenocara/dist/xcb-util/icccm/icccm.c:442
+</I>&gt;<i> 442 &#160; &#160; &#160; length = xcb_get_property_value_length(reply) / (reply-&gt;format / 8);
+</I>
+Surely it isn't the length being 0, but rather the format, that causes
+this error.
+
+Since the immediately following if-condition tests that the type and
+format are sane, I'd suggest splitting off the length &gt;= 15 portion of
+the test into its own if-statement and moving the length computation
+in between the two tests.
+
+Michael's right that there's been a similar fix before, but I think
+Debian bug 531310 is unrelated. Commit
+d5b5d682465bd3196105df86d6df9fcde9518e6c looks like it addressed a
+similar issue though, in a different function. This code apparently
+needs an audit for more bugs like these.
+
+Jamey
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000046.html">[i3] Problem with dock windows and libxcb-icccm
+</A></li>
+	<LI>Next message: <A HREF="000049.html">[i3] [Xcb] Problem with dock windows and libxcb-icccm
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#47">[ date ]</a>
+              <a href="thread.html#47">[ thread ]</a>
+              <a href="subject.html#47">[ subject ]</a>
+              <a href="author.html#47">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3 announcement] i3 v4.1 released
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-announce%40infra.in.zekjur.net?Subject=Re%3A%20%5Bi3%20announcement%5D%20i3%20v4.1%20released&In-Reply-To=%3C1321051906-sup-4074%40stapelberg.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000022.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3 announcement] i3 v4.1 released</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-announce%40infra.in.zekjur.net?Subject=Re%3A%20%5Bi3%20announcement%5D%20i3%20v4.1%20released&In-Reply-To=%3C1321051906-sup-4074%40stapelberg.de%3E"
+       TITLE="[i3 announcement] i3 v4.1 released">michael+i3 at stapelberg.de
+       </A><BR>
+    <I>Fri Nov 11 23:52:07 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000022.html">[i3 announcement] i3lock 2.2 released
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#23">[ date ]</a>
+              <a href="thread.html#23">[ thread ]</a>
+              <a href="subject.html#23">[ subject ]</a>
+              <a href="author.html#23">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I just released i3 v4.1. The release notes follow:
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Release notes for i3 v4.1  &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+This is the second release of the new major version of i3, v4.1. It brings some
+new (and long-awaited) features, the most prominent being tray support in i3bar
+(for NetworkManager, Skype, etc.). 
+
+The assign syntax has changed to support criteria now. Also, criteria support
+regular expressions (using PCRE) now. Check the userguide for the new syntax.
+i3-nagbar will automatically display a warning when you use the old syntax.
+
+i3 now supports startup notifications, meaning that during an application
+starts up, the mouse cursor will change to 'watch' on the root window. Also,
+the application window will appear on the workspace on which it was launched
+(not on the currently focused workspace). Some applications don&#8217;t support
+startup notifications. If the cursor change bothers you, turn it off by using
+the --no-startup-id flag (see the userguide).
+
+This release has been in use by many users and is considered stable. Please
+upgrade.
+
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; New features               &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+  &#8226; Switch to dpkg-source 3.0 (quilt) and compat level 7
+  &#8226; Implement system tray support in i3bar (for NetworkManager, Skype, &#8230;)
+  &#8226; i3bar is now configurable in the i3 configfile
+  &#8226; Implement support for PCRE regular expressions in criteria
+  &#8226; Implement a new assign syntax which uses criteria
+  &#8226; Sort named workspaces whose name starts with a number accordingly
+  &#8226; Warn on duplicate bindings for the same key
+  &#8226; Restrict 'resize' command to left/right for horizontal containers, up/down
+    for vertical containers
+  &#8226; Implement support for startup notifications (cursor will change to 'watch',
+    started applications show up on the workspace they have been launched on)
+  &#8226; Implement the GET_MARKS IPC request to get all marks
+  &#8226; Implement the new_float config option (border style for floating windows)
+  &#8226; Implement passing IPC sockets to i3 (systemd-style socket activation)
+  &#8226; Implement the 'move output' command to move containers to a specific output
+  &#8226; Implement focus switching for floating windows
+  &#8226; Implement the window_role criterion (for matching multi-window apps)
+  &#8226; Implement a force_xinerama configuration directive
+  &#8226; Implement the --get-socketpath, useful for scripts using the IPC interface
+  &#8226; Implement the 'move workspace next' and 'move workspace prev' commands
+  &#8226; Implement the 'workspace back_and_forth' command and related configuration
+    option
+  &#8226; Implement the move command for floating windows
+  &#8226; i3 will now handle arbitrary text arguments by sending them as an IPC
+    command, like i3-msg: 'i3 reload' or 'i3 move workspace 3'
+  &#8226; Introduce the i3-sensible-{pager,editor,terminal} scripts to execute
+    $PAGER, $EDITOR or an available terminal emulator
+  &#8226; i3-input: implement -F (format) option
+
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Bugfixes                   &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+  &#8226; Bugfix: Preserve marks when restarting
+  &#8226; Bugfix: Correctly free old assignments when reloading
+  &#8226; Bugfix: Fix flickering when moving floating windows between monitors
+  &#8226; Bugfix: Correctly handle ConfigureRequests for floating windows in a
+    multi-monitor environment.
+  &#8226; Bugfix: Fix size of floating windows with X11 borders
+  &#8226; Bugfix: Always adjust floating window position when moving to another
+    output
+  &#8226; Bugfix: Avoid out-of-bounds coordinates when moving floating windows
+  &#8226; Bugfix: Don&#8217;t steal focus when a window gets destroyed
+  &#8226; Bugfix: Correctly split key/value when parsing variables
+  &#8226; Bugfix: Correctly revert focus to other floating windows when closing a
+    floating window
+  &#8226; Bugfix: Don&#8217;t leak the error logfile file descriptor
+  &#8226; Bugfix: Don&#8217;t steal focus when a window opens on an invisible workspace due
+    to assignments
+  &#8226; Bugfix: Fix handling of Mode_switch in i3-input
+  &#8226; Bugfix: Close invisible workspaces when they become empty
+  &#8226; Bugfix: Don&#8217;t invoke interactive resizing when clicking on the decoration
+    of a split container with more than one child (switch focus instead)
+  &#8226; Bugfix: Make named workspace assignments work again
+  &#8226; Bugfix: RandR: Correctly keep focus on the focused workspace when an output
+    disappears
+  &#8226; Bugfix: Insert container at the correct position on workspace level when
+    workspace_layout == default
+
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Thanks!                    &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+Thanks for testing, bugfixes, discussions and everything I forgot go out to:
+
+  aksr, alexanderb, atsutane, bacardi55, bjonnh, brian, cls, don, donald,
+  eeemsi, f8l, fernandotcl, isolnchip, julien, motif, mw, mxf, phnom, pl,
+  pnutzh4x0r, raphael, sardemff7, stfn, thomasba, xeen
+
+-- Michael Stapelberg, 2011-11-11
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000022.html">[i3 announcement] i3lock 2.2 released
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#23">[ date ]</a>
+              <a href="thread.html#23">[ thread ]</a>
+              <a href="subject.html#23">[ subject ]</a>
+              <a href="author.html#23">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-announce">More information about the i3-announce
+mailing list</a><br>
+</body></html>

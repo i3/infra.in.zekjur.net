@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Split-Views in Tabs: Display Window Titles, not process name
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Split-Views%20in%20Tabs%3A%20Display%20Window%20Titles%2C%20not%20process%20name&In-Reply-To=%3CCACaqnaSuYYa0-huAGRaSrvf5oGs3Ne%3DAMGvSZR%2B%3DcAtD9axDmg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002026.html">
+   <LINK REL="Next"  HREF="002028.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Split-Views in Tabs: Display Window Titles, not process name</H1>
+    <B>Eric Duncan</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Split-Views%20in%20Tabs%3A%20Display%20Window%20Titles%2C%20not%20process%20name&In-Reply-To=%3CCACaqnaSuYYa0-huAGRaSrvf5oGs3Ne%3DAMGvSZR%2B%3DcAtD9axDmg%40mail.gmail.com%3E"
+       TITLE="[i3] Split-Views in Tabs: Display Window Titles, not process name">eduncan911 at gmail.com
+       </A><BR>
+    <I>Fri Mar 20 17:01:30 CET 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002026.html">[i3] Announcing New Workspace Switcher
+</A></li>
+        <LI>Next message: <A HREF="002028.html">[i3] Split-Views in Tabs: Display Window Titles,	not process name
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2027">[ date ]</a>
+              <a href="thread.html#2027">[ thread ]</a>
+              <a href="subject.html#2027">[ subject ]</a>
+              <a href="author.html#2027">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello!
+
+I've been using i3wm for a little over a year.  Recently I've been using
+the Tabs feature, grouping several terminal windows in different tabs
+(monitoring a dozen or so logs).  I have my .bash environment set the
+Window Title properly for terminals, and that works with single tabs -
+displaying the gnome-terminal's title in the Tab's title just like it
+should.
+
+&quot;Single Tabs&quot; meaning with only 1 process running within that tab, i3wm
+shows the Window Title of that one process.  E.g. my gnome-terminal's
+window title.
+
+This message is about tabs that have multiple processes running within the
+tab's i3wm container.  E.g. two or more terminal windows.  i3wm currently
+displays in the window title of the tab:
+
+    i3: H[gnome-terminal gnome-terminal]
+
+It is obviously showing the process name, and that I am split via Height.
+Cool, but I am missing the Window Title I have set in the terminals.
+Again, the Tab's Window Title normally displays the Window Title of the
+executing process.  It's when grouping multiple processes within a single
+tab.
+
+I think the &quot;H&quot; and &quot;V&quot; is fine. I get things like this:
+
+    i3: H[V[gnome-terminal gnome-terminal] V[gnome-terminal gnome-terminal]]
+
+That obviously says I have a 2x2 arrangement in that tab.  It would really
+nice if it showed the Window Title of those processes though.  For example,
+if the terminal has the current path set for Window Title, it would look
+like:
+
+    i3: H[V[&quot;~/code/sp-validator&quot; &quot;~/code/sp-juke&quot;] V[&quot;~/go/src/
+github.com/eduncan911/go-mspec&quot; &quot;~/&quot;]]
+
+Now, you'll notice I put in quotations. An additional tweak may be to put
+in some type of delimier for when titles have spaces - so we know the
+different in a title like this:
+
+    i3: H[Evolution Inbox ~/code/sp-validator:grep]
+
+^- That's two different apps running in horizonal split view.  Without
+quotes around &quot;Evolution Inbox&quot;, it would hard to determine where the first
+one ends and second begins.
+
+Just a suggestion to an awesome window manager!
+
+Thanks!
+Eric
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150320/00c7a403/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150320/00c7a403/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002026.html">[i3] Announcing New Workspace Switcher
+</A></li>
+	<LI>Next message: <A HREF="002028.html">[i3] Split-Views in Tabs: Display Window Titles,	not process name
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2027">[ date ]</a>
+              <a href="thread.html#2027">[ thread ]</a>
+              <a href="subject.html#2027">[ subject ]</a>
+              <a href="author.html#2027">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

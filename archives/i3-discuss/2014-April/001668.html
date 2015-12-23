@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] IPC window close event
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20IPC%20window%20close%20event&In-Reply-To=%3C534721CA.40902%40hunsicker.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001667.html">
+   <LINK REL="Next"  HREF="001669.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] IPC window close event</H1>
+    <B>Marco Hunsicker</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20IPC%20window%20close%20event&In-Reply-To=%3C534721CA.40902%40hunsicker.de%3E"
+       TITLE="[i3] IPC window close event">i3 at hunsicker.de
+       </A><BR>
+    <I>Fri Apr 11 00:57:14 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001667.html">[i3] IPC window close event
+</A></li>
+        <LI>Next message: <A HREF="001669.html">[i3] IPC window close event
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1668">[ date ]</a>
+              <a href="thread.html#1668">[ thread ]</a>
+              <a href="subject.html#1668">[ subject ]</a>
+              <a href="author.html#1668">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Tony,
+
+&gt;<i> I think sending the focus stack is a good idea because it could be used to
+</I>&gt;<i> determine what window is focused (or focused-inactive) on the workspace.
+</I>
+My plan was to simply include the window ids of all opened X11 windows 
+with WORKSPACE replies (ignoring all other nodes!):
+
+&quot;windows&quot;:[id1, id2, ...]
+
+This would make it (relatively) easy to determine whether a workspace is 
+empty or not and be somewhat consistent with the TREE reply where each 
+node provides a &quot;window&quot; field with the window id.
+
+If the reply should indicate the focused window as well, we would either 
+have to add another field. Or extend the array to not only include the 
+window ids, but the focus state as well.
+
+&quot;windows&quot;:[
+     {&quot;window&quot;: id1, &quot;focused&quot;: true},
+     {&quot;window&quot;: id2, &quot;focused&quot;: false},
+     ...
+]
+
+API-wise it could make sense to use the dump_node() function and include 
+the whole set of window properties. This would require additional code 
+to deal with the protocol extension, though (i3bar is currently very 
+strict when parsing the WORKSPACE reply).
+
+Any thoughts?
+
+
+&gt;<i> I
+</I>&gt;<i> would like to see some tests that confirm that an empty array does indeed
+</I>&gt;<i> indicate an empty workspace as well.
+</I>
+I've already written several tests to ensure the implementation works as 
+desired.
+
+
+&gt;<i> Also, I would like this &quot;workspace&quot; member to be part of every window event
+</I>&gt;<i> and the new property of the &quot;workspace reply&quot; object to be included in
+</I>&gt;<i> GET_WORKSPACE replies as well to maintain some consistency in the api.
+</I>
+As discussed. That's trivial because there is a central function that is 
+used to create all window events.
+
+Cheers,
+   Marco
+</PRE>
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001667.html">[i3] IPC window close event
+</A></li>
+	<LI>Next message: <A HREF="001669.html">[i3] IPC window close event
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1668">[ date ]</a>
+              <a href="thread.html#1668">[ thread ]</a>
+              <a href="subject.html#1668">[ subject ]</a>
+              <a href="author.html#1668">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

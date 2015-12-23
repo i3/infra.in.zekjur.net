@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3 not capturing key syms
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%20not%20capturing%20key%20syms&In-Reply-To=%3Cx6r44zq2cc.fsf%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001680.html">
+   <LINK REL="Next"  HREF="001682.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3 not capturing key syms</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%20not%20capturing%20key%20syms&In-Reply-To=%3Cx6r44zq2cc.fsf%40midna.zekjur.net%3E"
+       TITLE="[i3] i3 not capturing key syms">michael at i3wm.org
+       </A><BR>
+    <I>Mon Apr 14 18:53:55 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001680.html">[i3] i3 not capturing key syms
+</A></li>
+        <LI>Next message: <A HREF="001682.html">[i3] i3 not capturing key syms
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1681">[ date ]</a>
+              <a href="thread.html#1681">[ thread ]</a>
+              <a href="subject.html#1681">[ subject ]</a>
+              <a href="author.html#1681">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Tobias,
+
+Tobias Frilling &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">tobias at frilling-online.de</A>&gt; writes:
+&gt;&gt;<i> Also, I’m unclear on whether you have any trouble _within_ i3 or just
+</I>&gt;&gt;<i> with i3-config-wizard.
+</I>&gt;<i> I'm having trouble within i3. I've got Mod4 as the leader for anything related to moving focus or spawning terminals, so this bug is a deal breaker.
+</I>&gt;<i>
+</I>&gt;&gt;<i> If the former: please provide a log, [...]
+</I>&gt;<i> <A HREF="http://codepad.org/HzRDvnkX">http://codepad.org/HzRDvnkX</A>
+</I>&gt;<i> I'm just starting i3 and pressing Mod4+Return a couple of times.
+</I>In your logfile, in line 1009, the keybindings are re-grabbed, this time
+with the correct mapping (presumably you load your layout manually after
+starting i3).
+
+AFAICT, the mapping is correct:
+
+2014-04-14 15:33:30 - config.c:translate_keysyms:156 - Translated symbol &quot;Return&quot; to 1 keycode
+[…]
+2014-04-14 15:33:30 - config.c:grab_keycode_for_binding:34 - Grabbing 36 with modifiers 64 (with mod_mask_lock 66)
+
+This is exactly the same line that I get in my log, and it works just
+fine for me.
+
+Are you sure that you have neither caps lock nor num lock pressed by
+accident? Also, what is the output of “xev” when you start it and press
+Mod4+Return?
+
+I also noticed that the Return keybinding in your “xmodmap -pke” output
+only has symbols for the first two layers:
+
+keycode  36 = Return NoSymbol Return
+
+Maybe try defining the upper layers too? For me it looks like this:
+
+keycode  36 = Return Return Return Return KP_Enter KP_Enter Return Return
+
+Also, maybe try this with a fresh user account, or booting from a live
+system? I am pretty sure this is a configuration problem of some sort,
+since there are many many i3 users with strange layouts and there were
+no bug reports like what you are reporting in the last couple of years.
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001680.html">[i3] i3 not capturing key syms
+</A></li>
+	<LI>Next message: <A HREF="001682.html">[i3] i3 not capturing key syms
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1681">[ date ]</a>
+              <a href="thread.html#1681">[ thread ]</a>
+              <a href="subject.html#1681">[ subject ]</a>
+              <a href="author.html#1681">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH]remove unnecessary code in render_con().
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5Dremove%20unnecessary%20code%20in%20render_con%28%29.&In-Reply-To=%3Cop.wj70c306h7z1jl%40sraven%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000897.html">
+   <LINK REL="Next"  HREF="000927.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH]remove unnecessary code in render_con().</H1>
+    <B>DR</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5Dremove%20unnecessary%20code%20in%20render_con%28%29.&In-Reply-To=%3Cop.wj70c306h7z1jl%40sraven%3E"
+       TITLE="[i3] [PATCH]remove unnecessary code in render_con().">drdarkraven at gmail.com
+       </A><BR>
+    <I>Thu Sep  6 17:37:41 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000897.html">[i3] RFC: Ignoring size increment hints for tiling windows
+</A></li>
+        <LI>Next message: <A HREF="000927.html">[i3] [PATCH]remove unnecessary code in render_con().
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#899">[ date ]</a>
+              <a href="thread.html#899">[ thread ]</a>
+              <a href="subject.html#899">[ subject ]</a>
+              <a href="author.html#899">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>The removed code was add by commit 61b8a62 to fix #564. That bug is cause
+by rendering the mplayer window again as a floating window (even if it
+has been rendered before as a fullscreen window, at line 202). So simply
+checking for fullscreen window is enough to solve this problem. Treating
+floating/tiling fullscreen window differently is not needed.
+---
+  src/render.c | 17 ++---------------
+  1 file changed, 2 insertions(+), 15 deletions(-)
+
+diff --git a/src/render.c b/src/render.c
+index 01628c3..fb5b1ab 100644
+--- a/src/render.c
++++ b/src/render.c
+@@ -254,26 +254,13 @@ void render_con(Con *con, bool render_fullscreen) {
+              Con *content = output_get_content(output);
+              Con *workspace = TAILQ_FIRST(&amp;(content-&gt;focus_head));
+
+-            /* Check for (floating!) fullscreen nodes */
++            /* Check for fullscreen nodes */
+              /* XXX: This code duplication is unfortunate. Keep in mind to  
+fix
+               * this when we clean up the whole render.c */
+              Con *fullscreen = NULL;
+              fullscreen = con_get_fullscreen_con(workspace, CF_OUTPUT);
+-            if (fullscreen) {
+-                /* Either the fullscreen window is inside the floating
+-                 * container, then we need to render and raise it now&#8230; */
+-                if (con_inside_floating(fullscreen)) {
+-                    fullscreen-&gt;rect = output-&gt;rect;
+-                    x_raise_con(fullscreen);
+-                    render_con(fullscreen, true);
++            if (fullscreen)
+                      continue;
+-                } else {
+-                    /* &#8230;or it&#8217;s a tiling window, in which case the  
+floating
+-                     * windows should not overlap it, so we skip  
+rendering this
+-                     * output. */
+-                    continue;
+-                }
+-            }
+
+              Con *child;
+              TAILQ_FOREACH(child, &amp;(workspace-&gt;floating_head),  
+floating_windows) {
+-- 
+1.7.12
+
+
+-- 
+Using Opera's revolutionary email client: <A HREF="http://www.opera.com/mail/">http://www.opera.com/mail/</A>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-remove-unnecessary-code-in-render_con.patch
+Type: application/octet-stream
+Size: 2168 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120906/03b51d22/attachment.obj">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120906/03b51d22/attachment.obj</A>&gt;
+</PRE>
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000897.html">[i3] RFC: Ignoring size increment hints for tiling windows
+</A></li>
+	<LI>Next message: <A HREF="000927.html">[i3] [PATCH]remove unnecessary code in render_con().
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#899">[ date ]</a>
+              <a href="thread.html#899">[ thread ]</a>
+              <a href="subject.html#899">[ subject ]</a>
+              <a href="author.html#899">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

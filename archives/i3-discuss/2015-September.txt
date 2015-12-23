@@ -1,0 +1,2247 @@
+From uzleepito at gmail.com  Tue Sep  1 17:07:01 2015
+From: uzleepito at gmail.com (Nokan Emiro)
+Date: Tue, 1 Sep 2015 17:07:01 +0200
+Subject: [i3] default kbd layout per window
+Message-ID: <CABmj=E4AnApJPb6ormCExMmnQs6YtUJUFbcuiTjKM8ZwoUR7ZA@mail.gmail.com>
+
+Hi i3wm gurus,
+
+I use i3 with kbdd in order to have different keyboard layouts in different
+windows:
+
+exec_always --no-startup-id kbdd
+exec_always setxkbmap -layout de,us -option grp:shift_caps_toggle
+
+
+I figured out that the following command changes the current layout into
+the US version:
+
+$  dbus-send --dest=ru.gentoo.KbddService /ru/gentoo/KbddService
+ru.gentoo.kbdd.set_layout uint32:1
+
+...and replacing the uint32:1 with uint32:0 switches to the DE layout.
+
+
+Now, what I couldn't figure out is that how can I set up a default layout
+for certain types
+of windows.  New windows start with the DE version (I guess because that
+one comes
+first in the list with the 'setxkbmap -layout de,us' command).  So far, so
+go.  But on
+terminals I want to use the US layout.  I tried something like this in the
+i3wm config:
+
+for_window [window_role="terminal"] exec dbus-send
+--dest=ru.gentoo.KbddService /ru/gentoo/KbddService
+ru.gentoo.kbdd.set_layout uint32:1
+
+Unfortunately this doesn't work.  Can you please tell me how can I do this
+kind of
+setup from the i3 config?  (Maybe I could run the dbus-send command from the
+bash_profile or something like that, but I hope this can be done with
+for_window
+in the i3 config somehow.)
+
+Thanks,
+Uz.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150901/180bcce2/attachment.html>
+
+From admin at airblader.de  Tue Sep  1 17:13:25 2015
+From: admin at airblader.de (=?ISO-8859-1?Q?Ingo_B=FCrk?=)
+Date: Tue, 01 Sep 2015 17:13:25 +0200
+Subject: [i3] default kbd layout per window
+In-Reply-To: <CABmj=E4AnApJPb6ormCExMmnQs6YtUJUFbcuiTjKM8ZwoUR7ZA@mail.gmail.com>
+References: <CABmj=E4AnApJPb6ormCExMmnQs6YtUJUFbcuiTjKM8ZwoUR7ZA@mail.gmail.com>
+Message-ID: <b10755f7-1119-46ca-b89f-7998a63b5a0c@typeapp.com>
+
+For_window will only be run when the window is opened, not everytime it is focused. 
+
+What you need to do is hook into the focus event on the IPC, match the window there and execute the command. 
+
+Regards
+Ingo 
+
+Sent from TypeMail
+
+
+
+On Sep 1, 2015, 17:07, at 17:07, Nokan Emiro <uzleepito at gmail.com> wrote:
+>Hi i3wm gurus,
+>
+>I use i3 with kbdd in order to have different keyboard layouts in
+>different
+>windows:
+>
+>exec_always --no-startup-id kbdd
+>exec_always setxkbmap -layout de,us -option grp:shift_caps_toggle
+>
+>
+>I figured out that the following command changes the current layout
+>into
+>the US version:
+>
+>$  dbus-send --dest=ru.gentoo.KbddService /ru/gentoo/KbddService
+>ru.gentoo.kbdd.set_layout uint32:1
+>
+>...and replacing the uint32:1 with uint32:0 switches to the DE layout.
+>
+>
+>Now, what I couldn't figure out is that how can I set up a default
+>layout
+>for certain types
+>of windows.  New windows start with the DE version (I guess because
+>that
+>one comes
+>first in the list with the 'setxkbmap -layout de,us' command).  So far,
+>so
+>go.  But on
+>terminals I want to use the US layout.  I tried something like this in
+>the
+>i3wm config:
+>
+>for_window [window_role="terminal"] exec dbus-send
+>--dest=ru.gentoo.KbddService /ru/gentoo/KbddService
+>ru.gentoo.kbdd.set_layout uint32:1
+>
+>Unfortunately this doesn't work.  Can you please tell me how can I do
+>this
+>kind of
+>setup from the i3 config?  (Maybe I could run the dbus-send command
+>from the
+>bash_profile or something like that, but I hope this can be done with
+>for_window
+>in the i3 config somehow.)
+>
+>Thanks,
+>Uz.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150901/20d45678/attachment.html>
+
+From uzleepito at gmail.com  Tue Sep  1 17:19:38 2015
+From: uzleepito at gmail.com (Nokan Emiro)
+Date: Tue, 1 Sep 2015 17:19:38 +0200
+Subject: [i3] default kbd layout per window
+In-Reply-To: <b10755f7-1119-46ca-b89f-7998a63b5a0c@typeapp.com>
+References: <CABmj=E4AnApJPb6ormCExMmnQs6YtUJUFbcuiTjKM8ZwoUR7ZA@mail.gmail.com>
+ <b10755f7-1119-46ca-b89f-7998a63b5a0c@typeapp.com>
+Message-ID: <CABmj=E4740pk5D17oa0Of42a5HgZv5Ja3hFra5vaaKLunn_vnA@mail.gmail.com>
+
+That's not a problem.  If the layout is once set for that particular
+window,  kbdd will
+take care of the focus changes and activate the proper layout if the focus
+moves.  All
+I want is to set the initial layout to US on the terminal windows and leave
+the other
+layout as the default for all the rest.
+
+
+On Tue, Sep 1, 2015 at 5:13 PM, Ingo Bürk <admin at airblader.de> wrote:
+
+> For_window will only be run when the window is opened, not everytime it is
+> focused.
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150901/bed7da88/attachment.html>
+
+From admin at airblader.de  Tue Sep  1 17:23:19 2015
+From: admin at airblader.de (=?ISO-8859-1?Q?Ingo_B=FCrk?=)
+Date: Tue, 01 Sep 2015 17:23:19 +0200
+Subject: [i3] default kbd layout per window
+In-Reply-To: <CABmj=E4740pk5D17oa0Of42a5HgZv5Ja3hFra5vaaKLunn_vnA@mail.gmail.com>
+References: <CABmj=E4AnApJPb6ormCExMmnQs6YtUJUFbcuiTjKM8ZwoUR7ZA@mail.gmail.com>
+ <b10755f7-1119-46ca-b89f-7998a63b5a0c@typeapp.com>
+ <CABmj=E4740pk5D17oa0Of42a5HgZv5Ja3hFra5vaaKLunn_vnA@mail.gmail.com>
+Message-ID: <4d71c65c-e8d9-48ad-ad63-73185dd216c2@typeapp.com>
+
+Then I think it should work, assuming your terminal actually has the window role "terminal".
+
+Can you be more specific on how it doesn't work? Can you figure out if the command is run on the wrong window? Also, a log file would be helpful to see how the command is being executed. 
+
+You probably also want to add --no-startup-id to the exec call. I doubt dbus-send does anything with startup notifications. 
+
+Regards
+Ingo 
+
+Sent from TypeMail
+
+
+
+On Sep 1, 2015, 17:19, at 17:19, Nokan Emiro <uzleepito at gmail.com> wrote:
+>That's not a problem.  If the layout is once set for that particular
+>window,  kbdd will
+>take care of the focus changes and activate the proper layout if the
+>focus
+>moves.  All
+>I want is to set the initial layout to US on the terminal windows and
+>leave
+>the other
+>layout as the default for all the rest.
+>
+>
+>On Tue, Sep 1, 2015 at 5:13 PM, Ingo Bürk <admin at airblader.de> wrote:
+>
+>> For_window will only be run when the window is opened, not everytime
+>it is
+>> focused.
+>>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150901/3a4f4b6d/attachment.html>
+
+From uzleepito at gmail.com  Tue Sep  1 21:27:20 2015
+From: uzleepito at gmail.com (Nokan Emiro)
+Date: Tue, 1 Sep 2015 21:27:20 +0200
+Subject: [i3] default kbd layout per window
+In-Reply-To: <4d71c65c-e8d9-48ad-ad63-73185dd216c2@typeapp.com>
+References: <CABmj=E4AnApJPb6ormCExMmnQs6YtUJUFbcuiTjKM8ZwoUR7ZA@mail.gmail.com>
+ <b10755f7-1119-46ca-b89f-7998a63b5a0c@typeapp.com>
+ <CABmj=E4740pk5D17oa0Of42a5HgZv5Ja3hFra5vaaKLunn_vnA@mail.gmail.com>
+ <4d71c65c-e8d9-48ad-ad63-73185dd216c2@typeapp.com>
+Message-ID: <CABmj=E7HOXzvme3tCQPh4NStHF=RFTcHX0AA=Y2Yg3F4yksUuw@mail.gmail.com>
+
+Yes, the "terminal" role is a-okay.  For example
+
+for_window [window_role="terminal"]  border pixel 22
+
+works fine.  And the dbus-send command also works if it's run from the
+terminal.  But
+if I start a new terminal with $mod+Enter, it comes up with the wrong
+layout.
+
+For testing, I did this (the same dbus-send command bound to $mod+o):
+
+bindsym $mod+o exec --no-startup-id dbus-send --dest=ru.gentoo.KbddService
+/ru/gentoo/KbddService ru.gentoo.kbdd.set_layout uint32:1
+
+and pressing $mod+o in the new terminal changes the layout to US, as I
+expected.
+
+My guess is that the switching to the US layout happens too early.  Maybe
+kbdd kicks in on the
+new window just a bit after the US layout was set and kbdd overwrites it
+with the default.
+
+
+This didn't work either:
+
+xte 'keydown Shift_L' 'keydown Caps_Lock' 'keyup Caps_Lock' 'keyup Shift_L'
+
+but this one (that sleeps 0.5 sec before simulating the keypresses) did:
+
+xte 'usleep 500000' 'keydown Shift_L' 'keydown Caps_Lock' 'keyup Caps_Lock'
+'keyup Shift_L'
+
+So, this seems to be some stupied timing issue.  I'm sorry about
+bothering...
+
+Uz.
+
+
+On Tue, Sep 1, 2015 at 5:23 PM, Ingo Bürk <admin at airblader.de> wrote:
+
+> Then I think it should work, assuming your terminal actually has the
+> window role "terminal".
+>
+> Can you be more specific on how it doesn't work? Can you figure out if the
+> command is run on the wrong window? Also, a log file would be helpful to
+> see how the command is being executed.
+>
+> You probably also want to add --no-startup-id to the exec call. I doubt
+> dbus-send does anything with startup notifications.
+>
+> Regards
+> Ingo
+>
+> Sent from TypeMail <http://www.typeapp.com/r>
+>
+> On Sep 1, 2015, at 17:19, Nokan Emiro <uzleepito at gmail.com> wrote:
+>>
+>> That's not a problem.  If the layout is once set for that particular
+>> window,  kbdd will
+>> take care of the focus changes and activate the proper layout if the
+>> focus moves.  All
+>> I want is to set the initial layout to US on the terminal windows and
+>> leave the other
+>> layout as the default for all the rest.
+>>
+>>
+>> On Tue, Sep 1, 2015 at 5:13 PM, Ingo Bürk <admin at airblader.de> wrote:
+>>
+>>> For_window will only be run when the window is opened, not everytime it
+>>> is focused.
+>>>
+>>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150901/7f977b68/attachment.html>
+
+From old4 at o2.pl  Wed Sep  2 00:26:21 2015
+From: old4 at o2.pl (Mateusz Poszwa)
+Date: Wed, 2 Sep 2015 00:26:21 +0200
+Subject: [i3] default kbd layout per window
+In-Reply-To: <CABmj=E7HOXzvme3tCQPh4NStHF=RFTcHX0AA=Y2Yg3F4yksUuw@mail.gmail.com>
+References: <CABmj=E4AnApJPb6ormCExMmnQs6YtUJUFbcuiTjKM8ZwoUR7ZA@mail.gmail.com>
+ <b10755f7-1119-46ca-b89f-7998a63b5a0c@typeapp.com>
+ <CABmj=E4740pk5D17oa0Of42a5HgZv5Ja3hFra5vaaKLunn_vnA@mail.gmail.com>
+ <4d71c65c-e8d9-48ad-ad63-73185dd216c2@typeapp.com>
+ <CABmj=E7HOXzvme3tCQPh4NStHF=RFTcHX0AA=Y2Yg3F4yksUuw@mail.gmail.com>
+Message-ID: <20150902002621.2f3e7aa5@Blickensderfer>
+
+Je 2015-09-01 21:27:20
+Nokan Emiro <uzleepito at gmail.com> skribis:
+
+(…)
+> but this one (that sleeps 0.5 sec before simulating the keypresses) did:
+> 
+> xte 'usleep 500000' 'keydown Shift_L' 'keydown Caps_Lock' 'keyup Caps_Lock'
+> 'keyup Shift_L'
+> 
+> So, this seems to be some stupied timing issue.  I'm sorry about
+> bothering...
+
+If it’s just a timing issue, you may want to add a delay, like this:
+
+for_window [window_role="terminal"] exec --no-startup-id sleep 1 && dbus-send --dest=ru.gentoo.KbddService /ru/gentoo/KbddService ru.gentoo.kbdd.set_layout uint32:1
+
+-- 
+Mateusz Poszwa
+
+From mailinglists at xgm.de  Wed Sep  2 16:06:41 2015
+From: mailinglists at xgm.de (Florian Lindner)
+Date: Wed, 02 Sep 2015 16:06:41 +0200
+Subject: [i3] Keep windows focused on workspace move
+Message-ID: <4795506.uIXWhWTBxv@asaru>
+
+Hello,
+
+when I move a window from a workspace to another (mod + shift + num) it looses the focus and a window (or parent) of the originating workspace is focused.
+
+How can I have the window to stay focused when moved across workspaces?
+
+Use case:
+I have a conversation open on the small and farer away laptop screen. I see activity there and I move it to one of my main screens. I want it to keep focused.
+
+Best Regards,
+Florian
+
+From old4 at o2.pl  Wed Sep  2 16:17:56 2015
+From: old4 at o2.pl (Mateusz Poszwa)
+Date: Wed, 2 Sep 2015 16:17:56 +0200
+Subject: [i3] Keep windows focused on workspace move
+In-Reply-To: <4795506.uIXWhWTBxv@asaru>
+References: <4795506.uIXWhWTBxv@asaru>
+Message-ID: <20150902161756.0a4b27bd@Blickensderfer>
+
+Je 2015-09-02 16:06:41
+Florian Lindner <mailinglists at xgm.de> skribis:
+
+> Hello,
+> 
+> when I move a window from a workspace to another (mod + shift + num) it looses the focus and a window (or parent) of the originating workspace is focused.
+> 
+> How can I have the window to stay focused when moved across workspaces?
+> 
+> Use case:
+> I have a conversation open on the small and farer away laptop screen. I see activity there and I move it to one of my main screens. I want it to keep focused.
+> 
+> Best Regards,
+> Florian
+
+Hello.
+
+Try to change your binding from
+move workspace «X»
+to
+move workspace «X», focus workspace «X»
+
+-- 
+Mateusz Poszwa
+
+From mailinglists at xgm.de  Wed Sep  2 16:38:58 2015
+From: mailinglists at xgm.de (Florian Lindner)
+Date: Wed, 02 Sep 2015 16:38:58 +0200
+Subject: [i3] Keep windows focused on workspace move
+In-Reply-To: <20150902161756.0a4b27bd@Blickensderfer>
+References: <4795506.uIXWhWTBxv@asaru> <20150902161756.0a4b27bd@Blickensderfer>
+Message-ID: <37927960.ndbX3h2WTL@asaru>
+
+Hello,
+
+Am Mittwoch, 2. September 2015, 16:17:56 schrieb Mateusz Poszwa:
+> Je 2015-09-02 16:06:41
+> Florian Lindner <mailinglists at xgm.de> skribis:
+> 
+> > Hello,
+> > 
+> > when I move a window from a workspace to another (mod + shift + num) it looses the focus and a window (or parent) of the originating workspace is focused.
+> > 
+> > How can I have the window to stay focused when moved across workspaces?
+> > 
+> > Use case:
+> > I have a conversation open on the small and farer away laptop screen. I see activity there and I move it to one of my main screens. I want it to keep focused.
+> > 
+> > Best Regards,
+> > Florian
+> 
+> Hello.
+> 
+> Try to change your binding from
+> move workspace «X»
+> to
+> move workspace «X», focus workspace «X»
+
+I have set it to:
+
+bindsym $mod+Shift+1 move container to workspace 1, focus workspace 1
+bindsym $mod+Shift+2 move container to workspace 2, focus workspace 2
+bindsym $mod+Shift+3 move container to workspace 3, focus workspace 3
+bindsym $mod+Shift+4 move container to workspace 4, focus workspace 4
+[...]
+
+but that shows no effect.
+
+Thanks,
+Florian
+
+From mailinglists at xgm.de  Wed Sep  2 16:58:27 2015
+From: mailinglists at xgm.de (Florian Lindner)
+Date: Wed, 02 Sep 2015 16:58:27 +0200
+Subject: [i3] Keep windows focused on workspace move
+In-Reply-To: <37927960.ndbX3h2WTL@asaru>
+References: <4795506.uIXWhWTBxv@asaru>
+ <20150902161756.0a4b27bd@Blickensderfer> <37927960.ndbX3h2WTL@asaru>
+Message-ID: <1516983.lJ1UcVK1X8@asaru>
+
+Ok, it works like that:
+
+bindsym $mod+Shift+1 move container to workspace 1,  workspace 1
+bindsym $mod+Shift+2 move container to workspace 2,  workspace 2
+bindsym $mod+Shift+3 move container to workspace 3,  workspace 3
+bindsym $mod+Shift+4 move container to workspace 4,  workspace 4
+bindsym $mod+Shift+5 move container to workspace 5,  workspace 5
+
+Best,
+Florian
+
+
+Am Mittwoch, 2. September 2015, 16:38:58 schrieb Florian Lindner:
+> Hello,
+> 
+> Am Mittwoch, 2. September 2015, 16:17:56 schrieb Mateusz Poszwa:
+> > Je 2015-09-02 16:06:41
+> > Florian Lindner <mailinglists at xgm.de> skribis:
+> > 
+> > > Hello,
+> > > 
+> > > when I move a window from a workspace to another (mod + shift + num) it looses the focus and a window (or parent) of the originating workspace is focused.
+> > > 
+> > > How can I have the window to stay focused when moved across workspaces?
+> > > 
+> > > Use case:
+> > > I have a conversation open on the small and farer away laptop screen. I see activity there and I move it to one of my main screens. I want it to keep focused.
+> > > 
+> > > Best Regards,
+> > > Florian
+> > 
+> > Hello.
+> > 
+> > Try to change your binding from
+> > move workspace «X»
+> > to
+> > move workspace «X», focus workspace «X»
+> 
+> I have set it to:
+> 
+> bindsym $mod+Shift+1 move container to workspace 1, focus workspace 1
+> bindsym $mod+Shift+2 move container to workspace 2, focus workspace 2
+> bindsym $mod+Shift+3 move container to workspace 3, focus workspace 3
+> bindsym $mod+Shift+4 move container to workspace 4, focus workspace 4
+> [...]
+> 
+> but that shows no effect.
+> 
+> Thanks,
+> Florian
+
+From serge at kroescontrol.nl  Wed Sep  2 16:59:07 2015
+From: serge at kroescontrol.nl (Serge Kroes)
+Date: Wed, 2 Sep 2015 16:59:07 +0200
+Subject: [i3] Keep windows focused on workspace move
+In-Reply-To: <37927960.ndbX3h2WTL@asaru>
+References: <4795506.uIXWhWTBxv@asaru> <20150902161756.0a4b27bd@Blickensderfer>
+ <37927960.ndbX3h2WTL@asaru>
+Message-ID: <CAFSt44aQ3AynNuOqY-hg60hPuJKp23KZjj2X0cj1OPfKy_bWVw@mail.gmail.com>
+
+Hi
+
+i'm using this:
+bindsym $mod+Shift+1 move container to workspace $WS1, exec i3-msg
+workspace $WS1, focus
+
+
+On Wed, Sep 2, 2015 at 4:38 PM, Florian Lindner <mailinglists at xgm.de> wrote:
+
+> Hello,
+>
+> Am Mittwoch, 2. September 2015, 16:17:56 schrieb Mateusz Poszwa:
+> > Je 2015-09-02 16:06:41
+> > Florian Lindner <mailinglists at xgm.de> skribis:
+> >
+> > > Hello,
+> > >
+> > > when I move a window from a workspace to another (mod + shift + num)
+> it looses the focus and a window (or parent) of the originating workspace
+> is focused.
+> > >
+> > > How can I have the window to stay focused when moved across workspaces?
+> > >
+> > > Use case:
+> > > I have a conversation open on the small and farer away laptop screen.
+> I see activity there and I move it to one of my main screens. I want it to
+> keep focused.
+> > >
+> > > Best Regards,
+> > > Florian
+> >
+> > Hello.
+> >
+> > Try to change your binding from
+> > move workspace «X»
+> > to
+> > move workspace «X», focus workspace «X»
+>
+> I have set it to:
+>
+> bindsym $mod+Shift+1 move container to workspace 1, focus workspace 1
+> bindsym $mod+Shift+2 move container to workspace 2, focus workspace 2
+> bindsym $mod+Shift+3 move container to workspace 3, focus workspace 3
+> bindsym $mod+Shift+4 move container to workspace 4, focus workspace 4
+> [...]
+>
+> but that shows no effect.
+>
+> Thanks,
+> Florian
+>
+
+
+
+-- 
+Serge Kroes | Kroescontrol <http://kroescontrol.nl> | LinkedIn
+<https://www.linkedin.com/in/skroes> | Twitter
+<https://twitter.com/sergekroes>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150902/7c49d353/attachment.html>
+
+From michael at i3wm.org  Thu Sep  3 20:40:51 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 3 Sep 2015 20:40:51 +0200
+Subject: [i3] Keep windows focused on workspace move
+In-Reply-To: <CAFSt44aQ3AynNuOqY-hg60hPuJKp23KZjj2X0cj1OPfKy_bWVw@mail.gmail.com>
+References: <4795506.uIXWhWTBxv@asaru> <20150902161756.0a4b27bd@Blickensderfer>
+ <37927960.ndbX3h2WTL@asaru>
+ <CAFSt44aQ3AynNuOqY-hg60hPuJKp23KZjj2X0cj1OPfKy_bWVw@mail.gmail.com>
+Message-ID: <CANnVG6=ySTCSSfZeoDBM7p=5fX69=N+RUOpgQ9RagVM6ozHNkA@mail.gmail.com>
+
+What are you trying to accomplish with “exec i3-msg workspace $WS1”?
+This is equivalent to just “workspace $WS1”, but will be executed
+out-of-order because it spawns a new process in the background which
+sends the command.
+
+Also, I think the “focus” command used on its own (i.e. without any
+criteria) is a no-op.
+
+The previously mentioned “move container to workspace 1, workspace 1”
+command is the way to go.
+
+On Wed, Sep 2, 2015 at 4:59 PM, Serge Kroes <serge at kroescontrol.nl> wrote:
+> Hi
+>
+> i'm using this:
+> bindsym $mod+Shift+1 move container to workspace $WS1, exec i3-msg workspace
+> $WS1, focus
+>
+>
+> On Wed, Sep 2, 2015 at 4:38 PM, Florian Lindner <mailinglists at xgm.de> wrote:
+>>
+>> Hello,
+>>
+>> Am Mittwoch, 2. September 2015, 16:17:56 schrieb Mateusz Poszwa:
+>> > Je 2015-09-02 16:06:41
+>> > Florian Lindner <mailinglists at xgm.de> skribis:
+>> >
+>> > > Hello,
+>> > >
+>> > > when I move a window from a workspace to another (mod + shift + num)
+>> > > it looses the focus and a window (or parent) of the originating workspace is
+>> > > focused.
+>> > >
+>> > > How can I have the window to stay focused when moved across
+>> > > workspaces?
+>> > >
+>> > > Use case:
+>> > > I have a conversation open on the small and farer away laptop screen.
+>> > > I see activity there and I move it to one of my main screens. I want it to
+>> > > keep focused.
+>> > >
+>> > > Best Regards,
+>> > > Florian
+>> >
+>> > Hello.
+>> >
+>> > Try to change your binding from
+>> > move workspace «X»
+>> > to
+>> > move workspace «X», focus workspace «X»
+>>
+>> I have set it to:
+>>
+>> bindsym $mod+Shift+1 move container to workspace 1, focus workspace 1
+>> bindsym $mod+Shift+2 move container to workspace 2, focus workspace 2
+>> bindsym $mod+Shift+3 move container to workspace 3, focus workspace 3
+>> bindsym $mod+Shift+4 move container to workspace 4, focus workspace 4
+>> [...]
+>>
+>> but that shows no effect.
+>>
+>> Thanks,
+>> Florian
+>
+>
+>
+>
+> --
+> Serge Kroes | Kroescontrol | LinkedIn | Twitter
+
+
+
+-- 
+Best regards,
+Michael
+
+From admin at airblader.de  Thu Sep  3 20:44:10 2015
+From: admin at airblader.de (=?UTF-8?Q?Ingo_B=c3=bcrk?=)
+Date: Thu, 3 Sep 2015 20:44:10 +0200
+Subject: [i3] Keep windows focused on workspace move
+In-Reply-To: <CANnVG6=ySTCSSfZeoDBM7p=5fX69=N+RUOpgQ9RagVM6ozHNkA@mail.gmail.com>
+References: <4795506.uIXWhWTBxv@asaru>
+ <20150902161756.0a4b27bd@Blickensderfer> <37927960.ndbX3h2WTL@asaru>
+ <CAFSt44aQ3AynNuOqY-hg60hPuJKp23KZjj2X0cj1OPfKy_bWVw@mail.gmail.com>
+ <CANnVG6=ySTCSSfZeoDBM7p=5fX69=N+RUOpgQ9RagVM6ozHNkA@mail.gmail.com>
+Message-ID: <55E894FA.7090700@airblader.de>
+
+It should work with just "focus" because the separation with a comma
+means the focus command will still be ran on the matched window.
+
+On 09/03/2015 08:40 PM, Michael Stapelberg wrote:
+> What are you trying to accomplish with “exec i3-msg workspace $WS1”?
+> This is equivalent to just “workspace $WS1”, but will be executed
+> out-of-order because it spawns a new process in the background which
+> sends the command.
+>
+> Also, I think the “focus” command used on its own (i.e. without any
+> criteria) is a no-op.
+>
+> The previously mentioned “move container to workspace 1, workspace 1”
+> command is the way to go.
+>
+> On Wed, Sep 2, 2015 at 4:59 PM, Serge Kroes <serge at kroescontrol.nl> wrote:
+>> Hi
+>>
+>> i'm using this:
+>> bindsym $mod+Shift+1 move container to workspace $WS1, exec i3-msg workspace
+>> $WS1, focus
+>>
+>>
+>> On Wed, Sep 2, 2015 at 4:38 PM, Florian Lindner <mailinglists at xgm.de> wrote:
+>>> Hello,
+>>>
+>>> Am Mittwoch, 2. September 2015, 16:17:56 schrieb Mateusz Poszwa:
+>>>> Je 2015-09-02 16:06:41
+>>>> Florian Lindner <mailinglists at xgm.de> skribis:
+>>>>
+>>>>> Hello,
+>>>>>
+>>>>> when I move a window from a workspace to another (mod + shift + num)
+>>>>> it looses the focus and a window (or parent) of the originating workspace is
+>>>>> focused.
+>>>>>
+>>>>> How can I have the window to stay focused when moved across
+>>>>> workspaces?
+>>>>>
+>>>>> Use case:
+>>>>> I have a conversation open on the small and farer away laptop screen.
+>>>>> I see activity there and I move it to one of my main screens. I want it to
+>>>>> keep focused.
+>>>>>
+>>>>> Best Regards,
+>>>>> Florian
+>>>> Hello.
+>>>>
+>>>> Try to change your binding from
+>>>> move workspace «X»
+>>>> to
+>>>> move workspace «X», focus workspace «X»
+>>> I have set it to:
+>>>
+>>> bindsym $mod+Shift+1 move container to workspace 1, focus workspace 1
+>>> bindsym $mod+Shift+2 move container to workspace 2, focus workspace 2
+>>> bindsym $mod+Shift+3 move container to workspace 3, focus workspace 3
+>>> bindsym $mod+Shift+4 move container to workspace 4, focus workspace 4
+>>> [...]
+>>>
+>>> but that shows no effect.
+>>>
+>>> Thanks,
+>>> Florian
+>>
+>>
+>>
+>> --
+>> Serge Kroes | Kroescontrol | LinkedIn | Twitter
+>
+>
+
+
+From michael at i3wm.org  Thu Sep  3 20:45:11 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 3 Sep 2015 20:45:11 +0200
+Subject: [i3] Keep windows focused on workspace move
+In-Reply-To: <55E894FA.7090700@airblader.de>
+References: <4795506.uIXWhWTBxv@asaru> <20150902161756.0a4b27bd@Blickensderfer>
+ <37927960.ndbX3h2WTL@asaru>
+ <CAFSt44aQ3AynNuOqY-hg60hPuJKp23KZjj2X0cj1OPfKy_bWVw@mail.gmail.com>
+ <CANnVG6=ySTCSSfZeoDBM7p=5fX69=N+RUOpgQ9RagVM6ozHNkA@mail.gmail.com>
+ <55E894FA.7090700@airblader.de>
+Message-ID: <CANnVG6kbVicn_11T9T4r0fWunRA4b80grR05SCapes-1iegqYg@mail.gmail.com>
+
+Yeah, but bindsym doesn’t match anything. You need to use criteria to
+match windows.
+
+On Thu, Sep 3, 2015 at 8:44 PM, Ingo Bürk <admin at airblader.de> wrote:
+> It should work with just "focus" because the separation with a comma
+> means the focus command will still be ran on the matched window.
+>
+> On 09/03/2015 08:40 PM, Michael Stapelberg wrote:
+>> What are you trying to accomplish with “exec i3-msg workspace $WS1”?
+>> This is equivalent to just “workspace $WS1”, but will be executed
+>> out-of-order because it spawns a new process in the background which
+>> sends the command.
+>>
+>> Also, I think the “focus” command used on its own (i.e. without any
+>> criteria) is a no-op.
+>>
+>> The previously mentioned “move container to workspace 1, workspace 1”
+>> command is the way to go.
+>>
+>> On Wed, Sep 2, 2015 at 4:59 PM, Serge Kroes <serge at kroescontrol.nl> wrote:
+>>> Hi
+>>>
+>>> i'm using this:
+>>> bindsym $mod+Shift+1 move container to workspace $WS1, exec i3-msg workspace
+>>> $WS1, focus
+>>>
+>>>
+>>> On Wed, Sep 2, 2015 at 4:38 PM, Florian Lindner <mailinglists at xgm.de> wrote:
+>>>> Hello,
+>>>>
+>>>> Am Mittwoch, 2. September 2015, 16:17:56 schrieb Mateusz Poszwa:
+>>>>> Je 2015-09-02 16:06:41
+>>>>> Florian Lindner <mailinglists at xgm.de> skribis:
+>>>>>
+>>>>>> Hello,
+>>>>>>
+>>>>>> when I move a window from a workspace to another (mod + shift + num)
+>>>>>> it looses the focus and a window (or parent) of the originating workspace is
+>>>>>> focused.
+>>>>>>
+>>>>>> How can I have the window to stay focused when moved across
+>>>>>> workspaces?
+>>>>>>
+>>>>>> Use case:
+>>>>>> I have a conversation open on the small and farer away laptop screen.
+>>>>>> I see activity there and I move it to one of my main screens. I want it to
+>>>>>> keep focused.
+>>>>>>
+>>>>>> Best Regards,
+>>>>>> Florian
+>>>>> Hello.
+>>>>>
+>>>>> Try to change your binding from
+>>>>> move workspace «X»
+>>>>> to
+>>>>> move workspace «X», focus workspace «X»
+>>>> I have set it to:
+>>>>
+>>>> bindsym $mod+Shift+1 move container to workspace 1, focus workspace 1
+>>>> bindsym $mod+Shift+2 move container to workspace 2, focus workspace 2
+>>>> bindsym $mod+Shift+3 move container to workspace 3, focus workspace 3
+>>>> bindsym $mod+Shift+4 move container to workspace 4, focus workspace 4
+>>>> [...]
+>>>>
+>>>> but that shows no effect.
+>>>>
+>>>> Thanks,
+>>>> Florian
+>>>
+>>>
+>>>
+>>> --
+>>> Serge Kroes | Kroescontrol | LinkedIn | Twitter
+>>
+>>
+>
+
+
+
+-- 
+Best regards,
+Michael
+
+From admin at airblader.de  Thu Sep  3 20:46:38 2015
+From: admin at airblader.de (=?UTF-8?Q?Ingo_B=c3=bcrk?=)
+Date: Thu, 3 Sep 2015 20:46:38 +0200
+Subject: [i3] Keep windows focused on workspace move
+In-Reply-To: <CANnVG6kbVicn_11T9T4r0fWunRA4b80grR05SCapes-1iegqYg@mail.gmail.com>
+References: <4795506.uIXWhWTBxv@asaru>
+ <20150902161756.0a4b27bd@Blickensderfer> <37927960.ndbX3h2WTL@asaru>
+ <CAFSt44aQ3AynNuOqY-hg60hPuJKp23KZjj2X0cj1OPfKy_bWVw@mail.gmail.com>
+ <CANnVG6=ySTCSSfZeoDBM7p=5fX69=N+RUOpgQ9RagVM6ozHNkA@mail.gmail.com>
+ <55E894FA.7090700@airblader.de>
+ <CANnVG6kbVicn_11T9T4r0fWunRA4b80grR05SCapes-1iegqYg@mail.gmail.com>
+Message-ID: <55E8958E.1010804@airblader.de>
+
+Yes, true. I guess I was too quick on that. :)
+
+On 09/03/2015 08:45 PM, Michael Stapelberg wrote:
+> Yeah, but bindsym doesn’t match anything. You need to use criteria to
+> match windows.
+>
+> On Thu, Sep 3, 2015 at 8:44 PM, Ingo Bürk <admin at airblader.de> wrote:
+>> It should work with just "focus" because the separation with a comma
+>> means the focus command will still be ran on the matched window.
+>>
+>> On 09/03/2015 08:40 PM, Michael Stapelberg wrote:
+>>> What are you trying to accomplish with “exec i3-msg workspace $WS1”?
+>>> This is equivalent to just “workspace $WS1”, but will be executed
+>>> out-of-order because it spawns a new process in the background which
+>>> sends the command.
+>>>
+>>> Also, I think the “focus” command used on its own (i.e. without any
+>>> criteria) is a no-op.
+>>>
+>>> The previously mentioned “move container to workspace 1, workspace 1”
+>>> command is the way to go.
+>>>
+>>> On Wed, Sep 2, 2015 at 4:59 PM, Serge Kroes <serge at kroescontrol.nl> wrote:
+>>>> Hi
+>>>>
+>>>> i'm using this:
+>>>> bindsym $mod+Shift+1 move container to workspace $WS1, exec i3-msg workspace
+>>>> $WS1, focus
+>>>>
+>>>>
+>>>> On Wed, Sep 2, 2015 at 4:38 PM, Florian Lindner <mailinglists at xgm.de> wrote:
+>>>>> Hello,
+>>>>>
+>>>>> Am Mittwoch, 2. September 2015, 16:17:56 schrieb Mateusz Poszwa:
+>>>>>> Je 2015-09-02 16:06:41
+>>>>>> Florian Lindner <mailinglists at xgm.de> skribis:
+>>>>>>
+>>>>>>> Hello,
+>>>>>>>
+>>>>>>> when I move a window from a workspace to another (mod + shift + num)
+>>>>>>> it looses the focus and a window (or parent) of the originating workspace is
+>>>>>>> focused.
+>>>>>>>
+>>>>>>> How can I have the window to stay focused when moved across
+>>>>>>> workspaces?
+>>>>>>>
+>>>>>>> Use case:
+>>>>>>> I have a conversation open on the small and farer away laptop screen.
+>>>>>>> I see activity there and I move it to one of my main screens. I want it to
+>>>>>>> keep focused.
+>>>>>>>
+>>>>>>> Best Regards,
+>>>>>>> Florian
+>>>>>> Hello.
+>>>>>>
+>>>>>> Try to change your binding from
+>>>>>> move workspace «X»
+>>>>>> to
+>>>>>> move workspace «X», focus workspace «X»
+>>>>> I have set it to:
+>>>>>
+>>>>> bindsym $mod+Shift+1 move container to workspace 1, focus workspace 1
+>>>>> bindsym $mod+Shift+2 move container to workspace 2, focus workspace 2
+>>>>> bindsym $mod+Shift+3 move container to workspace 3, focus workspace 3
+>>>>> bindsym $mod+Shift+4 move container to workspace 4, focus workspace 4
+>>>>> [...]
+>>>>>
+>>>>> but that shows no effect.
+>>>>>
+>>>>> Thanks,
+>>>>> Florian
+>>>>
+>>>>
+>>>> --
+>>>> Serge Kroes | Kroescontrol | LinkedIn | Twitter
+>>>
+>
+>
+
+
+From thumbd03803 at gmail.com  Sat Sep  5 11:19:47 2015
+From: thumbd03803 at gmail.com (Liang Ying-Ruei)
+Date: Sat, 5 Sep 2015 17:19:47 +0800
+Subject: [i3]  Configuration for steam big picture mode
+Message-ID: <CAGBd4kDEQKXoJcp=k1c6qNo0thnFwAPLNPwc+fw-gtA=2ZHcBQ@mail.gmail.com>
+
+I love i3 but this confuse me a while.
+I's possible to enter big picture mode with fullscreen enable, but
+after launching game i3 won't focus to the new window but stay.
+Is there any config or workaround that could provide the best
+experience for big picture mode on i3?
+
+-- 
+Work hard, but also play hard and have fun.
+
+From jeff at purple.com  Sun Sep  6 08:20:53 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Sun, 6 Sep 2015 08:20:53 +0200
+Subject: [i3] Configuration for steam big picture mode
+In-Reply-To: <CAGBd4kDEQKXoJcp=k1c6qNo0thnFwAPLNPwc+fw-gtA=2ZHcBQ@mail.gmail.com>
+References: <CAGBd4kDEQKXoJcp=k1c6qNo0thnFwAPLNPwc+fw-gtA=2ZHcBQ@mail.gmail.com>
+Message-ID: <CAM4Y7zxRdH5C_6jFDtyKWJoRy8nb_mqNRMwrmuYnx-DsvQy0BA@mail.gmail.com>
+
+When you say "big picture mode", I understand what i3 calls fullscreen mode
+<https://i3wm.org/docs/userguide.html#_toggling_fullscreen_mode_for_a_window>
+.
+Does it work for you simply to switch to full screen after game launch?
+
+I think I remember seeing some hooks that permit you to match certain
+actions to certain events.  I can't find the documentation now, but maybe
+someone else can fill in.  So I think you can express "when this type of
+window maps, I'd like this action (toggle fullscreen) to happen".  (Or
+maybe I'm thinking of workspace assignment
+<https://i3wm.org/docs/userguide.html#_automatically_putting_clients_on_specific_workspaces>
+and I'm wrong.)
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only if I'm in the UK
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+
+On 5 September 2015 at 11:19, Liang Ying-Ruei <thumbd03803 at gmail.com> wrote:
+
+> I love i3 but this confuse me a while.
+> I's possible to enter big picture mode with fullscreen enable, but
+> after launching game i3 won't focus to the new window but stay.
+> Is there any config or workaround that could provide the best
+> experience for big picture mode on i3?
+>
+> --
+> Work hard, but also play hard and have fun.
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150906/405f4d0e/attachment.html>
+
+From old4 at o2.pl  Sun Sep  6 13:51:25 2015
+From: old4 at o2.pl (Mateusz Poszwa)
+Date: Sun, 6 Sep 2015 13:51:25 +0200
+Subject: [i3] Configuration for steam big picture mode
+In-Reply-To: <CAM4Y7zxRdH5C_6jFDtyKWJoRy8nb_mqNRMwrmuYnx-DsvQy0BA@mail.gmail.com>
+References: <CAGBd4kDEQKXoJcp=k1c6qNo0thnFwAPLNPwc+fw-gtA=2ZHcBQ@mail.gmail.com>
+ <CAM4Y7zxRdH5C_6jFDtyKWJoRy8nb_mqNRMwrmuYnx-DsvQy0BA@mail.gmail.com>
+Message-ID: <20150906135125.70898ea4@Blickensderfer>
+
+Hello.
+
+Je 2015-09-06 08:20:53
+Jeff Abrahamson <jeff at purple.com> skribis:
+
+> When you say "big picture mode", I understand what i3 calls fullscreen mode
+> <https://i3wm.org/docs/userguide.html#_toggling_fullscreen_mode_for_a_window>
+> .
+> Does it work for you simply to switch to full screen after game launch?
+> 
+> I think I remember seeing some hooks that permit you to match certain
+> actions to certain events.  I can't find the documentation now, but maybe
+> someone else can fill in.  So I think you can express "when this type of
+> window maps, I'd like this action (toggle fullscreen) to happen".  (Or
+> maybe I'm thinking of workspace assignment
+> <https://i3wm.org/docs/userguide.html#_automatically_putting_clients_on_specific_workspaces>
+> and I'm wrong.)
+(…)
+
+You probably meant to point to this:
+http://i3wm.org/docs/userguide.html#_arbitrary_commands_for_specific_windows_for_window
+
+> On 5 September 2015 at 11:19, Liang Ying-Ruei <thumbd03803 at gmail.com> wrote:
+> 
+> > I love i3 but this confuse me a while.
+> > I's possible to enter big picture mode with fullscreen enable, but
+> > after launching game i3 won't focus to the new window but stay.
+> > Is there any config or workaround that could provide the best
+> > experience for big picture mode on i3?
+
+As far as I understand, (and I don’t know what you mean by big picture
+mode, so I’ll just assume you mean fullscreen mode) you are trying
+to launch a program with a fullscreen window while running another
+program, which already has a fullscreen window. By default i3 prevents
+that, as usually when you make a window fullscreen, this means you want
+to completely focus on it, and anything that tries to steal that focus
+is inhibited. However, this behaviour can be changed. For details, see:
+http://i3wm.org/docs/userguide.html#_popups_during_fullscreen_mode
+
+-- 
+Mateusz Poszwa
+
+From rob at mrrob.info  Mon Sep  7 02:56:26 2015
+From: rob at mrrob.info (Mrrob)
+Date: Mon, 7 Sep 2015 08:56:26 +0800
+Subject: [i3] Configuration for steam big picture mode
+In-Reply-To: <20150906135125.70898ea4@Blickensderfer>
+References: <CAGBd4kDEQKXoJcp=k1c6qNo0thnFwAPLNPwc+fw-gtA=2ZHcBQ@mail.gmail.com>
+ <CAM4Y7zxRdH5C_6jFDtyKWJoRy8nb_mqNRMwrmuYnx-DsvQy0BA@mail.gmail.com>
+ <20150906135125.70898ea4@Blickensderfer>
+Message-ID: <55ECE0BA.6040204@mrrob.info>
+
+On 06/09/15 19:51, Mateusz Poszwa wrote:
+> Hello.
+>
+> Je 2015-09-06 08:20:53
+> Jeff Abrahamson <jeff at purple.com> skribis:
+>
+>> When you say "big picture mode", I understand what i3 calls fullscreen mode
+>> <https://i3wm.org/docs/userguide.html#_toggling_fullscreen_mode_for_a_window>
+>> .
+>> Does it work for you simply to switch to full screen after game launch?
+>>
+>> I think I remember seeing some hooks that permit you to match certain
+>> actions to certain events.  I can't find the documentation now, but maybe
+>> someone else can fill in.  So I think you can express "when this type of
+>> window maps, I'd like this action (toggle fullscreen) to happen".  (Or
+>> maybe I'm thinking of workspace assignment
+>> <https://i3wm.org/docs/userguide.html#_automatically_putting_clients_on_specific_workspaces>
+>> and I'm wrong.)
+> (…)
+>
+> You probably meant to point to this:
+> http://i3wm.org/docs/userguide.html#_arbitrary_commands_for_specific_windows_for_window
+>
+>> On 5 September 2015 at 11:19, Liang Ying-Ruei <thumbd03803 at gmail.com> wrote:
+>>
+>>> I love i3 but this confuse me a while.
+>>> I's possible to enter big picture mode with fullscreen enable, but
+>>> after launching game i3 won't focus to the new window but stay.
+>>> Is there any config or workaround that could provide the best
+>>> experience for big picture mode on i3?
+>
+> As far as I understand, (and I don’t know what you mean by big picture
+> mode, so I’ll just assume you mean fullscreen mode) you are trying
+> to launch a program with a fullscreen window while running another
+> program, which already has a fullscreen window. By default i3 prevents
+> that, as usually when you make a window fullscreen, this means you want
+> to completely focus on it, and anything that tries to steal that focus
+> is inhibited. However, this behaviour can be changed. For details, see:
+> http://i3wm.org/docs/userguide.html#_popups_during_fullscreen_mode
+>
+
+Hi all,
+
+Liang is talking about "Steam Big Picture Mode" which is a <hipster 
+accent> 10-foot interface for the Steam digital distribution, DRM, 
+multiplayer and social networking platform </hipster accent>. Sorry, I'm 
+trying to be funny not patronising.
+
+The Big Picture Mode starts in i3's fullscreen mode but launches new 
+windows for games/software. Liang's (and my) desire would seem to be for 
+these new windows to go fullscreen in front of the Big Picture UI.
+
+Userguide Section 4.20 does not seem to provide an option for the above 
+behaviour and I haven't thought of a smart way to workaround this.
+
+Regards,
+
+---
+mrrob
+---
+
+From old4 at o2.pl  Tue Sep  8 17:26:41 2015
+From: old4 at o2.pl (Mateusz Poszwa)
+Date: Tue, 8 Sep 2015 17:26:41 +0200
+Subject: [i3] Configuration for steam big picture mode
+In-Reply-To: <55ECE0BA.6040204@mrrob.info>
+References: <CAGBd4kDEQKXoJcp=k1c6qNo0thnFwAPLNPwc+fw-gtA=2ZHcBQ@mail.gmail.com>
+ <CAM4Y7zxRdH5C_6jFDtyKWJoRy8nb_mqNRMwrmuYnx-DsvQy0BA@mail.gmail.com>
+ <20150906135125.70898ea4@Blickensderfer>
+ <55ECE0BA.6040204@mrrob.info>
+Message-ID: <20150908172641.3c183bde@Blickensderfer>
+
+Je 2015-09-07 08:56:26
+Mrrob <rob at mrrob.info> skribis:
+
+> On 06/09/15 19:51, Mateusz Poszwa wrote:
+> > Hello.
+> >
+> > Je 2015-09-06 08:20:53
+> > Jeff Abrahamson <jeff at purple.com> skribis:
+> >
+> >> When you say "big picture mode", I understand what i3 calls fullscreen mode
+> >> <https://i3wm.org/docs/userguide.html#_toggling_fullscreen_mode_for_a_window>
+> >> .
+> >> Does it work for you simply to switch to full screen after game launch?
+> >>
+> >> I think I remember seeing some hooks that permit you to match certain
+> >> actions to certain events.  I can't find the documentation now, but maybe
+> >> someone else can fill in.  So I think you can express "when this type of
+> >> window maps, I'd like this action (toggle fullscreen) to happen".  (Or
+> >> maybe I'm thinking of workspace assignment
+> >> <https://i3wm.org/docs/userguide.html#_automatically_putting_clients_on_specific_workspaces>
+> >> and I'm wrong.)
+> > (…)
+> >
+> > You probably meant to point to this:
+> > http://i3wm.org/docs/userguide.html#_arbitrary_commands_for_specific_windows_for_window
+> >
+> >> On 5 September 2015 at 11:19, Liang Ying-Ruei <thumbd03803 at gmail.com> wrote:
+> >>
+> >>> I love i3 but this confuse me a while.
+> >>> I's possible to enter big picture mode with fullscreen enable, but
+> >>> after launching game i3 won't focus to the new window but stay.
+> >>> Is there any config or workaround that could provide the best
+> >>> experience for big picture mode on i3?
+> >
+> > As far as I understand, (and I don’t know what you mean by big picture
+> > mode, so I’ll just assume you mean fullscreen mode) you are trying
+> > to launch a program with a fullscreen window while running another
+> > program, which already has a fullscreen window. By default i3 prevents
+> > that, as usually when you make a window fullscreen, this means you want
+> > to completely focus on it, and anything that tries to steal that focus
+> > is inhibited. However, this behaviour can be changed. For details, see:
+> > http://i3wm.org/docs/userguide.html#_popups_during_fullscreen_mode
+> >
+> 
+> Hi all,
+> 
+> Liang is talking about "Steam Big Picture Mode" which is a <hipster 
+> accent> 10-foot interface for the Steam digital distribution, DRM, 
+> multiplayer and social networking platform </hipster accent>. Sorry, I'm 
+> trying to be funny not patronising.
+> 
+> The Big Picture Mode starts in i3's fullscreen mode but launches new 
+> windows for games/software. Liang's (and my) desire would seem to be for 
+> these new windows to go fullscreen in front of the Big Picture UI.
+> 
+> Userguide Section 4.20 does not seem to provide an option for the above 
+> behaviour and I haven't thought of a smart way to workaround this.
+
+Have you tried to set popup_during_fullscreen to leave_fullscreen?
+If so, please describe how it behaves, and how would you prefer
+it to behave instead. If not, try it and do the above.
+
+Thanks.
+
+-- 
+Mateusz Poszwa
+
+From rob at mrrob.info  Wed Sep  9 13:39:19 2015
+From: rob at mrrob.info (Mrrob)
+Date: Wed, 9 Sep 2015 19:39:19 +0800
+Subject: [i3] Configuration for steam big picture mode
+In-Reply-To: <20150908172641.3c183bde@Blickensderfer>
+References: <CAGBd4kDEQKXoJcp=k1c6qNo0thnFwAPLNPwc+fw-gtA=2ZHcBQ@mail.gmail.com>
+ <CAM4Y7zxRdH5C_6jFDtyKWJoRy8nb_mqNRMwrmuYnx-DsvQy0BA@mail.gmail.com>
+ <20150906135125.70898ea4@Blickensderfer> <55ECE0BA.6040204@mrrob.info>
+ <20150908172641.3c183bde@Blickensderfer>
+Message-ID: <55F01A67.6050708@mrrob.info>
+
+On 08/09/15 23:26, Mateusz Poszwa wrote:
+> Je 2015-09-07 08:56:26
+> Mrrob <rob at mrrob.info> skribis:
+>
+>> On 06/09/15 19:51, Mateusz Poszwa wrote:
+>>> Hello.
+>>>
+>>> Je 2015-09-06 08:20:53
+>>> Jeff Abrahamson <jeff at purple.com> skribis:
+>>>
+>>>> When you say "big picture mode", I understand what i3 calls fullscreen mode
+>>>> <https://i3wm.org/docs/userguide.html#_toggling_fullscreen_mode_for_a_window>
+>>>> .
+>>>> Does it work for you simply to switch to full screen after game launch?
+>>>>
+>>>> I think I remember seeing some hooks that permit you to match certain
+>>>> actions to certain events.  I can't find the documentation now, but maybe
+>>>> someone else can fill in.  So I think you can express "when this type of
+>>>> window maps, I'd like this action (toggle fullscreen) to happen".  (Or
+>>>> maybe I'm thinking of workspace assignment
+>>>> <https://i3wm.org/docs/userguide.html#_automatically_putting_clients_on_specific_workspaces>
+>>>> and I'm wrong.)
+>>> (…)
+>>>
+>>> You probably meant to point to this:
+>>> http://i3wm.org/docs/userguide.html#_arbitrary_commands_for_specific_windows_for_window
+>>>
+>>>> On 5 September 2015 at 11:19, Liang Ying-Ruei <thumbd03803 at gmail.com> wrote:
+>>>>
+>>>>> I love i3 but this confuse me a while.
+>>>>> I's possible to enter big picture mode with fullscreen enable, but
+>>>>> after launching game i3 won't focus to the new window but stay.
+>>>>> Is there any config or workaround that could provide the best
+>>>>> experience for big picture mode on i3?
+>>>
+>>> As far as I understand, (and I don’t know what you mean by big picture
+>>> mode, so I’ll just assume you mean fullscreen mode) you are trying
+>>> to launch a program with a fullscreen window while running another
+>>> program, which already has a fullscreen window. By default i3 prevents
+>>> that, as usually when you make a window fullscreen, this means you want
+>>> to completely focus on it, and anything that tries to steal that focus
+>>> is inhibited. However, this behaviour can be changed. For details, see:
+>>> http://i3wm.org/docs/userguide.html#_popups_during_fullscreen_mode
+>>>
+>>
+>> Hi all,
+>>
+>> Liang is talking about "Steam Big Picture Mode" which is a <hipster
+>> accent> 10-foot interface for the Steam digital distribution, DRM,
+>> multiplayer and social networking platform </hipster accent>. Sorry, I'm
+>> trying to be funny not patronising.
+>>
+>> The Big Picture Mode starts in i3's fullscreen mode but launches new
+>> windows for games/software. Liang's (and my) desire would seem to be for
+>> these new windows to go fullscreen in front of the Big Picture UI.
+>>
+>> Userguide Section 4.20 does not seem to provide an option for the above
+>> behaviour and I haven't thought of a smart way to workaround this.
+>
+> Have you tried to set popup_during_fullscreen to leave_fullscreen?
+> If so, please describe how it behaves, and how would you prefer
+> it to behave instead. If not, try it and do the above.
+>
+> Thanks.
+>
+Hi Mateusz,
+
+Thanks for the advice. Setting "popup_during_fullscreen 
+leave_fullscreen" works well. I remember previously (24months ago) 
+noting that it was unsatisfactory but I now notice that the behaviour is 
+the same as normal mode (ie. steam not in big picture mode). Some games 
+do not start fullscreen if in big picture mode or not but with that 
+setting they will at least be in front of the big picture UI. I am sure 
+that this can be blamed on the games that behave like this and not on i3.
+
+Thanks again!
+
+---
+mrrob
+---
+
+From jeff at purple.com  Fri Sep 11 14:41:54 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Fri, 11 Sep 2015 14:41:54 +0200
+Subject: [i3] resize with mouse
+Message-ID: <CAM4Y7zy2rkNWxQa8YFWX7nU+pQGceG7nfsUzPvmgJ=L43TaPtQ@mail.gmail.com>
+
+I3 lets me resize windows with my mouse in case I should want to use my
+mouse.  Is it intentional that there's no mouse cursor feedback when a
+click-drag will cause a resize?  (The target seems to be three pixels wide.)
+
+Related, I notice that mouse-initiated horizontal resize works but vertical
+does not.  User error, bug, intentional?
+
+Also, more out of curiosity than anything else, is it intentional that a
+click and release within that three pixel band always move the mouse to the
+center of the band?  Yeah, this is a one pixel shift, so it doesn't matter
+to me, but having played with it, I'm now curious if there's a reason for
+the jump.
+
+Fwiw, i3 version 4.8 (2014-06-15, branch "4.8").
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only if I'm in the UK
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150911/90cbdc57/attachment.html>
+
+From admin at airblader.de  Fri Sep 11 15:25:05 2015
+From: admin at airblader.de (=?UTF-8?Q?Ingo_B=c3=bcrk?=)
+Date: Fri, 11 Sep 2015 15:25:05 +0200
+Subject: [i3] resize with mouse
+In-Reply-To: <CAM4Y7zy2rkNWxQa8YFWX7nU+pQGceG7nfsUzPvmgJ=L43TaPtQ@mail.gmail.com>
+References: <CAM4Y7zy2rkNWxQa8YFWX7nU+pQGceG7nfsUzPvmgJ=L43TaPtQ@mail.gmail.com>
+Message-ID: <55F2D631.9010607@airblader.de>
+
+i3 4.8 is really old. We generally don't support old versions. I'd
+recommend updating to 4.10.x and see which of your questions are still
+valid.
+
+On 09/11/2015 02:41 PM, Jeff Abrahamson wrote:
+> I3 lets me resize windows with my mouse in case I should want to use my
+> mouse.  Is it intentional that there's no mouse cursor feedback when a
+> click-drag will cause a resize?  (The target seems to be three pixels wide.)
+>
+> Related, I notice that mouse-initiated horizontal resize works but vertical
+> does not.  User error, bug, intentional?
+>
+> Also, more out of curiosity than anything else, is it intentional that a
+> click and release within that three pixel band always move the mouse to the
+> center of the band?  Yeah, this is a one pixel shift, so it doesn't matter
+> to me, but having played with it, I'm now curious if there's a reason for
+> the jump.
+>
+> Fwiw, i3 version 4.8 (2014-06-15, branch "4.8").
+>
+> Jeff Abrahamson
+> +33 6 24 40 01 57
+> +44 7920 594 255    <-- only if I'm in the UK
+>
+> http://jeff.purple.com/
+> http://blog.purple.com/jeff/
+>
+
+
+From mde at micahelliott.com  Fri Sep 11 19:04:39 2015
+From: mde at micahelliott.com (Micah Elliott)
+Date: Fri, 11 Sep 2015 10:04:39 -0700
+Subject: [i3] resize with mouse
+In-Reply-To: <CAM4Y7zy2rkNWxQa8YFWX7nU+pQGceG7nfsUzPvmgJ=L43TaPtQ@mail.gmail.com>
+References: <CAM4Y7zy2rkNWxQa8YFWX7nU+pQGceG7nfsUzPvmgJ=L43TaPtQ@mail.gmail.com>
+Message-ID: <CAELbujqCQXk=U6Z3HH58nVbWi=s+PSoW65M8LsgUPMaNs2pKvg@mail.gmail.com>
+
+> The target seems to be three pixels wide
+
+It's not clear if you're aware of the incredibly convenient "Mod +
+RightClick" to drag window resizing. Then you can quickly click just
+about anywhere on the screen and be grabbing an edge. The feature may
+render your concerns moot.
+
+--
+twitter:@MicahElliott  |  email:mde at MicahElliott.com  |  http://membean.com
+Remember your words with Membean!
+
+From jeff at purple.com  Fri Sep 11 19:18:39 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Fri, 11 Sep 2015 19:18:39 +0200
+Subject: [i3] resize with mouse
+In-Reply-To: <CAELbujqCQXk=U6Z3HH58nVbWi=s+PSoW65M8LsgUPMaNs2pKvg@mail.gmail.com>
+References: <CAM4Y7zy2rkNWxQa8YFWX7nU+pQGceG7nfsUzPvmgJ=L43TaPtQ@mail.gmail.com>
+ <CAELbujqCQXk=U6Z3HH58nVbWi=s+PSoW65M8LsgUPMaNs2pKvg@mail.gmail.com>
+Message-ID: <CAM4Y7zyR0iKwbawqQcogsPG6VUK=saGdQAzi+mf-dAr-Jcoo7A@mail.gmail.com>
+
+I was not aware of Mod + RightClick.  That's cool.  Thanks.  And in that
+context the warp to boundary makes sense: it makes clear what I'm about to
+do.
+
+Mod + RightClick also works for both H and V resize.
+
+So this leaves two questions, since maybe they are bugs, maybe not:
+
+1.  Is it intentional, given that non-mod LeftClick can resize, that there
+is no feedback on hovering over a window edge?
+
+2.  And is it a bug that vertical resize doesn't work without Mod?
+
+I haven't seen fit to restart i3 today (work to do), although I grabbed
+sources to compile from git master.  I'll check once I've compiled and
+restarted.
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only if I'm in the UK
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+
+On 11 September 2015 at 19:04, Micah Elliott <mde at micahelliott.com> wrote:
+
+> > The target seems to be three pixels wide
+>
+> It's not clear if you're aware of the incredibly convenient "Mod +
+> RightClick" to drag window resizing. Then you can quickly click just
+> about anywhere on the screen and be grabbing an edge. The feature may
+> render your concerns moot.
+>
+> --
+> twitter:@MicahElliott  |  email:mde at MicahElliott.com  |
+> http://membean.com
+> Remember your words with Membean!
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150911/1ca106d8/attachment.html>
+
+From michael at i3wm.org  Fri Sep 11 19:24:40 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 11 Sep 2015 19:24:40 +0200
+Subject: [i3] resize with mouse
+In-Reply-To: <CAM4Y7zyR0iKwbawqQcogsPG6VUK=saGdQAzi+mf-dAr-Jcoo7A@mail.gmail.com>
+References: <CAM4Y7zy2rkNWxQa8YFWX7nU+pQGceG7nfsUzPvmgJ=L43TaPtQ@mail.gmail.com>
+ <CAELbujqCQXk=U6Z3HH58nVbWi=s+PSoW65M8LsgUPMaNs2pKvg@mail.gmail.com>
+ <CAM4Y7zyR0iKwbawqQcogsPG6VUK=saGdQAzi+mf-dAr-Jcoo7A@mail.gmail.com>
+Message-ID: <CANnVG6==Re9OLwOrYyRGhPT4btWGNmoCFuSdyET+SfbwyFU6LQ@mail.gmail.com>
+
+On Fri, Sep 11, 2015 at 7:18 PM, Jeff Abrahamson <jeff at purple.com> wrote:
+> I was not aware of Mod + RightClick.  That's cool.  Thanks.  And in that
+> context the warp to boundary makes sense: it makes clear what I'm about to
+> do.
+>
+> Mod + RightClick also works for both H and V resize.
+>
+> So this leaves two questions, since maybe they are bugs, maybe not:
+>
+> 1.  Is it intentional, given that non-mod LeftClick can resize, that there
+> is no feedback on hovering over a window edge?
+
+https://github.com/i3/i3/issues/706
+
+>
+> 2.  And is it a bug that vertical resize doesn't work without Mod?
+
+Not sure what you mean by that. I can resize windows in any direction just fine.
+
+>
+> I haven't seen fit to restart i3 today (work to do), although I grabbed
+> sources to compile from git master.  I'll check once I've compiled and
+> restarted.
+>
+> Jeff Abrahamson
+> +33 6 24 40 01 57
+> +44 7920 594 255    <-- only if I'm in the UK
+>
+> http://jeff.purple.com/
+> http://blog.purple.com/jeff/
+>
+> On 11 September 2015 at 19:04, Micah Elliott <mde at micahelliott.com> wrote:
+>>
+>> > The target seems to be three pixels wide
+>>
+>> It's not clear if you're aware of the incredibly convenient "Mod +
+>> RightClick" to drag window resizing. Then you can quickly click just
+>> about anywhere on the screen and be grabbing an edge. The feature may
+>> render your concerns moot.
+>>
+>> --
+>> twitter:@MicahElliott  |  email:mde at MicahElliott.com  |
+>> http://membean.com
+>> Remember your words with Membean!
+>
+>
+
+-- 
+Best regards,
+Michael
+
+From jeff at purple.com  Fri Sep 11 19:27:24 2015
+From: jeff at purple.com (Jeff Abrahamson)
+Date: Fri, 11 Sep 2015 19:27:24 +0200
+Subject: [i3] resize with mouse
+In-Reply-To: <CANnVG6==Re9OLwOrYyRGhPT4btWGNmoCFuSdyET+SfbwyFU6LQ@mail.gmail.com>
+References: <CAM4Y7zy2rkNWxQa8YFWX7nU+pQGceG7nfsUzPvmgJ=L43TaPtQ@mail.gmail.com>
+ <CAELbujqCQXk=U6Z3HH58nVbWi=s+PSoW65M8LsgUPMaNs2pKvg@mail.gmail.com>
+ <CAM4Y7zyR0iKwbawqQcogsPG6VUK=saGdQAzi+mf-dAr-Jcoo7A@mail.gmail.com>
+ <CANnVG6==Re9OLwOrYyRGhPT4btWGNmoCFuSdyET+SfbwyFU6LQ@mail.gmail.com>
+Message-ID: <CAM4Y7zwncwQUaN6h40C43QkzF8VktoJ0YznHuDBmerpDdBCRWA@mail.gmail.com>
+
+1.  Thanks.
+
+2.  OK, I'll check once I've been able to compile and restart.
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    <-- only if I'm in the UK
+
+http://jeff.purple.com/
+http://blog.purple.com/jeff/
+
+On 11 September 2015 at 19:24, Michael Stapelberg <michael at i3wm.org> wrote:
+
+> On Fri, Sep 11, 2015 at 7:18 PM, Jeff Abrahamson <jeff at purple.com> wrote:
+> > I was not aware of Mod + RightClick.  That's cool.  Thanks.  And in that
+> > context the warp to boundary makes sense: it makes clear what I'm about
+> to
+> > do.
+> >
+> > Mod + RightClick also works for both H and V resize.
+> >
+> > So this leaves two questions, since maybe they are bugs, maybe not:
+> >
+> > 1.  Is it intentional, given that non-mod LeftClick can resize, that
+> there
+> > is no feedback on hovering over a window edge?
+>
+> https://github.com/i3/i3/issues/706
+>
+> >
+> > 2.  And is it a bug that vertical resize doesn't work without Mod?
+>
+> Not sure what you mean by that. I can resize windows in any direction just
+> fine.
+>
+> >
+> > I haven't seen fit to restart i3 today (work to do), although I grabbed
+> > sources to compile from git master.  I'll check once I've compiled and
+> > restarted.
+> >
+> > Jeff Abrahamson
+> > +33 6 24 40 01 57
+> > +44 7920 594 255    <-- only if I'm in the UK
+> >
+> > http://jeff.purple.com/
+> > http://blog.purple.com/jeff/
+> >
+> > On 11 September 2015 at 19:04, Micah Elliott <mde at micahelliott.com>
+> wrote:
+> >>
+> >> > The target seems to be three pixels wide
+> >>
+> >> It's not clear if you're aware of the incredibly convenient "Mod +
+> >> RightClick" to drag window resizing. Then you can quickly click just
+> >> about anywhere on the screen and be grabbing an edge. The feature may
+> >> render your concerns moot.
+> >>
+> >> --
+> >> twitter:@MicahElliott  |  email:mde at MicahElliott.com  |
+> >> http://membean.com
+> >> Remember your words with Membean!
+> >
+> >
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150911/eb0ad5e6/attachment.html>
+
+From admin at airblader.de  Fri Sep 11 21:38:09 2015
+From: admin at airblader.de (=?UTF-8?Q?Ingo_B=c3=bcrk?=)
+Date: Fri, 11 Sep 2015 21:38:09 +0200
+Subject: [i3] resize with mouse
+In-Reply-To: <CANnVG6==Re9OLwOrYyRGhPT4btWGNmoCFuSdyET+SfbwyFU6LQ@mail.gmail.com>
+References: <CAM4Y7zy2rkNWxQa8YFWX7nU+pQGceG7nfsUzPvmgJ=L43TaPtQ@mail.gmail.com>
+ <CAELbujqCQXk=U6Z3HH58nVbWi=s+PSoW65M8LsgUPMaNs2pKvg@mail.gmail.com>
+ <CAM4Y7zyR0iKwbawqQcogsPG6VUK=saGdQAzi+mf-dAr-Jcoo7A@mail.gmail.com>
+ <CANnVG6==Re9OLwOrYyRGhPT4btWGNmoCFuSdyET+SfbwyFU6LQ@mail.gmail.com>
+Message-ID: <55F32DA1.40401@airblader.de>
+
+Michael, are we sure that using Xfixes wouldn't make this a whole lot
+easier? I'm not familiar with the resizing code, really, but I didn't
+quite understand in that issue (#706) why we need separate windows?
+
+On 09/11/2015 07:24 PM, Michael Stapelberg wrote:
+> On Fri, Sep 11, 2015 at 7:18 PM, Jeff Abrahamson <jeff at purple.com> wrote:
+>> I was not aware of Mod + RightClick.  That's cool.  Thanks.  And in that
+>> context the warp to boundary makes sense: it makes clear what I'm about to
+>> do.
+>>
+>> Mod + RightClick also works for both H and V resize.
+>>
+>> So this leaves two questions, since maybe they are bugs, maybe not:
+>>
+>> 1.  Is it intentional, given that non-mod LeftClick can resize, that there
+>> is no feedback on hovering over a window edge?
+> https://github.com/i3/i3/issues/706
+>
+>> 2.  And is it a bug that vertical resize doesn't work without Mod?
+> Not sure what you mean by that. I can resize windows in any direction just fine.
+>
+>> I haven't seen fit to restart i3 today (work to do), although I grabbed
+>> sources to compile from git master.  I'll check once I've compiled and
+>> restarted.
+>>
+>> Jeff Abrahamson
+>> +33 6 24 40 01 57
+>> +44 7920 594 255    <-- only if I'm in the UK
+>>
+>> http://jeff.purple.com/
+>> http://blog.purple.com/jeff/
+>>
+>> On 11 September 2015 at 19:04, Micah Elliott <mde at micahelliott.com> wrote:
+>>>> The target seems to be three pixels wide
+>>> It's not clear if you're aware of the incredibly convenient "Mod +
+>>> RightClick" to drag window resizing. Then you can quickly click just
+>>> about anywhere on the screen and be grabbing an edge. The feature may
+>>> render your concerns moot.
+>>>
+>>> --
+>>> twitter:@MicahElliott  |  email:mde at MicahElliott.com  |
+>>> http://membean.com
+>>> Remember your words with Membean!
+>>
+
+
+From michael at i3wm.org  Fri Sep 11 22:34:20 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 11 Sep 2015 22:34:20 +0200
+Subject: [i3] resize with mouse
+In-Reply-To: <55F32DA1.40401@airblader.de>
+References: <CAM4Y7zy2rkNWxQa8YFWX7nU+pQGceG7nfsUzPvmgJ=L43TaPtQ@mail.gmail.com>
+ <CAELbujqCQXk=U6Z3HH58nVbWi=s+PSoW65M8LsgUPMaNs2pKvg@mail.gmail.com>
+ <CAM4Y7zyR0iKwbawqQcogsPG6VUK=saGdQAzi+mf-dAr-Jcoo7A@mail.gmail.com>
+ <CANnVG6==Re9OLwOrYyRGhPT4btWGNmoCFuSdyET+SfbwyFU6LQ@mail.gmail.com>
+ <55F32DA1.40401@airblader.de>
+Message-ID: <CANnVG6=5WJy-_ZnbsLZ3kuX3Vc9xuQD+DNKSVOZNaZUMzkoe0w@mail.gmail.com>
+
+I haven’t done much with Xfixes, so I’m not sure, but it sounds like
+you have a concrete idea in mind. Feel free to reopen #706 and prove
+me wrong :).
+
+On Fri, Sep 11, 2015 at 9:38 PM, Ingo Bürk <admin at airblader.de> wrote:
+> Michael, are we sure that using Xfixes wouldn't make this a whole lot
+> easier? I'm not familiar with the resizing code, really, but I didn't
+> quite understand in that issue (#706) why we need separate windows?
+>
+> On 09/11/2015 07:24 PM, Michael Stapelberg wrote:
+>> On Fri, Sep 11, 2015 at 7:18 PM, Jeff Abrahamson <jeff at purple.com> wrote:
+>>> I was not aware of Mod + RightClick.  That's cool.  Thanks.  And in that
+>>> context the warp to boundary makes sense: it makes clear what I'm about to
+>>> do.
+>>>
+>>> Mod + RightClick also works for both H and V resize.
+>>>
+>>> So this leaves two questions, since maybe they are bugs, maybe not:
+>>>
+>>> 1.  Is it intentional, given that non-mod LeftClick can resize, that there
+>>> is no feedback on hovering over a window edge?
+>> https://github.com/i3/i3/issues/706
+>>
+>>> 2.  And is it a bug that vertical resize doesn't work without Mod?
+>> Not sure what you mean by that. I can resize windows in any direction just fine.
+>>
+>>> I haven't seen fit to restart i3 today (work to do), although I grabbed
+>>> sources to compile from git master.  I'll check once I've compiled and
+>>> restarted.
+>>>
+>>> Jeff Abrahamson
+>>> +33 6 24 40 01 57
+>>> +44 7920 594 255    <-- only if I'm in the UK
+>>>
+>>> http://jeff.purple.com/
+>>> http://blog.purple.com/jeff/
+>>>
+>>> On 11 September 2015 at 19:04, Micah Elliott <mde at micahelliott.com> wrote:
+>>>>> The target seems to be three pixels wide
+>>>> It's not clear if you're aware of the incredibly convenient "Mod +
+>>>> RightClick" to drag window resizing. Then you can quickly click just
+>>>> about anywhere on the screen and be grabbing an edge. The feature may
+>>>> render your concerns moot.
+>>>>
+>>>> --
+>>>> twitter:@MicahElliott  |  email:mde at MicahElliott.com  |
+>>>> http://membean.com
+>>>> Remember your words with Membean!
+>>>
+>
+
+
+
+-- 
+Best regards,
+Michael
+
+From smilingmolecule at web.de  Sun Sep 13 17:14:11 2015
+From: smilingmolecule at web.de (Robert Grah)
+Date: Sun, 13 Sep 2015 17:14:11 +0200
+Subject: [i3] flash player plugin broken with i3 4.10.4
+Message-ID: <14fc7454c2b.118ccca0539863.3963504048932316541@web.de>
+
+Hi there,
+
+I updated from the stable Ubuntu version of i3 to 4.10.4 via the official ppa. After that upgrade I am having a problem with my flash plugin in the browser (chrome and firefox). The plugin is not loaded properly and is not recognized correctly by pages. Any ideas on this? Here is my LOG file: http://logs.i3wm.org/logs/5685057352105984.bz2
+
+Cheers,
+Robert
+
+
+
+
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150913/231edb6c/attachment.html>
+
+From michael at i3wm.org  Sun Sep 13 17:17:09 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 13 Sep 2015 17:17:09 +0200
+Subject: [i3] flash player plugin broken with i3 4.10.4
+In-Reply-To: <14fc7454c2b.118ccca0539863.3963504048932316541@web.de>
+References: <14fc7454c2b.118ccca0539863.3963504048932316541@web.de>
+Message-ID: <CANnVG6=Ti0pHx10pFEAiAa+zA1y3CqCbTCYZrNcws27H9rWywQ@mail.gmail.com>
+
+Note that flash is closed-source and hence unsupported by us (we can’t
+look at its source, so debugging problems with it is too much effort).
+That said, maybe someone else on the list has any insights to share.
+
+On Sun, Sep 13, 2015 at 5:14 PM, Robert Grah <smilingmolecule at web.de> wrote:
+> Hi there,
+>
+> I updated from the stable Ubuntu version of i3 to 4.10.4 via the official
+> ppa. After that upgrade I am having a problem with my flash plugin in the
+> browser (chrome and firefox). The plugin is not loaded properly and is not
+> recognized correctly by pages. Any ideas on this? Here is my LOG file:
+> http://logs.i3wm.org/logs/5685057352105984.bz2
+>
+> Cheers,
+> Robert
+>
+
+
+
+-- 
+Best regards,
+Michael
+
+From admin at airblader.de  Sun Sep 13 18:03:20 2015
+From: admin at airblader.de (=?UTF-8?Q?Ingo_B=c3=bcrk?=)
+Date: Sun, 13 Sep 2015 18:03:20 +0200
+Subject: [i3] flash player plugin broken with i3 4.10.4
+In-Reply-To: <14fc7454c2b.118ccca0539863.3963504048932316541@web.de>
+References: <14fc7454c2b.118ccca0539863.3963504048932316541@web.de>
+Message-ID: <55F59E48.1010402@airblader.de>
+
+I don't understand how the window manager is relevant for this. Are you
+sure you didn't also update your browser or flash or anything else?
+
+On 09/13/2015 05:14 PM, Robert Grah wrote:
+> Hi there,
+>
+> I updated from the stable Ubuntu version of i3 to 4.10.4 via the official ppa. After that upgrade I am having a problem with my flash plugin in the browser (chrome and firefox). The plugin is not loaded properly and is not recognized correctly by pages. Any ideas on this? Here is my LOG file: http://logs.i3wm.org/logs/5685057352105984.bz2
+>
+> Cheers,
+> Robert
+>
+>
+>
+>
+>
+>
+>
+
+
+From garbytrash at gmail.com  Mon Sep 14 02:02:11 2015
+From: garbytrash at gmail.com (Zenny)
+Date: Mon, 14 Sep 2015 02:02:11 +0200
+Subject: [i3] windows are not selectable with obs-studio with i3-wm
+Message-ID: <CACuV5sC3TYZgmCMKc9Y1oNH1xShcPfR0Lbi7Rj3xL95SnOzySQ@mail.gmail.com>
+
+Hi,
+
+i3 has been a default wm for me for a long time!
+
+Having a problem similar to what has been discussed here:
+
+https://obsproject.com/forum/threads/tiling-window-managers-xcomposite-no-windows-found.34708/
+
+The xcomposite windows cannot be selectable even under i3 like in
+Xmonad, however the second reply confirms that it worked fine with
+Awesome.
+
+Seems like it is more a problem of the window manager than the
+application (obs-studio)! Any inputs?!
+
+Thanks!
+
+/z
+
+From tony at dubstepdish.com  Mon Sep 14 04:56:22 2015
+From: tony at dubstepdish.com (Tony Crisci)
+Date: Sun, 13 Sep 2015 22:56:22 -0400
+Subject: [i3] windows are not selectable with obs-studio with i3-wm
+In-Reply-To: <CACuV5sC3TYZgmCMKc9Y1oNH1xShcPfR0Lbi7Rj3xL95SnOzySQ@mail.gmail.com>
+References: <CACuV5sC3TYZgmCMKc9Y1oNH1xShcPfR0Lbi7Rj3xL95SnOzySQ@mail.gmail.com>
+Message-ID: <55F63756.2010900@dubstepdish.com>
+
+Hey,
+
+I can't reproduce this. I can select the windows perfectly well. Please 
+update to the latest version of i3 and try again.
+
+On 09/13/2015 08:02 PM, Zenny wrote:
+> Hi,
+>
+> i3 has been a default wm for me for a long time!
+>
+> Having a problem similar to what has been discussed here:
+>
+> https://obsproject.com/forum/threads/tiling-window-managers-xcomposite-no-windows-found.34708/
+>
+> The xcomposite windows cannot be selectable even under i3 like in
+> Xmonad, however the second reply confirms that it worked fine with
+> Awesome.
+>
+> Seems like it is more a problem of the window manager than the
+> application (obs-studio)! Any inputs?!
+>
+> Thanks!
+>
+> /z
+
+
+From garbytrash at gmail.com  Mon Sep 14 08:31:14 2015
+From: garbytrash at gmail.com (Zenny)
+Date: Mon, 14 Sep 2015 08:31:14 +0200
+Subject: [i3] windows are not selectable with obs-studio with i3-wm
+In-Reply-To: <55F63756.2010900@dubstepdish.com>
+References: <CACuV5sC3TYZgmCMKc9Y1oNH1xShcPfR0Lbi7Rj3xL95SnOzySQ@mail.gmail.com>
+ <55F63756.2010900@dubstepdish.com>
+Message-ID: <CACuV5sAKDNQY2ouGTQG9315OycvwASDMquXBFM-Y1xtbjhWCzQ@mail.gmail.com>
+
+Hi Tony,
+
+Thanks for the pointer, the standard ubuntu has i3 at 4.7. I upgraded
+to 4.10.x following suit to your advice.
+
+However, the xcomposite windows are detected, but only selectable from
+the same i3 workspace where OBS is running. The xcomposite windows
+from other windows are listed, but once selected, it replaces with a
+red area instead of the window itself.
+
+/z
+
+On 9/14/15, Tony Crisci <tony at dubstepdish.com> wrote:
+> Hey,
+>
+> I can't reproduce this. I can select the windows perfectly well. Please
+> update to the latest version of i3 and try again.
+>
+> On 09/13/2015 08:02 PM, Zenny wrote:
+>> Hi,
+>>
+>> i3 has been a default wm for me for a long time!
+>>
+>> Having a problem similar to what has been discussed here:
+>>
+>> https://obsproject.com/forum/threads/tiling-window-managers-xcomposite-no-windows-found.34708/
+>>
+>> The xcomposite windows cannot be selectable even under i3 like in
+>> Xmonad, however the second reply confirms that it worked fine with
+>> Awesome.
+>>
+>> Seems like it is more a problem of the window manager than the
+>> application (obs-studio)! Any inputs?!
+>>
+>> Thanks!
+>>
+>> /z
+>
+>
+
+From smilingmolecule at web.de  Mon Sep 14 10:27:04 2015
+From: smilingmolecule at web.de (Robert Grah)
+Date: Mon, 14 Sep 2015 10:27:04 +0200
+Subject: [i3] flash player plugin broken with i3 4.10.4
+In-Reply-To: <55F59E48.1010402@airblader.de>
+References: <14fc7454c2b.118ccca0539863.3963504048932316541@web.de>
+ <55F59E48.1010402@airblader.de>
+Message-ID: <14fcaf6ed8f.e010348676461.6931044737506471466@web.de>
+
+I don't exactly know what happend. I reinstalled Flash and now its working again. The strange thing was that everything worked fine with Gnome Shell and with an older I3 version on my Laptop. So that lead me to the assumption its caused by the I3 Upgrade. Now everything is fine again. 
+
+I3 is great!
+
+---- Ein So, 13 Sep 2015 18:03:20 +0200 Ingo Bürk &lt;admin at airblader.de&gt; hat geschrieben ---- 
+
+I don't understand how the window manager is relevant for this. Are you 
+sure you didn't also update your browser or flash or anything else? 
+ 
+On 09/13/2015 05:14 PM, Robert Grah wrote: 
+&gt; Hi there, 
+&gt; 
+&gt; I updated from the stable Ubuntu version of i3 to 4.10.4 via the official ppa. After that upgrade I am having a problem with my flash plugin in the browser (chrome and firefox). The plugin is not loaded properly and is not recognized correctly by pages. Any ideas on this? Here is my LOG file: http://logs.i3wm.org/logs/5685057352105984.bz2 
+&gt; 
+&gt; Cheers, 
+&gt; Robert 
+&gt; 
+&gt; 
+&gt; 
+&gt; 
+&gt; 
+&gt; 
+&gt; 
+ 
+
+
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150914/e8e9a680/attachment.html>
+
+From ciprian.craciun at gmail.com  Wed Sep 16 08:01:13 2015
+From: ciprian.craciun at gmail.com (Ciprian Dorin Craciun)
+Date: Wed, 16 Sep 2015 09:01:13 +0300
+Subject: [i3] How to display in `i3bar` (via `i3status`) the amount of free
+	memory
+Message-ID: <CA+Tk8fxzU_OK1mhZmPLdc9ZUnLnwhjd_fBoJ3HRkFC-bRqEMiQ@mail.gmail.com>
+
+I've just looked in the `i3status` manual to see how to display the
+free memory (as reported by `free`), and found no option.
+
+I understand from the manual that computing the used memory is not
+easy, but displaying the total used or free memory (both RAM and swap)
+as reported by `free` is quite easy and useful.
+
+
+My particular usecase is this:  I use quite a few of `tmpfs` instances
+mounted for various development purposes, which consume quite a lot of
+memory (in terms of GiB) and which spill over to swap (sometimes
+leaving me without any memory RAM or swap), and I would like to easily
+find out when I'm close to "out-of-memory".
+
+Looking through the i3 mailing list archive I found other usecases of
+such a feature:
+* `[i3] memory information in i3status` from 1st of April 2015, which
+talks about many processes chewing RAM;
+* `[i3] memory display` from 15th November 2014, which talks about
+image processing applications;
+
+
+There even seems to be a rejected patch implementing this in `[i3]
+[RFC] [PATCH] i3status: memory-stats` from 23th February 2012, or
+`[i3] [PATCH] i3status: implements a memory-usage-print` from the same
+day.
+
+
+Thus although the average desktop user never runs out of memory
+(either he has enough these days or uses swap), there are people --
+especially developers or those using memory intensive applications
+like scientific or image processing -- that easily overrun both their
+RAM an swap.  For example I have on my laptop 8 GiB RAM and a 32 GiB
+swap, and I'm constantly running out of available memory due to the
+mentioned `tmpfs` instances.
+
+Thanks,
+Ciprian.
+
+From michael at i3wm.org  Wed Sep 16 13:26:34 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 16 Sep 2015 13:26:34 +0200
+Subject: [i3] How to display in `i3bar` (via `i3status`) the amount of
+ free memory
+In-Reply-To: <CA+Tk8fxzU_OK1mhZmPLdc9ZUnLnwhjd_fBoJ3HRkFC-bRqEMiQ@mail.gmail.com>
+References: <CA+Tk8fxzU_OK1mhZmPLdc9ZUnLnwhjd_fBoJ3HRkFC-bRqEMiQ@mail.gmail.com>
+Message-ID: <CANnVG6m0E0Y0QJYREuXY4LUz9Rn960yZ3Kfum0J+MifVwsm=4Q@mail.gmail.com>
+
+The recommended way is to wrap i3status as described in its manpage.
+
+On Wed, Sep 16, 2015 at 8:01 AM, Ciprian Dorin Craciun
+<ciprian.craciun at gmail.com> wrote:
+> I've just looked in the `i3status` manual to see how to display the
+> free memory (as reported by `free`), and found no option.
+>
+> I understand from the manual that computing the used memory is not
+> easy, but displaying the total used or free memory (both RAM and swap)
+> as reported by `free` is quite easy and useful.
+>
+>
+> My particular usecase is this:  I use quite a few of `tmpfs` instances
+> mounted for various development purposes, which consume quite a lot of
+> memory (in terms of GiB) and which spill over to swap (sometimes
+> leaving me without any memory RAM or swap), and I would like to easily
+> find out when I'm close to "out-of-memory".
+>
+> Looking through the i3 mailing list archive I found other usecases of
+> such a feature:
+> * `[i3] memory information in i3status` from 1st of April 2015, which
+> talks about many processes chewing RAM;
+> * `[i3] memory display` from 15th November 2014, which talks about
+> image processing applications;
+>
+>
+> There even seems to be a rejected patch implementing this in `[i3]
+> [RFC] [PATCH] i3status: memory-stats` from 23th February 2012, or
+> `[i3] [PATCH] i3status: implements a memory-usage-print` from the same
+> day.
+>
+>
+> Thus although the average desktop user never runs out of memory
+> (either he has enough these days or uses swap), there are people --
+> especially developers or those using memory intensive applications
+> like scientific or image processing -- that easily overrun both their
+> RAM an swap.  For example I have on my laptop 8 GiB RAM and a 32 GiB
+> swap, and I'm constantly running out of available memory due to the
+> mentioned `tmpfs` instances.
+>
+> Thanks,
+> Ciprian.
+
+
+
+-- 
+Best regards,
+Michael
+
+From ciprian.craciun at gmail.com  Wed Sep 16 14:22:50 2015
+From: ciprian.craciun at gmail.com (Ciprian Dorin Craciun)
+Date: Wed, 16 Sep 2015 15:22:50 +0300
+Subject: [i3] How to display in `i3bar` (via `i3status`) the amount of
+ free memory
+In-Reply-To: <CANnVG6m0E0Y0QJYREuXY4LUz9Rn960yZ3Kfum0J+MifVwsm=4Q@mail.gmail.com>
+References: <CA+Tk8fxzU_OK1mhZmPLdc9ZUnLnwhjd_fBoJ3HRkFC-bRqEMiQ@mail.gmail.com>
+ <CANnVG6m0E0Y0QJYREuXY4LUz9Rn960yZ3Kfum0J+MifVwsm=4Q@mail.gmail.com>
+Message-ID: <CA+Tk8fyoBxk88DqBPrRUiv+SX-o6Nf83xGsqeD1i1w=COxg-2Q@mail.gmail.com>
+
+On Wed, Sep 16, 2015 at 2:26 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+> The recommended way is to wrap i3status as described in its manpage.
+
+The whole purpose of `i3status` is that it's lightweight both in terms
+of resources and OS calls.  Wrapping it in a script that each second
+spawns a bunch of processes just to add memory usage is counter to its
+purpose...
+
+But anyway, as this is an open-source project where development is
+done voluntarily (and for free), and as I don't have time right now to
+patch it, I'll live it at this...  (Moreover as with the previous
+patches there is a high chance the patch won't be accepted in
+upstream, leaving me to maintain my own fork of it, which I have even
+less time for...)  :)
+
+However I would like to ask the developers to please reconsider adding
+such a basic and useful piece of information.  (But as said I'll live
+this here.)
+
+Thanks for i3,
+Ciprian.
+
+From michael at i3wm.org  Wed Sep 16 14:29:04 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 16 Sep 2015 14:29:04 +0200
+Subject: [i3] How to display in `i3bar` (via `i3status`) the amount of
+ free memory
+In-Reply-To: <CA+Tk8fyoBxk88DqBPrRUiv+SX-o6Nf83xGsqeD1i1w=COxg-2Q@mail.gmail.com>
+References: <CA+Tk8fxzU_OK1mhZmPLdc9ZUnLnwhjd_fBoJ3HRkFC-bRqEMiQ@mail.gmail.com>
+ <CANnVG6m0E0Y0QJYREuXY4LUz9Rn960yZ3Kfum0J+MifVwsm=4Q@mail.gmail.com>
+ <CA+Tk8fyoBxk88DqBPrRUiv+SX-o6Nf83xGsqeD1i1w=COxg-2Q@mail.gmail.com>
+Message-ID: <CANnVG6mBsXohzkKTU=uvxjEsA99vp1aCjtJFhYQQ+DaiGWVYxQ@mail.gmail.com>
+
+On Wed, Sep 16, 2015 at 2:22 PM, Ciprian Dorin Craciun
+<ciprian.craciun at gmail.com> wrote:
+> On Wed, Sep 16, 2015 at 2:26 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+>> The recommended way is to wrap i3status as described in its manpage.
+>
+> The whole purpose of `i3status` is that it's lightweight both in terms
+> of resources and OS calls.  Wrapping it in a script that each second
+> spawns a bunch of processes just to add memory usage is counter to its
+> purpose...
+
+You can use a higher-level language to wrap i3status.
+
+>
+> But anyway, as this is an open-source project where development is
+> done voluntarily (and for free), and as I don't have time right now to
+> patch it, I'll live it at this...  (Moreover as with the previous
+> patches there is a high chance the patch won't be accepted in
+> upstream, leaving me to maintain my own fork of it, which I have even
+> less time for...)  :)
+>
+> However I would like to ask the developers to please reconsider adding
+> such a basic and useful piece of information.  (But as said I'll live
+> this here.)
+
+We don’t have a great mental framework for deciding what goes into
+i3status and what doesn’t. The current state of affairs is that things
+that I deemed useful 7 years ago (wow, time flies) are in i3status,
+and we’re very conservative when it comes to adding new things (or
+even removing things that I wouldn’t add if I were to start from
+scratch, like cpu temperature).
+
+Other status bars (j4status, py3status, etc.) might be better suited
+for your use-case.
+
+-- 
+Best regards,
+Michael
+
+From jeff at jibson.com  Wed Sep 16 14:41:47 2015
+From: jeff at jibson.com (Jeff Jibson)
+Date: Wed, 16 Sep 2015 06:41:47 -0600
+Subject: [i3] How to display in `i3bar` (via `i3status`) the amount of
+ free memory
+In-Reply-To: <CA+Tk8fyoBxk88DqBPrRUiv+SX-o6Nf83xGsqeD1i1w=COxg-2Q@mail.gmail.com>
+References: <CA+Tk8fxzU_OK1mhZmPLdc9ZUnLnwhjd_fBoJ3HRkFC-bRqEMiQ@mail.gmail.com>
+ <CANnVG6m0E0Y0QJYREuXY4LUz9Rn960yZ3Kfum0J+MifVwsm=4Q@mail.gmail.com>
+ <CA+Tk8fyoBxk88DqBPrRUiv+SX-o6Nf83xGsqeD1i1w=COxg-2Q@mail.gmail.com>
+Message-ID: <CAPAw0WosXT7SNQPSf4CBd6+i9OQZ8sEbOfeDumrrKNub4TPdDw@mail.gmail.com>
+
+On Wed, Sep 16, 2015 at 6:22 AM, Ciprian Dorin Craciun <
+ciprian.craciun at gmail.com> wrote:
+>
+> On Wed, Sep 16, 2015 at 2:26 PM, Michael Stapelberg <michael at i3wm.org>
+wrote:
+> > The recommended way is to wrap i3status as described in its manpage.
+>
+> The whole purpose of `i3status` is that it's lightweight both in terms
+> of resources and OS calls.  Wrapping it in a script that each second
+> spawns a bunch of processes just to add memory usage is counter to its
+> purpose...
+>
+> ...
+
+
+>
+> However I would like to ask the developers to please reconsider adding
+> such a basic and useful piece of information.  (But as said I'll live
+> this here.)
+>
+> Thanks for i3,
+> Ciprian.
+
+
+There are several alternatives to i3status.  I haven't had time to try any
+of them.  I have been using conky for years, so I use it.
+
+In my config file I have:
+
+bar {
+    output             HDMI1
+    tray_output        HDMI1
+    status_command     conky -c ~/.i3/conkyrc.left
+    mode               dock
+    position           bottom
+    workspace_buttons  yes
+    font               $font
+
+    colors {
+    background         $root
+    statusline         $foreground
+    focused_workspace  $foreground $focused   $foreground
+    active_workspace   $foreground $active    $foreground
+    inactive_workspace $foreground $unfocused $foreground
+    urgent_workspace   $urgentfg   $urgentbg  $urgentfg
+    }
+}
+
+I have two monitors.  Both conky files have the following settings at the
+top of the file:
+
+background no
+use_xft yes
+out_to_console yes
+out_to_x no
+update_interval 2
+total_run_times 0
+double_buffer yes
+border_inner_margin 0
+border_outer_margin 0
+use_spacer none
+if_up_strictness address
+short_units yes
+
+In file for my left monitor I have:
+
+TEXT
+BKK ${tztime UTC-7 %T} \
+ CCSD ${tztime PST8PDT %T} \
+ PT-0{1,2,3} ${tztime MST7MDT %T}    |    \
+en01 ${addr eno1} ${downspeed eno1} ${upspeed eno1}  \
+ ${if_up tun0}  tun0 ${addr tun0} ${downspeed tun0} ${upspeed tun0}
+ ${endif} \
+ port ${tcp_portmon 1 65535 count}    |    \
+$nodename ($kernel) $uptime \
+ ${time %F %T}
+
+In the file for the right monitor I have:
+
+TEXT
+CLP $cpu=${cpu cpu0}+${cpu cpu1} \
+ $loadavg \
+ $running_processes / $processes    |    \
+MS $mem/$memmax ($memperc%) \
+ $swap/$swapmax ($swapperc%)    |    \
+D / ${fs_used /}/${fs_size /}    |    \
+G ${execi 50 if pgrep sandbox > /dev/null ; then genlop -cn | grep
+'Currently merging'  ; else echo -n Las Sync: ; ~/.i3/lastsync.sh ; fi}
+ |    \
+HKUT $nodename ($kernel) $uptime \
+ ${time %T}
+
+Some of this is specific to gentoo and needs gentools.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150916/6e7ec35e/attachment.html>
+
+From mail at merovius.de  Wed Sep 16 17:46:12 2015
+From: mail at merovius.de (Axel Wagner)
+Date: Wed, 16 Sep 2015 17:46:12 +0200
+Subject: [i3] How to display in `i3bar` (via `i3status`) the amount of
+	free memory
+In-Reply-To: <CA+Tk8fyoBxk88DqBPrRUiv+SX-o6Nf83xGsqeD1i1w=COxg-2Q@mail.gmail.com>
+References: <CA+Tk8fxzU_OK1mhZmPLdc9ZUnLnwhjd_fBoJ3HRkFC-bRqEMiQ@mail.gmail.com>
+ <CANnVG6m0E0Y0QJYREuXY4LUz9Rn960yZ3Kfum0J+MifVwsm=4Q@mail.gmail.com>
+ <CA+Tk8fyoBxk88DqBPrRUiv+SX-o6Nf83xGsqeD1i1w=COxg-2Q@mail.gmail.com>
+Message-ID: <87fv2eiczf.fsf@mail.merovius.de>
+
+Ciprian Dorin Craciun <ciprian.craciun at gmail.com> writes:
+> The whole purpose of `i3status` is that it's lightweight both in terms
+> of resources and OS calls.  Wrapping it in a script that each second
+> spawns a bunch of processes just to add memory usage is counter to its
+> purpose...
+
+Just in case you are using i3bar in hide mode: In that case i3bar will
+SIGSTOP i3status anyway, when the bar isn't shown, so this won't be a
+huge problem. :) If you use it in docked mode of course, you are kind of
+out of luck with this.
+
+From facetoe at facetoe.com.au  Thu Sep 17 00:40:09 2015
+From: facetoe at facetoe.com.au (facetoe)
+Date: Thu, 17 Sep 2015 06:40:09 +0800
+Subject: [i3] How to display in `i3bar` (via `i3status`) the amount of
+ free memory
+In-Reply-To: <CAPAw0WosXT7SNQPSf4CBd6+i9OQZ8sEbOfeDumrrKNub4TPdDw@mail.gmail.com>
+References: <CA+Tk8fxzU_OK1mhZmPLdc9ZUnLnwhjd_fBoJ3HRkFC-bRqEMiQ@mail.gmail.com>
+ <CANnVG6m0E0Y0QJYREuXY4LUz9Rn960yZ3Kfum0J+MifVwsm=4Q@mail.gmail.com>
+ <CA+Tk8fyoBxk88DqBPrRUiv+SX-o6Nf83xGsqeD1i1w=COxg-2Q@mail.gmail.com>
+ <CAPAw0WosXT7SNQPSf4CBd6+i9OQZ8sEbOfeDumrrKNub4TPdDw@mail.gmail.com>
+Message-ID: <55F9EFC9.1050801@facetoe.com.au>
+
+
+If you don't mind using an alternative to i3status, i3pystatus us an
+excellent project - https://github.com/enkore/i3pystatus. There are
+many modules written for it including one for memory -
+http://docs.enkore.de/i3pystatus/i3pystatus.html#i3pystatus.mem_bar.MemBar
+
+Thanks,
+
+Facetoe.
+
+From i3wm at rusu.info  Thu Sep 17 22:33:58 2015
+From: i3wm at rusu.info (Valentin Rusu)
+Date: Thu, 17 Sep 2015 23:33:58 +0300
+Subject: [i3] How to display in `i3bar` (via `i3status`) the amount of
+ free memory
+In-Reply-To: <CA+Tk8fyoBxk88DqBPrRUiv+SX-o6Nf83xGsqeD1i1w=COxg-2Q@mail.gmail.com>
+References: <CA+Tk8fxzU_OK1mhZmPLdc9ZUnLnwhjd_fBoJ3HRkFC-bRqEMiQ@mail.gmail.com>
+ <CANnVG6m0E0Y0QJYREuXY4LUz9Rn960yZ3Kfum0J+MifVwsm=4Q@mail.gmail.com>
+ <CA+Tk8fyoBxk88DqBPrRUiv+SX-o6Nf83xGsqeD1i1w=COxg-2Q@mail.gmail.com>
+Message-ID: <20150917203358.GA28746@sisif.rusu.info>
+
+* Ciprian Dorin Craciun <ciprian.craciun at gmail.com> [2015-09-16 15:22:50 +0300]:
+
+> On Wed, Sep 16, 2015 at 2:26 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+> > The recommended way is to wrap i3status as described in its manpage.
+> 
+
+I'm using i3blocks without problems. Just give it a try, perhaps it'll
+suit your needs.
+
+
+-- 
+Valentin Rusu
+IRC: valir
+

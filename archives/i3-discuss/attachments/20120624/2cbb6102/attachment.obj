@@ -1,0 +1,228 @@
+From 17ba50fea4c45354c32e59e5b4b4b79a5ddaa1d5 Mon Sep 17 00:00:00 2001
+From: darkraven <drdarkraven@gmail.com>
+Date: Sun, 24 Jun 2012 18:47:47 +0800
+Subject: [PATCH] Block outward events while processing commands.
+
+	Add facilities to queue outward ipc events. This will help sending
+	events with accurate timimg.
+---
+ include/ipc.h     | 21 ++++++++++++++-
+ src/assignments.c |  5 ++++
+ src/handlers.c    |  4 +++
+ src/ipc.c         | 76 ++++++++++++++++++++++++++++++++++++++++++++++++++++---
+ 4 files changed, 102 insertions(+), 4 deletions(-)
+
+diff --git a/include/ipc.h b/include/ipc.h
+index af80fa4..d72ec36 100644
+--- a/include/ipc.h
++++ b/include/ipc.h
+@@ -32,6 +32,12 @@ typedef struct ipc_client {
+         TAILQ_ENTRY(ipc_client) clients;
+ } ipc_client;
+ 
++typedef struct ipc_queue {
++    char *event, *payload;
++    uint32_t message_type;
++    SIMPLEQ_ENTRY(ipc_queue) items;
++} ipc_queue;
++
+ /*
+  * Callback type for the different message types.
+  *
+@@ -67,8 +73,21 @@ void ipc_new_client(EV_P_ struct ev_io *w, int revents);
+ int ipc_create_socket(const char *filename);
+ 
+ /**
++ * Stop queuing events, and drain the queue.
++ *
++ */
++void ipc_stop_queuing_and_drain(void);
++
++/**
++ * Start queuing events.
++ *
++ */
++void ipc_start_queuing(void);
++
++/**
+  * Sends the specified event to all IPC clients which are currently connected
+- * and subscribed to this kind of event.
++ * and subscribed to this kind of event, or queue the event until
++ * ipc_stop_queuing_and_drain is called
+  *
+  */
+ void ipc_send_event(const char *event, uint32_t message_type, const char *payload);
+diff --git a/src/assignments.c b/src/assignments.c
+index ae4affa..9f7fa1d 100644
+--- a/src/assignments.c
++++ b/src/assignments.c
+@@ -21,6 +21,9 @@ void run_assignments(i3Window *window) {
+ 
+     /* Check if any assignments match */
+     Assignment *current;
++
++    ipc_start_queuing();
++
+     TAILQ_FOREACH(current, &assignments, assignments) {
+         if (!match_matches_window(&(current->match), window))
+             continue;
+@@ -61,6 +64,8 @@ void run_assignments(i3Window *window) {
+     /* If any of the commands required re-rendering, we will do that now. */
+     if (needs_tree_render)
+         tree_render();
++
++    ipc_stop_queuing_and_drain();
+ }
+ 
+ /*
+diff --git a/src/handlers.c b/src/handlers.c
+index 148d633..7c6d781 100644
+--- a/src/handlers.c
++++ b/src/handlers.c
+@@ -119,11 +119,15 @@ static void handle_key_press(xcb_key_press_event_t *event) {
+         }
+     }
+ 
++    ipc_start_queuing();
++
+     struct CommandResult *command_output = parse_command(bind->command);
+ 
+     if (command_output->needs_tree_render)
+         tree_render();
+ 
++    ipc_stop_queuing_and_drain();
++
+     yajl_gen_free(command_output->json_gen);
+ }
+ 
+diff --git a/src/ipc.c b/src/ipc.c
+index 60ce814..2e08733 100644
+--- a/src/ipc.c
++++ b/src/ipc.c
+@@ -19,12 +19,14 @@
+ #include <yajl/yajl_version.h>
+ 
+ char *current_socketpath = NULL;
++static bool ipc_is_queued = false;
+ 
+ /* Shorter names for all those yajl_gen_* functions */
+ #define y(x, ...) yajl_gen_ ## x (gen, ##__VA_ARGS__)
+ #define ystr(str) yajl_gen_string(gen, (unsigned char*)str, strlen(str))
+ 
+ TAILQ_HEAD(ipc_client_head, ipc_client) all_clients = TAILQ_HEAD_INITIALIZER(all_clients);
++SIMPLEQ_HEAD(ipc_queue_head, ipc_queue) message_queue = SIMPLEQ_HEAD_INITIALIZER(message_queue);
+ 
+ /*
+  * Puts the given socket file descriptor into non-blocking mode or dies if
+@@ -70,11 +72,12 @@ static bool mkdirp(const char *path) {
+ }
+ 
+ /*
+- * Sends the specified event to all IPC clients which are currently connected
+- * and subscribed to this kind of event.
++ * Sends the specified event directly to all IPC clients which are currently connected
++ * and subscribed to this kind of event. This is the function do the actually message
++ * sending for ipc_send_event
+  *
+  */
+-void ipc_send_event(const char *event, uint32_t message_type, const char *payload) {
++static void _ipc_send_event(const char *event, uint32_t message_type, const char *payload) {
+     ipc_client *current;
+     TAILQ_FOREACH(current, &all_clients, clients) {
+         /* see if this client is interested in this event */
+@@ -93,12 +96,74 @@ void ipc_send_event(const char *event, uint32_t message_type, const char *payloa
+ }
+ 
+ /*
++ * Add a event to the event queue.
++ *
++ */
++static void ipc_enqueue_event(const char *event, uint32_t message_type, const char *payload) {
++    ipc_queue *new_msg = smalloc(sizeof(ipc_queue));
++    new_msg->event = sstrdup(event);
++    new_msg->message_type = message_type;
++    new_msg->payload = sstrdup(payload);
++    SIMPLEQ_INSERT_TAIL(&message_queue, new_msg, items);
++}
++
++/*
++ * Drain the event queue, sends all the queued event.
++ *
++ */
++static void ipc_drain_queue(void) {
++    ipc_queue *current;
++    while(!SIMPLEQ_EMPTY(&message_queue)){
++        current = SIMPLEQ_FIRST(&message_queue);
++        _ipc_send_event(current->event, current->message_type, current->payload);
++        free(current->event);
++        free(current->payload);
++        SIMPLEQ_REMOVE_HEAD(&message_queue, items);
++        free(current);
++    }
++}
++
++/*
++ * Start queuing events.
++ *
++ */
++void ipc_start_queuing(void) {
++    ipc_is_queued = true;
++}
++
++/*
++ * Stop queuing events, and drain the queue.
++ *
++ */
++void ipc_stop_queuing_and_drain(void) {
++    if (ipc_is_queued)
++        ipc_drain_queue();
++    ipc_is_queued = false;
++}
++
++/*
++ * Sends the specified event to all IPC clients which are currently connected
++ * and subscribed to this kind of event, or queue the event until
++ * ipc_stop_queuing_and_drain is called
++ *
++ */
++void ipc_send_event(const char *event, uint32_t message_type, const char *payload) {
++    if (ipc_is_queued)
++        ipc_enqueue_event(event, message_type, payload);
++    else
++        _ipc_send_event(event, message_type, payload);
++}
++
++/*
+  * Calls shutdown() on each socket and closes it. This function to be called
+  * when exiting or restarting only!
+  *
+  */
+ void ipc_shutdown(void) {
+     ipc_client *current;
++
++    ipc_stop_queuing_and_drain();
++
+     while (!TAILQ_EMPTY(&all_clients)) {
+         current = TAILQ_FIRST(&all_clients);
+         shutdown(current->fd, SHUT_RDWR);
+@@ -119,12 +184,17 @@ IPC_HANDLER(command) {
+     char *command = scalloc(message_size + 1);
+     strncpy(command, (const char*)message, message_size);
+     LOG("IPC: received: *%s*\n", command);
++
++    ipc_start_queuing();
++
+     struct CommandResult *command_output = parse_command((const char*)command);
+     free(command);
+ 
+     if (command_output->needs_tree_render)
+         tree_render();
+ 
++    ipc_stop_queuing_and_drain();
++
+     const unsigned char *reply;
+ #if YAJL_MAJOR >= 2
+     size_t length;
+-- 
+1.7.11
+

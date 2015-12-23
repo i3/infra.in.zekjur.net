@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] Use ev_break() rather than exit() in i3bar.
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Use%20ev_break%28%29%20rather%20than%20exit%28%29%20in%20i3bar.&In-Reply-To=%3CCANVYNa9%3DfWN%2Bd6EEKB4CJjAihV1cOdFr5uTpkZHTUd6hLH1Kyw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000522.html">
+   <LINK REL="Next"  HREF="000535.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] Use ev_break() rather than exit() in i3bar.</H1>
+    <B>Fernando Lemos</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Use%20ev_break%28%29%20rather%20than%20exit%28%29%20in%20i3bar.&In-Reply-To=%3CCANVYNa9%3DfWN%2Bd6EEKB4CJjAihV1cOdFr5uTpkZHTUd6hLH1Kyw%40mail.gmail.com%3E"
+       TITLE="[i3] [PATCH] Use ev_break() rather than exit() in i3bar.">fernandotcl at i3wm.org
+       </A><BR>
+    <I>Sat Mar  3 21:43:08 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000522.html">[i3] [PATCH] Use ev_break() rather than exit() in i3bar.
+</A></li>
+        <LI>Next message: <A HREF="000535.html">[i3] [PATCH] Use ev_break() rather than exit() in i3bar.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#523">[ date ]</a>
+              <a href="thread.html#523">[ thread ]</a>
+              <a href="subject.html#523">[ subject ]</a>
+              <a href="author.html#523">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sat, Mar 3, 2012 at 9:47 AM, DR &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">drdarkraven at gmail.com</A>&gt; wrote:
+&gt;<i> On Sat, Mar 3, 2012 at 8:29 PM, DR &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">drdarkraven at gmail.com</A>&gt; wrote:
+</I>&gt;&gt;<i> If i3bar is running in hide mode, when i3wm exit, i3bar will exit
+</I>&gt;&gt;<i> without killing its child process, leaving a couple of processes in
+</I>&gt;&gt;<i> 'T' mode (i.e. Stopped).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> With this patch, when i3bar needs to quit, it will call ev_break()
+</I>&gt;&gt;<i> rather than exit(), thus gives the code after ev_loop() a chance to
+</I>&gt;&gt;<i> clean things up.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I'm not very sure I've done things right. I might change some exit()s
+</I>&gt;&gt;<i> called before ev_loop() into ev_break(), or leave some exit()s
+</I>&gt;&gt;<i> unconverted. Someone please review this patch.
+</I>&gt;<i>
+</I>&gt;<i> Sorry, sorry. I made a mistake, I leave out a file in this patch.
+</I>&gt;<i>
+</I>&gt;<i> New patch attached.
+</I>
+Sounds great, but I think it would be cleaner to avoid exporting so
+many symbols. For example, for at least some of those calls to exit(),
+can't we just make the function signal to the caller through a return
+code that it has failed? The caller would then signal to his parent
+and so on, until we get to the event handlers. Those handlers know all
+state involved and can cleanly break out of the loop.
+
+In case the last sentence became a bit confusing, consider this (-&gt;
+indicates a function call):
+
+Event loop -&gt; Event handler -&gt; A -&gt; B -&gt; C
+
+If C called exit, you're now calling ev_break in C. But then you have
+to export the symbols of stuff that needs to be cleaned up in the
+event handler, in A and in B, so that you can clean up for them. If
+you instead propagate the error across the call stack, C would clean
+after itself and pass the error code to B, which would do the same and
+pass the error code to A, and so on. That way no function has to clean
+up after its parent.
+
+That might require some refactoring (e.g. some functions might already
+return something) but it's probably worth it.
+
+
+Another option may be only clean up what needs to be cleaned up.
+Memory usually doesn't need to be free'd if the process is going down
+anyways. I'd consider this last resort, but we already do that in the
+signal handler anyways, so it's not like it would be unprecedented.
+You could also call kill_child in an atexit() handler (child_pid would
+have to be initialized to 0), but it's ugly too.
+
+
+I also noticed that you call ev_break, but the signal handler calls
+ev_unloop. Is that intentional?
+
+
+Finally I'd recommend that you split part of the commit message into
+the description. In Git, the first line of the commit message is
+special and it must be short. How about something like this:
+
+---
+Use ev_break() instead of exit().
+
+Calling exit() directly would mean we would never clean up. So now we
+break out of the event loop instead. Now we can be sure the child killed
+killed when i3bar exits, for example.
+---
+
+
+Regards,
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000522.html">[i3] [PATCH] Use ev_break() rather than exit() in i3bar.
+</A></li>
+	<LI>Next message: <A HREF="000535.html">[i3] [PATCH] Use ev_break() rather than exit() in i3bar.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#523">[ date ]</a>
+              <a href="thread.html#523">[ thread ]</a>
+              <a href="subject.html#523">[ subject ]</a>
+              <a href="author.html#523">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

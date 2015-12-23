@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] How to display in `i3bar` (via `i3status`) the amount of free memory
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20How%20to%20display%20in%20%60i3bar%60%20%28via%20%60i3status%60%29%20the%20amount%20of%0A%20free%20memory&In-Reply-To=%3CCANnVG6m0E0Y0QJYREuXY4LUz9Rn960yZ3Kfum0J%2BMifVwsm%3D4Q%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002199.html">
+   <LINK REL="Next"  HREF="002201.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] How to display in `i3bar` (via `i3status`) the amount of free memory</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20How%20to%20display%20in%20%60i3bar%60%20%28via%20%60i3status%60%29%20the%20amount%20of%0A%20free%20memory&In-Reply-To=%3CCANnVG6m0E0Y0QJYREuXY4LUz9Rn960yZ3Kfum0J%2BMifVwsm%3D4Q%40mail.gmail.com%3E"
+       TITLE="[i3] How to display in `i3bar` (via `i3status`) the amount of free memory">michael at i3wm.org
+       </A><BR>
+    <I>Wed Sep 16 13:26:34 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002199.html">[i3] How to display in `i3bar` (via `i3status`) the amount of free	memory
+</A></li>
+        <LI>Next message: <A HREF="002201.html">[i3] How to display in `i3bar` (via `i3status`) the amount of free memory
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2200">[ date ]</a>
+              <a href="thread.html#2200">[ thread ]</a>
+              <a href="subject.html#2200">[ subject ]</a>
+              <a href="author.html#2200">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>The recommended way is to wrap i3status as described in its manpage.
+
+On Wed, Sep 16, 2015 at 8:01 AM, Ciprian Dorin Craciun
+&lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ciprian.craciun at gmail.com</A>&gt; wrote:
+&gt;<i> I've just looked in the `i3status` manual to see how to display the
+</I>&gt;<i> free memory (as reported by `free`), and found no option.
+</I>&gt;<i>
+</I>&gt;<i> I understand from the manual that computing the used memory is not
+</I>&gt;<i> easy, but displaying the total used or free memory (both RAM and swap)
+</I>&gt;<i> as reported by `free` is quite easy and useful.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> My particular usecase is this:  I use quite a few of `tmpfs` instances
+</I>&gt;<i> mounted for various development purposes, which consume quite a lot of
+</I>&gt;<i> memory (in terms of GiB) and which spill over to swap (sometimes
+</I>&gt;<i> leaving me without any memory RAM or swap), and I would like to easily
+</I>&gt;<i> find out when I'm close to &quot;out-of-memory&quot;.
+</I>&gt;<i>
+</I>&gt;<i> Looking through the i3 mailing list archive I found other usecases of
+</I>&gt;<i> such a feature:
+</I>&gt;<i> * `[i3] memory information in i3status` from 1st of April 2015, which
+</I>&gt;<i> talks about many processes chewing RAM;
+</I>&gt;<i> * `[i3] memory display` from 15th November 2014, which talks about
+</I>&gt;<i> image processing applications;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> There even seems to be a rejected patch implementing this in `[i3]
+</I>&gt;<i> [RFC] [PATCH] i3status: memory-stats` from 23th February 2012, or
+</I>&gt;<i> `[i3] [PATCH] i3status: implements a memory-usage-print` from the same
+</I>&gt;<i> day.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Thus although the average desktop user never runs out of memory
+</I>&gt;<i> (either he has enough these days or uses swap), there are people --
+</I>&gt;<i> especially developers or those using memory intensive applications
+</I>&gt;<i> like scientific or image processing -- that easily overrun both their
+</I>&gt;<i> RAM an swap.  For example I have on my laptop 8 GiB RAM and a 32 GiB
+</I>&gt;<i> swap, and I'm constantly running out of available memory due to the
+</I>&gt;<i> mentioned `tmpfs` instances.
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i> Ciprian.
+</I>
+
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002199.html">[i3] How to display in `i3bar` (via `i3status`) the amount of free	memory
+</A></li>
+	<LI>Next message: <A HREF="002201.html">[i3] How to display in `i3bar` (via `i3status`) the amount of free memory
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2200">[ date ]</a>
+              <a href="thread.html#2200">[ thread ]</a>
+              <a href="subject.html#2200">[ subject ]</a>
+              <a href="author.html#2200">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

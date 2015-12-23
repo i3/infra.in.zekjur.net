@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] restarting i3 when running inside Xephyr
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20restarting%20i3%20when%20running%20inside%20Xephyr&In-Reply-To=%3C20140831111211.130d62e0%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001833.html">
+   <LINK REL="Next"  HREF="001829.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] restarting i3 when running inside Xephyr</H1>
+    <B>Emanuel Guével</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20restarting%20i3%20when%20running%20inside%20Xephyr&In-Reply-To=%3C20140831111211.130d62e0%40gmail.com%3E"
+       TITLE="[i3] restarting i3 when running inside Xephyr">guevel.emanuel at gmail.com
+       </A><BR>
+    <I>Sun Aug 31 11:12:11 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001833.html">[i3] restarting i3 when running inside Xephyr
+</A></li>
+        <LI>Next message: <A HREF="001829.html">[i3] Cant subscribe to window::focus events
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1834">[ date ]</a>
+              <a href="thread.html#1834">[ thread ]</a>
+              <a href="subject.html#1834">[ subject ]</a>
+              <a href="author.html#1834">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sat, 30 Aug 2014 18:06:23 -0700,
+Unmanifest D &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">unmanifestd at gmail.com</A>&gt; wrote :
+
+&gt;<i> I am building a new application - let's call it A (an X11 app) that
+</I>&gt;<i> needs to use an existing X11 application  (that I can't change) -
+</I>&gt;<i> let's call it B. I would launch A and occasionally have to to fire up
+</I>&gt;<i> B to do some stuff related to what A does/is doing. Ideally, I would
+</I>&gt;<i> like B to be a sub-tab or somehow be 'contained within' A - to avoid
+</I>&gt;<i> the two showing up as two disconnected applications on the desktop and
+</I>&gt;<i> keep the two within the same 'container'. For lack of better options,
+</I>&gt;<i> I decided to make Xephyr my container and use i3 to display A and then
+</I>&gt;<i> B and switch back-n-forth etc. I'm open to any suggestions on better
+</I>&gt;<i> ways of achieving this.
+</I>
+Can't you embed B into A using Xembed?
+
+Here you have an example of a GTK2 window that can embed other
+apps (yeah, python2 + gtk2, it's outdated a bit, but you could find out
+an equivalent that works with your toolkit):
+<A HREF="http://www.moeraki.com/pygtktutorial/pygtk2tutorial/examples/socket.py">http://www.moeraki.com/pygtktutorial/pygtk2tutorial/examples/socket.py</A>
+
+If B does not support the Xembed protocol, you can run it inside Xephyr
+or Xnest (though this last one did not give good results for me).
+
+Proof of concept:
+  $ python2 socket.py
+  Socket ID= 35651617
+  $ Xephyr :1 -parent 35651617
+  $ DISPLAY=:1 xfontsel
+
+Cheers.
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001833.html">[i3] restarting i3 when running inside Xephyr
+</A></li>
+	<LI>Next message: <A HREF="001829.html">[i3] Cant subscribe to window::focus events
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1834">[ date ]</a>
+              <a href="thread.html#1834">[ thread ]</a>
+              <a href="subject.html#1834">[ subject ]</a>
+              <a href="author.html#1834">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

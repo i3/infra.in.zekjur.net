@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Querying Current Workspace / Window
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Querying%20Current%20Workspace%20/%20Window&In-Reply-To=%3C1277943868.18659.1382732975%40webmail.messagingengine.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000109.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Querying Current Workspace / Window</H1>
+    <B>registration.i3 at seani.justemail.net</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Querying%20Current%20Workspace%20/%20Window&In-Reply-To=%3C1277943868.18659.1382732975%40webmail.messagingengine.com%3E"
+       TITLE="[i3] Querying Current Workspace / Window">registration.i3 at seani.justemail.net
+       </A><BR>
+    <I>Thu Jul  1 02:24:28 CEST 2010</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000109.html">[i3] Querying Current Workspace / Window
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#108">[ date ]</a>
+              <a href="thread.html#108">[ thread ]</a>
+              <a href="subject.html#108">[ subject ]</a>
+              <a href="author.html#108">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Is there an easy(ish) way find out the number of the currently focussed
+workspace from the command line?
+
+
+I have the excellent BBC iPlayer running away on another workspace.
+Occasionally I want to pause for a phone call etc. and then unpause.
+Unfortunately as the iPlayer makes use of embedded flash, I can't bind
+directly to a shortcut key.
+
+
+What I'm doing instead is using a combination of i3-msg and xdotool to
+flip to the correct workspace and mouseclick at the appropriate point. I
+stick this in a shell script, and then exec the script on a bindsym.
+
+
+My script looks like this:
+
+
+#!/bin/bash
+
+# set focus to iplayer desktop
+i3-msg 4
+
+#
+# Move to player and ensure focus is on embedded player
+#
+xdotool mousemove 1465 430
+xdotool click 1
+
+#
+# Now move and click play / pause
+#
+xdotool mousemove 1465 487
+xdotool click 1
+
+
+
+So far, so trivial, and it works a treat.
+
+
+But I'd like to be able to record which i3 workspace I'm on, flip and
+click, and then restore. I don't much care about the screen flickering
+etc.
+
+
+Any way I can achieve that, or do I need to fiddle with talking to the
+socket directly?
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000109.html">[i3] Querying Current Workspace / Window
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#108">[ date ]</a>
+              <a href="thread.html#108">[ thread ]</a>
+              <a href="subject.html#108">[ subject ]</a>
+              <a href="author.html#108">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

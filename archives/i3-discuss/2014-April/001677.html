@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] monitor dependent workspaces
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20monitor%20dependent%20workspaces&In-Reply-To=%3CCAPAw0WrciJ8Zmzrw1W-Zihbmb%3DC7e3uyg6%3DTNm5P_-uOPK%2BarQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001675.html">
+   <LINK REL="Next"  HREF="001683.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] monitor dependent workspaces</H1>
+    <B>Jeff Jibson</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20monitor%20dependent%20workspaces&In-Reply-To=%3CCAPAw0WrciJ8Zmzrw1W-Zihbmb%3DC7e3uyg6%3DTNm5P_-uOPK%2BarQ%40mail.gmail.com%3E"
+       TITLE="[i3] monitor dependent workspaces">jeff at jibson.com
+       </A><BR>
+    <I>Sun Apr 13 09:23:22 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001675.html">[i3] monitor dependent workspaces
+</A></li>
+        <LI>Next message: <A HREF="001683.html">[i3] i3status
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1677">[ date ]</a>
+              <a href="thread.html#1677">[ thread ]</a>
+              <a href="subject.html#1677">[ subject ]</a>
+              <a href="author.html#1677">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, Apr 11, 2014 at 3:59 PM, Eric Roseman &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">Eric.Roseman at colorado.edu</A>&gt;wrote:
+
+&gt;<i> Thanks for the input. I tried this and I'm not sure how to switch to
+</I>&gt;<i> workspaces 11-20. What I'm trying to do is have workspace 1-10 per
+</I>&gt;<i> monitor, and a mod+2 or mod+3 would focus the #2 or #3 workspace of the
+</I>&gt;<i> current monitor.
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i> Eric
+</I>&gt;<i>
+</I>
+You can use other mod keys.  I have the left windows key setup as hyper and
+the right as super.  I tend to use the monitors in pairs (browsers on the
+left and tmux on the right) so, $Hyper+Control changes to both.  Using 0L
+and 0R works nice for scripting the pairs.
+
+set $Hyper Mod3
+set $Super Mod4
+
+# switch to another workspace
+bindcode $Hyper+19 workspace &quot;0L&quot;
+bindcode $Super+19 workspace &quot;0R&quot;
+bindcode $Hyper+Control+19 workspace &quot;0L&quot;; workspace &quot;0R&quot;
+bindcode $Hyper+10 workspace &quot;1L&quot;
+bindcode $Super+10 workspace &quot;1R&quot;
+bindcode $Hyper+Control+10 workspace &quot;1L&quot;; workspace &quot;1R&quot;
+bindcode $Hyper+11 workspace &quot;2L&quot;
+bindcode $Super+11 workspace &quot;2R&quot;
+bindcode $Hyper+Control+11 workspace &quot;2L&quot;; workspace &quot;2R&quot;
+...
+
+# Workspace assignments
+workspace &quot;0L&quot;        output DVI-I-1
+workspace &quot;1L&quot;        output DVI-I-1
+workspace &quot;2L&quot;        output DVI-I-1
+...
+workspace &quot;0R&quot;        output HDMI-1
+workspace &quot;1R&quot;        output HDMI-1
+workspace &quot;2R&quot;        output HDMI-1
+...
+
+# move to another workspace
+bindcode $Hyper+Shift+19 move workspace &quot;0L&quot;
+bindcode $Super+Shift+19 move workspace &quot;0R&quot;
+bindcode $Hyper+Shift+10 move workspace &quot;1L&quot;
+bindcode $Super+Shift+10 move workspace &quot;1R&quot;
+bindcode $Hyper+Shift+11 move workspace &quot;2L&quot;
+bindcode $Super+Shift+11 move workspace &quot;2R&quot;
+...
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140413/42c70808/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140413/42c70808/attachment.html</A>&gt;
+</PRE>
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001675.html">[i3] monitor dependent workspaces
+</A></li>
+	<LI>Next message: <A HREF="001683.html">[i3] i3status
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1677">[ date ]</a>
+              <a href="thread.html#1677">[ thread ]</a>
+              <a href="subject.html#1677">[ subject ]</a>
+              <a href="author.html#1677">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

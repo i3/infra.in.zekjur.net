@@ -1,0 +1,307 @@
+From maggo.ruepp at gmail.com  Thu Dec  4 01:29:48 2014
+From: maggo.ruepp at gmail.com (Markus)
+Date: Thu, 4 Dec 2014 00:29:48 +0000 (UTC)
+Subject: [i3] Content Assistant
+References: <CABTqaieBFMBjBsASg7nLXFy9EX6ey1Q2xJs615-0G7ZGuC=qTw@mail.gmail.com>
+ <5367F67E.8010002@necoro.eu> <x638gn28tz.fsf@midna.zekjur.net>
+Message-ID: <loom.20141204T012708-470@post.gmane.org>
+
+I had the same problem. In my case the IBus used the same shortcut. It has
+an icon in the i3 tray, next to the clock.
+
+
+From nashpapa at gmail.com  Fri Dec  5 19:25:20 2014
+From: nashpapa at gmail.com (avinash r)
+Date: Fri, 05 Dec 2014 18:25:20 +0000
+Subject: [i3] Systray not shown after 4.8
+References: <CAHCistdrZ_sgMPA9Hq=_Xu+ugEEOsdm5LB1Cx2sfeiA7zf+kGA@mail.gmail.com>
+ <CANnVG6nkHMEoxhZsqc=yr7AtRgqydQY15VuKi+Y8UAmgzK=Ayw@mail.gmail.com>
+Message-ID: <CAHCistc=1dEF=YC9NxniMbfE242z2W_i1geHRoEa27jpHhrecQ@mail.gmail.com>
+
+Hi Michael,
+
+I got a fix on this by removing the 'tray_output primary' from the config.
+
+I still don't have any clue why this showed up in the first place, because
+I remember that the 'tray_output primary' was set afterwards this issue
+showed up.
+
+Anyways, thanks for the help.
+
+On Fri Nov 14 2014 at 2:40:21 PM Michael Stapelberg <michael at i3wm.org>
+wrote:
+
+> On Fri, Nov 14, 2014 at 6:22 AM, avinash r <nashpapa at gmail.com> wrote:
+> > Hi,
+> >
+> > After updating to i3 4.8 (4.8-34-gfa41ad7) I am not able to see the
+> systray
+> > anymore. In my i3 config file, I have the following configuration for the
+> Which was the last i3 version with which it worked?
+>
+> Did you only update i3 or also other software?
+>
+> > bar:
+> >
+> > bar {
+> >         status_command "i3status -c ~/.i3/status.conf"
+> >         tray_output primary
+> Try setting an output as primary explicitly with “xrandr --output
+> LVDS1 --primary” (and possibly restarting i3 afterwards), or removing
+> “tray_output primary”.
+>
+> > }
+> >
+> > I have another laptop with same version of i3 running ubuntu where the
+> > systray works flawlessly.
+> >
+> > Any idea on how to fix this?
+> >
+> > PS: I had used i3blocks for the status command previously to this, which
+> i
+> > removed before updating. Can this be causing the issue?
+> i3blocks being the culprit sounds very unlikely.
+>
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20141205/b2381a98/attachment.html>
+
+From nashpapa at gmail.com  Fri Dec  5 20:22:01 2014
+From: nashpapa at gmail.com (avinash r)
+Date: Fri, 05 Dec 2014 19:22:01 +0000
+Subject: [i3] non-rectangular windows in i3
+Message-ID: <CAHCisteF-srMD2aNBqHv-nnWHry8xFzepuSZJzqyQ8PsKsQiCw@mail.gmail.com>
+
+Is there any way to render non-circular window correctly in i3?
+
+most of the windows in i3 has always been using a rectangular border, but
+recently when I installed the google hangouts chrome app
+<https://chrome.google.com/webstore/detail/hangouts/knipolnnllmklapflnccelgolnpehhpl?utm_source=chrome-ntp-icon>,
+I noticed that it had a circular window, which transforms into a rectangle
+once it's clicked on, and transforms back into a circle when clicked again.
+
+But on i3, the it still retains a rectangular window and looks weird
+(screenshot of this is available at:
+http://s2.postimg.org/f184crc15/i3_srsht.png).
+
+PS: the same is applicable for synapse (
+http://synapse.zeitgeist-project.com/) in it's default theme.
+
+Is this a bug?
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20141205/ded5d09f/attachment.html>
+
+From michael at i3wm.org  Fri Dec  5 22:35:53 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 5 Dec 2014 22:35:53 +0100
+Subject: [i3] non-rectangular windows in i3
+In-Reply-To: <CAHCisteF-srMD2aNBqHv-nnWHry8xFzepuSZJzqyQ8PsKsQiCw@mail.gmail.com>
+References: <CAHCisteF-srMD2aNBqHv-nnWHry8xFzepuSZJzqyQ8PsKsQiCw@mail.gmail.com>
+Message-ID: <CANnVG6ki0OiY9G4agdGu9tQK161DAZe3A2aC+LqWjpaVfD3dvw@mail.gmail.com>
+
+I think many of the hints that the Chrome hangouts app requires are
+not supported in i3. I’m certainly in favor of fixing that, but I’m
+not sure when I’ll get around to it. Perhaps that’s something for the
+holidays…
+
+(The usual caveat applies: if support for these hints introduces
+unreasonable complexity, I reserve the right to reject them.)
+
+On Fri, Dec 5, 2014 at 8:22 PM, avinash r <nashpapa at gmail.com> wrote:
+> Is there any way to render non-circular window correctly in i3?
+>
+> most of the windows in i3 has always been using a rectangular border, but
+> recently when I installed the google hangouts chrome app, I noticed that it
+> had a circular window, which transforms into a rectangle once it's clicked
+> on, and transforms back into a circle when clicked again.
+>
+> But on i3, the it still retains a rectangular window and looks weird
+> (screenshot of this is available at:
+> http://s2.postimg.org/f184crc15/i3_srsht.png).
+>
+> PS: the same is applicable for synapse
+> (http://synapse.zeitgeist-project.com/) in it's default theme.
+>
+> Is this a bug?
+
+
+
+-- 
+Best regards,
+Michael
+
+From joel.w.fl at gmail.com  Sat Dec 13 09:30:28 2014
+From: joel.w.fl at gmail.com (Joel F)
+Date: Sat, 13 Dec 2014 08:30:28 +0000 (UTC)
+Subject: [i3] I3-save-layout - the .json file is empty - bug or otherwise?
+Message-ID: <loom.20141213T092504-465@post.gmane.org>
+
+I'm using I3 4.8, have installed the perl modules AnyEvent::i3, JSON::XS and
+AnyEvent::Handle, along with i3-save-layout.
+
+
+When I run the command
+
+ $ 'i3-save-tree --workspace 2: Ranger/NCMPCPP > .i3/ws2.2.json'
+
+the resulting file contains just one line: 
+$ cat .i3/ws2.2.json
+// vim:ts=4:sw=4:et
+
+When it should actually be containing the layout. Is this a bug, and why
+does it happen? Or is it something else, related to dependencies?
+
+Would really appreciate some input on this. Seems to be a neat and useful
+feature.
+
+
+
+
+From public at enkore.de  Sat Dec 13 12:51:47 2014
+From: public at enkore.de (Marian Beermann)
+Date: Sat, 13 Dec 2014 12:51:47 +0100
+Subject: [i3] I3-save-layout - the .json file is empty - bug or
+	otherwise?
+In-Reply-To: <loom.20141213T092504-465@post.gmane.org>
+References: <loom.20141213T092504-465@post.gmane.org>
+Message-ID: <548C2853.6010805@enkore.de>
+
+On 12/13/2014 09:30 AM, Joel F wrote:
+> I'm using I3 4.8, have installed the perl modules AnyEvent::i3, JSON::XS and
+> AnyEvent::Handle, along with i3-save-layout.
+> 
+> 
+> When I run the command
+> 
+>  $ 'i3-save-tree --workspace 2: Ranger/NCMPCPP > .i3/ws2.2.json'
+> 
+> the resulting file contains just one line: 
+> $ cat .i3/ws2.2.json
+> // vim:ts=4:sw=4:et
+> 
+> When it should actually be containing the layout. Is this a bug, and why
+> does it happen? Or is it something else, related to dependencies?
+> 
+> Would really appreciate some input on this. Seems to be a neat and useful
+> feature.
+> 
+> 
+> 
+
+Did you try to quote your workspace name?
+
+From joel.w.fl at gmail.com  Mon Dec 15 08:49:38 2014
+From: joel.w.fl at gmail.com (Joel F)
+Date: Mon, 15 Dec 2014 07:49:38 +0000 (UTC)
+Subject: [i3]
+	=?utf-8?q?I3-save-layout_-_the_=2Ejson_file_is_empty_-_bug_o?=
+	=?utf-8?q?r=09otherwise=3F?=
+References: <loom.20141213T092504-465@post.gmane.org>
+ <548C2853.6010805@enkore.de>
+Message-ID: <loom.20141215T084840-909@post.gmane.org>
+
+Marian Beermann <public <at> enkore.de> writes:
+
+> 
+
+> 
+> Did you try to quote your workspace name?
+> 
+> 
+
+
+Quoting workspace name makes the problem go away. Thank you.
+
+
+From taras.koroljuk at gmail.com  Mon Dec 15 22:15:24 2014
+From: taras.koroljuk at gmail.com (cyberwoodman .)
+Date: Mon, 15 Dec 2014 23:15:24 +0200
+Subject: [i3] How to get i3wm statically linked?
+Message-ID: <CAKXNJ5nunzzNsdiSO5i35PC1mw8eAHuZ+g-HJmC8JxQt25DtyA@mail.gmail.com>
+
+Hello. At work I must use and old Ubuntu 11.04 version. So I limited to use
+i3 with version 3.x
+
+Sadly, the newest version of i3 is much more handy than previous one.
+
+Could you please advise me how to build i3 statically linked? Thanks.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20141215/076337a4/attachment.html>
+
+From oldpond at gmail.com  Mon Dec 15 22:59:55 2014
+From: oldpond at gmail.com (Mike Bonar)
+Date: Mon, 15 Dec 2014 13:59:55 -0800
+Subject: [i3] How to get i3wm statically linked?
+In-Reply-To: <CAKXNJ5nunzzNsdiSO5i35PC1mw8eAHuZ+g-HJmC8JxQt25DtyA@mail.gmail.com>
+References: <CAKXNJ5nunzzNsdiSO5i35PC1mw8eAHuZ+g-HJmC8JxQt25DtyA@mail.gmail.com>
+Message-ID: <1AC33426-D92A-40E8-8CA4-343670516A30@gmail.com>
+
+https://faq.i3wm.org/question/68/how-to-build-and-install-i3-from-sources/
+
+How to build from source.
+
+Cheers,
+Mike
+On Dec 15, 2014, at 1:15 PM, cyberwoodman . <taras.koroljuk at gmail.com> wrote:
+
+> Hello. At work I must use and old Ubuntu 11.04 version. So I limited to use i3 with version 3.x
+> 
+> Sadly, the newest version of i3 is much more handy than previous one.
+> 
+> Could you please advise me how to build i3 statically linked? Thanks.
+
+
+From mail at merovius.de  Mon Dec 15 23:26:46 2014
+From: mail at merovius.de (Axel Wagner)
+Date: Mon, 15 Dec 2014 22:26:46 +0000
+Subject: [i3] How to get i3wm statically linked?
+In-Reply-To: <1AC33426-D92A-40E8-8CA4-343670516A30@gmail.com>
+References: <CAKXNJ5nunzzNsdiSO5i35PC1mw8eAHuZ+g-HJmC8JxQt25DtyA@mail.gmail.com>
+ <1AC33426-D92A-40E8-8CA4-343670516A30@gmail.com>
+Message-ID: <87bnn47dnd.fsf@rincewind.i-did-not-set--mail-host-address--so-tickle-me>
+
+Hi,
+
+Mike Bonar <oldpond at gmail.com> writes:
+> https://faq.i3wm.org/question/68/how-to-build-and-install-i3-from-sources/
+>
+> How to build from source.
+
+this does not answer, how to link it statically.
+
+I have no real idea how to do that (and if it's possible) either. I
+tried building using LDFLAGS=-static and replacing --libs in the
+pkg-config by --static. That does not seem to be enough.
+
+From michael at i3wm.org  Fri Dec 26 21:15:10 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 26 Dec 2014 21:15:10 +0100
+Subject: [i3] Putting i3lock/i3status on github
+Message-ID: <CANnVG6mU-igNscfVJzLGEatAyF8iE1qMwA+ZbytveTFMzKky-A@mail.gmail.com>
+
+Hey,
+
+For various reasons, I’d like to minimize the number of critical
+services I host (and the number of custom solutions for common tasks).
+Therefore, I’m moving the i3status and i3lock repositories to GitHub
+as a test to see how well it works for our workflow/community/…
+
+Instead of submitting patches for i3lock/i3status on cr.i3wm.org,
+please send a pull request on https://github.com/i3/i3lock and
+https://github.com/i3/i3status respectively. I’ve disabled issues and
+wikis, as we’ll keep those at the current locations for now.
+
+I’ll keep the existing repository locations around as best-effort
+mirrors (which automatically pull from GitHub).
+
+-- 
+Best regards,
+Michael
+

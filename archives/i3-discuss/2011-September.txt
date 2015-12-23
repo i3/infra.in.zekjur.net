@@ -1,0 +1,741 @@
+From michael+i3 at stapelberg.de  Fri Sep  2 15:38:13 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Fri, 02 Sep 2011 15:38:13 +0200
+Subject: [i3] i3-input command building
+In-Reply-To: <alpine.LNX.2.00.1108271935480.5936@juffo-wup.dyndns.org>
+References: <alpine.LNX.2.00.1108271935480.5936@juffo-wup.dyndns.org>
+Message-ID: <1314970528-sup-6653@stapelberg.de>
+
+Hi Henryk,
+
+Sorry I did not reply earlier.
+
+Excerpts from Henryk Hecht's message of 2011-08-28 03:50:28 +0200:
+> I discovered i3 a day or so ago, and have a number of questions that don't 
+> seem to be covered in the documentation.  I don't know if the readers of 
+> the list would prefer one email per question or otherwise, so I'll just 
+> start with the most immediate:
+Yes, please post one email per question. If you want to, you could also come to
+IRC and get a more rapid response (hopefully) :).
+
+> i3-input accepts a -p argument as a prefix to a command, but does not seem 
+> to allow one to have a suffix to what is read; is this correct?  The 
+> motivation is to build a goto-by-class binding:
+> i3-input -p '[class=' -P 'Goto :' '] focus'
+Yeah, the goto command was just 'goto' in previous versions (and I think of
+re-introducing an alias), so that was never an issue there ;).
+
+> but it seems that it ignores anything in argv not in the getopt loop, 
+> leaving no way to build a command where the "interesting" part does not 
+> occur at the end.  An equivalent example is found in section 5.7 of the 
+> user guide ("VIM-like marks (mark/goto)"): there appears to be no way to 
+> actually implement this functionality with i3-input, which is recommended 
+> for the task.  One could, of course, enter the whole command with 
+> i3-input, or just append "] focus" oneself, but this seems unnecessarily 
+> tedious: hardly a timesaver.
+Yep.
+
+> Is it better to just ignore i3-input and write a shell script around 
+> i3-msg and xdialog?
+The best way of course would be to fix i3-input, probably accepting a format
+string and replacing %c for command.
+
+For the readers of this mailing list, there is a ticket which includes a patch:
+http://bugs.i3wm.org/ticket/512
+
+Best regards,
+Michael
+
+From michael+i3 at stapelberg.de  Mon Sep  5 14:43:53 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Mon, 05 Sep 2011 14:43:53 +0200
+Subject: [i3] pan icon in display
+In-Reply-To: <20110828212423.GC6684@poincare.pc.linmpi.mpg.de>
+References: <20110828212423.GC6684@poincare.pc.linmpi.mpg.de>
+Message-ID: <1315226362-sup-9046@stapelberg.de>
+
+Hi Miguel,
+
+Thanks for your mail.
+
+Excerpts from Miguel de Val-Borro's message of 2011-08-28 23:24:36 +0200:
+> The pan icon in Imagemagick's display should appear only when the size
+> of the image is largen than the screen. However in i3 the panning icon
+> also appears when the image is smaller than the screen.  Please find
+Indeed, I can reproduce that (open 'display' in a floating window, the floating
+window will end up having a smaller rectangle than the app requested).
+
+I created a ticket to track this: http://bugs.i3wm.org/ticket/513
+
+> attached the relevant part of my logfile with verbose output. Another
+> perhaps unrelated problem is that display opens the image with
+> coordinates 640,640 by default in i3 so in this example I have used
+> 'display -geometry +0+0' to center the image.
+One of the problems with ImageMagick?s initial geometry seems to be that it is
+not multi-monitor aware. However, judging from your logfile, you only have a
+single monitor with 1280x1024 pixels. I?m not sure why ImageMagick requests
+(640,640)?
+
+Best regards,
+Michael
+
+From michael+i3 at stapelberg.de  Mon Sep  5 19:04:25 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Mon, 05 Sep 2011 19:04:25 +0200
+Subject: [i3] egde snapping for floating windows
+In-Reply-To: <CAKneAX=1KweOtHS5+wtr5BrDt9wTM651z9O2Gt969Fjra+W3qQ@mail.gmail.com>
+References: <AANLkTikqYCFPK2Y7ic3Aw+UP6j=6rbeLDtd_T1za2aY8@mail.gmail.com>
+	<1296209361-sup-851@midna.zekjur.net>
+	<BANLkTinfV0pfy5syM4Mo2uKyOJB6Hao06g@mail.gmail.com>
+	<BANLkTi=8gtHAaFU-aQW2KXyRsrknOafWdw@mail.gmail.com>
+	<BANLkTinMr4A3v66g-LcBSssOamTMF=gbYw@mail.gmail.com>
+	<BANLkTimP18j7XjbNNjXiixF3E-3FMr8dcQ@mail.gmail.com>
+	<BANLkTinWhzyq3nqimpHWARUJdJb5dT-Fng@mail.gmail.com>
+	<BANLkTikfgOR3t1MzgNQzsh1RUSgDM5Cp-A@mail.gmail.com>
+	<CAKneAX=1KweOtHS5+wtr5BrDt9wTM651z9O2Gt969Fjra+W3qQ@mail.gmail.com>
+Message-ID: <1315241590-sup-1042@stapelberg.de>
+
+Hi Jan,
+
+Thanks for your patch, sorry for taking so long to respond.
+
+Excerpts from Jan Krcmar's message of 2011-08-26 10:58:31 +0200:
+> now, the windows are snapping while moving and while resizing
+> 
+> i've also pushed the new configuration option into the config file
+> determining the edge snap threshold
+I tried your patch with the default snap_threshold of 10 pixels. I noticed
+multiple issues:
+
+1) I can?t seem to position my windows within the 10 pixels to every screen
+   edge (e.g. I cannot position them at x=6, y=3). It always snaps. That is a
+   serious usability problem, but I don?t see a good way to solve it within the
+   existing i3 codebase.
+
+   A way that could work better (without having tried it): Signaling the user
+   that the window could snap. If you have ever used Apple Keynote or Xcode?s
+   User Interface Builder you know the helper lines they have to signal that
+   something can be aligned somewhere [1]. After signaling, the user could
+   either let the mouse button go (and the window would snap) or keep on
+   positioning and would be allowed to do it like he wants. As I said, I don?t
+   see how to implement this with i3?s codebase (in particular not without
+   using compositing).
+
+   Another way would be to press a specific key while dragging, like Control.
+   Not sure if Control is a good choice for that, and also not sure if using it
+   together with the floating_modifier (which might already include Control
+   :-/) is a reasonable key combination to press.
+
+2) You don?t consider dock clients but always snap to the screen edges.
+
+3) There are various little code style points which I?m omitting in this mail,
+   due to the reasons below.
+
+Now that I saw how it looks and feels, I don?t think this is a good feature for
+i3. It feels a little weird to use and frankly, I don?t think we need it.
+Floating mode is mainly implemented for (modal) popup dialogs like password
+prompts. i3 does not aim to become a good floating window manager.
+
+So, in conclusion: Thanks for your efforts, but I say no to this version of the
+patch and probably also to further versions, unless you can convince me that
+it?s really worth it and that you sorted out the usability problems.
+
+Best regards,
+Michael
+
+[1] See
+http://www.techotopia.com/images/7/74/Interface_builder_align_objects.png for
+example ? the blue dashed line signals that the button is centered below the
+input field.
+
+From miguel.deval at gmail.com  Mon Sep 12 21:26:21 2011
+From: miguel.deval at gmail.com (Miguel de Val-Borro)
+Date: Mon, 12 Sep 2011 21:26:21 +0200
+Subject: [i3] pan icon in display
+In-Reply-To: <1315226362-sup-9046@stapelberg.de>
+References: <20110828212423.GC6684@poincare.pc.linmpi.mpg.de>
+	<1315226362-sup-9046@stapelberg.de>
+Message-ID: <20110912192621.GC10916@poincare.pc.linmpi.mpg.de>
+
+Hi Michael,
+
+On Mon, Sep 05, 2011 at 02:43:53PM +0200, Michael Stapelberg wrote:
+> Excerpts from Miguel de Val-Borro's message of 2011-08-28 23:24:36 +0200:
+> > The pan icon in Imagemagick's display should appear only when the size
+> > of the image is largen than the screen. However in i3 the panning icon
+> > also appears when the image is smaller than the screen.  Please find
+> Indeed, I can reproduce that (open 'display' in a floating window, the floating
+> window will end up having a smaller rectangle than the app requested).
+> 
+> I created a ticket to track this: http://bugs.i3wm.org/ticket/513
+
+Thanks for confirming this problem.
+ 
+> > attached the relevant part of my logfile with verbose output. Another
+> > perhaps unrelated problem is that display opens the image with
+> > coordinates 640,640 by default in i3 so in this example I have used
+> > 'display -geometry +0+0' to center the image.
+> One of the problems with ImageMagick?s initial geometry seems to be that it is
+> not multi-monitor aware. However, judging from your logfile, you only have a
+> single monitor with 1280x1024 pixels. I?m not sure why ImageMagick requests
+> (640,640)?
+
+I always get a (640,640) position from ImageMagick for my single monitor
+setup. According to the documentation the default offset should be +0+0
+and this seems to work fine on wmii.
+
+http://www.imagemagick.org/www/command-line-processing.html#geometry
+
+Thanks,
+Miguel
+
+From fbg111 at gmail.com  Thu Sep 15 07:30:59 2011
+From: fbg111 at gmail.com (Byron Gibson)
+Date: Wed, 14 Sep 2011 22:30:59 -0700
+Subject: [i3] Installing i3status on Ubuntu 10.04,
+	requires libasound2 > 1.0.24.1
+Message-ID: <CAPwQ0Wt71D3jeV7ZPgv+EsTyZLcOwuuuiT4K-Q6eWMOtHpnGQw@mail.gmail.com>
+
+Hi all, anyone have any experience setting up i3 with i3status on
+Ubuntu 10.04?  10.04's default libasound2 is 1.0.22:
+
+The following packages have unmet dependencies:
+  i3status: Depends: libasound2 (> 1.0.24.1) but 1.0.22-0ubuntu7 is installed.
+
+Doesn't look like libasound2 will get updated for 10.04 past 1.0.22:
+
+https://launchpad.net/ubuntu/lucid/i386/libasound2
+
+Anyone have any workarounds or fixes for getting i3status working in 10.04?
+
+Thanks,
+Byron
+
+--
+Remember, if it?s in the news don?t worry about it. The very
+definition of news is ?something that almost never happens.? When
+something is so common that it?s no longer news ? car crashes,
+domestic violence ? that?s when you should worry about it. ?- Bruce
+Schneier
+
+From michael+i3 at stapelberg.de  Thu Sep 15 19:53:02 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Thu, 15 Sep 2011 18:53:02 +0100
+Subject: [i3] Installing i3status on Ubuntu 10.04,
+	requires libasound2 > 1.0.24.1
+In-Reply-To: <CAPwQ0Wt71D3jeV7ZPgv+EsTyZLcOwuuuiT4K-Q6eWMOtHpnGQw@mail.gmail.com>
+References: <CAPwQ0Wt71D3jeV7ZPgv+EsTyZLcOwuuuiT4K-Q6eWMOtHpnGQw@mail.gmail.com>
+Message-ID: <1316109158-sup-4626@stapelberg.de>
+
+Hi Byron,
+
+Excerpts from Byron Gibson's message of 2011-09-15 06:30:59 +0100:
+> The following packages have unmet dependencies:
+>   i3status: Depends: libasound2 (> 1.0.24.1) but 1.0.22-0ubuntu7 is installed.
+Yeah, just compile it yourself. It works fine with Ubuntu 10.04.
+
+Best regards,
+Michael
+
+From miguel.deval at gmail.com  Thu Sep 15 23:20:22 2011
+From: miguel.deval at gmail.com (Miguel de Val-Borro)
+Date: Thu, 15 Sep 2011 23:20:22 +0200
+Subject: [i3] default_orientation configuration
+Message-ID: <20110915212022.GB2891@poincare.mps.mpg.de>
+
+Hi,
+
+I have set up the default_orientation configuration parameter to
+vertical and I would expect that when I open a terminal it would always
+appear below the current one. However for a workspace with left and
+right terminals, when focus is on the right one, a new terminal appears
+to the right. If I press mod+v before opening a new terminal then it is
+created below the right terminal as expected. Is the default_orientation
+parameter supposed to define the orientation for all containers in the
+workspace?
+
+Thanks,
+Miguel
+
+From michael+i3 at stapelberg.de  Thu Sep 15 23:28:41 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Thu, 15 Sep 2011 22:28:41 +0100
+Subject: [i3] default_orientation configuration
+In-Reply-To: <20110915212022.GB2891@poincare.mps.mpg.de>
+References: <20110915212022.GB2891@poincare.mps.mpg.de>
+Message-ID: <1316122073-sup-5983@stapelberg.de>
+
+Hi Miguel,
+
+Excerpts from Miguel de Val-Borro's message of 2011-09-15 22:20:22 +0100:
+> created below the right terminal as expected. Is the default_orientation
+> parameter supposed to define the orientation for all containers in the
+> workspace?
+No, it?s not. It is the *default* orientation of the workspace, when a
+workspace will be created. So, if you change the workspace?s orientation (for
+example by moving windows to the left/right), the default_orientation does not
+matter anymore.
+
+Best regards,
+Michael
+
+From michael+i3 at stapelberg.de  Sat Sep 17 15:15:36 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 17 Sep 2011 14:15:36 +0100
+Subject: [i3] pan icon in display
+In-Reply-To: <20110912192621.GC10916@poincare.pc.linmpi.mpg.de>
+References: <20110828212423.GC6684@poincare.pc.linmpi.mpg.de>
+	<1315226362-sup-9046@stapelberg.de>
+	<20110912192621.GC10916@poincare.pc.linmpi.mpg.de>
+Message-ID: <1316265311-sup-4170@stapelberg.de>
+
+Hi Miguel,
+
+FYI: The bug with the pan icon is now fixed :).
+
+Best regards,
+Michael
+
+From miguel.deval at gmail.com  Sat Sep 17 17:15:30 2011
+From: miguel.deval at gmail.com (Miguel de Val-Borro)
+Date: Sat, 17 Sep 2011 17:15:30 +0200
+Subject: [i3] pan icon in display
+In-Reply-To: <1316265311-sup-4170@stapelberg.de>
+References: <20110828212423.GC6684@poincare.pc.linmpi.mpg.de>
+	<1315226362-sup-9046@stapelberg.de>
+	<20110912192621.GC10916@poincare.pc.linmpi.mpg.de>
+	<1316265311-sup-4170@stapelberg.de>
+Message-ID: <20110917151530.GA17392@poincare.pc.linmpi.mpg.de>
+
+Hi Michael,
+
+Thank you very much! I will try the latest version from the repository.
+
+Miguel
+
+On Sat, Sep 17, 2011 at 02:15:36PM +0100, Michael Stapelberg wrote:
+> Hi Miguel,
+> 
+> FYI: The bug with the pan icon is now fixed :).
+> 
+> Best regards,
+> Michael
+
+From Bernhard.Guillon at opensimpad.org  Sat Sep 24 13:08:19 2011
+From: Bernhard.Guillon at opensimpad.org (Bernhard Guillon)
+Date: Sat, 24 Sep 2011 13:08:19 +0200 (CEST)
+Subject: [i3] Switching workspaces when mouse touch the border of it
+Message-ID: <alpine.LNX.2.02.1109241252120.24084@myhost>
+
+Hi all,
+I want i3 to switch the workspace when I move the mouse pointer at the 
+border of the screen. It should then get to the next/prev workspace, warp the 
+pointer to the "oposit x" position and set the container beneath active.
+
+Here is some sloppy code to show you what I mean:
+
+diff --git a/src/handlers.c b/src/handlers.c
+index 6b79ed4..87bca5b 100644
+--- a/src/handlers.c
++++ b/src/handlers.c
+@@ -259,6 +259,20 @@ static int 
+handle_motion_notify(xcb_motion_notify_event_t *event) {
+          return 1;
+      }
+
++    /* see if we need to switch the workspace */
++    if (0 == event->root_x) {
++        workspace_prev();
++        xcb_warp_pointer(conn, XCB_NONE, root, 0, 0, 0, 0, 
+root_screen->width_in_pixels-2, event->root_y);
++    }
++
++    if (root_screen->width_in_pixels-1 <= event->root_x) {
++        workspace_next();
++        xcb_warp_pointer(conn, XCB_NONE, root, 0, 0, 0, 0, 1, 
+event->root_y);
++    }
++
++    /* refresh the screen */
++    tree_render();
++
+      return 1;
+  }
+
+This code of course does not set the container active and has some more 
+disadvantages. I can only test the behaviour on a single screen computer 
+because I do not own one with two screens. So if you have a dual screen 
+set up it might drive you crazy ;)
+
+Can you give me some advice on how to implement this feature best. It 
+might also be a good idea to make it an option. How should I call that 
+option?
+
+Best regards,
+Bernhard
+
+From michael+i3 at stapelberg.de  Sat Sep 24 14:00:26 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 24 Sep 2011 13:00:26 +0100
+Subject: [i3] Switching workspaces when mouse touch the border of it
+In-Reply-To: <alpine.LNX.2.02.1109241252120.24084@myhost>
+References: <alpine.LNX.2.02.1109241252120.24084@myhost>
+Message-ID: <1316865232-sup-2750@stapelberg.de>
+
+Hi Bernhard,
+
+Thanks for your willingness to implement a new feature.
+
+However, I am not convinced that this is actually a good feature, for the
+following reasons:
+
+1) i3 is a tiling window manager, not a floating window manager. Therefore,
+   actually seeing the desktop should be a rare occasion, such as when
+   rebooting your computer. In general, windows will always fill your screen.
+
+   As we only get PointerMotion events (== the mouse pointer moved) when the
+   pointer is above one of our windows, this implies that the feature would
+   only work in the rare case of not having any windows. Then again, workspaces
+   don?t exist when there are no windows on them, so that would not make sense
+   at all.
+
+   To actually get PointerMotion events all the time, you would need to grab
+   the pointer, then decide if you want to handle the event or pass it to the
+   client. This is not very performant and sounds like it might introduce new,
+   subtle bugs (based on my experience).
+
+2) Not so much a technical reason, but more a philosophical one: One of i3?s
+   goals is to provide an efficient user interface for power users. While using
+   the mouse pointer is faster for user interfaces / programs with which you
+   are not familiar (I can lookup the study if you want to), it is certainly
+   not faster as soon as keyboard shortcuts end up in your muscle memory.
+   Therefore, the primary input device when using i3 should be the keyboard. 
+
+In conclusion, I don?t think the feature you propose could be easily
+implemented nor would it make a lot of sense. An alternative which comes to my
+mind is a shortcut that works similar to the floating_modifier: Pressing some
+modifier and using the scroll wheel to change workspaces. For this, I would
+want to have a more generic "what should happen when I press mouse button X in
+situation Y" configuration.
+
+Best regards,
+Michael
+
+From john.haltiwanger at gmail.com  Sat Sep 24 14:48:37 2011
+From: john.haltiwanger at gmail.com (John Haltiwanger)
+Date: Sat, 24 Sep 2011 14:48:37 +0200
+Subject: [i3] Switching workspaces when mouse touch the border of it
+In-Reply-To: <1316865232-sup-2750@stapelberg.de>
+References: <alpine.LNX.2.02.1109241252120.24084@myhost>
+	<1316865232-sup-2750@stapelberg.de>
+Message-ID: <CANenyVPT1ucob6yMyZkMXEObrU9EowPcDhxomHUVhVfoj0-4VQ@mail.gmail.com>
+
+On Sat, Sep 24, 2011 at 2:00 PM, Michael Stapelberg <
+michael+i3 at stapelberg.de> wrote:
+>
+>
+> 2) Not so much a technical reason, but more a philosophical one: One of
+> i3?s
+>   goals is to provide an efficient user interface for power users. While
+> using
+>   the mouse pointer is faster for user interfaces / programs with which you
+>   are not familiar (I can lookup the study if you want to), it is certainly
+>   not faster as soon as keyboard shortcuts end up in your muscle memory.
+>
+
+I would be interested to see this study, not because I disagree but rather
+because I'd like to learn more about the experimental conditions.
+
+And Michael, thanks for i3. Though I didn't know until I used it, tree based
+management is what I've been wishing my interfaces to work like whether I
+was using a traditional or tiling wm. Bernhard, I suggest you try exploring
+the i3 way some more and then decide if its right for you. At this point you
+can basically see every libre wm as materially opinionated, and it doesn't
+make sense to stick to one that doesn't agree with your idea of a workflow.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20110924/ff6196bf/attachment.html>
+
+From Bernhard.Guillon at opensimpad.org  Sat Sep 24 16:17:01 2011
+From: Bernhard.Guillon at opensimpad.org (Bernhard Guillon)
+Date: Sat, 24 Sep 2011 16:17:01 +0200 (CEST)
+Subject: [i3] Switching workspaces when mouse touch the border of it
+In-Reply-To: <1316865232-sup-2750@stapelberg.de>
+References: <alpine.LNX.2.02.1109241252120.24084@myhost>
+	<1316865232-sup-2750@stapelberg.de>
+Message-ID: <alpine.LNX.2.02.1109241610350.24084@myhost>
+
+
+
+On Sat, 24 Sep 2011, Michael Stapelberg wrote:
+
+> 2) Not so much a technical reason, but more a philosophical one: One of i3?s
+>   goals is to provide an efficient user interface for power users. While using
+>   the mouse pointer is faster for user interfaces / programs with which you
+>   are not familiar (I can lookup the study if you want to), it is certainly
+>   not faster as soon as keyboard shortcuts end up in your muscle memory.
+>   Therefore, the primary input device when using i3 should be the keyboard.
+
+
+It will not change the primary interface "the keyboard" but I do not want 
+to start a useless flamewar. I will stop to develop this feature 
+in public and use in private only :)
+
+Best regards,
+Bernhard
+
+From Bernhard.Guillon at opensimpad.org  Sat Sep 24 16:26:57 2011
+From: Bernhard.Guillon at opensimpad.org (Bernhard Guillon)
+Date: Sat, 24 Sep 2011 16:26:57 +0200 (CEST)
+Subject: [i3] Switching workspaces when mouse touch the border of it
+In-Reply-To: <CANenyVPT1ucob6yMyZkMXEObrU9EowPcDhxomHUVhVfoj0-4VQ@mail.gmail.com>
+References: <alpine.LNX.2.02.1109241252120.24084@myhost>
+	<1316865232-sup-2750@stapelberg.de>
+	<CANenyVPT1ucob6yMyZkMXEObrU9EowPcDhxomHUVhVfoj0-4VQ@mail.gmail.com>
+Message-ID: <alpine.LNX.2.02.1109241617130.24084@myhost>
+
+
+
+On Sat, 24 Sep 2011, John Haltiwanger wrote:
+> Bernhard, I suggest you try exploring the i3 way some more and then decide if its right for you. At this point you can basically see every
+> libre wm as materially opinionated, and it doesn't make sense to stick to one that doesn't agree with your idea of a workflow.
+
+Hi John,
+I already explorded i3 and I like it. For _me_ it is lacking this feature 
+(and some other). I can self decide what I use and what not. I am also 
+able to implement the missing features myself. As I always do when I implement 
+something I try to share it and ask the mainline people how to implement 
+it better because in my experience the mainline people allways knows 
+their code best.
+
+So I will stick to i3 + patches :)
+
+Best regard,
+Bernhard
+
+From michael+i3 at stapelberg.de  Sat Sep 24 16:36:57 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 24 Sep 2011 15:36:57 +0100
+Subject: [i3] Switching workspaces when mouse touch the border of it
+In-Reply-To: <alpine.LNX.2.02.1109241617130.24084@myhost>
+References: <alpine.LNX.2.02.1109241252120.24084@myhost>
+	<1316865232-sup-2750@stapelberg.de>
+	<CANenyVPT1ucob6yMyZkMXEObrU9EowPcDhxomHUVhVfoj0-4VQ@mail.gmail.com>
+	<alpine.LNX.2.02.1109241617130.24084@myhost>
+Message-ID: <1316874773-sup-695@stapelberg.de>
+
+Hi Bernhard,
+
+Excerpts from Bernhard Guillon's message of 2011-09-24 15:26:57 +0100:
+> I already explorded i3 and I like it. For _me_ it is lacking this feature 
+> (and some other). I can self decide what I use and what not. I am also 
+> able to implement the missing features myself. As I always do when I implement 
+Of course you have the freedom to do that. Nevertheless, the hint that you
+might want to re-evaluate how you use i3 is appropriate, since you clearly want
+a feature which does not really fit into our concept :).
+
+> something I try to share it and ask the mainline people how to implement 
+> it better because in my experience the mainline people allways knows 
+> their code best.
+Well, a few hints on how to implement this:
+ ? Check out grabbing, see for example drag_pointer() in src/floating.c. You
+   will probably need to grab the pointer in order to always receive
+   PointerMotion events.
+ ??You have to get a bit more familiar with the tree. checking the root window
+   size is not appropriate for finding out how big your screen(s) are. Just
+   recursively go to the parent until you find the appropriate containers (type
+   == CT_OUTPUT).
+ ? Also, use con_focus() instead of pointer warping.
+
+Best regards,
+Michael
+
+From Bernhard.Guillon at opensimpad.org  Sun Sep 25 01:25:39 2011
+From: Bernhard.Guillon at opensimpad.org (Bernhard Guillon)
+Date: Sun, 25 Sep 2011 01:25:39 +0200 (CEST)
+Subject: [i3] Switching workspaces when mouse touch the border of it
+In-Reply-To: <1316874773-sup-695@stapelberg.de>
+References: <alpine.LNX.2.02.1109241252120.24084@myhost>
+	<1316865232-sup-2750@stapelberg.de>
+	<CANenyVPT1ucob6yMyZkMXEObrU9EowPcDhxomHUVhVfoj0-4VQ@mail.gmail.com>
+	<alpine.LNX.2.02.1109241617130.24084@myhost>
+	<1316874773-sup-695@stapelberg.de>
+Message-ID: <alpine.LNX.2.02.1109250123560.24084@myhost>
+
+
+
+On Sat, 24 Sep 2011, Michael Stapelberg wrote:
+
+> Well, a few hints on how to implement this:
+> ? Check out grabbing, see for example drag_pointer() in src/floating.c. You
+>   will probably need to grab the pointer in order to always receive
+>   PointerMotion events.
+> ??You have to get a bit more familiar with the tree. checking the root window
+>   size is not appropriate for finding out how big your screen(s) are. Just
+>   recursively go to the parent until you find the appropriate containers (type
+>   == CT_OUTPUT).
+> ? Also, use con_focus() instead of pointer warping.
+
+
+Thanks for your advice I will dig deeper into the suggested code :)
+
+Best regards,
+Bernhard
+
+From titan232 at gmail.com  Sun Sep 25 11:03:09 2011
+From: titan232 at gmail.com (ian)
+Date: Sun, 25 Sep 2011 10:03:09 +0100
+Subject: [i3] i3status not showing in i3bar
+Message-ID: <20110925100309.1e9142a8@sid>
+
+I am using Debian sid with i3wm 4.0.2-1 and i3 status 2.3-2 . I am
+using the default settings and should be seeing the information from
+i3status.conf in the 13bar, but nothing is seen. I really only want the
+time and date and deleting all the unwanted information does give a
+display but still includes IPV6 and other unwanted stuff. The default
+config is different between the docs and supplied file with no
+output_format = option on the supplied version. I have tried with and
+without this option I have also tried the latest version from your
+repros. Finally when shutting down the status information briefly 
+appears. 
+
+Thanks
+
+From michael+i3 at stapelberg.de  Sun Sep 25 12:09:23 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 25 Sep 2011 11:09:23 +0100
+Subject: [i3] i3status not showing in i3bar
+In-Reply-To: <20110925100309.1e9142a8@sid>
+References: <20110925100309.1e9142a8@sid>
+Message-ID: <1316945120-sup-5338@stapelberg.de>
+
+Hi ian,
+
+Excerpts from ian's message of 2011-09-25 10:03:09 +0100:
+> I am using Debian sid with i3wm 4.0.2-1 and i3 status 2.3-2 . I am
+> using the default settings and should be seeing the information from
+> i3status.conf in the 13bar, but nothing is seen. I really only want the
+You could try using output_format = none (it should be automatically detected,
+though).
+
+> time and date and deleting all the unwanted information does give a
+> display but still includes IPV6 and other unwanted stuff. The default
+Make sure to use order = "time" then (not order += "time").
+
+Best regards,
+Michael
+
+From titan232 at gmail.com  Sun Sep 25 13:02:48 2011
+From: titan232 at gmail.com (ian)
+Date: Sun, 25 Sep 2011 12:02:48 +0100
+Subject: [i3] i3status not showing in i3bar
+In-Reply-To: <1316945120-sup-5338@stapelberg.de>
+References: <20110925100309.1e9142a8@sid> <1316945120-sup-5338@stapelberg.de>
+Message-ID: <20110925120248.5eba65d0@sid>
+
+On Sun, 25 Sep 2011 11:09:23 +0100
+Michael Stapelberg <michael+i3 at stapelberg.de> wrote:
+
+> Hi ian,
+> 
+> Excerpts from ian's message of 2011-09-25 10:03:09 +0100:
+> > I am using Debian sid with i3wm 4.0.2-1 and i3 status 2.3-2 . I am
+> > using the default settings and should be seeing the information from
+> > i3status.conf in the 13bar, but nothing is seen. I really only want
+> > the
+> You could try using output_format = none (it should be automatically
+> detected, though).
+> 
+> > time and date and deleting all the unwanted information does give a
+> > display but still includes IPV6 and other unwanted stuff. The
+> > default
+> Make sure to use order = "time" then (not order += "time").
+> 
+> Best regards,
+> Michael
+
+
+Thank you Michael, that fixed it, I think I may have left the "+" in
+the previous config.
+
+I had tried the "output_format = none" but it makes no difference.
+
+Ian
+
+From john.haltiwanger at gmail.com  Tue Sep 27 11:43:04 2011
+From: john.haltiwanger at gmail.com (John Haltiwanger)
+Date: Tue, 27 Sep 2011 11:43:04 +0200
+Subject: [i3] Switching workspaces when mouse touch the border of it
+In-Reply-To: <alpine.LNX.2.02.1109241617130.24084@myhost>
+References: <alpine.LNX.2.02.1109241252120.24084@myhost>
+	<1316865232-sup-2750@stapelberg.de>
+	<CANenyVPT1ucob6yMyZkMXEObrU9EowPcDhxomHUVhVfoj0-4VQ@mail.gmail.com>
+	<alpine.LNX.2.02.1109241617130.24084@myhost>
+Message-ID: <CANenyVOi3bHsHpQcTXFhMeH+aZ9ZBVk4FZ_TyYOxbhyc0C8TuA@mail.gmail.com>
+
+On Sat, Sep 24, 2011 at 4:26 PM, Bernhard Guillon <
+Bernhard.Guillon at opensimpad.org> wrote:
+
+>
+>
+> On Sat, 24 Sep 2011, John Haltiwanger wrote:
+>
+>> Bernhard, I suggest you try exploring the i3 way some more and then decide
+>> if its right for you. At this point you can basically see every
+>> libre wm as materially opinionated, and it doesn't make sense to stick to
+>> one that doesn't agree with your idea of a workflow.
+>>
+>
+> Hi John,
+> I already explorded i3 and I like it. For _me_ it is lacking this feature
+> (and some other). I can self decide what I use and what not. I am also able
+> to implement the missing features myself. As I always do when I implement
+> something I try to share it and ask the mainline people how to implement it
+> better because in my experience the mainline people allways knows their code
+> best.
+>
+
+I didn't mean to imply that you're approach is unreasonable, only that it
+does not seem to fit into the usage model and philosophy of i3. In such a
+case, perhaps there is a more appropriate wm out there. Then again, as you
+say, perhaps not.
+
+That said, I am just as interested in how you are interfacing, given that
+you like i3 but would seem to like it to be more mouse-centric, as I am in
+the research that Michael mentioned earlier. I for one do not believe in
+there being 'only one way to do it' for HID and am always curious about
+encountering new diversity.
+
+
+
+> So I will stick to i3 + patches :)
+>
+
+Please consider sharing your patches back out to the community. I certainly
+wasn't intending to engage in flaming in any way, and I don't think
+flamewars will erupt if you publish you patches.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20110927/318ea313/attachment.html>
+
+From michael+i3 at stapelberg.de  Tue Sep 27 18:42:00 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Tue, 27 Sep 2011 17:42:00 +0100
+Subject: [i3] Switching workspaces when mouse touch the border of it
+In-Reply-To: <CANenyVPT1ucob6yMyZkMXEObrU9EowPcDhxomHUVhVfoj0-4VQ@mail.gmail.com>
+References: <alpine.LNX.2.02.1109241252120.24084@myhost>
+	<1316865232-sup-2750@stapelberg.de>
+	<CANenyVPT1ucob6yMyZkMXEObrU9EowPcDhxomHUVhVfoj0-4VQ@mail.gmail.com>
+Message-ID: <1317141701-sup-2708@stapelberg.de>
+
+Hi John,
+
+Excerpts from John Haltiwanger's message of 2011-09-24 13:48:37 +0100:
+> I would be interested to see this study, not because I disagree but rather
+> because I'd like to learn more about the experimental conditions.
+Here we go:
+http://www.asktog.com/TOI/toi06KeyboardVMouse1.html
+
+Best regards,
+Michael
+

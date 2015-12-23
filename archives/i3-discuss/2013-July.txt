@@ -1,0 +1,2065 @@
+From mhcerri at gmail.com  Mon Jul  1 13:49:26 2013
+From: mhcerri at gmail.com (Marcelo Cerri)
+Date: Mon, 1 Jul 2013 08:49:26 -0300
+Subject: [i3] Fan RPM info
+Message-ID: <CACg2Y9sJACsaiTQ22AT-8vR62oEU+LyLrvmGErDAPN0h8rOXKQ@mail.gmail.com>
+
+HI,
+
+I'm pretty sure that i3status isn't able to show how fast the fans in
+the computer are running, or even if it is supposed to support that.
+But does anyone know a solution for it that someone has created using
+python or scripts?
+
+I will start to work on that for me if no one has made that yet.
+
+Thanks and best regards.
+Marcelo
+
+From lists at necoro.eu  Mon Jul  1 16:50:00 2013
+From: lists at necoro.eu (=?ISO-8859-1?Q?Ren=E9_Neumann?=)
+Date: Mon, 01 Jul 2013 16:50:00 +0200
+Subject: [i3] Fan RPM info
+In-Reply-To: <CACg2Y9sJACsaiTQ22AT-8vR62oEU+LyLrvmGErDAPN0h8rOXKQ@mail.gmail.com>
+References: <CACg2Y9sJACsaiTQ22AT-8vR62oEU+LyLrvmGErDAPN0h8rOXKQ@mail.gmail.com>
+Message-ID: <51D19718.9090600@necoro.eu>
+
+Am 01.07.2013 13:49, schrieb Marcelo Cerri:
+> HI,
+> 
+> I'm pretty sure that i3status isn't able to show how fast the fans in
+> the computer are running, or even if it is supposed to support that.
+> But does anyone know a solution for it that someone has created using
+> python or scripts?
+> 
+> I will start to work on that for me if no one has made that yet.
+> 
+> Thanks and best regards.
+> Marcelo
+> 
+
+On solution: Replace i3status with conky.
+
+- Ren?
+
+From michael at i3wm.org  Mon Jul  1 18:10:46 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 01 Jul 2013 18:10:46 +0200
+Subject: [i3] Fan RPM info
+In-Reply-To: <51D19718.9090600@necoro.eu>
+References: <CACg2Y9sJACsaiTQ22AT-8vR62oEU+LyLrvmGErDAPN0h8rOXKQ@mail.gmail.com>
+ <51D19718.9090600@necoro.eu>
+Message-ID: <x6zju6z2ex.fsf@midna.lan>
+
+Hi Ren?,
+
+Ren? Neumann <lists at necoro.eu> writes:
+> On solution: Replace i3status with conky.
+Or use a wrapper script, see
+http://i3wm.org/i3status/manpage.html#_external_scripts_programs_with_i3status
+
+-- 
+Best regards,
+Michael
+
+From mhcerri at gmail.com  Mon Jul  1 18:59:51 2013
+From: mhcerri at gmail.com (Marcelo Cerri)
+Date: Mon, 1 Jul 2013 13:59:51 -0300
+Subject: [i3] Fan RPM info
+In-Reply-To: <x6zju6z2ex.fsf@midna.lan>
+References: <CACg2Y9sJACsaiTQ22AT-8vR62oEU+LyLrvmGErDAPN0h8rOXKQ@mail.gmail.com>
+ <51D19718.9090600@necoro.eu> <x6zju6z2ex.fsf@midna.lan>
+Message-ID: <CACg2Y9uixYERFxY1n=KBYW1A9Hw6byHBdJ=8aWgk=LfwrFBv-w@mail.gmail.com>
+
+Thanks, just wanted to check if someone else already had done it.
+
+I will go with Michael's suggestion.
+
+Regards.
+Marcelo
+
+On Mon, Jul 1, 2013 at 1:10 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+> Hi Ren?,
+>
+> Ren? Neumann <lists at necoro.eu> writes:
+>> On solution: Replace i3status with conky.
+> Or use a wrapper script, see
+> http://i3wm.org/i3status/manpage.html#_external_scripts_programs_with_i3status
+>
+> --
+> Best regards,
+> Michael
+
+From lee at yun.yagibdah.de  Wed Jul  3 11:47:40 2013
+From: lee at yun.yagibdah.de (lee)
+Date: Wed, 03 Jul 2013 11:47:40 +0200
+Subject: [i3] Fan RPM info
+In-Reply-To: <CACg2Y9sJACsaiTQ22AT-8vR62oEU+LyLrvmGErDAPN0h8rOXKQ@mail.gmail.com>
+ (Marcelo Cerri's message of "Mon, 1 Jul 2013 08:49:26 -0300")
+References: <CACg2Y9sJACsaiTQ22AT-8vR62oEU+LyLrvmGErDAPN0h8rOXKQ@mail.gmail.com>
+Message-ID: <87obak2cw3.fsf@yun.yagibdah.de>
+
+Marcelo Cerri <mhcerri at gmail.com> writes:
+
+> HI,
+>
+> I'm pretty sure that i3status isn't able to show how fast the fans in
+> the computer are running, or even if it is supposed to support that.
+> But does anyone know a solution for it that someone has created using
+> python or scripts?
+>
+> I will start to work on that for me if no one has made that yet.
+
+Feel free to modify or take for an example what you find on [1].  Conky
+seems to be a somewhat large application for just displaying some fan
+speeds.
+
+
+[1]: https://github.com/lee-/i3-bw
+
+-- 
+"Object-oriented programming languages aren't completely convinced that
+you should be allowed to do anything with functions."
+http://www.joelonsoftware.com/items/2006/08/01.html
+
+From lee at yun.yagibdah.de  Sun Jul  7 05:29:03 2013
+From: lee at yun.yagibdah.de (lee)
+Date: Sun, 07 Jul 2013 05:29:03 +0200
+Subject: [i3] key bindings not working
+Message-ID: <8738rr82v4.fsf@yun.yagibdah.de>
+
+Hi,
+
+what might be the reason for the following key bindings in the config to
+be ignored:
+
+
+bind $mod+periodcentered workspace next
+bind $mod+Shift+abovedot workspace prev
+
+
+$mod is AltGr, and I have
+
+
+keycode  61 = minus underscore minus underscore periodcentered abovedot periodcentered
+
+
+in my xmodmap.  I can type these symbols just fine, as if i3 is totally
+ignoring these key bindings.
+
+
+-- 
+"Object-oriented programming languages aren't completely convinced that
+you should be allowed to do anything with functions."
+http://www.joelonsoftware.com/items/2006/08/01.html
+
+From michael at i3wm.org  Sun Jul  7 11:15:22 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 07 Jul 2013 11:15:22 +0200
+Subject: [i3] key bindings not working
+In-Reply-To: <8738rr82v4.fsf@yun.yagibdah.de>
+References: <8738rr82v4.fsf@yun.yagibdah.de>
+Message-ID: <x6zjty3f4l.fsf@midna.lan>
+
+Hi lee,
+
+lee <lee at yun.yagibdah.de> writes:
+> bind $mod+periodcentered workspace next
+> bind $mod+Shift+abovedot workspace prev
+You need to use bindsym instead of bind in this case.
+
+See also http://i3wm.org/docs/debugging.html
+
+-- 
+Best regards,
+Michael
+
+From lee at yun.yagibdah.de  Sun Jul  7 18:01:06 2013
+From: lee at yun.yagibdah.de (lee)
+Date: Sun, 07 Jul 2013 18:01:06 +0200
+Subject: [i3] key bindings not working
+In-Reply-To: <x6zjty3f4l.fsf@midna.lan> (Michael Stapelberg's message of "Sun, 
+ 07 Jul 2013 11:15:22 +0200")
+References: <8738rr82v4.fsf@yun.yagibdah.de> <x6zjty3f4l.fsf@midna.lan>
+Message-ID: <87r4fajr5p.fsf@yun.yagibdah.de>
+
+Michael Stapelberg <michael at i3wm.org> writes:
+
+> Hi lee,
+>
+> lee <lee at yun.yagibdah.de> writes:
+>> bind $mod+periodcentered workspace next
+>> bind $mod+Shift+abovedot workspace prev
+> You need to use bindsym instead of bind in this case.
+
+Thank you --- I tried that and these key bindings are still ignored.
+
+bindsym $mod+periodcentered workspace next
+bindsym $mod+Shift+abovedot workspace prev
+
+> See also http://i3wm.org/docs/debugging.html
+
+Do I need to make a bug report with a logfile attached to it?
+
+
+-- 
+"Object-oriented programming languages aren't completely convinced that
+you should be allowed to do anything with functions."
+http://www.joelonsoftware.com/items/2006/08/01.html
+
+From michael at i3wm.org  Sun Jul  7 23:20:09 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 07 Jul 2013 23:20:09 +0200
+Subject: [i3] key bindings not working
+In-Reply-To: <87r4fajr5p.fsf@yun.yagibdah.de>
+References: <8738rr82v4.fsf@yun.yagibdah.de> <x6zjty3f4l.fsf@midna.lan>
+ <87r4fajr5p.fsf@yun.yagibdah.de>
+Message-ID: <x6ip0mvzhy.fsf@midna.lan>
+
+Hi lee,
+
+lee <lee at yun.yagibdah.de> writes:
+> Do I need to make a bug report with a logfile attached to it?
+In case you decide to file a bug, yes, a logfile with maximum debug
+level will be required for us to be able to figure out what happens.
+
+The new ticket form will also tell you that :).
+
+-- 
+Best regards,
+Michael
+
+From old4 at o2.pl  Mon Jul  8 09:36:19 2013
+From: old4 at o2.pl (Mateusz Poszwa)
+Date: Mon, 8 Jul 2013 09:36:19 +0200
+Subject: [i3] key bindings not working
+In-Reply-To: <8738rr82v4.fsf@yun.yagibdah.de>
+References: <8738rr82v4.fsf@yun.yagibdah.de>
+Message-ID: <20130708093619.6ed9bb70@debelianear>
+
+On Sun, 07 Jul 2013 05:29:03 +0200
+lee <lee at yun.yagibdah.de> wrote:
+
+> Hi,
+> 
+> what might be the reason for the following key bindings in the config to
+> be ignored:
+> 
+> 
+> bind $mod+periodcentered workspace next
+> bind $mod+Shift+abovedot workspace prev
+> 
+> 
+> $mod is AltGr, and I have
+> 
+> 
+> keycode  61 = minus underscore minus underscore periodcentered abovedot periodcentered
+> 
+> 
+> in my xmodmap.  I can type these symbols just fine, as if i3 is totally
+> ignoring these key bindings.
+
+I'd try with:
+?
+bindsym $mod+minus workspace next
+bindsym $mod+Shift+minus workspace prev
+?
+in this case.
+As a side note, I don't think using AltGr as a modifier is a good idea?
+
+Regards
+
+-- 
+Mateusz Poszwa
+
+From zhu.qunying at gmail.com  Mon Jul  8 18:54:58 2013
+From: zhu.qunying at gmail.com (Qun-Ying)
+Date: Mon, 8 Jul 2013 09:54:58 -0700
+Subject: [i3] How to make floating window with border
+Message-ID: <CAHiy0bRakfm86TsEL45GVM6Rbq=uoLuP_Myx7ToN+g1FLnC1Lg@mail.gmail.com>
+
+Hi,
+
+I have configured my i3, so that all new-window has no border and
+new-float border is normal. But then if I change an existing tiling window
+to float, it will be border-less.
+
+Relevant part of my confiuration:
+
+...
+new_window none
+new_float  normal
+hide_edge_borders both
+...
+
+Is there a way to make float window always have border and tiling window
+without one?
+
+-- 
+Qun-Ying
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130708/0d7d766f/attachment.html>
+
+From michael at i3wm.org  Mon Jul  8 21:59:59 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 08 Jul 2013 21:59:59 +0200
+Subject: [i3] How to make floating window with border
+In-Reply-To: <CAHiy0bRakfm86TsEL45GVM6Rbq=uoLuP_Myx7ToN+g1FLnC1Lg@mail.gmail.com>
+References: <CAHiy0bRakfm86TsEL45GVM6Rbq=uoLuP_Myx7ToN+g1FLnC1Lg@mail.gmail.com>
+Message-ID: <x6d2qsx1og.fsf@midna.lan>
+
+Hi Qun-Ying,
+
+Qun-Ying <zhu.qunying at gmail.com> writes:
+> new-float border is normal. But then if I change an existing tiling window
+> to float, it will be border-less.
+Instead of using
+
+    bindsym $mod+x floating enable
+
+Use:
+
+    bindsym $mod+x floating enable; border normal
+
+-- 
+Best regards,
+Michael
+
+From zhu.qunying at gmail.com  Mon Jul  8 23:12:22 2013
+From: zhu.qunying at gmail.com (Qun-Ying)
+Date: Mon, 8 Jul 2013 14:12:22 -0700
+Subject: [i3] How to make floating window with border
+In-Reply-To: <x6d2qsx1og.fsf@midna.lan>
+References: <CAHiy0bRakfm86TsEL45GVM6Rbq=uoLuP_Myx7ToN+g1FLnC1Lg@mail.gmail.com>
+ <x6d2qsx1og.fsf@midna.lan>
+Message-ID: <CAHiy0bTugkirzBhj_scMBNeKvohMLKRWw9boZq6kaDxF1OuFbw@mail.gmail.com>
+
+On Mon, Jul 8, 2013 at 12:59 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Qun-Ying,
+>
+> Qun-Ying <zhu.qunying at gmail.com> writes:
+> > new-float border is normal. But then if I change an existing tiling
+> window
+> > to float, it will be border-less.
+> Instead of using
+>
+>     bindsym $mod+x floating enable
+>
+> Use:
+>
+>     bindsym $mod+x floating enable; border normal
+>
+> Thanks, but this binding will keep the border when toggle back to tiling,
+unless I create another binding to make it borderless, like "bindsym $mod+y
+floating disable; border none ".  It is a little bit cumbersome as it needs
+two key bindings.  Anyway, it solves my current problem.  It would be
+better if the floating toggle command could have the same effect.
+
+-- 
+Qun-Ying
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130708/a9a5a2e3/attachment.html>
+
+From zeus at ibs.dn.ua  Wed Jul 10 13:30:35 2013
+From: zeus at ibs.dn.ua (Zeus Panchenko)
+Date: Wed, 10 Jul 2013 14:30:35 +0300
+Subject: [i3] default charset layout
+Message-ID: <20130710143035.39554@relay.ibs.dn.ua>
+
+Hi,
+
+I have a couple of questions, please:
+
+1. is it possible (I think this time it is not) to configure i3 to set
+   different charset layout for windows?
+
+   what I mean is when I work in bilingual environment (lets say `en'
+   and `ru' and `en' I want to be the default one), to switch charset
+   globally is rather inconvenient, so it'd be great to be able to set
+   charset individually for each window
+
+2. and adjacent question: wouldn't it be nice to be able to see on
+   status bar, which charset is active? is it possible?
+
+what do you think, please?
+-- 
+Zeus V. Panchenko				jid:zeus at im.ibs.dn.ua
+IT Dpt., I.B.S. LLC					  GMT+2 (EET)
+
+From michael at i3wm.org  Wed Jul 10 20:36:04 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 10 Jul 2013 20:36:04 +0200
+Subject: [i3] default charset layout
+In-Reply-To: <20130710143035.39554@relay.ibs.dn.ua>
+References: <20130710143035.39554@relay.ibs.dn.ua>
+Message-ID: <x638rmuusr.fsf@midna.lan>
+
+Hi Zeus,
+
+Zeus Panchenko <zeus at ibs.dn.ua> writes:
+> 1. is it possible (I think this time it is not) to configure i3 to set
+>    different charset layout for windows?
+Let me ask the question the other way around:
+
+Is it possible to have per-window locales/charsets? Not that I know of, but I
+might be wrong.
+
+> 2. and adjacent question: wouldn't it be nice to be able to see on
+>    status bar, which charset is active? is it possible?
+With a wrapper script around i3status (or whichever status program you
+are using), anything is possible. If you are asking whether i3status
+could be extended to show the current locale/charset, the answer is no.
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Wed Jul 10 21:05:37 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 10 Jul 2013 21:05:37 +0200
+Subject: [i3] Want to help? Become our t-shirt manager!
+Message-ID: <x6wqoytev2.fsf@midna.lan>
+
+Hi,
+
+In the past, I have sometimes ordered i3 t-shirts in batches and then
+sent them to everybody who wanted one.
+
+The local small business that has been making the i3 t-shirts is called
+FredDruck, and they now have an online shop where one can order shirts!
+
+The bad news is that the shop is in German only (but they ship
+world-wide), and they don?t have the capacity to make the shop English
+anytime soon.
+
+I therefore had the idea that we could have a document on the i3 website
+that explains what the terms and conditions are (e.g. how much the
+shipping costs, what payment options are available, what the sizes mean,
+what goes into which field in the order form) and then link to the shop.
+
+To find out with what exactly people from different countries have
+trouble with, a few orders have to be carefully observed and the
+document has to be refined repeatedly.
+
+This is a great opportunity for one of you to help the i3 community:
+I am looking for somebody who can speak German and is willing to guide
+non-Germans through the ordering process while writing and improving a
+document which explains this.
+
+Are you interested? Please let me know (cc the mailing list) and we can
+discuss the details.
+
+Thanks!
+
+-- 
+Best regards,
+Michael
+
+From zeus at ibs.dn.ua  Thu Jul 11 07:18:23 2013
+From: zeus at ibs.dn.ua (Zeus Panchenko)
+Date: Thu, 11 Jul 2013 08:18:23 +0300
+Subject: [i3] default charset layout
+In-Reply-To: Your message of Wed,
+ 10 Jul 2013 20:36:04 +0200 <x638rmuusr.fsf@midna.lan>
+References: <20130710143035.39554@relay.ibs.dn.ua> <x638rmuusr.fsf@midna.lan>
+Message-ID: <20130711081823.35747@relay.ibs.dn.ua>
+
+Michael Stapelberg <michael at i3wm.org> wrote:
+> 
+> Is it possible to have per-window locales/charsets? Not that I know of, but I
+> might be wrong.
+> 
+
+yes, for example ubuntu provides that (perhaps it is gnome)
+
+what I meant is not *any* charset but the one from preconfigured in xorg
+(when I have to use ubuntu, I work on bilingual configuration with en
+default and ru as secondary)
+
+> > 2. and adjacent question: wouldn't it be nice to be able to see on
+> >    status bar, which charset is active? is it possible?
+> With a wrapper script around i3status (or whichever status program you
+> are using), anything is possible. 
+
+may you point me, where it is described, please
+
+> If you are asking whether i3status
+> could be extended to show the current locale/charset, the answer is no.
+
+I was asking, if it is possible to include the issue into i3status todo?
+
+Because without this fearure it is rather inconvenient to type several
+characters and erase them right away because them were of wrong charset
+
+of course, it is possible to install some external layout switcher which
+can place it's icon into the tray, but it looks rather artificial in
+comparison with just placing some character/s on i3status ... am I
+wrong?
+
+-- 
+Zeus V. Panchenko				jid:zeus at im.ibs.dn.ua
+IT Dpt., I.B.S. LLC					  GMT+2 (EET)
+
+From lists at necoro.eu  Thu Jul 11 11:09:45 2013
+From: lists at necoro.eu (=?ISO-8859-15?Q?Ren=E9_Neumann?=)
+Date: Thu, 11 Jul 2013 11:09:45 +0200
+Subject: [i3] default charset layout
+In-Reply-To: <20130711081823.35747@relay.ibs.dn.ua>
+References: <20130710143035.39554@relay.ibs.dn.ua> <x638rmuusr.fsf@midna.lan>
+ <20130711081823.35747@relay.ibs.dn.ua>
+Message-ID: <51DE7659.3010500@necoro.eu>
+
+Am 11.07.2013 07:18, schrieb Zeus Panchenko:
+> Michael Stapelberg <michael at i3wm.org> wrote:
+>>
+>> Is it possible to have per-window locales/charsets? Not that I know of, but I
+>> might be wrong.
+>>
+> 
+> yes, for example ubuntu provides that (perhaps it is gnome)
+> 
+> what I meant is not *any* charset but the one from preconfigured in xorg
+> (when I have to use ubuntu, I work on bilingual configuration with en
+> default and ru as secondary)
+
+A quick googling showed that there are different daemons like xxkb and
+kbdd doing exactly that. I.e. it has nothing to do with i3.
+
+Further, if you don't want yet-another-daemon, X itself provides a way
+to toggle keybindings with one single key (I for example have bound it
+to the 'menu' key, as it is completely useless else): the 'grp'
+XkbOptions. In my case in the xorg.conf there is:
+
+Option "XkbOptions"
+"terminate:ctrl_alt_bksp,grp:menu_toggle,compose:rwin,caps:escape"
+
+>>> 2. and adjacent question: wouldn't it be nice to be able to see on
+>>>    status bar, which charset is active? is it possible?
+>> With a wrapper script around i3status (or whichever status program you
+>> are using), anything is possible. 
+> 
+> may you point me, where it is described, please
+
+Searching prior to asking really is not your way, is it?
+
+man i3-status
+Heading "EXTERNAL SCRIPTS"
+
+For your convenience:
+http://i3wm.org/i3status/manpage.html#_external_scripts_programs_with_i3status
+
+- Ren?
+
+From zeus at ibs.dn.ua  Thu Jul 11 13:15:57 2013
+From: zeus at ibs.dn.ua (Zeus Panchenko)
+Date: Thu, 11 Jul 2013 14:15:57 +0300
+Subject: [i3] default charset layout
+In-Reply-To: Your message of Thu,
+ 11 Jul 2013 11:09:45 +0200 <51DE7659.3010500@necoro.eu>
+References: <20130710143035.39554@relay.ibs.dn.ua> <x638rmuusr.fsf@midna.lan>
+ <20130711081823.35747@relay.ibs.dn.ua> <51DE7659.3010500@necoro.eu>
+Message-ID: <20130711141557.80375@relay.ibs.dn.ua>
+
+Ren? Neumann <lists at necoro.eu> wrote:
+
+> A quick googling showed ...
+
+before quick googling it'd be better to read original post, Ren?
+isn't it?
+
+what I was talking about it is not the switching, but the visualising,
+and yes, I do that with lighting ScrolLock led on standard keyboard, but
+netbooks doesn't has such leds and some indication will be of help
+
+P.S. and thanks for URL
+-- 
+Zeus V. Panchenko				jid:zeus at im.ibs.dn.ua
+IT Dpt., I.B.S. LLC					  GMT+2 (EET)
+
+From lists at necoro.eu  Thu Jul 11 13:34:12 2013
+From: lists at necoro.eu (=?UTF-8?B?UmVuw6kgTmV1bWFubg==?=)
+Date: Thu, 11 Jul 2013 13:34:12 +0200
+Subject: [i3] default charset layout
+In-Reply-To: <20130711141557.80375@relay.ibs.dn.ua>
+References: <20130710143035.39554@relay.ibs.dn.ua> <x638rmuusr.fsf@midna.lan>
+ <20130711081823.35747@relay.ibs.dn.ua> <51DE7659.3010500@necoro.eu>
+ <20130711141557.80375@relay.ibs.dn.ua>
+Message-ID: <51DE9834.4000301@necoro.eu>
+
+Am 11.07.2013 13:15, schrieb Zeus Panchenko:
+> Ren? Neumann <lists at necoro.eu> wrote:
+> 
+>> A quick googling showed ...
+> 
+> before quick googling it'd be better to read original post, Ren?
+> isn't it?
+> 
+> what I was talking about it is not the switching, but the visualising,
+> and yes, I do that with lighting ScrolLock led on standard keyboard, but
+> netbooks doesn't has such leds and some indication will be of help
+
+May I quote your original question here?:
+
+---------------------8<---------------------------
+is it possible (I think this time it is not) to configure i3 to set
+different charset layout for windows?
+--------------------->8---------------------------
+
+So yes: You WERE talking about switching in the first place. The
+visualization just came later.
+
+- Ren?
+
+
+From zeus at ibs.dn.ua  Thu Jul 11 13:48:56 2013
+From: zeus at ibs.dn.ua (Zeus Panchenko)
+Date: Thu, 11 Jul 2013 14:48:56 +0300
+Subject: [i3] default charset layout
+In-Reply-To: Your message of Thu,
+ 11 Jul 2013 13:34:12 +0200 <51DE9834.4000301@necoro.eu>
+References: <20130710143035.39554@relay.ibs.dn.ua> <x638rmuusr.fsf@midna.lan>
+ <20130711081823.35747@relay.ibs.dn.ua> <51DE7659.3010500@necoro.eu>
+ <20130711141557.80375@relay.ibs.dn.ua> <51DE9834.4000301@necoro.eu>
+Message-ID: <20130711144856.84671@relay.ibs.dn.ua>
+
+Ren? Neumann <lists at necoro.eu> wrote:
+> 
+> So yes: You WERE talking about switching in the first place. The
+> visualization just came later.
+
+I was talking about the posibility to have individual charset for each
+window and I really can not see the cause why it couldn't be i3 business
+
+Where it is implemented, the work is much comfortable (try to imagine
+situation with three or more locales)
+
+-- 
+Zeus V. Panchenko				jid:zeus at im.ibs.dn.ua
+IT Dpt., I.B.S. LLC					  GMT+2 (EET)
+
+From lists at necoro.eu  Thu Jul 11 14:01:14 2013
+From: lists at necoro.eu (=?UTF-8?B?UmVuw6kgTmV1bWFubg==?=)
+Date: Thu, 11 Jul 2013 14:01:14 +0200
+Subject: [i3] default charset layout
+In-Reply-To: <20130711144856.84671@relay.ibs.dn.ua>
+References: <20130710143035.39554@relay.ibs.dn.ua> <x638rmuusr.fsf@midna.lan>
+ <20130711081823.35747@relay.ibs.dn.ua> <51DE7659.3010500@necoro.eu>
+ <20130711141557.80375@relay.ibs.dn.ua> <51DE9834.4000301@necoro.eu>
+ <20130711144856.84671@relay.ibs.dn.ua>
+Message-ID: <51DE9E8A.5000805@necoro.eu>
+
+Am 11.07.2013 13:48, schrieb Zeus Panchenko:
+> Ren? Neumann <lists at necoro.eu> wrote:
+>>
+>> So yes: You WERE talking about switching in the first place. The
+>> visualization just came later.
+> 
+> I was talking about the posibility to have individual charset for each
+> window and I really can not see the cause why it couldn't be i3 business
+> 
+> Where it is implemented, the work is much comfortable (try to imagine
+> situation with three or more locales)
+
+Just to avoid confusion: What exactly do you mean by 'charset'? I
+figured you ment 'keyboard layout', and this is what I answered.
+
+If you really mean 'charset' as in 'fonts' and 'display text', I can
+only say: Unicode (and UTF-8) is there for a reason.
+
+- Ren?
+
+
+From zeus at ibs.dn.ua  Thu Jul 11 15:13:58 2013
+From: zeus at ibs.dn.ua (Zeus Panchenko)
+Date: Thu, 11 Jul 2013 16:13:58 +0300
+Subject: [i3] default charset layout
+In-Reply-To: Your message of Thu,
+ 11 Jul 2013 14:01:14 +0200 <51DE9E8A.5000805@necoro.eu>
+References: <20130710143035.39554@relay.ibs.dn.ua> <x638rmuusr.fsf@midna.lan>
+ <20130711081823.35747@relay.ibs.dn.ua> <51DE7659.3010500@necoro.eu>
+ <20130711141557.80375@relay.ibs.dn.ua> <51DE9834.4000301@necoro.eu>
+ <20130711144856.84671@relay.ibs.dn.ua> <51DE9E8A.5000805@necoro.eu>
+Message-ID: <20130711161358.95771@relay.ibs.dn.ua>
+
+Ren? Neumann <lists at necoro.eu> wrote:
+> 
+> Just to avoid confusion: What exactly do you mean by 'charset'? I
+> figured you ment 'keyboard layout', and this is what I answered.
+> 
+
+definitely keyboard layout
+sorry for mistake
+
+-- 
+Zeus V. Panchenko				jid:zeus at im.ibs.dn.ua
+IT Dpt., I.B.S. LLC					  GMT+2 (EET)
+
+From lee at yun.yagibdah.de  Fri Jul 12 01:17:03 2013
+From: lee at yun.yagibdah.de (lee)
+Date: Fri, 12 Jul 2013 01:17:03 +0200
+Subject: [i3] Want to help? Become our t-shirt manager!
+In-Reply-To: <x6wqoytev2.fsf@midna.lan> (Michael Stapelberg's message of "Wed, 
+ 10 Jul 2013 21:05:37 +0200")
+References: <x6wqoytev2.fsf@midna.lan>
+Message-ID: <87y59cr8k0.fsf@yun.yagibdah.de>
+
+Michael Stapelberg <michael at i3wm.org> writes:
+
+> This is a great opportunity for one of you to help the i3 community:
+> I am looking for somebody who can speak German and is willing to guide
+> non-Germans through the ordering process while writing and improving a
+> document which explains this.
+>
+> Are you interested? Please let me know (cc the mailing list) and we can
+> discuss the details.
+
+We would have to figure out what different sizes in different countries
+mean.  The USA apparently use (slightly?) different numbers for sizes
+than GB does, and both are different from what is used in Germany, afaik
+even when you use US sizes in Germany.  There also seems to be a
+considerable variety as to what sizes like XL or XXL in the US mean, and
+iirc, a size in England can be different from the same size in Scotland.
+
+Further countries might be different again.  It would probably be nice
+for the document to include some sort of conversion table --- that
+information is probably rather difficult to come by, though.
+
+How many different sizes do they make?
+
+
+-- 
+"Object-oriented programming languages aren't completely convinced that
+you should be allowed to do anything with functions."
+http://www.joelonsoftware.com/items/2006/08/01.html
+
+From lee at yun.yagibdah.de  Fri Jul 12 01:08:03 2013
+From: lee at yun.yagibdah.de (lee)
+Date: Fri, 12 Jul 2013 01:08:03 +0200
+Subject: [i3] key bindings not working
+In-Reply-To: <20130708093619.6ed9bb70@debelianear> (Mateusz Poszwa's message
+ of "Mon, 8 Jul 2013 09:36:19 +0200")
+References: <8738rr82v4.fsf@yun.yagibdah.de>
+ <20130708093619.6ed9bb70@debelianear>
+Message-ID: <8738rksnjg.fsf@yun.yagibdah.de>
+
+Mateusz Poszwa <old4 at o2.pl> writes:
+
+> On Sun, 07 Jul 2013 05:29:03 +0200
+> lee <lee at yun.yagibdah.de> wrote:
+>
+>> Hi,
+>> 
+>> what might be the reason for the following key bindings in the config to
+>> be ignored:
+>> 
+>> 
+>> bind $mod+periodcentered workspace next
+>> bind $mod+Shift+abovedot workspace prev
+>> 
+>> 
+>> $mod is AltGr, and I have
+>> 
+>> 
+>> keycode  61 = minus underscore minus underscore periodcentered abovedot periodcentered
+>> 
+>> 
+>> in my xmodmap.  I can type these symbols just fine, as if i3 is totally
+>> ignoring these key bindings.
+>
+> I'd try with:
+> ?
+> bindsym $mod+minus workspace next
+> bindsym $mod+Shift+minus workspace prev
+> ?
+> in this case.
+
+Oh thank you!  That works perfectly!
+
+My understanding was that you need to use the actual key symbol (as used
+in xmodmap) that is being produced.  For example, when you have
+
+bindsym $mod+Shift+J move left
+
+a capital 'J' is being produced.  When you have the some binding without
+Shift, like
+
+bindsym $mod+j move left
+
+it's a small 'j' because Shift isn't pressed.
+
+This shows throughout the default configuration file.  The documentation
+says:
+
+
+,---- [ http://i3wm.org/docs/userguide.html#keybindings]
+|
+| A keysym (key symbol) is a description for a specific symbol, like "a"
+| or "b", but also more strange ones like "underscore" instead of
+| "_". These are the ones you use in Xmodmap to remap your keys. To get
+| the current mapping of your keys, use xmodmap -pke. To interactively
+| enter a key and see what keysym it is configured to, use xev.
+|
+`----
+
+
+I have been using xev to verify that pressing 'AltGr+<Minus Key>' and
+'AltGr+Shift+<Minus Key>' do yield 'periodcentered' and 'abovedot',
+respectively.  (Those are now intercepted by i3.)
+
+Actually, 'Shift+<Minus Key>' produces an underscore.  How come that
+'AltGr+Shift+minus' even works?  Shouldn't that rather be
+'AltGr+Shift+underscore'?[1]
+
+Is the documentation misleading, or is there some inconsistency with how
+i3 perceives (some) keystrokes or key symbols?
+
+
+[1]:
+KeyRelease event, serial 27, synthetic NO, window 0x1e00001,
+    root 0x2a5, subw 0x0, time 93058061, (280,163), root:(1152,655),
+    state 0x10, keycode 61 (keysym 0x2d, minus), same_screen YES,
+    XLookupString gives 1 bytes: (2d) "-"
+    XFilterEvent returns: False
+
+keycode  61 = minus underscore minus underscore periodcentered abovedot periodcentered
+
+
+> As a side note, I don't think using AltGr as a modifier is a good idea?
+
+How come you think so?  It works great and allows for some easy
+one-handed i3-operations.  Since I have modified my xmodmap so that I
+can type braces and brackets without pressing AltGr, there are only four
+keys that come to mind for which I need AltGr: '@', '|', '?' and '\'.
+That leaves me pretty much all of the other 98 keys to bind i3 stuff to
+:)  Do you know of any application which would be aware that there's such
+a thing as an AltGr key?
+
+(I'm using a Model M keyboard that doesn't have the obsolete keys newer
+ones have, so there aren't any keys around Space, Alt, AltGr and Ctrl
+that would get persistently in the way.)
+
+
+-- 
+"Object-oriented programming languages aren't completely convinced that
+you should be allowed to do anything with functions."
+http://www.joelonsoftware.com/items/2006/08/01.html
+
+From lee at yun.yagibdah.de  Fri Jul 12 01:45:20 2013
+From: lee at yun.yagibdah.de (lee)
+Date: Fri, 12 Jul 2013 01:45:20 +0200
+Subject: [i3] default charset layout
+In-Reply-To: <20130711161358.95771@relay.ibs.dn.ua> (Zeus Panchenko's message
+ of "Thu, 11 Jul 2013 16:13:58 +0300")
+References: <20130710143035.39554@relay.ibs.dn.ua> <x638rmuusr.fsf@midna.lan>
+ <20130711081823.35747@relay.ibs.dn.ua> <51DE7659.3010500@necoro.eu>
+ <20130711141557.80375@relay.ibs.dn.ua> <51DE9834.4000301@necoro.eu>
+ <20130711144856.84671@relay.ibs.dn.ua> <51DE9E8A.5000805@necoro.eu>
+ <20130711161358.95771@relay.ibs.dn.ua>
+Message-ID: <87txk0r78v.fsf@yun.yagibdah.de>
+
+Zeus Panchenko <zeus at ibs.dn.ua> writes:
+
+> Ren? Neumann <lists at necoro.eu> wrote:
+>> 
+>> Just to avoid confusion: What exactly do you mean by 'charset'? I
+>> figured you ment 'keyboard layout', and this is what I answered.
+>> 
+>
+> definitely keyboard layout
+> sorry for mistake
+
+If there was some sort of "window switching hook" that could be used to
+execute a command and which would be called by i3 when focus changes,
+users could set up something to switch keyboard layouts depending on
+which window has the focus.  I'm thinking of something similar to the
+'for_window' option along the lines of:
+
+
+focused_window [title=".*"] exec xmodmap ~/.Xmodmap-std
+focused_window [title="ru"] exec xmodmap ~/.Xmodmap-ru
+focused_window [title="emacs"] exec xmodmap ~/.Xmodmap-programming
+
+
+However, it might be difficult to sufficiently differentiate the windows
+with only the criteria that are currently available.
+
+
+It is easily possible to have different locale in different windows. You
+can always set environment variables like 'LANG' and 'LC_MESSAGES'
+before starting an application.  That probably goes for every
+application, the only requirement being that the given locale is (and
+translations for the app are) available on the system.
+
+
+-- 
+"Object-oriented programming languages aren't completely convinced that
+you should be allowed to do anything with functions."
+http://www.joelonsoftware.com/items/2006/08/01.html
+
+From lists at necoro.eu  Fri Jul 12 09:00:43 2013
+From: lists at necoro.eu (=?UTF-8?B?UmVuw6kgTmV1bWFubg==?=)
+Date: Fri, 12 Jul 2013 09:00:43 +0200
+Subject: [i3] default charset layout
+In-Reply-To: <87txk0r78v.fsf@yun.yagibdah.de>
+References: <20130710143035.39554@relay.ibs.dn.ua> <x638rmuusr.fsf@midna.lan>
+ <20130711081823.35747@relay.ibs.dn.ua> <51DE7659.3010500@necoro.eu>
+ <20130711141557.80375@relay.ibs.dn.ua> <51DE9834.4000301@necoro.eu>
+ <20130711144856.84671@relay.ibs.dn.ua> <51DE9E8A.5000805@necoro.eu>
+ <20130711161358.95771@relay.ibs.dn.ua> <87txk0r78v.fsf@yun.yagibdah.de>
+Message-ID: <51DFA99B.5040003@necoro.eu>
+
+Am 12.07.2013 01:45, schrieb lee:
+> Zeus Panchenko <zeus at ibs.dn.ua> writes:
+> 
+>> Ren? Neumann <lists at necoro.eu> wrote:
+>>>
+>>> Just to avoid confusion: What exactly do you mean by 'charset'? I
+>>> figured you ment 'keyboard layout', and this is what I answered.
+>>>
+>>
+>> definitely keyboard layout
+>> sorry for mistake
+> 
+> If there was some sort of "window switching hook" that could be used to
+> execute a command and which would be called by i3 when focus changes,
+> users could set up something to switch keyboard layouts depending on
+> which window has the focus.
+
+Could anybody explain to me, why the proposed solution (using xxkb or
+kbdd) ist not feasible? I mean: This is just the usecase they were
+intended for...
+
+- Ren?
+
+
+
+From zeus at ibs.dn.ua  Fri Jul 12 12:25:04 2013
+From: zeus at ibs.dn.ua (Zeus Panchenko)
+Date: Fri, 12 Jul 2013 13:25:04 +0300
+Subject: [i3] default charset layout
+In-Reply-To: Your message of Fri,
+ 12 Jul 2013 09:00:43 +0200 <51DFA99B.5040003@necoro.eu>
+References: <20130710143035.39554@relay.ibs.dn.ua> <x638rmuusr.fsf@midna.lan>
+ <20130711081823.35747@relay.ibs.dn.ua> <51DE7659.3010500@necoro.eu>
+ <20130711141557.80375@relay.ibs.dn.ua> <51DE9834.4000301@necoro.eu>
+ <20130711144856.84671@relay.ibs.dn.ua> <51DE9E8A.5000805@necoro.eu>
+ <20130711161358.95771@relay.ibs.dn.ua> <87txk0r78v.fsf@yun.yagibdah.de>
+ <51DFA99B.5040003@necoro.eu>
+Message-ID: <20130712132504.14782@relay.ibs.dn.ua>
+
+Ren? Neumann <lists at necoro.eu> wrote:
+> Could anybody explain to me, why the proposed solution (using xxkb or
+> kbdd) ist not feasible?
+
+no, nobody can, since it is the proposed solution isn't not feasible. It
+is just what I didn't asked about.
+
+if i3 says, the issue is not i3's deal, so, let it be
+
+may be you Ren?, right and using external tool is better than repeat
+the functionality in i3/i3something code
+
+anyway thanks
+-- 
+Zeus V. Panchenko				jid:zeus at im.ibs.dn.ua
+IT Dpt., I.B.S. LLC					  GMT+2 (EET)
+
+From old4 at o2.pl  Fri Jul 12 14:40:51 2013
+From: old4 at o2.pl (Mateusz Poszwa)
+Date: Fri, 12 Jul 2013 14:40:51 +0200
+Subject: [i3] key bindings not working
+In-Reply-To: <8738rksnjg.fsf@yun.yagibdah.de>
+References: <8738rr82v4.fsf@yun.yagibdah.de>
+ <20130708093619.6ed9bb70@debelianear>
+ <8738rksnjg.fsf@yun.yagibdah.de>
+Message-ID: <20130712144051.0efd69c2@debelianear>
+
+On Fri, 12 Jul 2013 01:08:03 +0200
+lee <lee at yun.yagibdah.de> wrote:
+
+> Mateusz Poszwa <old4 at o2.pl> writes:
+> 
+> > On Sun, 07 Jul 2013 05:29:03 +0200
+> > lee <lee at yun.yagibdah.de> wrote:
+> >
+> >> Hi,
+> >> 
+> >> what might be the reason for the following key bindings in the config to
+> >> be ignored:
+> >> 
+> >> 
+> >> bind $mod+periodcentered workspace next
+> >> bind $mod+Shift+abovedot workspace prev
+> >> 
+> >> 
+> >> $mod is AltGr, and I have
+> >> 
+> >> 
+> >> keycode  61 = minus underscore minus underscore periodcentered abovedot periodcentered
+> >> 
+> >> 
+> >> in my xmodmap.  I can type these symbols just fine, as if i3 is totally
+> >> ignoring these key bindings.
+> >
+> > I'd try with:
+> > ?
+> > bindsym $mod+minus workspace next
+> > bindsym $mod+Shift+minus workspace prev
+> > ?
+> > in this case.
+> 
+> Oh thank you!  That works perfectly!
+> 
+> My understanding was that you need to use the actual key symbol (as used
+> in xmodmap) that is being produced.  For example, when you have
+> 
+> bindsym $mod+Shift+J move left
+> 
+> a capital 'J' is being produced.  When you have the some binding without
+> Shift, like
+> 
+> bindsym $mod+j move left
+> 
+> it's a small 'j' because Shift isn't pressed.
+
+?
+bindsym $mod+Shift+j move left
+?
+would work too. Maybe the names are case insensitive?
+
+
+> This shows throughout the default configuration file.  The documentation
+> says:
+> 
+> 
+> ,---- [ http://i3wm.org/docs/userguide.html#keybindings]
+> |
+> | A keysym (key symbol) is a description for a specific symbol, like "a"
+> | or "b", but also more strange ones like "underscore" instead of
+> | "_". These are the ones you use in Xmodmap to remap your keys. To get
+> | the current mapping of your keys, use xmodmap -pke. To interactively
+> | enter a key and see what keysym it is configured to, use xev.
+> |
+> `----
+> 
+> 
+> I have been using xev to verify that pressing 'AltGr+<Minus Key>' and
+> 'AltGr+Shift+<Minus Key>' do yield 'periodcentered' and 'abovedot',
+> respectively.  (Those are now intercepted by i3.)
+
+I don't think so, but I may be wrong.
+If it was as you say, you could write
+?
+bindsym abovedot workspace prev
+?
+instead of
+?
+bindsym $mod+Shift+minus workspace prev
+?
+To be honest, I haven't checked if the former works.
+You can do it as an exercise and let me know if you succeed. ;-)
+I'd be surprised, but I don't say it's impossible.
+
+> Actually, 'Shift+<Minus Key>' produces an underscore.  How come that
+> 'AltGr+Shift+minus' even works?  Shouldn't that rather be
+> 'AltGr+Shift+underscore'?[1]
+
+I think i3 maps keysyms (?plain? keysyms ? without modifiers)
+to keycodes and applies modifiers itself.
+
+
+> Is the documentation misleading, or is there some inconsistency with how
+> i3 perceives (some) keystrokes or key symbols?
+> 
+> 
+> [1]:
+> KeyRelease event, serial 27, synthetic NO, window 0x1e00001,
+>     root 0x2a5, subw 0x0, time 93058061, (280,163), root:(1152,655),
+>     state 0x10, keycode 61 (keysym 0x2d, minus), same_screen YES,
+>     XLookupString gives 1 bytes: (2d) "-"
+>     XFilterEvent returns: False
+> 
+> keycode  61 = minus underscore minus underscore periodcentered abovedot periodcentered
+> 
+> 
+> > As a side note, I don't think using AltGr as a modifier is a good idea?
+> 
+> How come you think so?  It works great and allows for some easy
+> one-handed i3-operations.  Since I have modified my xmodmap so that I
+> can type braces and brackets without pressing AltGr, there are only four
+> keys that come to mind for which I need AltGr: '@', '|', '?' and '\'.
+> That leaves me pretty much all of the other 98 keys to bind i3 stuff to
+> :)  Do you know of any application which would be aware that there's such
+> a thing as an AltGr key?
+
+How about '?'? ;-P
+You are right. It seems good in you case.
+I use the Colemak keyboard layout, which uses AltGr heavily
+for diacritics input, and there's quite many of them in Polish.
+
+As for AltGr-aware applications, probably
+some old games may use that key.
+
+> (I'm using a Model M keyboard that doesn't have the obsolete keys newer
+> ones have, so there aren't any keys around Space, Alt, AltGr and Ctrl
+> that would get persistently in the way.)
+
+I have plenty of ?obsolete? keys on my TypeMatrix 2020,
+such as Super (captioned ?Start?), which I use for i3's bindings,
+or Caps Lock, which I have bound a minus to. ;-)
+
+-- 
+Mateusz Poszwa
+
+From michael at i3wm.org  Fri Jul 12 17:38:51 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 12 Jul 2013 17:38:51 +0200
+Subject: [i3] default charset layout
+In-Reply-To: <20130712132504.14782@relay.ibs.dn.ua>
+References: <20130710143035.39554@relay.ibs.dn.ua> <x638rmuusr.fsf@midna.lan>
+ <20130711081823.35747@relay.ibs.dn.ua> <51DE7659.3010500@necoro.eu>
+ <20130711141557.80375@relay.ibs.dn.ua> <51DE9834.4000301@necoro.eu>
+ <20130711144856.84671@relay.ibs.dn.ua> <51DE9E8A.5000805@necoro.eu>
+ <20130711161358.95771@relay.ibs.dn.ua> <87txk0r78v.fsf@yun.yagibdah.de>
+ <51DFA99B.5040003@necoro.eu> <20130712132504.14782@relay.ibs.dn.ua>
+Message-ID: <x6hafzss8k.fsf@midna.lan>
+
+Hi Zeus,
+
+Zeus Panchenko <zeus at ibs.dn.ua> writes:
+
+> Ren? Neumann <lists at necoro.eu> wrote:
+>> Could anybody explain to me, why the proposed solution (using xxkb or
+>> kbdd) ist not feasible?
+>
+> no, nobody can, since it is the proposed solution isn't not feasible. It
+> is just what I didn't asked about.
+>
+> if i3 says, the issue is not i3's deal, so, let it be
+For the record:
+
+I think this is not i3?s responsibility, so please use the external
+tools pointed out in this thread. Thanks.
+
+-- 
+Best regards,
+Michael
+
+From ondekoza at gmail.com  Fri Jul 12 22:32:13 2013
+From: ondekoza at gmail.com (Stefan Schroeder)
+Date: Fri, 12 Jul 2013 20:32:13 +0000 (UTC)
+Subject: [i3] Want to help? Become our t-shirt manager!
+References: <x6wqoytev2.fsf@midna.lan>
+Message-ID: <loom.20130712T222935-557@post.gmane.org>
+
+Michael Stapelberg <michael <at> i3wm.org> writes:
+
+> Are you interested? Please let me know (cc the mailing list) and we can
+> discuss the details.
+> 
+
+I would be willing to assist. Since I am German and live in the US I could 
+also provide information about different sizes/units.
+
+Stefan Schroeder
+
+
+
+From lee at yun.yagibdah.de  Sat Jul 13 04:45:56 2013
+From: lee at yun.yagibdah.de (lee)
+Date: Sat, 13 Jul 2013 04:45:56 +0200
+Subject: [i3] key bindings not working
+In-Reply-To: <20130712144051.0efd69c2@debelianear> (Mateusz Poszwa's message
+ of "Fri, 12 Jul 2013 14:40:51 +0200")
+References: <8738rr82v4.fsf@yun.yagibdah.de>
+ <20130708093619.6ed9bb70@debelianear> <8738rksnjg.fsf@yun.yagibdah.de>
+ <20130712144051.0efd69c2@debelianear>
+Message-ID: <87bo67i3dn.fsf@yun.yagibdah.de>
+
+Mateusz Poszwa <old4 at o2.pl> writes:
+
+> On Fri, 12 Jul 2013 01:08:03 +0200
+> lee <lee at yun.yagibdah.de> wrote:
+>> My understanding was that you need to use the actual key symbol (as used
+>> in xmodmap) that is being produced.  For example, when you have
+>> 
+>> bindsym $mod+Shift+J move left
+>> 
+>> a capital 'J' is being produced.  When you have the some binding without
+>> Shift, like
+>> 
+>> bindsym $mod+j move left
+>> 
+>> it's a small 'j' because Shift isn't pressed.
+>
+> ?
+> bindsym $mod+Shift+j move left
+> ?
+> would work too. Maybe the names are case insensitive?
+
+Maybe they are, though the documentation indicates that you need to use
+the key symbols that are being produced.
+
+>> This shows throughout the default configuration file.  The documentation
+>> says:
+>> 
+>> 
+>> ,---- [ http://i3wm.org/docs/userguide.html#keybindings]
+>> |
+>> | A keysym (key symbol) is a description for a specific symbol, like "a"
+>> | or "b", but also more strange ones like "underscore" instead of
+>> | "_". These are the ones you use in Xmodmap to remap your keys. To get
+>> | the current mapping of your keys, use xmodmap -pke. To interactively
+>> | enter a key and see what keysym it is configured to, use xev.
+>> |
+>> `----
+>> 
+>> 
+>> I have been using xev to verify that pressing 'AltGr+<Minus Key>' and
+>> 'AltGr+Shift+<Minus Key>' do yield 'periodcentered' and 'abovedot',
+>> respectively.  (Those are now intercepted by i3.)
+>
+> I don't think so, but I may be wrong.
+
+Those symbols aren't typed anymore when I press the keys, so yes,
+really, i3 must be intercepting them.
+
+> If it was as you say, you could write
+> ?
+> bindsym abovedot workspace prev
+> ?
+> instead of
+> ?
+> bindsym $mod+Shift+minus workspace prev
+> ?
+> To be honest, I haven't checked if the former works.
+> You can do it as an exercise and let me know if you succeed. ;-)
+> I'd be surprised, but I don't say it's impossible.
+
+That's an interesting idea indeed :)  I tried it and it doesn't work.
+
+>> Actually, 'Shift+<Minus Key>' produces an underscore.  How come that
+>> 'AltGr+Shift+minus' even works?  Shouldn't that rather be
+>> 'AltGr+Shift+underscore'?[1]
+>
+> I think i3 maps keysyms (?plain? keysyms ? without modifiers)
+> to keycodes and applies modifiers itself.
+
+Going by the documentation, the key codes seem to be irrelevant unless
+you use 'bindcode' instead of 'bindsym'.  I guess if I changed my
+xmodmap so that '-' (minus) is on the key that's labeled 'J', I'd have
+to press AltGr+j instead of AltGr+<minus>.
+
+This is pretty confusing ...
+
+>> > As a side note, I don't think using AltGr as a modifier is a good idea?
+>> 
+>> How come you think so?  It works great and allows for some easy
+>> one-handed i3-operations.  Since I have modified my xmodmap so that I
+>> can type braces and brackets without pressing AltGr, there are only four
+>> keys that come to mind for which I need AltGr: '@', '|', '?' and '\'.
+>> That leaves me pretty much all of the other 98 keys to bind i3 stuff to
+>> :)  Do you know of any application which would be aware that there's such
+>> a thing as an AltGr key?
+>
+> How about '?'? ;-P
+
+What about it?
+
+> You are right. It seems good in you case. I use the Colemak keyboard
+> layout, which uses AltGr heavily for diacritics input, and there's
+> quite many of them in Polish.
+
+Ah I only write English and German, so I'm not missing any letters with
+the keyboard as is.  The only thing is that there are some like '/', '~'
+and brackets that are at very inconvenient locations with a default
+German layout, so I changed that.
+
+> As for AltGr-aware applications, probably some old games may use that
+> key.
+
+Hm, none that does comes to mind ...
+
+>> (I'm using a Model M keyboard that doesn't have the obsolete keys newer
+>> ones have, so there aren't any keys around Space, Alt, AltGr and Ctrl
+>> that would get persistently in the way.)
+>
+> I have plenty of ?obsolete? keys on my TypeMatrix 2020,
+> such as Super (captioned ?Start?), which I use for i3's bindings,
+> or Caps Lock, which I have bound a minus to. ;-)
+
+That looks like an interesting keyboard :)  I wish I could have one with
+122 keys, but it seems that there are hardware issues preventing that.
+
+
+-- 
+"Object-oriented programming languages aren't completely convinced that
+you should be allowed to do anything with functions."
+http://www.joelonsoftware.com/items/2006/08/01.html
+
+From lee at yun.yagibdah.de  Sat Jul 13 04:50:15 2013
+From: lee at yun.yagibdah.de (lee)
+Date: Sat, 13 Jul 2013 04:50:15 +0200
+Subject: [i3] default charset layout
+In-Reply-To: <51DFA99B.5040003@necoro.eu> (=?utf-8?Q?=22Ren=C3=A9?=
+ Neumann"'s message of "Fri, 12 Jul 2013 09:00:43 +0200")
+References: <20130710143035.39554@relay.ibs.dn.ua> <x638rmuusr.fsf@midna.lan>
+ <20130711081823.35747@relay.ibs.dn.ua> <51DE7659.3010500@necoro.eu>
+ <20130711141557.80375@relay.ibs.dn.ua> <51DE9834.4000301@necoro.eu>
+ <20130711144856.84671@relay.ibs.dn.ua> <51DE9E8A.5000805@necoro.eu>
+ <20130711161358.95771@relay.ibs.dn.ua>
+ <87txk0r78v.fsf@yun.yagibdah.de> <51DFA99B.5040003@necoro.eu>
+Message-ID: <877ggvi36g.fsf@yun.yagibdah.de>
+
+Ren? Neumann <lists at necoro.eu> writes:
+
+> Am 12.07.2013 01:45, schrieb lee:
+>> Zeus Panchenko <zeus at ibs.dn.ua> writes:
+>> 
+>>> Ren? Neumann <lists at necoro.eu> wrote:
+>>>>
+>>>> Just to avoid confusion: What exactly do you mean by 'charset'? I
+>>>> figured you ment 'keyboard layout', and this is what I answered.
+>>>>
+>>>
+>>> definitely keyboard layout
+>>> sorry for mistake
+>> 
+>> If there was some sort of "window switching hook" that could be used to
+>> execute a command and which would be called by i3 when focus changes,
+>> users could set up something to switch keyboard layouts depending on
+>> which window has the focus.
+>
+> Could anybody explain to me, why the proposed solution (using xxkb or
+> kbdd) ist not feasible? I mean: This is just the usecase they were
+> intended for...
+
+It was just an idea; I don't know what the proposed tools do.  Since the
+WM knows which window is focused, it seems to make at least as much
+sense to have such hooks for whatever usage as it does to be able to
+bind various things to keys.
+
+
+-- 
+"Object-oriented programming languages aren't completely convinced that
+you should be allowed to do anything with functions."
+http://www.joelonsoftware.com/items/2006/08/01.html
+
+From lee at yun.yagibdah.de  Sun Jul 14 00:03:40 2013
+From: lee at yun.yagibdah.de (lee)
+Date: Sun, 14 Jul 2013 00:03:40 +0200
+Subject: [i3] key bindings not working
+In-Reply-To: <x6ip0mvzhy.fsf@midna.lan> (Michael Stapelberg's message of "Sun, 
+ 07 Jul 2013 23:20:09 +0200")
+References: <8738rr82v4.fsf@yun.yagibdah.de> <x6zjty3f4l.fsf@midna.lan>
+ <87r4fajr5p.fsf@yun.yagibdah.de> <x6ip0mvzhy.fsf@midna.lan>
+Message-ID: <87ip0edsn7.fsf@yun.yagibdah.de>
+
+Michael Stapelberg <michael at i3wm.org> writes:
+
+> lee <lee at yun.yagibdah.de> writes:
+>> Do I need to make a bug report with a logfile attached to it?
+> In case you decide to file a bug, yes, a logfile with maximum debug
+> level will be required for us to be able to figure out what happens.
+>
+> The new ticket form will also tell you that :).
+
+Oh I wasn't sure if a bug report would be required :)
+
+You've probably seen that it's working now.  Some clarification would be
+nice, though; I might be able to write a paragraph or two then which
+could be added to the documentation.  Doing that now would be too much
+guessing about how these key bindings work.
+
+
+-- 
+"Object-oriented programming languages aren't completely convinced that
+you should be allowed to do anything with functions."
+http://www.joelonsoftware.com/items/2006/08/01.html
+
+From old4 at o2.pl  Sun Jul 14 16:51:24 2013
+From: old4 at o2.pl (Mateusz Poszwa)
+Date: Sun, 14 Jul 2013 16:51:24 +0200
+Subject: [i3] key bindings not working
+In-Reply-To: <87bo67i3dn.fsf@yun.yagibdah.de>
+References: <8738rr82v4.fsf@yun.yagibdah.de>
+ <20130708093619.6ed9bb70@debelianear>
+ <8738rksnjg.fsf@yun.yagibdah.de>
+ <20130712144051.0efd69c2@debelianear>
+ <87bo67i3dn.fsf@yun.yagibdah.de>
+Message-ID: <20130714165124.0f3fc321@debelianear>
+
+On Sat, 13 Jul 2013 04:45:56 +0200
+lee <lee at yun.yagibdah.de> wrote:
+
+> Mateusz Poszwa <old4 at o2.pl> writes:
+> 
+> > On Fri, 12 Jul 2013 01:08:03 +0200
+> > lee <lee at yun.yagibdah.de> wrote:
+> >> My understanding was that you need to use the actual key symbol (as used
+> >> in xmodmap) that is being produced.  For example, when you have
+> >> 
+> >> bindsym $mod+Shift+J move left
+> >> 
+> >> a capital 'J' is being produced.  When you have the some binding without
+> >> Shift, like
+> >> 
+> >> bindsym $mod+j move left
+> >> 
+> >> it's a small 'j' because Shift isn't pressed.
+> >
+> > ?
+> > bindsym $mod+Shift+j move left
+> > ?
+> > would work too. Maybe the names are case insensitive?
+> 
+> Maybe they are, though the documentation indicates that you need to use
+> the key symbols that are being produced.
+
+It does not state if the keys should be produced with
+or without modifiers. I agree this may need clarification.
+
+> >> This shows throughout the default configuration file.  The documentation
+> >> says:
+> >> 
+> >> 
+> >> ,---- [ http://i3wm.org/docs/userguide.html#keybindings]
+> >> |
+> >> | A keysym (key symbol) is a description for a specific symbol, like "a"
+> >> | or "b", but also more strange ones like "underscore" instead of
+> >> | "_". These are the ones you use in Xmodmap to remap your keys. To get
+> >> | the current mapping of your keys, use xmodmap -pke. To interactively
+> >> | enter a key and see what keysym it is configured to, use xev.
+> >> |
+> >> `----
+> >> 
+> >> 
+> >> I have been using xev to verify that pressing 'AltGr+<Minus Key>' and
+> >> 'AltGr+Shift+<Minus Key>' do yield 'periodcentered' and 'abovedot',
+> >> respectively.  (Those are now intercepted by i3.)
+> >
+> > I don't think so, but I may be wrong.
+> 
+> Those symbols aren't typed anymore when I press the keys, so yes,
+> really, i3 must be intercepting them.
+
+Sounds like a bug to me?
+
+> > If it was as you say, you could write
+> > ?
+> > bindsym abovedot workspace prev
+> > ?
+> > instead of
+> > ?
+> > bindsym $mod+Shift+minus workspace prev
+> > ?
+> > To be honest, I haven't checked if the former works.
+> > You can do it as an exercise and let me know if you succeed. ;-)
+> > I'd be surprised, but I don't say it's impossible.
+> 
+> That's an interesting idea indeed :)  I tried it and it doesn't work.
+
+Thanks for checking. ;-)
+
+> >> Actually, 'Shift+<Minus Key>' produces an underscore.  How come that
+> >> 'AltGr+Shift+minus' even works?  Shouldn't that rather be
+> >> 'AltGr+Shift+underscore'?[1]
+> >
+> > I think i3 maps keysyms (?plain? keysyms ? without modifiers)
+> > to keycodes and applies modifiers itself.
+> 
+> Going by the documentation, the key codes seem to be irrelevant unless
+> you use 'bindcode' instead of 'bindsym'.  I guess if I changed my
+> xmodmap so that '-' (minus) is on the key that's labeled 'J', I'd have
+> to press AltGr+j instead of AltGr+<minus>.
+> 
+> This is pretty confusing ...
+
+You are right. I checked that a moment ago.
+
+> >> > As a side note, I don't think using AltGr as a modifier is a good idea?
+> >> 
+> >> How come you think so?  It works great and allows for some easy
+> >> one-handed i3-operations.  Since I have modified my xmodmap so that I
+> >> can type braces and brackets without pressing AltGr, there are only four
+> >> keys that come to mind for which I need AltGr: '@', '|', '?' and '\'.
+> >> That leaves me pretty much all of the other 98 keys to bind i3 stuff to
+> >> :)  Do you know of any application which would be aware that there's such
+> >> a thing as an AltGr key?
+> >
+> > How about '?'? ;-P
+> 
+> What about it?
+
+Ah, nothing. I thought one needs AltGr for it. I stand corrected. :-)
+
+> > You are right. It seems good in you case. I use the Colemak keyboard
+> > layout, which uses AltGr heavily for diacritics input, and there's
+> > quite many of them in Polish.
+> 
+> Ah I only write English and German, so I'm not missing any letters with
+> the keyboard as is.  The only thing is that there are some like '/', '~'
+> and brackets that are at very inconvenient locations with a default
+> German layout, so I changed that.
+> 
+> > As for AltGr-aware applications, probably some old games may use that
+> > key.
+> 
+> Hm, none that does comes to mind ...
+
+Tomb Raider maybe? Never mind. It's a very, very rare case.
+
+> >> (I'm using a Model M keyboard that doesn't have the obsolete keys newer
+> >> ones have, so there aren't any keys around Space, Alt, AltGr and Ctrl
+> >> that would get persistently in the way.)
+> >
+> > I have plenty of ?obsolete? keys on my TypeMatrix 2020,
+> > such as Super (captioned ?Start?), which I use for i3's bindings,
+> > or Caps Lock, which I have bound a minus to. ;-)
+> 
+> That looks like an interesting keyboard :)  I wish I could have one with
+> 122 keys, but it seems that there are hardware issues preventing that.
+
+So many keys? It makes me recall this one:
+http://mykeyboard.co.uk/microswitch/
+
+-- 
+Mateusz Poszwa
+
+From michael at i3wm.org  Sun Jul 14 23:26:53 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 14 Jul 2013 23:26:53 +0200
+Subject: [i3] key bindings not working
+In-Reply-To: <87ip0edsn7.fsf@yun.yagibdah.de>
+References: <8738rr82v4.fsf@yun.yagibdah.de> <x6zjty3f4l.fsf@midna.lan>
+ <87r4fajr5p.fsf@yun.yagibdah.de> <x6ip0mvzhy.fsf@midna.lan>
+ <87ip0edsn7.fsf@yun.yagibdah.de>
+Message-ID: <x6ip0cq1cy.fsf@midna.lan>
+
+Hi lee,
+
+lee <lee at yun.yagibdah.de> writes:
+> You've probably seen that it's working now.  Some clarification would be
+> nice, though; I might be able to write a paragraph or two then which
+> could be added to the documentation.  Doing that now would be too much
+> guessing about how these key bindings work.
+It is hard to follow the thread because I don?t have very fresh memory
+on this part of the code and it?s a complex subject.
+
+I?d recommend reading
+http://code.stapelberg.de/git/i3/tree/src/config.c?h=next#n111
+which explains much better than I ever could how it works.
+
+Note that X11 thinks in keycodes, not in keysyms. I.e., what you get in
+xev is only what libX11 makes of the keycodes it gets.
+
+Sorry for not being very helpful here. Some research on your part and
+documentation updates are appreciated, though.
+
+-- 
+Best regards,
+Michael
+
+From guitarfish17 at gmail.com  Mon Jul 15 07:50:39 2013
+From: guitarfish17 at gmail.com (Harry Allenby)
+Date: Sun, 14 Jul 2013 22:50:39 -0700
+Subject: [i3] Containers in i3
+Message-ID: <CACxDzD+TAd6p_dfckxpQDBrTXV5rws=OnvpHhsJAPLdLN5DLxA@mail.gmail.com>
+
+Hello. I'm new to this list. Recently I've gotten interested in tiling
+window managers, and I studied the excellent reviews of more than 30
+at the Crunchbang Wiki
+[http://crunchbang.org/forums/viewtopic.php?id=18273] and elsewhere,
+and I've tried out i3, awesome, and xmonad, and I think i3 is the one
+for me. I've watched all the videos on i3 available at YouTbue
+(including the one on tree structure and containers), and studied the
+User Guide, but I'm a very literal-minded mathematician and I'm still
+having problems with understanding and using the concept of
+containers. I have three questions (in order of abstractness).
+
+(1) I'm sitting in front of an i3-screen with a focused window. I want
+to know (preferably in a semi-algorithmic statement), if I press Mod +
+s, exactly which windows will be stacked. In particular, does the
+answer depend on the history of the focused window?
+
+(2) If I press mod+v and make some windows, are they all in the same
+container? If I now press mod+h and make some more windows, are they
+in a different container?
+
+(3) I just don't grasp the concept of a container in i3. It seems to
+me that the basic objects are windows, and that "container" is a
+derived, relational notion, namely: two windows may (or may not) be in
+the same container. [So, mathematically, I think of a container as an
+equivalence class of windows; but I don't know what the equivalence
+relation is.]
+
+Thank you for your patience.
+
+
+
+http://crunchbang.org/forums/viewtopic.php?id=18273
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130714/3650b1a7/attachment.html>
+
+From mail at merovius.de  Mon Jul 15 09:00:45 2013
+From: mail at merovius.de (Axel Wagner)
+Date: Mon, 15 Jul 2013 09:00:45 +0200
+Subject: [i3] Containers in i3
+In-Reply-To: <CACxDzD+TAd6p_dfckxpQDBrTXV5rws=OnvpHhsJAPLdLN5DLxA@mail.gmail.com>
+References: <CACxDzD+TAd6p_dfckxpQDBrTXV5rws=OnvpHhsJAPLdLN5DLxA@mail.gmail.com>
+Message-ID: <1373870147-sup-4930@merovius.de>
+
+Hi,
+
+Excerpts from Harry Allenby's message of 2013-07-15 07:50:39 +0200:
+> I'm a very literal-minded mathematician
+
+Then let me, as a fellow mathematician try to explain at least part of
+your questions ;)
+
+> (3) I just don't grasp the concept of a container in i3. It seems to
+> me that the basic objects are windows, and that "container" is a
+> derived, relational notion, namely: two windows may (or may not) be in
+> the same container. [So, mathematically, I think of a container as an
+> equivalence class of windows; but I don't know what the equivalence
+> relation is.]
+
+Mathematically it is pretty simple. Containers are nodes in a tree,
+whose root the X-root-window is. Children of this root level there are
+individual outputs, children of the outputs are the workspaces, whose
+children in turn are the container-trees containing the windows you see.
+
+A container can either be an inner node containing more containers (I
+think this is called a ?split-container? in the documentation), or it
+can be a leaf, containing a window.
+
+The nodes are not all equal, leafs contain windows and near the top of
+the hierarchy there has to be special treatment (to use the more
+user-friendly abstractions of outputs and workspaces), but mostly this
+should be the way to think of it.
+
+> (2) If I press mod+v and make some windows, are they all in the same
+> container? If I now press mod+h and make some more windows, are they
+> in a different container?
+
+Yes and no. If by ?window? you think of ?a leaf node in the container
+tree?, then yes.
+
+If you create some windows (for example pressing Mod+Enter to
+open some terminals), then each one is put in an individual container.
+These containers are then put in a big container. If you then press
+mod+h, the currently focused node in the tree (which would be a leaf in
+most cases, so a container having a window inside it) is replaced by a
+new container, with the old content as a subtree. If you then open some
+windows, they are new leafs which are put in that new container.
+
+So I think the solution here is to stop thinking about windows as
+entities in the container-tree, because they're really not. The
+container-tree is an abstraction used by i3 and leaf-nodes in this tree
+have a window-property attached to them.
+
+> (1) I'm sitting in front of an i3-screen with a focused window. I want
+> to know (preferably in a semi-algorithmic statement), if I press Mod +
+> s, exactly which windows will be stacked. In particular, does the
+> answer depend on the history of the focused window?
+
+I'm actually not very clear of this myself. It just magically does
+exactly what I want. I _think_ the container being stacked is always the
+parent of the currently focused container.
+
+So, if you just open a bunch of terminals on an empty workspace, focus
+one of them, your layout would be something like (I apologize for my
+crude ASCII-art):
+
+      Workspace
+    /  |  |  | \
+   C1 C2 C3 C4 C5
+   |  |  |  |  |
+   T1 T2 T3 T4 T5
+
+With C1?C5 being node-containers and T1?T5 are the five windows attached to
+these node-containers.
+Pressing Alt+s would (if you focus for example T1, or rather C1) stack
+all your terminals.
+
+If on the other hand you open some terminals, split one leaf and open
+some more, your tree will look like this:
+
+     Workspace
+   /   |      \
+  C1  C2      C3
+  |    |     /  \
+  T1  T2   C4   C5
+            |    |
+           T4   T5
+
+Now if you focus C4 or C5 and press Mod+s, you will get a workspace with
+two terminals visible (T1/T2) and one stacked container (C3), containing
+two terminals (T4/T5).
+
+If on the other hand you focus C1 ore C2 and press Mod+s, you will get a
+stacked workspace and can cycle between T1, T2 and (T4+T5).
+
+One small warning: I think near the top of the container-tree (at the
+workspace-level and above) there is some special-casing regarding this,
+because you cannot sensibly ?stack? workspaces. So if you try focusing
+an entire workspace (via focus parent) you just might get unexpected
+results.
+
+
+So, I hope I could make at least some things more clear. Maybe I
+confused you even more, in that case ?sorry? ;)
+
+Kind regards,
+
+Axel
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 198 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130715/d2adc769/attachment.sig>
+
+From guitarfish17 at gmail.com  Tue Jul 16 03:38:25 2013
+From: guitarfish17 at gmail.com (Harry Allenby)
+Date: Mon, 15 Jul 2013 18:38:25 -0700
+Subject: [i3] Containers in i3
+In-Reply-To: <1373870147-sup-4930@merovius.de>
+References: <CACxDzD+TAd6p_dfckxpQDBrTXV5rws=OnvpHhsJAPLdLN5DLxA@mail.gmail.com>
+ <1373870147-sup-4930@merovius.de>
+Message-ID: <CACxDzDLp8SyETqGbSG8C1ovCkRLvxEKZ8rC3Vgo7p1+b2yVdoA@mail.gmail.com>
+
+Thanks very much for your detailed answer! I will study it carefully and
+make some experiments and maybe come up with a tree-model I can understand
+better--something I love doing. I like i3 very much because:
+(1) trees are IMO a better starting point than the column models others use;
+(2) I hate having to go through the pre-designed layouts given to you by
+some others (e.g. awesome and xmonad) (in the Microsoft spirit of "We know
+what's best for you").
+So I'm glad i3 has surprises! (I think the tragedy of doing mathematics is
+that you start with something totally magical, and you put in a lot of
+thought and work to understand it; and if you succeed you destroy its magic
+(but not totally!).)
+
+
+On Mon, Jul 15, 2013 at 12:00 AM, Axel Wagner <mail at merovius.de> wrote:
+
+> Hi,
+>
+> Excerpts from Harry Allenby's message of 2013-07-15 07:50:39 +0200:
+> > I'm a very literal-minded mathematician
+>
+> Then let me, as a fellow mathematician try to explain at least part of
+> your questions ;)
+>
+> > (3) I just don't grasp the concept of a container in i3. It seems to
+> > me that the basic objects are windows, and that "container" is a
+> > derived, relational notion, namely: two windows may (or may not) be in
+> > the same container. [So, mathematically, I think of a container as an
+> > equivalence class of windows; but I don't know what the equivalence
+> > relation is.]
+>
+> Mathematically it is pretty simple. Containers are nodes in a tree,
+> whose root the X-root-window is. Children of this root level there are
+> individual outputs, children of the outputs are the workspaces, whose
+> children in turn are the container-trees containing the windows you see.
+>
+> A container can either be an inner node containing more containers (I
+> think this is called a ?split-container? in the documentation), or it
+> can be a leaf, containing a window.
+>
+> The nodes are not all equal, leafs contain windows and near the top of
+> the hierarchy there has to be special treatment (to use the more
+> user-friendly abstractions of outputs and workspaces), but mostly this
+> should be the way to think of it.
+>
+> > (2) If I press mod+v and make some windows, are they all in the same
+> > container? If I now press mod+h and make some more windows, are they
+> > in a different container?
+>
+> Yes and no. If by ?window? you think of ?a leaf node in the container
+> tree?, then yes.
+>
+> If you create some windows (for example pressing Mod+Enter to
+> open some terminals), then each one is put in an individual container.
+> These containers are then put in a big container. If you then press
+> mod+h, the currently focused node in the tree (which would be a leaf in
+> most cases, so a container having a window inside it) is replaced by a
+> new container, with the old content as a subtree. If you then open some
+> windows, they are new leafs which are put in that new container.
+>
+> So I think the solution here is to stop thinking about windows as
+> entities in the container-tree, because they're really not. The
+> container-tree is an abstraction used by i3 and leaf-nodes in this tree
+> have a window-property attached to them.
+>
+> > (1) I'm sitting in front of an i3-screen with a focused window. I want
+> > to know (preferably in a semi-algorithmic statement), if I press Mod +
+> > s, exactly which windows will be stacked. In particular, does the
+> > answer depend on the history of the focused window?
+>
+> I'm actually not very clear of this myself. It just magically does
+> exactly what I want. I _think_ the container being stacked is always the
+> parent of the currently focused container.
+>
+> So, if you just open a bunch of terminals on an empty workspace, focus
+> one of them, your layout would be something like (I apologize for my
+> crude ASCII-art):
+>
+>       Workspace
+>     /  |  |  | \
+>    C1 C2 C3 C4 C5
+>    |  |  |  |  |
+>    T1 T2 T3 T4 T5
+>
+> With C1?C5 being node-containers and T1?T5 are the five windows attached to
+> these node-containers.
+> Pressing Alt+s would (if you focus for example T1, or rather C1) stack
+> all your terminals.
+>
+> If on the other hand you open some terminals, split one leaf and open
+> some more, your tree will look like this:
+>
+>      Workspace
+>    /   |      \
+>   C1  C2      C3
+>   |    |     /  \
+>   T1  T2   C4   C5
+>             |    |
+>            T4   T5
+>
+> Now if you focus C4 or C5 and press Mod+s, you will get a workspace with
+> two terminals visible (T1/T2) and one stacked container (C3), containing
+> two terminals (T4/T5).
+>
+> If on the other hand you focus C1 ore C2 and press Mod+s, you will get a
+> stacked workspace and can cycle between T1, T2 and (T4+T5).
+>
+> One small warning: I think near the top of the container-tree (at the
+> workspace-level and above) there is some special-casing regarding this,
+> because you cannot sensibly ?stack? workspaces. So if you try focusing
+> an entire workspace (via focus parent) you just might get unexpected
+> results.
+>
+>
+> So, I hope I could make at least some things more clear. Maybe I
+> confused you even more, in that case ?sorry? ;)
+>
+> Kind regards,
+>
+> Axel
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130715/19a5facc/attachment.html>
+
+From torimus.dw at gmail.com  Thu Jul 18 13:33:52 2013
+From: torimus.dw at gmail.com (Torimus Wright)
+Date: Thu, 18 Jul 2013 13:33:52 +0200
+Subject: [i3] Ratio for split containers ?
+Message-ID: <CAGfU=hfE4U8Ao2_++D8msY6xdzvOFdtpTey97vTy2SM4HmL0MA@mail.gmail.com>
+
+Hi,
+
+after reading i3 docs I'm still cann't get how to change default i3 ratio
+for splitted containers.
+
+By default containers are split 50/50 of the available workspace and I have
+to invoke "resize" mode, adjust the size then leave back to "normal" mode.
+Bit cumbersome. I'd need to set default "golden" ratio of 67%/33% for split
+containers. Is this possible in i3 ?
+
+
+Regards
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130718/0b6020c0/attachment.html>
+
+From michael at i3wm.org  Thu Jul 18 17:45:27 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 18 Jul 2013 17:45:27 +0200
+Subject: [i3] Ratio for split containers ?
+In-Reply-To: <CAGfU=hfE4U8Ao2_++D8msY6xdzvOFdtpTey97vTy2SM4HmL0MA@mail.gmail.com>
+References: <CAGfU=hfE4U8Ao2_++D8msY6xdzvOFdtpTey97vTy2SM4HmL0MA@mail.gmail.com>
+Message-ID: <x638rboors.fsf@midna.lan>
+
+Hi Torimus,
+
+Torimus Wright <torimus.dw at gmail.com> writes:
+> By default containers are split 50/50 of the available workspace and I have
+> to invoke "resize" mode, adjust the size then leave back to "normal" mode.
+> Bit cumbersome. I'd need to set default "golden" ratio of 67%/33% for split
+> containers. Is this possible in i3 ?
+No. You could try implementing this as a little script, see
+http://i3wm.org/docs/ipc.html
+
+-- 
+Best regards,
+Michael
+
+From nashpapa at gmail.com  Tue Jul 23 04:36:21 2013
+From: nashpapa at gmail.com (avinash r)
+Date: Tue, 23 Jul 2013 08:06:21 +0530
+Subject: [i3] Making Hangouts to minimize
+Message-ID: <CAHCiste3S6f1Y2AtDNv1hgmUWEo6xPug603jgZTy2NGSUp3+Yw@mail.gmail.com>
+
+Hi,
+
+I'm using the hangout plugin for pidgin and similar. On a stacking WM, the
+plugin will be shown minimizable icons on the titilebar. in i3 the icons
+are not shown at all.
+
+Being a popup, the hangouts is always on top, so without the minimize
+button its actually impossible to work.
+
+I would like to know if someone is using the same and have a way around
+this.
+
+Thanks
+
+--
+Avinash R
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130723/f74b9b25/attachment.html>
+
+From layus.on at gmail.com  Tue Jul 23 08:15:45 2013
+From: layus.on at gmail.com (Layus)
+Date: Tue, 23 Jul 2013 08:15:45 +0200
+Subject: [i3] Making Hangouts to minimize
+In-Reply-To: <CAHCiste3S6f1Y2AtDNv1hgmUWEo6xPug603jgZTy2NGSUp3+Yw@mail.gmail.com>
+References: <CAHCiste3S6f1Y2AtDNv1hgmUWEo6xPug603jgZTy2NGSUp3+Yw@mail.gmail.com>
+Message-ID: <51EE1F91.8080008@gmail.com>
+
+Le 23/07/13 04:36, avinash r a ?crit :
+> Hi,
+>
+> I'm using the hangout plugin for pidgin and similar. On a stacking WM, 
+> the plugin will be shown minimizable icons on the titilebar. in i3 the 
+> icons are not shown at all.
+>
+> Being a popup, the hangouts is always on top, so without the minimize 
+> button its actually impossible to work.
+>
+> I would like to know if someone is using the same and have a way 
+> around this.
+>
+> Thanks
+>
+> --
+> Avinash R
+Hi,
+
+When I work with Skype, I set the messaging (= text exchange) window as 
+floating,
+and send it to the scratchpad. When new text arrives, there is a bell 
+ringing and
+I call the window back from the scratchpat to answer.
+
+The video window is always on top, but that is for the best.
+
+So I think the scratchpad might be a solution for you.
+
+Regards,
+Guillaume.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130723/5675d59e/attachment.html>
+
+From keks at cookiesoft.de  Sun Jul 28 15:06:05 2013
+From: keks at cookiesoft.de (Marcel Hellwig)
+Date: Sun, 28 Jul 2013 15:06:05 +0200
+Subject: [i3] Move container via $mod+shift+F12
+Message-ID: <51F5173D.7080200@cookiesoft.de>
+
+Hi everyone,
+
+I have a real strange behavoir.
+When I try to move a container to workspace 12 via shortcut below, it
+won't work. But going to workspace 12 (not moving a container) is fine.
+Is that a bug? Did I do something wrong?
+> bindsym $mod+F12 workspace 12
+works
+> bindsym $mod+Shift+F12 move container to workspace 12
+won't work
+
+
+
+
+
+
+Regards
+Marcel
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 901 bytes
+Desc: OpenPGP digital signature
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130728/23fa4f05/attachment.sig>
+
+From michael at i3wm.org  Sun Jul 28 16:53:22 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 28 Jul 2013 16:53:22 +0200
+Subject: [i3] Move container via $mod+shift+F12
+In-Reply-To: <51F5173D.7080200@cookiesoft.de>
+References: <51F5173D.7080200@cookiesoft.de>
+Message-ID: <x6hafeivml.fsf@midna.lan>
+
+Hi Marcel,
+
+Marcel Hellwig <keks at cookiesoft.de> writes:
+> When I try to move a container to workspace 12 via shortcut below, it
+> won't work. But going to workspace 12 (not moving a container) is fine.
+> Is that a bug? Did I do something wrong?
+>> bindsym $mod+F12 workspace 12
+> works
+>> bindsym $mod+Shift+F12 move container to workspace 12
+> won't work
+My guess is that either Shift+F12 does not generate a KeyPress event on
+your computer due to the firmware grabbing the key for something else or
+another application grabbing it.
+
+Checking the i3 log will reveal whether it detects a key press, see also
+http://i3wm.org/docs/debugging.html
+
+There are no known bugs with regards to key grabbing that would fit what
+you are seeing and in the past, _all_ of these issues fell into either
+of the categories I listed above.
+
+-- 
+Best regards,
+Michael
+
+From keks at cookiesoft.de  Sun Jul 28 18:01:23 2013
+From: keks at cookiesoft.de (Marcel Hellwig)
+Date: Sun, 28 Jul 2013 18:01:23 +0200
+Subject: [i3] Move container via $mod+shift+F12
+In-Reply-To: <x6hafeivml.fsf@midna.lan>
+References: <51F5173D.7080200@cookiesoft.de> <x6hafeivml.fsf@midna.lan>
+Message-ID: <51F54053.2050306@cookiesoft.de>
+
+On 28.07.2013 16:53, Michael Stapelberg wrote:
+> Hi Marcel,
+> My guess is that either Shift+F12 does not generate a KeyPress event on
+> your computer due to the firmware grabbing the key for something else or
+> another application grabbing it.
+You may be right. Xev does log an key event for Shift+F12, Meta+F12, but
+not for Meta+Shift+F12. Any chance to find out what does block the event?
+
+Regards
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 901 bytes
+Desc: OpenPGP digital signature
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130728/1813ef7a/attachment.sig>
+

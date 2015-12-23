@@ -1,0 +1,85 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH 1/2] Fix 'back and forth' in 'workspace number' for	named ws
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%201/2%5D%20Fix%20%27back%20and%20forth%27%20in%20%27workspace%20number%27%20for%0A%09named%20ws&In-Reply-To=%3C1345650563-25754-2-git-send-email-sebasti%40nullrich.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000874.html">
+   <LINK REL="Next"  HREF="000876.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH 1/2] Fix 'back and forth' in 'workspace number' for	named ws</H1>
+    <B>Sebastian Ullrich</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%201/2%5D%20Fix%20%27back%20and%20forth%27%20in%20%27workspace%20number%27%20for%0A%09named%20ws&In-Reply-To=%3C1345650563-25754-2-git-send-email-sebasti%40nullrich.de%3E"
+       TITLE="[i3] [PATCH 1/2] Fix 'back and forth' in 'workspace number' for	named ws">sebasti at nullrich.de
+       </A><BR>
+    <I>Wed Aug 22 17:49:22 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000874.html">[i3] [PATCH v2 0/2] Next try
+</A></li>
+        <LI>Next message: <A HREF="000876.html">[i3] [PATCH 2/2] Remove dead code in cmd_workspace_number
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#875">[ date ]</a>
+              <a href="thread.html#875">[ thread ]</a>
+              <a href="subject.html#875">[ subject ]</a>
+              <a href="author.html#875">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>---
+ src/commands.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/commands.c b/src/commands.c
+index 8875b8d..85d8cdf 100644
+--- a/src/commands.c
++++ b/src/commands.c
+@@ -846,7 +846,7 @@ void cmd_workspace_number(I3_CMD, char *which) {
+         cmd_output-&gt;needs_tree_render = true;
+         return;
+     }
+-    if (maybe_back_and_forth(cmd_output, which))
++    if (maybe_back_and_forth(cmd_output, workspace-&gt;name))
+         return;
+     workspace_show(workspace);
+ 
+-- 
+1.7.11.5
+
+</PRE>
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000874.html">[i3] [PATCH v2 0/2] Next try
+</A></li>
+	<LI>Next message: <A HREF="000876.html">[i3] [PATCH 2/2] Remove dead code in cmd_workspace_number
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#875">[ date ]</a>
+              <a href="thread.html#875">[ thread ]</a>
+              <a href="subject.html#875">[ subject ]</a>
+              <a href="author.html#875">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

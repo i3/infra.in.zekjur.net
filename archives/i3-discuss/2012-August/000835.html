@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Get list of workspaces
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Get%20list%20of%20workspaces&In-Reply-To=%3C20120801210447.30365.47608%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000836.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Get list of workspaces</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Get%20list%20of%20workspaces&In-Reply-To=%3C20120801210447.30365.47608%40midna.zekjur.net%3E"
+       TITLE="[i3] Get list of workspaces">michael at i3wm.org
+       </A><BR>
+    <I>Wed Aug  1 23:04:47 CEST 2012</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000836.html">[i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#835">[ date ]</a>
+              <a href="thread.html#835">[ thread ]</a>
+              <a href="subject.html#835">[ subject ]</a>
+              <a href="author.html#835">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Anders,
+
+Quoting Anders Bo Rasmussen (2012-07-31 21:32:50)
+&gt;<i> Hi Michael. Thanks. That made it work.
+</I>I checked that again, and I think you should not use this hack. Instead,
+use this:
+
+#!/usr/bin/env perl
+# vim:ts=4:sw=4:expandtab
+
+use strict;
+use warnings;
+use Data::Dumper;
+use AnyEvent;
+use AnyEvent::I3;
+use v5.10;
+
+my $i3 = i3();
+
+$i3-&gt;connect-&gt;recv or die &quot;Error connecting to i3&quot;;
+
+$i3-&gt;subscribe({
+    workspace =&gt; sub {
+        $i3-&gt;get_tree-&gt;cb(sub {
+            my ($tree) = @_;
+            say &quot;tree: &quot; . Dumper($tree);
+        });
+    }
+})-&gt;recv-&gt;{success} or die &quot;Error subscribing to events&quot;;
+
+AE::cv-&gt;recv
+
+(Note the asynchronous callback when calling get_tree)
+
+&gt;<i> &gt; (I have noticed a few strange things while hacking up this example, so there
+</I>&gt;<i> &gt; might be a new release of AnyEvent::I3 soon ;-)).
+</I>&gt;<i> If you update it I think it would be good with the call to EV::loop in
+</I>&gt;<i> the example for subscribe().
+</I>Well, AnyEvent code ideally shouldn&#8217;t be tied to any specific
+implementation (EV in this case), so it&#8217;s not a good idea to advertise
+code like that.
+
+As a follow-up: The &quot;strange things&quot; were:
+
+1) -&gt;subscribe not automatically establishing a connection to i3. After
+   re-reading the docs I noticed that there is the special _error
+   callback which lets you deal with reconnecting. Therefore, it kinda
+   makes sense to not interfere with connecting to i3 in this method.
+   Instead, we might introduce a &quot;sugar&quot; method (like the others) for
+   events some day.
+
+2) I couldn&#8217;t use $i3-&gt;get_tree-&gt;recv(), but had to use
+   i3-&gt;get_tree-&gt;recv() (new connection instead of the existing one)
+   when using the EV::loop hack. When not using it, using the existing
+   connection is just fine.
+
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000836.html">[i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#835">[ date ]</a>
+              <a href="thread.html#835">[ thread ]</a>
+              <a href="subject.html#835">[ subject ]</a>
+              <a href="author.html#835">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

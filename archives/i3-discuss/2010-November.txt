@@ -1,0 +1,544 @@
+From listmail at b79.net  Sun Nov 14 20:29:50 2010
+From: listmail at b79.net (John Magolske)
+Date: Sun, 14 Nov 2010 11:29:50 -0800
+Subject: [i3] i3status questions
+Message-ID: <20101114192950.GA325@s70206.gridserver.com>
+
+Hi,
+
+I just started using i3 and am liking it a lot. I've tried ion, wmii,
+icewm, and most recently fluxbox. i3 brings me back to the goodness of
+a tiling wm...yay! I'm on Debian Sid, installing using aptitude
+(i3 3.e-bf1, i3status 2.2, dzen-0.8.5), and have a few questions about
+the status line. What's suggested in /usr/share/doc/i3-wm/wsbar.html :
+
+  i3status | i3-wsbar -c "dzen2 -x %x -dock"
+
+doesn't work, due to not having the latest version of dzen2 I believe.
+I'd rather wait till I can aptitude install the required version than
+install it from source...so I think that leaves me with the option of
+manually positioning it using the -x and -y options as shown in the
+script below. The "-tw 700 -x 640 -y 750" places the status line in
+the lower right-hand corner of my 1024 x 768 display, leaving room for
+the default workspace indicators in the lower left-hand corner:
+
+  #!/bin/sh
+  if pidof i3status > /dev/null
+  then
+      kill `pidof i3status` &> /dev/null
+  else
+      i3status | dzen2 -tw 700 -x 640 -y 750 -fg white \
+      -fn '-misc-fixed-medium-r-normal--13-120-75-75-C-70-iso8859-1' &
+  fi
+
+This script toggles the status line on & off. I called it i3stat and
+bound it to Mod1+s in ~/.i3/config like so:
+
+  # Toggle the status line on & off (Mod1+s):
+  bind Mod1+39 exec $HOME/bin/i3stat
+
+Question about i3status -- the man page mentions the color_good,
+color_degraded, color_bad and color_separator directives, but when I
+try something like color_good = #00FF00 in ~/.i3status.conf I get:
+
+  .i3status.conf:5: no such option 'color_separator'
+
+Not a huge deal (mostly I'm concerned about resource-efficiency,
+sounds like i3status is well-designed in this regard), but I'd like
+to tweak the colors if possible.
+
+Thanks for any suggestions,
+
+John
+
+-- 
+John Magolske
+http://B79.net/contact
+
+
+From fernandotcl at gmail.com  Sun Nov 14 22:28:01 2010
+From: fernandotcl at gmail.com (Fernando Lemos)
+Date: Sun, 14 Nov 2010 19:28:01 -0200
+Subject: [i3] i3status questions
+In-Reply-To: <20101114192950.GA325@s70206.gridserver.com>
+References: <20101114192950.GA325@s70206.gridserver.com>
+Message-ID: <AANLkTik1g5FR_h4=RpEta_qwJ8sAdG=svssKm6MhD-Ti@mail.gmail.com>
+
+Hi,
+
+On Sun, Nov 14, 2010 at 5:29 PM, John Magolske <listmail at b79.net> wrote:
+> doesn't work, due to not having the latest version of dzen2 I believe.
+
+Yep, for dzen2 -dock to work you need to compile dzen2 from the SVN
+repositories, the released versions don't support that option yet.
+
+> Question about i3status -- the man page mentions the color_good,
+> color_degraded, color_bad and color_separator directives, but when I
+> try something like color_good = #00FF00 in ~/.i3status.conf I get:
+>
+> ?.i3status.conf:5: no such option 'color_separator'
+
+Can you post your complete .i3status.conf? Note that color_* need to
+be specified in the "general" section.
+
+Regards,
+
+
+From listmail at b79.net  Sun Nov 14 22:48:25 2010
+From: listmail at b79.net (John Magolske)
+Date: Sun, 14 Nov 2010 13:48:25 -0800
+Subject: [i3] i3status questions
+In-Reply-To: <AANLkTik1g5FR_h4=RpEta_qwJ8sAdG=svssKm6MhD-Ti@mail.gmail.com>
+References: <20101114192950.GA325@s70206.gridserver.com>
+	<AANLkTik1g5FR_h4=RpEta_qwJ8sAdG=svssKm6MhD-Ti@mail.gmail.com>
+Message-ID: <20101114214824.GA30003@s70206.gridserver.com>
+
+* Fernando Lemos <fernandotcl at gmail.com> [101114 13:35]:
+> > Question about i3status -- the man page mentions the color_good,
+> > color_degraded, color_bad and color_separator directives, but when I
+> > try something like color_good = #00FF00 in ~/.i3status.conf I get:
+> >
+> > ?.i3status.conf:5: no such option 'color_separator'
+> 
+> Can you post your complete .i3status.conf? Note that color_* need to
+> be specified in the "general" section.
+
+Here it is, with a "color_good: #00FF00" tossed in for a test, which
+gets a "no such option 'color_good:'" output:
+
+
+  general {
+          colors = true
+          color_good: #00FF00
+      interval = 5
+  }
+  
+  order  = "cpu_temperature 0"
+  order += "load"
+  order += "battery 0"
+  order += "time"
+  
+  wireless wlan0 {
+          format_up = "W: (%quality at %essid) %ip"
+          format_down = "W: down"
+  }
+  
+  ethernet eth0 {
+          # if you use %speed, i3status requires root privileges
+          format_up = "E: %ip (%speed)"
+      format_down = "E: down"
+  }
+  
+  battery 0 {
+          format = "%status %percentage"
+  }
+  
+  run_watch DHCP {
+          pidfile = "/var/run/dhclient*.pid"
+  }
+  
+  time {
+      format = " %a %e %b`%y  %l:%M%P"
+  }
+  
+  load {
+      format = "%1min "
+  }
+  
+  cpu_temperature 0 {
+      format = "%degrees?C"
+  }
+  
+  disk "/" {
+      format = "%free"
+  }
+
+
+Regards,
+
+John
+
+-- 
+John Magolske
+http://B79.net/contact
+
+
+From michael+i3 at stapelberg.de  Sun Nov 14 22:51:07 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 14 Nov 2010 22:51:07 +0100
+Subject: [i3] i3status questions
+In-Reply-To: <20101114214824.GA30003@s70206.gridserver.com>
+References: <20101114192950.GA325@s70206.gridserver.com>
+	<AANLkTik1g5FR_h4=RpEta_qwJ8sAdG=svssKm6MhD-Ti@mail.gmail.com>
+	<20101114214824.GA30003@s70206.gridserver.com>
+Message-ID: <1289771437-sup-9125@midna.zekjur.net>
+
+Hi John,
+
+Excerpts from John Magolske's message of 2010-11-14 22:48:25 +0100:
+> Here it is, with a "color_good: #00FF00" tossed in for a test, which
+> gets a "no such option 'color_good:'" output:
+> 
+> 
+>   general {
+>           colors = true
+>           color_good: #00FF00
+Try color_good = #00FF00 instead of color_good: #00FF00.
+
+Best regards,
+Michael
+
+
+From listmail at b79.net  Mon Nov 15 00:54:56 2010
+From: listmail at b79.net (John Magolske)
+Date: Sun, 14 Nov 2010 15:54:56 -0800
+Subject: [i3] i3status questions
+In-Reply-To: <1289771437-sup-9125@midna.zekjur.net>
+References: <20101114192950.GA325@s70206.gridserver.com>
+	<AANLkTik1g5FR_h4=RpEta_qwJ8sAdG=svssKm6MhD-Ti@mail.gmail.com>
+	<20101114214824.GA30003@s70206.gridserver.com>
+	<1289771437-sup-9125@midna.zekjur.net>
+Message-ID: <20101114235455.GA899@s70206.gridserver.com>
+
+* Michael Stapelberg <michael+i3 at stapelberg.de> [101114 15:49]:
+> > Here it is, with a "color_good: #00FF00" tossed in for a test,
+> > which gets a "no such option 'color_good:'" output:
+> > 
+> > 
+> >   general {
+> >           colors = true
+> >           color_good: #00FF00
+> Try color_good = #00FF00 instead of color_good: #00FF00.
+
+I tried:
+
+  general {
+          color_good = #00FF00
+          colors = true
+      interval = 5
+  }
+  
+and got
+
+  unexpected token '='
+
+Regards,
+
+John
+
+-- 
+John Magolske
+http://B79.net/contact
+
+
+From fernandotcl at gmail.com  Mon Nov 15 00:55:36 2010
+From: fernandotcl at gmail.com (Fernando Lemos)
+Date: Sun, 14 Nov 2010 21:55:36 -0200
+Subject: [i3] i3status questions
+In-Reply-To: <20101114235455.GA899@s70206.gridserver.com>
+References: <20101114192950.GA325@s70206.gridserver.com>
+	<AANLkTik1g5FR_h4=RpEta_qwJ8sAdG=svssKm6MhD-Ti@mail.gmail.com>
+	<20101114214824.GA30003@s70206.gridserver.com>
+	<1289771437-sup-9125@midna.zekjur.net>
+	<20101114235455.GA899@s70206.gridserver.com>
+Message-ID: <AANLkTi=00YRuYkELGyJJVJfJYFJT_MH2KW4_e4i_zHnk@mail.gmail.com>
+
+Hi John,
+
+On Sun, Nov 14, 2010 at 9:54 PM, John Magolske <listmail at b79.net> wrote:
+> I tried:
+>
+> ?general {
+> ? ? ? ? ?color_good = #00FF00
+> ? ? ? ? ?colors = true
+> ? ? ?interval = 5
+> ?}
+>
+> and got
+>
+> ?unexpected token '='
+
+color_good = "#00FF00"
+
+(use quotes around strings)
+
+Regards,
+
+
+From listmail at b79.net  Mon Nov 15 01:30:19 2010
+From: listmail at b79.net (John Magolske)
+Date: Sun, 14 Nov 2010 16:30:19 -0800
+Subject: [i3] i3status questions
+In-Reply-To: <AANLkTi=00YRuYkELGyJJVJfJYFJT_MH2KW4_e4i_zHnk@mail.gmail.com>
+References: <20101114192950.GA325@s70206.gridserver.com>
+	<AANLkTik1g5FR_h4=RpEta_qwJ8sAdG=svssKm6MhD-Ti@mail.gmail.com>
+	<20101114214824.GA30003@s70206.gridserver.com>
+	<1289771437-sup-9125@midna.zekjur.net>
+	<20101114235455.GA899@s70206.gridserver.com>
+	<AANLkTi=00YRuYkELGyJJVJfJYFJT_MH2KW4_e4i_zHnk@mail.gmail.com>
+Message-ID: <20101115003019.GB899@s70206.gridserver.com>
+
+* Fernando Lemos <fernandotcl at gmail.com> [101114 16:03]:
+> On Sun, Nov 14, 2010 at 9:54 PM, John Magolske <listmail at b79.net> wrote:
+> > ?general {
+> > ? ? ? ? ?color_good = #00FF00
+> > ? ? ? ? ?colors = true
+> > ? ? ?interval = 5
+> > ?}
+> >
+> > and got
+> >
+> > ?unexpected token '='
+> 
+> color_good = "#00FF00"
+> 
+> (use quotes around strings)
+
+Yes, that does it, thanks!
+
+One more question, i3status(1) says:
+
+  You can also specify the colors that will be used to display
+  "good", "degraded" or "bad" values using the color_good,
+  color_degraded or color_bad directives ...
+
+What determines what a "good", "degraded" or "bad" value is? Assigning
+various values to color_good color_degraded & color_bad doesn't seem
+to have any effect on the output. I tried:
+
+  general {
+          output_format = "dzen2"
+          colors = true
+          color_good = "#00FF00"
+          color_degraded = "#0000FF"
+          color_bad = "#FF0000"
+          color_separator = "#b096b7"
+      interval = 5
+  }
+
+The color separator looks different, but all the text just
+shows up as white. I also changed the line in my script from:
+
+  i3status | dzen2 -y 750 -tw 700 -x 640 -fg white \
+  -fn '-misc-fixed-medium-r-normal--13-120-75-75-C-70-iso8859-1' &
+
+
+to
+
+  i3status | dzen2 -y 750 -tw 700 -x 640 \
+  -fn '-misc-fixed-medium-r-normal--13-120-75-75-C-70-iso8859-1' &
+
+But that didn't make any difference.
+
+Regards,
+
+John
+
+-- 
+John Magolske
+http://B79.net/contact
+
+
+From fernandotcl at gmail.com  Mon Nov 15 01:37:17 2010
+From: fernandotcl at gmail.com (Fernando Lemos)
+Date: Sun, 14 Nov 2010 22:37:17 -0200
+Subject: [i3] i3status questions
+In-Reply-To: <20101115003019.GB899@s70206.gridserver.com>
+References: <20101114192950.GA325@s70206.gridserver.com>
+	<AANLkTik1g5FR_h4=RpEta_qwJ8sAdG=svssKm6MhD-Ti@mail.gmail.com>
+	<20101114214824.GA30003@s70206.gridserver.com>
+	<1289771437-sup-9125@midna.zekjur.net>
+	<20101114235455.GA899@s70206.gridserver.com>
+	<AANLkTi=00YRuYkELGyJJVJfJYFJT_MH2KW4_e4i_zHnk@mail.gmail.com>
+	<20101115003019.GB899@s70206.gridserver.com>
+Message-ID: <AANLkTikdSrBo6KahsZwORiTNr0CkXMjGVj5DzfPEpfOv@mail.gmail.com>
+
+Hi, John
+
+On Sun, Nov 14, 2010 at 10:30 PM, John Magolske <listmail at b79.net> wrote:
+> What determines what a "good", "degraded" or "bad" value is? Assigning
+> various values to color_good color_degraded & color_bad doesn't seem
+> to have any effect on the output. I tried:
+
+The interpretation of "good", "degraded" or "bad" is entirely up to
+the modules. For instance, for the ethernet module, the info is
+displayed in color_good if the link is up or in color_bad otherwise.
+Same thing about the wireless module, except that it also displays in
+color_degraded if the link is up but the signal quality is "bad" (the
+kernel driver specifies what can be considered "bad" in this case).
+
+Some modules don't have support for using those colors, though. That's
+either because it doesn't make any sense to support them (for the time
+module, for example) or because nobody cared enough to implement color
+support for it yet (patches are welcome :-)).
+
+Regards,
+
+
+From ciprian.craciun at gmail.com  Tue Nov 23 20:28:59 2010
+From: ciprian.craciun at gmail.com (Ciprian Dorin, Craciun)
+Date: Tue, 23 Nov 2010 21:28:59 +0200
+Subject: [i3] `_NET_ACTIVE_WINDOW` feature broken?
+Message-ID: <AANLkTi=zcH3aY4+yW-17a_v21rcjsz_ez0uporzn_r_V@mail.gmail.com>
+
+    Hello!
+
+    Today I've tried using `xdotool` by querying the current window,
+and got the following error:
+~~~~
+xdotool getactivewindow
+~~~~
+Your windowmanager claims not to support _NET_ACTIVE_WINDOW, so the
+attempt to query the active window aborted.
+xdo_get_active_window reported an error
+~~~~
+
+    But looking at the previous `i3` version release notes, it states
+that the option is implemented:
+~~~~
+        ( http://i3.zekjur.net/downloads/RELEASE-NOTES-3.e.txt )
+ * ewmh: correctly set _NET_ACTIVE_WINDOW
+~~~~
+
+    (I'm running the latest stable version, as `i3 --version` yields:
+`i3 version 3.e-bf1 (2010-06-09) ...`)
+
+    Is the feature indeed broken in `i3` or is it in `xdotool`.
+
+    Thanks,
+    Ciprian.
+
+    P.S.: Just out of curiosity when is the next release of `i3`? :)
+
+
+From dlampridis at gmail.com  Wed Nov 24 14:29:51 2010
+From: dlampridis at gmail.com (Dimitris Lampridis)
+Date: Wed, 24 Nov 2010 14:29:51 +0100
+Subject: [i3] Moving complete workspaces (again)
+Message-ID: <201011241429.52012.dlampridis@gmail.com>
+
+Hi everybody,
+
+I just starting using i3 and I'm loving it. I owe a huge "thank you" to 
+everybody involved!
+
+I found out a similar discussion dating back in May 2010. One user asked 
+whether it would be possible to move complete workspaces between monitors.
+
+I would like to make it more generic by offering the possibility to move 
+complete workspaces to other workspaces (be it on the same or a different 
+monitor).
+
+So, if I have two windows on workspace X, using a particular arrangement, I 
+would like to be able to move both of them to workspace Y, while maintaining 
+the arrangement (otherwise it is already possible to move windows one by one 
+and rearrange them myself).
+
+I think it would be a great feature, one that I miss almost every day  when 
+using i3.
+
+I'm puzzled though on what should be the proper behavior if the destination 
+workspace is not empty. Perhaps a "swap workspaces" would make more sense? 
+This could also double up as a "rename workspace" if the target workspace does 
+not exist. Still requires some thinking...
+
+Anyway, what I really wanted to ask is whether anybody is already working on 
+this concept. If not, I would be more than willing to give it a try.
+
+Also, anybody else thinks this would be useful?
+
+Thanks again for this great WM,
+Dimitris
+
+
+From andi at geekosphere.org  Wed Nov 24 14:33:20 2010
+From: andi at geekosphere.org (andreas)
+Date: Wed, 24 Nov 2010 14:33:20 +0100
+Subject: [i3] Moving complete workspaces (again)
+In-Reply-To: <201011241429.52012.dlampridis@gmail.com>
+References: <201011241429.52012.dlampridis@gmail.com>
+Message-ID: <4CED1420.6030005@geekosphere.org>
+
+On 11/24/2010 02:29 PM, Dimitris Lampridis wrote:
+> I would like to make it more generic by offering the possibility to move 
+> complete workspaces to other workspaces (be it on the same or a different 
+> monitor).
+> [...]
+> Also, anybody else thinks this would be useful?
+
+I would love this feature :)
+
+
+From michael+i3 at stapelberg.de  Wed Nov 24 15:03:37 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Wed, 24 Nov 2010 15:03:37 +0100
+Subject: [i3] Moving complete workspaces (again)
+In-Reply-To: <201011241429.52012.dlampridis@gmail.com>
+References: <201011241429.52012.dlampridis@gmail.com>
+Message-ID: <1290607367-sup-557@midna.zekjur.net>
+
+Hi Dimitris,
+
+Excerpts from Dimitris Lampridis's message of 2010-11-24 14:29:51 +0100:
+> Anyway, what I really wanted to ask is whether anybody is already working on 
+> this concept. If not, I would be more than willing to give it a try.
+This is planned for the tree branch already.
+
+Best regards,
+Michael
+
+
+From dlampridis at gmail.com  Wed Nov 24 15:15:30 2010
+From: dlampridis at gmail.com (Dimitris Lampridis)
+Date: Wed, 24 Nov 2010 15:15:30 +0100
+Subject: [i3] Moving complete workspaces (again)
+In-Reply-To: <1290607367-sup-557@midna.zekjur.net>
+References: <201011241429.52012.dlampridis@gmail.com>
+	<1290607367-sup-557@midna.zekjur.net>
+Message-ID: <201011241515.30199.dlampridis@gmail.com>
+
+On Wednesday 24 November 2010 15:03:37 Michael Stapelberg wrote:
+> Hi Dimitris,
+> 
+> Excerpts from Dimitris Lampridis's message of 2010-11-24 14:29:51 +0100:
+> > Anyway, what I really wanted to ask is whether anybody is already working
+> > on this concept. If not, I would be more than willing to give it a try.
+> 
+> This is planned for the tree branch already.
+
+Great! Thanks for the info :)
+
+By the way, is there somewhere a TODO list or something, with things that need 
+to be implemented?
+
+D.
+
+
+From michael+i3 at stapelberg.de  Wed Nov 24 19:16:14 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Wed, 24 Nov 2010 19:16:14 +0100
+Subject: [i3] Moving complete workspaces (again)
+In-Reply-To: <201011241515.30199.dlampridis@gmail.com>
+References: <201011241429.52012.dlampridis@gmail.com>
+	<1290607367-sup-557@midna.zekjur.net>
+	<201011241515.30199.dlampridis@gmail.com>
+Message-ID: <1290622433-sup-4332@midna.zekjur.net>
+
+Hi Dimitris,
+
+Excerpts from Dimitris Lampridis's message of 2010-11-24 15:15:30 +0100:
+> By the way, is there somewhere a TODO list or something, with things that need 
+> to be implemented?
+For the tree branch, we use a collaboration software called Teambox. It?s not
+public for various reasons. If you are serious about putting some time and work
+into i3 (tree branch), join us this weekend on our next hacking session. Just
+come to the IRC channel and introduce yourself.
+
+Best regards,
+Michael
+
+BTW: As soon as there are the first (preview) releases, the public bugtracker
+will be used to track bugs etc. We don?t want to hide information, we just want
+to get to the release effectively.
+
+

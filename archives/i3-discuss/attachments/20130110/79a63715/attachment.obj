@@ -1,0 +1,25 @@
+From 6c9fab2d103ab3a410765b1bf5c2f889755328ff Mon Sep 17 00:00:00 2001
+From: David Coppa <dcoppa@gmail.com>
+Date: Thu, 10 Jan 2013 09:38:49 +0100
+Subject: [PATCH] Minor fix for libi3/ipc_send_message.c
+
+---
+ libi3/ipc_send_message.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libi3/ipc_send_message.c b/libi3/ipc_send_message.c
+index 88d87a6..ae80245 100644
+--- a/libi3/ipc_send_message.c
++++ b/libi3/ipc_send_message.c
+@@ -30,7 +30,7 @@ int ipc_send_message(int sockfd, uint32_t message_size,
+     char msg[buffer_size];
+     char *walk = msg;
+ 
+-    strncpy(walk, I3_IPC_MAGIC, buffer_size - 1);
++    strncpy(walk, I3_IPC_MAGIC, strlen(I3_IPC_MAGIC));
+     walk += strlen(I3_IPC_MAGIC);
+     memcpy(walk, &message_size, sizeof(uint32_t));
+     walk += sizeof(uint32_t);
+-- 
+1.8.0.3
+

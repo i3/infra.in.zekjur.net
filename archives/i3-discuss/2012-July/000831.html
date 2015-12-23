@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Help: Code Review Software
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Help%3A%20Code%20Review%20Software&In-Reply-To=%3C20120730181922.15855.16172%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000829.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Help: Code Review Software</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Help%3A%20Code%20Review%20Software&In-Reply-To=%3C20120730181922.15855.16172%40midna.zekjur.net%3E"
+       TITLE="[i3] Help: Code Review Software">michael at i3wm.org
+       </A><BR>
+    <I>Mon Jul 30 20:19:22 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000829.html">[i3] Help: Code Review Software
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#831">[ date ]</a>
+              <a href="thread.html#831">[ thread ]</a>
+              <a href="subject.html#831">[ subject ]</a>
+              <a href="author.html#831">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Quoting ablepharus (2012-07-26 14:25:55)
+&gt;<i> I would really like to write the desired Software and I would use django
+</I>&gt;<i> for it. I would be ready for doing this alone, but of course I'd be
+</I>&gt;<i> happy about some help. I have planned on writing such a service anyway,
+</I>&gt;<i> without a target. I agree with the mentioned needs and restrictions.
+</I>That&#8217;s nice to hear. I&#8217;d be happy to betatest anything you come up with.
+
+By the way, I evaluated barkeep briefly. Here are my observations:
+
+ &#8226; Deployment is horrible, as with most ruby projects :-/
+ &#8226; Documentation is really sparse, and the existing documentation
+   contained two errors (I opened an issue for one and fixed the other
+   one right away).
+ &#8226; The only distinction is between admin/normal users, that is, you
+   cannot specify who&#8217;s able to comment or approve commits (not that
+   approving has any effect, but&#8230;).
+ &#8226; Authentification is possible only via OAuth with a horrible user
+   experience. You are directly redirected to the configured OAuth
+   provider (e.g. google) without any message. This is the biggest
+   problem for my intended use. We really need to be able to create user
+   accounts automatically to hand them out after somebody uploads a
+   patch.
+ &#8226; barkeep only supports a post-commit workflow. This means I&#8217;d have to
+   build a site (and/or script) to upload patches and then have them be
+   committed to a new branch automatically. No big deal, but see the
+   points above &#8212; after all, it&#8217;s not really worth it I think.
+
+I have to stress that barkeep really does it right in the user
+interface. A list of commits, a nice diff and comments is really all I
+want to have. I just think adjusting it is not that easy for now.
+
+Best regards,
+Michael
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000829.html">[i3] Help: Code Review Software
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#831">[ date ]</a>
+              <a href="thread.html#831">[ thread ]</a>
+              <a href="subject.html#831">[ subject ]</a>
+              <a href="author.html#831">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

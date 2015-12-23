@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Switching workspaces when mouse touch the border of it
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Switching%20workspaces%20when%20mouse%20touch%20the%20border%20of%20it&In-Reply-To=%3C1316865232-sup-2750%40stapelberg.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000294.html">
+   <LINK REL="Next"  HREF="000296.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Switching workspaces when mouse touch the border of it</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Switching%20workspaces%20when%20mouse%20touch%20the%20border%20of%20it&In-Reply-To=%3C1316865232-sup-2750%40stapelberg.de%3E"
+       TITLE="[i3] Switching workspaces when mouse touch the border of it">michael+i3 at stapelberg.de
+       </A><BR>
+    <I>Sat Sep 24 14:00:26 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000294.html">[i3] Switching workspaces when mouse touch the border of it
+</A></li>
+        <LI>Next message: <A HREF="000296.html">[i3] Switching workspaces when mouse touch the border of it
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#295">[ date ]</a>
+              <a href="thread.html#295">[ thread ]</a>
+              <a href="subject.html#295">[ subject ]</a>
+              <a href="author.html#295">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Bernhard,
+
+Thanks for your willingness to implement a new feature.
+
+However, I am not convinced that this is actually a good feature, for the
+following reasons:
+
+1) i3 is a tiling window manager, not a floating window manager. Therefore,
+   actually seeing the desktop should be a rare occasion, such as when
+   rebooting your computer. In general, windows will always fill your screen.
+
+   As we only get PointerMotion events (== the mouse pointer moved) when the
+   pointer is above one of our windows, this implies that the feature would
+   only work in the rare case of not having any windows. Then again, workspaces
+   don&#8217;t exist when there are no windows on them, so that would not make sense
+   at all.
+
+   To actually get PointerMotion events all the time, you would need to grab
+   the pointer, then decide if you want to handle the event or pass it to the
+   client. This is not very performant and sounds like it might introduce new,
+   subtle bugs (based on my experience).
+
+2) Not so much a technical reason, but more a philosophical one: One of i3&#8217;s
+   goals is to provide an efficient user interface for power users. While using
+   the mouse pointer is faster for user interfaces / programs with which you
+   are not familiar (I can lookup the study if you want to), it is certainly
+   not faster as soon as keyboard shortcuts end up in your muscle memory.
+   Therefore, the primary input device when using i3 should be the keyboard. 
+
+In conclusion, I don&#8217;t think the feature you propose could be easily
+implemented nor would it make a lot of sense. An alternative which comes to my
+mind is a shortcut that works similar to the floating_modifier: Pressing some
+modifier and using the scroll wheel to change workspaces. For this, I would
+want to have a more generic &quot;what should happen when I press mouse button X in
+situation Y&quot; configuration.
+
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000294.html">[i3] Switching workspaces when mouse touch the border of it
+</A></li>
+	<LI>Next message: <A HREF="000296.html">[i3] Switching workspaces when mouse touch the border of it
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#295">[ date ]</a>
+              <a href="thread.html#295">[ thread ]</a>
+              <a href="subject.html#295">[ subject ]</a>
+              <a href="author.html#295">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

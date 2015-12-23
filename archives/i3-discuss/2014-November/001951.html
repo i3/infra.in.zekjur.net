@@ -1,0 +1,124 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3bar multi-monitor setup
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3bar%20multi-monitor%20setup&In-Reply-To=%3CCANnVG6nwPbJ%2BtbtgC8wEmvFXFz0HTAN5OnibzfM5o%3DwqBM8uzw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001950.html">
+   <LINK REL="Next"  HREF="001952.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3bar multi-monitor setup</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3bar%20multi-monitor%20setup&In-Reply-To=%3CCANnVG6nwPbJ%2BtbtgC8wEmvFXFz0HTAN5OnibzfM5o%3DwqBM8uzw%40mail.gmail.com%3E"
+       TITLE="[i3] i3bar multi-monitor setup">michael at stapelberg.ch
+       </A><BR>
+    <I>Sat Nov 22 12:23:29 CET 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001950.html">[i3] i3bar multi-monitor setup
+</A></li>
+        <LI>Next message: <A HREF="001952.html">[i3] i3bar multi-monitor setup
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1951">[ date ]</a>
+              <a href="thread.html#1951">[ thread ]</a>
+              <a href="subject.html#1951">[ subject ]</a>
+              <a href="author.html#1951">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, Nov 21, 2014 at 7:10 PM, Marco Hunsicker &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3 at hunsicker.de</A>&gt; wrote:
+&gt;<i> Hello Michael,
+</I>&gt;<i>
+</I>&gt;<i> thanks for your quick action.
+</I>&gt;<i>
+</I>&gt;&gt;&gt;<i> I'm running a somewhat unusual setup with 3 monitors in pivot mode. Total
+</I>&gt;&gt;&gt;<i> screen size is 3600x1920, but in order to be able to stretch my IDE
+</I>&gt;&gt;&gt;<i> across 2
+</I>&gt;&gt;&gt;<i> monitors I'm using the fake-outputs option to form just 2 workspaces:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>      fake-outputs 1200x1920+0+0,2400x1920+1200+0
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> This is the problem. There is a reason this option is not documented:
+</I>&gt;&gt;<i> it’s not supported and not intended to be used at all. It exists for
+</I>&gt;&gt;<i> our testsuite only.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Remove the fake-outputs option and the i3bar configuration will work.
+</I>
+Thinking about it again, perhaps what you are looking for are the
+output names “fake-0”, “fake-1”, etc. Those are what i3bar will see
+when you use fake-outputs.
+
+&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> That's the answer I feared ;)
+</I>&gt;<i>
+</I>&gt;<i> I understand that this mode is not supported, but besides the i3bar glitch
+</I>&gt;<i> it works wonderful with said configuration and provides a great deal of
+</I>&gt;<i> flexibility with minimal effort.
+</I>&gt;<i>
+</I>&gt;<i> As I have a few applications that don't fit into just one workspace, having
+</I>&gt;<i> three independent workspaces would complicate application switching and
+</I>&gt;<i> especially startup.
+</I>&gt;<i>
+</I>&gt;<i> I guess the application switching could be solved with some scripting to
+</I>&gt;<i> keep workspaces in sync (or is there already support for this?).
+</I>&gt;<i>
+</I>&gt;<i> But at least Eclipse does not seem to be able restore a window configuration
+</I>&gt;<i> that has been split to different workspaces across sessions. Hm, maybe I
+</I>&gt;<i> could somehow automate the process of detaching and moving the different
+</I>&gt;<i> views as well.
+</I>&gt;<i>
+</I>&gt;<i> Still, would you be open to receive a patch to make i3bar work?
+</I>I’ll definitely not accept a patch that makes i3bar use non-fake
+output names when using fake-outputs, as that defeats the entire
+purpose. But see above, maybe you can make use of the fake output
+names.
+
+&gt;<i>
+</I>&gt;<i> Anyway, thanks much for your feedback and for supporting a very useful piece
+</I>&gt;<i> of software. Have a great weekend.
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i>
+</I>&gt;<i> Marco
+</I>&gt;<i>
+</I>
+
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001950.html">[i3] i3bar multi-monitor setup
+</A></li>
+	<LI>Next message: <A HREF="001952.html">[i3] i3bar multi-monitor setup
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1951">[ date ]</a>
+              <a href="thread.html#1951">[ thread ]</a>
+              <a href="subject.html#1951">[ subject ]</a>
+              <a href="author.html#1951">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

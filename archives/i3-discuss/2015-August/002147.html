@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] X session ends when last monitor turns off
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20X%20session%20ends%20when%20last%20monitor%20turns%20off&In-Reply-To=%3CCACn7RsKzCng7jv%3D41sKE%3DcDoe9fY%2Bj1C1nw%3DaJ0ZSEpN%3DC9fFg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002146.html">
+   <LINK REL="Next"  HREF="002148.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] X session ends when last monitor turns off</H1>
+    <B>Bart Samwel</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20X%20session%20ends%20when%20last%20monitor%20turns%20off&In-Reply-To=%3CCACn7RsKzCng7jv%3D41sKE%3DcDoe9fY%2Bj1C1nw%3DaJ0ZSEpN%3DC9fFg%40mail.gmail.com%3E"
+       TITLE="[i3] X session ends when last monitor turns off">bsamwel at gmail.com
+       </A><BR>
+    <I>Mon Aug 24 21:42:44 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002146.html">[i3] Make disabling output config option
+</A></li>
+        <LI>Next message: <A HREF="002148.html">[i3] X session ends when last monitor turns off
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2147">[ date ]</a>
+              <a href="thread.html#2147">[ thread ]</a>
+              <a href="subject.html#2147">[ subject ]</a>
+              <a href="author.html#2147">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I have a multi-monitor setup where I want to use *either* my laptop screen
+*or* my external monitor. I've set up an &quot;autoxrandr&quot; script like this, to
+enable an external monitor if it's connected, and to enable the laptop
+panel otherwise:
+
+#!/bin/bash
+for output in $(xrandr | grep '\Wconnected' | awk '{ print $1 }'); do
+    if [[ ! $output =~ ^LVDS.*$ ]]; then
+       other=$output
+    fi
+done
+
+if [ &quot;$other&quot; != &quot;&quot; ] ; then
+  xrandr --output $other --auto --primary --output LVDS1 --off
+else
+  xrandr --output LVDS1 --auto --primary
+fi
+
+The trouble is that when the laptop is connected to an external screen, and
+when I turn the monitor off, it seems that i3 exits. What I want instead is
+that it either keeps running so that I can switch the laptop screen on, or
+that I can configure it to automatically turn the laptop screen on.
+
+I have no clue where to debug this. This is on Ubuntu 14.04 and using
+lightdm. The lightdm logs say that the session (i3) exits and that's why
+its stopping the session. I don't think I can get i3 logs using the
+instructions at <A HREF="http://i3wm.org/docs/debugging.html">http://i3wm.org/docs/debugging.html</A> because both i3 and the
+X session are dead after this happens.
+
+Any idea what I could try here?
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150824/8071135c/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150824/8071135c/attachment.html</A>&gt;
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002146.html">[i3] Make disabling output config option
+</A></li>
+	<LI>Next message: <A HREF="002148.html">[i3] X session ends when last monitor turns off
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2147">[ date ]</a>
+              <a href="thread.html#2147">[ thread ]</a>
+              <a href="subject.html#2147">[ subject ]</a>
+              <a href="author.html#2147">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

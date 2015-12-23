@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3 hangs, when I execute this script =&gt; bug?
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%20hangs%2C%20when%20I%20execute%20this%20script%20%3D%3E%20bug%3F&In-Reply-To=%3C20100206235736.4DA4511803D%40smtp.hushmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000018.html">
+   <LINK REL="Next"  HREF="000020.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3 hangs, when I execute this script =&gt; bug?</H1>
+    <B>Sasha</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%20hangs%2C%20when%20I%20execute%20this%20script%20%3D%3E%20bug%3F&In-Reply-To=%3C20100206235736.4DA4511803D%40smtp.hushmail.com%3E"
+       TITLE="[i3] i3 hangs, when I execute this script =&gt; bug?">crawlingwithsnakes at hush.com
+       </A><BR>
+    <I>Sun Feb  7 00:57:36 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000018.html">[i3] i3 hangs, when I execute this script =&gt; bug?
+</A></li>
+        <LI>Next message: <A HREF="000020.html">[i3] i3 hangs, when I execute this script =&gt; bug?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#19">[ date ]</a>
+              <a href="thread.html#19">[ thread ]</a>
+              <a href="subject.html#19">[ subject ]</a>
+              <a href="author.html#19">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+
+
+On Sat, 06 Feb 2010 07:52:45 -0400 Uli Armbruster
+&lt;<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">uli.armbruster at googlemail.com</A>&gt; wrote:
+&gt;<i>Hi, it's me again, the new mister i3-user ;-)
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>I managed to configure everything the way I want it, am really
+</I>&gt;<i>happy with i3. But there's one little thing that disturbs me and I
+</I>&gt;<i>can't figure out, what's the problem.
+</I>&gt;<i>
+</I>&gt;<i>I have a tv card and I have to use mplayer to watch tv, because
+</I>&gt;<i>it's the only app which can handle my tv card. So I have a script
+</I>&gt;<i>for watching tv, which looks like this
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>#!/bin/bash
+</I>&gt;<i>mplayer <A HREF="tv://">tv://</A> -tv
+</I>&gt;<i>driver=v4l2:norm=PAL:fps=25:width=768:height=576:device=/dev/video0
+</I>&gt;:<i>chanlist=europe-
+</I>&gt;<i>west:alsa=yes:adevice=plughw.1,0:audiorate=32000:forceaudio:immedia
+</I>&gt;<i>temode=0:channels=\
+</I>&gt;<i>E7-ARD,\
+</I>&gt;<i>E6-ZDF,\
+</I>&gt;<i>E5-SWR_BW,\
+</I>&gt;<i>SE10-BR,\
+</I>&gt;<i>E10-Sat1,\
+</I>&gt;<i>SE14-Pro7,\
+</I>&gt;<i>E9-RTL,\
+</I>&gt;<i>SE7-MTV,\
+</I>&gt;<i>SE12-VIVA,\
+</I>&gt;<i>SE6-Kabel1,\
+</I>&gt;<i>SE5-VOX,\
+</I>&gt;<i>E12,DSF,\
+</I>&gt;<i>SE4-Tele5,\
+</I>&gt;<i>SE9-Phoenix,\
+</I>&gt;<i>SE11-SuperRTL,\
+</I>&gt;<i>SE13-3sat,\
+</I>&gt;<i>SE15-EuroSport,\
+</I>&gt;<i>E11-ZDF-Doku,\
+</I>&gt;<i>SE16-RTL2,\
+</I>&gt;<i>SE17-WDR,\
+</I>&gt;<i>SE18-NDR,\
+</I>&gt;<i>22-SF_DRS,\
+</I>&gt;<i>47-SF2,\
+</I>&gt;<i>24-ORF1,\
+</I>&gt;<i>23-ORF2,\
+</I>&gt;<i>25-RegioTV,\
+</I>&gt;<i>26-N24,\
+</I>&gt;<i>27-NTV,\
+</I>&gt;<i>28-MDR,\
+</I>&gt;<i>31-ARTE,\
+</I>&gt;<i>34-DMAX,\
+</I>&gt;<i>36-Das_Vierte,\
+</I>&gt;<i>41-BR_alpha,\
+</I>&gt;<i>42-HR,\
+</I>&gt;<i>44-CNN,\
+</I>&gt;<i>45-Bloomberg,\
+</I>&gt;<i>50-AnixeSD,\
+</I>&gt;<i>51-RBB\
+</I>&gt;<i>-af volnorm -vf pp=lb -vo xv -delay 0.2
+</I>&gt;<i>
+</I>&gt;<i>(I still have to find a good chanel order ;-) )
+</I>&gt;<i>
+</I>&gt;<i>It works, when I run it from urxvt, but when I start it with
+</I>&gt;<i>dmenu, i3 completely crashes. But it cannot be a dmenu issue,
+</I>&gt;<i>because it worked in musca (which uses dmenu as well). All I can
+</I>&gt;<i>do is go to tty and hit ^C. Here's an output, which tells me
+</I>&gt;<i>something like &quot;mplayer crashed. that should not happen&quot; (in case
+</I>&gt;<i>it's really relevant, I can provide the complete output).
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>Anyone with an idea?
+</I>&gt;<i>
+</I>&gt;<i>Regards
+</I>&gt;<i>Army
+</I>
+This may be obvious, but also obvious enough to overlook:
+
+Are you sure to fork off the dmenu execution from the i3 process,
+as well as fork off the mplayer script from dmesg? I mean, using
+the &quot;&amp;&quot; to fork the process?
+Otherwise, dmenu will remain &quot;attached&quot; to i3, and mplayer will
+remain &quot;attached&quot; to dmenu, causing non-desirable effects :-)
+
+I did have a similar thing happen, and forking off the process I
+had forgotten to, fixed the problem.
+
+Sasha
+-----BEGIN PGP SIGNATURE-----
+Note: This signature can be verified at <A HREF="https://www.hushtools.com/verify">https://www.hushtools.com/verify</A>
+Charset: iso-8859-1
+Version: Hush 3.0
+
+wpwEAQMCAAYFAktuBJYACgkQNSYFEb1mCzLOQgQAi1QQdHKRMIcMNuIp6uitpDh26g5u
+T69Gp9xN5+GLNdiPX06Bg+60SyuVZlVDCuib7ZdVq4Tklh/H3LPFXZ5rOIuZpJ/j/nrR
+Th952Km4uqiUhEqBNnYlkH/pWka9MKS4TPE1aaqnly8Y91s/SlMNYShzvGYZAwiIqqEW
+zDdjBW4=
+=rE8i
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000018.html">[i3] i3 hangs, when I execute this script =&gt; bug?
+</A></li>
+	<LI>Next message: <A HREF="000020.html">[i3] i3 hangs, when I execute this script =&gt; bug?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#19">[ date ]</a>
+              <a href="thread.html#19">[ thread ]</a>
+              <a href="subject.html#19">[ subject ]</a>
+              <a href="author.html#19">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

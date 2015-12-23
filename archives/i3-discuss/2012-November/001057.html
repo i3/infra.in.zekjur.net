@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH 4/5] Alignment fixes for i3bar
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%204/5%5D%20Alignment%20fixes%20for%20i3bar&In-Reply-To=%3CCAMO0NGZOCYOS-VU3b5F2rj6HLRebtT9B30HOeJp3HOb663y1Kw%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001050.html">
+   <LINK REL="Next"  HREF="001059.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH 4/5] Alignment fixes for i3bar</H1>
+    <B>Kevin Murphy</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%204/5%5D%20Alignment%20fixes%20for%20i3bar&In-Reply-To=%3CCAMO0NGZOCYOS-VU3b5F2rj6HLRebtT9B30HOeJp3HOb663y1Kw%40mail.gmail.com%3E"
+       TITLE="[i3] [PATCH 4/5] Alignment fixes for i3bar">kemurphy.cmu at gmail.com
+       </A><BR>
+    <I>Tue Nov 20 10:42:41 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001050.html">[i3] [PATCH 4/5] Alignment fixes for i3bar
+</A></li>
+        <LI>Next message: <A HREF="001059.html">[i3] [PATCH 4/5] Alignment fixes for i3bar
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1057">[ date ]</a>
+              <a href="thread.html#1057">[ thread ]</a>
+              <a href="subject.html#1057">[ subject ]</a>
+              <a href="author.html#1057">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Missed the reply-all button :)
+
+On Tue, Nov 20, 2012 at 4:39 AM, Kevin Murphy &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">kemurphy.cmu at gmail.com</A>&gt;wrote:
+
+&gt;<i> Sure thing.  I'll also rebase it without the window title patch below it,
+</I>&gt;<i> for the time being. :)
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i> Kevin
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Tue, Nov 20, 2012 at 3:30 AM, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt;wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Hi Kevin,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Kevin Murphy &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">kemurphy.cmu at gmail.com</A>&gt; writes:
+</I>&gt;&gt;<i> &gt; This patch fixes vertical text alignment between the workspace labels,
+</I>&gt;&gt;<i> &gt; window title, and status line, and horizontal spacing between the window
+</I>&gt;&gt;<i> &gt; title and status line in i3bar.
+</I>&gt;&gt;<i> Can you amend that in your patch and re-send it please?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> @fernandotcl: Can you have a look at the following changes please?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> &gt; On Sun, Nov 18, 2012 at 5:56 AM, Kevin Murphy &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">kemurphy.cmu at gmail.com</A>
+</I>&gt;&gt;<i> &gt;wrote:
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt;&gt; From: Kevin Murphy &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">kemurphy at andrew.cmu.edu</A>&gt;
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; ---
+</I>&gt;&gt;<i> &gt;&gt;  i3bar/src/xcb.c | 6 +++---
+</I>&gt;&gt;<i> &gt;&gt;  1 file changed, 3 insertions(+), 3 deletions(-)
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; diff --git a/i3bar/src/xcb.c b/i3bar/src/xcb.c
+</I>&gt;&gt;<i> &gt;&gt; index c20ff37..983d5ad 100644
+</I>&gt;&gt;<i> &gt;&gt; --- a/i3bar/src/xcb.c
+</I>&gt;&gt;<i> &gt;&gt; +++ b/i3bar/src/xcb.c
+</I>&gt;&gt;<i> &gt;&gt; @@ -130,7 +130,7 @@ void refresh_statusline(void) {
+</I>&gt;&gt;<i> &gt;&gt;          block-&gt;width = predict_text_width(block-&gt;full_text);
+</I>&gt;&gt;<i> &gt;&gt;          /* If this is not the last block, add some pixels for a
+</I>&gt;&gt;<i> &gt;&gt; separator. */
+</I>&gt;&gt;<i> &gt;&gt;          if (TAILQ_NEXT(block, blocks) != NULL)
+</I>&gt;&gt;<i> &gt;&gt; -            block-&gt;width += 9;
+</I>&gt;&gt;<i> &gt;&gt; +            block-&gt;width += 10;
+</I>&gt;&gt;<i> &gt;&gt;          statusline_width += block-&gt;width;
+</I>&gt;&gt;<i> &gt;&gt;      }
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; @@ -141,7 +141,7 @@ void refresh_statusline(void) {
+</I>&gt;&gt;<i> &gt;&gt;          realloc_sl_buffer();
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;      /* Clear the statusline pixmap. */
+</I>&gt;&gt;<i> &gt;&gt; -    xcb_rectangle_t rect = { 0, 0, root_screen-&gt;width_in_pixels,
+</I>&gt;&gt;<i> &gt;&gt; font.height };
+</I>&gt;&gt;<i> &gt;&gt; +    xcb_rectangle_t rect = { 0, 0, root_screen-&gt;width_in_pixels,
+</I>&gt;&gt;<i> &gt;&gt; font.height + 4 };
+</I>&gt;&gt;<i> &gt;&gt;      xcb_poly_fill_rectangle(xcb_connection, statusline_pm,
+</I>&gt;&gt;<i> &gt;&gt; statusline_clear, 1, &amp;rect);
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;      /* Draw the text of each block. */
+</I>&gt;&gt;<i> &gt;&gt; @@ -1576,7 +1576,7 @@ void draw_bars(bool unhide) {
+</I>&gt;&gt;<i> &gt;&gt;                            outputs_walk-&gt;buffer,
+</I>&gt;&gt;<i> &gt;&gt;                            outputs_walk-&gt;bargc,
+</I>&gt;&gt;<i> &gt;&gt;                            MAX(0, (int16_t)(statusline_width -
+</I>&gt;&gt;<i> &gt;&gt; outputs_walk-&gt;rect.w + 4)), 0,
+</I>&gt;&gt;<i> &gt;&gt; -                          MAX(0, (int16_t)(outputs_walk-&gt;rect.w -
+</I>&gt;&gt;<i> &gt;&gt; statusline_width - traypx - 4)), 3,
+</I>&gt;&gt;<i> &gt;&gt; +                          MAX(0, (int16_t)(outputs_walk-&gt;rect.w -
+</I>&gt;&gt;<i> &gt;&gt; statusline_width - traypx - 4)), 2,
+</I>&gt;&gt;<i> &gt;&gt;                            MIN(outputs_walk-&gt;rect.w - traypx - 4,
+</I>&gt;&gt;<i> &gt;&gt; statusline_width), font.height);
+</I>&gt;&gt;<i> &gt;&gt;          }
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; --
+</I>&gt;&gt;<i> &gt;&gt; 1.8.0
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i> Best regards,
+</I>&gt;&gt;<i> Michael
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121120/e4fd32a6/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121120/e4fd32a6/attachment.html</A>&gt;
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001050.html">[i3] [PATCH 4/5] Alignment fixes for i3bar
+</A></li>
+	<LI>Next message: <A HREF="001059.html">[i3] [PATCH 4/5] Alignment fixes for i3bar
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1057">[ date ]</a>
+              <a href="thread.html#1057">[ thread ]</a>
+              <a href="subject.html#1057">[ subject ]</a>
+              <a href="author.html#1057">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

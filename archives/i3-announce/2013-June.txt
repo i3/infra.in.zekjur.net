@@ -1,0 +1,34 @@
+From michael at i3wm.org  Sun Jun  9 12:01:37 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 09 Jun 2013 12:01:37 +0200
+Subject: [i3 announcement] i3lock 2.5 released
+Message-ID: <x6a9mz1u2m.fsf@midna.zekjur.net>
+
+Hi,
+
+i3lock 2.5 was just released. It requires libxkbcommon ? 0.2.0, but in
+turn does much better input handling.
+
+Here is the changelog:
+
+ ? NEW DEPENDENCY: Use libxkbcommon for input handling
+   This makes input handling much better for many edge cases.
+ ? Bugfix: fix argument parsing on ARM (s/char/int/)
+ ? Bugfix: free(reply) to avoid memory leak
+ ? Bugfix: Use ev_loop_fork after fork, fixes forking on kqueue based OSes
+ ? Bugfix: Fix centering the indicator in the no-xinerama case
+ ? Only use mlock() on Linux, FreeBSD (for example) requires root
+ ? promote the "could not load image" message from debug to normal
+ ? s/pam_message/pam_response/ (Thanks Tucos)
+ ? remove support for NOLIBCAIRO, cairo-xcb is widespread by now
+ ? Allow XKB_KEY_XF86ScreenSaver as synonym for enter
+   This keysym is generated on convertible tablets by pressing a hardware
+   lock/unlock button.
+ ? Allow passwordless PAM conversations (e.g. fingerprint)
+ ? Add ctrl+u password reset
+ ? Set window name to i3lock
+
+-- 
+Best regards,
+Michael
+

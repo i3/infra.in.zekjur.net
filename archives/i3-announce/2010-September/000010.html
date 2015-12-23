@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3 announcement] i3status 2.2 released
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-announce%40i3.zekjur.net?Subject=%5Bi3%20announcement%5D%20i3status%202.2%20released&In-Reply-To=">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000009.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3 announcement] i3status 2.2 released</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-announce%40i3.zekjur.net?Subject=%5Bi3%20announcement%5D%20i3status%202.2%20released&In-Reply-To="
+       TITLE="[i3 announcement] i3status 2.2 released">michael+i3 at stapelberg.de
+       </A><BR>
+    <I>Thu Sep 23 01:01:29 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000009.html">[i3 announcement] i3lock 2.0 released
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#10">[ date ]</a>
+              <a href="thread.html#10">[ thread ]</a>
+              <a href="subject.html#10">[ subject ]</a>
+              <a href="author.html#10">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+a few minutes ago, I released version 2.2 of i3status.
+
+i3status is a small program (less than 1000 SLOC) for generating a status bar
+for dzen2, xmobar or similar programs. It is designed to be very efficient by
+issuing a very small number of system calls, as one generally wants to update
+such a status line every second. This ensures that even under high load, your
+status bar is updated correctly. Also, it saves a bit of energy by not hogging
+your CPU as much as spawning the corresponding amount of shell commands would. 
+
+The changes between i3status 2.1 and i3status 2.2 are:
+
+ &#8226; Implement a discordian date module (like ddate(1))
+ &#8226; Implement ALSA volume support
+ &#8226; disk: implement %avail (different from %free with regard to the reserved
+   space of your filesystem)
+ &#8226; wireless: display quality relative to the wireless maximum quality.
+ &#8226; wireless: display connection speed (bitrate)
+ &#8226; wireless: custom colors for link quality
+ &#8226; Bugfix: Treat an interface as 'down' when it cannot be found in
+   /proc/net/wireless
+ &#8226; Bugfix: Correctly check for interface up/down status
+
+Get it from&#8230;
+<A HREF="http://i3.zekjur.net/i3status/i3status-2.2.tar.bz2">http://i3.zekjur.net/i3status/i3status-2.2.tar.bz2</A>
+&#8230;and verify the GPG signature:
+<A HREF="http://i3.zekjur.net/i3status/i3status-2.2.tar.bz2.asc">http://i3.zekjur.net/i3status/i3status-2.2.tar.bz2.asc</A>
+
+Best regards,
+Michael
+
+BTW: As always, I also uploaded a new version to debian. It will be available
+soon.
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000009.html">[i3 announcement] i3lock 2.0 released
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#10">[ date ]</a>
+              <a href="thread.html#10">[ thread ]</a>
+              <a href="subject.html#10">[ subject ]</a>
+              <a href="author.html#10">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://p2pdfs.zekjur.net/mailman/listinfo.cgi/i3-announce">More information about the i3-announce
+mailing list</a><br>
+</body></html>

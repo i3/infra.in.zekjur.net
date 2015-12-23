@@ -1,0 +1,1556 @@
+From breunig at uni-hd.de  Mon Oct  1 08:38:12 2012
+From: breunig at uni-hd.de (Stefan Breunig)
+Date: Mon, 01 Oct 2012 08:38:12 +0200
+Subject: [i3] RFC: http://bugs-beta.i3wm.org/ (new ticket form)
+In-Reply-To: <x6mx0b4laq.fsf@midna.zekjur.net>
+References: <x6mx0b4laq.fsf@midna.zekjur.net>
+Message-ID: <50693A54.5070209@uni-hd.de>
+
+Things I noticed:
+
+? why do the input fields become red when focused? (I believe it?s  to 
+indicate that the input is wrong, but it still feels strange to be told 
+?you are wrong? right away)
+? The logfile page could simply mention ?i3-dump-log | gzip -9c > 
+/tmp/i3.log.gz? and link to the debugging page under "More info" or so, 
+since that?s the one command needed. Downside is that people might not 
+learn about how to obtain backtraces by chance.
+? I always write the bug reports first, and then the title because I 
+made up my mind/organized my thoughts. For me, this usually results in 
+a more concise title. You could try to move the title down as well, but 
+call it ?Summary? so it?s not so awkward.
+
+From michael at i3wm.org  Mon Oct  1 09:23:04 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 01 Oct 2012 09:23:04 +0200
+Subject: [i3] RFC: http://bugs-beta.i3wm.org/ (new ticket form)
+In-Reply-To: <50693A54.5070209@uni-hd.de>
+References: <x6mx0b4laq.fsf@midna.zekjur.net> <50693A54.5070209@uni-hd.de>
+Message-ID: <x67grad5bb.fsf@midna.zekjur.net>
+
+Hi Stefan,
+
+Stefan Breunig <breunig at uni-hd.de> writes:
+> ? why do the input fields become red when focused? (I believe it?s  to 
+> indicate that the input is wrong, but it still feels strange to be told 
+> ?you are wrong? right away)
+Yes, it?s to indicate that they are required and you haven?t filled in
+anything yet. That?s the default behavior of bootstrap, so if you care,
+please send a patch against bootstrap?s css.
+
+> ? The logfile page could simply mention ?i3-dump-log | gzip -9c > 
+> /tmp/i3.log.gz? and link to the debugging page under "More info" or so, 
+> since that?s the one command needed. Downside is that people might not 
+> learn about how to obtain backtraces by chance.
+Unfortunately, we cannot do that. i3-dump-log only works in debug
+versions of i3, not in the release version (intentionally). A proper
+error message which explains this in clear terms has been added in i3
+v4.3, but that version is too new to assume that everybody has it
+(granted, we do only support 4.3, but people might lie about the version
+because they?re annoyed by the form, so let?s give it some time).
+
+> ? I always write the bug reports first, and then the title because I 
+> made up my mind/organized my thoughts. For me, this usually results in 
+> a more concise title. You could try to move the title down as well, but 
+> call it ?Summary? so it?s not so awkward.
+Interesting idea. Are there any other opinions on that? I?m inclined to
+call the field "one-line summary" and move it to the bottom, unless
+someone comes up with a good reason against that.
+
+-- 
+Best regards,
+Michael
+
+From marcos at anue.biz  Mon Oct  1 17:28:44 2012
+From: marcos at anue.biz (Marcos Moyano)
+Date: Mon, 1 Oct 2012 12:28:44 -0300
+Subject: [i3] Ticket #807
+Message-ID: <CANxNxiD5tRTw9sTuFkD_yPiqw8yfNwz=ji3OOt66LgbJEAE1aA@mail.gmail.com>
+
+Hey guys,
+I'd like to provide a patch for this ticket (
+http://bugs.i3wm.org/report/ticket/807 ) but before I get started I'd like
+to ask a couple of questions to start in the right direction.
+I'm thinking about doing something like a scratchpad toggle which will
+show/hide all scratchpad windows at once. This won't work on "all floating
+windows" by default but on "all scratchpad windows". A window set to the
+scratchpad is centered and resized the first time but not on future
+"scratchpad show"s. So it's pretty easy to get the scratchpad windows
+showing like you want and then toggle their visibility.
+I think this is a good approach but I'm not sure. If this should work on
+all the workspace floating windows, how can we distinguish the floating
+windows being send to the scratchpad from windows already in the scratchpad?
+
+So my questions are:
+1) Is this the right approach?
+2) If so, should the new command handle matching windows? (ie: bindsym
+Mod1+Control+- [class="URxvt"] scratchpad toggle )
+
+
+Rgds,
+Marcos
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121001/25205aec/attachment.html>
+
+From michael at i3wm.org  Mon Oct  1 17:46:11 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 01 Oct 2012 17:46:11 +0200
+Subject: [i3] Ticket #807
+In-Reply-To: <CANxNxiD5tRTw9sTuFkD_yPiqw8yfNwz=ji3OOt66LgbJEAE1aA@mail.gmail.com>
+References: <CANxNxiD5tRTw9sTuFkD_yPiqw8yfNwz=ji3OOt66LgbJEAE1aA@mail.gmail.com>
+Message-ID: <x64nmeci0s.fsf@midna.zekjur.net>
+
+Hi Marcos,
+
+Marcos Moyano <marcos at anue.biz> writes:
+> 1) Is this the right approach?
+I think the approach you described has nothing to do with the ticket
+itself. Ticket #807 is about floating windows, and that feature was
+accepted. If you care about scratchpad windows, please file a new ticket
+and I?ll think about it.
+
+-- 
+Best regards,
+Michael
+
+From marcos at anue.biz  Mon Oct  1 19:47:19 2012
+From: marcos at anue.biz (Marcos Moyano)
+Date: Mon, 1 Oct 2012 14:47:19 -0300
+Subject: [i3] Ticket #807
+In-Reply-To: <x64nmeci0s.fsf@midna.zekjur.net>
+References: <CANxNxiD5tRTw9sTuFkD_yPiqw8yfNwz=ji3OOt66LgbJEAE1aA@mail.gmail.com>
+ <x64nmeci0s.fsf@midna.zekjur.net>
+Message-ID: <CANxNxiAOc-x3s=Pi06LjBv_Po80k-_5NFUBqanL3==+390B+ww@mail.gmail.com>
+
+Ok, Since the ticket mentioned how to accomplish something similar for
+scratchpad windows with focus changing I thought that was the case, which I
+care more than hiding regular floating windows since most of the time my
+floating windows are temporary and most of my scrachpad windows are not
+Here's the ticket http://bugs.i3wm.org/report/ticket/834
+
+Marcos
+
+On Mon, Oct 1, 2012 at 12:46 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Marcos,
+>
+> Marcos Moyano <marcos at anue.biz> writes:
+> > 1) Is this the right approach?
+> I think the approach you described has nothing to do with the ticket
+> itself. Ticket #807 is about floating windows, and that feature was
+> accepted. If you care about scratchpad windows, please file a new ticket
+> and I?ll think about it.
+>
+> --
+> Best regards,
+> Michael
+>
+
+
+
+-- 
+Marcos Moyano
+Co-Founder of Anue
+Skype: marcosmoyano
+http://www.anue.biz/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121001/ff92c322/attachment.html>
+
+From crestani at informatik.uni-tuebingen.de  Tue Oct  2 10:41:27 2012
+From: crestani at informatik.uni-tuebingen.de (Marcus Crestani)
+Date: Tue, 02 Oct 2012 10:41:27 +0200
+Subject: [i3] Workspace 1 does not respect tabbed layout setting
+Message-ID: <m2obklb70o.fsf@informatik.uni-tuebingen.de>
+
+I have found a regression in i3.  I run i3 on OS X 10.8.2 and XQuartz
+2.7.4.  In my configuration, I have:
+
+  workspace_layout tabbed
+
+However, when I start a fresh i3 version 4.3-19-g01ce4bb (2012-09-29,
+branch "master"), i3 does not seem to be respect the workspace_layout
+setting.  When I open two terminals, they are not presented in tabbed
+layout, but instead in splith:
+
++---------------------------+---------------------------+
+| terminal 1                | terminal 2                |
++---------------------------+---------------------------+
+|                           |                           |
+|                           |                           |
+|                           |                           | 
+
+The problem only occurs in workspace 1, however.  When I switch to
+another workspace, say workspace 2, and I open two terminals, they are
+tabbed as I would expect them to be:
+
++---------------------------+---------------------------+
+| terminal 1                | terminal 2                |
++---------------------------+---------------------------+
+|                                                       |
+|                                                       |
+|                                                       | 
+
+Interestingly, when I close all the windows in workspace 1, switch to
+workspace 2, open two windows, then switch back to workspace 1 and open
+two windows there, then they are tabbed as well.  So, workspace 1
+realizes that it should use the tabbed layout only after I've used it
+successfully in workspace 2.
+
+It seems that this problem was introduced recently.  When I run i3-4.2
+everything works as I expect it to work.  The release version of i3-4.3
+has the problem as well as today's HEAD of the git repository.
+
+(Unfortunately I am not able to provide more debugging information,
+i3-dump-log seems not to work on OS X.  i3-dump-log: Could not shm_open
+SHM segment for the i3 log (/i3-log-32571): No such file or directory).
+
+Any ideas what could be the cause of my problem?  I am happy to provide
+more information or test out things if needed.
+
+Thanks,
+-- 
+Marcus
+
+From michael at i3wm.org  Tue Oct  2 15:34:51 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 02 Oct 2012 15:34:51 +0200
+Subject: [i3] Workspace 1 does not respect tabbed layout setting
+In-Reply-To: <m2obklb70o.fsf@informatik.uni-tuebingen.de>
+References: <m2obklb70o.fsf@informatik.uni-tuebingen.de>
+Message-ID: <x6y5jpatfo.fsf@midna.zekjur.net>
+
+Hi Marcus,
+
+I have observed the problem you are talking about, too.
+
+Could you file a ticket for it at http://bugs-beta.i3wm.org/ please?
+
+-- 
+Best regards,
+Michael
+
+From crestani at informatik.uni-tuebingen.de  Tue Oct  2 21:07:01 2012
+From: crestani at informatik.uni-tuebingen.de (Marcus Crestani)
+Date: Tue, 02 Oct 2012 21:07:01 +0200
+Subject: [i3] Workspace 1 does not respect tabbed layout setting
+In-Reply-To: <x6y5jpatfo.fsf@midna.zekjur.net> (Michael Stapelberg's message
+ of "Tue, 02 Oct 2012 15:34:51 +0200")
+References: <m2obklb70o.fsf@informatik.uni-tuebingen.de>
+ <x6y5jpatfo.fsf@midna.zekjur.net>
+Message-ID: <m2ipassnfu.fsf@informatik.uni-tuebingen.de>
+
+>>>>>"MS" == Michael Stapelberg <michael at i3wm.org> writes:
+MS> Could you file a ticket for it at http://bugs-beta.i3wm.org/ please?
+
+I tried, but the after submitting the first form I see:
+
+  New i3 ticket: Internal error
+
+  There was an internal error in i3-new-ticket. Your data has been saved
+  in a crash report and the developers have been notified via email. A
+  ticket with the data you submitted will be created manually.
+
+  The error message of the program is:
+
+  Could not save session: securecookie: the value could not be encoded
+
+I've tried it twice, both times with the same result.
+
+-- 
+Marcus
+
+From michael at i3wm.org  Tue Oct  2 21:28:07 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 02 Oct 2012 21:28:07 +0200
+Subject: [i3] Workspace 1 does not respect tabbed layout setting
+In-Reply-To: <m2ipassnfu.fsf@informatik.uni-tuebingen.de>
+References: <m2obklb70o.fsf@informatik.uni-tuebingen.de>
+ <x6y5jpatfo.fsf@midna.zekjur.net>
+ <m2ipassnfu.fsf@informatik.uni-tuebingen.de>
+Message-ID: <x6vcesbrnc.fsf@midna.zekjur.net>
+
+Hi Marcus,
+
+Marcus Crestani <crestani at informatik.uni-tuebingen.de> writes:
+> I tried, but the after submitting the first form I see:
+Thanks for the report. I tried it in Firefox and it works for me. Do you
+have cookies disabled? If so, could you enable them and retry? If not,
+could you still retry (I?ve got some additional logging enabled now)?
+
+Thanks.
+
+-- 
+Best regards,
+Michael
+
+From crestani at informatik.uni-tuebingen.de  Tue Oct  2 21:59:47 2012
+From: crestani at informatik.uni-tuebingen.de (Marcus Crestani)
+Date: Tue, 02 Oct 2012 21:59:47 +0200
+Subject: [i3] Workspace 1 does not respect tabbed layout setting
+In-Reply-To: <x6vcesbrnc.fsf@midna.zekjur.net> (Michael Stapelberg's message
+ of "Tue, 02 Oct 2012 21:28:07 +0200")
+References: <m2obklb70o.fsf@informatik.uni-tuebingen.de>
+ <x6y5jpatfo.fsf@midna.zekjur.net>
+ <m2ipassnfu.fsf@informatik.uni-tuebingen.de>
+ <x6vcesbrnc.fsf@midna.zekjur.net>
+Message-ID: <m2zk441w7g.fsf@informatik.uni-tuebingen.de>
+
+>>>>>"MS" == Michael Stapelberg <michael at i3wm.org> writes:
+MS> Thanks for the report. I tried it in Firefox and it works for me. Do you
+MS> have cookies disabled? 
+
+No, I have cookies enabled.
+
+MS> If not, could you still retry (I?ve got some additional logging
+MS> enabled now)?
+
+I just did, same error.
+
+-- 
+Marcus
+
+From michael at i3wm.org  Tue Oct  2 23:22:19 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 02 Oct 2012 23:22:19 +0200
+Subject: [i3] Workspace 1 does not respect tabbed layout setting
+In-Reply-To: <m2zk441w7g.fsf@informatik.uni-tuebingen.de>
+References: <m2obklb70o.fsf@informatik.uni-tuebingen.de>
+ <x6y5jpatfo.fsf@midna.zekjur.net>
+ <m2ipassnfu.fsf@informatik.uni-tuebingen.de>
+ <x6vcesbrnc.fsf@midna.zekjur.net>
+ <m2zk441w7g.fsf@informatik.uni-tuebingen.de>
+Message-ID: <x6sj9wbmd0.fsf@midna.zekjur.net>
+
+Hi Marcus,
+
+Marcus Crestani <crestani at informatik.uni-tuebingen.de> writes:
+> I just did, same error.
+Thanks, this helped me fix (or rather work around) the issue. See
+http://code.google.com/p/gorilla/issues/detail?id=55 if you care about
+the details.
+
+Could you please retry now (hopefully the last time)? :-)
+
+-- 
+Best regards,
+Michael
+
+From knopwob at googlemail.com  Wed Oct  3 04:48:28 2012
+From: knopwob at googlemail.com (Sascha Kruse)
+Date: Wed, 3 Oct 2012 04:48:28 +0200
+Subject: [i3] Workspace 1 does not respect tabbed layout setting
+In-Reply-To: <x6sj9wbmd0.fsf@midna.zekjur.net>
+References: <m2obklb70o.fsf@informatik.uni-tuebingen.de>
+ <x6y5jpatfo.fsf@midna.zekjur.net>
+ <m2ipassnfu.fsf@informatik.uni-tuebingen.de>
+ <x6vcesbrnc.fsf@midna.zekjur.net>
+ <m2zk441w7g.fsf@informatik.uni-tuebingen.de>
+ <x6sj9wbmd0.fsf@midna.zekjur.net>
+Message-ID: <CA+kZju81dLPWybVjQEhbe8UXQU2Rs27_WpA+H7FETDSJMZHMTw@mail.gmail.com>
+
+Hi,
+
+I think Marcus hasn't created the bug report yet
+(or I just haven't found it) so I'm posting this here.
+
+I git bisected the problem to this commit:
+    cd4dd365e87ea3ea09cde9cd8a00209284dc282d
+    Allow changing the layout of workspaces by storing it (Thanks mhcerri)
+
+A proposed patch is attached. It explicitly sets workspace_layout in
+create_workspace_on_output(). I'm still confused why this issue only
+occurs on the initial workspaces after starting i3, though. So I'm not
+100% sure whether this is the correct way to fix this.
+
+A testcase is also included.
+
+Greetings,
+Sascha
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-set-workspace_layout-in-create_workspace_on_output.patch
+Type: application/octet-stream
+Size: 2224 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121003/65c6054e/attachment.obj>
+
+From crestani at informatik.uni-tuebingen.de  Wed Oct  3 09:33:47 2012
+From: crestani at informatik.uni-tuebingen.de (Marcus Crestani)
+Date: Wed, 03 Oct 2012 09:33:47 +0200
+Subject: [i3] Workspace 1 does not respect tabbed layout setting
+In-Reply-To: <x6sj9wbmd0.fsf@midna.zekjur.net> (Michael Stapelberg's message
+ of "Tue, 02 Oct 2012 23:22:19 +0200")
+References: <m2obklb70o.fsf@informatik.uni-tuebingen.de>
+ <x6y5jpatfo.fsf@midna.zekjur.net>
+ <m2ipassnfu.fsf@informatik.uni-tuebingen.de>
+ <x6vcesbrnc.fsf@midna.zekjur.net>
+ <m2zk441w7g.fsf@informatik.uni-tuebingen.de>
+ <x6sj9wbmd0.fsf@midna.zekjur.net>
+Message-ID: <m2sj9w102s.fsf@informatik.uni-tuebingen.de>
+
+>>>>>"MS" == Michael Stapelberg <michael at i3wm.org> writes:
+MS> Could you please retry now (hopefully the last time)? :-)
+
+I've just tried and it worked this time.  Here is the ticket:
+
+  http://bugs.i3wm.org/report/ticket/835
+
+-- 
+Marcus
+
+From crestani at informatik.uni-tuebingen.de  Wed Oct  3 09:44:19 2012
+From: crestani at informatik.uni-tuebingen.de (Marcus Crestani)
+Date: Wed, 03 Oct 2012 09:44:19 +0200
+Subject: [i3] Workspace 1 does not respect tabbed layout setting
+In-Reply-To: <CA+kZju81dLPWybVjQEhbe8UXQU2Rs27_WpA+H7FETDSJMZHMTw@mail.gmail.com>
+ (Sascha Kruse's message of "Wed, 3 Oct 2012 04:48:28 +0200")
+References: <m2obklb70o.fsf@informatik.uni-tuebingen.de>
+ <x6y5jpatfo.fsf@midna.zekjur.net>
+ <m2ipassnfu.fsf@informatik.uni-tuebingen.de>
+ <x6vcesbrnc.fsf@midna.zekjur.net>
+ <m2zk441w7g.fsf@informatik.uni-tuebingen.de>
+ <x6sj9wbmd0.fsf@midna.zekjur.net>
+ <CA+kZju81dLPWybVjQEhbe8UXQU2Rs27_WpA+H7FETDSJMZHMTw@mail.gmail.com>
+Message-ID: <m2haqcatkc.fsf@informatik.uni-tuebingen.de>
+
+>>>>>"SK" == Sascha Kruse <knopwob at googlemail.com> writes:
+SK> I think Marcus hasn't created the bug report yet
+SK> (or I just haven't found it) so I'm posting this here.
+
+After Michael's fixes to the new bug submission system, I was just able
+to submit the report:
+
+  http://bugs.i3wm.org/report/ticket/835
+
+SK> A proposed patch is attached. It explicitly sets workspace_layout in
+SK> create_workspace_on_output().
+
+The patch fixes the problem for me!  Thanks for the quick action!
+
+-- 
+Marcus
+
+From crestani at informatik.uni-tuebingen.de  Wed Oct  3 10:42:41 2012
+From: crestani at informatik.uni-tuebingen.de (Marcus Crestani)
+Date: Wed, 03 Oct 2012 10:42:41 +0200
+Subject: [i3] Fix i3-dump-log on OS X (was: Workspace 1 does not respect
+	tabbed layout setting)
+In-Reply-To: <m2obklb70o.fsf@informatik.uni-tuebingen.de> (Marcus Crestani's
+ message of "Tue, 02 Oct 2012 10:41:27 +0200")
+References: <m2obklb70o.fsf@informatik.uni-tuebingen.de>
+Message-ID: <m2pq50j69q.fsf@informatik.uni-tuebingen.de>
+
+>>>>>"MC" == Marcus Crestani <crestani at informatik.uni-tuebingen.de> writes:
+MC> (Unfortunately I am not able to provide more debugging information,
+MC> i3-dump-log seems not to work on OS X.  i3-dump-log: Could not shm_open
+MC> SHM segment for the i3 log (/i3-log-32571): No such file or directory).
+
+OS X does not support O_TRUNC in shm_open.  Attached patch fixes
+i3-dump-log on OS X.
+
+-- 
+Marcus
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Make-i3-dump-log-work-on-OS-X-shm_open-does-not-supp.patch
+Type: text/x-patch
+Size: 1371 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121003/79b1537b/attachment.bin>
+
+From michael at i3wm.org  Wed Oct  3 15:10:03 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 03 Oct 2012 15:10:03 +0200
+Subject: [i3] Workspace 1 does not respect tabbed layout setting
+In-Reply-To: <CA+kZju81dLPWybVjQEhbe8UXQU2Rs27_WpA+H7FETDSJMZHMTw@mail.gmail.com>
+References: <m2obklb70o.fsf@informatik.uni-tuebingen.de>
+ <x6y5jpatfo.fsf@midna.zekjur.net>
+ <m2ipassnfu.fsf@informatik.uni-tuebingen.de>
+ <x6vcesbrnc.fsf@midna.zekjur.net>
+ <m2zk441w7g.fsf@informatik.uni-tuebingen.de>
+ <x6sj9wbmd0.fsf@midna.zekjur.net>
+ <CA+kZju81dLPWybVjQEhbe8UXQU2Rs27_WpA+H7FETDSJMZHMTw@mail.gmail.com>
+Message-ID: <x6k3v7bt1w.fsf@midna.zekjur.net>
+
+Hi Sascha,
+
+perfectly done (providing a test and and a quick fix)! This is merged,
+thanks.
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Wed Oct  3 15:16:22 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 03 Oct 2012 15:16:22 +0200
+Subject: [i3] Fix i3-dump-log on OS X (was: Workspace 1 does not respect
+	tabbed layout setting)
+In-Reply-To: <m2pq50j69q.fsf@informatik.uni-tuebingen.de>
+References: <m2obklb70o.fsf@informatik.uni-tuebingen.de>
+ <m2pq50j69q.fsf@informatik.uni-tuebingen.de>
+Message-ID: <x6haqbbsrd.fsf@midna.zekjur.net>
+
+Hi Marcus,
+
+Marcus Crestani <crestani at informatik.uni-tuebingen.de> writes:
+> OS X does not support O_TRUNC in shm_open.  Attached patch fixes
+> i3-dump-log on OS X.
+Are you sure? The shm_open(2) manpage on Mac OS X 10.6.8 says otherwise:
+
+     The value of oflag is formed by or'ing the following values:
+
+           O_RDONLY        open for reading only
+           O_RDWR          open for reading and writing
+           O_CREAT         create object if it does not exist
+           O_EXCL          error if create and object exists
+           O_TRUNC         truncate size to 0
+
+     Exactly one of O_RDONLY or O_RDWR must be specified.
+
+     If O_TRUNC is specified and the file exists, the file is truncated
+     to zero length.  If O_EXCL is set with O_CREAT and the file already
+     exists, shm_open() returns an error.  This may be used to implement
+     a simple exclusive access locking mechanism.
+
+Did they break this in newer versions or is your patch wrong?
+
+-- 
+Best regards,
+Michael
+
+From crestani at informatik.uni-tuebingen.de  Wed Oct  3 18:06:48 2012
+From: crestani at informatik.uni-tuebingen.de (Marcus Crestani)
+Date: Wed, 03 Oct 2012 18:06:48 +0200
+Subject: [i3] Fix i3-dump-log on OS X
+In-Reply-To: <x6haqbbsrd.fsf@midna.zekjur.net> (Michael Stapelberg's message
+ of "Wed, 03 Oct 2012 15:16:22 +0200")
+References: <m2obklb70o.fsf@informatik.uni-tuebingen.de>
+ <m2pq50j69q.fsf@informatik.uni-tuebingen.de>
+ <x6haqbbsrd.fsf@midna.zekjur.net>
+Message-ID: <m2k3v7mtev.fsf@informatik.uni-tuebingen.de>
+
+>>>>>"MS" == Michael Stapelberg <michael at i3wm.org> writes:
+MS> Did they break this in newer versions or is your patch wrong?
+
+O_TRUNK is documented and exists but it is not implemented.  shm_open
+with O_TRUNK yields
+
+  shm_open: invalid argument
+
+AFAIK, O_TRUNK never worked on OS X.
+
+-- 
+Marcus
+
+From dcoppa at gmail.com  Thu Oct  4 11:56:35 2012
+From: dcoppa at gmail.com (David Coppa)
+Date: Thu, 4 Oct 2012 11:56:35 +0200
+Subject: [i3] Workspace 1 does not respect tabbed layout setting
+In-Reply-To: <x6k3v7bt1w.fsf@midna.zekjur.net>
+References: <m2obklb70o.fsf@informatik.uni-tuebingen.de>
+ <x6y5jpatfo.fsf@midna.zekjur.net>
+ <m2ipassnfu.fsf@informatik.uni-tuebingen.de> <x6vcesbrnc.fsf@midna.zekjur.net>
+ <m2zk441w7g.fsf@informatik.uni-tuebingen.de> <x6sj9wbmd0.fsf@midna.zekjur.net>
+ <CA+kZju81dLPWybVjQEhbe8UXQU2Rs27_WpA+H7FETDSJMZHMTw@mail.gmail.com>
+ <x6k3v7bt1w.fsf@midna.zekjur.net>
+Message-ID: <CABM=MFLLeLLcB_uMBu8bX8HPoFacxn+pH7ebCO606a52RC_8pw@mail.gmail.com>
+
+On Wed, Oct 3, 2012 at 3:10 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+> Hi Sascha,
+>
+> perfectly done (providing a test and and a quick fix)! This is merged,
+> thanks.
+
+This did not go into the master branch.
+
+Is it intended?
+
+> --
+> Best regards,
+> Michael
+
+Ciao,
+David
+
+From michael at i3wm.org  Thu Oct  4 13:24:39 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 04 Oct 2012 13:24:39 +0200
+Subject: [i3] Workspace 1 does not respect tabbed layout setting
+In-Reply-To: <CABM=MFLLeLLcB_uMBu8bX8HPoFacxn+pH7ebCO606a52RC_8pw@mail.gmail.com>
+References: <m2obklb70o.fsf@informatik.uni-tuebingen.de>
+ <x6y5jpatfo.fsf@midna.zekjur.net>
+ <m2ipassnfu.fsf@informatik.uni-tuebingen.de>
+ <x6vcesbrnc.fsf@midna.zekjur.net>
+ <m2zk441w7g.fsf@informatik.uni-tuebingen.de>
+ <x6sj9wbmd0.fsf@midna.zekjur.net>
+ <CA+kZju81dLPWybVjQEhbe8UXQU2Rs27_WpA+H7FETDSJMZHMTw@mail.gmail.com>
+ <x6k3v7bt1w.fsf@midna.zekjur.net>
+ <CABM=MFLLeLLcB_uMBu8bX8HPoFacxn+pH7ebCO606a52RC_8pw@mail.gmail.com>
+Message-ID: <x6wqz6o4y0.fsf@midna.zekjur.net>
+
+Hi David,
+
+David Coppa <dcoppa at gmail.com> writes:
+> This did not go into the master branch.
+I forgot to push the master branch, but I did now. Thanks for the hint.
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Thu Oct  4 17:07:41 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 04 Oct 2012 17:07:41 +0200
+Subject: [i3] Fix i3-dump-log on OS X
+In-Reply-To: <m2k3v7mtev.fsf@informatik.uni-tuebingen.de>
+References: <m2obklb70o.fsf@informatik.uni-tuebingen.de>
+ <m2pq50j69q.fsf@informatik.uni-tuebingen.de>
+ <x6haqbbsrd.fsf@midna.zekjur.net>
+ <m2k3v7mtev.fsf@informatik.uni-tuebingen.de>
+Message-ID: <x6zk429sxu.fsf@midna.zekjur.net>
+
+Hi Marcus,
+
+I fixed this by just removing the O_TRUNC flag entirely. Since we
+truncate and memset afterwards anyways, there is no reason to use
+O_TRUNC.
+
+-- 
+Best regards,
+Michael
+
+From okiddle at yahoo.co.uk  Thu Oct  4 18:37:39 2012
+From: okiddle at yahoo.co.uk (Oliver Kiddle)
+Date: Thu, 04 Oct 2012 18:37:39 +0200
+Subject: [i3] firefox stealing focus on startup
+Message-ID: <5013.1349368659@thecus.kiddle.eu>
+
+When starting up, firefox likes to grab focus once it has started. As it
+can take more than a couple of seconds to start and I have it assigned
+to a particular workspace, this can be quite annoying. I don't see a
+need for anything to grab focus ever. Is there any way to have such
+focus grabbing hints treated in the same way as an urgency hint instead.
+
+Thanks
+
+Oliver
+
+From michael at i3wm.org  Thu Oct  4 18:48:00 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 04 Oct 2012 18:48:00 +0200
+Subject: [i3] firefox stealing focus on startup
+In-Reply-To: <5013.1349368659@thecus.kiddle.eu>
+References: <5013.1349368659@thecus.kiddle.eu>
+Message-ID: <x6obki9oan.fsf@midna.zekjur.net>
+
+Hi Oliver,
+
+Oliver Kiddle <okiddle at yahoo.co.uk> writes:
+> need for anything to grab focus ever. Is there any way to have such
+> focus grabbing hints treated in the same way as an urgency hint instead.
+It should only be able to grab focus when it?s on a visible
+workspace. If it happens when firefox is invisible, that?s not with i3?s
+help, so nothing we can do about it.
+
+Maybe this helps, though?
+http://www.techsupportalert.com/content/how-stop-firefox-stealing-window-focus.htm
+
+-- 
+Best regards,
+Michael
+
+From okiddle at yahoo.co.uk  Thu Oct  4 19:08:55 2012
+From: okiddle at yahoo.co.uk (Oliver Kiddle)
+Date: Thu, 04 Oct 2012 19:08:55 +0200
+Subject: [i3] firefox stealing focus on startup
+In-Reply-To: <x6obki9oan.fsf@midna.zekjur.net>
+References: <5013.1349368659@thecus.kiddle.eu>
+ <x6obki9oan.fsf@midna.zekjur.net>
+Message-ID: <5241.1349370535@thecus.kiddle.eu>
+
+Michael Stapelberg wrote:
+> It should only be able to grab focus when it?s on a visible
+> workspace. If it happens when firefox is invisible, that?s not with i3?s
+> help, so nothing we can do about it.
+
+I've got a two monitor setup and assign Firefox to start on one of
+them. So it is often on a visible workspace when I start it.
+
+> Maybe this helps, though?
+> http://www.techsupportalert.com/content/how-stop-firefox-stealing-window-focus.htm
+
+That only helps for the case when I open a URL in an existing firefox
+such as by clicking on one in my e-mail. Thanks for the pointer though
+as that does help a bit.
+
+Oliver
+
+From joepvandelft at xs4all.nl  Thu Oct  4 22:14:48 2012
+From: joepvandelft at xs4all.nl (Joep van Delft)
+Date: Thu, 4 Oct 2012 22:14:48 +0200
+Subject: [i3] firefox stealing focus on startup
+In-Reply-To: <5241.1349370535@thecus.kiddle.eu>
+References: <5013.1349368659@thecus.kiddle.eu>
+ <x6obki9oan.fsf@midna.zekjur.net>
+ <5241.1349370535@thecus.kiddle.eu>
+Message-ID: <20121004221448.44239975@xs4all.nl>
+
+For what it's worth, an answer that bypasses your question: 
+
+For most of my browsing tasks, I use dwb
+(http://portix.bitbucket.org/dwb/) nowadays. I figured that I prefer 
+to have my window manager to take care of window/tab management over
+some inconsistent and extraneous implementation. There are
+some rough edges with sharing cookies among different instances of
+the browser and sharing history etc., but those are most likely
+due to part of my lack of interest to configure it correctly. 
+
+Cheers, 
+
+
+	Joep
+
+
+
+On Thu, 04 Oct 2012 19:08:55 +0200
+Oliver Kiddle <okiddle at yahoo.co.uk> wrote:
+
+> Michael Stapelberg wrote:
+> > It should only be able to grab focus when it?s on a visible
+> > workspace. If it happens when firefox is invisible, that?s not
+> > with i3?s help, so nothing we can do about it.
+> 
+> I've got a two monitor setup and assign Firefox to start on one of
+> them. So it is often on a visible workspace when I start it.
+> 
+> > Maybe this helps, though?
+> > http://www.techsupportalert.com/content/how-stop-firefox-stealing-window-focus.htm
+> 
+> That only helps for the case when I open a URL in an existing
+> firefox such as by clicking on one in my e-mail. Thanks for the
+> pointer though as that does help a bit.
+> 
+> Oliver
+
+
+From danielstockton at hotmail.com  Tue Oct  9 19:12:07 2012
+From: danielstockton at hotmail.com (Daniel Stockton)
+Date: Tue, 9 Oct 2012 17:12:07 +0000
+Subject: [i3] border-less and title-less tabbed layout
+Message-ID: <COL002-W898F58DDC82244A9413C07D18F0@phx.gbl>
+
+Dear all,
+I am really enjoying using i3 but there is one feature missing that would make it perfect: a border-less and title-less tabbed layout. Perhaps this could be configurable in a similar way to i3status, where the tab titles are hidden until the modifier is pressed?I would really appreciate it if anyone could tell me if this is a planned feature or give me any hints on what's needed if I chose to dig into the code and implement this myself.Thank you and regards,Daniel 		 	   		  
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121009/540852e3/attachment.html>
+
+From michael at i3wm.org  Tue Oct  9 21:40:00 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 09 Oct 2012 21:40:00 +0200
+Subject: [i3] border-less and title-less tabbed layout
+In-Reply-To: <COL002-W898F58DDC82244A9413C07D18F0@phx.gbl>
+References: <COL002-W898F58DDC82244A9413C07D18F0@phx.gbl>
+Message-ID: <x6obkb4epb.fsf@midna.zekjur.net>
+
+Hi Daniel,
+
+Daniel Stockton <danielstockton at hotmail.com> writes:
+> Dear all, I am really enjoying using i3 but there is one feature
+> missing that would make it perfect: a border-less and title-less
+> tabbed layout. Perhaps this could be configurable in a similar way to
+This doesn?t fit the i3 philosophy because the missing titles obscure
+the fact that there are multiple windows on your screen.
+
+Therefore, we won?t introduce such a feature.
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Wed Oct 10 09:36:16 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 10 Oct 2012 09:36:16 +0200
+Subject: [i3] border-less and title-less tabbed layout
+In-Reply-To: <COL002-W75FF2041D68D6291712B9ED18E0@phx.gbl>
+References: <COL002-W898F58DDC82244A9413C07D18F0@phx.gbl>
+ <x6obkb4epb.fsf@midna.zekjur.net>
+ <COL002-W75FF2041D68D6291712B9ED18E0@phx.gbl>
+Message-ID: <x6y5je6aof.fsf@midna.zekjur.net>
+
+Hi Daniel,
+
+Daniel Stockton <danielstockton at hotmail.com> writes:
+> Personally, my main concern is maximising screen space and I tend to
+> be extremely minimalist in my setup. This is my motiviation for
+> wanting this feature. It makes sense that there should be some
+> indication of multiple windows, but for me it would be enough to have
+> this indication appear when the modifier is pressed.  Anyway, given
+> how well documented the code is, hopefully I can modify it myself for
+> my own use. If you have any advice towards that, it would be greatly
+> appreciated.  Thanks again and regards,Daniel
+The only general advice I can give is read the hacking-howto. And maybe
+spend some time with i3 as-is and see if you really really can?t adapt
+to how things are before you try to modify them ;-).
+
+-- 
+Best regards,
+Michael
+
+From tobias at frilling-online.de  Wed Oct 10 19:59:23 2012
+From: tobias at frilling-online.de (Tobias Frilling)
+Date: Wed, 10 Oct 2012 19:59:23 +0200
+Subject: [i3] Don't be a split container anymore
+Message-ID: <5075B77B.3090702@frilling-online.de>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Hi folks,
+
+consider following layout: I've opened two windows, made the last window a split
+container and then opened a 3rd window, leaving me with something like this:
+
+  -------------------
+  |       |    2    |
+  |   1   |________ |
+  |       |    3    |
+  |       |         |
+  -------------------
+
+Consider further that I'm done with window 3, so I close it. What I now would
+like to do is tell window 2 "Don't be a split container anymore!", so when I
+open a new 3rd window, the 3 windows are all directly in the same container (
+e.g. |1|2|3|). The only way I've found so far to do this is moving window 2
+around. Is there any other way?
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.19 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://www.enigmail.net/
+
+iQIcBAEBAgAGBQJQdbd3AAoJENVg3RpC7ZC81iYP/0tsDyMdJgXu/xOeBZI1WNtt
+vpptvQzkVv+arIDLDDtOp2W2KALEG0GiniHsorNx+m3hghk5tXiHPYBJWCVse7W3
+XZork8OzzANNsuDRrxWJlSRLksya/OseAAPJ+kddzKBzH3IW/xYXtCUHUhsmKwn7
+H1xbGeUNftRU396PUn7gBeTHDEiwN0znRw4H2UE5ZIOU46VLzWQEqJe5u3A8h5zi
+Lzz3li7ET1cav7Tefq7JM8ehsTeE+DUF7ITDX2tHWjD/nH881w/af1ChrnVHRkjY
+5847z6DXeLMRZg92K2iuyQM3O0fvBVEEmJ+pItWVN0t8GGqgvhWvWIYJxuuGUsgI
+q7/gU73Tgfhhz1oWw9crAYadye2kMU1TUKA29GiJil4PxwhJRSxKW2YgyDcEu09v
+Plgt/bVvMIA6eHWvbTNwrovRMP3ujVLFZR7LKTFBn2wm64f9Z5s34HcEOiXtEGHB
+OuXKmU4q4kb2Bh3eo6utg+scs4ePVRWYPrAb3puUJHAhtaAgRYcNgoJIdD38aLDg
+l5IEthflr1Kz32NVp/+/V9xTyNTe3LXjvpk4UWaatepqvnljisE+iZ/6uzH7yM3k
+CfmpA0xQMJHbTzO7mK+Nr+JWxSXebZMal0Rodk9Yya8TJudnPSaJUAHSHBL1BO3t
+76D8BACqemdg9y/aBV6x
+=o0Il
+-----END PGP SIGNATURE-----
+
+From okraits at arcor.de  Wed Oct 10 20:26:59 2012
+From: okraits at arcor.de (Oliver Kraitschy)
+Date: Wed, 10 Oct 2012 20:26:59 +0200
+Subject: [i3] Don't be a split container anymore
+In-Reply-To: <5075B77B.3090702@frilling-online.de>
+References: <5075B77B.3090702@frilling-online.de>
+Message-ID: <5075BDF3.3090602@arcor.de>
+
+Hello Tobias,
+
+if i understand you right, you want to focus the parent of window 2 and 
+then create a new window?
+
+Greetings
+
+Oliver
+
+Am 10.10.2012 19:59, schrieb Tobias Frilling:
+> -----BEGIN PGP SIGNED MESSAGE-----
+> Hash: SHA1
+>
+> Hi folks,
+>
+> consider following layout: I've opened two windows, made the last window a split
+> container and then opened a 3rd window, leaving me with something like this:
+>
+>    -------------------
+>    |       |    2    |
+>    |   1   |________ |
+>    |       |    3    |
+>    |       |         |
+>    -------------------
+>
+> Consider further that I'm done with window 3, so I close it. What I now would
+> like to do is tell window 2 "Don't be a split container anymore!", so when I
+> open a new 3rd window, the 3 windows are all directly in the same container (
+> e.g. |1|2|3|). The only way I've found so far to do this is moving window 2
+> around. Is there any other way?
+> -----BEGIN PGP SIGNATURE-----
+> Version: GnuPG v2.0.19 (GNU/Linux)
+> Comment: Using GnuPG with Mozilla - http://www.enigmail.net/
+>
+> iQIcBAEBAgAGBQJQdbd3AAoJENVg3RpC7ZC81iYP/0tsDyMdJgXu/xOeBZI1WNtt
+> vpptvQzkVv+arIDLDDtOp2W2KALEG0GiniHsorNx+m3hghk5tXiHPYBJWCVse7W3
+> XZork8OzzANNsuDRrxWJlSRLksya/OseAAPJ+kddzKBzH3IW/xYXtCUHUhsmKwn7
+> H1xbGeUNftRU396PUn7gBeTHDEiwN0znRw4H2UE5ZIOU46VLzWQEqJe5u3A8h5zi
+> Lzz3li7ET1cav7Tefq7JM8ehsTeE+DUF7ITDX2tHWjD/nH881w/af1ChrnVHRkjY
+> 5847z6DXeLMRZg92K2iuyQM3O0fvBVEEmJ+pItWVN0t8GGqgvhWvWIYJxuuGUsgI
+> q7/gU73Tgfhhz1oWw9crAYadye2kMU1TUKA29GiJil4PxwhJRSxKW2YgyDcEu09v
+> Plgt/bVvMIA6eHWvbTNwrovRMP3ujVLFZR7LKTFBn2wm64f9Z5s34HcEOiXtEGHB
+> OuXKmU4q4kb2Bh3eo6utg+scs4ePVRWYPrAb3puUJHAhtaAgRYcNgoJIdD38aLDg
+> l5IEthflr1Kz32NVp/+/V9xTyNTe3LXjvpk4UWaatepqvnljisE+iZ/6uzH7yM3k
+> CfmpA0xQMJHbTzO7mK+Nr+JWxSXebZMal0Rodk9Yya8TJudnPSaJUAHSHBL1BO3t
+> 76D8BACqemdg9y/aBV6x
+> =o0Il
+> -----END PGP SIGNATURE-----
+>
+
+
+From michael at i3wm.org  Wed Oct 10 20:39:21 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 10 Oct 2012 20:39:21 +0200
+Subject: [i3] Don't be a split container anymore
+In-Reply-To: <5075B77B.3090702@frilling-online.de>
+References: <5075B77B.3090702@frilling-online.de>
+Message-ID: <x6life41eu.fsf@midna.zekjur.net>
+
+Hi Tobias,
+
+Tobias Frilling <tobias at frilling-online.de> writes:
+> e.g. |1|2|3|). The only way I've found so far to do this is moving window 2
+> around. Is there any other way?
+Moving it is the way to go.
+
+-- 
+Best regards,
+Michael
+
+From kemurphy.cmu at gmail.com  Wed Oct 10 20:53:48 2012
+From: kemurphy.cmu at gmail.com (Kevin Murphy)
+Date: Wed, 10 Oct 2012 14:53:48 -0400
+Subject: [i3] Don't be a split container anymore
+In-Reply-To: <x6life41eu.fsf@midna.zekjur.net>
+References: <5075B77B.3090702@frilling-online.de>
+ <x6life41eu.fsf@midna.zekjur.net>
+Message-ID: <926C3375-EC42-4921-8D88-12D20B1CC395@gmail.com>
+
+This looks to me like yet another case in which something like mod+shift+a ("Move to Parent") would me useful.
+
+On Oct 10, 2012, at 2:39 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+
+> Hi Tobias,
+> 
+> Tobias Frilling <tobias at frilling-online.de> writes:
+>> e.g. |1|2|3|). The only way I've found so far to do this is moving window 2
+>> around. Is there any other way?
+> Moving it is the way to go.
+> 
+> -- 
+> Best regards,
+> Michael
+
+From tobias at frilling-online.de  Wed Oct 10 21:30:27 2012
+From: tobias at frilling-online.de (Tobias Frilling)
+Date: Wed, 10 Oct 2012 21:30:27 +0200
+Subject: [i3] Don't be a split container anymore
+In-Reply-To: <5075BDF3.3090602@arcor.de>
+References: <5075B77B.3090702@frilling-online.de> <5075BDF3.3090602@arcor.de>
+Message-ID: <5075CCD3.70404@frilling-online.de>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Oliver Kraitschy wrote:
+> if i understand you right, you want to focus the parent of window 2 and then create a new window?
+
+Not really, it's more like moving window 2 out of its own container into its parent, so that I
+don't have to focus the parent.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.19 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://www.enigmail.net/
+
+iQIcBAEBAgAGBQJQdczQAAoJENVg3RpC7ZC8KlkQAKNYLNPu8qXfd0GBJxfpeN58
+pbuUHcAoPcGtclRKDUzMoxnoDqf7R2ixPLh/Tdpn87qqbSXu3GuNBCOgQA6T96id
+F7SkJRD5cGdhcYje84MUKTjqTHQ+h0bzg/n8gbhKaodo+gtAqNQZlybta9HdnlvL
+rAQamxp3V+AVEE+gaiqy8impWfmHzO30kKJupcWPeU/LbSzATwhhwc2vyptHgTBQ
+aYoY8+xJD0BkdgyTchiI7jfzkTIBQaqsO/nLiLpm39JlC7s8ZEXT7/Sy33LlgXbp
+gvDLzt4+PXm1+trVFVNCe7FN5j+NNUw7JXvddjFBHLOZ6+hDVEyN/LDOl/R0zBt4
+miyIU7l3/3w9/PM1b2d1shT7vBhNPO3uhmTZACvbhiuMoerLVLzsybjxQbNZ9kGH
+tMD3sVL5IFwJSDVySLMpRTDQVScWYOBBj87eeK6r0QaRqOPlFWG2NmzcmxwPMhM9
+Ls5GnfkyCtDbJuYMg+EbL8WDiVgAmxE9s2oji0Y/gK1vHmQGaySrU5xwtuXE8w4l
+RB1q2ATiAHdoxjxRuQST0X0OVaokoW7HyzTb0R0zRtM52hZloQ/o87zfq1KOE4BB
+W2kHHqUBMq7cqLafLb9DUPWHsdLRjZ/NEfB7nnnNbZl9VhcJkQlJbtZJzXSyitMN
+WViAT5KLuU8Zggn2Zh2R
+=RPny
+-----END PGP SIGNATURE-----
+
+From tobias at frilling-online.de  Wed Oct 10 21:30:51 2012
+From: tobias at frilling-online.de (Tobias Frilling)
+Date: Wed, 10 Oct 2012 21:30:51 +0200
+Subject: [i3] Don't be a split container anymore
+In-Reply-To: <926C3375-EC42-4921-8D88-12D20B1CC395@gmail.com>
+References: <5075B77B.3090702@frilling-online.de>
+ <x6life41eu.fsf@midna.zekjur.net>
+ <926C3375-EC42-4921-8D88-12D20B1CC395@gmail.com>
+Message-ID: <5075CCEB.4000201@frilling-online.de>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Kevin Murphy wrote:
+> This looks to me like yet another case in which something like mod+shift+a ("Move to Parent") would me useful.
+
+Yeah, that would be helpful, is there a way to do this?
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.19 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://www.enigmail.net/
+
+iQIcBAEBAgAGBQJQdczpAAoJENVg3RpC7ZC8BCYP/AnzxksUUhXUA8hnJJ92WKwe
+SqNmz+R9xM3F1CXd7egTqLGjul9sTB7oo6SO3RUnQW6M6eDEbwTjxwYOnBESXYD1
+/GUGMewUD1Z8bSKVfucxSILn2256RMC7NTGt98aanUio6oqrDWuFt73aS5STUgp5
+1w2TsfjMvo2sUrGZ5Bmlq0XXcNNnYijUvppFnHUfPfnEhiacXJGokB/XZOzdGyoP
+B4F3eYQtuxi8A7JPbr4bOWNpRs78fl1gUjmGm15MKC+zDOMJWkZfzeOO1Wqt9O6i
+SR88xzyQxtdyWHHHKYab/lXwckgMo7IQR1DGTki7qcP6ccDyZppm5M71oHRNNMhe
+nMjA88afB9gtyUTL/N6zoooC2bDQknUnBipgzdH0Y3b2VhMZJYXdFnBaVAAO2wIB
++Meyk39mtQqD4DHFpRKU0dMqLqYHjpBpq0YBmf1NulPFMmkh/+op0z7ckG42oUfv
+s3RFtkaE/aG3R1ISnJfxDzk5+8HLhDDRkuEkbKkf+0n29NChCpjr1pgtJFGbEOUm
+8pnfSqeSy8btsGBRQTlIryAATUKf6aiZncrg4i7ovZWJMluOwQ/sJlvaQ3EsplgI
+PlUF61dYtY4xMly+BxusunuOIiJQ0WZTxNXth2OxXMMMIWYIEBdmNhttJoqkyUnn
+YPFe8lVhCAzIVbh/xykc
+=Drrz
+-----END PGP SIGNATURE-----
+
+From pkordy at gmail.com  Thu Oct 11 08:44:18 2012
+From: pkordy at gmail.com (Piotr Kordy)
+Date: Thu, 11 Oct 2012 08:44:18 +0200
+Subject: [i3] border-less and title-less tabbed layout
+In-Reply-To: <x6y5je6aof.fsf@midna.zekjur.net>
+References: <COL002-W898F58DDC82244A9413C07D18F0@phx.gbl>
+ <x6obkb4epb.fsf@midna.zekjur.net>
+ <COL002-W75FF2041D68D6291712B9ED18E0@phx.gbl>
+ <x6y5je6aof.fsf@midna.zekjur.net>
+Message-ID: <CAPNvPCMwQmqLtGT8iyyERAd6cweYObVbKsHe3+H=rJ1SfO40ug@mail.gmail.com>
+
+Hi,
+Daniel, if you decide to implement this feature, please do so also for the
+stacked layout. It would really save some of my screen estate. I tend to
+have
+a screen divided into two parts where each part consists of multiple
+stacked
+windows. Sometimes titles take up to 1/4 of my screen height. I was
+thinking of extending possibility to change border style to stacked and
+tabbed
+layout, but your suggestion would also help a lot.
+
+Cheers,
+Piotr
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121011/189f651d/attachment.html>
+
+From rodperson at rodperson.com  Wed Oct 17 19:10:23 2012
+From: rodperson at rodperson.com (Rod Person)
+Date: Wed, 17 Oct 2012 13:10:23 -0400
+Subject: [i3] 4.3 Build error on FreeBSD
+Message-ID: <20121017131023.0000650a.rodperson@rodperson.com>
+
+Hello,
+
+I'm trying to build the latest version of i3 on FreeBSD since the port
+has not been updated yet, and I get the following error when building.
+
+[i3] YACC src/cfgparse.y
+[i3] CC src/cfgparse.tab.c
+[i3] LEX src/cfgparse.l
+flex: can't open src/cfgparse.yy.c
+gmake: *** [src/cfgparse.yy.c] Error 1
+
+
+-- 
+Rod
+
+Just because it can been done, does not mean it should be done.
+
+From michael at i3wm.org  Wed Oct 17 20:29:48 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 17 Oct 2012 20:29:48 +0200
+Subject: [i3] 4.3 Build error on FreeBSD
+In-Reply-To: <20121017131023.0000650a.rodperson@rodperson.com>
+References: <20121017131023.0000650a.rodperson@rodperson.com>
+Message-ID: <x6mwzlne8z.fsf@midna.zekjur.net>
+
+Hi Rod,
+
+Rod Person <rodperson at rodperson.com> writes:
+> [i3] YACC src/cfgparse.y
+> [i3] CC src/cfgparse.tab.c
+> [i3] LEX src/cfgparse.l
+> flex: can't open src/cfgparse.yy.c
+> gmake: *** [src/cfgparse.yy.c] Error 1
+FreeBSD?s base system flex or bison or both is really old. Use the one
+from ports.
+
+-- 
+Best regards,
+Michael
+
+From rodperson at rodperson.com  Wed Oct 17 21:04:20 2012
+From: rodperson at rodperson.com (Rod Person)
+Date: Wed, 17 Oct 2012 15:04:20 -0400
+Subject: [i3] 4.3 Build error on FreeBSD
+In-Reply-To: <x6mwzlne8z.fsf@midna.zekjur.net>
+References: <20121017131023.0000650a.rodperson@rodperson.com>
+ <x6mwzlne8z.fsf@midna.zekjur.net>
+Message-ID: <20121017150420.00001ca3@unknown>
+
+On Wed, 17 Oct 2012 20:29:48 +0200
+Michael Stapelberg <michael at i3wm.org> wrote:
+
+> Hi Rod,
+> 
+> Rod Person <rodperson at rodperson.com> writes:
+> > [i3] YACC src/cfgparse.y
+> > [i3] CC src/cfgparse.tab.c
+> > [i3] LEX src/cfgparse.l
+> > flex: can't open src/cfgparse.yy.c
+> > gmake: *** [src/cfgparse.yy.c] Error 1
+> FreeBSD?s base system flex or bison or both is really old. Use the one
+> from ports.
+> 
+Thanks for the reply.
+
+At first I thought that was the issues, I have 
+
+flex 2.5.37
+bison 2.5.1
+
+Both of which are higher than the DEPENDS document...I thought maybe I
+should downgrade them?
+
+-- 
+
+Rod Person  http://www.rodperson.com  rodperson at rodperson.com
+
+
+Sent From Claws Mail 3.8.0cvs30 Win7 x86 GTK+ 2.16.6/GLib 2.24.0
+
+
+
+From michael at i3wm.org  Thu Oct 18 08:58:23 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 18 Oct 2012 08:58:23 +0200
+Subject: [i3] 4.3 Build error on FreeBSD
+In-Reply-To: <20121017150420.00001ca3@unknown>
+References: <20121017131023.0000650a.rodperson@rodperson.com>
+ <x6mwzlne8z.fsf@midna.zekjur.net> <20121017150420.00001ca3@unknown>
+Message-ID: <x6k3uonu5s.fsf@midna.zekjur.net>
+
+Hi Rod,
+
+Rod Person <rodperson at rodperson.com> writes:
+> flex 2.5.37
+> bison 2.5.1
+Are you sure that those are actually used when compiling?
+
+FYI: I use flex 2.5.35 and bison 2.5.
+
+I?d recommend you to contact the FreeBSD port maintainer or a FreeBSD
+mailing list, they should be more knowledgable about problems like this.
+
+Also, as a heads-up: in the next version of i3, we?ll still support the
+flex/bison parser but in the version afterwards, it?ll be removed.
+
+-- 
+Best regards,
+Michael
+
+From dcoppa at gmail.com  Thu Oct 18 09:15:48 2012
+From: dcoppa at gmail.com (David Coppa)
+Date: Thu, 18 Oct 2012 09:15:48 +0200
+Subject: [i3] 4.3 Build error on FreeBSD
+In-Reply-To: <20121017150420.00001ca3@unknown>
+References: <20121017131023.0000650a.rodperson@rodperson.com>
+ <x6mwzlne8z.fsf@midna.zekjur.net> <20121017150420.00001ca3@unknown>
+Message-ID: <CABM=MFKUBFr2wtkByuBkyULfe37oDjGfYHH-dYQ1WdqENoP+DA@mail.gmail.com>
+
+On Wed, Oct 17, 2012 at 9:04 PM, Rod Person <rodperson at rodperson.com> wrote:
+> On Wed, 17 Oct 2012 20:29:48 +0200
+> Michael Stapelberg <michael at i3wm.org> wrote:
+>
+>> Hi Rod,
+>>
+>> Rod Person <rodperson at rodperson.com> writes:
+>> > [i3] YACC src/cfgparse.y
+>> > [i3] CC src/cfgparse.tab.c
+>> > [i3] LEX src/cfgparse.l
+>> > flex: can't open src/cfgparse.yy.c
+>> > gmake: *** [src/cfgparse.yy.c] Error 1
+>> FreeBSD?s base system flex or bison or both is really old. Use the one
+>> from ports.
+>>
+> Thanks for the reply.
+>
+> At first I thought that was the issues, I have
+>
+> flex 2.5.37
+> bison 2.5.1
+>
+> Both of which are higher than the DEPENDS document...I thought maybe I
+> should downgrade them?
+
+You need the ones from ports:
+
+ports/textproc/flex
+ports/devel/bison
+
+From mhcerri at gmail.com  Thu Oct 18 22:55:41 2012
+From: mhcerri at gmail.com (Marcelo Cerri)
+Date: Thu, 18 Oct 2012 17:55:41 -0300
+Subject: [i3] [PATCH] add good, degraded and bad colors per module
+Message-ID: <1350593741-10831-1-git-send-email-mhcerri@gmail.com>
+
+This commit adds support for color_good, color_degraded and color_bad
+directives per module section in the config file.
+---
+
+Please consider this patch for i3status. I'm not sure if this would be
+accepted but feedbacks and suggestions are welcome.
+
+ i3status.c         | 19 +++++++++++++++----
+ include/i3status.h | 12 ++++++++----
+ man/i3status.man   |  5 +++++
+ 3 files changed, 28 insertions(+), 8 deletions(-)
+
+diff --git a/i3status.c b/i3status.c
+index 5d3153c..0037fbc 100644
+--- a/i3status.c
++++ b/i3status.c
+@@ -35,10 +35,17 @@
+ 
+ #define exit_if_null(pointer, ...) { if (pointer == NULL) die(__VA_ARGS__); }
+ 
++#define CFG_COLOR_OPTS(good, degraded, bad) \
++    CFG_STR("color_good", good, CFGF_NONE), \
++    CFG_STR("color_degraded", degraded, CFGF_NONE), \
++    CFG_STR("color_bad", bad, CFGF_NONE)
++
++#define CFG_CUSTOM_COLOR_OPTS CFG_COLOR_OPTS(NULL, NULL, NULL)
++
+ /* socket file descriptor for general purposes */
+ int general_socket;
+ 
+-cfg_t *cfg, *cfg_general;
++cfg_t *cfg, *cfg_general, *cfg_section;
+ 
+ /*
+  * Exit upon SIGPIPE because when we have nowhere to write to, gathering
+@@ -179,35 +186,37 @@ int main(int argc, char *argv[]) {
+         cfg_opt_t general_opts[] = {
+                 CFG_STR("output_format", "auto", CFGF_NONE),
+                 CFG_BOOL("colors", 1, CFGF_NONE),
+-                CFG_STR("color_good", "#00FF00", CFGF_NONE),
+-                CFG_STR("color_degraded", "#FFFF00", CFGF_NONE),
+-                CFG_STR("color_bad", "#FF0000", CFGF_NONE),
+                 CFG_STR("color_separator", "#333333", CFGF_NONE),
+                 CFG_INT("interval", 1, CFGF_NONE),
++                CFG_COLOR_OPTS("#00FF00", "#FFFF00", "#FF0000"),
+                 CFG_END()
+         };
+ 
+         cfg_opt_t run_watch_opts[] = {
+                 CFG_STR("pidfile", NULL, CFGF_NONE),
+                 CFG_STR("format", "%title: %status", CFGF_NONE),
++                CFG_CUSTOM_COLOR_OPTS,
+                 CFG_END()
+         };
+ 
+         cfg_opt_t wireless_opts[] = {
+                 CFG_STR("format_up", "W: (%quality at %essid, %bitrate) %ip", CFGF_NONE),
+                 CFG_STR("format_down", "W: down", CFGF_NONE),
++                CFG_CUSTOM_COLOR_OPTS,
+                 CFG_END()
+         };
+ 
+         cfg_opt_t ethernet_opts[] = {
+                 CFG_STR("format_up", "E: %ip (%speed)", CFGF_NONE),
+                 CFG_STR("format_down", "E: down", CFGF_NONE),
++                CFG_CUSTOM_COLOR_OPTS,
+                 CFG_END()
+         };
+ 
+         cfg_opt_t ipv6_opts[] = {
+                 CFG_STR("format_up", "%ip", CFGF_NONE),
+                 CFG_STR("format_down", "no IPv6", CFGF_NONE),
++                CFG_CUSTOM_COLOR_OPTS,
+                 CFG_END()
+         };
+ 
+@@ -257,6 +266,7 @@ int main(int argc, char *argv[]) {
+                 CFG_STR("device", "default", CFGF_NONE),
+                 CFG_STR("mixer", "Master", CFGF_NONE),
+                 CFG_INT("mixer_idx", 0, CFGF_NONE),
++                CFG_CUSTOM_COLOR_OPTS,
+                 CFG_END()
+         };
+ 
+@@ -275,6 +285,7 @@ int main(int argc, char *argv[]) {
+                 CFG_SEC("ddate", ddate_opts, CFGF_NONE),
+                 CFG_SEC("load", load_opts, CFGF_NONE),
+                 CFG_SEC("cpu_usage", usage_opts, CFGF_NONE),
++                CFG_CUSTOM_COLOR_OPTS,
+                 CFG_END()
+         };
+ 
+diff --git a/include/i3status.h b/include/i3status.h
+index fc984f8..559df9e 100644
+--- a/include/i3status.h
++++ b/include/i3status.h
+@@ -45,13 +45,13 @@ enum { O_DZEN2, O_XMOBAR, O_I3BAR, O_NONE } output_format;
+ 
+ #define CASE_SEC(name) \
+         if (BEGINS_WITH(current, name)) \
+-                with(cfg_t *, sec, cfg_getsec(cfg, name)) \
++                with(cfg_t *, sec, cfg_section = cfg_getsec(cfg, name)) \
+                         if (sec != NULL)
+ 
+ #define CASE_SEC_TITLE(name) \
+         if (BEGINS_WITH(current, name)) \
+                 with(const char *, title, current + strlen(name) + 1) \
+-                        with(cfg_t *, sec, cfg_gettsec(cfg, name, title)) \
++                        with(cfg_t *, sec, cfg_section = cfg_gettsec(cfg, name, title)) \
+                                 if (sec != NULL)
+ 
+ /* Macro which any plugin can use to output the full_text part (when the output
+@@ -88,7 +88,11 @@ enum { O_DZEN2, O_XMOBAR, O_I3BAR, O_NONE } output_format;
+ #define START_COLOR(colorstr) \
+ 	do { \
+ 		if (cfg_getbool(cfg_general, "colors")) { \
+-			const char *_val = cfg_getstr(cfg_general, colorstr); \
++			const char *_val = NULL; \
++			if (cfg_section) \
++				_val = cfg_getstr(cfg_section, colorstr); \
++			if (!_val) \
++				_val = cfg_getstr(cfg_general, colorstr); \
+ 			if (output_format == O_I3BAR) { \
+ 				yajl_gen_string(json_gen, (const unsigned char *)"color", strlen("color")); \
+ 				yajl_gen_string(json_gen, (const unsigned char *)_val, strlen(_val)); \
+@@ -147,6 +151,6 @@ bool process_runs(const char *path);
+ /* socket file descriptor for general purposes */
+ extern int general_socket;
+ 
+-extern cfg_t *cfg, *cfg_general;
++extern cfg_t *cfg, *cfg_general, *cfg_section;
+ 
+ #endif
+diff --git a/man/i3status.man b/man/i3status.man
+index 0d98f8f..1e0278b 100644
+--- a/man/i3status.man
++++ b/man/i3status.man
+@@ -143,6 +143,11 @@ none::
+ Does not use any color codes. Separates values by the pipe symbol. This should
+ be used with i3bar and can be used for custom scripts.
+ 
++It's also possible to use the color_good, color_degraded, color_bad directives
++to define specific colors to each module. If one of these directives is defined
++in a module section its value will override the value defined in the general
++section just for this module.a
++
+ === IPv6
+ 
+ This module gets the IPv6 address used for outgoing connections (that is, the
+-- 
+1.7.12
+
+
+From baptiste.daroussin at gmail.com  Tue Oct 23 12:44:38 2012
+From: baptiste.daroussin at gmail.com (Baptiste Daroussin)
+Date: Tue, 23 Oct 2012 12:44:38 +0200
+Subject: [i3] 4.3 Build error on FreeBSD
+In-Reply-To: <CABM=MFKUBFr2wtkByuBkyULfe37oDjGfYHH-dYQ1WdqENoP+DA@mail.gmail.com>
+References: <20121017131023.0000650a.rodperson@rodperson.com>
+ <x6mwzlne8z.fsf@midna.zekjur.net> <20121017150420.00001ca3@unknown>
+ <CABM=MFKUBFr2wtkByuBkyULfe37oDjGfYHH-dYQ1WdqENoP+DA@mail.gmail.com>
+Message-ID: <CAPKC6oJSUjcYcKiJuadZ2VQE6MawOpgABeR2mug1UqzbKt5hdQ@mail.gmail.com>
+
+2012/10/18 David Coppa <dcoppa at gmail.com>
+
+> On Wed, Oct 17, 2012 at 9:04 PM, Rod Person <rodperson at rodperson.com>
+> wrote:
+> > On Wed, 17 Oct 2012 20:29:48 +0200
+> > Michael Stapelberg <michael at i3wm.org> wrote:
+> >
+> >> Hi Rod,
+> >>
+> >> Rod Person <rodperson at rodperson.com> writes:
+> >> > [i3] YACC src/cfgparse.y
+> >> > [i3] CC src/cfgparse.tab.c
+> >> > [i3] LEX src/cfgparse.l
+> >> > flex: can't open src/cfgparse.yy.c
+> >> > gmake: *** [src/cfgparse.yy.c] Error 1
+> >> FreeBSD?s base system flex or bison or both is really old. Use the one
+> >> from ports.
+> >>
+> > Thanks for the reply.
+> >
+> > At first I thought that was the issues, I have
+> >
+> > flex 2.5.37
+> > bison 2.5.1
+> >
+> > Both of which are higher than the DEPENDS document...I thought maybe I
+> > should downgrade them?
+>
+> You need the ones from ports:
+>
+> ports/textproc/flex
+> ports/devel/bison
+>
+actually devel/bison is not needed, but textproc/flex is really needed.
+
+If you have a look a the port which is old :( then you'll get the correct
+way to build i3 on FreeBSD.
+
+regards,
+Bapt
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121023/3fb9e1dd/attachment.html>
+
+From rodperson at rodperson.com  Tue Oct 23 13:35:20 2012
+From: rodperson at rodperson.com (Rod Person)
+Date: Tue, 23 Oct 2012 07:35:20 -0400
+Subject: [i3] 4.3 Build error on FreeBSD
+In-Reply-To: <CAPKC6oJSUjcYcKiJuadZ2VQE6MawOpgABeR2mug1UqzbKt5hdQ@mail.gmail.com>
+References: <20121017131023.0000650a.rodperson@rodperson.com>
+ <x6mwzlne8z.fsf@midna.zekjur.net> <20121017150420.00001ca3@unknown>
+ <CABM=MFKUBFr2wtkByuBkyULfe37oDjGfYHH-dYQ1WdqENoP+DA@mail.gmail.com>
+ <CAPKC6oJSUjcYcKiJuadZ2VQE6MawOpgABeR2mug1UqzbKt5hdQ@mail.gmail.com>
+Message-ID: <20121023073520.000049b6.rodperson@rodperson.com>
+
+On Tue, 23 Oct 2012 12:44:38 +0200
+Baptiste Daroussin <baptiste.daroussin at gmail.com> wrote:
+> > >> Rod Person <rodperson at rodperson.com> writes:
+> > >> > [i3] YACC src/cfgparse.y
+> > >> > [i3] CC src/cfgparse.tab.c
+> > >> > [i3] LEX src/cfgparse.l
+> > >> > flex: can't open src/cfgparse.yy.c
+> > >> > gmake: *** [src/cfgparse.yy.c] Error 1
+> > >> FreeBSD?s base system flex or bison or both is really old. Use
+> > >> the one from ports.
+> > >>
+> > > Thanks for the reply.
+> > >
+> > > At first I thought that was the issues, I have
+> > >
+> > > flex 2.5.37
+> > > bison 2.5.1
+> > >
+> > > Both of which are higher than the DEPENDS document...I thought
+> > > maybe I should downgrade them?
+> >
+> > You need the ones from ports:
+> >
+> > ports/textproc/flex
+> > ports/devel/bison
+> >
+> actually devel/bison is not needed, but textproc/flex is really
+> needed.
+> 
+> If you have a look a the port which is old :( then you'll get the
+> correct way to build i3 on FreeBSD.
+
+Bapt,
+
+Thanks for the reply. I tried looking at the old port and making the
+changes suggested by it to 4.3 but that did not help. Then someone on
+the FreeBSD list found the problem, which I quote now:
+
+"The commands that fail are:
+
+flex -i -o src/cfgparse.yy.c ../i3-4.3/src/cfgparse.l
+flex -i -o i3-config-wizard/cfgparse.yy.c i3-config-wizard/cfgparse.l
+
+The below commands work:
+
+flex -i -osrc/cfgparse.yy.c ../i3-4.3/src/cfgparse.l
+flex -i -oi3-config-wizard/cfgparse.yy.c i3-config-wizard/cfgparse.l"
+
+So once I did that every thing build smoothly. I guess it just one of
+those little Linux and FreeBSD differences :)
+
+The port maintainer was CC on the reply with a diff so hopefully the
+official port will be updated soon.
+
+Thanks again for the reply,
+
+Rod
+
+-- 
+Just because it can been done, does not mean it should be done.
+
+From michael at i3wm.org  Wed Oct 24 19:01:07 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 24 Oct 2012 19:01:07 +0200
+Subject: [i3] [PATCH] add good, degraded and bad colors per module
+In-Reply-To: <1350593741-10831-1-git-send-email-mhcerri@gmail.com>
+References: <1350593741-10831-1-git-send-email-mhcerri@gmail.com>
+Message-ID: <x6hapjls8c.fsf@midna.zekjur.net>
+
+Hi Marcelo,
+
+Marcelo Cerri <mhcerri at gmail.com> writes:
+> This commit adds support for color_good, color_degraded and color_bad
+> directives per module section in the config file.
+Thanks, this is merged.
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Wed Oct 24 21:04:08 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 24 Oct 2012 21:04:08 +0200
+Subject: [i3] [RFC]render.c cleanup.
+In-Reply-To: <CAMJW5=2LLek_yui0ruX5AiBu0T_gnEXw=1TCZe3=OUdEQ_ipEw@mail.gmail.com>
+References: <CAMJW5=3k65gkmrHndPQkX8+qLJs6ueXr3Aqdx2-cGQuwa0BDqg@mail.gmail.com>
+ <20120902222820.21042.65253@midna.zekjur.net>
+ <CAMJW5=0TQwozJx=hVQNL7V9a0we6WWE1uKptF6p1p1-6Pxp7xg@mail.gmail.com>
+ <20120904210403.13924.70613@midna.zekjur.net> <op.wj70akryh7z1jl@sraven>
+ <x68vc9et2q.fsf@midna.zekjur.net>
+ <CAMJW5=2xJnEK+oqOseFvMAyCXF1e1ZbVvvX_MKeDDAj0L-4qtA@mail.gmail.com>
+ <x61uhu89cz.fsf@midna.zekjur.net>
+ <CAMJW5=2LLek_yui0ruX5AiBu0T_gnEXw=1TCZe3=OUdEQ_ipEw@mail.gmail.com>
+Message-ID: <x6d307lmjb.fsf@midna.zekjur.net>
+
+Hi darkraven,
+
+DR <drdarkraven at gmail.com> writes:
+>> Can you please resend them in such a way that they apply to what?s
+>>  currently in the git "next" branch? Thanks!
+>
+> Rebased.
+
+So, I?ve just looked at your patch again (sorry for taking so long, I
+have a bad habit of delaying unpleasant tasks).
+
+I?ve come to the conclusion that my gut feeling about such a refactoring
+just says no. It?s too risky for me to just merge it without
+understanding every detail, and in order to to understand everything, I
+need to do the changes myself. Simply reading the diff (or trying to
+read both versions side-by-side) does not help me in understanding the
+changes.
+
+Therefore, I will not merge these patches as they are, sorry for the
+work you?ve put into it :-(.
+
+However, I believe your original goal was to implement the smart popup
+during fullscreen behavior, which I have now done in commit
+http://c.i3wm.org/9b87b2c (without any large refactorings whatsoever).
+
+If there is anything else you intended to accomplish with those patches,
+please let me know and we can work out a different solution for that,
+too.
+
+-- 
+Best regards,
+Michael
+

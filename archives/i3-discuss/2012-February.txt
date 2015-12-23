@@ -1,0 +1,2900 @@
+From mountpeaks at lavabit.com  Wed Feb  1 09:45:14 2012
+From: mountpeaks at lavabit.com (mountpeaks at lavabit.com)
+Date: Wed, 1 Feb 2012 03:45:14 -0500 (EST)
+Subject: [i3] i3 and i3bar config
+Message-ID: <34538.194.197.79.18.1328085914.squirrel@lavabit.com>
+
+I've just recently tried i3 at work, and was trying to make tray work
+(unfortunately it is not preconfigured by default, which I find strange)
+I added the necessary lines to ~/.i3/config for tray to work on boot at
+the end of config file, but after gdm login i3 crashes and I'm taken back
+to login screen. This is what I added:
+
+bar {
+    output            LVDS1
+    status_command    i3status
+    position          top
+    mode              hide
+    workspace_buttons yes
+    tray_output       HDMI1
+
+    font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+
+    colors {
+        background #000000
+        statusline #ffffff
+
+        focused_workspace  #ffffff #285577
+        active_workspace   #ffffff #333333
+        inactive_workspace #888888 #222222
+        urgent_workspace   #ffffff #900000
+    }
+}
+
+Tell me what am I doing wrong?
+
+
+
+From michael+i3 at stapelberg.de  Wed Feb  1 13:58:05 2012
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Wed, 01 Feb 2012 12:58:05 +0000
+Subject: [i3] i3 and i3bar config
+In-Reply-To: <34538.194.197.79.18.1328085914.squirrel@lavabit.com>
+References: <34538.194.197.79.18.1328085914.squirrel@lavabit.com>
+Message-ID: <1328101046-sup-4541@stapelberg.de>
+
+Hi mountpeaks,
+
+Excerpts from mountpeaks's message of 2012-02-01 08:45:14 +0000:
+> I've just recently tried i3 at work, and was trying to make tray work
+> (unfortunately it is not preconfigured by default, which I find strange)
+This sounds like you are using an old version of i3.
+
+Please provide the output of i3 --version. If it?s older than 4.1, there is no
+tray for you :).
+
+Best regards,
+Michael
+
+From jeff at jibson.com  Thu Feb  2 06:01:31 2012
+From: jeff at jibson.com (Jeff Jibson)
+Date: Wed, 1 Feb 2012 22:01:31 -0700
+Subject: [i3] Can I get the current mode?
+Message-ID: <CAPAw0WrxBwVCsqv65Brh6u+rdCfwDkG2k4UWfDE7DjZps+rpLA@mail.gmail.com>
+
+How can I get the current mode?  I am looking for the mode that is set
+in the i3 config, i.e. mode "resize."  There are a couple of uses I
+can think of; first, displaying it in the status bar; second, using it
+within a script.
+
+Thanks.
+
+From alex at ua2web.com  Thu Feb  2 07:39:17 2012
+From: alex at ua2web.com (Alex V. Koval)
+Date: Thu, 2 Feb 2012 08:39:17 +0200 (EET)
+Subject: [i3] first week impressions of using i3
+Message-ID: <alpine.LNX.2.00.1202020838480.30063@avk-v131-2>
+
+
+Hi All,
+
+At first BIG thanks for authors for creating such an excellent product!
+
+I would like to share my 1-week experience here, because I think it is relevant 
+for authours to understand what/how novices think. My impressions
+are fresh now, but the more I became used to, the less I will notice
+the small but important differencies which novice users need.
+
+What I explain is neigher critics, neither wishes to implement. It is as-is, 
+just the impressions of new user, and please do your own judgement
+and conclusions if anything from said below is important for you
+and strategically for i3.
+
+Things I've noticed:
+
+1) There are no good explation of stacking mode in the video screencast
+     and docs.
+
+2) "Resize" section of default config file is too complicated. I've come
+     with much better solution for me, it is very easy to remember:
+
+# resize
+bindsym Mod4+Mod1+Left            resize shrink   right 3 px or 3 ppt
+bindsym Mod4+Mod1+Right           resize grow     right 3 px or 3 ppt
+bindsym Mod4+Mod1+Control+Right   resize shrink   left 3 px or 3 ppt
+bindsym Mod4+Mod1+Control+Left    resize grow     left 3 px or 3 ppt
+bindsym Mod4+Mod1+Up              resize shrink   down 3 px or 3 ppt
+bindsym Mod4+Mod1+Down            resize grow     down 3 px or 3 ppt
+bindsym Mod4+Mod1+Control+Down    resize shrink   up 3 px or 3 ppt
+bindsym Mod4+Mod1+Control+Up      resize grow     up 3 px or 3 ppt
+
+P.S. May be I just don't get the defaule resize mode. I've tried
+it a few times and later just disabled it because were unable to learn
+it fast.
+
+3) [minor issue ]Modkey + jkl - difficult to re-learn after xmonad,
+     awesome and others which have assigned different meanings for those keys
+     by default
+
+4) [minor] I can not find the shortcut for Alt-Tab. Simple, this should be 
+ability
+     to cycle windows on current desktop. Most of newcoming users would feel
+     bad without it.
+
+5) [minor] Floating mode for the whole desktop. Let me explain. Tiling & 
+stacking
+     are very good for hard work, where all space is occupied
+     by different windows. But there are situations when I don't need
+     this. Sometimes I want to see my nice background and a few floating
+     windows over it. It would be good to have such a mode for desktop,
+     as a fallback for a typical user to normal work.
+
+     The other argument: I use to put very nice background on my desktop,
+     and would never see it if I always work in tiling.
+
+     It is also _very_ important IMO if we would ever have floating
+     mode for desktop, it should support 'smart' window placement. I've
+     explained
+     what I mean in this video: http://youtu.be/eS-mchtzJsg but generally it
+     means
+     the following: place window in biggest onuccupied space on current screen.
+
+6) *Always* pressing Modkey+H, Modkey+V before every next program open is
+     overkill. I think more smart would be to cycle this. Why? Because now every
+     next window open always have bigger ratio X*Y where it is comfortable to
+     work
+     with apps in square. So, what I mean, exactly, I think it would be helpful
+     if:
+       6.1. Mod+enter - opens terminal on full screen
+       6.2. Mod+enter - opens terminal split vertically
+       6.3. Mod+enter (without Modkey+v) opens new terminal split horizontally
+
+etc... Because I always tend to do it this way. I don't see big necessity
+to open tall narrow terminals.
+
+     6.4. Next one should open horizontally.
+
+Looks like we come up to somehow called 'spiral' layout, but its smarter 
+because
+when you switch to other window, it would continue splitting this way.
+
+7) Its very pity that dmenu does not remember previous choice. It would be 
+great
+to improve this part of dmenu.
+
+8) Until there are serious bugs remain, like dying tray applications (
+http://bugs.i3wm.org/report/ticket/550) it would be diffcult to advertize
+i3. I am upset that such great window manager still don't get great
+public attention (like I don't see it in Google Trends), but may be its not a 
+right time. When everything will be very stable, I will try publish an article 
+about it in habr (21523 readers) for russian speaking ppl.
+
+Again, please don't treat this as critics, no way! You have created
+one of the greatest products around, and I hope that my first impressions
+will tell you something about new users mind :)
+
+Best Regards,
+
+--
+Alex V. Koval
+
+From m3s0n3.14 at gmail.com  Thu Feb  2 09:31:26 2012
+From: m3s0n3.14 at gmail.com (Marius Vlad)
+Date: Thu, 2 Feb 2012 09:31:26 +0100
+Subject: [i3] first week impressions of using i3
+In-Reply-To: <alpine.LNX.2.00.1202020838480.30063@avk-v131-2>
+References: <alpine.LNX.2.00.1202020838480.30063@avk-v131-2>
+Message-ID: <20120202083126.GA7201@lenny.retea.local>
+
+Hi, 
+
+On Thu, Feb 02, 2012 at 08:39:17AM +0200, Alex V. Koval wrote:
+> 
+> Hi All,
+> 
+> At first BIG thanks for authors for creating such an excellent product!
+> 
+> I would like to share my 1-week experience here, because I think it
+> is relevant for authours to understand what/how novices think. My
+> impressions
+> are fresh now, but the more I became used to, the less I will notice
+> the small but important differencies which novice users need.
+> 
+> What I explain is neigher critics, neither wishes to implement. It
+> is as-is, just the impressions of new user, and please do your own
+> judgement
+> and conclusions if anything from said below is important for you
+> and strategically for i3.
+> 
+> Things I've noticed:
+> 
+> 1) There are no good explation of stacking mode in the video screencast
+>     and docs.
+        I found the documentation pretty easy to follow and understand, 
+        but then again never used stacking mode.
+> 
+> 2) "Resize" section of default config file is too complicated. I've come
+>     with much better solution for me, it is very easy to remember:
+
+        +1, but on the other hand, resizing for me has always involved 
+        the mouse.
+
+> 
+> # resize
+> bindsym Mod4+Mod1+Left            resize shrink   right 3 px or 3 ppt
+> bindsym Mod4+Mod1+Right           resize grow     right 3 px or 3 ppt
+> bindsym Mod4+Mod1+Control+Right   resize shrink   left 3 px or 3 ppt
+> bindsym Mod4+Mod1+Control+Left    resize grow     left 3 px or 3 ppt
+> bindsym Mod4+Mod1+Up              resize shrink   down 3 px or 3 ppt
+> bindsym Mod4+Mod1+Down            resize grow     down 3 px or 3 ppt
+> bindsym Mod4+Mod1+Control+Down    resize shrink   up 3 px or 3 ppt
+> bindsym Mod4+Mod1+Control+Up      resize grow     up 3 px or 3 ppt
+> 
+> P.S. May be I just don't get the defaule resize mode. I've tried
+> it a few times and later just disabled it because were unable to learn
+> it fast.
+> 
+> 3) [minor issue ]Modkey + jkl - difficult to re-learn after xmonad,
+>     awesome and others which have assigned different meanings for those keys
+>     by default
+
+        I also come from 3 years of using xmonad, but the ModKey+jkl;?
+        is there as well enabled by default (see bellow).
+
+        You can cycle windows wih ``vi'' like bindings. 
+        The only thing which is weird is because ModKey+h is bind 
+        to horiz split.
+
+        Maybe here we can enable a default ``vi'' window splitting as
+        well ? (binding ModKey+s for horiz and ModKey+v for vertical 
+        -- though I think I had to replace other modifier as it was
+        already taken).
+
+        This the key word here is default configuration, by default
+        I mean the simplest configuration file you can have -- if
+        for instance I delete my configuration file, i3 should
+        assume implicit values as explained in the manual.
+
+> 
+> 4) [minor] I can not find the shortcut for Alt-Tab. Simple, this
+> should be ability
+>     to cycle windows on current desktop. Most of newcoming users would feel
+>     bad without it.
+        +1, at first was pressing this pretty intensive, it seems I
+        never realized until ``now'' how much I used that.
+> 
+> 5) [minor] Floating mode for the whole desktop. Let me explain.
+> Tiling & stacking
+>     are very good for hard work, where all space is occupied
+>     by different windows. But there are situations when I don't need
+>     this. Sometimes I want to see my nice background and a few floating
+>     windows over it. It would be good to have such a mode for desktop,
+>     as a fallback for a typical user to normal work.
+
+        I think floating should be ``enabled'' before window/container 
+        creation -- let's say I want this workspace to have floating 
+        mode switch to that then all windows in that workspace can be
+        smartly sized placed.
+> 
+>     The other argument: I use to put very nice background on my desktop,
+>     and would never see it if I always work in tiling.
+> 
+>     It is also _very_ important IMO if we would ever have floating
+>     mode for desktop, it should support 'smart' window placement. I've
+>     explained
+>     what I mean in this video: http://youtu.be/eS-mchtzJsg but generally it
+>     means
+>     the following: place window in biggest onuccupied space on current screen.
+> 
+> 6) *Always* pressing Modkey+H, Modkey+V before every next program open is
+>     overkill. I think more smart would be to cycle this. Why? Because now every
+>     next window open always have bigger ratio X*Y where it is comfortable to
+>     work
+>     with apps in square. So, what I mean, exactly, I think it would be helpful
+>     if:
+>       6.1. Mod+enter - opens terminal on full screen
+>       6.2. Mod+enter - opens terminal split vertically
+>       6.3. Mod+enter (without Modkey+v) opens new terminal split horizontally
+> 
+> etc... Because I always tend to do it this way. I don't see big necessity
+> to open tall narrow terminals.
+
+        I also vote on this, but I have to say that after some
+        time, I find it more normal/natural this way, as you arrange 
+        your layout as you may seem fit -- but of course having a
+        default ``smart'' spiral layout sounds great, the issue for
+        me here would be to keep this layout after windows/containers
+        are destroyed not having to do it all over again.
+> 
+>     6.4. Next one should open horizontally.
+> 
+> Looks like we come up to somehow called 'spiral' layout, but its
+> smarter because
+> when you switch to other window, it would continue splitting this way.
+
+        You have consistent behaviour which we humans seem to value
+        and care.
+> 
+> 7) Its very pity that dmenu does not remember previous choice. It
+> would be great
+> to improve this part of dmenu.
+
+        Unfortunately suckless-tools is another project.
+> 
+> 8) Until there are serious bugs remain, like dying tray applications (
+> http://bugs.i3wm.org/report/ticket/550) it would be diffcult to advertize
+> i3. I am upset that such great window manager still don't get great
+> public attention (like I don't see it in Google Trends), but may be
+> its not a right time. When everything will be very stable, I will
+> try publish an article about it in habr (21523 readers) for russian
+> speaking ppl.
+
+        Never had this issue, and it seems stable enough to go
+        from a 3 year xmonad productive configuration in just
+        a day pretty nice.
+> 
+> Again, please don't treat this as critics, no way! You have created
+> one of the greatest products around, and I hope that my first impressions
+> will tell you something about new users mind :)
+
+        I do feel the same way, great job!
+> 
+> Best Regards,
+> 
+> --
+> Alex V. Koval
+> 
+
+-- 
+m3s0n dot 3 dot 14 at gmail dot com 
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 490 bytes
+Desc: Digital signature
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120202/b46ec5f3/attachment.pgp>
+
+From marcus.moeller at gmx.ch  Thu Feb  2 09:53:47 2012
+From: marcus.moeller at gmx.ch (Marcus Moeller)
+Date: Thu, 02 Feb 2012 09:53:47 +0100
+Subject: [i3] first week impressions of using i3
+In-Reply-To: <20120202083126.GA7201@lenny.retea.local>
+References: <alpine.LNX.2.00.1202020838480.30063@avk-v131-2>
+ <20120202083126.GA7201@lenny.retea.local>
+Message-ID: <4F2A4F1B.9080101@gmx.ch>
+
+Hi All,
+
+...
+
+>> 4) [minor] I can not find the shortcut for Alt-Tab. Simple, this
+>> should be ability
+>>      to cycle windows on current desktop. Most of newcoming users would feel
+>>      bad without it.
+>          +1, at first was pressing this pretty intensive, it seems I
+>          never realized until ``now'' how much I used that.
+
++1
+
+...
+
+>> 6) *Always* pressing Modkey+H, Modkey+V before every next program open is
+>>      overkill. I think more smart would be to cycle this. Why? Because now every
+>>      next window open always have bigger ratio X*Y where it is comfortable to
+>>      work
+>>      with apps in square. So, what I mean, exactly, I think it would be helpful
+>>      if:
+>>        6.1. Mod+enter - opens terminal on full screen
+>>        6.2. Mod+enter - opens terminal split vertically
+>>        6.3. Mod+enter (without Modkey+v) opens new terminal split horizontally
+>>
+>> etc... Because I always tend to do it this way. I don't see big necessity
+>> to open tall narrow terminals.
+>
+>          I also vote on this, but I have to say that after some
+>          time, I find it more normal/natural this way, as you arrange
+>          your layout as you may seem fit -- but of course having a
+>          default ``smart'' spiral layout sounds great, the issue for
+>          me here would be to keep this layout after windows/containers
+>          are destroyed not having to do it all over again.
+
+I am personally totally against this. The arrangement of the layout is a 
+personal choice, and e.g. I do it completely different. I also do not 
+find it that that hard to press the modifier I want, before opening the 
+next program.
+
+...
+
+Greets
+Marcus
+
+From fh at fhaun.de  Thu Feb  2 12:33:48 2012
+From: fh at fhaun.de (Frank Haun)
+Date: Thu, 02 Feb 2012 12:33:48 +0100
+Subject: [i3] first week impressions of using i3
+In-Reply-To: <alpine.LNX.2.00.1202020838480.30063@avk-v131-2> (Alex V. Koval's
+ message of "Thu, 2 Feb 2012 08:39:17 +0200 (EET)")
+References: <alpine.LNX.2.00.1202020838480.30063@avk-v131-2>
+Message-ID: <87zkd1ii5f.fsf@m7000.fhaun.de>
+
+"Alex V. Koval" <alex at ua2web.com> writes:
+
+> At first BIG thanks for authors for creating such an excellent
+> product!
+
+i++ :-)
+
+> I would like to share my 1-week experience here, because I think it is
+> relevant for authours to understand what/how novices think. My
+> impressions
+> are fresh now, but the more I became used to, the less I will notice
+> the small but important differencies which novice users need.
+
+Nice to read, what other users are thinking, thx. I remember my first
+week with i3. I never use a tiling WM before and know I can't without.
+
+> Things I've noticed:
+[...]
+> 2) "Resize" section of default config file is too complicated. I've come
+>     with much better solution for me, it is very easy to remember:
+>
+> # resize
+> bindsym Mod4+Mod1+Left            resize shrink   right 3 px or 3 ppt
+> bindsym Mod4+Mod1+Right           resize grow     right 3 px or 3 ppt
+[...]
+
+Same here. I skip entering resize mode, and do it directly like you.
+
+> 4) [minor] I can not find the shortcut for Alt-Tab. Simple, this
+> should be ability
+>     to cycle windows on current desktop. Most of newcoming users would feel
+>     bad without it.
+
+I use Alt-Tab in this way and I like it.
+
+  ## switching workspace
+  bindsym Mod1+Tab workspace back_and_forth
+
+But I agree, sometimes it would be nice to switch between the last two
+windows.
+
+> 5) [minor] Floating mode for the whole desktop.
+
+Nice to have, but I don't need it really.
+
+> 6) *Always* pressing Modkey+H, Modkey+V before every next program open is
+>     overkill. I think more smart would be to cycle this. Why? Because now every
+>     next window open always have bigger ratio X*Y where it is comfortable to
+>     work
+>     with apps in square. So, what I mean, exactly, I think it would be helpful
+>     if:
+>       6.1. Mod+enter - opens terminal on full screen
+>       6.2. Mod+enter - opens terminal split vertically
+>       6.3. Mod+enter (without Modkey+v) opens new terminal split horizontally
+>
+> etc... Because I always tend to do it this way. I don't see big necessity
+> to open tall narrow terminals.
+>
+>     6.4. Next one should open horizontally.
+>
+> Looks like we come up to somehow called 'spiral' layout, but its
+> smarter because
+> when you switch to other window, it would continue splitting this way.
+
+I wouldn't like it. I want *my* layout and *no* rule. ;-) I have no
+problem with hitting ?mod-v to put the third terminal under the second.
+For more complex layouts shell scripts can do a good job.
+
+
+Frank
+
+From fernandotcl at gmail.com  Thu Feb  2 23:10:26 2012
+From: fernandotcl at gmail.com (Fernando Lemos)
+Date: Thu, 2 Feb 2012 20:10:26 -0200
+Subject: [i3] first week impressions of using i3
+In-Reply-To: <alpine.LNX.2.00.1202020838480.30063@avk-v131-2>
+References: <alpine.LNX.2.00.1202020838480.30063@avk-v131-2>
+Message-ID: <CANVYNa_V=-JEw2RDY1BNhoJ_iCUeior_RqzUM1Xn9eRBvmYZTQ@mail.gmail.com>
+
+HI,
+
+On Thu, Feb 2, 2012 at 4:39 AM, Alex V. Koval <alex at ua2web.com> wrote:
+> 1) There are no good explation of stacking mode in the video screencast
+> ? ?and docs.
+
+Section 2.2 mentions the stacking layout:
+
+http://i3wm.org/docs/userguide.html#_changing_the_container_layout
+
+Perhaps it could be expanded. If you think you can improve it, please
+let us know, submit patches, etc.
+
+
+> 2) "Resize" section of default config file is too complicated. I've come
+> ? ?with much better solution for me, it is very easy to remember:
+>
+> # resize
+> bindsym Mod4+Mod1+Left ? ? ? ? ? ?resize shrink ? right 3 px or 3 ppt
+> bindsym Mod4+Mod1+Right ? ? ? ? ? resize grow ? ? right 3 px or 3 ppt
+> bindsym Mod4+Mod1+Control+Right ? resize shrink ? left 3 px or 3 ppt
+> bindsym Mod4+Mod1+Control+Left ? ?resize grow ? ? left 3 px or 3 ppt
+> bindsym Mod4+Mod1+Up ? ? ? ? ? ? ?resize shrink ? down 3 px or 3 ppt
+> bindsym Mod4+Mod1+Down ? ? ? ? ? ?resize grow ? ? down 3 px or 3 ppt
+> bindsym Mod4+Mod1+Control+Down ? ?resize shrink ? up 3 px or 3 ppt
+> bindsym Mod4+Mod1+Control+Up ? ? ?resize grow ? ? up 3 px or 3 ppt
+>
+> P.S. May be I just don't get the defaule resize mode. I've tried
+> it a few times and later just disabled it because were unable to learn
+> it fast.
+
+Resizing with the keyboard is complicated. We have some ideas to
+provide simpler resizing with the keyboard in the bugtracker:
+
+http://bugs.i3wm.org/report/ticket/576
+
+We don't use 2-modifier bindings in the default config. I'm guessing
+here, but I think there are two reasons for that. First, it would
+probably complicate things. Second, we ask the user what modifier he'd
+like to use in the config wizard, and thus using 2-modifier bindings
+wouldn't make much sense.
+
+Whether using 2-modifier bindings in the default config would make
+things easier or not is completely subjective, and I don't see the
+default bindings for resizing changing unless we introduce different
+ways to resize. I could argue that the bindings I set up for my laptop
+are clearly better, but that doesn't mean they should be the default
+bindings. :-)
+
+
+> 3) [minor issue ]Modkey + jkl - difficult to re-learn after xmonad,
+> ? ?awesome and others which have assigned different meanings for those keys
+> ? ?by default
+
+Kind of personal taste too, no?
+
+
+> 4) [minor] I can not find the shortcut for Alt-Tab. Simple, this should be
+> ability
+> ? ?to cycle windows on current desktop. Most of newcoming users would feel
+> ? ?bad without it.
+
+There's no such concept in i3, as focus follows the tree hierarchy.
+Using any tiled window manager requires learning, unfortunately, and
+i3 is no different. That said, if you're considering implementing
+this, please ping Michael first to see if he would accept it.
+
+
+> 5) [minor] Floating mode for the whole desktop. Let me explain. Tiling &
+> stacking
+> ? ?are very good for hard work, where all space is occupied
+> ? ?by different windows. But there are situations when I don't need
+> ? ?this. Sometimes I want to see my nice background and a few floating
+> ? ?windows over it. It would be good to have such a mode for desktop,
+> ? ?as a fallback for a typical user to normal work.
+>
+> ? ?The other argument: I use to put very nice background on my desktop,
+> ? ?and would never see it if I always work in tiling.
+>
+> ? ?It is also _very_ important IMO if we would ever have floating
+> ? ?mode for desktop, it should support 'smart' window placement. I've
+> ? ?explained
+> ? ?what I mean in this video: http://youtu.be/eS-mchtzJsg but generally it
+> ? ?means
+> ? ?the following: place window in biggest onuccupied space on current
+> screen.
+
+That's probably not going to happen, as Michael already stated in the
+past. i3 is a pure tiling window manager, floating exists mostly for
+popups and compatibility with the occasional broken application.
+
+The snapping behavior has been shot down already in the past:
+
+http://infra.in.zekjur.net/pipermail/i3-discuss/2011-September/000286.html
+
+Also, using the "beautiful desktop background" argument will get you
+nowhere. i3 prioritizes functionality over form, and thus a point like
+this is never going to be taken seriously. If you want to see a
+beautiful image, use a image viewer or switch to an empty workspace.
+:-P
+
+
+> 6) *Always* pressing Modkey+H, Modkey+V before every next program open is
+> ? ?overkill. I think more smart would be to cycle this. Why? Because now
+> every
+> ? ?next window open always have bigger ratio X*Y where it is comfortable to
+> ? ?work
+> ? ?with apps in square. So, what I mean, exactly, I think it would be
+> helpful
+> ? ?if:
+> ? ? ?6.1. Mod+enter - opens terminal on full screen
+> ? ? ?6.2. Mod+enter - opens terminal split vertically
+> ? ? ?6.3. Mod+enter (without Modkey+v) opens new terminal split horizontally
+>
+> etc... Because I always tend to do it this way. I don't see big necessity
+> to open tall narrow terminals.
+>
+> ? ?6.4. Next one should open horizontally.
+>
+> Looks like we come up to somehow called 'spiral' layout, but its smarter
+> because
+> when you switch to other window, it would continue splitting this way.
+
+Just some clarification. You only need to split before opening a
+client *if* you want to split the current container. You could argue
+that the spiral layout you're describing forces one to "unsplit"
+before launching a client, which would be rather "unproductive" too if
+that is not what you wanted to do, naturally.
+
+What you describe is the Awesome spiral layout. i3, on the other hand,
+works by making you manage the layout by splitting, resizing and
+moving containers around in a tree structure. It's a different
+behavior, I don't see that changing. In the future, you might be able
+to restore from a previously-saved (or manually composed) layout. That
+might be enough for your needs.
+
+
+> 7) Its very pity that dmenu does not remember previous choice. It would be
+> great
+> to improve this part of dmenu.
+
+Yeah, as it's already been mentioned, dmenu is a separate project,
+created and maintained by different people. Please ping them with
+suggestions about dmenu (it's part of the Suckless project/community).
+
+
+> 8) Until there are serious bugs remain, like dying tray applications (
+> http://bugs.i3wm.org/report/ticket/550) it would be diffcult to advertize
+> i3. I am upset that such great window manager still don't get great
+> public attention (like I don't see it in Google Trends), but may be its not
+> a right time. When everything will be very stable, I will try publish an
+> article about it in habr (21523 readers) for russian speaking ppl.
+
+We are very aware of the bugs in i3 (after all, that's why we track
+them in the bugtracker). If you can reproduce #550 (or any other bug
+that needs attention), please post relevant information in the
+bugtracker.
+
+It would be nice if you or anyone wrote articles about i3, but I'd
+suggest that you take your time adapting to how things work with i3
+first.
+
+Regards,
+
+From alex at ua2web.com  Fri Feb  3 07:29:42 2012
+From: alex at ua2web.com (Alex V. Koval)
+Date: Fri, 3 Feb 2012 08:29:42 +0200 (EET)
+Subject: [i3] first week impressions of using i3
+In-Reply-To: <CANVYNa_V=-JEw2RDY1BNhoJ_iCUeior_RqzUM1Xn9eRBvmYZTQ@mail.gmail.com>
+References: <alpine.LNX.2.00.1202020838480.30063@avk-v131-2>
+ <CANVYNa_V=-JEw2RDY1BNhoJ_iCUeior_RqzUM1Xn9eRBvmYZTQ@mail.gmail.com>
+Message-ID: <alpine.LNX.2.00.1202030807130.25130@avk-v131-2>
+
+
+Hi Fernando & All,
+
+Yes, agree with above said by you. I am novice user, and posted only my
+first week impressions, most of them could be unrelevant or misconcepts.
+
+Example: making full support for floating would be 'nice to have' but...
+I *do* understand that may add too much crap to the code, and probably 
+authors are not interested in that at all at this stage, especially when 
+its being very optional. So, please dont pay much attention to all what 
+I've said. I only  mentioned it because I wanted to express 'general' 
+feel, without paying atttention on how difficult (or conceptually) it 
+would be to get it implemented.
+
+Based on your comments vote for two things:
+
+  1) Still I think it would be very good for the Alt-Tab support.
+
+Let me explain my necessity in it:
+
+Where I find it *very* useful that i3 does remember the active window
+in the current container, I still will have to press more keys then
+in other WM when I need to work between two windows located
+on different sides of the screen:
+
+For example I have a very big 27" panel, where I place
+applications in 4 rows. Using cursor navigation between windows
+would take longer, then using alt-tab to switch between last 2 used apps.
+I am not very big fan of mouse, and try to use it only in this kind
+of corner situations. It would help if I have only one screen (and for example
+moving focus out of screen would go round to left side) but when there
+are multiple big screens connected, focus would go there.
+
+Cycle windows using Alt-Tab, based on history of last active window
+would solve this easily, and less keypresses (or mouse movements)
+will be needed.
+
+  2) Smart container auto-split. That feature may be optional. Now,
+I think I will stay with the following: after new app open, I *always* should
+specify manually how the next application will split the current container.
+Lets see if I can get this habit. Because what happens now is that a lot
+of windows open (chat windows, etc) usaully in wrong direction, and I almost
+always have to relocate or re-split the container and relocate window
+back to correct location.
+
+> It would be nice if you or anyone wrote articles about i3, but I'd
+> suggest that you take your time adapting to how things work with i3
+> first.
+
+Yes, agree. Writing good article also requires good time. I hope to get
+it done properly after a few more weeks by using this fantastic program!
+Thank you and all above commented on my initial response :-)
+
+--
+Alex V. Koval
+http://alex.koval.kharkov.ua/
+http://www.halogen-dg.com/
+
+From michael+i3 at stapelberg.de  Fri Feb  3 14:03:01 2012
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Fri, 03 Feb 2012 13:03:01 +0000
+Subject: [i3] first week impressions of using i3
+In-Reply-To: <alpine.LNX.2.00.1202030807130.25130@avk-v131-2>
+References: <alpine.LNX.2.00.1202020838480.30063@avk-v131-2>
+ <CANVYNa_V=-JEw2RDY1BNhoJ_iCUeior_RqzUM1Xn9eRBvmYZTQ@mail.gmail.com>
+ <alpine.LNX.2.00.1202030807130.25130@avk-v131-2>
+Message-ID: <1328273904-sup-4951@stapelberg.de>
+
+Hi Alex,
+
+Excerpts from Alex V. Koval's message of 2012-02-03 06:29:42 +0000:
+>   1) Still I think it would be very good for the Alt-Tab support.
+I find the concept of alt-tab horrible. In its usual implementation (like it is
+implemented in Windows, Mac OS X, GNOME, ?), it either requires you to remember
+where focus was before, or you end up in the wrong window. Now, most of the
+mentioned implementations also display some kind of window list to make this
+more deterministic, but that requires additional hand-eye-coordination, which
+i3 attempts to get rid of (mostly).
+
+Therefore, I don?t want to have an alt-tab-like feature. Most users get used to
+using the direction keys just fine.
+
+>   2) Smart container auto-split. That feature may be optional. Now,
+> I think I will stay with the following: after new app open, I *always* should
+> specify manually how the next application will split the current container.
+> Lets see if I can get this habit. Because what happens now is that a lot
+> of windows open (chat windows, etc) usaully in wrong direction, and I almost
+> always have to relocate or re-split the container and relocate window
+> back to correct location.
+Hm, I usually set my workspaces to stacked layout (unless I?m using very big
+monitors) and then break out of that (by using focus parent and opening a new
+window) when necessary. For more advanced rules, like splitting based on the
+amount of windows / space used, I would recommend writing external scripts, but
+I?m not quite sure how exactly that could be done from the top of my head :).
+
+If we forgot to reply to any of your points, please let us know. The list was
+pretty long :).
+
+Best regards,
+Michael
+
+From michael+i3 at stapelberg.de  Fri Feb  3 14:05:19 2012
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Fri, 03 Feb 2012 13:05:19 +0000
+Subject: [i3] Can I get the current mode?
+In-Reply-To: <CAPAw0WrxBwVCsqv65Brh6u+rdCfwDkG2k4UWfDE7DjZps+rpLA@mail.gmail.com>
+References: <CAPAw0WrxBwVCsqv65Brh6u+rdCfwDkG2k4UWfDE7DjZps+rpLA@mail.gmail.com>
+Message-ID: <1328274267-sup-1908@stapelberg.de>
+
+Hi Jeff,
+
+Excerpts from Jeff Jibson's message of 2012-02-02 05:01:31 +0000:
+> How can I get the current mode?  I am looking for the mode that is set
+At this point, you can?t. Implementing an IPC request for it should be fairly
+straight-forward, patches accepted.
+
+> in the i3 config, i.e. mode "resize."  There are a couple of uses I
+> can think of; first, displaying it in the status bar; second, using it
+> within a script.
+I agree that those make sense, and we intend to implement them somewhen :).
+
+Best regards,
+Michael
+
+From alex at ua2web.com  Fri Feb  3 15:49:32 2012
+From: alex at ua2web.com (Alex V. Koval)
+Date: Fri, 3 Feb 2012 16:49:32 +0200 (EET)
+Subject: [i3] first week impressions of using i3
+In-Reply-To: <1328273904-sup-4951@stapelberg.de>
+References: <alpine.LNX.2.00.1202020838480.30063@avk-v131-2>
+ <CANVYNa_V=-JEw2RDY1BNhoJ_iCUeior_RqzUM1Xn9eRBvmYZTQ@mail.gmail.com>
+ <alpine.LNX.2.00.1202030807130.25130@avk-v131-2>
+ <1328273904-sup-4951@stapelberg.de>
+Message-ID: <alpine.LNX.2.00.1202031643530.25130@avk-v131-2>
+
+
+Hi Michael,
+
+On Fri, 3 Feb 2012, Michael Stapelberg wrote:
+
+> Hi Alex,
+>
+> Excerpts from Alex V. Koval's message of 2012-02-03 06:29:42 +0000:
+>>   1) Still I think it would be very good for the Alt-Tab support.
+> I find the concept of alt-tab horrible. In its usual implementation (like it is
+> implemented in Windows, Mac OS X, GNOME, ???), it either requires you to remember
+> where focus was before, or you end up in the wrong window.
+
+The best alt-tab implementation along all the WMs was here:
+http://fluxbox-wiki.org/index.php/Keyboard_shortcuts
+0 or unspecified = Default/current behavior - no skipping
+1 cycle groups
+2 skip stuck windows
+4 skip shaded windows
+8 cycle linear (use the same order every time)
+
+Of course bitmasks would have different meanings for i3 (like insetad of 
+cycle windows we would cycle history or cycle linear), but the general
+idea behind that is that end user configure what he thinks is more 
+appropriate.
+
+> Now, most of the
+> mentioned implementations also display some kind of window list to make this
+> more deterministic, but that requires additional hand-eye-coordination, which
+> i3 attempts to get rid of (mostly).
+>
+> Therefore, I don???t want to have an alt-tab-like feature. Most users get used to
+> using the direction keys just fine.
+
+No problem, I will use it as-is anyway. Well, that is a minor issue ;-)
+
+>
+>>   2) Smart container auto-split. That feature may be optional. Now,
+>> I think I will stay with the following: after new app open, I *always* should
+>> specify manually how the next application will split the current container.
+>> Lets see if I can get this habit. Because what happens now is that a lot
+>> of windows open (chat windows, etc) usaully in wrong direction, and I almost
+>> always have to relocate or re-split the container and relocate window
+>> back to correct location.
+> Hm, I usually set my workspaces to stacked layout (unless I???m using very big
+> monitors) and then break out of that (by using focus parent and opening a new
+> window) when necessary. For more advanced rules, like splitting based on the
+> amount of windows / space used, I would recommend writing external scripts, but
+> I???m not quite sure how exactly that could be done from the top of my head :).
+
+Yah, for one week experience I am not yet started with scripting here, 
+probably this will start after at least a few months, and only if I find
+that I am missing something important.
+
+Thank you & have a good day!
+
+Best Regards,
+
+--
+Alex V. Koval
+
+From discord at uw.edu  Sun Feb  5 22:59:22 2012
+From: discord at uw.edu (Colin Kincaid Williams)
+Date: Sun, 5 Feb 2012 13:59:22 -0800
+Subject: [i3] Starting applications on specific workspaces
+Message-ID: <CAB-gU_tkGLRZMYd+HHwdnF0MpghoZtjT0f_jdqJOi97oOj_zyQ@mail.gmail.com>
+
+I'm trying to get a certain behavior out of I3. As an example, lets say I'd
+like to have a firefox browser window on workspace 3, a chromium browser
+window on workspace 9 , etc.  * However, I do not want to launch another
+firefox again and have it also appear on workspace 3 *.
+
+For some reason, each firefox has the same WM_CLASS class / instance fields
+on my debian system. Too bad they didn't append natural numbers to each
+instance: firefox1 for the first, firefox2 for the second , etc. This is
+not a problem with some of the terminal emulator's  e.g. gnome-terminal
+lets you set the WM_NAME window name, it remains static,  and we can assign
+to that. I tried using exec xprop -name ..... -set name .....  to set the
+window name for the browsers from the config file, but i get no such
+window. I believe this is because the window name changes, as mentioned in
+the user guide.
+
+ I can think of two ways to get my desired behavior to work. One  would be
+a on_workspace command which I would add to the config file and its
+signature would be "on_workspace 9 exec chromium" or something similar,
+with the expected behavior launching a chromium browser on workspace 9.
+Another way would be to change the exec command to pass back the window id,
+however I'm not sure this is possible, and it doesn't seem to go with the
+design plan for i3.  Can anybody suggest a way to achieve the behavior I'm
+looking for, or give me a pointer on how to implement the feature myself?
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120205/43c5cac8/attachment.html>
+
+From michael+i3 at stapelberg.de  Mon Feb  6 00:49:12 2012
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Mon, 06 Feb 2012 00:49:12 +0100
+Subject: [i3] Starting applications on specific workspaces
+In-Reply-To: <CAB-gU_tkGLRZMYd+HHwdnF0MpghoZtjT0f_jdqJOi97oOj_zyQ@mail.gmail.com>
+References: <CAB-gU_tkGLRZMYd+HHwdnF0MpghoZtjT0f_jdqJOi97oOj_zyQ@mail.gmail.com>
+Message-ID: <1328485596-sup-9828@stapelberg.de>
+
+Hi Colin,
+
+First of all: you asked this on IRC twice, and I got no chance to answer before
+you left. Please stay around for a while if you want answers on IRC. Most of us
+live in Europe, e.g. UTC or UTC+1 :).
+
+Excerpts from Colin Kincaid Williams's message of 2012-02-05 22:59:22 +0100:
+> I'm trying to get a certain behavior out of I3. As an example, lets say I'd
+> like to have a firefox browser window on workspace 3, a chromium browser
+> window on workspace 9 , etc.  * However, I do not want to launch another
+> firefox again and have it also appear on workspace 3 *.
+The solution for this is:
+
+i3-msg workspace 3; i3-msg exec firefox
+i3-msg workspace 9; i3-msg exec chromium
+
+?assuming that both browsers are startup-notification compatible and you are
+using i3 v4.1 or newer. At least chromium is definitely startup-notification
+compatible.
+
+>  I can think of two ways to get my desired behavior to work. One  would be
+> a on_workspace command which I would add to the config file and its
+> signature would be "on_workspace 9 exec chromium" or something similar,
+> with the expected behavior launching a chromium browser on workspace 9.
+> Another way would be to change the exec command to pass back the window id,
+> however I'm not sure this is possible, and it doesn't seem to go with the
+> design plan for i3.  Can anybody suggest a way to achieve the behavior I'm
+> looking for, or give me a pointer on how to implement the feature myself?
+I gave you the solution above. If you want to read our thoughts on why it is
+not possible any other way, see
+http://build.i3wm.org/docs/hacking-howto.html#_thought_experiments
+
+Best regards,
+Michael
+
+From discord at uw.edu  Mon Feb  6 04:51:20 2012
+From: discord at uw.edu (Colin Kincaid Williams)
+Date: Sun, 5 Feb 2012 19:51:20 -0800
+Subject: [i3] Starting applications on specific workspaces
+In-Reply-To: <1328485596-sup-9828@stapelberg.de>
+References: <CAB-gU_tkGLRZMYd+HHwdnF0MpghoZtjT0f_jdqJOi97oOj_zyQ@mail.gmail.com>
+ <1328485596-sup-9828@stapelberg.de>
+Message-ID: <CAB-gU_uSo4kxKrE2RQHraa-S12zV-MB84JaVahmUi_FSaLhOTw@mail.gmail.com>
+
+Hi sorry I couldn't stick around on IRC. I was tweaking my config file and
+when restarting my xserver,etc. I was unable to keep my client up. Thanks
+for the response. I was looking at i3-msg but it wasn't clear to me how to
+use it. Thanks for elucidating that for me. I'll have a look at the thought
+experiments, I'm very happy to use i3 it's very excellent.
+
+Best.
+
+Colin Williams
+
+On Sun, Feb 5, 2012 at 3:49 PM, Michael Stapelberg <michael+i3 at stapelberg.de
+> wrote:
+
+> Hi Colin,
+>
+> First of all: you asked this on IRC twice, and I got no chance to answer
+> before
+> you left. Please stay around for a while if you want answers on IRC. Most
+> of us
+> live in Europe, e.g. UTC or UTC+1 :).
+>
+> Excerpts from Colin Kincaid Williams's message of 2012-02-05 22:59:22
+> +0100:
+> > I'm trying to get a certain behavior out of I3. As an example, lets say
+> I'd
+> > like to have a firefox browser window on workspace 3, a chromium browser
+> > window on workspace 9 , etc.  * However, I do not want to launch another
+> > firefox again and have it also appear on workspace 3 *.
+> The solution for this is:
+>
+> i3-msg workspace 3; i3-msg exec firefox
+> i3-msg workspace 9; i3-msg exec chromium
+>
+> ?assuming that both browsers are startup-notification compatible and you
+> are
+> using i3 v4.1 or newer. At least chromium is definitely
+> startup-notification
+> compatible.
+>
+> >  I can think of two ways to get my desired behavior to work. One  would
+> be
+> > a on_workspace command which I would add to the config file and its
+> > signature would be "on_workspace 9 exec chromium" or something similar,
+> > with the expected behavior launching a chromium browser on workspace 9.
+> > Another way would be to change the exec command to pass back the window
+> id,
+> > however I'm not sure this is possible, and it doesn't seem to go with the
+> > design plan for i3.  Can anybody suggest a way to achieve the behavior
+> I'm
+> > looking for, or give me a pointer on how to implement the feature myself?
+> I gave you the solution above. If you want to read our thoughts on why it
+> is
+> not possible any other way, see
+> http://build.i3wm.org/docs/hacking-howto.html#_thought_experiments
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120205/6cdbbc40/attachment.html>
+
+From andi at geekosphere.org  Mon Feb  6 07:25:40 2012
+From: andi at geekosphere.org (Andreas Herz)
+Date: Mon, 6 Feb 2012 07:25:40 +0100
+Subject: [i3] Starting applications on specific workspaces
+In-Reply-To: <CAB-gU_uSo4kxKrE2RQHraa-S12zV-MB84JaVahmUi_FSaLhOTw@mail.gmail.com>
+References: <CAB-gU_tkGLRZMYd+HHwdnF0MpghoZtjT0f_jdqJOi97oOj_zyQ@mail.gmail.com>
+ <1328485596-sup-9828@stapelberg.de>
+ <CAB-gU_uSo4kxKrE2RQHraa-S12zV-MB84JaVahmUi_FSaLhOTw@mail.gmail.com>
+Message-ID: <20120206062540.GF4805@workstation>
+
+On 05/02/12 at 19:51, Colin Kincaid Williams wrote:
+> Hi sorry I couldn't stick around on IRC. I was tweaking my config file and
+> when restarting my xserver,etc. I was unable to keep my client up. Thanks
+> for the response. I was looking at i3-msg but it wasn't clear to me how to
+> use it. Thanks for elucidating that for me. I'll have a look at the thought
+> experiments, I'm very happy to use i3 it's very excellent.
+
+You could use a IRC client without X like irssi or weechat to stay on
+IRC while working on your i3 setup.
+
+-- 
+Andreas Herz
+
+From ac at acampbell.org.uk  Mon Feb  6 08:35:06 2012
+From: ac at acampbell.org.uk (Anthony Campbell)
+Date: Mon, 6 Feb 2012 07:35:06 +0000
+Subject: [i3] Simple question about internal status bar
+Message-ID: <20120206073506.GA3504@ithaca.acampbell.org.uk>
+
+First, just a note to endorse the recent appreciative posts about i3.
+I've been trying out tiling WMs for the last 3 months, especially xmonad
+and dwm. I liked both but with reservations; I find that i3 gives me
+pretty much everything I was looking for, so many thanks to the
+developers. I've discussed it on my blog and it gets quite a few hits.
+
+Just one minor query about the internal status bar. What is the meaning
+of the figure immediately to the left of the date? It currently reads
+0.00 but at times other figures appear, and gradually decline towards
+zero. I can't see any documentation about this bar anywhere.
+
+Anthony
+
+-- 
+Anthony Campbell - ac at acampbell.org.uk 
+Microsoft-free zone - Using Debian GNU/Linux
+http://www.acampbell.org.uk - sample my ebooks
+at http://www.smashwords.com/profile/view/acampbell
+
+
+From andi at geekosphere.org  Mon Feb  6 08:45:04 2012
+From: andi at geekosphere.org (Andreas Herz)
+Date: Mon, 6 Feb 2012 08:45:04 +0100
+Subject: [i3] Simple question about internal status bar
+In-Reply-To: <20120206073506.GA3504@ithaca.acampbell.org.uk>
+References: <20120206073506.GA3504@ithaca.acampbell.org.uk>
+Message-ID: <20120206074503.GH4805@workstation>
+
+On 06/02/12 at 07:35, Anthony Campbell wrote:
+> Just one minor query about the internal status bar. What is the meaning
+> of the figure immediately to the left of the date? It currently reads
+> 0.00 but at times other figures appear, and gradually decline towards
+> zero. I can't see any documentation about this bar anywhere.
+
+This is your system load :) If you use "top" you can see "load average"
+with three values which display the average load over a specific time.
+The default is 1, 5 and 15 minutes. You should also see this in your
+.i3status.conf.
+At least i guess that is what you mean.
+
+-- 
+Andreas Herz
+
+From ac at acampbell.org.uk  Mon Feb  6 09:26:38 2012
+From: ac at acampbell.org.uk (Anthony Campbell)
+Date: Mon, 6 Feb 2012 08:26:38 +0000
+Subject: [i3] Simple question about internal status bar
+In-Reply-To: <20120206074503.GH4805@workstation>
+References: <20120206073506.GA3504@ithaca.acampbell.org.uk>
+ <20120206074503.GH4805@workstation>
+Message-ID: <20120206082637.GA4355@ithaca.acampbell.org.uk>
+
+On 06 Feb 2012, Andreas Herz wrote:
+> On 06/02/12 at 07:35, Anthony Campbell wrote:
+> > Just one minor query about the internal status bar. What is the meaning
+> > of the figure immediately to the left of the date? It currently reads
+> > 0.00 but at times other figures appear, and gradually decline towards
+> > zero. I can't see any documentation about this bar anywhere.
+> 
+> This is your system load :) If you use "top" you can see "load average"
+> with three values which display the average load over a specific time.
+> The default is 1, 5 and 15 minutes. You should also see this in your
+> .i3status.conf.
+> At least i guess that is what you mean.
+> 
+> -- 
+> Andreas Herz
+
+
+Thank you, yes; I'd guessed it was that but wasn't sure. And thanks for
+the pointer to i3statsus.conf, which I'd missed.
+
+Anthony
+
+-- 
+Anthony Campbell - ac at acampbell.org.uk 
+Microsoft-free zone - Using Debian GNU/Linux
+http://www.acampbell.org.uk - sample my ebooks
+at http://www.smashwords.com/profile/view/acampbell
+
+
+From discord at uw.edu  Mon Feb  6 11:11:56 2012
+From: discord at uw.edu (Colin Kincaid Williams)
+Date: Mon, 6 Feb 2012 02:11:56 -0800
+Subject: [i3] Starting applications on specific workspaces
+In-Reply-To: <20120206062540.GF4805@workstation>
+References: <CAB-gU_tkGLRZMYd+HHwdnF0MpghoZtjT0f_jdqJOi97oOj_zyQ@mail.gmail.com>
+ <1328485596-sup-9828@stapelberg.de>
+ <CAB-gU_uSo4kxKrE2RQHraa-S12zV-MB84JaVahmUi_FSaLhOTw@mail.gmail.com>
+ <20120206062540.GF4805@workstation>
+Message-ID: <CAB-gU_tLtKtA8MmqhvdkXwX2HNAODW4GGeDbenJ8bTHqfbXxoA@mail.gmail.com>
+
+I do use Irssi, so I guess I lied when I said that.....
+
+On Sun, Feb 5, 2012 at 10:25 PM, Andreas Herz <andi at geekosphere.org> wrote:
+
+> On 05/02/12 at 19:51, Colin Kincaid Williams wrote:
+> > Hi sorry I couldn't stick around on IRC. I was tweaking my config file
+> and
+> > when restarting my xserver,etc. I was unable to keep my client up. Thanks
+> > for the response. I was looking at i3-msg but it wasn't clear to me how
+> to
+> > use it. Thanks for elucidating that for me. I'll have a look at the
+> thought
+> > experiments, I'm very happy to use i3 it's very excellent.
+>
+> You could use a IRC client without X like irssi or weechat to stay on
+> IRC while working on your i3 setup.
+>
+> --
+> Andreas Herz
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120206/23e3c383/attachment.html>
+
+From j.ziberna at gmail.com  Mon Feb  6 18:48:39 2012
+From: j.ziberna at gmail.com (=?UTF-8?Q?Jure_=C5=BDiberna?=)
+Date: Mon, 6 Feb 2012 18:48:39 +0100
+Subject: [i3] i3-py, a Python module for communicating with i3
+Message-ID: <CAC_712punBWGY4T=2AUPrcvdYf930T3mveRL=2aScF1JfTUyWw@mail.gmail.com>
+
+I've implemented a Python module for communication with i3; it makes
+communicating easy by doing socket stuff for the user and it also supports
+subscribing to events with custom callbacks.
+
+For example, the following Python code
+
+import i3
+i3.layout('tabbed')
+
+changes the layout of the current workspace.
+
+The user can still work with sockets and send messages to i3 as described
+on the IPC interface page <http://i3wm.org/docs/ipc.html>, so it also works
+as an i3-ipc library.
+There's also an i3-ipc script, which is more or less just a clone of
+i3-msg, and an i3wsbar implementation (still early in development though).
+
+Source code is hosted at https://github.com/jzib/i3-py. The
+README<https://github.com/jzib/i3-py/blob/master/README.md>contains
+much more information about i3-py's features.
+
+Criticism, feature requests, bug reports, contributions and insults are
+welcome!
+
+Jure Ziberna
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120206/cfb2dd1a/attachment.html>
+
+From michael+i3 at stapelberg.de  Mon Feb  6 20:01:31 2012
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Mon, 06 Feb 2012 19:01:31 +0000
+Subject: [i3] Request for CPU time
+Message-ID: <1328554416-sup-890@stapelberg.de>
+
+Hi,
+
+Currently, the machine providing the autobuilder service is down. This is not a
+huge deal (I can temporarily run the autobuilder on my notebook or something),
+but I don?t like single point of failures and I have been looking to extend the
+capacity of our autobuilder setup anyways.
+
+So, if you want to help the i3 project, we need at least one machine with the
+following specs:
+
+ ? reasonably fast CPU (anything > 2 GHz will do)
+ ? at least 10 GiB of disk space
+ ? at least 2 GiB of RAM, 4 GiB preferred (to keep the whole build chroot in
+   RAM and have very fast builds)
+ ? fast internet connection preferred (to upload ~ 10 MiB per git commit, so
+   quite low-traffic)
+ ? amd64 linux installation (so that we can build for i386 and amd64)
+
+This can be a virtual machine or a physical machine, but it needs to be hosted
+somewhere (that is, we are not looking for hardware donations).
+
+Please contact me off-list if you can offer anything.
+
+Thank you,
+Best regards,
+Michael
+
+From michael+i3 at stapelberg.de  Mon Feb  6 22:01:27 2012
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Mon, 06 Feb 2012 21:01:27 +0000
+Subject: [i3] [PATCH] Transparency support
+In-Reply-To: <1327767281-sup-8641@stapelberg.de>
+References: <CAMJW5=0GeBus4D4npdO54Z5+mL33T4mz=Cem7J5X+6RveXTL7Q@mail.gmail.com>
+ <CANVYNa_utbh3Umvxpqd+bjwUv7h67JRhUik=xLHphdNusMr0yg@mail.gmail.com>
+ <CAMJW5=2ZHyZDzBy-EhHyM=0srB9UNnWYVUFt5UqhZX=kf2jBQA@mail.gmail.com>
+ <CANVYNa-S82Qkd04KX4TrPkrFMO1gRVtpcSa68cDQ_zF+e=gmNA@mail.gmail.com>
+ <op.v8b5j5am735up4@sraven> <1327744001-sup-4371@stapelberg.de>
+ <CAMJW5=3-OT5Lf0Ef5t2mRa-6p_6NB80CKfjS39QQ03p2DcWP8Q@mail.gmail.com>
+ <1327767281-sup-8641@stapelberg.de>
+Message-ID: <1328562055-sup-3279@stapelberg.de>
+
+Hey Raven,
+
+Excerpts from Michael Stapelberg's message of 2012-01-28 16:25:17 +0000:
+> I pushed this in a separate branch:
+> http://code.stapelberg.de/git/i3/commit/?h=transparency&id=78cc929cdaaf75abea297241fd88977bd58b6e19
+> 
+> Please check out the branch and confirm that it works for you (it worked in my
+> quick tests). Note that you need to start i3 with --enable-32bit-visual ? I
+> decided to make this opt-in since it makes workspace switching and redrawing
+> considerably slower on my computer.
+
+This has been more than a week ago. Any news? Did you get a chance to test it?
+
+Best regards,
+Michael
+
+From fh at fhaun.de  Tue Feb  7 22:30:42 2012
+From: fh at fhaun.de (Frank Haun)
+Date: Tue, 07 Feb 2012 22:30:42 +0100
+Subject: [i3] Request for CPU time
+In-Reply-To: <1328554416-sup-890@stapelberg.de> (Michael Stapelberg's message
+ of "Mon, 06 Feb 2012 19:01:31 +0000")
+References: <1328554416-sup-890@stapelberg.de>
+Message-ID: <8762fifi0t.fsf@m7000.fhaun.de>
+
+Maybe interesting:
+
+GCC Compile Farm Project
+http://gcc.gnu.org/wiki/CompileFarm
+
+Frank
+
+From drdarkraven at gmail.com  Wed Feb  8 05:35:22 2012
+From: drdarkraven at gmail.com (DR)
+Date: Wed, 8 Feb 2012 12:35:22 +0800
+Subject: [i3] [PATCH] Transparency support
+In-Reply-To: <1328562055-sup-3279@stapelberg.de>
+References: <CAMJW5=0GeBus4D4npdO54Z5+mL33T4mz=Cem7J5X+6RveXTL7Q@mail.gmail.com>
+ <CANVYNa_utbh3Umvxpqd+bjwUv7h67JRhUik=xLHphdNusMr0yg@mail.gmail.com>
+ <CAMJW5=2ZHyZDzBy-EhHyM=0srB9UNnWYVUFt5UqhZX=kf2jBQA@mail.gmail.com>
+ <CANVYNa-S82Qkd04KX4TrPkrFMO1gRVtpcSa68cDQ_zF+e=gmNA@mail.gmail.com>
+ <op.v8b5j5am735up4@sraven> <1327744001-sup-4371@stapelberg.de>
+ <CAMJW5=3-OT5Lf0Ef5t2mRa-6p_6NB80CKfjS39QQ03p2DcWP8Q@mail.gmail.com>
+ <1327767281-sup-8641@stapelberg.de> <1328562055-sup-3279@stapelberg.de>
+Message-ID: <CAMJW5=0FHnCWSv9G6-=zPbn55Tn=+WNkG9gEgRzg2Sgj=gBY3w@mail.gmail.com>
+
+On Tue, Feb 7, 2012 at 5:01 AM, Michael Stapelberg
+<michael+i3 at stapelberg.de> wrote:
+> Hey Raven,
+>
+> Excerpts from Michael Stapelberg's message of 2012-01-28 16:25:17 +0000:
+>> I pushed this in a separate branch:
+>> http://code.stapelberg.de/git/i3/commit/?h=transparency&id=78cc929cdaaf75abea297241fd88977bd58b6e19
+>>
+>> Please check out the branch and confirm that it works for you (it worked in my
+>> quick tests). Note that you need to start i3 with --enable-32bit-visual ? I
+>> decided to make this opt-in since it makes workspace switching and redrawing
+>> considerably slower on my computer.
+>
+> This has been more than a week ago. Any news? Did you get a chance to test it?
+
+Sorry for the late reply, I just don't have time to test...
+
+Yes, the transparent support now works perfectly for me.
+
+>
+> Best regards,
+> Michael
+
+From m.haase.w at t-online.de  Wed Feb  8 15:55:54 2012
+From: m.haase.w at t-online.de (M. Haase)
+Date: Wed, 8 Feb 2012 15:55:54 +0100
+Subject: [i3] dmenu und history
+Message-ID: <20120208145554.GA4603@neos>
+
+Hi,
+
+Here's a clue to the post by Alex V. Koval, item 7:
+  
+The absence of a history in dmenu is really unfortunate. But I have
+found a little script for dmenu that shows the most frequently used programs first
+in the list: https://gist.github.com/950556
+
+Greets
+Michael
+
+From fh at fhaun.de  Fri Feb 10 14:38:53 2012
+From: fh at fhaun.de (Frank Haun)
+Date: Fri, 10 Feb 2012 14:38:53 +0100
+Subject: [i3] first week impressions of using i3
+In-Reply-To: <alpine.LNX.2.00.1202020838480.30063@avk-v131-2> (Alex V. Koval's
+ message of "Thu, 2 Feb 2012 08:39:17 +0200 (EET)")
+References: <alpine.LNX.2.00.1202020838480.30063@avk-v131-2>
+Message-ID: <87fweizu36.fsf@m7000.fhaun.de>
+
+"Alex V. Koval" <alex at ua2web.com> writes:
+
+> 7) Its very pity that dmenu does not remember previous choice. It
+> would be great to improve this part of dmenu.
+
+Have a look at kupfer, works nice under i3:
+
+  http://kaizer.se/wiki/kupfer/
+
+Frank
+
+From drdarkraven at gmail.com  Sat Feb 18 16:00:04 2012
+From: drdarkraven at gmail.com (DR)
+Date: Sat, 18 Feb 2012 23:00:04 +0800
+Subject: [i3] Why no xft support?
+Message-ID: <CAMJW5=2Q2fJbn9kj4fPT2W8PX0jnE7K42dboS5CvrDbC3bWW6w@mail.gmail.com>
+
+Seriously, Why no xft support?
+I could found a lot of use cases for xft, like:
+Outline fonts, hinting, sub-pixel font rendering which would be nice
+for lcd display, support font alias so I could use different font for
+different language, make font config easier, and many more.
+
+So could anyone give me a reason why you decided not to include xft support?
+
+From fernandotcl at i3wm.org  Sat Feb 18 17:04:34 2012
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Sat, 18 Feb 2012 14:04:34 -0200
+Subject: [i3] Why no xft support?
+In-Reply-To: <CAMJW5=2Q2fJbn9kj4fPT2W8PX0jnE7K42dboS5CvrDbC3bWW6w@mail.gmail.com>
+References: <CAMJW5=2Q2fJbn9kj4fPT2W8PX0jnE7K42dboS5CvrDbC3bWW6w@mail.gmail.com>
+Message-ID: <CANVYNa9rvFmH4AMm+kWMv4Cp4fYW2sEp987Dt6tcKJhR3OLWsw@mail.gmail.com>
+
+Hi,
+
+On Sat, Feb 18, 2012 at 1:00 PM, DR <drdarkraven at gmail.com> wrote:
+> Seriously, Why no xft support?
+> I could found a lot of use cases for xft, like:
+> Outline fonts, hinting, sub-pixel font rendering which would be nice
+> for lcd display, support font alias so I could use different font for
+> different language, make font config easier, and many more.
+>
+> So could anyone give me a reason why you decided not to include xft support?
+
+I guess you reached that conclusion based on item 9 in the i3 home
+page. Michael could probably give you specific reasons, but most
+likely he simply likes his X core fonts and wouldn't want the burdern
+of supporting different rendering engines. Now I've talked to Michael
+about this in the past, and I think we might be able to support modern
+rendering engines soon-ish.
+
+Some time ago we made changes to the i3 source that moved font
+rendering to libi3. Right now we can only render X core fonts with
+this font rendering API, but I maintain a Pango backend (I can post
+the patches somewhere if you want to give it a shot). When and if this
+backend is merged, we'll have "xft" fonts in i3.
+
+The major reason why this backend hasn't been merged so far is that i3
+uses xcb, not Xlib (well, except for a few things) and we use Pango to
+render on top of a Cairo surface connected to a xcb pixmap. Cairo
+doesn't officially support xcb, so not all distros ship xcb support
+for Cairo (Debian does, Arch doesn't). This is probably gonna change
+when the next release of Cairo is out (1.12, if I'm not mistaken). By
+then we can consider integrating this backend or not.
+
+To clarify, Pango support would automagically bring us (in i3, i3bar
+and other tools):
+
+* UTF-8 support
+* Support for right-to-left languages
+* Smooth fonts, with hinting, sub-pixel rendering, etc., as you mentioned
+
+Pango support would *not* bring us "outlines", though. Although it
+could perhaps be implemented with Pango, this would require theming
+changes, and that would be a separate discussion.
+
+Regards,
+
+From drdarkraven at gmail.com  Sun Feb 19 10:54:45 2012
+From: drdarkraven at gmail.com (DR)
+Date: Sun, 19 Feb 2012 17:54:45 +0800
+Subject: [i3] Why no xft support?
+In-Reply-To: <CANVYNa9rvFmH4AMm+kWMv4Cp4fYW2sEp987Dt6tcKJhR3OLWsw@mail.gmail.com>
+References: <CAMJW5=2Q2fJbn9kj4fPT2W8PX0jnE7K42dboS5CvrDbC3bWW6w@mail.gmail.com>
+ <CANVYNa9rvFmH4AMm+kWMv4Cp4fYW2sEp987Dt6tcKJhR3OLWsw@mail.gmail.com>
+Message-ID: <CAMJW5=3O1gi67swQ=xX4BKWy-a=Z0rGOH7qYWn9vSaq8C=FvBg@mail.gmail.com>
+
+On Sun, Feb 19, 2012 at 12:04 AM, Fernando Lemos <fernandotcl at i3wm.org> wrote:
+> Hi,
+>
+> On Sat, Feb 18, 2012 at 1:00 PM, DR <drdarkraven at gmail.com> wrote:
+>> Seriously, Why no xft support?
+>> I could found a lot of use cases for xft, like:
+>> Outline fonts, hinting, sub-pixel font rendering which would be nice
+>> for lcd display, support font alias so I could use different font for
+>> different language, make font config easier, and many more.
+>>
+>> So could anyone give me a reason why you decided not to include xft support?
+>
+> I guess you reached that conclusion based on item 9 in the i3 home
+> page. Michael could probably give you specific reasons, but most
+> likely he simply likes his X core fonts and wouldn't want the burdern
+> of supporting different rendering engines. Now I've talked to Michael
+> about this in the past, and I think we might be able to support modern
+> rendering engines soon-ish.
+>
+> Some time ago we made changes to the i3 source that moved font
+> rendering to libi3. Right now we can only render X core fonts with
+> this font rendering API, but I maintain a Pango backend (I can post
+> the patches somewhere if you want to give it a shot). When and if this
+> backend is merged, we'll have "xft" fonts in i3.
+>
+> The major reason why this backend hasn't been merged so far is that i3
+> uses xcb, not Xlib (well, except for a few things) and we use Pango to
+> render on top of a Cairo surface connected to a xcb pixmap. Cairo
+> doesn't officially support xcb, so not all distros ship xcb support
+> for Cairo (Debian does, Arch doesn't). This is probably gonna change
+> when the next release of Cairo is out (1.12, if I'm not mistaken). By
+> then we can consider integrating this backend or not.
+>
+> To clarify, Pango support would automagically bring us (in i3, i3bar
+> and other tools):
+>
+> * UTF-8 support
+> * Support for right-to-left languages
+> * Smooth fonts, with hinting, sub-pixel rendering, etc., as you mentioned
+>
+> Pango support would *not* bring us "outlines", though. Although it
+> could perhaps be implemented with Pango, this would require theming
+> changes, and that would be a separate discussion.
+>
+> Regards,
+
+Thank you for your reply.
+I'm glad someone is currently working on it.
+If you send me the patch, I'd be glad to test it.
+
+From fernandotcl at i3wm.org  Sun Feb 19 14:27:17 2012
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Sun, 19 Feb 2012 11:27:17 -0200
+Subject: [i3] Why no xft support?
+In-Reply-To: <CAMJW5=3O1gi67swQ=xX4BKWy-a=Z0rGOH7qYWn9vSaq8C=FvBg@mail.gmail.com>
+References: <CAMJW5=2Q2fJbn9kj4fPT2W8PX0jnE7K42dboS5CvrDbC3bWW6w@mail.gmail.com>
+ <CANVYNa9rvFmH4AMm+kWMv4Cp4fYW2sEp987Dt6tcKJhR3OLWsw@mail.gmail.com>
+ <CAMJW5=3O1gi67swQ=xX4BKWy-a=Z0rGOH7qYWn9vSaq8C=FvBg@mail.gmail.com>
+Message-ID: <CANVYNa9X+1Fo6GBk7EsLR026uKN3PjFqs1K9LnYLFghznRqEDg@mail.gmail.com>
+
+Hi,
+
+On Sun, Feb 19, 2012 at 7:54 AM, DR <drdarkraven at gmail.com> wrote:
+> If you send me the patch, I'd be glad to test it.
+
+1/2: http://pastebin.com/Kw6srqZE
+2/2: http://pastebin.com/7D4PcgwX
+
+2/2 only makes the i3bar text align with the workspace indicators
+(might be used without the Pango patches too).
+
+This is WIP, but it should work (I've been using it for some time
+now). You'll need Pango and Cairo dev packages installed, of course,
+and your distro must support the XCB backend for Cairo.
+
+Regards,
+
+From fernandotcl at i3wm.org  Mon Feb 20 00:14:50 2012
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Sun, 19 Feb 2012 21:14:50 -0200
+Subject: [i3] Why no xft support?
+In-Reply-To: <CANVYNa9X+1Fo6GBk7EsLR026uKN3PjFqs1K9LnYLFghznRqEDg@mail.gmail.com>
+References: <CAMJW5=2Q2fJbn9kj4fPT2W8PX0jnE7K42dboS5CvrDbC3bWW6w@mail.gmail.com>
+ <CANVYNa9rvFmH4AMm+kWMv4Cp4fYW2sEp987Dt6tcKJhR3OLWsw@mail.gmail.com>
+ <CAMJW5=3O1gi67swQ=xX4BKWy-a=Z0rGOH7qYWn9vSaq8C=FvBg@mail.gmail.com>
+ <CANVYNa9X+1Fo6GBk7EsLR026uKN3PjFqs1K9LnYLFghznRqEDg@mail.gmail.com>
+Message-ID: <CANVYNa-bRkhjkznLd8uwQmi2Dx6jAd7prN2pDv+QyES5ENycJA@mail.gmail.com>
+
+On Sun, Feb 19, 2012 at 11:27 AM, Fernando Lemos <fernandotcl at i3wm.org> wrote:
+> Hi,
+>
+> On Sun, Feb 19, 2012 at 7:54 AM, DR <drdarkraven at gmail.com> wrote:
+>> If you send me the patch, I'd be glad to test it.
+>
+> 1/2: http://pastebin.com/Kw6srqZE
+
+Ugh. A revised patch that takes into account the alpha component in colors:
+
+1/2: http://pastebin.com/zuyTSXKB
+
+Regards,
+
+From drdarkraven at gmail.com  Tue Feb 21 10:49:37 2012
+From: drdarkraven at gmail.com (DR)
+Date: Tue, 21 Feb 2012 17:49:37 +0800
+Subject: [i3] [PATCH] Transparency support
+In-Reply-To: <CAMJW5=0FHnCWSv9G6-=zPbn55Tn=+WNkG9gEgRzg2Sgj=gBY3w@mail.gmail.com>
+References: <CAMJW5=0GeBus4D4npdO54Z5+mL33T4mz=Cem7J5X+6RveXTL7Q@mail.gmail.com>
+ <CANVYNa_utbh3Umvxpqd+bjwUv7h67JRhUik=xLHphdNusMr0yg@mail.gmail.com>
+ <CAMJW5=2ZHyZDzBy-EhHyM=0srB9UNnWYVUFt5UqhZX=kf2jBQA@mail.gmail.com>
+ <CANVYNa-S82Qkd04KX4TrPkrFMO1gRVtpcSa68cDQ_zF+e=gmNA@mail.gmail.com>
+ <op.v8b5j5am735up4@sraven> <1327744001-sup-4371@stapelberg.de>
+ <CAMJW5=3-OT5Lf0Ef5t2mRa-6p_6NB80CKfjS39QQ03p2DcWP8Q@mail.gmail.com>
+ <1327767281-sup-8641@stapelberg.de> <1328562055-sup-3279@stapelberg.de>
+ <CAMJW5=0FHnCWSv9G6-=zPbn55Tn=+WNkG9gEgRzg2Sgj=gBY3w@mail.gmail.com>
+Message-ID: <CAMJW5=0Zfexbx-eRXwEd2EEKHXvSGVR7dMFiqFwKrCL3Xj99Nw@mail.gmail.com>
+
+Oops, I noticed a bug caused by 32bit visual.
+in resize_graphical_handler(), the creation of helpwin will fail with
+a BadMatch.
+I tried hard to fix it, but can't.
+Would you mind look into this problem?
+
+On Wed, Feb 8, 2012 at 12:35 PM, DR <drdarkraven at gmail.com> wrote:
+> On Tue, Feb 7, 2012 at 5:01 AM, Michael Stapelberg
+> <michael+i3 at stapelberg.de> wrote:
+>> Hey Raven,
+>>
+>> Excerpts from Michael Stapelberg's message of 2012-01-28 16:25:17 +0000:
+>>> I pushed this in a separate branch:
+>>> http://code.stapelberg.de/git/i3/commit/?h=transparency&id=78cc929cdaaf75abea297241fd88977bd58b6e19
+>>>
+>>> Please check out the branch and confirm that it works for you (it worked in my
+>>> quick tests). Note that you need to start i3 with --enable-32bit-visual ? I
+>>> decided to make this opt-in since it makes workspace switching and redrawing
+>>> considerably slower on my computer.
+>>
+>> This has been more than a week ago. Any news? Did you get a chance to test it?
+>
+> Sorry for the late reply, I just don't have time to test...
+>
+> Yes, the transparent support now works perfectly for me.
+>
+>>
+>> Best regards,
+>> Michael
+
+From drdarkraven at gmail.com  Tue Feb 21 14:46:07 2012
+From: drdarkraven at gmail.com (DR)
+Date: Tue, 21 Feb 2012 21:46:07 +0800
+Subject: [i3] Why no xft support?
+In-Reply-To: <CANVYNa-bRkhjkznLd8uwQmi2Dx6jAd7prN2pDv+QyES5ENycJA@mail.gmail.com>
+References: <CAMJW5=2Q2fJbn9kj4fPT2W8PX0jnE7K42dboS5CvrDbC3bWW6w@mail.gmail.com>
+ <CANVYNa9rvFmH4AMm+kWMv4Cp4fYW2sEp987Dt6tcKJhR3OLWsw@mail.gmail.com>
+ <CAMJW5=3O1gi67swQ=xX4BKWy-a=Z0rGOH7qYWn9vSaq8C=FvBg@mail.gmail.com>
+ <CANVYNa9X+1Fo6GBk7EsLR026uKN3PjFqs1K9LnYLFghznRqEDg@mail.gmail.com>
+ <CANVYNa-bRkhjkznLd8uwQmi2Dx6jAd7prN2pDv+QyES5ENycJA@mail.gmail.com>
+Message-ID: <CAMJW5=1KuFEF2K_Cv=he7TrhjRibRY4OuQpAPaq5dOg4uXY+_A@mail.gmail.com>
+
+On Mon, Feb 20, 2012 at 7:14 AM, Fernando Lemos <fernandotcl at i3wm.org> wrote:
+> On Sun, Feb 19, 2012 at 11:27 AM, Fernando Lemos <fernandotcl at i3wm.org> wrote:
+>> Hi,
+>>
+>> On Sun, Feb 19, 2012 at 7:54 AM, DR <drdarkraven at gmail.com> wrote:
+>>> If you send me the patch, I'd be glad to test it.
+>>
+>> 1/2: http://pastebin.com/Kw6srqZE
+>
+> Ugh. A revised patch that takes into account the alpha component in colors:
+>
+> 1/2: http://pastebin.com/zuyTSXKB
+
+I'm running i3 with your patch now.
+While i3 is working well with this patch, I notice some glitches.
+
+The text's width seems to be mis-calculated, resulting in window title
+being truncated even if the text string is far from filling the whole
+title bar.
+Another thing I notice is that the string seems to be truncated to a
+'wrong' length, leaves some trailing, undisplayable characters.
+
+These glitches mainly occur if non-english characters are involved.
+
+Screenshots attached.
+
+>
+> Regards,
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 2012-02-21-214408_240x85_scrot.png
+Type: image/png
+Size: 15812 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120221/a533854c/attachment.png>
+
+From fernandotcl at i3wm.org  Tue Feb 21 17:15:06 2012
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Tue, 21 Feb 2012 14:15:06 -0200
+Subject: [i3] Why no xft support?
+In-Reply-To: <CAMJW5=1KuFEF2K_Cv=he7TrhjRibRY4OuQpAPaq5dOg4uXY+_A@mail.gmail.com>
+References: <CAMJW5=2Q2fJbn9kj4fPT2W8PX0jnE7K42dboS5CvrDbC3bWW6w@mail.gmail.com>
+ <CANVYNa9rvFmH4AMm+kWMv4Cp4fYW2sEp987Dt6tcKJhR3OLWsw@mail.gmail.com>
+ <CAMJW5=3O1gi67swQ=xX4BKWy-a=Z0rGOH7qYWn9vSaq8C=FvBg@mail.gmail.com>
+ <CANVYNa9X+1Fo6GBk7EsLR026uKN3PjFqs1K9LnYLFghznRqEDg@mail.gmail.com>
+ <CANVYNa-bRkhjkznLd8uwQmi2Dx6jAd7prN2pDv+QyES5ENycJA@mail.gmail.com>
+ <CAMJW5=1KuFEF2K_Cv=he7TrhjRibRY4OuQpAPaq5dOg4uXY+_A@mail.gmail.com>
+Message-ID: <CANVYNa98z+LiEN5H_fjLogSZiPUEN2GkaUYJG_UWT6F6PR6Xtw@mail.gmail.com>
+
+On Tue, Feb 21, 2012 at 11:46 AM, DR <drdarkraven at gmail.com> wrote:
+> On Mon, Feb 20, 2012 at 7:14 AM, Fernando Lemos <fernandotcl at i3wm.org> wrote:
+>> On Sun, Feb 19, 2012 at 11:27 AM, Fernando Lemos <fernandotcl at i3wm.org> wrote:
+>>> Hi,
+>>>
+>>> On Sun, Feb 19, 2012 at 7:54 AM, DR <drdarkraven at gmail.com> wrote:
+>>>> If you send me the patch, I'd be glad to test it.
+>>>
+>>> 1/2: http://pastebin.com/Kw6srqZE
+>>
+>> Ugh. A revised patch that takes into account the alpha component in colors:
+>>
+>> 1/2: http://pastebin.com/zuyTSXKB
+>
+> I'm running i3 with your patch now.
+> While i3 is working well with this patch, I notice some glitches.
+>
+> The text's width seems to be mis-calculated, resulting in window title
+> being truncated even if the text string is far from filling the whole
+> title bar.
+
+Can you post a screenshot of this specific problem? If the text width
+were being miscalculated somehow (we use Pango itself to determine the
+text width), it would be terminated with ellipsis.
+
+> Another thing I notice is that the string seems to be truncated to a
+> 'wrong' length, leaves some trailing, undisplayable characters.
+>
+> These glitches mainly occur if non-english characters are involved.
+
+I noticed that too, but I thought it was something with my fonts. Can
+you confirm that it works with, say, Openbox (which also uses Pango
+for rendering)?
+
+I think it could be a bug in the UCS-2 -> UTF-8 conversion, I'll take
+a look at it.
+
+Regards,
+Fernando
+
+From fernandotcl at i3wm.org  Tue Feb 21 17:42:38 2012
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Tue, 21 Feb 2012 14:42:38 -0200
+Subject: [i3] Why no xft support?
+In-Reply-To: <CANVYNa98z+LiEN5H_fjLogSZiPUEN2GkaUYJG_UWT6F6PR6Xtw@mail.gmail.com>
+References: <CAMJW5=2Q2fJbn9kj4fPT2W8PX0jnE7K42dboS5CvrDbC3bWW6w@mail.gmail.com>
+ <CANVYNa9rvFmH4AMm+kWMv4Cp4fYW2sEp987Dt6tcKJhR3OLWsw@mail.gmail.com>
+ <CAMJW5=3O1gi67swQ=xX4BKWy-a=Z0rGOH7qYWn9vSaq8C=FvBg@mail.gmail.com>
+ <CANVYNa9X+1Fo6GBk7EsLR026uKN3PjFqs1K9LnYLFghznRqEDg@mail.gmail.com>
+ <CANVYNa-bRkhjkznLd8uwQmi2Dx6jAd7prN2pDv+QyES5ENycJA@mail.gmail.com>
+ <CAMJW5=1KuFEF2K_Cv=he7TrhjRibRY4OuQpAPaq5dOg4uXY+_A@mail.gmail.com>
+ <CANVYNa98z+LiEN5H_fjLogSZiPUEN2GkaUYJG_UWT6F6PR6Xtw@mail.gmail.com>
+Message-ID: <CANVYNa_eSOOPt1pOc2GG9bCqoRMyfnBD2jW=xLkAkryP03iUxg@mail.gmail.com>
+
+On Tue, Feb 21, 2012 at 2:15 PM, Fernando Lemos <fernandotcl at i3wm.org> wrote:
+> On Tue, Feb 21, 2012 at 11:46 AM, DR <drdarkraven at gmail.com> wrote:
+>> On Mon, Feb 20, 2012 at 7:14 AM, Fernando Lemos <fernandotcl at i3wm.org> wrote:
+>>> On Sun, Feb 19, 2012 at 11:27 AM, Fernando Lemos <fernandotcl at i3wm.org> wrote:
+>>>> Hi,
+>>>>
+>>>> On Sun, Feb 19, 2012 at 7:54 AM, DR <drdarkraven at gmail.com> wrote:
+>>>>> If you send me the patch, I'd be glad to test it.
+>>>>
+>>>> 1/2: http://pastebin.com/Kw6srqZE
+>>>
+>>> Ugh. A revised patch that takes into account the alpha component in colors:
+>>>
+>>> 1/2: http://pastebin.com/zuyTSXKB
+>>
+>> I'm running i3 with your patch now.
+>> While i3 is working well with this patch, I notice some glitches.
+
+Ah, I think I nailed it. Can you see if this fixes the issues you mentioned?
+
+http://pastebin.com/UEScudhV
+
+It also made me realize that draw_text isn't well documented... I'll work on it.
+
+Thanks,
+
+From drdarkraven at gmail.com  Wed Feb 22 06:53:25 2012
+From: drdarkraven at gmail.com (DR)
+Date: Wed, 22 Feb 2012 13:53:25 +0800
+Subject: [i3] [PATCH] Transparency support
+In-Reply-To: <CAMJW5=0Zfexbx-eRXwEd2EEKHXvSGVR7dMFiqFwKrCL3Xj99Nw@mail.gmail.com>
+References: <CAMJW5=0GeBus4D4npdO54Z5+mL33T4mz=Cem7J5X+6RveXTL7Q@mail.gmail.com>
+ <CANVYNa_utbh3Umvxpqd+bjwUv7h67JRhUik=xLHphdNusMr0yg@mail.gmail.com>
+ <CAMJW5=2ZHyZDzBy-EhHyM=0srB9UNnWYVUFt5UqhZX=kf2jBQA@mail.gmail.com>
+ <CANVYNa-S82Qkd04KX4TrPkrFMO1gRVtpcSa68cDQ_zF+e=gmNA@mail.gmail.com>
+ <op.v8b5j5am735up4@sraven> <1327744001-sup-4371@stapelberg.de>
+ <CAMJW5=3-OT5Lf0Ef5t2mRa-6p_6NB80CKfjS39QQ03p2DcWP8Q@mail.gmail.com>
+ <1327767281-sup-8641@stapelberg.de> <1328562055-sup-3279@stapelberg.de>
+ <CAMJW5=0FHnCWSv9G6-=zPbn55Tn=+WNkG9gEgRzg2Sgj=gBY3w@mail.gmail.com>
+ <CAMJW5=0Zfexbx-eRXwEd2EEKHXvSGVR7dMFiqFwKrCL3Xj99Nw@mail.gmail.com>
+Message-ID: <CAMJW5=0rXDEVf5jU12fYm2x6b8Y_Anbxh2Von2qwjBdcwmrkTg@mail.gmail.com>
+
+On Tue, Feb 21, 2012 at 5:49 PM, DR <drdarkraven at gmail.com> wrote:
+> Oops, I noticed a bug caused by 32bit visual.
+> in resize_graphical_handler(), the creation of helpwin will fail with
+> a BadMatch.
+> I tried hard to fix it, but can't.
+> Would you mind look into this problem?
+I've fixed this.
+
+>
+> On Wed, Feb 8, 2012 at 12:35 PM, DR <drdarkraven at gmail.com> wrote:
+>> On Tue, Feb 7, 2012 at 5:01 AM, Michael Stapelberg
+>> <michael+i3 at stapelberg.de> wrote:
+>>> Hey Raven,
+>>>
+>>> Excerpts from Michael Stapelberg's message of 2012-01-28 16:25:17 +0000:
+>>>> I pushed this in a separate branch:
+>>>> http://code.stapelberg.de/git/i3/commit/?h=transparency&id=78cc929cdaaf75abea297241fd88977bd58b6e19
+>>>>
+>>>> Please check out the branch and confirm that it works for you (it worked in my
+>>>> quick tests). Note that you need to start i3 with --enable-32bit-visual ? I
+>>>> decided to make this opt-in since it makes workspace switching and redrawing
+>>>> considerably slower on my computer.
+>>>
+>>> This has been more than a week ago. Any news? Did you get a chance to test it?
+>>
+>> Sorry for the late reply, I just don't have time to test...
+>>
+>> Yes, the transparent support now works perfectly for me.
+>>
+>>>
+>>> Best regards,
+>>> Michael
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0002-fix-resize-bar.patch
+Type: text/x-patch
+Size: 1262 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120222/01936cd5/attachment.bin>
+
+From drdarkraven at gmail.com  Wed Feb 22 06:54:47 2012
+From: drdarkraven at gmail.com (DR)
+Date: Wed, 22 Feb 2012 13:54:47 +0800
+Subject: [i3] Why no xft support?
+In-Reply-To: <CANVYNa_eSOOPt1pOc2GG9bCqoRMyfnBD2jW=xLkAkryP03iUxg@mail.gmail.com>
+References: <CAMJW5=2Q2fJbn9kj4fPT2W8PX0jnE7K42dboS5CvrDbC3bWW6w@mail.gmail.com>
+ <CANVYNa9rvFmH4AMm+kWMv4Cp4fYW2sEp987Dt6tcKJhR3OLWsw@mail.gmail.com>
+ <CAMJW5=3O1gi67swQ=xX4BKWy-a=Z0rGOH7qYWn9vSaq8C=FvBg@mail.gmail.com>
+ <CANVYNa9X+1Fo6GBk7EsLR026uKN3PjFqs1K9LnYLFghznRqEDg@mail.gmail.com>
+ <CANVYNa-bRkhjkznLd8uwQmi2Dx6jAd7prN2pDv+QyES5ENycJA@mail.gmail.com>
+ <CAMJW5=1KuFEF2K_Cv=he7TrhjRibRY4OuQpAPaq5dOg4uXY+_A@mail.gmail.com>
+ <CANVYNa98z+LiEN5H_fjLogSZiPUEN2GkaUYJG_UWT6F6PR6Xtw@mail.gmail.com>
+ <CANVYNa_eSOOPt1pOc2GG9bCqoRMyfnBD2jW=xLkAkryP03iUxg@mail.gmail.com>
+Message-ID: <CAMJW5=1iZYMchWsZXmyyGyv2+fJD3E8we7KW0Rg_QvSABrgjZg@mail.gmail.com>
+
+On Wed, Feb 22, 2012 at 12:42 AM, Fernando Lemos <fernandotcl at i3wm.org> wrote:
+> On Tue, Feb 21, 2012 at 2:15 PM, Fernando Lemos <fernandotcl at i3wm.org> wrote:
+>> On Tue, Feb 21, 2012 at 11:46 AM, DR <drdarkraven at gmail.com> wrote:
+>>> On Mon, Feb 20, 2012 at 7:14 AM, Fernando Lemos <fernandotcl at i3wm.org> wrote:
+>>>> On Sun, Feb 19, 2012 at 11:27 AM, Fernando Lemos <fernandotcl at i3wm.org> wrote:
+>>>>> Hi,
+>>>>>
+>>>>> On Sun, Feb 19, 2012 at 7:54 AM, DR <drdarkraven at gmail.com> wrote:
+>>>>>> If you send me the patch, I'd be glad to test it.
+>>>>>
+>>>>> 1/2: http://pastebin.com/Kw6srqZE
+>>>>
+>>>> Ugh. A revised patch that takes into account the alpha component in colors:
+>>>>
+>>>> 1/2: http://pastebin.com/zuyTSXKB
+>>>
+>>> I'm running i3 with your patch now.
+>>> While i3 is working well with this patch, I notice some glitches.
+>
+> Ah, I think I nailed it. Can you see if this fixes the issues you mentioned?
+>
+> http://pastebin.com/UEScudhV
+>
+> It also made me realize that draw_text isn't well documented... I'll work on it.
+>
+> Thanks,
+
+Thank you for such a quick fix, great work.
+
+From drdarkraven at gmail.com  Wed Feb 22 07:21:43 2012
+From: drdarkraven at gmail.com (DR)
+Date: Wed, 22 Feb 2012 14:21:43 +0800
+Subject: [i3] [PATCH] Improved i3bar hide mode behavior (In my point of view)
+Message-ID: <CAMJW5=0hC+1YhuPyY8=eQtAKuM0VwzPgiGRDAwJs2aXzF_YcKw@mail.gmail.com>
+
+When a workspace marked 'urgent', i3bar unhide itself. if I want to
+hide it again, I must press the modifier.
+This sometimes annoys me.
+
+In this patch I change the above behavior to this: If a urgent
+workspace occurs, i3bar will unhide itself; and when you navigates
+away from the last urgent workspace and there is no more urgent
+workspace, i3bar will hide itself again.
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0003-unhide.patch
+Type: text/x-patch
+Size: 3021 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120222/360f4c03/attachment.bin>
+
+From drdarkraven at gmail.com  Wed Feb 22 10:15:41 2012
+From: drdarkraven at gmail.com (DR)
+Date: Wed, 22 Feb 2012 17:15:41 +0800
+Subject: [i3] [PATCH] Improved i3bar hide mode behavior (In my point of
+	view)
+In-Reply-To: <CAMJW5=0hC+1YhuPyY8=eQtAKuM0VwzPgiGRDAwJs2aXzF_YcKw@mail.gmail.com>
+References: <CAMJW5=0hC+1YhuPyY8=eQtAKuM0VwzPgiGRDAwJs2aXzF_YcKw@mail.gmail.com>
+Message-ID: <CAMJW5=2u8xves-DYAJk-xy4aM64eRhfoY5bPufh52OmYbgYomw@mail.gmail.com>
+
+On Wed, Feb 22, 2012 at 2:21 PM, DR <drdarkraven at gmail.com> wrote:
+> When a workspace marked 'urgent', i3bar unhide itself. if I want to
+> hide it again, I must press the modifier.
+> This sometimes annoys me.
+>
+> In this patch I change the above behavior to this: If a urgent
+> workspace occurs, i3bar will unhide itself; and when you navigates
+> away from the last urgent workspace and there is no more urgent
+> workspace, i3bar will hide itself again.
+
+Oops... I messed it up.
+Here is the patch fix build, and improve the behavior a little bit more:
+When the urgent workspace is currently focused, i3bar will hide as
+soon as the urgent mark has gone.
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-i3bar-fix.patch
+Type: text/x-patch
+Size: 2029 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120222/9d07be03/attachment.bin>
+
+From mail at merovius.de  Wed Feb 22 13:47:23 2012
+From: mail at merovius.de (Axel Wagner)
+Date: Wed, 22 Feb 2012 13:47:23 +0100
+Subject: [i3] [PATCH] Improved i3bar hide mode behavior (In my point of
+	view)
+In-Reply-To: <CAMJW5=2u8xves-DYAJk-xy4aM64eRhfoY5bPufh52OmYbgYomw@mail.gmail.com>
+References: <CAMJW5=0hC+1YhuPyY8=eQtAKuM0VwzPgiGRDAwJs2aXzF_YcKw@mail.gmail.com>
+ <CAMJW5=2u8xves-DYAJk-xy4aM64eRhfoY5bPufh52OmYbgYomw@mail.gmail.com>
+Message-ID: <1329914775-sup-7782@merovius.de>
+
+Excerpts from DR's message of 2012-02-22 10:15:41 +0100:
+> When the urgent workspace is currently focused, i3bar will hide as
+> soon as the urgent mark has gone.
+
+excellent, when this patch does, what you're saying it does, it fixes a
+bug, that has bothered me from the beginning, but I never had the nerve
+to fix ;)
+
+Regards,
+
+Axel
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 198 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120222/7a079b50/attachment.pgp>
+
+From bebl at mageta.org  Thu Feb 23 21:31:07 2012
+From: bebl at mageta.org (Benjamin Block)
+Date: Thu, 23 Feb 2012 21:31:07 +0100
+Subject: [i3] [RFC] [PATCH] i3status: memory-stats
+Message-ID: <1330029068-20904-1-git-send-email-bebl@mageta.org>
+
+Hi folks,
+
+I noticed that there is currently no way to display memory-stats with i3status.
+Because I like to know how much memory is used/free on my systems I wrote a
+small addition to i3status to cover this.
+
+The RFC only covers stats on linux-systems as I'm not that familiar with
+FreeBSD.
+
+I'm not entirely sure whether I covered everything necessary, or if there are
+still bugs. But if you like it, you are free to use it/modify it as you please.
+
+Best regards,
+- Benjamin
+
+Benjamin Block (1):
+  i3status: implements a memory-usage-print
+
+ i3status.c            |   14 +++
+ include/i3status.h    |    1 +
+ man/i3status.man      |   27 ++++++
+ src/print_mem_usage.c |  210 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 252 insertions(+), 0 deletions(-)
+ create mode 100644 src/print_mem_usage.c
+
+--
+1.7.3.4
+
+
+From bebl at mageta.org  Thu Feb 23 21:31:08 2012
+From: bebl at mageta.org (Benjamin Block)
+Date: Thu, 23 Feb 2012 21:31:08 +0100
+Subject: [i3] [PATCH] i3status: implements a memory-usage-print
+In-Reply-To: <1330029068-20904-1-git-send-email-bebl@mageta.org>
+References: <1330029068-20904-1-git-send-email-bebl@mageta.org>
+Message-ID: <1330029068-20904-2-git-send-email-bebl@mageta.org>
+
+Adds a new output which can be used to display common memory-statistics,
+like top would do it.
+
+The current implementation supports only linux and reads /proc/meminfo.
+
+Signed-of-by: Benjamin Block <bebl at mageta.org>
+---
+ i3status.c            |   14 +++
+ include/i3status.h    |    1 +
+ man/i3status.man      |   27 ++++++
+ src/print_mem_usage.c |  210 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 252 insertions(+), 0 deletions(-)
+ create mode 100644 src/print_mem_usage.c
+
+diff --git a/i3status.c b/i3status.c
+index dd7d1e6..f86d0e6 100644
+--- a/i3status.c
++++ b/i3status.c
+@@ -234,6 +234,13 @@ int main(int argc, char *argv[]) {
+                 CFG_END()
+         };
+ 
++        cfg_opt_t mem_usage_opts[] = {
++                CFG_STR("format", "%usage", CFGF_NONE),
++                CFG_INT("include_buffers", 0, CFGF_NONE),
++                CFG_INT("include_caches", 0, CFGF_NONE),
++                CFG_END()
++        };
++
+         cfg_opt_t temp_opts[] = {
+                 CFG_STR("format", "%degrees C", CFGF_NONE),
+                 CFG_STR("path", NULL, CFGF_NONE),
+@@ -268,6 +275,7 @@ int main(int argc, char *argv[]) {
+                 CFG_SEC("ddate", ddate_opts, CFGF_NONE),
+                 CFG_SEC("load", load_opts, CFGF_NONE),
+                 CFG_SEC("cpu_usage", usage_opts, CFGF_NONE),
++                CFG_SEC("mem_usage", mem_usage_opts, CFGF_TITLE | CFGF_MULTI),
+                 CFG_END()
+         };
+ 
+@@ -410,6 +418,12 @@ int main(int argc, char *argv[]) {
+ 
+                         CASE_SEC("cpu_usage")
+                                 print_cpu_usage(cfg_getstr(sec, "format"));
++
++                        CASE_SEC_TITLE("mem_usage")
++                                print_mem_usage(title,
++                                                cfg_getstr(sec, "format"),
++                                                cfg_getint(sec, "include_buffers"),
++                                                cfg_getint(sec, "include_caches"));
+                 }
+                 if (output_format == O_I3BAR)
+                         printf("],");
+diff --git a/include/i3status.h b/include/i3status.h
+index e40003c..6afccdd 100644
+--- a/include/i3status.h
++++ b/include/i3status.h
+@@ -73,6 +73,7 @@ void print_wireless_info(const char *interface, const char *format_up, const cha
+ void print_run_watch(const char *title, const char *pidfile, const char *format);
+ void print_cpu_temperature_info(int zone, const char *path, const char *format);
+ void print_cpu_usage(const char *format);
++void print_mem_usage(const char *title, const char *format, int include_buffers, int include_caches);
+ void print_eth_info(const char *interface, const char *format_up, const char *format_down);
+ void print_load();
+ void print_volume(const char *fmt, const char *device, const char *mixer, int mixer_idx);
+diff --git a/man/i3status.man b/man/i3status.man
+index fb1bbf4..b14eaa6 100644
+--- a/man/i3status.man
++++ b/man/i3status.man
+@@ -136,6 +136,8 @@ managers like dwm, wmii and xmonad though it will work with any windowmanger
+ xmobar::
+ xmobar is a minimalistic, text based, status bar. It was designed to work
+ with the xmonad Window Manager.
++i3bar::
++the native status bar of i3.
+ none::
+ Does not use any color codes. Separates values by the pipe symbol. This should
+ be used with i3bar and can be used for custom scripts.
+@@ -220,6 +222,31 @@ Gets the percentual CPU usage from +/proc/stat+.
+ 
+ *Example format*: +%usage+
+ 
++=== Memory Usage
++
++Gets several memory-parameters from +/proc/meminfo+.
++
++*Example order*: +memory_usage phy_free+
++
++*Example config*:
++-------------------------------------------------------------
++memory_usage top {
++	format = "Memory: %phytotal total, %phyused used, %phyfree
++		  free; Swap: %swaptotal total, %swapused used,
++		  %swapfree free"
++	include_buffers = 0
++	include_caches = 0
++}
++-------------------------------------------------------------
++
++-------------------------------------------------------------
++memory_usage phy_free {
++	format = "M: %phyfree"
++	include_buffers = 0
++	include_caches = 0
++}
++-------------------------------------------------------------
++
+ === Load
+ 
+ Gets the system load (number of processes waiting for CPU time in the last
+diff --git a/src/print_mem_usage.c b/src/print_mem_usage.c
+new file mode 100644
+index 0000000..fed9f67
+--- /dev/null
++++ b/src/print_mem_usage.c
+@@ -0,0 +1,210 @@
++// vim:sw=8:sts=8:ts=8:expandtab
++#include <stdlib.h>
++#include <limits.h>
++#include <stdio.h>
++#include <string.h>
++#include <errno.h>
++
++#ifdef __FreeBSD__
++/* don't have any freebsd-systems .. */
++#endif
++
++#include "i3status.h"
++
++enum mem_usage_idx {
++        MEM_USAGE_MIN   = 0,
++        MEM_USAGE_TOTAL = 0,
++        MEM_USAGE_FREE   = 1,
++        MEM_USAGE_USED  = 2,
++        MEM_USAGE_MAX   = 3
++};
++
++/*
++ * shall provide a common way to express the amount of memory used and available
++ *
++ * the values are expected to be kByte-numbers
++ */
++struct mem_usage {
++        unsigned long phy[3];
++        unsigned long swap[3];
++};
++
++/* os-specific implementations provided at the bottom */
++int get_mem_usage(struct mem_usage * usage, int include_buffers,
++                int include_caches);
++
++void
++print_mem_usage(const char *title, const char *format, int include_buffers,
++                int include_caches)
++{
++        const char *walk;
++        struct mem_usage usage;
++
++        if (output_format == O_I3BAR)
++                printf("{\"name\":\"mem_usage\", \"full_text\":\"");
++
++        if(get_mem_usage(&usage, include_buffers, include_caches))
++                goto err_out;
++
++/* matches the str against (walk + 1) */
++#define matchField(str) (strncmp(walk + 1, (str), sizeof((str)) - 1) == 0)
++
++        for (walk = format; *walk != '\0'; walk++) {
++                if (*walk != '%') {
++                        putchar(*walk);
++                        continue;
++                }
++
++                /* dispaly in MegaBytes */
++                if (matchField("phytotal")) {
++                        printf("%lumB", usage.phy[MEM_USAGE_TOTAL] >> 10);
++                        walk += sizeof("phytotal") - 1;
++                } else if (matchField("phyfree")) {
++                        printf("%lumB", usage.phy[MEM_USAGE_FREE] >> 10);
++                        walk += sizeof("phyfree") - 1;
++                } else if (matchField("phyused")) {
++                        printf("%lumB", usage.phy[MEM_USAGE_USED] >> 10);
++                        walk += sizeof("phyused") - 1;
++                } else if (matchField("swaptotal")) {
++                        printf("%lumB", usage.swap[MEM_USAGE_TOTAL] >> 10);
++                        walk += sizeof("swaptotal") - 1;
++                } else if (matchField("swapfree")) {
++                        printf("%lumB", usage.swap[MEM_USAGE_FREE] >> 10);
++                        walk += sizeof("swapfree") - 1;
++                } else if (matchField("swapused")) {
++                        printf("%lumB", usage.swap[MEM_USAGE_USED] >> 10);
++                        walk += sizeof("swapused") - 1;
++                }
++        }
++
++        if (output_format == O_I3BAR)
++                printf("\"}");
++
++#undef  matchField
++
++        return;
++err_out:
++        (void) fputs("Cannot read mem-usage\n", stderr);
++}
++
++#if defined(LINUX)
++int
++to_ulong(char *c, unsigned long *ul)
++{
++        *ul = strtoul(c, NULL, 10);
++        if (errno == ERANGE || errno == EINVAL)
++                return 1;
++        return 0;
++}
++
++int
++get_mem_usage(struct mem_usage * usage, int include_buffers,
++                int include_caches)
++{
++        /*
++         * Documentation: $LINUX_HOME/Documentation/filesystems/proc.txt
++         * Implementation: $LINUX_HOME/fs/proc/meminfo.c
++         */
++        char * file = "/proc/meminfo";
++        /*
++         * we actually need 6 lines:
++         * - MemTotal
++         * - MemFree
++         * - Buffers
++         * - Cached
++         * - SwapTotal
++         * - SwapFree
++         *
++         * SwapFree is the last of the necessary ones. So, if you
++         * look into the implementation, there are currently around
++         * 20 lines, each with 28 Bytes. Therefore we need to read
++         * at least 560 Bytes.
++         */
++        char buffer[1024]; /* should be plenty */
++        int read = 0; /* how many lines were found */
++
++        char *fn, *fv, *fl; /* the 3 line-tokens */
++        unsigned long tmp, caches, buffers;
++
++        if (!slurp(file, buffer, sizeof(buffer)))
++                goto err_out;
++
++        memset(usage, 0, sizeof(*usage));
++
++        /* working with strings is so much fun in C */
++
++/* matches the str against fn */
++#define matchField(str) (strncmp(fn, (str), sizeof((str)) - 1) == 0)
++/* try to get a value out of fv */
++#define getValue(val) (to_ulong(fv, &(val)) == 0)
++
++        /* tokenize one line */
++        fn = strtok(buffer, " "); /* pointer to the field-name (and ':') */
++        fv = strtok(NULL, " "); /* pointer to the field-value */
++        fl = strtok(NULL, "\n"); /* should contain 'kB' */
++        while(fn && fv && fl) {
++                /*
++                 * try to find a important line and if one is found
++                 * try to convert the field-value-string into a usable
++                 */
++                if (matchField("MemTotal") && getValue(tmp)) {
++                        usage->phy[MEM_USAGE_TOTAL] = tmp;
++                        read++;
++                } else if (matchField("MemFree") && getValue(tmp)) {
++                        usage->phy[MEM_USAGE_FREE] = tmp;
++                        read++;
++                } else if (matchField("Buffers") && getValue(tmp)) {
++                        buffers = tmp;
++                        read++;
++                } else if (matchField("Cached") && getValue(tmp)) {
++                        caches = tmp;
++                        read++;
++                } else if (matchField("SwapTotal") && getValue(tmp)) {
++                        usage->swap[MEM_USAGE_TOTAL] = tmp;
++                        read++;
++                } else if (matchField("SwapFree") && getValue(tmp)) {
++                        usage->swap[MEM_USAGE_FREE] = tmp;
++                        read++;
++                }
++
++                if(read >= 6)
++                        break;
++
++                /* try to tokenize an other line */
++                fn = strtok(NULL, " ");
++                fv = strtok(NULL, " ");
++                fl = strtok(NULL, "\n");
++        }
++
++#undef getValue
++#undef matchField
++
++        if(read < 6)
++                goto err_out;
++
++        usage->phy[MEM_USAGE_USED] = usage->phy[MEM_USAGE_TOTAL] -
++                usage->phy[MEM_USAGE_FREE];
++        usage->swap[MEM_USAGE_USED] = usage->swap[MEM_USAGE_TOTAL] -
++                usage->swap[MEM_USAGE_FREE];
++
++        if (include_buffers == 0) {
++                usage->phy[MEM_USAGE_FREE] += buffers;
++                usage->phy[MEM_USAGE_USED] -= buffers;
++        }
++
++        if (include_caches == 0) {
++                usage->phy[MEM_USAGE_FREE] += caches;
++                usage->phy[MEM_USAGE_USED] -= caches;
++        }
++
++        return 0;
++err_out:
++        return 1;
++}
++#else
++int
++get_mem_usage(struct mem_usage * usage)
++{
++        return 1;
++}
++#endif
+-- 
+1.7.3.4
+
+
+From fernandotcl at i3wm.org  Fri Feb 24 00:28:44 2012
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Thu, 23 Feb 2012 21:28:44 -0200
+Subject: [i3] [RFC] [PATCH] i3status: memory-stats
+In-Reply-To: <1330029068-20904-1-git-send-email-bebl@mageta.org>
+References: <1330029068-20904-1-git-send-email-bebl@mageta.org>
+Message-ID: <CANVYNa_wWqsyHCvZuV=h8nR5bWPxgwgrv95bqf2h2oLAPn-xMg@mail.gmail.com>
+
+Hi, Benjamin,
+
+On Thu, Feb 23, 2012 at 6:31 PM, Benjamin Block <bebl at mageta.org> wrote:
+> Hi folks,
+>
+> I noticed that there is currently no way to display memory-stats with i3status.
+> Because I like to know how much memory is used/free on my systems I wrote a
+> small addition to i3status to cover this.
+>
+
+I believe we don't have memory stats in i3status because Michael
+doesn't think it's a good idea, since it's too volatile and it's not
+something you're supposed to monitor. Same thing about CPU usage at a
+given time. Have you talked to Michael about this?
+
+Of course, nothing prevents you from distributing those patches
+yourself, feel free to post them here too.
+
+Regards,
+
+From fernandotcl at gmail.com  Fri Feb 24 00:43:56 2012
+From: fernandotcl at gmail.com (Fernando Lemos)
+Date: Thu, 23 Feb 2012 21:43:56 -0200
+Subject: [i3] [PATCH] Transparency support
+In-Reply-To: <CAMJW5=0rXDEVf5jU12fYm2x6b8Y_Anbxh2Von2qwjBdcwmrkTg@mail.gmail.com>
+References: <CAMJW5=0GeBus4D4npdO54Z5+mL33T4mz=Cem7J5X+6RveXTL7Q@mail.gmail.com>
+ <CANVYNa_utbh3Umvxpqd+bjwUv7h67JRhUik=xLHphdNusMr0yg@mail.gmail.com>
+ <CAMJW5=2ZHyZDzBy-EhHyM=0srB9UNnWYVUFt5UqhZX=kf2jBQA@mail.gmail.com>
+ <CANVYNa-S82Qkd04KX4TrPkrFMO1gRVtpcSa68cDQ_zF+e=gmNA@mail.gmail.com>
+ <op.v8b5j5am735up4@sraven> <1327744001-sup-4371@stapelberg.de>
+ <CAMJW5=3-OT5Lf0Ef5t2mRa-6p_6NB80CKfjS39QQ03p2DcWP8Q@mail.gmail.com>
+ <1327767281-sup-8641@stapelberg.de>
+ <1328562055-sup-3279@stapelberg.de>
+ <CAMJW5=0FHnCWSv9G6-=zPbn55Tn=+WNkG9gEgRzg2Sgj=gBY3w@mail.gmail.com>
+ <CAMJW5=0Zfexbx-eRXwEd2EEKHXvSGVR7dMFiqFwKrCL3Xj99Nw@mail.gmail.com>
+ <CAMJW5=0rXDEVf5jU12fYm2x6b8Y_Anbxh2Von2qwjBdcwmrkTg@mail.gmail.com>
+Message-ID: <CANVYNa_zj+zL9rZaqLHsOnNZGVwfSbTtc_ZQPcaFSbwJcpj1jQ@mail.gmail.com>
+
+HI,
+
+On Wed, Feb 22, 2012 at 3:53 AM, DR <drdarkraven at gmail.com> wrote:
+> On Tue, Feb 21, 2012 at 5:49 PM, DR <drdarkraven at gmail.com> wrote:
+>> Oops, I noticed a bug caused by 32bit visual.
+>> in resize_graphical_handler(), the creation of helpwin will fail with
+>> a BadMatch.
+>> I tried hard to fix it, but can't.
+>> Would you mind look into this problem?
+> I've fixed this.
+
+Cool. You might want to explain the patch a bit better, "fix resize
+bar" is a bit too generic. Consider explaining why your changes are
+needed, something like "Don't forget to set X on Y." in the short
+description. You might want to elaborate on why that's needed in the
+long description too, something like "Y needs to have X set so that Y
+can do Z without W errors when resizing".
+
+You're also introducing 2 extra blank lines, is that intended?
+
+Regards,
+
+From fernandotcl at i3wm.org  Fri Feb 24 01:13:04 2012
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Thu, 23 Feb 2012 22:13:04 -0200
+Subject: [i3] [PATCH] Improved i3bar hide mode behavior (In my point of
+	view)
+In-Reply-To: <CAMJW5=2u8xves-DYAJk-xy4aM64eRhfoY5bPufh52OmYbgYomw@mail.gmail.com>
+References: <CAMJW5=0hC+1YhuPyY8=eQtAKuM0VwzPgiGRDAwJs2aXzF_YcKw@mail.gmail.com>
+ <CAMJW5=2u8xves-DYAJk-xy4aM64eRhfoY5bPufh52OmYbgYomw@mail.gmail.com>
+Message-ID: <CANVYNa9Kbr_aDYTpN+4Qi6xsJKDFsQ34+3ZdpwK4MAqAOzETZg@mail.gmail.com>
+
+Hi,
+
+On Wed, Feb 22, 2012 at 7:15 AM, DR <drdarkraven at gmail.com> wrote:
+> On Wed, Feb 22, 2012 at 2:21 PM, DR <drdarkraven at gmail.com> wrote:
+>> When a workspace marked 'urgent', i3bar unhide itself. if I want to
+>> hide it again, I must press the modifier.
+>> This sometimes annoys me.
+>>
+>> In this patch I change the above behavior to this: If a urgent
+>> workspace occurs, i3bar will unhide itself; and when you navigates
+>> away from the last urgent workspace and there is no more urgent
+>> workspace, i3bar will hide itself again.
+
+This sounds interesting, but have you discussed it with Michael first?
+I'd recommend always pinging Michael first to see if what you intend
+to do is in line with the project goals and things like that. Unless,
+of course, you don't care about getting your patches merged.
+
+Anyways, some comments below.
+
+> Oops... I messed it up.
+> Here is the patch fix build, and improve the behavior a little bit more:
+> When the urgent workspace is currently focused, i3bar will hide as
+> soon as the urgent mark has gone.
+
+Please merge both patches in a single one to make it easier to review
+(unless they do separate things, of course).
+
+I noticed you used "if (" and "if(", please stick with "if (" as
+that's what the rest of xcb.c uses.
+
+You declare and read bar_hidden, but you never seem to write to it. Am
+I missing something? Also, I'd rather have the code that calls
+hide/unhide_bar simply not call those functions rather than do the
+checking inside the functions, but that's subjective, I guess.
+
+The indentation level on the call to hide_bars() in the last chunk of
+the second patch is wrong. Are you sure you don't want that enclosed
+by brackets, as part of the "else" branch?
+
+You're doing all the logic in the drawing code. Perhaps it would be
+better to detect that stuff directly in the ipc.c, when you receive
+the workspace info from i3, after the call to parse_workspaces_json.
+
+Regards,
+
+From drdarkraven at gmail.com  Fri Feb 24 08:32:01 2012
+From: drdarkraven at gmail.com (DR)
+Date: Fri, 24 Feb 2012 15:32:01 +0800
+Subject: [i3] [PATCH] Transparency support
+In-Reply-To: <CANVYNa_zj+zL9rZaqLHsOnNZGVwfSbTtc_ZQPcaFSbwJcpj1jQ@mail.gmail.com>
+References: <CAMJW5=0GeBus4D4npdO54Z5+mL33T4mz=Cem7J5X+6RveXTL7Q@mail.gmail.com>
+ <CANVYNa_utbh3Umvxpqd+bjwUv7h67JRhUik=xLHphdNusMr0yg@mail.gmail.com>
+ <CAMJW5=2ZHyZDzBy-EhHyM=0srB9UNnWYVUFt5UqhZX=kf2jBQA@mail.gmail.com>
+ <CANVYNa-S82Qkd04KX4TrPkrFMO1gRVtpcSa68cDQ_zF+e=gmNA@mail.gmail.com>
+ <op.v8b5j5am735up4@sraven> <1327744001-sup-4371@stapelberg.de>
+ <CAMJW5=3-OT5Lf0Ef5t2mRa-6p_6NB80CKfjS39QQ03p2DcWP8Q@mail.gmail.com>
+ <1327767281-sup-8641@stapelberg.de> <1328562055-sup-3279@stapelberg.de>
+ <CAMJW5=0FHnCWSv9G6-=zPbn55Tn=+WNkG9gEgRzg2Sgj=gBY3w@mail.gmail.com>
+ <CAMJW5=0Zfexbx-eRXwEd2EEKHXvSGVR7dMFiqFwKrCL3Xj99Nw@mail.gmail.com>
+ <CAMJW5=0rXDEVf5jU12fYm2x6b8Y_Anbxh2Von2qwjBdcwmrkTg@mail.gmail.com>
+ <CANVYNa_zj+zL9rZaqLHsOnNZGVwfSbTtc_ZQPcaFSbwJcpj1jQ@mail.gmail.com>
+Message-ID: <CAMJW5=0yM0y8m-U-YRV8hseg6LNVEwZp4fT7zZJQs-UXVWuChQ@mail.gmail.com>
+
+On Fri, Feb 24, 2012 at 7:43 AM, Fernando Lemos <fernandotcl at gmail.com> wrote:
+> HI,
+>
+> On Wed, Feb 22, 2012 at 3:53 AM, DR <drdarkraven at gmail.com> wrote:
+>> On Tue, Feb 21, 2012 at 5:49 PM, DR <drdarkraven at gmail.com> wrote:
+>>> Oops, I noticed a bug caused by 32bit visual.
+>>> in resize_graphical_handler(), the creation of helpwin will fail with
+>>> a BadMatch.
+>>> I tried hard to fix it, but can't.
+>>> Would you mind look into this problem?
+>> I've fixed this.
+>
+> Cool. You might want to explain the patch a bit better, "fix resize
+> bar" is a bit too generic. Consider explaining why your changes are
+> needed, something like "Don't forget to set X on Y." in the short
+> description. You might want to elaborate on why that's needed in the
+> long description too, something like "Y needs to have X set so that Y
+> can do Z without W errors when resizing".
+It's the same issue explained in x_con_init() at src/x.c
+
+>
+> You're also introducing 2 extra blank lines, is that intended?
+Sorry, that's a mistake.
+
+>
+> Regards,
+
+From bebl at mageta.org  Fri Feb 24 14:22:05 2012
+From: bebl at mageta.org (Benjamin Block)
+Date: Fri, 24 Feb 2012 14:22:05 +0100
+Subject: [i3] [RFC] [PATCH] i3status: memory-stats
+In-Reply-To: <CANVYNa_wWqsyHCvZuV=h8nR5bWPxgwgrv95bqf2h2oLAPn-xMg@mail.gmail.com>
+References: <1330029068-20904-1-git-send-email-bebl@mageta.org>
+ <CANVYNa_wWqsyHCvZuV=h8nR5bWPxgwgrv95bqf2h2oLAPn-xMg@mail.gmail.com>
+Message-ID: <4F478EFD.5090605@mageta.org>
+
+On 24.02.2012 00:28, Fernando Lemos wrote:
+> Hi, Benjamin,
+> 
+> On Thu, Feb 23, 2012 at 6:31 PM, Benjamin Block <bebl at mageta.org> wrote:
+>> Hi folks,
+>>
+>> I noticed that there is currently no way to display memory-stats with i3status.
+>> Because I like to know how much memory is used/free on my systems I wrote a
+>> small addition to i3status to cover this.
+>>
+> 
+> I believe we don't have memory stats in i3status because Michael
+> doesn't think it's a good idea, since it's too volatile and it's not
+> something you're supposed to monitor. Same thing about CPU usage at a
+> given time. Have you talked to Michael about this?
+> 
+
+Nah, haven't talked about this with anyone. I just wanted to see my
+memstats and hacked it in ;)
+
+I haven't measured it, but as for the kernel-side-code, it seems not to
+be much more "volatile" than reading /proc/loadavg or /proc/stat, things
+that you already do in i3status.
+It simply reads some system-wide-statistics and iterates over some
+block-devices to figure out what amount of memory is used for buffers.
+
+The userland does only one read on the proc-file and some
+string-matching, which is ugly as hell but should be fast enough to be
+negligible (on modern cpu's with things like sseXY or MMX).
+
+>
+> Of course, nothing prevents you from distributing those patches
+> yourself, feel free to post them here too.
+> 
+
+If you don't like it, don't use it :)
+
+best regards,
+- Benjamin
+
+
+From michael at i3wm.org  Fri Feb 24 17:33:52 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 24 Feb 2012 17:33:52 +0100
+Subject: [i3] [RFC] [PATCH] i3status: memory-stats
+In-Reply-To: <4F478EFD.5090605@mageta.org>
+References: <1330029068-20904-1-git-send-email-bebl@mageta.org>
+ <CANVYNa_wWqsyHCvZuV=h8nR5bWPxgwgrv95bqf2h2oLAPn-xMg@mail.gmail.com>
+ <4F478EFD.5090605@mageta.org>
+Message-ID: <1330101122-sup-4659@stapelberg.de>
+
+Hi Benjamin,
+
+Excerpts from Benjamin Block's message of 2012-02-24 14:22:05 +0100:
+> > I believe we don't have memory stats in i3status because Michael
+> > doesn't think it's a good idea, since it's too volatile and it's not
+> > something you're supposed to monitor. Same thing about CPU usage at a
+> > given time. Have you talked to Michael about this?
+> > 
+> 
+> Nah, haven't talked about this with anyone. I just wanted to see my
+> memstats and hacked it in ;)
+Fernando is right. memory usage came up quite a few times already, so I decided
+to finally add a note to the manpage explaining why we don?t want it in
+i3status:
+
+http://code.i3wm.org/i3status/commit/?id=b35753cd
+
+Therefore, I am sorry that your work was "in vain" (well, you are profiting
+from it, I guess), but I won?t merge this patch.
+
+Best regards,
+Michael
+
+From bebl at mageta.org  Fri Feb 24 23:29:21 2012
+From: bebl at mageta.org (Benjamin Block)
+Date: Fri, 24 Feb 2012 23:29:21 +0100
+Subject: [i3] [RFC] [PATCH] i3status: memory-stats
+In-Reply-To: <1330101122-sup-4659@stapelberg.de>
+References: <1330029068-20904-1-git-send-email-bebl@mageta.org>
+ <CANVYNa_wWqsyHCvZuV=h8nR5bWPxgwgrv95bqf2h2oLAPn-xMg@mail.gmail.com>
+ <4F478EFD.5090605@mageta.org> <1330101122-sup-4659@stapelberg.de>
+Message-ID: <4F480F41.9010609@mageta.org>
+
+On 24.02.2012 17:33, Michael Stapelberg wrote:
+> Hi Benjamin,
+> 
+> Excerpts from Benjamin Block's message of 2012-02-24 14:22:05 +0100:
+>>> I believe we don't have memory stats in i3status because Michael
+>>> doesn't think it's a good idea, since it's too volatile and it's not
+>>> something you're supposed to monitor. Same thing about CPU usage at a
+>>> given time. Have you talked to Michael about this?
+>>>
+>>
+>> Nah, haven't talked about this with anyone. I just wanted to see my
+>> memstats and hacked it in ;)
+> Fernando is right. memory usage came up quite a few times already, so I decided
+> to finally add a note to the manpage explaining why we don?t want it in
+> i3status:
+> 
+> http://code.i3wm.org/i3status/commit/?id=b35753cd
+> 
+> Therefore, I am sorry that your work was "in vain" (well, you are profiting
+> from it, I guess), but I won?t merge this patch.
+> 
+
+Well, it's up to you. But you maybe want to remove the part about
+cpu-usage, because there is a cpu-usage-statistic available in i3status ;)
+
+From michael at i3wm.org  Sat Feb 25 12:13:18 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 25 Feb 2012 12:13:18 +0100
+Subject: [i3] [RFC] [PATCH] i3status: memory-stats
+In-Reply-To: <4F480F41.9010609@mageta.org>
+References: <1330029068-20904-1-git-send-email-bebl@mageta.org>
+ <CANVYNa_wWqsyHCvZuV=h8nR5bWPxgwgrv95bqf2h2oLAPn-xMg@mail.gmail.com>
+ <4F478EFD.5090605@mageta.org> <1330101122-sup-4659@stapelberg.de>
+ <4F480F41.9010609@mageta.org>
+Message-ID: <1330168373-sup-1556@stapelberg.de>
+
+Hi Benjamin,
+
+Excerpts from Benjamin Block's message of 2012-02-24 23:29:21 +0100:
+> Well, it's up to you. But you maybe want to remove the part about
+> cpu-usage, because there is a cpu-usage-statistic available in i3status ;)
+I didn?t talk about CPU usage. I talked about CPU frequency.
+
+Best regards,
+Michael
+
+From fernandotcl at i3wm.org  Sat Feb 25 22:17:15 2012
+From: fernandotcl at i3wm.org (Fernando Lemos)
+Date: Sat, 25 Feb 2012 19:17:15 -0200
+Subject: [i3] [PATCH] Transparency support
+In-Reply-To: <CAMJW5=0yM0y8m-U-YRV8hseg6LNVEwZp4fT7zZJQs-UXVWuChQ@mail.gmail.com>
+References: <CAMJW5=0GeBus4D4npdO54Z5+mL33T4mz=Cem7J5X+6RveXTL7Q@mail.gmail.com>
+ <CANVYNa_utbh3Umvxpqd+bjwUv7h67JRhUik=xLHphdNusMr0yg@mail.gmail.com>
+ <CAMJW5=2ZHyZDzBy-EhHyM=0srB9UNnWYVUFt5UqhZX=kf2jBQA@mail.gmail.com>
+ <CANVYNa-S82Qkd04KX4TrPkrFMO1gRVtpcSa68cDQ_zF+e=gmNA@mail.gmail.com>
+ <op.v8b5j5am735up4@sraven> <1327744001-sup-4371@stapelberg.de>
+ <CAMJW5=3-OT5Lf0Ef5t2mRa-6p_6NB80CKfjS39QQ03p2DcWP8Q@mail.gmail.com>
+ <1327767281-sup-8641@stapelberg.de>
+ <1328562055-sup-3279@stapelberg.de>
+ <CAMJW5=0FHnCWSv9G6-=zPbn55Tn=+WNkG9gEgRzg2Sgj=gBY3w@mail.gmail.com>
+ <CAMJW5=0Zfexbx-eRXwEd2EEKHXvSGVR7dMFiqFwKrCL3Xj99Nw@mail.gmail.com>
+ <CAMJW5=0rXDEVf5jU12fYm2x6b8Y_Anbxh2Von2qwjBdcwmrkTg@mail.gmail.com>
+ <CANVYNa_zj+zL9rZaqLHsOnNZGVwfSbTtc_ZQPcaFSbwJcpj1jQ@mail.gmail.com>
+ <CAMJW5=0yM0y8m-U-YRV8hseg6LNVEwZp4fT7zZJQs-UXVWuChQ@mail.gmail.com>
+Message-ID: <CANVYNa-ZuH81YXqetnRmGZn3c59jb=V9-gXvgs7TftUnvfzrWQ@mail.gmail.com>
+
+On Fri, Feb 24, 2012 at 5:32 AM, DR <drdarkraven at gmail.com> wrote:
+> On Fri, Feb 24, 2012 at 7:43 AM, Fernando Lemos <fernandotcl at gmail.com> wrote:
+>> HI,
+>>
+>> On Wed, Feb 22, 2012 at 3:53 AM, DR <drdarkraven at gmail.com> wrote:
+>>> On Tue, Feb 21, 2012 at 5:49 PM, DR <drdarkraven at gmail.com> wrote:
+>>>> Oops, I noticed a bug caused by 32bit visual.
+>>>> in resize_graphical_handler(), the creation of helpwin will fail with
+>>>> a BadMatch.
+>>>> I tried hard to fix it, but can't.
+>>>> Would you mind look into this problem?
+>>> I've fixed this.
+>>
+>> Cool. You might want to explain the patch a bit better, "fix resize
+>> bar" is a bit too generic. Consider explaining why your changes are
+>> needed, something like "Don't forget to set X on Y." in the short
+>> description. You might want to elaborate on why that's needed in the
+>> long description too, something like "Y needs to have X set so that Y
+>> can do Z without W errors when resizing".
+> It's the same issue explained in x_con_init() at src/x.c
+
+It doesn't matter, the patch must explain what it does or the
+description is essentially useless.
+
+Regards,
+
+From j.ziberna at gmail.com  Sat Feb 25 13:24:26 2012
+From: j.ziberna at gmail.com (=?UTF-8?Q?Jure_=C5=BDiberna?=)
+Date: Sat, 25 Feb 2012 13:24:26 +0100
+Subject: [i3] i3-py: project location changed
+Message-ID: <CAC_712pYW4wE=GXTLkWYz_Cb+p8nFGHkYJUqvDv8JSYjNeg5Kw@mail.gmail.com>
+
+The location of the i3-py project has changed to
+https://github.com/ziberna/i3-py
+
+If anybody has any bug reports / feature requests / anything, please let me
+know!
+
+Jure
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120225/99683cae/attachment.html>
+
+From marcus.klemm at googlemail.com  Sun Feb 26 15:17:17 2012
+From: marcus.klemm at googlemail.com (Marcus Klemm)
+Date: Sun, 26 Feb 2012 15:17:17 +0100
+Subject: [i3] Changing keybindings on the fly
+Message-ID: <CALfxri+cxAHfp7M+kx-b6pwcTqnteOrO12Zuw+5wykQh=Krn5A@mail.gmail.com>
+
+Hello Michael,
+
+I wonder if it is possible to change the keybindings during runtime. What i
+want to achieve is dynamically adding named workspaces. Executing
+
+i3-msg workspace 3:emacs
+
+works just fine but I'd really like to access this workspace by keybinding.
+
+
+i3-msg bindsym Mod4+3 workspace 3:emacs
+
+gives me {"success":false, "error":"syntax error, unexpected $undefined at
+position 1"}, so I guess "bindsym" is not an accepted command. Any plans on
+changing that? Then of course, there needs to be a way of deleting
+keybindings, as well.
+
+Ciao, Marcus
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120226/aced9d5c/attachment.html>
+
+From michael at i3wm.org  Sun Feb 26 15:21:50 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 26 Feb 2012 15:21:50 +0100
+Subject: [i3] Changing keybindings on the fly
+In-Reply-To: <CALfxri+cxAHfp7M+kx-b6pwcTqnteOrO12Zuw+5wykQh=Krn5A@mail.gmail.com>
+References: <CALfxri+cxAHfp7M+kx-b6pwcTqnteOrO12Zuw+5wykQh=Krn5A@mail.gmail.com>
+Message-ID: <1330266090-sup-4923@stapelberg.de>
+
+Hi Marcus,
+
+Excerpts from Marcus Klemm's message of 2012-02-26 15:17:17 +0100:
+> I wonder if it is possible to change the keybindings during runtime. What i
+No, this is not yet possible.
+
+Best regards,
+Michael
+
+From marcus.klemm at googlemail.com  Sun Feb 26 15:30:23 2012
+From: marcus.klemm at googlemail.com (Marcus Klemm)
+Date: Sun, 26 Feb 2012 15:30:23 +0100
+Subject: [i3] Changing keybindings on the fly
+In-Reply-To: <1330266090-sup-4923@stapelberg.de>
+References: <CALfxri+cxAHfp7M+kx-b6pwcTqnteOrO12Zuw+5wykQh=Krn5A@mail.gmail.com>
+ <1330266090-sup-4923@stapelberg.de>
+Message-ID: <CALfxriKEpZPfQ1aV65Gtzgt9Tht1L3O7riB6SCB+e14tSvzyAg@mail.gmail.com>
+
+Hello Michael,
+
+
+> No, this is not yet possible.
+>
+
+Are you planning on changing that? I mean, i3's workspaces already are
+dynamic. They disappear when there are no windows on them, I can add them
+on the fly, access them via the next/prev commands etc. It would be really
+nice to be able to assign a key to them, too.
+
+Ciao, Marcus
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120226/39133b1a/attachment.html>
+
+From michael at i3wm.org  Sun Feb 26 15:38:14 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 26 Feb 2012 15:38:14 +0100
+Subject: [i3] Changing keybindings on the fly
+In-Reply-To: <CALfxriKEpZPfQ1aV65Gtzgt9Tht1L3O7riB6SCB+e14tSvzyAg@mail.gmail.com>
+References: <CALfxri+cxAHfp7M+kx-b6pwcTqnteOrO12Zuw+5wykQh=Krn5A@mail.gmail.com>
+ <1330266090-sup-4923@stapelberg.de>
+ <CALfxriKEpZPfQ1aV65Gtzgt9Tht1L3O7riB6SCB+e14tSvzyAg@mail.gmail.com>
+Message-ID: <1330267079-sup-9273@stapelberg.de>
+
+Hi Marcus,
+
+Excerpts from Marcus Klemm's message of 2012-02-26 15:30:23 +0100:
+> > No, this is not yet possible.
+> Are you planning on changing that? I mean, i3's workspaces already are
+Yes, I am.
+
+Best regards,
+Michael
+
+From marcus.klemm at googlemail.com  Sun Feb 26 15:39:59 2012
+From: marcus.klemm at googlemail.com (Marcus Klemm)
+Date: Sun, 26 Feb 2012 15:39:59 +0100
+Subject: [i3] Changing keybindings on the fly
+In-Reply-To: <1330267079-sup-9273@stapelberg.de>
+References: <CALfxri+cxAHfp7M+kx-b6pwcTqnteOrO12Zuw+5wykQh=Krn5A@mail.gmail.com>
+ <1330266090-sup-4923@stapelberg.de>
+ <CALfxriKEpZPfQ1aV65Gtzgt9Tht1L3O7riB6SCB+e14tSvzyAg@mail.gmail.com>
+ <1330267079-sup-9273@stapelberg.de>
+Message-ID: <CALfxriJHT5UhAvmMy29aFHE9ZqHgVdwNttzbOOzESRhjRm0c6g@mail.gmail.com>
+
+Hello Michael,
+
+On Sun, Feb 26, 2012 at 3:38 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Yes, I am.
+>
+
+>
+Cool! Looking forward to it.
+
+Ciao, Marcus
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120226/714e03ee/attachment.html>
+
+From michael at i3wm.org  Mon Feb 27 10:09:51 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 27 Feb 2012 10:09:51 +0100
+Subject: [i3] [PATCH] Transparency support
+In-Reply-To: <CANVYNa-ZuH81YXqetnRmGZn3c59jb=V9-gXvgs7TftUnvfzrWQ@mail.gmail.com>
+References: <CAMJW5=0GeBus4D4npdO54Z5+mL33T4mz=Cem7J5X+6RveXTL7Q@mail.gmail.com>
+ <CANVYNa_utbh3Umvxpqd+bjwUv7h67JRhUik=xLHphdNusMr0yg@mail.gmail.com>
+ <CAMJW5=2ZHyZDzBy-EhHyM=0srB9UNnWYVUFt5UqhZX=kf2jBQA@mail.gmail.com>
+ <CANVYNa-S82Qkd04KX4TrPkrFMO1gRVtpcSa68cDQ_zF+e=gmNA@mail.gmail.com>
+ <op.v8b5j5am735up4@sraven> <1327744001-sup-4371@stapelberg.de>
+ <CAMJW5=3-OT5Lf0Ef5t2mRa-6p_6NB80CKfjS39QQ03p2DcWP8Q@mail.gmail.com>
+ <1327767281-sup-8641@stapelberg.de> <1328562055-sup-3279@stapelberg.de>
+ <CAMJW5=0FHnCWSv9G6-=zPbn55Tn=+WNkG9gEgRzg2Sgj=gBY3w@mail.gmail.com>
+ <CAMJW5=0Zfexbx-eRXwEd2EEKHXvSGVR7dMFiqFwKrCL3Xj99Nw@mail.gmail.com>
+ <CAMJW5=0rXDEVf5jU12fYm2x6b8Y_Anbxh2Von2qwjBdcwmrkTg@mail.gmail.com>
+ <CANVYNa_zj+zL9rZaqLHsOnNZGVwfSbTtc_ZQPcaFSbwJcpj1jQ@mail.gmail.com>
+ <CAMJW5=0yM0y8m-U-YRV8hseg6LNVEwZp4fT7zZJQs-UXVWuChQ@mail.gmail.com>
+ <CANVYNa-ZuH81YXqetnRmGZn3c59jb=V9-gXvgs7TftUnvfzrWQ@mail.gmail.com>
+Message-ID: <1330333730-sup-7369@stapelberg.de>
+
+Hi,
+
+Excerpts from Fernando Lemos's message of 2012-02-25 22:17:15 +0100:
+> >> Cool. You might want to explain the patch a bit better, "fix resize
+> >> bar" is a bit too generic. Consider explaining why your changes are
+> >> needed, something like "Don't forget to set X on Y." in the short
+> >> description. You might want to elaborate on why that's needed in the
+> >> long description too, something like "Y needs to have X set so that Y
+> >> can do Z without W errors when resizing".
+> > It's the same issue explained in x_con_init() at src/x.c
+> 
+> It doesn't matter, the patch must explain what it does or the
+> description is essentially useless.
+As Fernando said, please resend this patch with a proper description. This will
+make it much easier to figure out problems based on the output of "git blame".
+A good and clean commit history is something we should keep :).
+
+Best regards,
+Michael
+
+From drdarkraven at gmail.com  Mon Feb 27 16:09:07 2012
+From: drdarkraven at gmail.com (DR)
+Date: Mon, 27 Feb 2012 23:09:07 +0800
+Subject: [i3] [PATCH] Transparency support
+In-Reply-To: <1330333730-sup-7369@stapelberg.de>
+References: <CAMJW5=0GeBus4D4npdO54Z5+mL33T4mz=Cem7J5X+6RveXTL7Q@mail.gmail.com>
+ <CANVYNa_utbh3Umvxpqd+bjwUv7h67JRhUik=xLHphdNusMr0yg@mail.gmail.com>
+ <CAMJW5=2ZHyZDzBy-EhHyM=0srB9UNnWYVUFt5UqhZX=kf2jBQA@mail.gmail.com>
+ <CANVYNa-S82Qkd04KX4TrPkrFMO1gRVtpcSa68cDQ_zF+e=gmNA@mail.gmail.com>
+ <op.v8b5j5am735up4@sraven> <1327744001-sup-4371@stapelberg.de>
+ <CAMJW5=3-OT5Lf0Ef5t2mRa-6p_6NB80CKfjS39QQ03p2DcWP8Q@mail.gmail.com>
+ <1327767281-sup-8641@stapelberg.de> <1328562055-sup-3279@stapelberg.de>
+ <CAMJW5=0FHnCWSv9G6-=zPbn55Tn=+WNkG9gEgRzg2Sgj=gBY3w@mail.gmail.com>
+ <CAMJW5=0Zfexbx-eRXwEd2EEKHXvSGVR7dMFiqFwKrCL3Xj99Nw@mail.gmail.com>
+ <CAMJW5=0rXDEVf5jU12fYm2x6b8Y_Anbxh2Von2qwjBdcwmrkTg@mail.gmail.com>
+ <CANVYNa_zj+zL9rZaqLHsOnNZGVwfSbTtc_ZQPcaFSbwJcpj1jQ@mail.gmail.com>
+ <CAMJW5=0yM0y8m-U-YRV8hseg6LNVEwZp4fT7zZJQs-UXVWuChQ@mail.gmail.com>
+ <CANVYNa-ZuH81YXqetnRmGZn3c59jb=V9-gXvgs7TftUnvfzrWQ@mail.gmail.com>
+ <1330333730-sup-7369@stapelberg.de>
+Message-ID: <CAMJW5=1fTCJZz7Po8qrGDQ8vz4RXsUsRafM4Mu2OA553T6tS6g@mail.gmail.com>
+
+On Mon, Feb 27, 2012 at 5:09 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+> Hi,
+>
+> Excerpts from Fernando Lemos's message of 2012-02-25 22:17:15 +0100:
+>> >> Cool. You might want to explain the patch a bit better, "fix resize
+>> >> bar" is a bit too generic. Consider explaining why your changes are
+>> >> needed, something like "Don't forget to set X on Y." in the short
+>> >> description. You might want to elaborate on why that's needed in the
+>> >> long description too, something like "Y needs to have X set so that Y
+>> >> can do Z without W errors when resizing".
+>> > It's the same issue explained in x_con_init() at src/x.c
+>>
+>> It doesn't matter, the patch must explain what it does or the
+>> description is essentially useless.
+> As Fernando said, please resend this patch with a proper description. This will
+> make it much easier to figure out problems based on the output of "git blame".
+> A good and clean commit history is something we should keep :).
+Here is a patch which enables i3 to use 32bit visual only when needed.
+
+>
+> Best regards,
+> Michael
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Use-32bit-visual-only-when-needed.patch
+Type: text/x-patch
+Size: 14606 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120227/ecc12405/attachment.bin>
+
+From michael at i3wm.org  Wed Feb 29 10:51:07 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 29 Feb 2012 10:51:07 +0100
+Subject: [i3] [PATCH] Transparency support
+In-Reply-To: <CAMJW5=1fTCJZz7Po8qrGDQ8vz4RXsUsRafM4Mu2OA553T6tS6g@mail.gmail.com>
+References: <CAMJW5=0GeBus4D4npdO54Z5+mL33T4mz=Cem7J5X+6RveXTL7Q@mail.gmail.com>
+ <CANVYNa_utbh3Umvxpqd+bjwUv7h67JRhUik=xLHphdNusMr0yg@mail.gmail.com>
+ <CAMJW5=2ZHyZDzBy-EhHyM=0srB9UNnWYVUFt5UqhZX=kf2jBQA@mail.gmail.com>
+ <CANVYNa-S82Qkd04KX4TrPkrFMO1gRVtpcSa68cDQ_zF+e=gmNA@mail.gmail.com>
+ <op.v8b5j5am735up4@sraven> <1327744001-sup-4371@stapelberg.de>
+ <CAMJW5=3-OT5Lf0Ef5t2mRa-6p_6NB80CKfjS39QQ03p2DcWP8Q@mail.gmail.com>
+ <1327767281-sup-8641@stapelberg.de> <1328562055-sup-3279@stapelberg.de>
+ <CAMJW5=0FHnCWSv9G6-=zPbn55Tn=+WNkG9gEgRzg2Sgj=gBY3w@mail.gmail.com>
+ <CAMJW5=0Zfexbx-eRXwEd2EEKHXvSGVR7dMFiqFwKrCL3Xj99Nw@mail.gmail.com>
+ <CAMJW5=0rXDEVf5jU12fYm2x6b8Y_Anbxh2Von2qwjBdcwmrkTg@mail.gmail.com>
+ <CANVYNa_zj+zL9rZaqLHsOnNZGVwfSbTtc_ZQPcaFSbwJcpj1jQ@mail.gmail.com>
+ <CAMJW5=0yM0y8m-U-YRV8hseg6LNVEwZp4fT7zZJQs-UXVWuChQ@mail.gmail.com>
+ <CANVYNa-ZuH81YXqetnRmGZn3c59jb=V9-gXvgs7TftUnvfzrWQ@mail.gmail.com>
+ <1330333730-sup-7369@stapelberg.de>
+ <CAMJW5=1fTCJZz7Po8qrGDQ8vz4RXsUsRafM4Mu2OA553T6
+ tS6g@mail.gmail.com>
+Message-ID: <1330508645-sup-6340@stapelberg.de>
+
+Hi darkraven,
+
+Excerpts from DR's message of 2012-02-27 16:09:07 +0100:
+> Here is a patch which enables i3 to use 32bit visual only when needed.
+Thanks for your patch. It removes a commandline switch, which is a good thing,
+and it seems to work just fine on my system.
+
+Here are a few comments about it:
+
+1) The commit message is far too long and contains a snippet you pasted from
+   IRC. I don?t see the reason for that excerpt even being in the commit
+   message. Could you reduce the commit message to a reasonable length please?
+
+2) You introduce trailing whitespace in a number of occasions. Please remove that.
+   My git log says lines 21, 225, 245, 248 and 268 are affected.
+
+3) In x_con_init(), you create a colormap for each window, without ever freeing
+   them. This is an X11 resource leak and will make X11 go out of memory after
+   a while. Can you avoid creating new colormaps for every window entirely?
+
+4) Can you please use XCB_COPY_FROM_PARENT instead of an explicit 0 for the
+   depth? I think this makes the effect clearer.
+
+5) In get_visual_depth and get_visualid_by_depth, please adhere to our coding
+   style: no spaces between the function name and its arguments. So, use
+   "xcb_depth_next(&depth_iter)" instead of "xcb_depth_next (&depth_iter)".
+
+Thanks!
+
+Best regards,
+Michael
+

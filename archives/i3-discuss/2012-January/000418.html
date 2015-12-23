@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] Transparency support
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Transparency%20support&In-Reply-To=%3CCANVYNa-S82Qkd04KX4TrPkrFMO1gRVtpcSa68cDQ_zF%2Be%3DgmNA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000417.html">
+   <LINK REL="Next"  HREF="000419.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] Transparency support</H1>
+    <B>Fernando Lemos</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Transparency%20support&In-Reply-To=%3CCANVYNa-S82Qkd04KX4TrPkrFMO1gRVtpcSa68cDQ_zF%2Be%3DgmNA%40mail.gmail.com%3E"
+       TITLE="[i3] [PATCH] Transparency support">fernandotcl at gmail.com
+       </A><BR>
+    <I>Wed Jan 18 01:12:37 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000417.html">[i3] [PATCH] Transparency support
+</A></li>
+        <LI>Next message: <A HREF="000419.html">[i3] [PATCH] Transparency support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#418">[ date ]</a>
+              <a href="thread.html#418">[ thread ]</a>
+              <a href="subject.html#418">[ subject ]</a>
+              <a href="author.html#418">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Mon, Jan 16, 2012 at 7:08 AM, DR &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">drdarkraven at gmail.com</A>&gt; wrote:
+&gt;&gt;<i> You might want to adapt the code to the i3 style. Take a look at other
+</I>&gt;&gt;<i> functions, conditionals and for loops. Also, those function names
+</I>&gt;&gt;<i> might not be ideal.
+</I>&gt;<i>
+</I>&gt;<i> I don't quite understand i3's coding style or naming conventions, are
+</I>&gt;<i> there any documents explaining this?
+</I>
+I'm afraid not. Make sure you read the hacking how-to, but I don't
+think it mentions those conventions. This should be quite simple,
+though. Just copy the style you see in other functions. Do you have
+any specific questions? One thing in particular would be the spacing
+between &quot;if (&quot; and &quot;if(&quot;.
+
+&gt;&gt;<i> If we can't find an ARGB visual, i3 will segfault. Is an ARGB visual
+</I>&gt;&gt;<i> always going to be present? If yes, then please use asserts to
+</I>&gt;&gt;<i> indicate that. Otherwise handle the cases where we can't find an ARGB
+</I>&gt;&gt;<i> visual.
+</I>&gt;<i>
+</I>&gt;<i> I'll fix this.
+</I>
+I noticed you sent an incremental patch. It looks ok to me, could you
+please post a diff against next so it would be easier to review?
+
+&gt;&gt;<i> I'd also prefer if you renamed default_* to argb_*, since I plan to
+</I>&gt;&gt;<i> introduce vars like root_visual_type for Pango support, and that can
+</I>&gt;&gt;<i> be confusing.
+</I>&gt;<i>
+</I>&gt;<i> The default_* is actually the default, since default_visual,
+</I>&gt;<i> default_depth will be applied to every single window. I think it will
+</I>&gt;<i> not be confused with root_visual_type, if root_visual_type means
+</I>&gt;<i> visual type of the root window.
+</I>
+Cool, the naming you went with in your incremental patch makes sense to me.
+
+Regards,
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000417.html">[i3] [PATCH] Transparency support
+</A></li>
+	<LI>Next message: <A HREF="000419.html">[i3] [PATCH] Transparency support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#418">[ date ]</a>
+              <a href="thread.html#418">[ thread ]</a>
+              <a href="subject.html#418">[ subject ]</a>
+              <a href="author.html#418">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

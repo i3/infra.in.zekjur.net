@@ -1,0 +1,161 @@
+From b624fb36289774768c20f0c424470710efb859c5 Mon Sep 17 00:00:00 2001
+From: darkraven <drdarkraven@gmail.com>
+Date: Thu, 20 Sep 2012 16:51:12 +0800
+Subject: [PATCH 3/3] move floating window logic into render_l_output().
+
+So the duplicated code could be deleted.
+---
+ src/render.c | 118 ++++++++++++++++++++++++-----------------------------------
+ 1 file changed, 47 insertions(+), 71 deletions(-)
+
+diff --git a/src/render.c b/src/render.c
+index 986c637..9f6fdf4 100644
+--- a/src/render.c
++++ b/src/render.c
+@@ -73,47 +73,58 @@ static void render_l_output(Con *con) {
+     if (render_con_fullscreen(ws))
+         return;
+ 
+-    /* First pass: determine the height of all CT_DOCKAREAs (the sum of their
+-     * children) and figure out how many pixels we have left for the rest */
+-    TAILQ_FOREACH(child, &(con->nodes_head), nodes) {
+-        if (child->type != CT_DOCKAREA)
+-            continue;
++    if (!ws->mapped) {
++        /* First pass: determine the height of all CT_DOCKAREAs (the sum of their
++         * children) and figure out how many pixels we have left for the rest */
++        TAILQ_FOREACH(child, &(con->nodes_head), nodes) {
++            if (child->type != CT_DOCKAREA)
++                continue;
+ 
+-        child->rect.height = 0;
+-        TAILQ_FOREACH(dockchild, &(child->nodes_head), nodes)
+-            child->rect.height += dockchild->geometry.height;
++            child->rect.height = 0;
++            TAILQ_FOREACH(dockchild, &(child->nodes_head), nodes)
++                child->rect.height += dockchild->geometry.height;
+ 
+-        height -= child->rect.height;
+-    }
++            height -= child->rect.height;
++        }
++
++        /* Second pass: Set the widths/heights */
++        TAILQ_FOREACH(child, &(con->nodes_head), nodes) {
++            if (child->type == CT_CON) {
++                child->rect.x = x;
++                child->rect.y = y;
++                child->rect.width = con->rect.width;
++                child->rect.height = height;
++            }
+ 
+-    /* Second pass: Set the widths/heights */
+-    TAILQ_FOREACH(child, &(con->nodes_head), nodes) {
+-        if (child->type == CT_CON) {
+             child->rect.x = x;
+             child->rect.y = y;
+             child->rect.width = con->rect.width;
+-            child->rect.height = height;
+-        }
+-
+-        child->rect.x = x;
+-        child->rect.y = y;
+-        child->rect.width = con->rect.width;
+ 
+-        child->deco_rect.x = 0;
+-        child->deco_rect.y = 0;
+-        child->deco_rect.width = 0;
+-        child->deco_rect.height = 0;
++            child->deco_rect.x = 0;
++            child->deco_rect.y = 0;
++            child->deco_rect.width = 0;
++            child->deco_rect.height = 0;
+ 
+-        y += child->rect.height;
++            y += child->rect.height;
+ 
+-        DLOG("child at (%d, %d) with (%d x %d)\n",
+-                child->rect.x, child->rect.y, child->rect.width, child->rect.height);
+-        x_raise_con(child);
+-        render_con(child, false);
++            DLOG("child at (%d, %d) with (%d x %d)\n",
++                    child->rect.x, child->rect.y, child->rect.width, child->rect.height);
++            x_raise_con(child);
++            render_con(child, false);
++        }
++    } else {
++        /* This mean this output is rendered the second time, so we only
++         * render floating windows */
++        DLOG("Rendering floating windows:\n");
++        Con *child;
++        TAILQ_FOREACH(child, &(ws->floating_head), floating_windows) {
++            DLOG("floating child at (%d,%d) with %d x %d\n", child->rect.x, child->rect.y, child->rect.width, child->rect.height);
++            x_raise_con(child);
++            render_con(child, false);
++        }
+     }
+ }
+ 
+-
+ /* Render all children of a given con */
+ void render_child(Con *con) {
+     Con *child;
+@@ -376,48 +387,13 @@ void render_con(Con *con, bool render_fullscreen) {
+ 
+         TAILQ_FOREACH(output, &(con->nodes_head), nodes)
+             render_con(output, false);
+-
+-        /* We need to render floating windows after rendering all outputs’
+-         * tiling windows because they need to be on top of *every* output at
+-         * all times. This is important when the user places floating
+-         * windows/containers so that they overlap on another output. */
+-        DLOG("Rendering floating windows:\n");
+-        TAILQ_FOREACH(output, &(con->nodes_head), nodes) {
+-            if (output->name[0] == '_' && output->name[1] == '_')
+-                continue;
+-            /* Get the active workspace of that output */
+-            Con *content = output_get_content(output);
+-            Con *workspace = TAILQ_FIRST(&(content->focus_head));
+-
+-            /* Check for (floating!) fullscreen nodes */
+-            /* XXX: This code duplication is unfortunate. Keep in mind to fix
+-             * this when we clean up the whole render.c */
+-            Con *fullscreen = NULL;
+-            fullscreen = con_get_fullscreen_con(workspace, CF_OUTPUT);
+-            if (fullscreen) {
+-                /* Either the fullscreen window is inside the floating
+-                 * container, then we need to render and raise it now… */
+-                if (con_inside_floating(fullscreen)) {
+-                    fullscreen->rect = output->rect;
+-                    x_raise_con(fullscreen);
+-                    render_con(fullscreen, true);
+-                    continue;
+-                } else {
+-                    /* …or it’s a tiling window, in which case the floating
+-                     * windows should not overlap it, so we skip rendering this
+-                     * output. */
+-                    continue;
+-                }
+-            }
+-
+-            Con *child;
+-            TAILQ_FOREACH(child, &(workspace->floating_head), floating_windows) {
+-                DLOG("floating child at (%d,%d) with %d x %d\n", child->rect.x, child->rect.y, child->rect.width, child->rect.height);
+-                x_raise_con(child);
+-                render_con(child, false);
+-            }
+-        }
+-
++        /* Render outputs a second time, this time only floating windows will
++         * be rendered. Thus we could guarantee that floating windows will be
++         * on top of *every* output at all times. This is important when the
++         * user places floating windows/containers so that they overlap on
++         * another output. */
++        TAILQ_FOREACH(output, &(con->nodes_head), nodes)
++            render_con(output, false);
+     } else
+         /* Case 5: otherwise simply render its children */
+         render_child(con);
+-- 
+1.7.12
+

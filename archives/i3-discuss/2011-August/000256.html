@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3 v 4.0 build problems
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%20v%204.0%20build%20problems&In-Reply-To=%3CCAKgsu%3DFcTDZopAsMgOvBusN5SC%2BOCkBt%3DWdi3i%2BrOn0gcL5HNQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000257.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3 v 4.0 build problems</H1>
+    <B>Marcin Herda</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%20v%204.0%20build%20problems&In-Reply-To=%3CCAKgsu%3DFcTDZopAsMgOvBusN5SC%2BOCkBt%3DWdi3i%2BrOn0gcL5HNQ%40mail.gmail.com%3E"
+       TITLE="[i3] i3 v 4.0 build problems">mherda at gmail.com
+       </A><BR>
+    <I>Mon Aug  1 14:47:00 CEST 2011</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000257.html">[i3] i3 v 4.0 build problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#256">[ date ]</a>
+              <a href="thread.html#256">[ thread ]</a>
+              <a href="subject.html#256">[ subject ]</a>
+              <a href="author.html#256">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi I'm really sorry if it's a double mail, but I'm not really sure if
+my previous email has been sent.
+
+Hi Michael and others,
+
+Thanks for the new release. Are there any specific build instructions
+for 4.0. I'm trying to compile it on Slackware64 13.37. I just enter
+'make' and that's what I get:
+
+
+bash-4.1$ make
+YACC src/cfgparse.y
+LEX src/cfgparse.l
+YACC src/cmdparse.y
+LEX src/cmdparse.l
+CC src/resize.c
+CC src/con.c
+CC src/handlers.c
+CC src/config.c
+CC src/manage.c
+CC src/move.c
+CC src/xinerama.c
+CC src/match.c
+CC src/log.c
+CC src/x.c
+CC src/load_layout.c
+CC src/output.c
+CC src/floating.c
+CC src/ipc.c
+CC src/window.c
+CC src/main.c
+CC src/debug.c
+CC src/xcursor.c
+CC src/util.c
+CC src/workspace.c
+CC src/xcb.c
+CC src/click.c
+CC src/sighandler.c
+CC src/ewmh.c
+CC src/assignments.c
+CC src/randr.c
+CC src/render.c
+CC src/tree.c
+LINK i3
+
+MAKE i3-msg
+CC main.c
+LINK i3-msg
+
+MAKE i3-input
+CC ucs2_to_utf8.c
+CC ipc.c
+CC keysym2ucs.c
+CC main.c
+CC xcb.c
+LINK i3-input
+
+MAKE i3-nagbar
+CC main.c
+CC xcb.c
+LINK i3-nagbar
+
+MAKE i3-config-wizard
+YACC cfgparse.y
+LEX cfgparse.l
+CC ipc.c
+CC main.c
+CC xcb.c
+LINK i3-config-wizard
+
+MAKE i3bar
+CC src/ucs2_to_utf8.c
+CC src/outputs.c
+src/outputs.c:15:20: fatal error: i3/ipc.h: No such file or directory
+compilation terminated.
+make[1]: *** [src/outputs.o] Error 1
+make: *** [subdirs] Error 2
+
+
+I can't seem to find any relevant information on it.
+
+Thank you
+
+regards
+Martin
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000257.html">[i3] i3 v 4.0 build problems
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#256">[ date ]</a>
+              <a href="thread.html#256">[ thread ]</a>
+              <a href="subject.html#256">[ subject ]</a>
+              <a href="author.html#256">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3 announcement] i3 v4.0 released
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-announce%40infra.in.zekjur.net?Subject=Re%3A%20%5Bi3%20announcement%5D%20i3%20v4.0%20released&In-Reply-To=%3C1312149341-sup-2398%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000018.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3 announcement] i3 v4.0 released</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-announce%40infra.in.zekjur.net?Subject=Re%3A%20%5Bi3%20announcement%5D%20i3%20v4.0%20released&In-Reply-To=%3C1312149341-sup-2398%40midna.zekjur.net%3E"
+       TITLE="[i3 announcement] i3 v4.0 released">michael+i3 at stapelberg.de
+       </A><BR>
+    <I>Sun Jul 31 23:59:59 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000018.html">[i3 announcement] i3status 2.3 released
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#19">[ date ]</a>
+              <a href="thread.html#19">[ thread ]</a>
+              <a href="subject.html#19">[ subject ]</a>
+              <a href="author.html#19">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I just released i3 v4.0. Below are the release notes:
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Release notes for i3 v4.0  &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+This is the first release of the new major version of i3, v4.0. It has been a
+long time since v3.&#949; was released (over one year). A lot has been happening
+since then, we made 736 commits &#8211; compare that to the total number of 1664
+commits for i3.
+
+The reason for the high number of commits and long time for this release is the
+big refactoring we have been doing. Instead of using several lists and a table
+as data structures, we now use a single tree of containers. These containers
+represent invisible entities like your X11 root window, your different monitors
+and workspaces, but also visible entities like actual windows.
+
+Using a tree has made a lot of things cleaner and easier &#8211; in the code *and* in
+the user interface. Admittedly though, you will probably need a day or two to
+get used to a few more advanced movement commands if you are used to v3.&#949; right
+now.
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; New features               &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+ &#8226; In addition to the proper flex/bison based parser for the config file
+   introduced in 3.&#948;, we now also have a flex/bison parser for commands. What
+   this means is that we can have more human-readable, beautiful command names
+   instead of cryptic commands like 'f' for fullscreen or 'mh' for move left.
+   In fact, the commands for the aforementioned functions *are* 'fullscreen'
+   and 'move left'!
+
+ &#8226; You can now chain commands using ';' (a semicolon). One example for that is
+   'workspace 3 ; exec /usr/bin/urxvt' to switch to a new workspace and open a
+   terminal.
+
+ &#8226; You can specify which windows should be affected by your command by using
+   different criteria. A good example is '[class=&quot;Firefox&quot;] kill' to get rid
+   of all Firefox windows.
+
+ &#8226; As the configuration file needs new commands (and a few options are
+   obsolete), you need to change it. To make this process a little bit easier
+   for you, this release comes with the script i3-migrate-config-to-v4. Just
+   run it on your current config file and it will spit out a v4 config file to
+   stdout. To make things even better, i3 automatically detects v3 config files
+   and calls that script, so you never end up with a non-working config :).
+
+ &#8226; Similarly to the criteria when using commands, we now have a 'for_window'
+   configuration directive, which lets you automatically apply certain commands
+   to certain windows. Use it to set border styles per window, for example with
+   'for_window [class=&quot;XTerm&quot;] border 1pixel'.
+
+ &#8226; Since dock clients (like dzen2) are now part of the layout tree (as opposed
+   to a custom data structure as before), it was easy to implement top and
+   bottom dock areas. Programs which properly specify the dock hint get placed
+   on the edge of the screen they request. i3bar has the -dtop and -dbottom
+   parameters, for example.
+
+ &#8226; The internal workspace bar is obsolete. Use i3bar instead.
+
+ &#8226; Resizing now works between all windows!
+
+ &#8226; Fullscreen now works for everything!
+
+ &#8226; Floating now works for everything!
+
+ &#8226; Your layout is now preserved when doing an inplace restart.
+
+ &#8226; When you have an error in your config file, a new program called i3-nagbar
+   will tell you so. It offers you two buttons: One to view the error in your
+   $PAGER and one to edit your config in your $EDITOR.
+
+ &#8226; The default config used key symbols (like 'bind Mod1+f fullscreen') instead
+   of key codes. If you use a non-qwerty layout, the program i3-config-wizard
+   can create a key symbol based config file based on your current layout. You
+   can also chose between Windows (Mod4) and Alt (Mod1) as your default
+   modifier. i3-config-wizard will automatically be started as long as you
+   don&#8217;t have a configuration file for i3.
+
+ &#8226; Custom X cursor themes are now supported.
+
+ &#8226; The RandR backend now respects the primary output.
+
+ &#8226; A wrong 'font' configuration in your config file will no longer make i3
+   exit. Instead, it will fall back to a different font and tell you about the
+   error in its log.
+
+ &#8226; The default split direction (whether a new window gets placed right next to
+   the current one or below the current one) is now automatically set to
+   horizontal if you have a monitor that is wider than high or vertical if you
+   a monitor which is higher than wide. This works great with rotated monitors.
+
+ &#8226; Sockets and temporary files are now placed in XDG_RUNTIME_DIR, if set (this
+   is used on systemd based systems).
+
+ &#8226; Tools like i3bar, i3-msg etc. use the I3_SOCKET_PATH property which is set
+   to the X11 root window, so you don&#8217;t have to configure your socket path
+   anywhere.
+
+ &#8226; The kill command kills single windows by default now. To kill a whole
+   application, use 'kill client'.
+
+ &#8226; IPC: Commands can now have custom replies. When the parser encounters an
+   error, a proper error reply is sent.
+
+ &#8226; There is now an 'exec_always' configuration directive which works like
+   'exec' but will also be run when restarting.
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Future features            &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+Our plans were big but our time and manpower is limited. Therefore, the
+following features did not make it into this release. However, the foundation
+is now in place and implementing them is possible, so stay tuned!
+
+ &#8226; Saving/Restoring specific parts of your layout
+
+ &#8226; Session saving
+
+ &#8226; Sticky windows
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Thanks!                    &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+Thanks for testing, bugfixes, discussions and everything I forgot go out to:
+
+  aniou, artoj, badboy, cloud, cradle, David Coppa, dbp, dothebart, eeemsi,
+  eelvex, f8l, fernando, jan, jimdigriz, jon, julien, kacper, ktosiek,
+  lexszero, litemotiv, lourens, madroach, marcus, merovius, mike, mirko, mseed,
+  mxf, phnom, quaec, rogutes, sardemff7, smartass, thepub, tiago, tucos,
+  woddf2, xpt, ys
+
+-- Michael Stapelberg, 2011-07-31
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000018.html">[i3 announcement] i3status 2.3 released
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#19">[ date ]</a>
+              <a href="thread.html#19">[ thread ]</a>
+              <a href="subject.html#19">[ subject ]</a>
+              <a href="author.html#19">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-announce">More information about the i3-announce
+mailing list</a><br>
+</body></html>

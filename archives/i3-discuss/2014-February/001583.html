@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Resize direction does not behave how I&#8217;d expect
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%0A%09%3D%3Futf-8%3Fq%3FResize_direction_does_not_behave_how_I%3DE2%3D80%3D99d_e%3F%3D%0A%09%3D%3Futf-8%3Fq%3Fxpect%3F%3D&In-Reply-To=%3CCADHp1NxvTy9xYpi-COiXxvwTkns_BD7bvW8JHdkaN75k%2B6XXGA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001582.html">
+   <LINK REL="Next"  HREF="001584.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Resize direction does not behave how I&#8217;d expect</H1>
+    <B>Teto</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%0A%09%3D%3Futf-8%3Fq%3FResize_direction_does_not_behave_how_I%3DE2%3D80%3D99d_e%3F%3D%0A%09%3D%3Futf-8%3Fq%3Fxpect%3F%3D&In-Reply-To=%3CCADHp1NxvTy9xYpi-COiXxvwTkns_BD7bvW8JHdkaN75k%2B6XXGA%40mail.gmail.com%3E"
+       TITLE="[i3] Resize direction does not behave how I&#8217;d expect">mattator at gmail.com
+       </A><BR>
+    <I>Wed Feb 12 16:25:57 CET 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001582.html">[i3] Resize direction does not behave how I&#8217;d expect
+</A></li>
+        <LI>Next message: <A HREF="001584.html">[i3] Resize direction does not behave how I&#8217;d expect
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1583">[ date ]</a>
+              <a href="thread.html#1583">[ thread ]</a>
+              <a href="subject.html#1583">[ subject ]</a>
+              <a href="author.html#1583">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I found the default bindings misleading as well. then I stumbled on
+that configuration which may makemore sense:
+ mode &quot;resize&quot; {
+
+       # Pressing right will grow the window&#8217;s width.
+        # Pressing up will shrink the window&#8217;s height.
+        # Pressing down will grow the window&#8217;s height.
+        bindsym j resize grow left 10 px or 10 ppt
+        bindsym Shift+j resize shrink left 10 px or 10 ppt
+
+        bindsym k resize grow up  10 px or 10 ppt
+        bindsym Shift+k resize shrink up 10 px or 10 ppt
+
+        bindsym l resize grow down 10 px or 10 ppt
+        bindsym Shift+l resize shrink down 10 px or 10 ppt
+
+        bindsym m resize grow right 10 px or 10 ppt
+        bindsym Shift+m resize shrink right 10 px or 10 ppt
+}
+Hope that helps
+
+2014-02-12 16:02 GMT+01:00 Profpatsch &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">mail at profpatsch.de</A>&gt;:
+&gt;<i> When I have a (vertical) split and use resize, then hit an arrow key,
+</I>&gt;<i> the split border oftentimes is moved in the *opposite* direction, making
+</I>&gt;<i> the whole process highly non-deterministic from a user&#8217;s perspective.
+</I>&gt;<i>
+</I>&gt;<i> When I move the left window right and attempt it again, the direction
+</I>&gt;<i> the window border moves is changed.
+</I>&gt;<i>
+</I>&gt;<i> The same happens with horizontal splits.
+</I>&gt;<i>
+</I>&gt;<i> After some messing around I assume that the concept is not to move the
+</I>&gt;<i> border, but to make the window smaller or to embiggen (sic!) it.
+</I>&gt;<i> But then, why is making it horizontally bigger/smaller mapped to down/up
+</I>&gt;<i> and not up/down? And what&#8217;s the reasoning behind the assignment of
+</I>&gt;<i> left/right?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Another thing that gets me everytime is to be in resize mode and
+</I>&gt;<i> forgetting about it. A timeout for that would be nice.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Yet another thing that bugs me is that I can only use the hardware
+</I>&gt;<i> escape, and e.g. neo2&#8217;s ESC on Layer 4 doesn&#8217;t work. Is this because the
+</I>&gt;<i> key&#8217;s hardcoded?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> I didn&#8217;t want to open bugs on trac because I don&#8217;t know which have been
+</I>&gt;<i> filed yet (the search function is not very helpful), which ones are
+</I>&gt;<i> design decisions and the Yet-Another-One-Shot-Account problem.
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Proudly written in Mutt with Vim on Archlinux.
+</I></PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001582.html">[i3] Resize direction does not behave how I&#8217;d expect
+</A></li>
+	<LI>Next message: <A HREF="001584.html">[i3] Resize direction does not behave how I&#8217;d expect
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1583">[ date ]</a>
+              <a href="thread.html#1583">[ thread ]</a>
+              <a href="subject.html#1583">[ subject ]</a>
+              <a href="author.html#1583">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

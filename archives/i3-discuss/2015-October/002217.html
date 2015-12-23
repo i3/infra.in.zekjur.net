@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] managing wifi with i3
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20managing%20wifi%20with%20i3&In-Reply-To=%3C20151003065020.GB668%40sisif.rusu.info%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002213.html">
+   <LINK REL="Next"  HREF="002218.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] managing wifi with i3</H1>
+    <B>Valentin Rusu</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20managing%20wifi%20with%20i3&In-Reply-To=%3C20151003065020.GB668%40sisif.rusu.info%3E"
+       TITLE="[i3] managing wifi with i3">i3wm at rusu.info
+       </A><BR>
+    <I>Sat Oct  3 08:50:20 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002213.html">[i3] managing wifi with i3
+</A></li>
+        <LI>Next message: <A HREF="002218.html">[i3] managing wifi with i3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2217">[ date ]</a>
+              <a href="thread.html#2217">[ thread ]</a>
+              <a href="subject.html#2217">[ subject ]</a>
+              <a href="author.html#2217">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>No problem with that on ArchLinux.
+However, wicd-curses crashes when the connection is up, but by that time
+I no longer need it so that won't bother me ;-)
+
+* Jeff Bauer &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jeffrubic at gmail.com</A>&gt; [2015-10-01 14:53:37 -0500]:
+
+&gt;<i> I use wicd with i3, but it always fails when I attempt to connect to a network
+</I>&gt;<i> that requires authentication (virtually all of them, these days).  There's some
+</I>&gt;<i> error in the Python code that I have tracked down yet, so I log into new
+</I>&gt;<i> networks with nm-applet the first time, then with wicd thereafter.
+</I>&gt;<i> 
+</I>&gt;<i> -Jeff
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> On Thu, Oct 01, 2015 at 10:13:49PM +0300, Valentin Rusu wrote:
+</I>&gt;<i> &gt; I use wicd instead of NetworkManager and I'm very happy with it. It
+</I>&gt;<i> &gt; would connect as soon as I login in text mode, so by the time I3 is up,
+</I>&gt;<i> &gt; the connection is already there.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; * Jeff Abrahamson &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jeff at purple.com</A>&gt; [2015-10-01 10:41:53 +0200]:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &gt; I have the following in my ~/.xsessionrc, and it works correctly:
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; if [ &quot;X$DESKTOP_SESSION&quot; = Xi3 ]; then
+</I>&gt;<i> &gt; &gt;     nm-applet &amp;
+</I>&gt;<i> &gt; &gt;     # and other stuff
+</I>&gt;<i> &gt; &gt; fi
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; Jeff Abrahamson
+</I>&gt;<i> &gt; &gt; +33 6 24 40 01 57
+</I>&gt;<i> &gt; &gt; +44 7920 594 255    &lt;-- only when I'm in the UK
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; *<A HREF="http://www.ml-week.com/fr/*">http://www.ml-week.com/fr/*</A> &lt;<A HREF="http://www.ml-week.com/fr/">http://www.ml-week.com/fr/</A>&gt;*     2-5 novembre
+</I>&gt;<i> &gt; &gt; 2015*
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; <A HREF="http://jeff.purple.com/">http://jeff.purple.com/</A>
+</I>&gt;<i> &gt; &gt; <A HREF="http://blog.purple.com/jeff/">http://blog.purple.com/jeff/</A>
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; On 1 October 2015 at 10:36, Ingo Bürk &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">admin at airblader.de</A>&gt; wrote:
+</I>&gt;<i> &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; The window manager is neither responsible nor involved in network
+</I>&gt;<i> &gt; &gt; &gt; management at all, so I'm afraid you're looking in the wrong direction
+</I>&gt;<i> &gt; &gt; &gt; here.
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; On 10/01/2015 10:34 AM, Robert Grah wrote:
+</I>&gt;<i> &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt; Hey there,
+</I>&gt;<i> &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt; I am having some problems getting wifi to work in i3. I tried to add
+</I>&gt;<i> &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt; exec--no-startup-id nm-applet
+</I>&gt;<i> &gt; &gt; &gt; &gt; to my config and this braught me the icon, but it can not find any wifi
+</I>&gt;<i> &gt; &gt; &gt; networks.
+</I>&gt;<i> &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt; It seems that there are some problems with the session or similar. I
+</I>&gt;<i> &gt; &gt; &gt; also tried wicd or gnome-network-manager all without results.
+</I>&gt;<i> &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt; I am using Ubuntu 15.04 and i3 4.10.4.
+</I>&gt;<i> &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt; Any ideas?
+</I>&gt;<i> &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt; &gt; &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; --
+</I>&gt;<i> &gt; Valentin Rusu
+</I>&gt;<i> &gt; IRC: valir
+</I>
+-- 
+Valentin Rusu
+IRC: valir
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002213.html">[i3] managing wifi with i3
+</A></li>
+	<LI>Next message: <A HREF="002218.html">[i3] managing wifi with i3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2217">[ date ]</a>
+              <a href="thread.html#2217">[ thread ]</a>
+              <a href="subject.html#2217">[ subject ]</a>
+              <a href="author.html#2217">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

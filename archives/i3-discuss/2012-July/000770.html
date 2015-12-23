@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Tray Icons Disappearing on i3bar
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Tray%20Icons%20Disappearing%20on%20i3bar&In-Reply-To=%3CCAAuVr704yddK%2BF4HXXMg8W0WD8kLf%2BD_CAsXfVqC5m_doOXB%3DA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000769.html">
+   <LINK REL="Next"  HREF="000771.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Tray Icons Disappearing on i3bar</H1>
+    <B>BRAGA, Bruno</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Tray%20Icons%20Disappearing%20on%20i3bar&In-Reply-To=%3CCAAuVr704yddK%2BF4HXXMg8W0WD8kLf%2BD_CAsXfVqC5m_doOXB%3DA%40mail.gmail.com%3E"
+       TITLE="[i3] Tray Icons Disappearing on i3bar">bruno.braga at gmail.com
+       </A><BR>
+    <I>Tue Jul  3 12:20:44 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000769.html">[i3] [PATCH] Block outward events while processing commands.
+</A></li>
+        <LI>Next message: <A HREF="000771.html">[i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#770">[ date ]</a>
+              <a href="thread.html#770">[ thread ]</a>
+              <a href="subject.html#770">[ subject ]</a>
+              <a href="author.html#770">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>FYI.
+
+I have created the ticket for this issue:
+<A HREF="http://bugs.i3wm.org/report/ticket/745">http://bugs.i3wm.org/report/ticket/745</A>
+
+Regards,
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">bruno.braga at gmail.com</A>
+
+
+On Fri, Jun 29, 2012 at 7:26 PM, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt;wrote:
+
+&gt;<i> Hi Fernando,
+</I>&gt;<i>
+</I>&gt;<i> Quoting Fernando Lemos (2012-06-29 03:37:13)
+</I>&gt;<i> &gt; When i3 is restarted, so is i3bar. Looks like when i3bar quits, its
+</I>&gt;<i> &gt; window is destroyed and the embedded windows receive a BadWindow error
+</I>&gt;<i> &gt; [1]. Seems to be a design issue in XEmbed itself:
+</I>&gt;<i> They shouldn&#8217;t, though. Have a look at the code. When i3bar receives an
+</I>&gt;<i> EOF (or does it not receive an EOF in that case? maybe we should make it
+</I>&gt;<i> restart-aware) it first properly kills all embedded tray icons.
+</I>&gt;<i>
+</I>&gt;<i> &gt; What happens here, I guess, is that some clients may try to create the
+</I>&gt;<i> &gt; tray icon again, while others may not. Or maybe they do, but i3bar
+</I>&gt;<i> &gt; wasn't up by the time they retry (I'm guessing here, I really didn't
+</I>&gt;<i> &gt; read XEmbed).
+</I>&gt;<i> In case they don&#8217;t retry, they are violating the spec. Also, the
+</I>&gt;<i> embedder can be down for an arbitrary amount of time. The tray
+</I>&gt;<i> application is supposed to deal with that. And at least nm-applet does
+</I>&gt;<i> (so do all GTK-based ones probably). Note however that when the embedder
+</I>&gt;<i> does not properly kill the tray clients, they may not retry at all. So
+</I>&gt;<i> this is probably what&#8217;s happening here (as you described above).
+</I>&gt;<i>
+</I>&gt;<i> &gt; XEmbed also says that &quot;the protocol ends&quot; when the embedded window is
+</I>&gt;<i> &gt; reparented to the root window [2]. So I don't know much about X, but
+</I>&gt;<i> &gt; maybe reparenting the embedded windows to the root window before
+</I>&gt;<i> &gt; terminating would be a solution? I'm not sure how the clients are
+</I>&gt;<i> &gt; supposed to react, though.
+</I>&gt;<i> As I said, we should be doing that :).
+</I>&gt;<i>
+</I>&gt;<i> &gt; What puzzles me is that you guys say it also happens when returning
+</I>&gt;<i> &gt; from suspend... I have no idea why that is, I always thought suspend
+</I>&gt;<i> &gt; was (mostly) transparent to applications?
+</I>&gt;<i> Yes, it definitely should be transparent to applications. My guess is
+</I>&gt;<i> that for some reason, a monitor reconfiguration event is sent and i3
+</I>&gt;<i> restarts i3bar because of that. However, that&#8217;s a different code path
+</I>&gt;<i> than the i3 restart, so it&#8217;s quite a mystery to me currently.
+</I>&gt;<i>
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Michael
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120703/261100dc/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120703/261100dc/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000769.html">[i3] [PATCH] Block outward events while processing commands.
+</A></li>
+	<LI>Next message: <A HREF="000771.html">[i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#770">[ date ]</a>
+              <a href="thread.html#770">[ thread ]</a>
+              <a href="subject.html#770">[ subject ]</a>
+              <a href="author.html#770">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Questions regarding bindsym through ipc, tabbed layout, etc.
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Questions%20regarding%20bindsym%20through%20ipc%2C%20tabbed%20layout%2C%20etc.&In-Reply-To=%3CCAHR9pOHM89YRj_nY9L%3DMmMEWSv4_kPRbDiQCZTRau0tzbviNPA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001686.html">
+   <LINK REL="Next"  HREF="001688.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Questions regarding bindsym through ipc, tabbed layout, etc.</H1>
+    <B>Thomas Sanchez</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Questions%20regarding%20bindsym%20through%20ipc%2C%20tabbed%20layout%2C%20etc.&In-Reply-To=%3CCAHR9pOHM89YRj_nY9L%3DMmMEWSv4_kPRbDiQCZTRau0tzbviNPA%40mail.gmail.com%3E"
+       TITLE="[i3] Questions regarding bindsym through ipc, tabbed layout, etc.">thomas.sanchz at gmail.com
+       </A><BR>
+    <I>Wed Apr 16 18:18:53 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001686.html">[i3] i3status
+</A></li>
+        <LI>Next message: <A HREF="001688.html">[i3] Questions regarding bindsym through ipc, tabbed layout,	etc.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1687">[ date ]</a>
+              <a href="thread.html#1687">[ thread ]</a>
+              <a href="subject.html#1687">[ subject ]</a>
+              <a href="author.html#1687">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+First of all I wanted to say thank you for i3. I finally found a WM
+that answer all my needs :)
+
+However I have some questions:
+
+* Is there any rational for bindsym not being considered as any other command ?
+$&gt; i3-msg 'bindsym Mod4+i exec gvim'
+ERROR: Your command: bindsym Mod4+i exec gvim
+ERROR:               ^^^^^^^^^^^^^^^^^^^^^^^^
+
+I wrote a set of script ( <A HREF="https://github.com/daedric/i3scripts">https://github.com/daedric/i3scripts</A> ) to
+manage dynamic workspaces according to the project I'm working on.
+IMO it would make sense to be able to setup some specific binding.
+Thus, it would make also sense to be able to delete/replace a binding.
+
+I searched a bit, and I found nothing, so if it has already been asked
+I'm sorry.
+
+* Why when I have a splitted workspace with say chromium and a
+terminal, I can't set the layout to tabbed (or stacked) for the
+terminal but I can split it ?
+
+* Why this does not work (no error reported, but i3lock does not get
+executed, nothing in the logs):
+bindsym F1 exec i3lock
+or
+bindsym $mod+F1 exec i3lock
+
+I thought that maybe F1 is not the right symbol, but according to
+xmodmap -pke/xev it is
+
+* The following binding, does not show the i3-input on the focused output
+bindsym $mod+m exec i3-input -P &quot;Mark: &quot; -F &quot;mark %s&quot;
+
+
+Thanks,
+-- 
+Thomas Sanchez
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001686.html">[i3] i3status
+</A></li>
+	<LI>Next message: <A HREF="001688.html">[i3] Questions regarding bindsym through ipc, tabbed layout,	etc.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1687">[ date ]</a>
+              <a href="thread.html#1687">[ thread ]</a>
+              <a href="subject.html#1687">[ subject ]</a>
+              <a href="author.html#1687">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Hotkey to resize a terminal?
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Hotkey%20to%20resize%20a%20terminal%3F&In-Reply-To=%3Cx68v9ex5ol.fsf%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001067.html">
+   <LINK REL="Next"  HREF="001069.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Hotkey to resize a terminal?</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Hotkey%20to%20resize%20a%20terminal%3F&In-Reply-To=%3Cx68v9ex5ol.fsf%40midna.zekjur.net%3E"
+       TITLE="[i3] Hotkey to resize a terminal?">michael at i3wm.org
+       </A><BR>
+    <I>Mon Dec  3 21:05:14 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001067.html">[i3] Hotkey to resize a terminal?
+</A></li>
+        <LI>Next message: <A HREF="001069.html">[i3] Ubuntu 12.10, i3status and new libxkbcommon &gt;= 0.2.0 dependency
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1068">[ date ]</a>
+              <a href="thread.html#1068">[ thread ]</a>
+              <a href="subject.html#1068">[ subject ]</a>
+              <a href="author.html#1068">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Benjamin,
+
+Benjamin Block &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">bebl at mageta.org</A>&gt; writes:
+&gt;<i> is it possible to define a hotkey to &quot;painlessly&quot; resize a terminal to a
+</I>&gt;<i> specific size - so it can for example display 80 chars on one line?
+</I>The problem is that &quot;80 characters&quot; depends on the font and possibly the
+terminal emulator you are using. There is no way for the terminal
+emulator to tell i3 that it wants to be 80 characters wide. Any
+X11 ConfigureRequests will be ignored by i3 &#8212; that&#8217;s necessary for a
+tiling window manager :-).
+
+Now, if you are into programming, the problem is not unsolvable. Here is
+how I would approach it:
+
+1) Figure out whether your terminal emulator provides the information
+   how wide 80 characters are in pixels. Alternatively, if you are fine
+   with hard-coding this, figure it out yourself once.
+
+2) Implement a script which uses i3&#8217;s IPC interface
+   (<A HREF="http://i3wm.org/docs/ipc.html">http://i3wm.org/docs/ipc.html</A>) in order to figure out the current
+   size percentage and actual size of the currently focused terminal
+   window. You can get these information by requesting the layout tree.
+
+3) Send an IPC request to resize the window accordingly so that it has
+   enough space. This is also where your definition of &quot;painlessly&quot;
+   comes into the picture :-).
+
+Have fun! If you have any questions left, feel free to ask.
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001067.html">[i3] Hotkey to resize a terminal?
+</A></li>
+	<LI>Next message: <A HREF="001069.html">[i3] Ubuntu 12.10, i3status and new libxkbcommon &gt;= 0.2.0 dependency
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1068">[ date ]</a>
+              <a href="thread.html#1068">[ thread ]</a>
+              <a href="subject.html#1068">[ subject ]</a>
+              <a href="author.html#1068">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

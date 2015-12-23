@@ -1,0 +1,319 @@
+From mkalisiak at gmail.com  Thu Feb 10 22:55:39 2011
+From: mkalisiak at gmail.com (Maciej Kalisiak)
+Date: Thu, 10 Feb 2011 16:55:39 -0500
+Subject: [i3] "mode" keyword in config not working?
+Message-ID: <AANLkTi=8Jh6_7hnKXDoKW1DAAa-kgXjLV3a_GmANZZ-6@mail.gmail.com>
+
+I followed the User's Guide and setup a "resize" 'mode', as per:
+  http://i3.zekjur.net/docs/userguide.html#resizingconfig
+
+However, when I restart i3 it complains it doesn't understand "mode" and
+exits.  Is this example in User's Guide still valid?  What version of i3 do
+I need?  Am currently running 3.d-bf1.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20110210/ab348fb6/attachment.html>
+
+From michael+i3 at stapelberg.de  Thu Feb 10 23:03:22 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Thu, 10 Feb 2011 23:03:22 +0100
+Subject: [i3] "mode" keyword in config not working?
+In-Reply-To: <AANLkTi=8Jh6_7hnKXDoKW1DAAa-kgXjLV3a_GmANZZ-6@mail.gmail.com>
+References: <AANLkTi=8Jh6_7hnKXDoKW1DAAa-kgXjLV3a_GmANZZ-6@mail.gmail.com>
+Message-ID: <1297375365-sup-1575@midna.zekjur.net>
+
+Hi Maciej,
+
+Excerpts from Maciej Kalisiak's message of 2011-02-10 22:55:39 +0100:
+> I need?  Am currently running 3.d-bf1.
+3.d-bf1 is *ANCIENT*. Please compile your own version and/or get rid of ubuntu :-p.
+
+Best regards,
+Michael
+
+From mkalisiak at gmail.com  Thu Feb 10 23:05:21 2011
+From: mkalisiak at gmail.com (Maciej Kalisiak)
+Date: Thu, 10 Feb 2011 17:05:21 -0500
+Subject: [i3] resizing i3 in a virtual desktop
+Message-ID: <AANLkTikSaraKrt3ti4bjCWQVRs7mz1YD9fnUSt2BPufs@mail.gmail.com>
+
+I run i3 on a remote machine, using a virtual desktop ("nx"). I have the
+virtual desktop displayed in a window (as opposed to fullscreen) on the
+local system/workstation. When I resize this window, i3 does not adjust the
+"resolution" of the desktop to fit the new size.  Is there an easy way to
+get i3 to resize?  wmii does this automatically somehow...
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20110210/c35f30f9/attachment.html>
+
+From mkalisiak at gmail.com  Thu Feb 10 23:07:43 2011
+From: mkalisiak at gmail.com (Maciej Kalisiak)
+Date: Thu, 10 Feb 2011 17:07:43 -0500
+Subject: [i3] "mode" keyword in config not working?
+In-Reply-To: <1297375365-sup-1575@midna.zekjur.net>
+References: <AANLkTi=8Jh6_7hnKXDoKW1DAAa-kgXjLV3a_GmANZZ-6@mail.gmail.com>
+	<1297375365-sup-1575@midna.zekjur.net>
+Message-ID: <AANLkTikB7xZWUxa8fy2kCez5HQouUK6hCi5UOJ9H9DUf@mail.gmail.com>
+
+Oh wow, just checked Downloads section... 3.d-bf1 is December 2009.  Ouch.
+ Why did I think it was vaguely recent?? :P
+
+On Thu, Feb 10, 2011 at 17:03, Michael Stapelberg
+<michael+i3 at stapelberg.de>wrote:
+
+> Hi Maciej,
+>
+> Excerpts from Maciej Kalisiak's message of 2011-02-10 22:55:39 +0100:
+> > I need?  Am currently running 3.d-bf1.
+> 3.d-bf1 is *ANCIENT*. Please compile your own version and/or get rid of
+> ubuntu :-p.
+>
+> Best regards,
+> Michael
+>
+
+
+
+-- 
+Maciej Kalisiak
+mkalisiak at gmail.com
+http://maciej.kalisiak.googlepages.com
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20110210/0c72c75a/attachment.html>
+
+From mlmichael70 at gmail.com  Fri Feb 11 17:40:18 2011
+From: mlmichael70 at gmail.com (Michael)
+Date: Fri, 11 Feb 2011 16:40:18 +0000
+Subject: [i3] couple of questions, maybe bugs
+Message-ID: <4D556672.9020303@gmail.com>
+
+Hello,
+
+I'm new to i3 but I already love it. I'm using version 3.e-bf2.
+I have a couple of questions tho:
+
+- documentation is telling about "stack-limit" option. Should it not be 
+new_container stack-limit?
+- opening a new terminal (MOD+Enter) in stacked or tabbed mode causes 
+that new window to blink with urgent colors. It's like it was receiving 
+a urgent flag for a split second just after it's created. It's not 
+happening in default mode. It's a bit annoying and looks like a bug.
+- when I try to run ratmen (simple menu program) then I'm getting 
+segmentation fault from it. The same configuration works fine on wmii. 
+Any ideas please?
+
+Michael
+
+From michael+i3 at stapelberg.de  Fri Feb 11 19:09:05 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Fri, 11 Feb 2011 19:09:05 +0100
+Subject: [i3] couple of questions, maybe bugs
+In-Reply-To: <4D556672.9020303@gmail.com>
+References: <4D556672.9020303@gmail.com>
+Message-ID: <1297447663-sup-251@midna.zekjur.net>
+
+Hi Michael,
+
+Excerpts from Michael's message of 2011-02-11 17:40:18 +0100:
+> - documentation is telling about "stack-limit" option. Should it not be 
+> new_container stack-limit?
+No, 'new_container stack-limit' sets the default stack-limit for new
+containers. If you want to set a stack limit for a particular container, you
+can issue the 'stack-limit' command using IPC.
+
+> - opening a new terminal (MOD+Enter) in stacked or tabbed mode causes 
+> that new window to blink with urgent colors. It's like it was receiving 
+> a urgent flag for a split second just after it's created. It's not 
+> happening in default mode. It's a bit annoying and looks like a bug.
+That sounds like a bug. Which terminal emulator do you use?
+
+> - when I try to run ratmen (simple menu program) then I'm getting 
+> segmentation fault from it. The same configuration works fine on wmii. 
+> Any ideas please?
+Well, generate a backtrace. See http://i3.zekjur.net/docs/debugging.html
+
+Best regards,
+Michael
+
+From minjae.d.kim at gmail.com  Sun Feb 13 17:36:03 2011
+From: minjae.d.kim at gmail.com (Minjae Kim)
+Date: Sun, 13 Feb 2011 10:36:03 -0600
+Subject: [i3] Specifying workspace with Xinerama
+Message-ID: <AANLkTin7ytMit39p6Ad1V+T8Y7V7RbUN-XKmiUV3QH50@mail.gmail.com>
+
+Hello,
+
+I have a dual monitor setup with nVidia Twinview.  When i3 starts, it
+defaults workspace 1 to the left monitor (coordinate 0, 0) and workspace 2
+to the other one.
+I want workspace 1 to be on my right side, so I tried to specify this in i3
+config file
+
+workspace 1 output DFP-0
+
+But this does not seem to work well.  Do I understand correctly that the
+output labeling is done by xrandr and nvidia driver is not completely
+compatible with it?
+
+Any help would be great.
+
+Thanks.
+
+Minjae
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20110213/8ccea095/attachment.html>
+
+From mlmichael70 at gmail.com  Tue Feb 15 21:55:16 2011
+From: mlmichael70 at gmail.com (Michael)
+Date: Tue, 15 Feb 2011 20:55:16 +0000
+Subject: [i3] couple of questions, maybe bugs
+In-Reply-To: <1297447663-sup-251@midna.zekjur.net>
+References: <4D556672.9020303@gmail.com> <1297447663-sup-251@midna.zekjur.net>
+Message-ID: <4D5AE834.2070005@gmail.com>
+
+On 11/02/2011 18:09, Michael Stapelberg wrote:
+
+>> - opening a new terminal (MOD+Enter) in stacked or tabbed mode causes
+>> that new window to blink with urgent colors. It's like it was receiving
+>> a urgent flag for a split second just after it's created. It's not
+>> happening in default mode. It's a bit annoying and looks like a bug.
+> That sounds like a bug. Which terminal emulator do you use?
+>
+
+I'm using xterm and new_container stacking.
+
+Michael
+
+From michael+i3 at stapelberg.de  Sat Feb 19 21:58:07 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 19 Feb 2011 21:58:07 +0100
+Subject: [i3] Specifying workspace with Xinerama
+In-Reply-To: <AANLkTin7ytMit39p6Ad1V+T8Y7V7RbUN-XKmiUV3QH50@mail.gmail.com>
+References: <AANLkTin7ytMit39p6Ad1V+T8Y7V7RbUN-XKmiUV3QH50@mail.gmail.com>
+Message-ID: <1298149016-sup-7777@midna.zekjur.net>
+
+Hi Minjae,
+
+Excerpts from Minjae Kim's message of 2011-02-13 17:36:03 +0100:
+> But this does not seem to work well.  Do I understand correctly that the
+> output labeling is done by xrandr and nvidia driver is not completely
+> compatible with it?
+If I understand you correctly, what you are looking for is the output name
+xinerama-0, xinerama-1, etc. You could also have checked the logfile, see
+http://i3.zekjur.net/docs/debugging.html
+
+Best regards,
+Michael
+
+From honza801 at gmail.com  Mon Feb 28 18:12:20 2011
+From: honza801 at gmail.com (Jan Krcmar)
+Date: Mon, 28 Feb 2011 18:12:20 +0100
+Subject: [i3] rpm .spec file
+Message-ID: <AANLkTi=NvLvVHF8+rAwvtkXd+a0pwxPdjDenVx+sOzTZ@mail.gmail.com>
+
+hi all,
+
+i've just written .spec file for version 3.e-bf2, maybe it would be
+useful rpm users,
+enjoy
+
+http://home.zcu.cz/~honza801/i3.spec
+
+fous
+
+From michael+i3 at stapelberg.de  Mon Feb 28 18:16:48 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Mon, 28 Feb 2011 18:16:48 +0100
+Subject: [i3] rpm .spec file
+In-Reply-To: <AANLkTi=NvLvVHF8+rAwvtkXd+a0pwxPdjDenVx+sOzTZ@mail.gmail.com>
+References: <AANLkTi=NvLvVHF8+rAwvtkXd+a0pwxPdjDenVx+sOzTZ@mail.gmail.com>
+Message-ID: <1298913349-sup-4257@midna.zekjur.net>
+
+Hi Jan,
+
+Excerpts from Jan Krcmar's message of 2011-02-28 18:12:20 +0100:
+> i've just written .spec file for version 3.e-bf2, maybe it would be
+> useful rpm users,
+Thanks. How is it different from the packages by cassmodiah (see [1])?
+
+Best regards,
+Michael
+
+[1] https://admin.fedoraproject.org/community/?package=i3#package_maintenance
+
+From mail at merovius.de  Mon Feb 28 18:21:12 2011
+From: mail at merovius.de (Axel Wagner)
+Date: Mon, 28 Feb 2011 18:21:12 +0100
+Subject: [i3] rpm .spec file
+In-Reply-To: <AANLkTi=NvLvVHF8+rAwvtkXd+a0pwxPdjDenVx+sOzTZ@mail.gmail.com>
+References: <AANLkTi=NvLvVHF8+rAwvtkXd+a0pwxPdjDenVx+sOzTZ@mail.gmail.com>
+Message-ID: <1298913603-sup-5649@merovius.de>
+
+Hi,
+
+Excerpts from Jan Krcmar's message of 2011-02-28 18:12:20 +0100:
+> i've just written .spec file for version 3.e-bf2, maybe it would be
+> useful rpm users,
+
+great ;) But I guess ?improved tiling window manager? makes for a better
+slogan, than ?completely written from scratch? ;)
+
+Regards,
+
+Merovius
+
+From honza801 at gmail.com  Mon Feb 28 18:24:49 2011
+From: honza801 at gmail.com (Jan Krcmar)
+Date: Mon, 28 Feb 2011 18:24:49 +0100
+Subject: [i3] rpm .spec file
+In-Reply-To: <1298913349-sup-4257@midna.zekjur.net>
+References: <AANLkTi=NvLvVHF8+rAwvtkXd+a0pwxPdjDenVx+sOzTZ@mail.gmail.com>
+	<1298913349-sup-4257@midna.zekjur.net>
+Message-ID: <AANLkTinmT8Ys0E862uRxhmosMidrzjaOSx1GbX2PMz-v@mail.gmail.com>
+
+hehe, i didn't know about cassmodiah packages.
+anyway, mine works for opensuse :)
+
+2011/2/28 Michael Stapelberg <michael+i3 at stapelberg.de>:
+> Hi Jan,
+>
+> Excerpts from Jan Krcmar's message of 2011-02-28 18:12:20 +0100:
+>> i've just written .spec file for version 3.e-bf2, maybe it would be
+>> useful rpm users,
+> Thanks. How is it different from the packages by cassmodiah (see [1])?
+>
+> Best regards,
+> Michael
+>
+> [1] https://admin.fedoraproject.org/community/?package=i3#package_maintenance
+>
+
+From honza801 at gmail.com  Mon Feb 28 18:26:28 2011
+From: honza801 at gmail.com (Jan Krcmar)
+Date: Mon, 28 Feb 2011 18:26:28 +0100
+Subject: [i3] rpm .spec file
+In-Reply-To: <1298913603-sup-5649@merovius.de>
+References: <AANLkTi=NvLvVHF8+rAwvtkXd+a0pwxPdjDenVx+sOzTZ@mail.gmail.com>
+	<1298913603-sup-5649@merovius.de>
+Message-ID: <AANLkTikT=HarT5r+Sz1gfwH-VetU7XsM2-GcNUBKOvGS@mail.gmail.com>
+
+i only took the text from the web...
+any advices are appreciated :D
+
+2011/2/28 Axel Wagner <mail at merovius.de>:
+> Hi,
+>
+> Excerpts from Jan Krcmar's message of 2011-02-28 18:12:20 +0100:
+>> i've just written .spec file for version 3.e-bf2, maybe it would be
+>> useful rpm users,
+>
+> great ;) But I guess ?improved tiling window manager? makes for a better
+> slogan, than ?completely written from scratch? ;)
+>
+> Regards,
+>
+> Merovius
+>
+

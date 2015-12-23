@@ -1,0 +1,46 @@
+<tt>
+This&nbsp;patch&nbsp;fixes&nbsp;vertical&nbsp;text&nbsp;alignment&nbsp;between&nbsp;the&nbsp;workspace&nbsp;labels,&nbsp;window&nbsp;title,&nbsp;and&nbsp;status&nbsp;line,&nbsp;and&nbsp;horizontal&nbsp;spacing&nbsp;between&nbsp;the&nbsp;window&nbsp;title&nbsp;and&nbsp;status&nbsp;line&nbsp;in&nbsp;i3bar.&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Sorry&nbsp;for&nbsp;not&nbsp;elaborating&nbsp;more&nbsp;in&nbsp;the&nbsp;original&nbsp;description&nbsp;:)&lt;br&gt;<br>
+&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Thanks,&lt;/div&gt;&lt;div&gt;Kevin&lt;br&gt;&lt;br&gt;&lt;div&nbsp;class=&quot;gmail_quote&quot;&gt;On&nbsp;Sun,&nbsp;Nov&nbsp;18,&nbsp;2012&nbsp;at&nbsp;5:56&nbsp;AM,&nbsp;Kevin&nbsp;Murphy&nbsp;&lt;span&nbsp;dir=&quot;ltr&quot;&gt;&lt;&lt;a&nbsp;href=&quot;mailto:kemurphy.cmu@gmail.com&quot;&nbsp;target=&quot;_blank&quot;&gt;kemurphy.cmu@gmail.com&lt;/a&gt;&gt;&lt;/span&gt;&nbsp;wrote:&lt;br&gt;<br>
+&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;From:&nbsp;Kevin&nbsp;Murphy&nbsp;&lt;&lt;a&nbsp;href=&quot;mailto:kemurphy@andrew.cmu.edu&quot;&gt;kemurphy@andrew.cmu.edu&lt;/a&gt;&gt;&lt;br&gt;<br>
+&lt;br&gt;<br>
+---&lt;br&gt;<br>
+ i3bar/src/xcb.c&nbsp;|&nbsp;6&nbsp;+++---&lt;br&gt;<br>
+ 1&nbsp;file&nbsp;changed,&nbsp;3&nbsp;insertions(+),&nbsp;3&nbsp;deletions(-)&lt;br&gt;<br>
+&lt;br&gt;<br>
+diff&nbsp;--git&nbsp;a/i3bar/src/xcb.c&nbsp;b/i3bar/src/xcb.c&lt;br&gt;<br>
+index&nbsp;c20ff37..983d5ad&nbsp;100644&lt;br&gt;<br>
+---&nbsp;a/i3bar/src/xcb.c&lt;br&gt;<br>
++++&nbsp;b/i3bar/src/xcb.c&lt;br&gt;<br>
+@@&nbsp;-130,7&nbsp;+130,7&nbsp;@@&nbsp;void&nbsp;refresh_statusline(void)&nbsp;{&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; block-&gt;width&nbsp;=&nbsp;predict_text_width(block-&gt;full_text);&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; /*&nbsp;If&nbsp;this&nbsp;is&nbsp;not&nbsp;the&nbsp;last&nbsp;block,&nbsp;add&nbsp;some&nbsp;pixels&nbsp;for&nbsp;a&nbsp;separator.&nbsp;*/&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; if&nbsp;(TAILQ_NEXT(block,&nbsp;blocks)&nbsp;!=&nbsp;NULL)&lt;br&gt;<br>
+-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; block-&gt;width&nbsp;+=&nbsp;9;&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; block-&gt;width&nbsp;+=&nbsp;10;&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; statusline_width&nbsp;+=&nbsp;block-&gt;width;&lt;br&gt;<br>
+ &nbsp; &nbsp; }&lt;br&gt;<br>
+&lt;br&gt;<br>
+@@&nbsp;-141,7&nbsp;+141,7&nbsp;@@&nbsp;void&nbsp;refresh_statusline(void)&nbsp;{&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; realloc_sl_buffer();&lt;br&gt;<br>
+&lt;br&gt;<br>
+ &nbsp; &nbsp; /*&nbsp;Clear&nbsp;the&nbsp;statusline&nbsp;pixmap.&nbsp;*/&lt;br&gt;<br>
+-&nbsp; &nbsp; xcb_rectangle_t&nbsp;rect&nbsp;=&nbsp;{&nbsp;0,&nbsp;0,&nbsp;root_screen-&gt;width_in_pixels,&nbsp;font.height&nbsp;};&lt;br&gt;<br>
++&nbsp; &nbsp; xcb_rectangle_t&nbsp;rect&nbsp;=&nbsp;{&nbsp;0,&nbsp;0,&nbsp;root_screen-&gt;width_in_pixels,&nbsp;font.height&nbsp;+&nbsp;4&nbsp;};&lt;br&gt;<br>
+ &nbsp; &nbsp; xcb_poly_fill_rectangle(xcb_connection,&nbsp;statusline_pm,&nbsp;statusline_clear,&nbsp;1,&nbsp;&amp;rect);&lt;br&gt;<br>
+&lt;br&gt;<br>
+ &nbsp; &nbsp; /*&nbsp;Draw&nbsp;the&nbsp;text&nbsp;of&nbsp;each&nbsp;block.&nbsp;*/&lt;br&gt;<br>
+@@&nbsp;-1576,7&nbsp;+1576,7&nbsp;@@&nbsp;void&nbsp;draw_bars(bool&nbsp;unhide)&nbsp;{&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; outputs_walk-&gt;buffer,&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; outputs_walk-&gt;bargc,&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; MAX(0,&nbsp;(int16_t)(statusline_width&nbsp;-&nbsp;outputs_walk-&gt;rect.w&nbsp;+&nbsp;4)),&nbsp;0,&lt;br&gt;<br>
+-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; MAX(0,&nbsp;(int16_t)(outputs_walk-&gt;rect.w&nbsp;-&nbsp;statusline_width&nbsp;-&nbsp;traypx&nbsp;-&nbsp;4)),&nbsp;3,&lt;br&gt;<br>
++&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; MAX(0,&nbsp;(int16_t)(outputs_walk-&gt;rect.w&nbsp;-&nbsp;statusline_width&nbsp;-&nbsp;traypx&nbsp;-&nbsp;4)),&nbsp;2,&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; MIN(outputs_walk-&gt;rect.w&nbsp;-&nbsp;traypx&nbsp;-&nbsp;4,&nbsp;statusline_width),&nbsp;font.height);&lt;br&gt;<br>
+ &nbsp; &nbsp; &nbsp; &nbsp; }&lt;br&gt;<br>
+&lt;span&nbsp;class=&quot;HOEnZb&quot;&gt;&lt;font&nbsp;color=&quot;#888888&quot;&gt;&lt;br&gt;<br>
+--&lt;br&gt;<br>
+1.8.0&lt;br&gt;<br>
+&lt;br&gt;<br>
+&lt;/font&gt;&lt;/span&gt;&lt;/blockquote&gt;&lt;/div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;<br>
+
+</tt>

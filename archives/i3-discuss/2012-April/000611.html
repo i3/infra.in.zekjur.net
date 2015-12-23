@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3 4.1: urxvt loses focus after &quot;gitk&quot; ceases on Debian	squeeze
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%204.1%3A%20urxvt%20loses%20focus%20after%20%22gitk%22%20ceases%20on%20Debian%0A%09squeeze&In-Reply-To=%3CCAB%2BhAsVpFQ2Ub6mfHF3OC94%3D0kh2WFoBthX-31LgtT9WyRK_LQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000610.html">
+   <LINK REL="Next"  HREF="000612.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3 4.1: urxvt loses focus after &quot;gitk&quot; ceases on Debian	squeeze</H1>
+    <B>zeroxia</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%204.1%3A%20urxvt%20loses%20focus%20after%20%22gitk%22%20ceases%20on%20Debian%0A%09squeeze&In-Reply-To=%3CCAB%2BhAsVpFQ2Ub6mfHF3OC94%3D0kh2WFoBthX-31LgtT9WyRK_LQ%40mail.gmail.com%3E"
+       TITLE="[i3] i3 4.1: urxvt loses focus after &quot;gitk&quot; ceases on Debian	squeeze">zeroxia at gmail.com
+       </A><BR>
+    <I>Fri Apr 13 05:29:34 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000610.html">[i3] i3 4.1: urxvt loses focus after &quot;gitk&quot; ceases on Debian	squeeze
+</A></li>
+        <LI>Next message: <A HREF="000612.html">[i3] Starting apps on designated workspace only on i3 startup
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#611">[ date ]</a>
+              <a href="thread.html#611">[ thread ]</a>
+              <a href="subject.html#611">[ subject ]</a>
+              <a href="author.html#611">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I updated &quot;gitk&quot; from 1.7.2.5 to 1.7.9 from the &quot;backport repository&quot;
+for Debian stable release. And after a search I see the latest
+&quot;tcl/tk&quot; version is 8.6, but that is in the &quot;experimental&quot; release,
+and my stable repository only has tk8.4 and tk8.5 (&quot;gitk&quot; package
+depends on &quot;tk8.4&quot;, so &quot;tk8.4&quot; is automatically installed, and won't
+accept &quot;tk8.5&quot;), so I installed tk8.5, and updated &quot;wish&quot; to point to
+&quot;/usr/bin/wish8.5&quot;. But the problem persists.
+
+This seems to be the tcl/tk problem. As I run &quot;wish&quot; in the urxvt
+terminal, I can get a blank GUI window, and after closing the window,
+URXVT got no focus, exactly the symptom occurred when I use gitk.
+
+The actual &quot;tk8.5&quot; version is 8.5.8, which is a little older than that
+of testing or sid release 8.5.11, so I also build the 8.5.11 sources
+and upgrade tcl8.5 &amp; tk8.5, but still no avail.
+
+By the way, I found that there is a &quot;wish8.3&quot; at /usr/local/bin, which
+probably was installed by source navigator, running this to get a
+blank GUI window and then close it will not cause URXVT freezed. But
+the &quot;gitk&quot; script cannot run with this executable...
+
+Is there any other way I can try out?
+
+Regards,
+Xia.
+
+On Thu, Apr 12, 2012 at 11:35 PM, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt; wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Excerpts from zeroxia's message of 2012-04-12 13:31:29 +0200:
+</I>&gt;&gt;<i> Everything works except that gitk and urxvt do not cooperate well.
+</I>&gt;&gt;<i> When I'm in the urxvt shell, and fire up gitk, then I close gitk (by
+</I>&gt;&gt;<i> pressing Ctrl-W), the starting shell window has no focus and won't
+</I>&gt;<i> It has focus here and works just fine. I&#8217;m using rxvt-unicode-256color 9.15-1
+</I>&gt;<i> and gitk 1:1.7.9-1.
+</I>&gt;<i>
+</I>&gt;&gt;<i> I also built the latest urxvt from Debian sid source
+</I>&gt;&gt;<i> (rxvt-unicode_9.15-1_i386.deb), the gitk version is 1.7.2.5-3 (shown
+</I>&gt;&gt;<i> from dpkg -l gitk).
+</I>&gt;<i> Maybe you could try upgrading your gitk and/or tcl/tk?
+</I>&gt;<i>
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Michael
+</I></PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000610.html">[i3] i3 4.1: urxvt loses focus after &quot;gitk&quot; ceases on Debian	squeeze
+</A></li>
+	<LI>Next message: <A HREF="000612.html">[i3] Starting apps on designated workspace only on i3 startup
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#611">[ date ]</a>
+              <a href="thread.html#611">[ thread ]</a>
+              <a href="subject.html#611">[ subject ]</a>
+              <a href="author.html#611">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

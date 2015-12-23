@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Containers in i3
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Containers%20in%20i3&In-Reply-To=%3C1373870147-sup-4930%40merovius.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001359.html">
+   <LINK REL="Next"  HREF="001361.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Containers in i3</H1>
+    <B>Axel Wagner</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Containers%20in%20i3&In-Reply-To=%3C1373870147-sup-4930%40merovius.de%3E"
+       TITLE="[i3] Containers in i3">mail at merovius.de
+       </A><BR>
+    <I>Mon Jul 15 09:00:45 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001359.html">[i3] Containers in i3
+</A></li>
+        <LI>Next message: <A HREF="001361.html">[i3] Containers in i3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1360">[ date ]</a>
+              <a href="thread.html#1360">[ thread ]</a>
+              <a href="subject.html#1360">[ subject ]</a>
+              <a href="author.html#1360">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Excerpts from Harry Allenby's message of 2013-07-15 07:50:39 +0200:
+&gt;<i> I'm a very literal-minded mathematician
+</I>
+Then let me, as a fellow mathematician try to explain at least part of
+your questions ;)
+
+&gt;<i> (3) I just don't grasp the concept of a container in i3. It seems to
+</I>&gt;<i> me that the basic objects are windows, and that &quot;container&quot; is a
+</I>&gt;<i> derived, relational notion, namely: two windows may (or may not) be in
+</I>&gt;<i> the same container. [So, mathematically, I think of a container as an
+</I>&gt;<i> equivalence class of windows; but I don't know what the equivalence
+</I>&gt;<i> relation is.]
+</I>
+Mathematically it is pretty simple. Containers are nodes in a tree,
+whose root the X-root-window is. Children of this root level there are
+individual outputs, children of the outputs are the workspaces, whose
+children in turn are the container-trees containing the windows you see.
+
+A container can either be an inner node containing more containers (I
+think this is called a &#8222;split-container&#8220; in the documentation), or it
+can be a leaf, containing a window.
+
+The nodes are not all equal, leafs contain windows and near the top of
+the hierarchy there has to be special treatment (to use the more
+user-friendly abstractions of outputs and workspaces), but mostly this
+should be the way to think of it.
+
+&gt;<i> (2) If I press mod+v and make some windows, are they all in the same
+</I>&gt;<i> container? If I now press mod+h and make some more windows, are they
+</I>&gt;<i> in a different container?
+</I>
+Yes and no. If by &#8222;window&#8220; you think of &#8222;a leaf node in the container
+tree&#8220;, then yes.
+
+If you create some windows (for example pressing Mod+Enter to
+open some terminals), then each one is put in an individual container.
+These containers are then put in a big container. If you then press
+mod+h, the currently focused node in the tree (which would be a leaf in
+most cases, so a container having a window inside it) is replaced by a
+new container, with the old content as a subtree. If you then open some
+windows, they are new leafs which are put in that new container.
+
+So I think the solution here is to stop thinking about windows as
+entities in the container-tree, because they're really not. The
+container-tree is an abstraction used by i3 and leaf-nodes in this tree
+have a window-property attached to them.
+
+&gt;<i> (1) I'm sitting in front of an i3-screen with a focused window. I want
+</I>&gt;<i> to know (preferably in a semi-algorithmic statement), if I press Mod +
+</I>&gt;<i> s, exactly which windows will be stacked. In particular, does the
+</I>&gt;<i> answer depend on the history of the focused window?
+</I>
+I'm actually not very clear of this myself. It just magically does
+exactly what I want. I _think_ the container being stacked is always the
+parent of the currently focused container.
+
+So, if you just open a bunch of terminals on an empty workspace, focus
+one of them, your layout would be something like (I apologize for my
+crude ASCII-art):
+
+      Workspace
+    /  |  |  | \
+   C1 C2 C3 C4 C5
+   |  |  |  |  |
+   T1 T2 T3 T4 T5
+
+With C1&#8230;C5 being node-containers and T1&#8230;T5 are the five windows attached to
+these node-containers.
+Pressing Alt+s would (if you focus for example T1, or rather C1) stack
+all your terminals.
+
+If on the other hand you open some terminals, split one leaf and open
+some more, your tree will look like this:
+
+     Workspace
+   /   |      \
+  C1  C2      C3
+  |    |     /  \
+  T1  T2   C4   C5
+            |    |
+           T4   T5
+
+Now if you focus C4 or C5 and press Mod+s, you will get a workspace with
+two terminals visible (T1/T2) and one stacked container (C3), containing
+two terminals (T4/T5).
+
+If on the other hand you focus C1 ore C2 and press Mod+s, you will get a
+stacked workspace and can cycle between T1, T2 and (T4+T5).
+
+One small warning: I think near the top of the container-tree (at the
+workspace-level and above) there is some special-casing regarding this,
+because you cannot sensibly &#8222;stack&#8220; workspaces. So if you try focusing
+an entire workspace (via focus parent) you just might get unexpected
+results.
+
+
+So, I hope I could make at least some things more clear. Maybe I
+confused you even more, in that case &#8222;sorry&#8220; ;)
+
+Kind regards,
+
+Axel
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 198 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130715/d2adc769/attachment.sig">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130715/d2adc769/attachment.sig</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001359.html">[i3] Containers in i3
+</A></li>
+	<LI>Next message: <A HREF="001361.html">[i3] Containers in i3
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1360">[ date ]</a>
+              <a href="thread.html#1360">[ thread ]</a>
+              <a href="subject.html#1360">[ subject ]</a>
+              <a href="author.html#1360">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

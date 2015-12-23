@@ -1,0 +1,173 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Debugging techniques.
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Debugging%20techniques.&In-Reply-To=%3CCANnVG6%3DCU7KGxj9GYXEfCOC5TA7NTJL_CEH%3DQsub_O_hktqZ9g%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002231.html">
+   <LINK REL="Next"  HREF="002234.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Debugging techniques.</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Debugging%20techniques.&In-Reply-To=%3CCANnVG6%3DCU7KGxj9GYXEfCOC5TA7NTJL_CEH%3DQsub_O_hktqZ9g%40mail.gmail.com%3E"
+       TITLE="[i3] Debugging techniques.">michael at i3wm.org
+       </A><BR>
+    <I>Tue Oct 27 15:22:20 CET 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002231.html">[i3] Debugging techniques.
+</A></li>
+        <LI>Next message: <A HREF="002234.html">[i3] Debugging techniques.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2232">[ date ]</a>
+              <a href="thread.html#2232">[ thread ]</a>
+              <a href="subject.html#2232">[ subject ]</a>
+              <a href="author.html#2232">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Tue, Oct 27, 2015 at 7:01 AM, Guillaume Maudoux (Layus) &lt;
+<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">layus.on at gmail.com</A>&gt; wrote:
+
+&gt;<i> Hello world!
+</I>&gt;<i>
+</I>&gt;<i> I am trying to enable debugging in i3, and I am confused by the number of
+</I>&gt;<i> different options to do this.
+</I>&gt;<i>
+</I>&gt;<i>    command line          config option
+</I>&gt;<i> -- --------------------  -----------------------------
+</I>&gt;<i> 1 i3 --shmlog-size=X shmlog on|off|toggle|&lt;size&gt;
+</I>&gt;<i>
+</I>
+Note that “shmlog on|off|toggle|&lt;size&gt;” refers to a command, not a config
+directive.
+
+2  i3 -V ?
+&gt;<i>
+</I>
+Errors (ELOG in the code) are always printed to stdout.
+Verbose log messages (LOG in the code) are printed to stdout if -V is
+enabled. Intended for curious users.
+Debug log messages (DLOG in the code) are printed if -d is enabled.
+
+
+&gt;<i> 3  i3 -d all             ?
+</I>&gt;<i> 4  ? debuglog on|off|toggle
+</I>&gt;<i>
+</I>
+3 and 4 are the same setting. The “all” argument to -d is obsolete, but
+kept for backwards compatibility.
+
+See also <A HREF="https://github.com/i3/i3/issues/1823">https://github.com/i3/i3/issues/1823</A> for a related discussion.
+
+
+&gt;<i>
+</I>&gt;<i> So my question are:
+</I>&gt;<i>
+</I>&gt;<i> Which one is the recommended way ?
+</I>&gt;<i>
+</I>
+The recommended way is to use an automatically built version from
+<A HREF="http://i3wm.org/docs/repositories.html">http://i3wm.org/docs/repositories.html</A> (or i3-git if your package manager
+knows how to build automatically build software from git) because otherwise
+any of your findings will need to be confirmed again on a more recent
+version.
+
+These versions automatically enable debug logging to shared memory (they
+check whether they were built from a git version that is not a release
+version).
+
+
+&gt;<i> Does `shmlog on` imply  `debuglog on` ?
+</I>&gt;<i>
+</I>
+No.
+
+
+&gt;<i> Does `-d all` imply `-V` ?
+</I>&gt;<i>
+</I>
+No.
+
+
+&gt;<i> What size do you recommend for the shmlog size ?
+</I>&gt;<i>
+</I>
+25MB (arbitrarily chosen, but proven to be enough for all issues we’ve
+encountered so far).
+
+
+&gt;<i> May I assume that the config options cannot be used to debug issues prior
+</I>&gt;<i> to loading the configuration file (nor issues while loading the
+</I>&gt;<i> configuration file) ?
+</I>&gt;<i>
+</I>
+If you specify them as command-line parameters to i3, they will be active
+before loading the configuration file.
+
+
+&gt;<i> Which of these options provide enough information for a bug report ? Is -V
+</I>&gt;<i> enough ?
+</I>&gt;<i>
+</I>
+Please use -V -d all, as per section 2 of
+<A HREF="http://i3wm.org/docs/debugging.html">http://i3wm.org/docs/debugging.html</A>
+
+
+&gt;<i>
+</I>&gt;<i> It seems that shm logging is better in the sense that it does not increase
+</I>&gt;<i> a log file size, but not as nice as it locks some memory space.
+</I>&gt;<i>
+</I>
+Correct.
+
+
+&gt;<i> What is the reason behind shm logging, instead of the usual logging to
+</I>&gt;<i> file + logrotate ?
+</I>
+
+It’s easier for us to set aside a chunk of memory than to make sure that
+every user of i3 knows about having to logrotate a file away. Anecdotally,
+we’ve had a bunch of users whose hard drive (or RAM, in case of /tmp being
+on tmpfs) filled up because of an ever-growing i3 logfile.
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151027/27ff8b4a/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151027/27ff8b4a/attachment.html</A>&gt;
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002231.html">[i3] Debugging techniques.
+</A></li>
+	<LI>Next message: <A HREF="002234.html">[i3] Debugging techniques.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2232">[ date ]</a>
+              <a href="thread.html#2232">[ thread ]</a>
+              <a href="subject.html#2232">[ subject ]</a>
+              <a href="author.html#2232">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

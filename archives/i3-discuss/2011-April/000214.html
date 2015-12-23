@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] egde snapping for floating windows
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20egde%20snapping%20for%20floating%20windows&In-Reply-To=%3CBANLkTimP18j7XjbNNjXiixF3E-3FMr8dcQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000213.html">
+   <LINK REL="Next"  HREF="000215.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] egde snapping for floating windows</H1>
+    <B>Jan Krcmar</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20egde%20snapping%20for%20floating%20windows&In-Reply-To=%3CBANLkTimP18j7XjbNNjXiixF3E-3FMr8dcQ%40mail.gmail.com%3E"
+       TITLE="[i3] egde snapping for floating windows">honza801 at gmail.com
+       </A><BR>
+    <I>Fri Apr 22 15:28:17 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000213.html">[i3] egde snapping for floating windows
+</A></li>
+        <LI>Next message: <A HREF="000215.html">[i3] egde snapping for floating windows
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#214">[ date ]</a>
+              <a href="thread.html#214">[ thread ]</a>
+              <a href="subject.html#214">[ subject ]</a>
+              <a href="author.html#214">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>hi again,
+
+the problem was in the Xnest, running it on vt works good, but...
+
+the second problem is in the randr extension.
+in src/randr.c: void randr_init function breaks the file descriptor of
+the xcb via xcb_randr_select_input function
+
+i think that all the xrandr functions shouldn't be called if the
+xrandr extension is missing. anyway the debug log says &quot;Checking for
+XRandR...&quot; but it does not check anythink, it just calls the randr
+functions.
+
+so, here is my patched rand_init function, it is definetly NOT a good
+workaround, but it works. ;)
+
+void randr_init(int *event_base) {
+    const xcb_query_extension_reply_t *extreply;
+
+    extreply = xcb_get_extension_data(conn, &amp;xcb_randr_id);
+    if (!extreply-&gt;present) {
+        disable_randr(conn);
+        return;
+    }
+
+    randr_query_outputs();
+
+    if (event_base != NULL)
+        *event_base = extreply-&gt;first_event;
+
+    xcb_randr_select_input(conn, root,
+            XCB_RANDR_NOTIFY_MASK_SCREEN_CHANGE |
+            XCB_RANDR_NOTIFY_MASK_OUTPUT_CHANGE |
+            XCB_RANDR_NOTIFY_MASK_CRTC_CHANGE |
+            XCB_RANDR_NOTIFY_MASK_OUTPUT_PROPERTY);
+
+    xcb_flush(conn);
+}
+
+hope this helped...
+
+regards
+fous
+
+
+2011/4/22 Jan Krcmar &lt;<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">honza801 at gmail.com</A>&gt;:
+&gt;<i> hi,
+</I>&gt;<i> made your wishes come true
+</I>&gt;<i>
+</I>&gt;<i> 04/22/2011 10:44:23 AM - main.c: ev_io_start ipc_io
+</I>&gt;<i> 04/22/2011 10:44:23 AM - main.c: ev_io_start xcb_watcher
+</I>&gt;<i> i3: ev.c:2621: ev_io_start: Assertion `(&quot;libev: ev_io_start called
+</I>&gt;<i> with negative fd&quot;, fd &gt;= 0)' failed.
+</I>&gt;<i> Aborted
+</I>&gt;<i>
+</I>&gt;<i> so the problem is in theese lines of main.c
+</I>&gt;<i>
+</I>&gt;<i> ev_io_init(xcb_watcher, xcb_got_event, xcb_get_file_descriptor(conn), EV_READ);
+</I>&gt;<i> LOG(&quot;main.c: ev_io_start xcb_watcher\n&quot;);
+</I>&gt;<i> ev_io_start(loop, xcb_watcher);
+</I>&gt;<i>
+</I>&gt;<i> do you need any additional informations?
+</I>&gt;<i> btw, i'm trying to run i3 in the Xnest, could this be the problem?
+</I>&gt;<i>
+</I>&gt;<i> regards
+</I>&gt;<i> fous
+</I>&gt;<i>
+</I>&gt;<i> 2011/4/22 Fernando Lemos &lt;<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">fernandotcl at gmail.com</A>&gt;:
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Thu, Apr 21, 2011 at 10:49 AM, Jan Krcmar &lt;<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">honza801 at gmail.com</A>&gt; wrote:
+</I>&gt;&gt;&gt;<i> finally i've got some time to spend with i3
+</I>&gt;&gt;&gt;<i> the 'tree' branch compiles, but
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> i3: ev.c:2621: ev_io_start: Assertion `(&quot;libev: ev_io_start called
+</I>&gt;&gt;&gt;<i> with negative fd&quot;, fd &gt;= 0)' failed.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I haven't really looked at the patch (thanks anyways, it's always
+</I>&gt;&gt;<i> appreciated), but can you reproduce it with the current -tree? If so,
+</I>&gt;&gt;<i> could you please add a printf (or DLOG or whatever) above each call to
+</I>&gt;&gt;<i> ev_io_start (3 in main.c, 1 in ipc.c) and file a bug report?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thanks,
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I></PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000213.html">[i3] egde snapping for floating windows
+</A></li>
+	<LI>Next message: <A HREF="000215.html">[i3] egde snapping for floating windows
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#214">[ date ]</a>
+              <a href="thread.html#214">[ thread ]</a>
+              <a href="subject.html#214">[ subject ]</a>
+              <a href="author.html#214">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

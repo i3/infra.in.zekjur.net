@@ -1,0 +1,54 @@
+From 43ad56e270cbb514669f634df35814280cc727ec Mon Sep 17 00:00:00 2001
+From: darkraven <drdarkraven@gmail.com>
+Date: Sat, 23 Jun 2012 16:04:08 +0800
+Subject: [PATCH 2/3] Add two new workspaces events.
+
+	The 'urgent_off' event is fired when a workspace lose its urgent
+	state. The 'urgent' event is changed to only fire when workspace
+	gain a urgent state.
+
+	The 'invisible' event is fired when a workspace becomes
+	invisible.
+
+	This two events provides information which can only be retrieved
+	via get_workspaces message.
+---
+ src/workspace.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/src/workspace.c b/src/workspace.c
+index 65b38cc..1a209e1 100644
+--- a/src/workspace.c
++++ b/src/workspace.c
+@@ -357,11 +357,13 @@ static void _workspace_show(Con *workspace) {
+             tree_close(old, DONT_KILL_WINDOW, false, false);
+             changed_num_workspaces = true;
+         }
+-    }
++    } else if (!workspace_is_visible(old))
++        send_workspace_event("invisible", old);
+ 
+     /* Memorize current output */
+     Con *old_output = con_get_output(focused);
+ 
++    /* Make sure the "focus" is sent before the "urgent_off" event */
+     send_workspace_event("focus", workspace);
+ 
+     con_focus(next);
+@@ -687,8 +689,12 @@ void workspace_update_urgent_flag(Con *ws) {
+     ws->urgent = get_urgency_flag(ws);
+     DLOG("Workspace urgency flag changed from %d to %d\n", old_flag, ws->urgent);
+ 
+-    if (old_flag != ws->urgent)
++    if (old_flag != ws->urgent) {
++        if (ws->urgent)
+             send_workspace_event("urgent", ws);
++        else
++            send_workspace_event("urgent_off", ws);
++    }
+ 
+ }
+ 
+-- 
+1.7.11
+

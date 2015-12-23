@@ -1,0 +1,3859 @@
+From mhcerri at gmail.com  Mon Jan  2 14:44:07 2012
+From: mhcerri at gmail.com (Marcelo Cerri)
+Date: Mon, 2 Jan 2012 11:44:07 -0200
+Subject: [i3] dmenu replacement
+Message-ID: <CACg2Y9v30hKUgNCD8r4O2b1RJ4_HXUd+RSo04aA10K_K1Niwtg@mail.gmail.com>
+
+Hi,
+
+I'm using dmenu as my application launcher but I'm a bit disappointed with
+it because of the lack of history and absolute path completion.
+
+I'm thinking to create a new menu application (or maybe a proper launcher)
+that could fulfill the following goal:
+
+1. Use XCB instead of Xlib.
+2. Support command history.
+3. Be able to complete an absolute path or at least provide a mechanism to
+do this.
+4. And maybe integrate with i3.
+
+
+I'd like to receive some opinions about this. Do you think it'd be worth it?
+
+Regards,
+Marcelo
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120102/ab8ab02b/attachment.html>
+
+From john.haltiwanger at gmail.com  Mon Jan  2 14:49:38 2012
+From: john.haltiwanger at gmail.com (John Haltiwanger)
+Date: Mon, 2 Jan 2012 14:49:38 +0100
+Subject: [i3] dmenu replacement
+In-Reply-To: <CACg2Y9v30hKUgNCD8r4O2b1RJ4_HXUd+RSo04aA10K_K1Niwtg@mail.gmail.com>
+References: <CACg2Y9v30hKUgNCD8r4O2b1RJ4_HXUd+RSo04aA10K_K1Niwtg@mail.gmail.com>
+Message-ID: <CANenyVNYOdyL59VVBPS2=V7ZYFMVOpORM8_EuDfrh6-P==y5ZQ@mail.gmail.com>
+
+On Mon, Jan 2, 2012 at 2:44 PM, Marcelo Cerri <mhcerri at gmail.com> wrote:
+
+> Hi,
+>
+> I'm using dmenu as my application launcher but I'm a bit disappointed with
+> it because of the lack of history and absolute path completion.
+>
+> I'm thinking to create a new menu application (or maybe a proper launcher)
+> that could fulfill the following goal:
+>
+> 1. Use XCB instead of Xlib.
+> 2. Support command history.
+> 3. Be able to complete an absolute path or at least provide a mechanism to
+> do this.
+> 4. And maybe integrate with i3.
+>
+>
+> I'd like to receive some opinions about this. Do you think it'd be worth
+> it?
+>
+
+I would personally be interested. The ability to run commands based on path
+(rather than having only binaries in $PATH) is probably my favorite feature
+you propose, though command history would also be great.
+
+What would you have in mind regarding i3 integration?
+
+>
+> Regards,
+> Marcelo
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120102/45c5b03a/attachment.html>
+
+From michael+i3 at stapelberg.de  Mon Jan  2 14:52:09 2012
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Mon, 02 Jan 2012 14:52:09 +0100
+Subject: [i3] dmenu replacement
+In-Reply-To: <CACg2Y9v30hKUgNCD8r4O2b1RJ4_HXUd+RSo04aA10K_K1Niwtg@mail.gmail.com>
+References: <CACg2Y9v30hKUgNCD8r4O2b1RJ4_HXUd+RSo04aA10K_K1Niwtg@mail.gmail.com>
+Message-ID: <1325512220-sup-4109@stapelberg.de>
+
+Hi Marcelo,
+
+Excerpts from Marcelo Cerri's message of 2012-01-02 14:44:07 +0100:
+> I'd like to receive some opinions about this. Do you think it'd be worth it?
+There have been some attempts (including code) by Merovius to create a launcher
+which used zsh and thus a very sophisticated completion system. Basically, his
+code was a minimal terminal emulator in a one-line window (which expanded as
+soon as necessary).
+
+If you want to, I can point you in the right direction. But be aware that this
+is nowhere near usable and not under active development at the moment.
+
+Best regards,
+Michael
+
+From raphael at khaiat.org  Mon Jan  2 14:53:26 2012
+From: raphael at khaiat.org (Raphael Khaiat)
+Date: Mon, 2 Jan 2012 14:53:26 +0100 (CET)
+Subject: [i3] dmenu replacement
+In-Reply-To: <CACg2Y9v30hKUgNCD8r4O2b1RJ4_HXUd+RSo04aA10K_K1Niwtg@mail.gmail.com>
+Message-ID: <25829654.219.1325512406372.JavaMail.root@ks353733.kimsufi.com>
+
+Hi,
+
+I would be very interested in such a launcher. Specially for 
+the history feature :)
+
+----- Mail original -----
+> De: "Marcelo Cerri" <mhcerri at gmail.com>
+> ?: i3-discuss at i3.zekjur.net
+> Envoy?: Lundi 2 Janvier 2012 14:44:07
+> Objet: [i3] dmenu replacement
+> Hi,
+> 
+> 
+> I'm using dmenu as my application launcher but I'm a bit disappointed
+> with it because of the lack of history and absolute path completion.
+> 
+> 
+> I'm thinking to create a new menu application (or maybe a proper
+> launcher) that could fulfill the following goal:
+> 
+> 
+> 
+> 
+> 1. Use XCB instead of Xlib.
+> 2. Support command history.
+> 3. Be able to complete an absolute path or at least provide a
+> mechanism to do this.
+> 4. And maybe integrate with i3.
+> 
+> I'd like to receive some opinions about this. Do you think it'd be
+> worth it?
+> 
+> 
+> Regards,
+> Marcelo
+
+From andi at geekosphere.org  Mon Jan  2 15:25:12 2012
+From: andi at geekosphere.org (Andreas Herz)
+Date: Mon, 2 Jan 2012 15:25:12 +0100
+Subject: [i3] dmenu replacement
+In-Reply-To: <CACg2Y9v30hKUgNCD8r4O2b1RJ4_HXUd+RSo04aA10K_K1Niwtg@mail.gmail.com>
+References: <CACg2Y9v30hKUgNCD8r4O2b1RJ4_HXUd+RSo04aA10K_K1Niwtg@mail.gmail.com>
+Message-ID: <20120102142512.GG11156@workstation>
+
+On 02/01/12 at 11:44, Marcelo Cerri wrote:
+> I'm using dmenu as my application launcher but I'm a bit disappointed with
+> it because of the lack of history and absolute path completion.
+
+I also have one issue, i run i3 with three LCD Displays and the problem
+is that dmenu runs across all three and so the alignment for the
+applications is on the left, but i want it to be centered or to restric
+dmenu to one screen (the active one).
+
+> I'd like to receive some opinions about this. Do you think it'd be worth it?
+
+I think it's a great idea :)
+
+-- 
+Andreas Herz
+
+From mhcerri at gmail.com  Mon Jan  2 15:40:19 2012
+From: mhcerri at gmail.com (Marcelo Cerri)
+Date: Mon, 2 Jan 2012 12:40:19 -0200
+Subject: [i3] dmenu replacement
+In-Reply-To: <CANenyVNYOdyL59VVBPS2=V7ZYFMVOpORM8_EuDfrh6-P==y5ZQ@mail.gmail.com>
+References: <CACg2Y9v30hKUgNCD8r4O2b1RJ4_HXUd+RSo04aA10K_K1Niwtg@mail.gmail.com>
+ <CANenyVNYOdyL59VVBPS2=V7ZYFMVOpORM8_EuDfrh6-P==y5ZQ@mail.gmail.com>
+Message-ID: <CACg2Y9seTgnSRHQCcE07FSzY+np4ogxi-Dek0itUf91zHQTxyQ@mail.gmail.com>
+
+Hi John,
+
+I'd like to use this tool to send commands to i3 (similar to i3-msg) and be
+able to get the commands and parameters completed.
+
+Currently I'm using dmenu + i3-msg to do this. Here is my key binding for
+this:
+
+bindsym $mod+i exec --no-startup-id echo -e
+'border\nexec\nexit\nfloating\nfocus\nfullscreen\nkill\nlayout\nmark\nmode\nmove\nnop\nopen\nreload\nresize\nrestart\nsplit\nworkspace'
+| dmenu | xargs i3-msg | xargs -0 -i notify-send -t 3000 "{}"
+
+What I like most about dmenu is its flexibility. But I couldn't find a way
+to make this tool flexible enough to support $PATH completion, absolute
+path completion and i3 command completion without turning it into a monster.
+
+So unless someone else proposes a clean and flexible alternative, I'll
+follow with a simple application laucher and forget about i3 integration
+for now. Later I can reuse some source code to make it.
+
+Regards,
+Marcelo
+
+
+On Mon, Jan 2, 2012 at 11:49 AM, John Haltiwanger <
+john.haltiwanger at gmail.com> wrote:
+
+> On Mon, Jan 2, 2012 at 2:44 PM, Marcelo Cerri <mhcerri at gmail.com> wrote:
+>
+>> Hi,
+>>
+>> I'm using dmenu as my application launcher but I'm a
+>> bit disappointed with it because of the lack of history and absolute path
+>> completion.
+>>
+>> I'm thinking to create a new menu application (or maybe a proper
+>> launcher) that could fulfill the following goal:
+>>
+>> 1. Use XCB instead of Xlib.
+>> 2. Support command history.
+>> 3. Be able to complete an absolute path or at least provide
+>> a mechanism to do this.
+>> 4. And maybe integrate with i3.
+>>
+>>
+>> I'd like to receive some opinions about this. Do you think it'd be worth
+>> it?
+>>
+>
+> I would personally be interested. The ability to run commands based on
+> path (rather than having only binaries in $PATH) is probably my favorite
+> feature you propose, though command history would also be great.
+>
+> What would you have in mind regarding i3 integration?
+>
+>>
+>> Regards,
+>> Marcelo
+>>
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120102/396bd590/attachment.html>
+
+From mhcerri at gmail.com  Mon Jan  2 15:46:02 2012
+From: mhcerri at gmail.com (Marcelo Cerri)
+Date: Mon, 2 Jan 2012 12:46:02 -0200
+Subject: [i3] dmenu replacement
+In-Reply-To: <1325512220-sup-4109@stapelberg.de>
+References: <CACg2Y9v30hKUgNCD8r4O2b1RJ4_HXUd+RSo04aA10K_K1Niwtg@mail.gmail.com>
+ <1325512220-sup-4109@stapelberg.de>
+Message-ID: <CACg2Y9tDzg4moON55nK37+iW3fXHk_m2A6OgdY8Q6oO=uoBPcA@mail.gmail.com>
+
+Hi Michael,
+
+I think it's a very interesting idea!
+
+Just a question: in this case, the auto completion would be in charge of
+the shell?
+
+I'd like to take a look at this if possible.
+
+Thanks,
+Marcleo
+
+On Mon, Jan 2, 2012 at 11:52 AM, Michael Stapelberg <
+michael+i3 at stapelberg.de> wrote:
+
+> Hi Marcelo,
+>
+> Excerpts from Marcelo Cerri's message of 2012-01-02 14:44:07 +0100:
+> > I'd like to receive some opinions about this. Do you think it'd be worth
+> it?
+> There have been some attempts (including code) by Merovius to create a
+> launcher
+> which used zsh and thus a very sophisticated completion system. Basically,
+> his
+> code was a minimal terminal emulator in a one-line window (which expanded
+> as
+> soon as necessary).
+>
+> If you want to, I can point you in the right direction. But be aware that
+> this
+> is nowhere near usable and not under active development at the moment.
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120102/9d6ea8e0/attachment.html>
+
+From michael+i3 at stapelberg.de  Mon Jan  2 15:49:11 2012
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Mon, 02 Jan 2012 15:49:11 +0100
+Subject: [i3] dmenu replacement
+In-Reply-To: <CACg2Y9seTgnSRHQCcE07FSzY+np4ogxi-Dek0itUf91zHQTxyQ@mail.gmail.com>
+References: <CACg2Y9v30hKUgNCD8r4O2b1RJ4_HXUd+RSo04aA10K_K1Niwtg@mail.gmail.com>
+ <CANenyVNYOdyL59VVBPS2=V7ZYFMVOpORM8_EuDfrh6-P==y5ZQ@mail.gmail.com>
+ <CACg2Y9seTgnSRHQCcE07FSzY+np4ogxi-Dek0itUf91zHQTxyQ@mail.gmail.com>
+Message-ID: <1325515630-sup-9322@stapelberg.de>
+
+Hi Marcelo,
+
+Excerpts from Marcelo Cerri's message of 2012-01-02 15:40:19 +0100:
+> I'd like to use this tool to send commands to i3 (similar to i3-msg) and be
+> able to get the commands and parameters completed.
+By the way, just in case you don?t know that:
+You can use 'i3 <command>' just like 'i3-msg <command>'. So, executing 'i3
+border none' will work just fine :). I think typing i3 in front of a command
+which should go to i3 does not require any more integration (at least for now).
+
+There also is i3-input, which can be used to send IPC commands to i3. It hasn?t
+seen much love, though, so it can be improved in various ways.
+
+Best regards,
+Michael
+
+From michael+i3 at stapelberg.de  Mon Jan  2 15:52:06 2012
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Mon, 02 Jan 2012 15:52:06 +0100
+Subject: [i3] dmenu replacement
+In-Reply-To: <CACg2Y9tDzg4moON55nK37+iW3fXHk_m2A6OgdY8Q6oO=uoBPcA@mail.gmail.com>
+References: <CACg2Y9v30hKUgNCD8r4O2b1RJ4_HXUd+RSo04aA10K_K1Niwtg@mail.gmail.com>
+ <1325512220-sup-4109@stapelberg.de>
+ <CACg2Y9tDzg4moON55nK37+iW3fXHk_m2A6OgdY8Q6oO=uoBPcA@mail.gmail.com>
+Message-ID: <1325515855-sup-2610@stapelberg.de>
+
+Hi Marcelo,
+
+Excerpts from Marcelo Cerri's message of 2012-01-02 15:46:02 +0100:
+> Just a question: in this case, the auto completion would be in charge of
+> the shell?
+The shell is in charge of completing, yes.
+
+> I'd like to take a look at this if possible.
+See http://git.merovius.de/shellex/. Again, the disclaimer: Neither usable yet,
+nor in development.
+
+Best regards,
+Michael
+
+From matthew at mattleach.net  Mon Jan  2 15:46:36 2012
+From: matthew at mattleach.net (Matthew Leach)
+Date: Mon, 02 Jan 2012 14:46:36 +0000
+Subject: [i3] dmenu replacement
+In-Reply-To: <CACg2Y9v30hKUgNCD8r4O2b1RJ4_HXUd+RSo04aA10K_K1Niwtg@mail.gmail.com>
+ (Marcelo Cerri's message of "Mon, 2 Jan 2012 11:44:07 -0200")
+References: <CACg2Y9v30hKUgNCD8r4O2b1RJ4_HXUd+RSo04aA10K_K1Niwtg@mail.gmail.com>
+Message-ID: <87y5tqtb5f.fsf@mattleach.net>
+
+Marcelo Cerri <mhcerri at gmail.com> writes:
+
+
+>     2. Support command history.
+>     3. Be able to complete an absolute path or at least provide
+>     a?mechanism?to do this.
+
+
+I know that the menubar that awesome uses has these features, I'm not
+sure what libraries they use however.
+
+
+> I'd like to receive some opinions about this. Do you think it'd be
+> worth it?
+
+It's defiantly an interesting project and I would be willing to offer my
+help in getting this project off the ground.
+
+Regards,
+Matt
+
+From john.haltiwanger at gmail.com  Mon Jan  2 19:49:19 2012
+From: john.haltiwanger at gmail.com (John Haltiwanger)
+Date: Mon, 2 Jan 2012 19:49:19 +0100
+Subject: [i3] dmenu replacement
+In-Reply-To: <CACg2Y9seTgnSRHQCcE07FSzY+np4ogxi-Dek0itUf91zHQTxyQ@mail.gmail.com>
+References: <CACg2Y9v30hKUgNCD8r4O2b1RJ4_HXUd+RSo04aA10K_K1Niwtg@mail.gmail.com>
+ <CANenyVNYOdyL59VVBPS2=V7ZYFMVOpORM8_EuDfrh6-P==y5ZQ@mail.gmail.com>
+ <CACg2Y9seTgnSRHQCcE07FSzY+np4ogxi-Dek0itUf91zHQTxyQ@mail.gmail.com>
+Message-ID: <CANenyVO0t+SBfEqMA0CxY_97s-juY6VWfXqjwdiDoB48UAsk9g@mail.gmail.com>
+
+On Mon, Jan 2, 2012 at 3:40 PM, Marcelo Cerri <mhcerri at gmail.com> wrote:
+
+> Hi John,
+>
+> I'd like to use this tool to send commands to i3 (similar to i3-msg) and
+> be able to get the commands and parameters completed.
+>
+
+That's what I figured, but I wanted to be sure :)
+
+>
+> So unless someone else proposes a clean and flexible alternative, I'll
+> follow with a simple application laucher and forget about i3 integration
+> for now. Later I can reuse some source code to make it.
+>
+
+The zsh based solution would require i3-msg specific completion
+configuration, but that would provide the additional benefit of i3-msg
+completion in the normal shell for zsh users. In fact, maybe someone has
+already done this work?
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120102/3a0fde34/attachment.html>
+
+From atsutane at freethoughts.de  Tue Jan  3 01:39:00 2012
+From: atsutane at freethoughts.de (Thorsten =?ISO-8859-1?B?VPZwcGVy?=)
+Date: Tue, 3 Jan 2012 01:39:00 +0100
+Subject: [i3] dmenu replacement
+In-Reply-To: <20120102142512.GG11156@workstation>
+References: <CACg2Y9v30hKUgNCD8r4O2b1RJ4_HXUd+RSo04aA10K_K1Niwtg@mail.gmail.com>
+ <20120102142512.GG11156@workstation>
+Message-ID: <20120103013900.6a160f4b@hell>
+
+On Mon, 2 Jan 2012 15:25:12 +0100
+Andreas Herz <andi at geekosphere.org> wrote:
+> On 02/01/12 at 11:44, Marcelo Cerri wrote:
+> > I'm using dmenu as my application launcher but I'm a bit
+> > disappointed with it because of the lack of history and absolute
+> > path completion.
+> 
+> I also have one issue, i run i3 with three LCD Displays and the
+> problem is that dmenu runs across all three and so the alignment for
+> the applications is on the left, but i want it to be centered or to
+> restric dmenu to one screen (the active one).
+
+That's strange, I have a two monitor setup at my workstation and dmenu
+only shows up on the currently active monitor/workspace. Same goes for
+my laptop hooked up at an external monitor(just tested). Well I run i3
+built from git at both systems, but I can't remember this being
+different in the past couple of months or I just did not notice...
+
+I use dmenu 4.4.1 and call it using the dmenu_run script:
+bindsym Mod4+v exec /usr/bin/dmenu_run
+
+So there's nothing really special with my configuration.
+
+
+> > I'd like to receive some opinions about this. Do you think it'd be
+> > worth it?
+> 
+> I think it's a great idea :)
+
+I'm fine with dmenu, though I also was fine with a plain bash until I
+discovered zsh... ;-)
+
+-- 
+Jabber: atsutane at freethoughts.de Blog: http://atsutane.freethoughts.de/
+Key: 295AFBF4     FP: 39F8 80E5 0E49 A4D1 1341 E8F9 39E4 F17F 295A FBF4
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 222 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120103/bfba25a9/attachment.pgp>
+
+From andi at geekosphere.org  Tue Jan  3 01:52:57 2012
+From: andi at geekosphere.org (Andreas Herz)
+Date: Tue, 3 Jan 2012 01:52:57 +0100
+Subject: [i3] dmenu replacement
+In-Reply-To: <20120103013900.6a160f4b@hell>
+References: <CACg2Y9v30hKUgNCD8r4O2b1RJ4_HXUd+RSo04aA10K_K1Niwtg@mail.gmail.com>
+ <20120102142512.GG11156@workstation> <20120103013900.6a160f4b@hell>
+Message-ID: <20120103005257.GI11156@workstation>
+
+On 03/01/12 at 01:39, Thorsten T?pper wrote:
+> On Mon, 2 Jan 2012 15:25:12 +0100
+> Andreas Herz <andi at geekosphere.org> wrote:
+> > On 02/01/12 at 11:44, Marcelo Cerri wrote:
+> > > I'm using dmenu as my application launcher but I'm a bit
+> > > disappointed with it because of the lack of history and absolute
+> > > path completion.
+> > 
+> > I also have one issue, i run i3 with three LCD Displays and the
+> > problem is that dmenu runs across all three and so the alignment for
+> > the applications is on the left, but i want it to be centered or to
+> > restric dmenu to one screen (the active one).
+> 
+> That's strange, I have a two monitor setup at my workstation and dmenu
+> only shows up on the currently active monitor/workspace. Same goes for
+> my laptop hooked up at an external monitor(just tested). Well I run i3
+> built from git at both systems, but I can't remember this being
+> different in the past couple of months or I just did not notice...
+
+What driver do you use?
+I have a AMD/ATI Radeon 5770 with Eyefinity so i use the proprietary
+fglrx driver (11.8) on my Gentoo 64-Bit.
+
+I run i3 4.1.1 not from git.
+
+> I use dmenu 4.4.1 and call it using the dmenu_run script:
+> bindsym Mod4+v exec /usr/bin/dmenu_run
+
+Same dmenu version here, the only difference i use /usr/bin/dmenu but
+that doesnt change anything, dmenu_run is on the whole screen, too.
+
+> So there's nothing really special with my configuration.
+
+Neither with mine :/
+
+-- 
+Andreas Herz
+
+From ciprian.craciun at gmail.com  Tue Jan  3 09:12:25 2012
+From: ciprian.craciun at gmail.com (Ciprian Dorin Craciun)
+Date: Tue, 3 Jan 2012 10:12:25 +0200
+Subject: [i3] Eclipse strange behaviour (dialog windows, popups, etc.)
+In-Reply-To: <1323800447-sup-6999@stapelberg.de>
+References: <CA+Tk8fzg5JrVhor0GsEy5ab2R=Jy04uudSykaVtD1-CG3M2-EA@mail.gmail.com>
+ <1323800447-sup-6999@stapelberg.de>
+Message-ID: <CA+Tk8fwYGfWfmwBiKXWe8qR8=GmZ6ArHiJzHBN7cPBCpU2bf5g@mail.gmail.com>
+
+On Tue, Dec 13, 2011 at 20:21, Michael Stapelberg
+<michael+i3 at stapelberg.de> wrote:
+> Hi Ciprian,
+>
+> please upgrade to latest git, this might be the problem described at
+> http://bugs.i3wm.org/511
+>
+> Best regards,
+> Michael
+
+
+    Sorry for the late response. I was to lazy to compile and install
+i3 from the repository, but it seems that the latest ArchLinux upgrade
+fixes it (4.1.1-1 compiled on Sat 24 Dec 2011 06:52:50 PM EET).
+
+    It seems that it fixes both the Eclipse and Firefox problem.
+
+    Thanks,
+    Ciprian.
+
+From atsutane at freethoughts.de  Tue Jan  3 20:48:43 2012
+From: atsutane at freethoughts.de (Thorsten =?ISO-8859-1?B?VPZwcGVy?=)
+Date: Tue, 3 Jan 2012 20:48:43 +0100
+Subject: [i3] dmenu replacement
+In-Reply-To: <20120103005257.GI11156@workstation>
+References: <CACg2Y9v30hKUgNCD8r4O2b1RJ4_HXUd+RSo04aA10K_K1Niwtg@mail.gmail.com>
+ <20120102142512.GG11156@workstation> <20120103013900.6a160f4b@hell>
+ <20120103005257.GI11156@workstation>
+Message-ID: <20120103204843.560d1565@hell>
+
+On Tue, 3 Jan 2012 01:52:57 +0100
+Andreas Herz <andi at geekosphere.org> wrote:
+> What driver do you use?
+> I have a AMD/ATI Radeon 5770 with Eyefinity so i use the proprietary
+> fglrx driver (11.8) on my Gentoo 64-Bit.
+> 
+> I run i3 4.1.1 not from git.
+
+My laptop runs with the i915 driver from xf86-video-intel(2.17.0). At
+the workstation I have a GeForce 8800GT and use the proprietary nvidia
+driver(290.10), so I have to use the --force-xinerama switch there.
+
+Both systems run x86_64 Arch Linux with X server 1.11.3.
+
+-- 
+Jabber: atsutane at freethoughts.de Blog: http://atsutane.freethoughts.de/
+Key: 295AFBF4     FP: 39F8 80E5 0E49 A4D1 1341 E8F9 39E4 F17F 295A FBF4
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 222 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120103/012cbff2/attachment.pgp>
+
+From andi at geekosphere.org  Tue Jan  3 23:19:38 2012
+From: andi at geekosphere.org (Andreas Herz)
+Date: Tue, 3 Jan 2012 23:19:38 +0100
+Subject: [i3] dmenu replacement
+In-Reply-To: <20120103204843.560d1565@hell>
+References: <CACg2Y9v30hKUgNCD8r4O2b1RJ4_HXUd+RSo04aA10K_K1Niwtg@mail.gmail.com>
+ <20120102142512.GG11156@workstation> <20120103013900.6a160f4b@hell>
+ <20120103005257.GI11156@workstation> <20120103204843.560d1565@hell>
+Message-ID: <20120103221938.GL11156@workstation>
+
+On 03/01/12 at 20:48, Thorsten T?pper wrote:
+> On Tue, 3 Jan 2012 01:52:57 +0100
+> Andreas Herz <andi at geekosphere.org> wrote:
+> > What driver do you use?
+> > I have a AMD/ATI Radeon 5770 with Eyefinity so i use the proprietary
+> > fglrx driver (11.8) on my Gentoo 64-Bit.
+> > 
+> > I run i3 4.1.1 not from git.
+> 
+> My laptop runs with the i915 driver from xf86-video-intel(2.17.0). At
+> the workstation I have a GeForce 8800GT and use the proprietary nvidia
+> driver(290.10), so I have to use the --force-xinerama switch there.
+
+I guess it's the xinerama option, but i will test this on a machine here
+with nvidia GPU.
+Thanks so far.
+
+-- 
+Andreas Herz
+
+From mhcerri at gmail.com  Wed Jan  4 19:09:11 2012
+From: mhcerri at gmail.com (Marcelo Cerri)
+Date: Wed, 4 Jan 2012 16:09:11 -0200
+Subject: [i3] dmenu replacement
+In-Reply-To: <1325515855-sup-2610@stapelberg.de>
+References: <CACg2Y9v30hKUgNCD8r4O2b1RJ4_HXUd+RSo04aA10K_K1Niwtg@mail.gmail.com>
+ <1325512220-sup-4109@stapelberg.de>
+ <CACg2Y9tDzg4moON55nK37+iW3fXHk_m2A6OgdY8Q6oO=uoBPcA@mail.gmail.com>
+ <1325515855-sup-2610@stapelberg.de>
+Message-ID: <CACg2Y9sQa6Cw8FPWBntnnsTko9A88pC_4bcG4PF38dqHuryRUA@mail.gmail.com>
+
+Thanks Michael,
+
+I already started writing some code, mostly to get comfortable wit XCB, and
+during this week I'll take a look at the shellex project.
+
+Regarding i3-input, what are your plans for it?
+
+Regards,
+Marcelo
+
+On Mon, Jan 2, 2012 at 12:52 PM, Michael Stapelberg <
+michael+i3 at stapelberg.de> wrote:
+
+> Hi Marcelo,
+>
+> Excerpts from Marcelo Cerri's message of 2012-01-02 15:46:02 +0100:
+> > Just a question: in this case, the auto completion would be in charge of
+> > the shell?
+> The shell is in charge of completing, yes.
+>
+> > I'd like to take a look at this if possible.
+> See http://git.merovius.de/shellex/. Again, the disclaimer: Neither
+> usable yet,
+> nor in development.
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120104/0bc97b9a/attachment.html>
+
+From michael+i3 at stapelberg.de  Wed Jan  4 19:28:06 2012
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Wed, 04 Jan 2012 18:28:06 +0000
+Subject: [i3] dmenu replacement
+In-Reply-To: <CACg2Y9sQa6Cw8FPWBntnnsTko9A88pC_4bcG4PF38dqHuryRUA@mail.gmail.com>
+References: <CACg2Y9v30hKUgNCD8r4O2b1RJ4_HXUd+RSo04aA10K_K1Niwtg@mail.gmail.com>
+ <1325512220-sup-4109@stapelberg.de>
+ <CACg2Y9tDzg4moON55nK37+iW3fXHk_m2A6OgdY8Q6oO=uoBPcA@mail.gmail.com>
+ <1325515855-sup-2610@stapelberg.de>
+ <CACg2Y9sQa6Cw8FPWBntnnsTko9A88pC_4bcG4PF38dqHuryRUA@mail.gmail.com>
+Message-ID: <1325701055-sup-5480@stapelberg.de>
+
+Hi Marcelo,
+
+Excerpts from Marcelo Cerri's message of 2012-01-04 18:09:11 +0000:
+> I already started writing some code, mostly to get comfortable wit XCB, and
+Be aware that there are manpages for XCB at
+https://github.com/mstap/xcb-man-pregenerated
+
+> Regarding i3-input, what are your plans for it?
+I have no immediate plans for i3-input.
+
+Best regards,
+Michael
+
+From aaron.small.99a at gmail.com  Thu Jan  5 21:39:28 2012
+From: aaron.small.99a at gmail.com (Aaron Small)
+Date: Thu, 5 Jan 2012 15:39:28 -0500
+Subject: [i3] Window titles running together
+Message-ID: <20120105203927.GA9257@ahni>
+
+Hello,
+
+I'm attempting to switch over to i3 as a window manager from ion3, and
+one of the things I miss is that in ion3, I can open many windows in
+tabbed mode with their titles visible, and see at a glance what is open.
+This is difficult in i3 because the text of the window titles starts to
+run together when there are more than 4 or 5 windows in the container
+and some have long titles. In ion3, there can be a box drawn around each
+title, so that it's easy to see where one title ends and the next
+begins, which makes reading what is open much easier.
+
+The attached patch implements the behaviour I'm interested in. Is this
+something others would be interested in?
+
+Thanks,
+Aaron
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Draw-a-box-around-the-title.patch
+Type: text/x-diff
+Size: 1106 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120105/dc0dc98f/attachment.patch>
+
+From michael+i3 at stapelberg.de  Thu Jan  5 21:46:20 2012
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Thu, 05 Jan 2012 20:46:20 +0000
+Subject: [i3] Window titles running together
+In-Reply-To: <20120105203927.GA9257@ahni>
+References: <20120105203927.GA9257@ahni>
+Message-ID: <1325796321-sup-7229@stapelberg.de>
+
+Hi Aaron,
+
+Excerpts from Aaron Small's message of 2012-01-05 20:39:28 +0000:
+> The attached patch implements the behaviour I'm interested in. Is this
+> something others would be interested in?
+Thanks for your patch. Unfortunately, it doesn?t cleanly apply to the 'next'
+branch, which is where development happens. Could you rebase it and re-send it?
+If it doesn?t cause any regressions (that is, rendering changes for non-tabbed
+containers), I?ll merge it.
+
+Best regards,
+Michael
+
+From aaron.small.99a at gmail.com  Thu Jan  5 22:11:32 2012
+From: aaron.small.99a at gmail.com (Aaron Small)
+Date: Thu, 5 Jan 2012 16:11:32 -0500
+Subject: [i3] Window titles running together
+In-Reply-To: <1325796321-sup-7229@stapelberg.de>
+References: <20120105203927.GA9257@ahni>
+ <1325796321-sup-7229@stapelberg.de>
+Message-ID: <20120105211130.GA26346@ahni>
+
+Thanks! Here is the rebased patch.
+
+It draws the box around non-tabbed containers too, but I think looks
+okay in those cases, and is consistent with the tabbed look.
+
+Aaron
+
+* Michael Stapelberg <michael+i3 at stapelberg.de> wrote:
+
+> Hi Aaron,
+> 
+> Excerpts from Aaron Small's message of 2012-01-05 20:39:28 +0000:
+> > The attached patch implements the behaviour I'm interested in. Is this
+> > something others would be interested in?
+> Thanks for your patch. Unfortunately, it doesn?t cleanly apply to the 'next'
+> branch, which is where development happens. Could you rebase it and re-send it?
+> If it doesn?t cause any regressions (that is, rendering changes for non-tabbed
+> containers), I?ll merge it.
+> 
+> Best regards,
+> Michael
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Draw-a-box-around-the-title.patch
+Type: text/x-diff
+Size: 1046 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120105/a1c9167c/attachment.patch>
+
+From michael+i3 at stapelberg.de  Thu Jan  5 23:07:59 2012
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Thu, 05 Jan 2012 22:07:59 +0000
+Subject: [i3] Window titles running together
+In-Reply-To: <20120105211130.GA26346@ahni>
+References: <20120105203927.GA9257@ahni> <1325796321-sup-7229@stapelberg.de>
+ <20120105211130.GA26346@ahni>
+Message-ID: <1325801048-sup-6033@stapelberg.de>
+
+Hi Aaron,
+
+Excerpts from Aaron Small's message of 2012-01-05 21:11:32 +0000:
+> It draws the box around non-tabbed containers too, but I think looks
+> okay in those cases, and is consistent with the tabbed look.
+So, I tried your patch. Here is my opinion:
+
+1) The border color doesn?t really match the i3 color scheme.
+2) Drawing borders all the time (not only in tabbed mode) is unnecessary.
+3) To properly separate the tabs in their look and feel, you should draw a
+   one-pixel vertical line between all the tabs, which is rendered *after* the
+   title, so that it clearly marks the end of the tab.
+
+Can you fix these issues please?
+
+Best regards,
+Michael
+
+From aaron.small.99a at gmail.com  Fri Jan  6 01:00:02 2012
+From: aaron.small.99a at gmail.com (Aaron Small)
+Date: Thu, 5 Jan 2012 19:00:02 -0500
+Subject: [i3] Window titles running together
+In-Reply-To: <1325801048-sup-6033@stapelberg.de>
+References: <20120105203927.GA9257@ahni> <1325796321-sup-7229@stapelberg.de>
+ <20120105211130.GA26346@ahni> <1325801048-sup-6033@stapelberg.de>
+Message-ID: <20120106000001.GA26854@ahni>
+
+For 2+3, sure, second patch is attached.
+
+For 1, I'm not sure what you mean. The reason I used the text colour is
+because that's the colour that is already being used as a foreground
+colour within the titlebar (for the text), so I thought it is the most
+likely colour to go well with the background colour of the titlebar.
+What colour were you thinking of?
+
+
+Thanks,
+Aaron
+
+* Michael Stapelberg <michael+i3 at stapelberg.de> wrote:
+
+> Hi Aaron,
+> 
+> Excerpts from Aaron Small's message of 2012-01-05 21:11:32 +0000:
+> > It draws the box around non-tabbed containers too, but I think looks
+> > okay in those cases, and is consistent with the tabbed look.
+> So, I tried your patch. Here is my opinion:
+> 
+> 1) The border color doesn?t really match the i3 color scheme.
+> 2) Drawing borders all the time (not only in tabbed mode) is unnecessary.
+> 3) To properly separate the tabs in their look and feel, you should draw a
+>    one-pixel vertical line between all the tabs, which is rendered *after* the
+>    title, so that it clearly marks the end of the tab.
+> 
+> Can you fix these issues please?
+> 
+> Best regards,
+> Michael
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0002-Use-a-single-pixel-vertical-line-instead-of-a-box-an.patch
+Type: text/x-diff
+Size: 2081 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120105/6a7f5484/attachment.patch>
+
+From michael+i3 at stapelberg.de  Fri Jan  6 01:27:39 2012
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Fri, 06 Jan 2012 00:27:39 +0000
+Subject: [i3] Window titles running together
+In-Reply-To: <20120106000001.GA26854@ahni>
+References: <20120105203927.GA9257@ahni> <1325796321-sup-7229@stapelberg.de>
+ <20120105211130.GA26346@ahni> <1325801048-sup-6033@stapelberg.de>
+ <20120106000001.GA26854@ahni>
+Message-ID: <1325809354-sup-9603@stapelberg.de>
+
+Hi Aaron,
+
+Excerpts from Aaron Small's message of 2012-01-06 00:00:02 +0000:
+> For 1, I'm not sure what you mean. The reason I used the text colour is
+> because that's the colour that is already being used as a foreground
+> colour within the titlebar (for the text), so I thought it is the most
+> likely colour to go well with the background colour of the titlebar.
+> What colour were you thinking of?
+There also is the border color (which is the 1px border at the bottom of window
+titles). I think that is the best color to use.
+
+In the comment you say "*after* all but the first", but you actually draw
+*before* all but the first :).
+
+Also, your last patch was based on the first patch, so I can?t merge it in one
+single commit (which I want to do). You can use git?s interactive rebase
+feature for that (google it).
+
+Can you please change it and re-send? Thanks!
+
+Best regards,
+Michael
+
+From aaron.small.99a at gmail.com  Fri Jan  6 02:05:04 2012
+From: aaron.small.99a at gmail.com (Aaron Small)
+Date: Thu, 5 Jan 2012 20:05:04 -0500
+Subject: [i3] Window titles running together
+In-Reply-To: <1325809354-sup-9603@stapelberg.de>
+References: <20120105203927.GA9257@ahni> <1325796321-sup-7229@stapelberg.de>
+ <20120105211130.GA26346@ahni> <1325801048-sup-6033@stapelberg.de>
+ <20120106000001.GA26854@ahni> <1325809354-sup-9603@stapelberg.de>
+Message-ID: <20120106010503.GA30107@ahni>
+
+Ah, I see - I didn't even notice the border because it's so faint in the
+default colourscheme. After making that higher contrast, it looks much
+better, thanks.
+
+Patch will these three changes attached.
+
+
+Thanks,
+Aaron
+
+* Michael Stapelberg <michael+i3 at stapelberg.de> wrote:
+
+> Hi Aaron,
+> 
+> Excerpts from Aaron Small's message of 2012-01-06 00:00:02 +0000:
+> > For 1, I'm not sure what you mean. The reason I used the text colour is
+> > because that's the colour that is already being used as a foreground
+> > colour within the titlebar (for the text), so I thought it is the most
+> > likely colour to go well with the background colour of the titlebar.
+> > What colour were you thinking of?
+> There also is the border color (which is the 1px border at the bottom of window
+> titles). I think that is the best color to use.
+> 
+> In the comment you say "*after* all but the first", but you actually draw
+> *before* all but the first :).
+> 
+> Also, your last patch was based on the first patch, so I can?t merge it in one
+> single commit (which I want to do). You can use git?s interactive rebase
+> feature for that (google it).
+> 
+> Can you please change it and re-send? Thanks!
+> 
+> Best regards,
+> Michael
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Draw-a-separator-between-titles-in-horizontal-defaul.patch
+Type: text/x-diff
+Size: 1366 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120105/4ab97f6b/attachment.patch>
+
+From titan232 at gmail.com  Wed Jan 11 14:56:33 2012
+From: titan232 at gmail.com (ian)
+Date: Wed, 11 Jan 2012 13:56:33 +0000
+Subject: [i3] Problems closing i3
+In-Reply-To: <20111114220709.GB2613@broggs.org>
+References: <20111112101036.4bd32246@sid> <1321093288-sup-394@stapelberg.de>
+ <20111114175520.177f706e@sid> <1321294766-sup-8205@stapelberg.de>
+ <20111114193714.08e009a6@sid> <1321300158-sup-9191@stapelberg.de>
+ <20111114220709.GB2613@broggs.org>
+Message-ID: <20120111135633.39f37b04@sid>
+
+I just installed a new Sid based distro Siduction, I chose the
+lightest version with lxde which uses lightdm. I installed i3
+everything works except the ability to close i3 with mod+Shift+e. I
+I have the same i3 version on another sid based distro and have no
+issues with that. Any suggestions welcome.
+
+Thanks
+
+Ian
+
+From honza801 at gmail.com  Wed Jan 11 15:18:24 2012
+From: honza801 at gmail.com (Jan Krcmar)
+Date: Wed, 11 Jan 2012 15:18:24 +0100
+Subject: [i3] Problems closing i3
+In-Reply-To: <20120111135633.39f37b04@sid>
+References: <20111112101036.4bd32246@sid> <1321093288-sup-394@stapelberg.de>
+ <20111114175520.177f706e@sid> <1321294766-sup-8205@stapelberg.de>
+ <20111114193714.08e009a6@sid> <1321300158-sup-9191@stapelberg.de>
+ <20111114220709.GB2613@broggs.org> <20120111135633.39f37b04@sid>
+Message-ID: <CAKneAXn0UwVhLhSLPMjrmHQue_ZRbYavXJ+JOpQ6z_MCTOygZg@mail.gmail.com>
+
+hi,
+
+are you using the same config file too?
+what does the log say?
+
+jan
+
+2012/1/11 ian <titan232 at gmail.com>:
+> I just installed a new Sid based distro Siduction, I chose the
+> lightest version with lxde which uses lightdm. I installed i3
+> everything works except the ability to close i3 with mod+Shift+e. I
+> I have the same i3 version on another sid based distro and have no
+> issues with that. Any suggestions welcome.
+>
+> Thanks
+>
+> Ian
+
+From titan232 at gmail.com  Thu Jan 12 10:38:27 2012
+From: titan232 at gmail.com (ian)
+Date: Thu, 12 Jan 2012 09:38:27 +0000
+Subject: [i3] Problems closing i3
+In-Reply-To: <CAKneAXn0UwVhLhSLPMjrmHQue_ZRbYavXJ+JOpQ6z_MCTOygZg@mail.gmail.com>
+References: <20111112101036.4bd32246@sid> <1321093288-sup-394@stapelberg.de>
+ <20111114175520.177f706e@sid> <1321294766-sup-8205@stapelberg.de>
+ <20111114193714.08e009a6@sid> <1321300158-sup-9191@stapelberg.de>
+ <20111114220709.GB2613@broggs.org> <20120111135633.39f37b04@sid>
+ <CAKneAXn0UwVhLhSLPMjrmHQue_ZRbYavXJ+JOpQ6z_MCTOygZg@mail.gmail.com>
+Message-ID: <20120112093827.044f2a22@sid>
+
+On Wed, 11 Jan 2012 15:18:24 +0100
+Jan Krcmar <honza801 at gmail.com> wrote:
+
+> hi,
+> 
+> are you using the same config file too?
+> what does the log say?
+> 
+> jan
+> 
+> 2012/1/11 ian <titan232 at gmail.com>:
+> > I just installed a new Sid based distro Siduction, I chose the
+> > lightest version with lxde which uses lightdm. I installed i3
+> > everything works except the ability to close i3 with mod+Shift+e. I
+> > I have the same i3 version on another sid based distro and have no
+> > issues with that. Any suggestions welcome.
+> >
+> > Thanks
+> >
+> > Ian
+
+Hi Jan,
+I have tried with new and my existing config. I have just done clean
+install of Aptosid with full upgrade and same problem.  the xsession
+error file is below.
+
+
+/etc/gdm3/Xsession: Beginning session setup...
+Failed to connect to the VirtualBox kernel service
+Failed to connect to the VirtualBox kernel service
+Failed to connect to the VirtualBox kernel service
+Failed to connect to the VirtualBox kernel service
+deciding for version 4 due to this line: # i3 config file (v4)
+font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+	Found keysym binding mod8 with key Return and command exec i3-sensible-terminal
+	Found keysym binding mod9 with key Q and command kill
+	Found keysym binding mod8 with key d and command exec dmenu_run
+	Found keysym binding mod8 with key j and command focus left
+	Found keysym binding mod8 with key k and command focus down
+	Found keysym binding mod8 with key l and command focus up
+	Found keysym binding mod8 with key semicolon and command focus right
+	Found keysym binding mod8 with key Left and command focus left
+	Found keysym binding mod8 with key Down and command focus down
+	Found keysym binding mod8 with key Up and command focus up
+	Found keysym binding mod8 with key Right and command focus right
+	Found keysym binding mod9 with key J and command move left
+	Found keysym binding mod9 with key K and command move down
+	Found keysym binding mod9 with key L and command move up
+	Found keysym binding mod9 with key colon and command move right
+	Found keysym binding mod9 with key Left and command move left
+	Found keysym binding mod9 with key Down and command move down
+	Found keysym binding mod9 with key Up and command move up
+	Found keysym binding mod9 with key Right and command move right
+	Found keysym binding mod8 with key h and command split h
+	Found keysym binding mod8 with key v and command split v
+	Found keysym binding mod8 with key f and command fullscreen
+	Found keysym binding mod8 with key s and command layout stacking
+	Found keysym binding mod8 with key w and command layout tabbed
+	Found keysym binding mod8 with key e and command layout default
+	Found keysym binding mod9 with key space and command floating toggle
+	Found keysym binding mod8 with key space and command focus mode_toggle
+	Found keysym binding mod8 with key a and command focus parent
+	Found keysym binding mod8 with key 1 and command workspace 1
+	Found keysym binding mod8 with key 2 and command workspace 2
+	Found keysym binding mod8 with key 3 and command workspace 3
+	Found keysym binding mod8 with key 4 and command workspace 4
+	Found keysym binding mod8 with key 5 and command workspace 5
+	Found keysym binding mod8 with key 6 and command workspace 6
+	Found keysym binding mod8 with key 7 and command workspace 7
+	Found keysym binding mod8 with key 8 and command workspace 8
+	Found keysym binding mod8 with key 9 and command workspace 9
+	Found keysym binding mod8 with key 0 and command workspace 10
+	Found keysym binding mod9 with key exclam and command move workspace 1
+	Found keysym binding mod9 with key quotedbl and command move workspace 2
+	Found keysym binding mod9 with key sterling and command move workspace 3
+	Found keysym binding mod9 with key dollar and command move workspace 4
+	Found keysym binding mod9 with key percent and command move workspace 5
+	Found keysym binding mod9 with key asciicircum and command move workspace 6
+	Found keysym binding mod9 with key ampersand and command move workspace 7
+	Found keysym binding mod9 with key asterisk and command move workspace 8
+	Found keysym binding mod9 with key parenleft and command move workspace 9
+	Found keysym binding mod9 with key parenright and command move workspace 10
+	Found keysym binding mod9 with key C and command reload
+	Found keysym binding mod9 with key R and command restart
+	Found keysym binding mod9 with key E and command exit
+	Found keysym binding mod0 with key j and command resize shrink left 10 px or 10 ppt
+	Found keysym binding mod1 with key J and command resize grow   left 10 px or 10 ppt
+	Found keysym binding mod0 with key k and command resize shrink down 10 px or 10 ppt
+	Found keysym binding mod1 with key K and command resize grow   down 10 px or 10 ppt
+	Found keysym binding mod0 with key l and command resize shrink up 10 px or 10 ppt
+	Found keysym binding mod1 with key L and command resize grow   up 10 px or 10 ppt
+	Found keysym binding mod0 with key semicolon and command resize shrink right 10 px or 10 ppt
+	Found keysym binding mod1 with key colon and command resize grow   right 10 px or 10 ppt
+	Found keysym binding mod0 with key Left and command resize shrink left 10 px or 10 ppt
+	Found keysym binding mod1 with key Left and command resize grow   left 10 px or 10 ppt
+	Found keysym binding mod0 with key Down and command resize shrink down 10 px or 10 ppt
+	Found keysym binding mod1 with key Down and command resize grow   down 10 px or 10 ppt
+	Found keysym binding mod0 with key Up and command resize shrink up 10 px or 10 ppt
+	Found keysym binding mod1 with key Up and command resize grow   up 10 px or 10 ppt
+	Found keysym binding mod0 with key Right and command resize shrink right 10 px or 10 ppt
+	Found keysym binding mod1 with key Right and command resize grow   right 10 px or 10 ppt
+	Found keysym binding mod0 with key Return and command mode "default"
+	Found keysym binding mod0 with key Escape and command mode "default"
+	 now in mode resize
+	 current bindings = 0xa64840
+got binding on mods 0, keycode 0, symbol j, command resize shrink left 10 px or 10 ppt
+got binding on mods 1, keycode 0, symbol J, command resize grow   left 10 px or 10 ppt
+got binding on mods 0, keycode 0, symbol k, command resize shrink down 10 px or 10 ppt
+got binding on mods 1, keycode 0, symbol K, command resize grow   down 10 px or 10 ppt
+got binding on mods 0, keycode 0, symbol l, command resize shrink up 10 px or 10 ppt
+got binding on mods 1, keycode 0, symbol L, command resize grow   up 10 px or 10 ppt
+got binding on mods 0, keycode 0, symbol semicolon, command resize shrink right 10 px or 10 ppt
+got binding on mods 1, keycode 0, symbol colon, command resize grow   right 10 px or 10 ppt
+got binding on mods 0, keycode 0, symbol Left, command resize shrink left 10 px or 10 ppt
+got binding on mods 1, keycode 0, symbol Left, command resize grow   left 10 px or 10 ppt
+got binding on mods 0, keycode 0, symbol Down, command resize shrink down 10 px or 10 ppt
+got binding on mods 1, keycode 0, symbol Down, command resize grow   down 10 px or 10 ppt
+got binding on mods 0, keycode 0, symbol Up, command resize shrink up 10 px or 10 ppt
+got binding on mods 1, keycode 0, symbol Up, command resize grow   up 10 px or 10 ppt
+got binding on mods 0, keycode 0, symbol Right, command resize shrink right 10 px or 10 ppt
+got binding on mods 1, keycode 0, symbol Right, command resize grow   right 10 px or 10 ppt
+got binding on mods 0, keycode 0, symbol Return, command mode "default"
+got binding on mods 0, keycode 0, symbol Escape, command mode "default"
+	Found keysym binding mod8 with key r and command mode "resize"
+	 new bar configuration finished, saving.
+i3status: trying to auto-detect output_format setting
+i3status: auto-detected "none"
+anything else: *d*
+should execute dmenu_run, no_startup_id = 0
+single command completely parsed, dropping state...
+done, json output = (null)
+
+From michael+i3 at stapelberg.de  Thu Jan 12 20:22:27 2012
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Thu, 12 Jan 2012 19:22:27 +0000
+Subject: [i3] Problems closing i3
+In-Reply-To: <20120112093827.044f2a22@sid>
+References: <20111112101036.4bd32246@sid> <1321093288-sup-394@stapelberg.de>
+ <20111114175520.177f706e@sid> <1321294766-sup-8205@stapelberg.de>
+ <20111114193714.08e009a6@sid> <1321300158-sup-9191@stapelberg.de>
+ <20111114220709.GB2613@broggs.org> <20120111135633.39f37b04@sid>
+ <CAKneAXn0UwVhLhSLPMjrmHQue_ZRbYavXJ+JOpQ6z_MCTOygZg@mail.gmail.com>
+ <20120112093827.044f2a22@sid>
+Message-ID: <1326396051-sup-1619@stapelberg.de>
+
+Hi ian,
+
+Excerpts from ian's message of 2012-01-12 09:38:27 +0000:
+> I have tried with new and my existing config. I have just done clean
+> install of Aptosid with full upgrade and same problem.  the xsession
+> error file is below.
+Please provide a full debug level logfile of an i3 run where you just press
+mod+shift+e. See also http://i3wm.org/docs/debugging.html, or use
+'i3-dump-log | gzip -9c > /tmp/i3.log.gz' if you are running a git version of
+i3.
+
+Best regards,
+Michael
+
+From ac at acampbell.org.uk  Sat Jan 14 13:24:07 2012
+From: ac at acampbell.org.uk (Anthony Campbell)
+Date: Sat, 14 Jan 2012 12:24:07 +0000
+Subject: [i3] Change colours of top panel in stacked and tabbed layouts
+Message-ID: <20120114122407.GA2704@acampbell.org.uk>
+
+I've recently been trying out a number of different tiling WMs and i3 is
+currently the one I've liked best. 
+
+Just one problem I can't figure out: in the stacked and tabbed layouts,
+the greyed-out names of the non-focused windows are all but invisible on
+the dark background. Is there any way to change this, e.g. by altering
+the font or the background colour?
+
+Anthony
+
+
+-- 
+Anthony Campbell - ac at acampbell.org.uk 
+Microsoft-free zone - using Linux 
+http://www.acampbell.org.uk - book reviews, 
+articles, blog, and printed books and ebooks
+
+From miguel.deval at gmail.com  Sat Jan 14 13:33:28 2012
+From: miguel.deval at gmail.com (Miguel de Val-Borro)
+Date: Sat, 14 Jan 2012 13:33:28 +0100
+Subject: [i3] Change colours of top panel in stacked and tabbed layouts
+In-Reply-To: <20120114122407.GA2704@acampbell.org.uk>
+References: <20120114122407.GA2704@acampbell.org.uk>
+Message-ID: <20120114123328.GA18236@poincare.pc.linmpi.mpg.de>
+
+On Sat, Jan 14, 2012 at 12:24:07PM +0000, Anthony Campbell wrote:
+> I've recently been trying out a number of different tiling WMs and i3 is
+> currently the one I've liked best. 
+> 
+> Just one problem I can't figure out: in the stacked and tabbed layouts,
+> the greyed-out names of the non-focused windows are all but invisible on
+> the dark background. Is there any way to change this, e.g. by altering
+> the font or the background colour?
+
+The color of the unfocused windows can be changed in the
+client.unfocused setting of the config file.  By default the colors 
+for the border, background and text are:
+
+client.unfocused #333333 #222222 #888888
+
+See the user guide for more details:
+http://i3wm.org/docs/userguide.html#_changing_colors
+
+Miguel
+
+From drdarkraven at gmail.com  Sat Jan 14 13:38:22 2012
+From: drdarkraven at gmail.com (DR)
+Date: Sat, 14 Jan 2012 20:38:22 +0800
+Subject: [i3] [PATCH] Transparency support
+Message-ID: <CAMJW5=0GeBus4D4npdO54Z5+mL33T4mz=Cem7J5X+6RveXTL7Q@mail.gmail.com>
+
+This patch is in a very early stage. It may break something, or I may have
+done this in a way differ from what you would expect. So please review and
+give me some response.
+
+This patch is largely copied from the awesome window manager, which acquire
+a argb visual at startup, and use this visual for every xcb_create_window().
+
+
+---
+ include/i3.h     |    3 +++
+ src/main.c       |   45 +++++++++++++++++++++++++++++++++++++++++++++
+ src/sighandler.c |    2 +-
+ src/x.c          |   17 +++++++++++++----
+ src/xcb.c        |    6 ++++--
+ 5 files changed, 66 insertions(+), 7 deletions(-)
+
+diff --git a/include/i3.h b/include/i3.h
+index 75b7a9b..5860d10 100644
+--- a/include/i3.h
++++ b/include/i3.h
+@@ -46,6 +46,9 @@ extern TAILQ_HEAD(ws_assignments_head,
+Workspace_Assignment) ws_assignments;
+ extern TAILQ_HEAD(assignments_head, Assignment) assignments;
+ extern SLIST_HEAD(stack_wins_head, Stack_Window) stack_wins;
+ extern xcb_screen_t *root_screen;
++extern xcb_colormap_t default_colormap;
++extern xcb_visualtype_t *default_visual;
++extern uint8_t default_depth;
+ extern uint8_t root_depth;
+ extern bool xcursor_supported, xkb_supported;
+ extern xcb_window_t root;
+diff --git a/src/main.c b/src/main.c
+index 062a486..c218aaf 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -45,6 +45,9 @@ xcb_timestamp_t last_timestamp = XCB_CURRENT_TIME;
+
+ xcb_screen_t *root_screen;
+ xcb_window_t root;
++xcb_visualtype_t *default_visual = NULL;
++xcb_colormap_t default_colormap = 0;
++uint8_t default_depth;
+ uint8_t root_depth;
+
+ struct ev_loop *main_loop;
+@@ -207,6 +210,35 @@ static void i3_exit() {
+ #endif
+ }
+
++static xcb_visualtype_t *
++a_argb_visual(xcb_screen_t *s)
++{
++    xcb_depth_iterator_t depth_iter =
+xcb_screen_allowed_depths_iterator(s);
++
++    if(depth_iter.data)
++        for(; depth_iter.rem; xcb_depth_next (&depth_iter))
++            if(depth_iter.data->depth == 32)
++                for(xcb_visualtype_iterator_t visual_iter =
+xcb_depth_visuals_iterator(depth_iter.data);
++                    visual_iter.rem; xcb_visualtype_next (&visual_iter))
++                    return visual_iter.data;
++
++    return NULL;
++}
++
++static uint8_t
++a_visual_depth(xcb_screen_t *s, xcb_visualid_t vis)
++{
++    xcb_depth_iterator_t depth_iter =
+xcb_screen_allowed_depths_iterator(s);
++
++    if(depth_iter.data)
++        for(; depth_iter.rem; xcb_depth_next (&depth_iter))
++            for(xcb_visualtype_iterator_t visual_iter =
+xcb_depth_visuals_iterator(depth_iter.data);
++                visual_iter.rem; xcb_visualtype_next (&visual_iter))
++                if(vis == visual_iter.data->visual_id)
++                    return depth_iter.data->depth;
++    return 24;
++}
++
+ int main(int argc, char *argv[]) {
+     char *override_configpath = NULL;
+     bool autostart = true;
+@@ -475,6 +507,19 @@ int main(int argc, char *argv[]) {
+     }
+     DLOG("root geometry reply: (%d, %d) %d x %d\n", greply->x, greply->y,
+greply->width, greply->height);
+
++
++    /* Acquire a argb visual */
++    default_visual = a_argb_visual(root_screen);
++    default_depth = a_visual_depth(root_screen, default_visual->visual_id);
++    /* Acquire corresponding colormap */
++    default_colormap = root_screen->default_colormap;
++    if(default_depth != root_depth){
++        default_colormap = xcb_generate_id(conn);
++        xcb_create_colormap(conn, XCB_COLORMAP_ALLOC_NONE,
++            default_colormap, root,
++            default_visual->visual_id);
++    }
++
+     /* Place requests for the atoms we need as soon as possible */
+     #define xmacro(atom) \
+         xcb_intern_atom_cookie_t atom ## _cookie = xcb_intern_atom(conn,
+0, strlen(#atom), #atom);
+diff --git a/src/sighandler.c b/src/sighandler.c
+index a029422..ac42af7 100644
+--- a/src/sighandler.c
++++ b/src/sighandler.c
+@@ -166,7 +166,7 @@ void handle_signal(int sig, siginfo_t *info, void
+*data) {
+         /* Create pixmap */
+         pixmap = xcb_generate_id(conn);
+         pixmap_gc = xcb_generate_id(conn);
+-        xcb_create_pixmap(conn, root_depth, pixmap, win, width, height);
++        xcb_create_pixmap(conn, default_depth, pixmap, win, width, height);
+         xcb_create_gc(conn, pixmap_gc, pixmap, 0, 0);
+
+         /* Create graphics context */
+diff --git a/src/x.c b/src/x.c
+index e8bfaeb..281e961 100644
+--- a/src/x.c
++++ b/src/x.c
+@@ -90,15 +90,24 @@ void x_con_init(Con *con) {
+      * get the initial geometry right */
+
+     uint32_t mask = 0;
+-    uint32_t values[2];
++    uint32_t values[5];
++
++    mask |= XCB_CW_BACK_PIXEL;
++    values[0] = root_screen->black_pixel;
++
++    mask |= XCB_CW_BORDER_PIXEL;
++    values[1] = root_screen->black_pixel;
+
+     /* our own frames should not be managed */
+     mask |= XCB_CW_OVERRIDE_REDIRECT;
+-    values[0] = 1;
++    values[2] = 1;
+
+     /* see include/xcb.h for the FRAME_EVENT_MASK */
+     mask |= XCB_CW_EVENT_MASK;
+-    values[1] = FRAME_EVENT_MASK & ~XCB_EVENT_MASK_ENTER_WINDOW;
++    values[3] = FRAME_EVENT_MASK & ~XCB_EVENT_MASK_ENTER_WINDOW;
++
++    mask |= XCB_CW_COLORMAP;
++    values[4] = default_colormap;
+
+     Rect dims = { -15, -15, 10, 10 };
+     con->frame = create_window(conn, dims, XCB_WINDOW_CLASS_INPUT_OUTPUT,
+XCURSOR_CURSOR_POINTER, false, mask, values);
+@@ -586,7 +595,7 @@ void x_push_node(Con *con) {
+                 xcb_free_pixmap(conn, con->pixmap);
+                 xcb_free_gc(conn, con->pm_gc);
+             }
+-            xcb_create_pixmap(conn, root_depth, con->pixmap, con->frame,
+rect.width, rect.height);
++            xcb_create_pixmap(conn, default_depth, con->pixmap,
+con->frame, rect.width, rect.height);
+             /* For the graphics context, we disable GraphicsExposure
+events.
+              * Those will be sent when a CopyArea request cannot be
+fulfilled
+              * properly due to parts of the source being unmapped or
+otherwise
+diff --git a/src/xcb.c b/src/xcb.c
+index aa761ca..eb7c61e 100644
+--- a/src/xcb.c
++++ b/src/xcb.c
+@@ -21,7 +21,8 @@ xcb_window_t create_window(xcb_connection_t *conn, Rect
+dims, uint16_t window_cl
+     xcb_window_t result = xcb_generate_id(conn);
+
+     /* If the window class is XCB_WINDOW_CLASS_INPUT_ONLY, depth has to be
+0 */
+-    uint16_t depth = (window_class == XCB_WINDOW_CLASS_INPUT_ONLY ? 0 :
+XCB_COPY_FROM_PARENT);
++    uint16_t depth = (window_class == XCB_WINDOW_CLASS_INPUT_ONLY ? 0 :
+default_depth);
++    xcb_visualid_t visual_id= (window_class == XCB_WINDOW_CLASS_INPUT_ONLY
+? XCB_WINDOW_CLASS_COPY_FROM_PARENT : default_visual->visual_id);
+
+     xcb_create_window(conn,
+             depth,
+@@ -30,7 +31,8 @@ xcb_window_t create_window(xcb_connection_t *conn, Rect
+dims, uint16_t window_cl
+             dims.x, dims.y, dims.width, dims.height, /* dimensions */
+             0, /* border = 0, we draw our own */
+             window_class,
+-            XCB_WINDOW_CLASS_COPY_FROM_PARENT, /* copy visual from parent
+*/
++            visual_id,
++            //XCB_WINDOW_CLASS_COPY_FROM_PARENT, /* copy visual from
+parent */
+             mask,
+             values);
+
+-- 
+1.7.8.3
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120114/1b6d955c/attachment.html>
+
+From ac at acampbell.org.uk  Sat Jan 14 13:48:46 2012
+From: ac at acampbell.org.uk (Anthony Campbell)
+Date: Sat, 14 Jan 2012 12:48:46 +0000
+Subject: [i3] Change colours of top panel in stacked and tabbed layouts
+In-Reply-To: <20120114123328.GA18236@poincare.pc.linmpi.mpg.de>
+References: <20120114122407.GA2704@acampbell.org.uk>
+ <20120114123328.GA18236@poincare.pc.linmpi.mpg.de>
+Message-ID: <20120114124846.GB2704@acampbell.org.uk>
+
+On 14 Jan 2012, Miguel de Val-Borro wrote:
+> On Sat, Jan 14, 2012 at 12:24:07PM +0000, Anthony Campbell wrote:
+> > I've recently been trying out a number of different tiling WMs and i3 is
+> > currently the one I've liked best. 
+> > 
+> > Just one problem I can't figure out: in the stacked and tabbed layouts,
+> > the greyed-out names of the non-focused windows are all but invisible on
+> > the dark background. Is there any way to change this, e.g. by altering
+> > the font or the background colour?
+> 
+> The color of the unfocused windows can be changed in the
+> client.unfocused setting of the config file.  By default the colors 
+> for the border, background and text are:
+> 
+> client.unfocused #333333 #222222 #888888
+> 
+> See the user guide for more details:
+> http://i3wm.org/docs/userguide.html#_changing_colors
+> 
+> Miguel
+
+Excellent! Many thanks for the instantaneous very helpful reply.
+
+Anthony
+
+-- 
+Anthony Campbell - ac at acampbell.org.uk 
+Microsoft-free zone - using Linux 
+http://www.acampbell.org.uk - book reviews, 
+articles, blog, and printed books and ebooks
+
+From fernandotcl at gmail.com  Sat Jan 14 22:14:04 2012
+From: fernandotcl at gmail.com (Fernando Lemos)
+Date: Sat, 14 Jan 2012 19:14:04 -0200
+Subject: [i3] [PATCH] Transparency support
+In-Reply-To: <CAMJW5=0GeBus4D4npdO54Z5+mL33T4mz=Cem7J5X+6RveXTL7Q@mail.gmail.com>
+References: <CAMJW5=0GeBus4D4npdO54Z5+mL33T4mz=Cem7J5X+6RveXTL7Q@mail.gmail.com>
+Message-ID: <CANVYNa_utbh3Umvxpqd+bjwUv7h67JRhUik=xLHphdNusMr0yg@mail.gmail.com>
+
+Hi,
+
+On Sat, Jan 14, 2012 at 10:38 AM, DR <drdarkraven at gmail.com> wrote:
+> This patch is in a very early stage. It may break something, or I may have
+> done this in a way differ from what you would expect. So please review and
+> give me some response.
+>
+> This patch is largely copied from the awesome window manager, which acquire
+> a argb visual at startup, and use this visual for every xcb_create_window().
+
+That sounds good. I don't have enough X experience, but a few things stand out:
+
+> +static xcb_visualtype_t *
+> +a_argb_visual(xcb_screen_t *s)
+> +{
+> + ? ?xcb_depth_iterator_t depth_iter =
+> xcb_screen_allowed_depths_iterator(s);
+> +
+> + ? ?if(depth_iter.data)
+> + ? ? ? ?for(; depth_iter.rem; xcb_depth_next (&depth_iter))
+> + ? ? ? ? ? ?if(depth_iter.data->depth == 32)
+> + ? ? ? ? ? ? ? ?for(xcb_visualtype_iterator_t visual_iter =
+> xcb_depth_visuals_iterator(depth_iter.data);
+> + ? ? ? ? ? ? ? ? ? ?visual_iter.rem; xcb_visualtype_next (&visual_iter))
+> + ? ? ? ? ? ? ? ? ? ?return visual_iter.data;
+> +
+> + ? ?return NULL;
+> +}
+> +
+> +static uint8_t
+> +a_visual_depth(xcb_screen_t *s, xcb_visualid_t vis)
+> +{
+> + ? ?xcb_depth_iterator_t depth_iter =
+> xcb_screen_allowed_depths_iterator(s);
+> +
+> + ? ?if(depth_iter.data)
+> + ? ? ? ?for(; depth_iter.rem; xcb_depth_next (&depth_iter))
+> + ? ? ? ? ? ?for(xcb_visualtype_iterator_t visual_iter =
+> xcb_depth_visuals_iterator(depth_iter.data);
+> + ? ? ? ? ? ? ? ?visual_iter.rem; xcb_visualtype_next (&visual_iter))
+> + ? ? ? ? ? ? ? ?if(vis == visual_iter.data->visual_id)
+> + ? ? ? ? ? ? ? ? ? ?return depth_iter.data->depth;
+> + ? ?return 24;
+> +}
+
+You might want to adapt the code to the i3 style. Take a look at other
+functions, conditionals and for loops. Also, those function names
+might not be ideal.
+
+> + ? ?/* Acquire a argb visual */
+> + ? ?default_visual = a_argb_visual(root_screen);
+> + ? ?default_depth = a_visual_depth(root_screen, default_visual->visual_id);
+> + ? ?/* Acquire corresponding colormap */
+> + ? ?default_colormap = root_screen->default_colormap;
+> + ? ?if(default_depth != root_depth){
+> + ? ? ? ?default_colormap = xcb_generate_id(conn);
+> + ? ? ? ?xcb_create_colormap(conn, XCB_COLORMAP_ALLOC_NONE,
+> + ? ? ? ? ? ?default_colormap, root,
+> + ? ? ? ? ? ?default_visual->visual_id);
+> + ? ?}
+
+If we can't find an ARGB visual, i3 will segfault. Is an ARGB visual
+always going to be present? If yes, then please use asserts to
+indicate that. Otherwise handle the cases where we can't find an ARGB
+visual.
+
+I'd also prefer if you renamed default_* to argb_*, since I plan to
+introduce vars like root_visual_type for Pango support, and that can
+be confusing.
+
+> diff --git a/src/x.c b/src/x.c
+> index e8bfaeb..281e961 100644
+> --- a/src/x.c
+> +++ b/src/x.c
+> @@ -90,15 +90,24 @@ void x_con_init(Con *con) {
+> ? ? ? * get the initial geometry right */
+>
+> ? ? ?uint32_t mask = 0;
+> - ? ?uint32_t values[2];
+> + ? ?uint32_t values[5];
+> +
+> + ? ?mask |= XCB_CW_BACK_PIXEL;
+> + ? ?values[0] = root_screen->black_pixel;
+> +
+> + ? ?mask |= XCB_CW_BORDER_PIXEL;
+> + ? ?values[1] = root_screen->black_pixel;
+>
+> ? ? ?/* our own frames should not be managed */
+> ? ? ?mask |= XCB_CW_OVERRIDE_REDIRECT;
+> - ? ?values[0] = 1;
+> + ? ?values[2] = 1;
+>
+> ? ? ?/* see include/xcb.h for the FRAME_EVENT_MASK */
+> ? ? ?mask |= XCB_CW_EVENT_MASK;
+> - ? ?values[1] = FRAME_EVENT_MASK & ~XCB_EVENT_MASK_ENTER_WINDOW;
+> + ? ?values[3] = FRAME_EVENT_MASK & ~XCB_EVENT_MASK_ENTER_WINDOW;
+> +
+> + ? ?mask |= XCB_CW_COLORMAP;
+> + ? ?values[4] = default_colormap;
+>
+> ? ? ?Rect dims = { -15, -15, 10, 10 };
+> ? ? ?con->frame = create_window(conn, dims, XCB_WINDOW_CLASS_INPUT_OUTPUT,
+> XCURSOR_CURSOR_POINTER, false, mask, values);
+> @@ -586,7 +595,7 @@ void x_push_node(Con *con) {
+> ? ? ? ? ? ? ? ? ?xcb_free_pixmap(conn, con->pixmap);
+> ? ? ? ? ? ? ? ? ?xcb_free_gc(conn, con->pm_gc);
+> ? ? ? ? ? ? ?}
+> - ? ? ? ? ? ?xcb_create_pixmap(conn, root_depth, con->pixmap, con->frame,
+> rect.width, rect.height);
+> + ? ? ? ? ? ?xcb_create_pixmap(conn, default_depth, con->pixmap, con->frame,
+> rect.width, rect.height);
+> ? ? ? ? ? ? ?/* For the graphics context, we disable GraphicsExposure
+> events.
+> ? ? ? ? ? ? ? * Those will be sent when a CopyArea request cannot be
+> fulfilled
+> ? ? ? ? ? ? ? * properly due to parts of the source being unmapped or
+> otherwise
+> diff --git a/src/xcb.c b/src/xcb.c
+> index aa761ca..eb7c61e 100644
+> --- a/src/xcb.c
+> +++ b/src/xcb.c
+> @@ -21,7 +21,8 @@ xcb_window_t create_window(xcb_connection_t *conn, Rect
+> dims, uint16_t window_cl
+> ? ? ?xcb_window_t result = xcb_generate_id(conn);
+>
+> ? ? ?/* If the window class is XCB_WINDOW_CLASS_INPUT_ONLY, depth has to be
+> 0 */
+> - ? ?uint16_t depth = (window_class == XCB_WINDOW_CLASS_INPUT_ONLY ? 0 :
+> XCB_COPY_FROM_PARENT);
+> + ? ?uint16_t depth = (window_class == XCB_WINDOW_CLASS_INPUT_ONLY ? 0 :
+> default_depth);
+> + ? ?xcb_visualid_t visual_id= (window_class == XCB_WINDOW_CLASS_INPUT_ONLY
+> ? XCB_WINDOW_CLASS_COPY_FROM_PARENT : default_visual->visual_id);
+>
+> ? ? ?xcb_create_window(conn,
+> ? ? ? ? ? ? ?depth,
+> @@ -30,7 +31,8 @@ xcb_window_t create_window(xcb_connection_t *conn, Rect
+> dims, uint16_t window_cl
+> ? ? ? ? ? ? ?dims.x, dims.y, dims.width, dims.height, /* dimensions */
+> ? ? ? ? ? ? ?0, /* border = 0, we draw our own */
+> ? ? ? ? ? ? ?window_class,
+> - ? ? ? ? ? ?XCB_WINDOW_CLASS_COPY_FROM_PARENT, /* copy visual from parent
+> */
+> + ? ? ? ? ? ?visual_id,
+> + ? ? ? ? ? ?//XCB_WINDOW_CLASS_COPY_FROM_PARENT, /* copy visual from parent
+> */
+> ? ? ? ? ? ? ?mask,
+> ? ? ? ? ? ? ?values);
+
+All this also needs handling for cases where we can't find an ARGB visual, no?
+
+Also, don't comment out stuff, just remove it, we have history in the VCS.
+
+Regards,
+
+From drdarkraven at gmail.com  Mon Jan 16 10:08:53 2012
+From: drdarkraven at gmail.com (DR)
+Date: Mon, 16 Jan 2012 17:08:53 +0800
+Subject: [i3] [PATCH] Transparency support
+In-Reply-To: <CANVYNa_utbh3Umvxpqd+bjwUv7h67JRhUik=xLHphdNusMr0yg@mail.gmail.com>
+References: <CAMJW5=0GeBus4D4npdO54Z5+mL33T4mz=Cem7J5X+6RveXTL7Q@mail.gmail.com>
+ <CANVYNa_utbh3Umvxpqd+bjwUv7h67JRhUik=xLHphdNusMr0yg@mail.gmail.com>
+Message-ID: <CAMJW5=2ZHyZDzBy-EhHyM=0srB9UNnWYVUFt5UqhZX=kf2jBQA@mail.gmail.com>
+
+On Sun, Jan 15, 2012 at 5:14 AM, Fernando Lemos <fernandotcl at gmail.com> wrote:
+>
+> Hi,
+>
+> On Sat, Jan 14, 2012 at 10:38 AM, DR <drdarkraven at gmail.com> wrote:
+> > This patch is in a very early stage. It may break something, or I may have
+> > done this in a way differ from what you would expect. So please review and
+> > give me some response.
+> >
+> > This patch is largely copied from the awesome window manager, which acquire
+> > a argb visual at startup, and use this visual for every xcb_create_window().
+>
+> That sounds good. I don't have enough X experience, but a few things stand out:
+>
+> > +static xcb_visualtype_t *
+> > +a_argb_visual(xcb_screen_t *s)
+> > +{
+> > + ? ?xcb_depth_iterator_t depth_iter =
+> > xcb_screen_allowed_depths_iterator(s);
+> > +
+> > + ? ?if(depth_iter.data)
+> > + ? ? ? ?for(; depth_iter.rem; xcb_depth_next (&depth_iter))
+> > + ? ? ? ? ? ?if(depth_iter.data->depth == 32)
+> > + ? ? ? ? ? ? ? ?for(xcb_visualtype_iterator_t visual_iter =
+> > xcb_depth_visuals_iterator(depth_iter.data);
+> > + ? ? ? ? ? ? ? ? ? ?visual_iter.rem; xcb_visualtype_next (&visual_iter))
+> > + ? ? ? ? ? ? ? ? ? ?return visual_iter.data;
+> > +
+> > + ? ?return NULL;
+> > +}
+> > +
+> > +static uint8_t
+> > +a_visual_depth(xcb_screen_t *s, xcb_visualid_t vis)
+> > +{
+> > + ? ?xcb_depth_iterator_t depth_iter =
+> > xcb_screen_allowed_depths_iterator(s);
+> > +
+> > + ? ?if(depth_iter.data)
+> > + ? ? ? ?for(; depth_iter.rem; xcb_depth_next (&depth_iter))
+> > + ? ? ? ? ? ?for(xcb_visualtype_iterator_t visual_iter =
+> > xcb_depth_visuals_iterator(depth_iter.data);
+> > + ? ? ? ? ? ? ? ?visual_iter.rem; xcb_visualtype_next (&visual_iter))
+> > + ? ? ? ? ? ? ? ?if(vis == visual_iter.data->visual_id)
+> > + ? ? ? ? ? ? ? ? ? ?return depth_iter.data->depth;
+> > + ? ?return 24;
+> > +}
+>
+> You might want to adapt the code to the i3 style. Take a look at other
+> functions, conditionals and for loops. Also, those function names
+> might not be ideal.
+
+I don't quite understand i3's coding style or naming conventions, are
+there any documents explaining this?
+
+>
+> > + ? ?/* Acquire a argb visual */
+> > + ? ?default_visual = a_argb_visual(root_screen);
+> > + ? ?default_depth = a_visual_depth(root_screen, default_visual->visual_id);
+> > + ? ?/* Acquire corresponding colormap */
+> > + ? ?default_colormap = root_screen->default_colormap;
+> > + ? ?if(default_depth != root_depth){
+> > + ? ? ? ?default_colormap = xcb_generate_id(conn);
+> > + ? ? ? ?xcb_create_colormap(conn, XCB_COLORMAP_ALLOC_NONE,
+> > + ? ? ? ? ? ?default_colormap, root,
+> > + ? ? ? ? ? ?default_visual->visual_id);
+> > + ? ?}
+>
+> If we can't find an ARGB visual, i3 will segfault. Is an ARGB visual
+> always going to be present? If yes, then please use asserts to
+> indicate that. Otherwise handle the cases where we can't find an ARGB
+> visual.
+
+I'll fix this.
+
+>
+> I'd also prefer if you renamed default_* to argb_*, since I plan to
+> introduce vars like root_visual_type for Pango support, and that can
+> be confusing.
+
+The default_* is actually the default, since default_visual,
+default_depth will be applied to every single window. I think it will
+not be confused with root_visual_type, if root_visual_type means
+visual type of the root window.
+
+>
+> > diff --git a/src/x.c b/src/x.c
+> > index e8bfaeb..281e961 100644
+> > --- a/src/x.c
+> > +++ b/src/x.c
+> > @@ -90,15 +90,24 @@ void x_con_init(Con *con) {
+> > ? ? ? * get the initial geometry right */
+> >
+> > ? ? ?uint32_t mask = 0;
+> > - ? ?uint32_t values[2];
+> > + ? ?uint32_t values[5];
+> > +
+> > + ? ?mask |= XCB_CW_BACK_PIXEL;
+> > + ? ?values[0] = root_screen->black_pixel;
+> > +
+> > + ? ?mask |= XCB_CW_BORDER_PIXEL;
+> > + ? ?values[1] = root_screen->black_pixel;
+> >
+> > ? ? ?/* our own frames should not be managed */
+> > ? ? ?mask |= XCB_CW_OVERRIDE_REDIRECT;
+> > - ? ?values[0] = 1;
+> > + ? ?values[2] = 1;
+> >
+> > ? ? ?/* see include/xcb.h for the FRAME_EVENT_MASK */
+> > ? ? ?mask |= XCB_CW_EVENT_MASK;
+> > - ? ?values[1] = FRAME_EVENT_MASK & ~XCB_EVENT_MASK_ENTER_WINDOW;
+> > + ? ?values[3] = FRAME_EVENT_MASK & ~XCB_EVENT_MASK_ENTER_WINDOW;
+> > +
+> > + ? ?mask |= XCB_CW_COLORMAP;
+> > + ? ?values[4] = default_colormap;
+> >
+> > ? ? ?Rect dims = { -15, -15, 10, 10 };
+> > ? ? ?con->frame = create_window(conn, dims, XCB_WINDOW_CLASS_INPUT_OUTPUT,
+> > XCURSOR_CURSOR_POINTER, false, mask, values);
+> > @@ -586,7 +595,7 @@ void x_push_node(Con *con) {
+> > ? ? ? ? ? ? ? ? ?xcb_free_pixmap(conn, con->pixmap);
+> > ? ? ? ? ? ? ? ? ?xcb_free_gc(conn, con->pm_gc);
+> > ? ? ? ? ? ? ?}
+> > - ? ? ? ? ? ?xcb_create_pixmap(conn, root_depth, con->pixmap, con->frame,
+> > rect.width, rect.height);
+> > + ? ? ? ? ? ?xcb_create_pixmap(conn, default_depth, con->pixmap, con->frame,
+> > rect.width, rect.height);
+> > ? ? ? ? ? ? ?/* For the graphics context, we disable GraphicsExposure
+> > events.
+> > ? ? ? ? ? ? ? * Those will be sent when a CopyArea request cannot be
+> > fulfilled
+> > ? ? ? ? ? ? ? * properly due to parts of the source being unmapped or
+> > otherwise
+> > diff --git a/src/xcb.c b/src/xcb.c
+> > index aa761ca..eb7c61e 100644
+> > --- a/src/xcb.c
+> > +++ b/src/xcb.c
+> > @@ -21,7 +21,8 @@ xcb_window_t create_window(xcb_connection_t *conn, Rect
+> > dims, uint16_t window_cl
+> > ? ? ?xcb_window_t result = xcb_generate_id(conn);
+> >
+> > ? ? ?/* If the window class is XCB_WINDOW_CLASS_INPUT_ONLY, depth has to be
+> > 0 */
+> > - ? ?uint16_t depth = (window_class == XCB_WINDOW_CLASS_INPUT_ONLY ? 0 :
+> > XCB_COPY_FROM_PARENT);
+> > + ? ?uint16_t depth = (window_class == XCB_WINDOW_CLASS_INPUT_ONLY ? 0 :
+> > default_depth);
+> > + ? ?xcb_visualid_t visual_id= (window_class == XCB_WINDOW_CLASS_INPUT_ONLY
+> > ? XCB_WINDOW_CLASS_COPY_FROM_PARENT : default_visual->visual_id);
+> >
+> > ? ? ?xcb_create_window(conn,
+> > ? ? ? ? ? ? ?depth,
+> > @@ -30,7 +31,8 @@ xcb_window_t create_window(xcb_connection_t *conn, Rect
+> > dims, uint16_t window_cl
+> > ? ? ? ? ? ? ?dims.x, dims.y, dims.width, dims.height, /* dimensions */
+> > ? ? ? ? ? ? ?0, /* border = 0, we draw our own */
+> > ? ? ? ? ? ? ?window_class,
+> > - ? ? ? ? ? ?XCB_WINDOW_CLASS_COPY_FROM_PARENT, /* copy visual from parent
+> > */
+> > + ? ? ? ? ? ?visual_id,
+> > + ? ? ? ? ? ?//XCB_WINDOW_CLASS_COPY_FROM_PARENT, /* copy visual from parent
+> > */
+> > ? ? ? ? ? ? ?mask,
+> > ? ? ? ? ? ? ?values);
+>
+> All this also needs handling for cases where we can't find an ARGB visual, no?
+>
+> Also, don't comment out stuff, just remove it, we have history in the VCS.
+>
+> Regards,
+
+From drdarkraven at gmail.com  Mon Jan 16 10:10:26 2012
+From: drdarkraven at gmail.com (DR)
+Date: Mon, 16 Jan 2012 17:10:26 +0800
+Subject: [i3] [PATCH] Transparency support
+In-Reply-To: <CAMJW5=2ZHyZDzBy-EhHyM=0srB9UNnWYVUFt5UqhZX=kf2jBQA@mail.gmail.com>
+References: <CAMJW5=0GeBus4D4npdO54Z5+mL33T4mz=Cem7J5X+6RveXTL7Q@mail.gmail.com>
+ <CANVYNa_utbh3Umvxpqd+bjwUv7h67JRhUik=xLHphdNusMr0yg@mail.gmail.com>
+ <CAMJW5=2ZHyZDzBy-EhHyM=0srB9UNnWYVUFt5UqhZX=kf2jBQA@mail.gmail.com>
+Message-ID: <CAMJW5=2OO1Y722tUXB-yoyrkMH0_d9WCPEKm_qCbUFHGHyy38g@mail.gmail.com>
+
+Incremental patch, fixing the NULL default_visual problem.
+
+diff --git a/src/main.c b/src/main.c
+index c218aaf..28350c5 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -210,24 +210,20 @@ static void i3_exit() {
+?#endif
+?}
+
+-static xcb_visualtype_t *
+-a_argb_visual(xcb_screen_t *s)
+-{
++static xcb_visualtype_t *get_argb_visual(xcb_screen_t *s) {
+? ? ?xcb_depth_iterator_t depth_iter = xcb_screen_allowed_depths_iterator(s);
+
+? ? ?if(depth_iter.data)
+- ? ? ? ?for(; depth_iter.rem; xcb_depth_next (&depth_iter))
++ ? ? ? ?for(; depth_iter.rem; xcb_depth_next(&depth_iter))
+? ? ? ? ? ? ?if(depth_iter.data->depth == 32)
+? ? ? ? ? ? ? ? ?for(xcb_visualtype_iterator_t visual_iter =
+xcb_depth_visuals_iterator(depth_iter.data);
+- ? ? ? ? ? ? ? ? ? ?visual_iter.rem; xcb_visualtype_next (&visual_iter))
++ ? ? ? ? ? ? ? ? ? ?visual_iter.rem; xcb_visualtype_next(&visual_iter))
+? ? ? ? ? ? ? ? ? ? ?return visual_iter.data;
+
+? ? ?return NULL;
+?}
+
+-static uint8_t
+-a_visual_depth(xcb_screen_t *s, xcb_visualid_t vis)
+-{
++static uint8_t get_visual_depth(xcb_screen_t *s, xcb_visualid_t vis) {
+? ? ?xcb_depth_iterator_t depth_iter = xcb_screen_allowed_depths_iterator(s);
+
+? ? ?if(depth_iter.data)
+@@ -239,6 +235,18 @@ a_visual_depth(xcb_screen_t *s, xcb_visualid_t vis)
+? ? ?return 24;
+?}
+
++static xcb_visualtype_t *get_default_visual(xcb_screen_t *s) {
++ ? ?xcb_depth_iterator_t depth_iter = xcb_screen_allowed_depths_iterator(s);
++
++ ? ?if(depth_iter.data)
++ ? ? ? ?for(; depth_iter.rem; xcb_depth_next (&depth_iter))
++ ? ? ? ? ? ?for(xcb_visualtype_iterator_t visual_iter =
+xcb_depth_visuals_iterator(depth_iter.data);
++ ? ? ? ? ? ? ? ?visual_iter.rem; xcb_visualtype_next (&visual_iter))
++ ? ? ? ? ? ? ? ?if(s->root_visual == visual_iter.data->visual_id)
++ ? ? ? ? ? ? ? ? ? ?return visual_iter.data;
++
++ ? ?return NULL;
++}
+?int main(int argc, char *argv[]) {
+? ? ?char *override_configpath = NULL;
+? ? ?bool autostart = true;
+@@ -509,11 +517,17 @@ int main(int argc, char *argv[]) {
+
+
+? ? ?/* Acquire a argb visual */
+- ? ?default_visual = a_argb_visual(root_screen);
+- ? ?default_depth = a_visual_depth(root_screen, default_visual->visual_id);
++ ? ?default_visual = get_argb_visual(root_screen);
++ ? ?if(!default_visual)
++ ? ? ? ?default_visual = get_default_visual(root_screen);
++ ? ?if (!default_visual) {
++ ? ? ? ?ELOG("No available visual found, exiting\n");
++ ? ? ? ?return 1;
++ ? ?}
++ ? ?default_depth = get_visual_depth(root_screen, default_visual->visual_id);
+? ? ?/* Acquire corresponding colormap */
+? ? ?default_colormap = root_screen->default_colormap;
+- ? ?if(default_depth != root_depth){
++ ? ?if(default_depth != root_depth) {
+? ? ? ? ?default_colormap = xcb_generate_id(conn);
+? ? ? ? ?xcb_create_colormap(conn, XCB_COLORMAP_ALLOC_NONE,
+? ? ? ? ? ? ?default_colormap, root,
+diff --git a/src/xcb.c b/src/xcb.c
+index eb7c61e..e181180 100644
+--- a/src/xcb.c
++++ b/src/xcb.c
+@@ -32,7 +32,6 @@ xcb_window_t create_window(xcb_connection_t *conn,
+Rect dims, uint16_t window_cl
+? ? ? ? ? ? ?0, /* border = 0, we draw our own */
+? ? ? ? ? ? ?window_class,
+? ? ? ? ? ? ?visual_id,
+- ? ? ? ? ? ?//XCB_WINDOW_CLASS_COPY_FROM_PARENT, /* copy visual from parent */
+? ? ? ? ? ? ?mask,
+? ? ? ? ? ? ?values);
+
+
+On Mon, Jan 16, 2012 at 5:08 PM, DR <drdarkraven at gmail.com> wrote:
+> On Sun, Jan 15, 2012 at 5:14 AM, Fernando Lemos <fernandotcl at gmail.com> wrote:
+>>
+>> Hi,
+>>
+>> On Sat, Jan 14, 2012 at 10:38 AM, DR <drdarkraven at gmail.com> wrote:
+>> > This patch is in a very early stage. It may break something, or I may have
+>> > done this in a way differ from what you would expect. So please review and
+>> > give me some response.
+>> >
+>> > This patch is largely copied from the awesome window manager, which acquire
+>> > a argb visual at startup, and use this visual for every xcb_create_window().
+>>
+>> That sounds good. I don't have enough X experience, but a few things stand out:
+>>
+>> > +static xcb_visualtype_t *
+>> > +a_argb_visual(xcb_screen_t *s)
+>> > +{
+>> > + ? ?xcb_depth_iterator_t depth_iter =
+>> > xcb_screen_allowed_depths_iterator(s);
+>> > +
+>> > + ? ?if(depth_iter.data)
+>> > + ? ? ? ?for(; depth_iter.rem; xcb_depth_next (&depth_iter))
+>> > + ? ? ? ? ? ?if(depth_iter.data->depth == 32)
+>> > + ? ? ? ? ? ? ? ?for(xcb_visualtype_iterator_t visual_iter =
+>> > xcb_depth_visuals_iterator(depth_iter.data);
+>> > + ? ? ? ? ? ? ? ? ? ?visual_iter.rem; xcb_visualtype_next (&visual_iter))
+>> > + ? ? ? ? ? ? ? ? ? ?return visual_iter.data;
+>> > +
+>> > + ? ?return NULL;
+>> > +}
+>> > +
+>> > +static uint8_t
+>> > +a_visual_depth(xcb_screen_t *s, xcb_visualid_t vis)
+>> > +{
+>> > + ? ?xcb_depth_iterator_t depth_iter =
+>> > xcb_screen_allowed_depths_iterator(s);
+>> > +
+>> > + ? ?if(depth_iter.data)
+>> > + ? ? ? ?for(; depth_iter.rem; xcb_depth_next (&depth_iter))
+>> > + ? ? ? ? ? ?for(xcb_visualtype_iterator_t visual_iter =
+>> > xcb_depth_visuals_iterator(depth_iter.data);
+>> > + ? ? ? ? ? ? ? ?visual_iter.rem; xcb_visualtype_next (&visual_iter))
+>> > + ? ? ? ? ? ? ? ?if(vis == visual_iter.data->visual_id)
+>> > + ? ? ? ? ? ? ? ? ? ?return depth_iter.data->depth;
+>> > + ? ?return 24;
+>> > +}
+>>
+>> You might want to adapt the code to the i3 style. Take a look at other
+>> functions, conditionals and for loops. Also, those function names
+>> might not be ideal.
+>
+> I don't quite understand i3's coding style or naming conventions, are
+> there any documents explaining this?
+>
+>>
+>> > + ? ?/* Acquire a argb visual */
+>> > + ? ?default_visual = a_argb_visual(root_screen);
+>> > + ? ?default_depth = a_visual_depth(root_screen, default_visual->visual_id);
+>> > + ? ?/* Acquire corresponding colormap */
+>> > + ? ?default_colormap = root_screen->default_colormap;
+>> > + ? ?if(default_depth != root_depth){
+>> > + ? ? ? ?default_colormap = xcb_generate_id(conn);
+>> > + ? ? ? ?xcb_create_colormap(conn, XCB_COLORMAP_ALLOC_NONE,
+>> > + ? ? ? ? ? ?default_colormap, root,
+>> > + ? ? ? ? ? ?default_visual->visual_id);
+>> > + ? ?}
+>>
+>> If we can't find an ARGB visual, i3 will segfault. Is an ARGB visual
+>> always going to be present? If yes, then please use asserts to
+>> indicate that. Otherwise handle the cases where we can't find an ARGB
+>> visual.
+>
+> I'll fix this.
+>
+>>
+>> I'd also prefer if you renamed default_* to argb_*, since I plan to
+>> introduce vars like root_visual_type for Pango support, and that can
+>> be confusing.
+>
+> The default_* is actually the default, since default_visual,
+> default_depth will be applied to every single window. I think it will
+> not be confused with root_visual_type, if root_visual_type means
+> visual type of the root window.
+>
+>>
+>> > diff --git a/src/x.c b/src/x.c
+>> > index e8bfaeb..281e961 100644
+>> > --- a/src/x.c
+>> > +++ b/src/x.c
+>> > @@ -90,15 +90,24 @@ void x_con_init(Con *con) {
+>> > ? ? ? * get the initial geometry right */
+>> >
+>> > ? ? ?uint32_t mask = 0;
+>> > - ? ?uint32_t values[2];
+>> > + ? ?uint32_t values[5];
+>> > +
+>> > + ? ?mask |= XCB_CW_BACK_PIXEL;
+>> > + ? ?values[0] = root_screen->black_pixel;
+>> > +
+>> > + ? ?mask |= XCB_CW_BORDER_PIXEL;
+>> > + ? ?values[1] = root_screen->black_pixel;
+>> >
+>> > ? ? ?/* our own frames should not be managed */
+>> > ? ? ?mask |= XCB_CW_OVERRIDE_REDIRECT;
+>> > - ? ?values[0] = 1;
+>> > + ? ?values[2] = 1;
+>> >
+>> > ? ? ?/* see include/xcb.h for the FRAME_EVENT_MASK */
+>> > ? ? ?mask |= XCB_CW_EVENT_MASK;
+>> > - ? ?values[1] = FRAME_EVENT_MASK & ~XCB_EVENT_MASK_ENTER_WINDOW;
+>> > + ? ?values[3] = FRAME_EVENT_MASK & ~XCB_EVENT_MASK_ENTER_WINDOW;
+>> > +
+>> > + ? ?mask |= XCB_CW_COLORMAP;
+>> > + ? ?values[4] = default_colormap;
+>> >
+>> > ? ? ?Rect dims = { -15, -15, 10, 10 };
+>> > ? ? ?con->frame = create_window(conn, dims, XCB_WINDOW_CLASS_INPUT_OUTPUT,
+>> > XCURSOR_CURSOR_POINTER, false, mask, values);
+>> > @@ -586,7 +595,7 @@ void x_push_node(Con *con) {
+>> > ? ? ? ? ? ? ? ? ?xcb_free_pixmap(conn, con->pixmap);
+>> > ? ? ? ? ? ? ? ? ?xcb_free_gc(conn, con->pm_gc);
+>> > ? ? ? ? ? ? ?}
+>> > - ? ? ? ? ? ?xcb_create_pixmap(conn, root_depth, con->pixmap, con->frame,
+>> > rect.width, rect.height);
+>> > + ? ? ? ? ? ?xcb_create_pixmap(conn, default_depth, con->pixmap, con->frame,
+>> > rect.width, rect.height);
+>> > ? ? ? ? ? ? ?/* For the graphics context, we disable GraphicsExposure
+>> > events.
+>> > ? ? ? ? ? ? ? * Those will be sent when a CopyArea request cannot be
+>> > fulfilled
+>> > ? ? ? ? ? ? ? * properly due to parts of the source being unmapped or
+>> > otherwise
+>> > diff --git a/src/xcb.c b/src/xcb.c
+>> > index aa761ca..eb7c61e 100644
+>> > --- a/src/xcb.c
+>> > +++ b/src/xcb.c
+>> > @@ -21,7 +21,8 @@ xcb_window_t create_window(xcb_connection_t *conn, Rect
+>> > dims, uint16_t window_cl
+>> > ? ? ?xcb_window_t result = xcb_generate_id(conn);
+>> >
+>> > ? ? ?/* If the window class is XCB_WINDOW_CLASS_INPUT_ONLY, depth has to be
+>> > 0 */
+>> > - ? ?uint16_t depth = (window_class == XCB_WINDOW_CLASS_INPUT_ONLY ? 0 :
+>> > XCB_COPY_FROM_PARENT);
+>> > + ? ?uint16_t depth = (window_class == XCB_WINDOW_CLASS_INPUT_ONLY ? 0 :
+>> > default_depth);
+>> > + ? ?xcb_visualid_t visual_id= (window_class == XCB_WINDOW_CLASS_INPUT_ONLY
+>> > ? XCB_WINDOW_CLASS_COPY_FROM_PARENT : default_visual->visual_id);
+>> >
+>> > ? ? ?xcb_create_window(conn,
+>> > ? ? ? ? ? ? ?depth,
+>> > @@ -30,7 +31,8 @@ xcb_window_t create_window(xcb_connection_t *conn, Rect
+>> > dims, uint16_t window_cl
+>> > ? ? ? ? ? ? ?dims.x, dims.y, dims.width, dims.height, /* dimensions */
+>> > ? ? ? ? ? ? ?0, /* border = 0, we draw our own */
+>> > ? ? ? ? ? ? ?window_class,
+>> > - ? ? ? ? ? ?XCB_WINDOW_CLASS_COPY_FROM_PARENT, /* copy visual from parent
+>> > */
+>> > + ? ? ? ? ? ?visual_id,
+>> > + ? ? ? ? ? ?//XCB_WINDOW_CLASS_COPY_FROM_PARENT, /* copy visual from parent
+>> > */
+>> > ? ? ? ? ? ? ?mask,
+>> > ? ? ? ? ? ? ?values);
+>>
+>> All this also needs handling for cases where we can't find an ARGB visual, no?
+>>
+>> Also, don't comment out stuff, just remove it, we have history in the VCS.
+>>
+>> Regards,
+
+From fernandotcl at gmail.com  Wed Jan 18 01:12:37 2012
+From: fernandotcl at gmail.com (Fernando Lemos)
+Date: Tue, 17 Jan 2012 22:12:37 -0200
+Subject: [i3] [PATCH] Transparency support
+In-Reply-To: <CAMJW5=2ZHyZDzBy-EhHyM=0srB9UNnWYVUFt5UqhZX=kf2jBQA@mail.gmail.com>
+References: <CAMJW5=0GeBus4D4npdO54Z5+mL33T4mz=Cem7J5X+6RveXTL7Q@mail.gmail.com>
+ <CANVYNa_utbh3Umvxpqd+bjwUv7h67JRhUik=xLHphdNusMr0yg@mail.gmail.com>
+ <CAMJW5=2ZHyZDzBy-EhHyM=0srB9UNnWYVUFt5UqhZX=kf2jBQA@mail.gmail.com>
+Message-ID: <CANVYNa-S82Qkd04KX4TrPkrFMO1gRVtpcSa68cDQ_zF+e=gmNA@mail.gmail.com>
+
+Hi,
+
+On Mon, Jan 16, 2012 at 7:08 AM, DR <drdarkraven at gmail.com> wrote:
+>> You might want to adapt the code to the i3 style. Take a look at other
+>> functions, conditionals and for loops. Also, those function names
+>> might not be ideal.
+>
+> I don't quite understand i3's coding style or naming conventions, are
+> there any documents explaining this?
+
+I'm afraid not. Make sure you read the hacking how-to, but I don't
+think it mentions those conventions. This should be quite simple,
+though. Just copy the style you see in other functions. Do you have
+any specific questions? One thing in particular would be the spacing
+between "if (" and "if(".
+
+>> If we can't find an ARGB visual, i3 will segfault. Is an ARGB visual
+>> always going to be present? If yes, then please use asserts to
+>> indicate that. Otherwise handle the cases where we can't find an ARGB
+>> visual.
+>
+> I'll fix this.
+
+I noticed you sent an incremental patch. It looks ok to me, could you
+please post a diff against next so it would be easier to review?
+
+>> I'd also prefer if you renamed default_* to argb_*, since I plan to
+>> introduce vars like root_visual_type for Pango support, and that can
+>> be confusing.
+>
+> The default_* is actually the default, since default_visual,
+> default_depth will be applied to every single window. I think it will
+> not be confused with root_visual_type, if root_visual_type means
+> visual type of the root window.
+
+Cool, the naming you went with in your incremental patch makes sense to me.
+
+Regards,
+
+From drdarkraven at gmail.com  Thu Jan 19 15:37:12 2012
+From: drdarkraven at gmail.com (Raven )
+Date: Thu, 19 Jan 2012 22:37:12 +0800
+Subject: [i3] [PATCH] Transparency support
+In-Reply-To: <CANVYNa-S82Qkd04KX4TrPkrFMO1gRVtpcSa68cDQ_zF+e=gmNA@mail.gmail.com>
+References: <CAMJW5=0GeBus4D4npdO54Z5+mL33T4mz=Cem7J5X+6RveXTL7Q@mail.gmail.com>
+ <CANVYNa_utbh3Umvxpqd+bjwUv7h67JRhUik=xLHphdNusMr0yg@mail.gmail.com>
+ <CAMJW5=2ZHyZDzBy-EhHyM=0srB9UNnWYVUFt5UqhZX=kf2jBQA@mail.gmail.com>
+ <CANVYNa-S82Qkd04KX4TrPkrFMO1gRVtpcSa68cDQ_zF+e=gmNA@mail.gmail.com>
+Message-ID: <op.v8b5j5am735up4@sraven>
+
+rebased onto next, and here is the patch:
+
+diff --git a/include/i3.h b/include/i3.h
+index d645325..313c68a 100644
+--- a/include/i3.h
++++ b/include/i3.h
+@@ -48,6 +48,9 @@ extern TAILQ_HEAD(ws_assignments_head,  
+Workspace_Assignment) ws_assignments;
+  extern TAILQ_HEAD(assignments_head, Assignment) assignments;
+  extern SLIST_HEAD(stack_wins_head, Stack_Window) stack_wins;
+  extern xcb_screen_t *root_screen;
++extern xcb_colormap_t default_colormap;
++extern xcb_visualtype_t *default_visual;
++extern uint8_t default_depth;
+  extern uint8_t root_depth;
+  extern bool xcursor_supported, xkb_supported;
+  extern xcb_window_t root;
+diff --git a/src/main.c b/src/main.c
+index 32073d2..6642d8b 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -50,6 +50,9 @@ xcb_timestamp_t last_timestamp = XCB_CURRENT_TIME;
+
+  xcb_screen_t *root_screen;
+  xcb_window_t root;
++xcb_visualtype_t *default_visual = NULL;
++xcb_colormap_t default_colormap = 0;
++uint8_t default_depth;
+  uint8_t root_depth;
+
+  struct ev_loop *main_loop;
+@@ -234,6 +237,43 @@ static void handle_signal(int sig, siginfo_t *info,  
+void *data) {
+      raise(sig);
+  }
+
++static xcb_visualtype_t *get_argb_visual(xcb_screen_t *s) {
++    xcb_depth_iterator_t depth_iter =  
+xcb_screen_allowed_depths_iterator(s);
++
++    if(depth_iter.data)
++        for(; depth_iter.rem; xcb_depth_next(&depth_iter))
++            if(depth_iter.data->depth == 32)
++                for(xcb_visualtype_iterator_t visual_iter =  
+xcb_depth_visuals_iterator(depth_iter.data);
++                    visual_iter.rem; xcb_visualtype_next(&visual_iter))
++                    return visual_iter.data;
++
++    return NULL;
++}
++
++static uint8_t get_visual_depth(xcb_screen_t *s, xcb_visualid_t vis) {
++    xcb_depth_iterator_t depth_iter =  
+xcb_screen_allowed_depths_iterator(s);
++
++    if(depth_iter.data)
++        for(; depth_iter.rem; xcb_depth_next (&depth_iter))
++            for(xcb_visualtype_iterator_t visual_iter =  
+xcb_depth_visuals_iterator(depth_iter.data);
++                visual_iter.rem; xcb_visualtype_next (&visual_iter))
++                if(vis == visual_iter.data->visual_id)
++                    return depth_iter.data->depth;
++    return 24;
++}
++
++static xcb_visualtype_t *get_default_visual(xcb_screen_t *s) {
++    xcb_depth_iterator_t depth_iter =  
+xcb_screen_allowed_depths_iterator(s);
++
++    if(depth_iter.data)
++        for(; depth_iter.rem; xcb_depth_next (&depth_iter))
++            for(xcb_visualtype_iterator_t visual_iter =  
+xcb_depth_visuals_iterator(depth_iter.data);
++                visual_iter.rem; xcb_visualtype_next (&visual_iter))
++                if(s->root_visual == visual_iter.data->visual_id)
++                    return visual_iter.data;
++
++    return NULL;
++}
+  int main(int argc, char *argv[]) {
+      char *override_configpath = NULL;
+      bool autostart = true;
+@@ -528,6 +568,25 @@ int main(int argc, char *argv[]) {
+      }
+      DLOG("root geometry reply: (%d, %d) %d x %d\n", greply->x, greply->y,  
+greply->width, greply->height);
+
++
++    /* Acquire a argb visual */
++    default_visual = get_argb_visual(root_screen);
++    if(!default_visual)
++        default_visual = get_default_visual(root_screen);
++    if (!default_visual) {
++        ELOG("No available visual found, exiting\n");
++        return 1;
++    }
++    default_depth = get_visual_depth(root_screen,  
+default_visual->visual_id);
++    /* Acquire corresponding colormap */
++    default_colormap = root_screen->default_colormap;
++    if(default_depth != root_depth) {
++        default_colormap = xcb_generate_id(conn);
++        xcb_create_colormap(conn, XCB_COLORMAP_ALLOC_NONE,
++            default_colormap, root,
++            default_visual->visual_id);
++    }
++
+      /* Place requests for the atoms we need as soon as possible */
+      #define xmacro(atom) \
+          xcb_intern_atom_cookie_t atom ## _cookie = xcb_intern_atom(conn,  
+0, strlen(#atom), #atom);
+diff --git a/src/sighandler.c b/src/sighandler.c
+index 4a0c13b..7f8ef51 100644
+--- a/src/sighandler.c
++++ b/src/sighandler.c
+@@ -162,7 +162,7 @@ void handle_signal(int sig, siginfo_t *info, void  
+*data) {
+          /* Create pixmap */
+          pixmap = xcb_generate_id(conn);
+          pixmap_gc = xcb_generate_id(conn);
+-        xcb_create_pixmap(conn, root_depth, pixmap, win, width, height);
++        xcb_create_pixmap(conn, default_depth, pixmap, win, width,  
+height);
+          xcb_create_gc(conn, pixmap_gc, pixmap, 0, 0);
+
+          /* Grab the keyboard to get all input */
+diff --git a/src/x.c b/src/x.c
+index e5853fb..8a2aedb 100644
+--- a/src/x.c
++++ b/src/x.c
+@@ -90,15 +90,24 @@ void x_con_init(Con *con) {
+       * get the initial geometry right */
+
+      uint32_t mask = 0;
+-    uint32_t values[2];
++    uint32_t values[5];
++
++    mask |= XCB_CW_BACK_PIXEL;
++    values[0] = root_screen->black_pixel;
++
++    mask |= XCB_CW_BORDER_PIXEL;
++    values[1] = root_screen->black_pixel;
+
+      /* our own frames should not be managed */
+      mask |= XCB_CW_OVERRIDE_REDIRECT;
+-    values[0] = 1;
++    values[2] = 1;
+
+      /* see include/xcb.h for the FRAME_EVENT_MASK */
+      mask |= XCB_CW_EVENT_MASK;
+-    values[1] = FRAME_EVENT_MASK & ~XCB_EVENT_MASK_ENTER_WINDOW;
++    values[3] = FRAME_EVENT_MASK & ~XCB_EVENT_MASK_ENTER_WINDOW;
++
++    mask |= XCB_CW_COLORMAP;
++    values[4] = default_colormap;
+
+      Rect dims = { -15, -15, 10, 10 };
+      con->frame = create_window(conn, dims, XCB_WINDOW_CLASS_INPUT_OUTPUT,  
+XCURSOR_CURSOR_POINTER, false, mask, values);
+@@ -561,7 +570,7 @@ void x_push_node(Con *con) {
+                  xcb_free_pixmap(conn, con->pixmap);
+                  xcb_free_gc(conn, con->pm_gc);
+              }
+-            xcb_create_pixmap(conn, root_depth, con->pixmap, con->frame,  
+rect.width, rect.height);
++            xcb_create_pixmap(conn, default_depth, con->pixmap,  
+con->frame, rect.width, rect.height);
+              /* For the graphics context, we disable GraphicsExposure  
+events.
+               * Those will be sent when a CopyArea request cannot be  
+fulfilled
+               * properly due to parts of the source being unmapped or  
+otherwise
+diff --git a/src/xcb.c b/src/xcb.c
+index 48906a2..1583782 100644
+--- a/src/xcb.c
++++ b/src/xcb.c
+@@ -21,7 +21,8 @@ xcb_window_t create_window(xcb_connection_t *conn, Rect  
+dims, uint16_t window_cl
+      xcb_window_t result = xcb_generate_id(conn);
+
+      /* If the window class is XCB_WINDOW_CLASS_INPUT_ONLY, depth has to  
+be 0 */
+-    uint16_t depth = (window_class == XCB_WINDOW_CLASS_INPUT_ONLY ? 0 :  
+XCB_COPY_FROM_PARENT);
++    uint16_t depth = (window_class == XCB_WINDOW_CLASS_INPUT_ONLY ? 0 :  
+default_depth);
++    xcb_visualid_t visual_id= (window_class ==  
+XCB_WINDOW_CLASS_INPUT_ONLY ? XCB_WINDOW_CLASS_COPY_FROM_PARENT :  
+default_visual->visual_id);
+
+      xcb_create_window(conn,
+              depth,
+@@ -30,7 +31,7 @@ xcb_window_t create_window(xcb_connection_t *conn, Rect  
+dims, uint16_t window_cl
+              dims.x, dims.y, dims.width, dims.height, /* dimensions */
+              0, /* border = 0, we draw our own */
+              window_class,
+-            XCB_WINDOW_CLASS_COPY_FROM_PARENT, /* copy visual from parent  
+*/
++            visual_id,
+              mask,
+              values);
+
+-- 
+1.7.8.4
+
+
+On Wed, 18 Jan 2012 08:12:37 +0800, Fernando Lemos <fernandotcl at gmail.com>  
+wrote:
+
+> Hi,
+>
+> On Mon, Jan 16, 2012 at 7:08 AM, DR <drdarkraven at gmail.com> wrote:
+>>> You might want to adapt the code to the i3 style. Take a look at other
+>>> functions, conditionals and for loops. Also, those function names
+>>> might not be ideal.
+>>
+>> I don't quite understand i3's coding style or naming conventions, are
+>> there any documents explaining this?
+>
+> I'm afraid not. Make sure you read the hacking how-to, but I don't
+> think it mentions those conventions. This should be quite simple,
+> though. Just copy the style you see in other functions. Do you have
+> any specific questions? One thing in particular would be the spacing
+> between "if (" and "if(".
+>
+>>> If we can't find an ARGB visual, i3 will segfault. Is an ARGB visual
+>>> always going to be present? If yes, then please use asserts to
+>>> indicate that. Otherwise handle the cases where we can't find an ARGB
+>>> visual.
+>>
+>> I'll fix this.
+>
+> I noticed you sent an incremental patch. It looks ok to me, could you
+> please post a diff against next so it would be easier to review?
+>
+>>> I'd also prefer if you renamed default_* to argb_*, since I plan to
+>>> introduce vars like root_visual_type for Pango support, and that can
+>>> be confusing.
+>>
+>> The default_* is actually the default, since default_visual,
+>> default_depth will be applied to every single window. I think it will
+>> not be confused with root_visual_type, if root_visual_type means
+>> visual type of the root window.
+>
+> Cool, the naming you went with in your incremental patch makes sense to  
+> me.
+>
+> Regards,
+
+
+-- 
+Using Opera's revolutionary email client: http://www.opera.com/mail/
+
+From michael+i3 at stapelberg.de  Sat Jan 21 12:10:03 2012
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 21 Jan 2012 11:10:03 +0000
+Subject: [i3] Window titles running together
+In-Reply-To: <20120106010503.GA30107@ahni>
+References: <20120105203927.GA9257@ahni> <1325796321-sup-7229@stapelberg.de>
+ <20120105211130.GA26346@ahni> <1325801048-sup-6033@stapelberg.de>
+ <20120106000001.GA26854@ahni> <1325809354-sup-9603@stapelberg.de>
+ <20120106010503.GA30107@ahni>
+Message-ID: <1327144135-sup-4054@stapelberg.de>
+
+Hi Aaron,
+
+Sorry for taking so long to respond.
+
+Excerpts from Aaron Small's message of 2012-01-06 01:05:04 +0000:
+> Ah, I see - I didn't even notice the border because it's so faint in the
+> default colourscheme. After making that higher contrast, it looks much
+> better, thanks.
+> 
+> Patch will these three changes attached.
+Since I fixed ticket #368 before applying your patch, it didn?t apply any
+longer, therefore I merged it myself. Tabs will now have a border color
+separator line, much like in your patch (but not 100% the same).
+
+Thanks for your contribution!
+
+Best regards,
+Michael
+
+From dunric29a at gmail.com  Mon Jan 23 00:58:52 2012
+From: dunric29a at gmail.com (David Unric)
+Date: Mon, 23 Jan 2012 00:58:52 +0100
+Subject: [i3] Help with configuration tweaking
+In-Reply-To: <CABRYzzXNZvCUXetZOJRd==37iyL0w7tAh-7boGpPnrW_++cnXw@mail.gmail.com>
+References: <CABRYzzXNZvCUXetZOJRd==37iyL0w7tAh-7boGpPnrW_++cnXw@mail.gmail.com>
+Message-ID: <CABRYzzV0unwLtGMhhzNbwgv1S1X840=NXeEa2v-NBS1TXWN2BA@mail.gmail.com>
+
+Hello,
+
+I'm almost satisfied with my default i3 config but got stuck with the
+following requirements:
+
+- when a new split-container is created, available space is divided  by 50%
+. Can be configured to split by a custom ratio like 66/34 % or is this
+hard-coded in i3's sources ?
+
+- how to feed i3bar by my own commands instead of i3status or conky output
+? Some example how to display current date/time f.E. ? I did tried in
+~/.i3/config
+...
+bar {
+    status_command date
+}
+...
+
+but it didn't appeared in i3bar.
+
+Thx.
+
+David
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120123/f8536d30/attachment.html>
+
+From fernandotcl at gmail.com  Mon Jan 23 01:22:43 2012
+From: fernandotcl at gmail.com (Fernando Lemos)
+Date: Sun, 22 Jan 2012 22:22:43 -0200
+Subject: [i3] Help with configuration tweaking
+In-Reply-To: <CABRYzzV0unwLtGMhhzNbwgv1S1X840=NXeEa2v-NBS1TXWN2BA@mail.gmail.com>
+References: <CABRYzzXNZvCUXetZOJRd==37iyL0w7tAh-7boGpPnrW_++cnXw@mail.gmail.com>
+ <CABRYzzV0unwLtGMhhzNbwgv1S1X840=NXeEa2v-NBS1TXWN2BA@mail.gmail.com>
+Message-ID: <CANVYNa8sapf+mE8maOryr_NxBu_HiHvETt80750tWj6eVRMgNQ@mail.gmail.com>
+
+Hi,
+
+On Sun, Jan 22, 2012 at 9:58 PM, David Unric <dunric29a at gmail.com> wrote:
+> - when a new split-container is created, available space is divided? by 50%
+> . Can be configured to split by a custom ratio like 66/34 % or is this
+> hard-coded in i3's sources ?
+
+Well, not really "hardcoded", each container starts up taking up 1/n
+of the available space in the parent container, where n is the number
+of children (including the container itself). That said, no, you can't
+change that now.
+
+> - how to feed i3bar by my own commands instead of i3status or conky output ?
+> Some example how to display current date/time f.E. ? I did tried in
+> ~/.i3/config
+> ...
+> bar {
+> ??? status_command date
+> }
+> ...
+>
+> but it didn't appeared in i3bar.
+
+The status command isn't run once every now and then. It must display
+its output once and then every time this output changes. So what you
+want should probably be a script that does "while true; do date; sleep
+1; done". This approach sucks, though, for a number of reasons. If you
+don't quite get why it sucks, please use something like i3status
+instead (you might want to pipe the i3status output and modify it as
+you see fit too).
+
+Regards,
+
+From jeff at jibson.com  Mon Jan 23 22:13:08 2012
+From: jeff at jibson.com (Jeff Jibson)
+Date: Mon, 23 Jan 2012 14:13:08 -0700
+Subject: [i3] multiple x sessions
+Message-ID: <CAPAw0Wp5dxjdAHU-QTRp9q0+CnaWH_ObP7BXg_1X01gQNyym8w@mail.gmail.com>
+
+I have two x sessions, :0 with two screens and :1 with one screen
+connected by x2x.  Is there a way to jump from one session to the
+other with a keyboard.  The mouse works, but mice are evil ;)
+
+I am using:
+  i3 4.1.1
+  xorg-server 1.11.3 (x11 7.4)
+  x2x 1.27
+  xf86-video-nouvea 0.0.16_pre20111109
+  xf86-video-displaylink 0.3.
+
+I tried using synergy (1.4.5), but it doesn't seem to work.  I'd
+prefer this to x2x if it worked.
+
+From michael+i3 at stapelberg.de  Mon Jan 23 22:34:08 2012
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Mon, 23 Jan 2012 21:34:08 +0000
+Subject: [i3] multiple x sessions
+In-Reply-To: <CAPAw0Wp5dxjdAHU-QTRp9q0+CnaWH_ObP7BXg_1X01gQNyym8w@mail.gmail.com>
+References: <CAPAw0Wp5dxjdAHU-QTRp9q0+CnaWH_ObP7BXg_1X01gQNyym8w@mail.gmail.com>
+Message-ID: <1327354437-sup-7579@stapelberg.de>
+
+Hi Jeff,
+
+Excerpts from Jeff Jibson's message of 2012-01-23 21:13:08 +0000:
+> I have two x sessions, :0 with two screens and :1 with one screen
+> connected by x2x.  Is there a way to jump from one session to the
+> other with a keyboard.  The mouse works, but mice are evil ;)
+Yes, swarp.
+
+Best regards,
+Michael
+
+From jeff at jibson.com  Tue Jan 24 17:19:08 2012
+From: jeff at jibson.com (Jeff Jibson)
+Date: Tue, 24 Jan 2012 09:19:08 -0700
+Subject: [i3] multiple x sessions
+In-Reply-To: <1327354437-sup-7579@stapelberg.de>
+References: <CAPAw0Wp5dxjdAHU-QTRp9q0+CnaWH_ObP7BXg_1X01gQNyym8w@mail.gmail.com>
+ <1327354437-sup-7579@stapelberg.de>
+Message-ID: <CAPAw0Wq4WCH55LoxCGkdA-b=JWzMBvP-tR0yPX5NsBNnYbfkbQ@mail.gmail.com>
+
+On Mon, Jan 23, 2012 at 14:34, Michael Stapelberg
+<michael+i3 at stapelberg.de> wrote:
+> Hi Jeff,
+>
+> Excerpts from Jeff Jibson's message of 2012-01-23 21:13:08 +0000:
+>> I have two x sessions, :0 with two screens and :1 with one screen
+>> connected by x2x. ?Is there a way to jump from one session to the
+>> other with a keyboard. ?The mouse works, but mice are evil ;)
+> Yes, swarp.
+>
+> Best regards,
+> Michael
+
+Thanks, that works.
+
+From jelten at in.tum.de  Wed Jan 25 10:52:56 2012
+From: jelten at in.tum.de (Jonas Jelten)
+Date: Wed, 25 Jan 2012 10:52:56 +0100
+Subject: [i3] Java applications focus bug
+Message-ID: <4F1FD0F8.1@in.tum.de>
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Hi i3 users!
+
+
+I have encountered an annoying issue in i3:
+
+Java Textareas do not regain focus if they get blurred.
+
+Maybe it's a problem of the Java JVM, but as this bug is nonexistent
+under lxde or gnome,
+i think it could have to do with my i3.
+
+
+Please run this Java code and let me know if you have the same problem:
+
+==========================================
+
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
+/**
+ * Demonstrates the Java Textarea focus bug under i3
+ * @author Jonas Jelten
+ */
+public class WindowFocusBug {
+
+    public static void main(String[] args) {
+        WindowFocusBug b = new WindowFocusBug();
+    }
+
+    public WindowFocusBug() {
+        JFrame f = new JFrame("i3 java window focus bug test");
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JTextArea a = new JTextArea("Welcome to the nasty Java window
+focus bug, this test application is by Jonas Jelten\r\n\r\n"
+                + "The bug occurs in the following applications, and it
+is extremely annoying:\r\n"
+                + "*  Minecraft\r\n* Netbeans\r\n* all other Java
+applications"
+                + "\r\n\r\nTry to reproduce it by changing something in
+this JTestArea, then switch to another window"
+                + "like Firefox or whatever, come back to this window
+and click in this text area again, and try to change something."
+                + "\r\nI am not able to regain any focus to the textarea
+again, it seems to have turned read only."
+                + "\r\n\r\n"
+                + "I have no idea whether this is i3's fault, or java's.
+please test it and figure it out.");
+        a.setLineWrap(true);
+        a.setWrapStyleWord(true);
+        JScrollPane p = new JScrollPane(a);
+       
+       
+        f.setSize(500, 400);
+        f.add(p);
+        f.pack();
+        f.setLocationRelativeTo(null);
+        f.setVisible(true);
+        f.requestFocus();
+
+
+    }
+}
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
+
+iQIcBAEBAgAGBQJPH9D4AAoJEMCMsfQ1RG1iSWkQAKLJhUnY/J3t2osEnLMLjiu8
+uAtQrRxgKOEdCeZmK3CNv74i0S7xUWGWRkfmrXbwI1L5uM08SUPRQ7JYS8DSCyaf
+CoGCIsFCweLqHnhzn99cLDJXso59nM34vksCUgnfHhzmYqmtV2d1jh7RNkZbiyQc
+VClbfzghES4oU+OM1wqEXh5otiwHZ0EWlzQfUEzUoADDhzXwxp8TagmNjl4SuBSG
+1DZaJd+kJQSsiBKVMzgbgSBNOy8m3m6CkOUJfBHoWnUhZKTbWULNCOsS92LxMv9p
+wWm5bF5cgn38g7jZggs7ki7Ua67/HbvmJ8/aH4zFF0OL4buH13ihimP4xV5+hCvC
+ybN/gpLn7g/+r1TzJQVZI7CplEqIvKfNiUSgnCD5/p/r5BKZ+40GARG25zkMXMEO
+9/Kmz/Xa4gOgPJLibhFxIoGpTkc6wGrMMgJyMArj2RHsujEmJP+OJfNDIFru2T14
+CG46Teh4qznWcwfDfuBXeGM2R1UM3kgupRedCsZA4jP3EE7wfO50XwTM3aQ7jCBc
+JyHYr/PhSESMMkj2BdVl+da5uYwHL6sNsYEdDzplcoiEVEOetrB+qmTsUhdT6pEQ
+CG79iQH/GceeHe3vyvh/r96MoOBQt1HPKonxXI7cKTjTjHBTH6mX1dT9V7pwMtAm
+jEWQJks1Qc+t5kXDCHBg
+=xGQM
+-----END PGP SIGNATURE-----
+
+
+From atsutane at freethoughts.de  Wed Jan 25 17:00:26 2012
+From: atsutane at freethoughts.de (Thorsten =?ISO-8859-1?B?VPZwcGVy?=)
+Date: Wed, 25 Jan 2012 17:00:26 +0100
+Subject: [i3] Java applications focus bug
+In-Reply-To: <4F1FD0F8.1@in.tum.de>
+References: <4F1FD0F8.1@in.tum.de>
+Message-ID: <20120125170026.34f55041@hell>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA224
+
+On Wed, 25 Jan 2012 10:52:56 +0100
+Jonas Jelten <jelten at in.tum.de> wrote:
+> Hi i3 users!
+> 
+> 
+> I have encountered an annoying issue in i3:
+> 
+> Java Textareas do not regain focus if they get blurred.
+> 
+> Maybe it's a problem of the Java JVM, but as this bug is nonexistent
+> under lxde or gnome,
+> i think it could have to do with my i3.
+> 
+> 
+> Please run this Java code and let me know if you have the same
+> problem:
+> 
+<snip>
+
+Hello Jonas,
+
+works fine with i3 build from git, so the bug has been fixed.
+
+http://bugs.i3wm.org/report/ticket/578
+
+Regards
+Thorsten
+
+- -- 
+Jabber: atsutane at freethoughts.de Blog: http://atsutane.freethoughts.de/
+Key: 295AFBF4     FP: 39F8 80E5 0E49 A4D1 1341 E8F9 39E4 F17F 295A FBF4
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+
+iFYEARELAAYFAk8gJxoACgkQOeTxfyla+/TOdwDaAmjiv0xqdATJ6omDorA3CWwt
+oVsnHIjcSUab5wDfcbqi4vwm9iXweaBm0iSGSABMEhWLCJYy58G5Jw==
+=eFmq
+-----END PGP SIGNATURE-----
+
+From mhcerri at gmail.com  Thu Jan 26 13:22:15 2012
+From: mhcerri at gmail.com (Marcelo Cerri)
+Date: Thu, 26 Jan 2012 10:22:15 -0200
+Subject: [i3] [PATCH] Fixed worspace clicking area for i3bar (branch next)
+Message-ID: <CACg2Y9tqWf9C4Dw9cKCS1WRsPoPSGRKq2x6sj0MRER-sr1KxMQ@mail.gmail.com>
+
+---
+ i3bar/src/xcb.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/i3bar/src/xcb.c b/i3bar/src/xcb.c
+index adb4c76..0910195 100644
+--- a/i3bar/src/xcb.c
++++ b/i3bar/src/xcb.c
+@@ -267,10 +267,10 @@ void handle_button(xcb_button_press_event_t *event) {
+              * and set cur_ws accordingly */
+             TAILQ_FOREACH(cur_ws, walk->workspaces, tailq) {
+                 DLOG("x = %d\n", x);
+-                if (x < cur_ws->name_width + 10) {
++                if (x < cur_ws->name_width + 12) {
+                     break;
+                 }
+-                x -= cur_ws->name_width + 10;
++                x -= cur_ws->name_width + 12;
+             }
+             if (cur_ws == NULL) {
+                 return;
+-- 
+1.7.1
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120126/3f45755f/attachment.html>
+
+From jelten at in.tum.de  Thu Jan 26 22:58:16 2012
+From: jelten at in.tum.de (Jonas Jelten)
+Date: Thu, 26 Jan 2012 22:58:16 +0100
+Subject: [i3] Java applications focus bug
+In-Reply-To: <20120125170026.34f55041@hell>
+References: <4F1FD0F8.1@in.tum.de> <20120125170026.34f55041@hell>
+Message-ID: <4F21CC78.8070500@in.tum.de>
+
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+On 01/25/2012 05:00 PM, Thorsten T?pper wrote:
+> On Wed, 25 Jan 2012 10:52:56 +0100
+> Jonas Jelten <jelten at in.tum.de> wrote:
+> > Hi i3 users!
+>
+>
+> > I have encountered an annoying issue in i3:
+>
+> > Java Textareas do not regain focus if they get blurred.
+>
+> > Maybe it's a problem of the Java JVM, but as this bug is nonexistent
+> > under lxde or gnome,
+> > i think it could have to do with my i3.
+>
+>
+> > Please run this Java code and let me know if you have the same
+> > problem:
+>
+> <snip>
+>
+> Hello Jonas,
+>
+> works fine with i3 build from git, so the bug has been fixed.
+>
+> http://bugs.i3wm.org/report/ticket/578
+>
+> Regards
+> Thorsten
+>
+indeed, the bug is gone in the i3-wm-git.
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+Comment: Using GnuPG with Mozilla - http://enigmail.mozdev.org/
+
+iQIcBAEBAgAGBQJPIcx3AAoJEMCMsfQ1RG1idEkP/1zWnwVbr8QlF9Ts5EEhSNTw
+WNEA4EnjcplWxihl3IrKyM9B91ooBBA6Ol4DBe8W7MyPVhWq3C8P3xEs3RtDi8qy
+3hHOw+X9nxmmXmjJihPBMnZD1srJVq/xDx9cl4LsMRgtGF4+c1FhXVNrLaI/TLcQ
+HYQ+ueJ45T12GaHaMPzxca83GgHGIZ/Y2lcEzRGKutLNL0lwAM8cPAPuYuUuIRf+
+EkQbpKMR6yQgpXRv3DIvANaCUuUDPiFx9nvONAJgbXD8eC+ZKmvgfskfZMHx9vbB
+pAG+waLkwhmJuxKZC4UtT4TWRavroguLC/FAAa25DTB6G3fCBVOUiiF4JsJiH9OE
+qSiHUZGMJoPqrNC0eLmYopTy03lV6n13kz6LdlI5JCoMD2as8PHpefa7bLpBZvFn
+IRj+ubysiARH6PV5xMsLqn8+yBnAd3Oh0VzHK/ycaKi7F6kCK6uQdzwWkti4OR7F
+Ljd5OUvLctLdQyvAfmfeG8IeRE09d0JQPXjB1129gTzG/tCi9sMhVC34ydxAAABg
+PUhEAoiycl7fv11u1SBgiO4QCzKH6pl3wZpj5MF+jmCnupsksd/7vf96iG8tu0eY
+GnNd1gNb+A3qsc9ToX83lno09/WB4jlD0XqRRkZjNLxHeVBqz8x1AnyWh0DBp9v8
+Mg4R914zOSQI4XX66KXa
+=fevg
+-----END PGP SIGNATURE-----
+
+
+From fernandotcl at gmail.com  Thu Jan 26 23:22:52 2012
+From: fernandotcl at gmail.com (Fernando Lemos)
+Date: Thu, 26 Jan 2012 20:22:52 -0200
+Subject: [i3] [PATCH] Fixed worspace clicking area for i3bar (branch
+	next)
+In-Reply-To: <CACg2Y9tqWf9C4Dw9cKCS1WRsPoPSGRKq2x6sj0MRER-sr1KxMQ@mail.gmail.com>
+References: <CACg2Y9tqWf9C4Dw9cKCS1WRsPoPSGRKq2x6sj0MRER-sr1KxMQ@mail.gmail.com>
+Message-ID: <CANVYNa_bJsM1C1fTbcfP3SWDynChNLtCFf6Pc2c_XBVAvjYdUA@mail.gmail.com>
+
+Hi,
+
+On Thu, Jan 26, 2012 at 10:22 AM, Marcelo Cerri <mhcerri at gmail.com> wrote:
+> ---
+> ?i3bar/src/xcb.c | ? ?4 ++--
+> ?1 files changed, 2 insertions(+), 2 deletions(-)
+
+Looks good to me. I hadn't noticed that, the patch seems to fix the
+problem indeed.
+
+Regards,
+
+From michael+i3 at stapelberg.de  Sat Jan 28 10:50:40 2012
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 28 Jan 2012 09:50:40 +0000
+Subject: [i3] [PATCH] Transparency support
+In-Reply-To: <op.v8b5j5am735up4@sraven>
+References: <CAMJW5=0GeBus4D4npdO54Z5+mL33T4mz=Cem7J5X+6RveXTL7Q@mail.gmail.com>
+ <CANVYNa_utbh3Umvxpqd+bjwUv7h67JRhUik=xLHphdNusMr0yg@mail.gmail.com>
+ <CAMJW5=2ZHyZDzBy-EhHyM=0srB9UNnWYVUFt5UqhZX=kf2jBQA@mail.gmail.com>
+ <CANVYNa-S82Qkd04KX4TrPkrFMO1gRVtpcSa68cDQ_zF+e=gmNA@mail.gmail.com>
+ <op.v8b5j5am735up4@sraven>
+Message-ID: <1327744001-sup-4371@stapelberg.de>
+
+Hi Raven,
+
+Thanks for your patch and sorry for replying so late. Here are my comments:
+
+1) You did not use git format-patch to generate the patch. This is bad because
+   then your name is missing from the git log. Please use git format-patch.
+
+2) Your patch has been line-wrapped/mangled by your mail client so that I
+   cannot apply it.
+
+3) You did not state what this patch actually fixes and how I can reproduce
+   that. I just looked at ticket http://bugs.i3wm.org/220 again and tried the
+   following:
+
+in ~/.Xresources:
+URxvt.background: [85]black
+URxvt.foreground: lightgrey
+URxvt.depth: 32
+
+Then start xcompmgr -n, use transset-df and click on an urxvt terminal. It
+became transparent (without your patch).
+
+Could you please elaborate on that and re-send your patch?
+
+Best regards,
+Michael
+
+From michael+i3 at stapelberg.de  Sat Jan 28 11:09:01 2012
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 28 Jan 2012 10:09:01 +0000
+Subject: [i3] [PATCH] Fixed worspace clicking area for i3bar (branch
+	next)
+In-Reply-To: <CACg2Y9tqWf9C4Dw9cKCS1WRsPoPSGRKq2x6sj0MRER-sr1KxMQ@mail.gmail.com>
+References: <CACg2Y9tqWf9C4Dw9cKCS1WRsPoPSGRKq2x6sj0MRER-sr1KxMQ@mail.gmail.com>
+Message-ID: <1327745327-sup-8510@stapelberg.de>
+
+Hi Marcelo,
+
+Thanks for your patch, I merged it.
+
+Best regards,
+Michael
+
+From drdarkraven at gmail.com  Sat Jan 28 13:48:12 2012
+From: drdarkraven at gmail.com (DR)
+Date: Sat, 28 Jan 2012 20:48:12 +0800
+Subject: [i3] [PATCH] Transparency support
+In-Reply-To: <1327744001-sup-4371@stapelberg.de>
+References: <CAMJW5=0GeBus4D4npdO54Z5+mL33T4mz=Cem7J5X+6RveXTL7Q@mail.gmail.com>
+ <CANVYNa_utbh3Umvxpqd+bjwUv7h67JRhUik=xLHphdNusMr0yg@mail.gmail.com>
+ <CAMJW5=2ZHyZDzBy-EhHyM=0srB9UNnWYVUFt5UqhZX=kf2jBQA@mail.gmail.com>
+ <CANVYNa-S82Qkd04KX4TrPkrFMO1gRVtpcSa68cDQ_zF+e=gmNA@mail.gmail.com>
+ <op.v8b5j5am735up4@sraven> <1327744001-sup-4371@stapelberg.de>
+Message-ID: <CAMJW5=3-OT5Lf0Ef5t2mRa-6p_6NB80CKfjS39QQ03p2DcWP8Q@mail.gmail.com>
+
+On Sat, Jan 28, 2012 at 5:50 PM, Michael Stapelberg
+<michael+i3 at stapelberg.de> wrote:
+> Hi Raven,
+>
+> Thanks for your patch and sorry for replying so late. Here are my comments:
+>
+> 1) You did not use git format-patch to generate the patch. This is bad because
+> ? then your name is missing from the git log. Please use git format-patch.
+>
+> 2) Your patch has been line-wrapped/mangled by your mail client so that I
+> ? cannot apply it.
+
+Sorry for that. I'll re-send the patch.
+
+>
+> 3) You did not state what this patch actually fixes and how I can reproduce
+> ? that. I just looked at ticket http://bugs.i3wm.org/220 again and tried the
+> ? following:
+>
+> in ~/.Xresources:
+> URxvt.background: [85]black
+> URxvt.foreground: lightgrey
+> URxvt.depth: 32
+>
+> Then start xcompmgr -n, use transset-df and click on an urxvt terminal. It
+> became transparent (without your patch).
+>
+> Could you please elaborate on that and re-send your patch?
+
+Bug #220 is exactly what this patch fix.
+
+The expected result is that urxvt would be transparent without
+transset-df (and this is how urxvt in most other wm works).
+
+With wm like wmii, you only need to put:
+
+URxvt.depth:		32
+Urxvt.background:      rgba:0000/0000/0000/7777
+
+In your .Xresources, and start xcompmgr, urxvt would be transparent.
+
+>
+> Best regards,
+> Michael
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-add-transparency-support.patch
+Type: text/x-patch
+Size: 7570 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120128/50e08cde/attachment.bin>
+
+From fernandotcl at gmail.com  Sat Jan 28 16:42:51 2012
+From: fernandotcl at gmail.com (Fernando Lemos)
+Date: Sat, 28 Jan 2012 13:42:51 -0200
+Subject: [i3] [PATCH] Transparency support
+In-Reply-To: <CAMJW5=3-OT5Lf0Ef5t2mRa-6p_6NB80CKfjS39QQ03p2DcWP8Q@mail.gmail.com>
+References: <CAMJW5=0GeBus4D4npdO54Z5+mL33T4mz=Cem7J5X+6RveXTL7Q@mail.gmail.com>
+ <CANVYNa_utbh3Umvxpqd+bjwUv7h67JRhUik=xLHphdNusMr0yg@mail.gmail.com>
+ <CAMJW5=2ZHyZDzBy-EhHyM=0srB9UNnWYVUFt5UqhZX=kf2jBQA@mail.gmail.com>
+ <CANVYNa-S82Qkd04KX4TrPkrFMO1gRVtpcSa68cDQ_zF+e=gmNA@mail.gmail.com>
+ <op.v8b5j5am735up4@sraven> <1327744001-sup-4371@stapelberg.de>
+ <CAMJW5=3-OT5Lf0Ef5t2mRa-6p_6NB80CKfjS39QQ03p2DcWP8Q@mail.gmail.com>
+Message-ID: <CANVYNa8PddhGioJXijSKAXPmxXSY6_+6N_9HvBBk_pQdYtUCDg@mail.gmail.com>
+
+On Sat, Jan 28, 2012 at 10:48 AM, DR <drdarkraven at gmail.com> wrote:
+> The expected result is that urxvt would be transparent without
+> transset-df (and this is how urxvt in most other wm works).
+
+This is commonly known as pseudo-transparency. You might want to use
+that term when describing the patch. :-)
+
+Regards,
+
+From michael+i3 at stapelberg.de  Sat Jan 28 17:25:17 2012
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 28 Jan 2012 16:25:17 +0000
+Subject: [i3] [PATCH] Transparency support
+In-Reply-To: <CAMJW5=3-OT5Lf0Ef5t2mRa-6p_6NB80CKfjS39QQ03p2DcWP8Q@mail.gmail.com>
+References: <CAMJW5=0GeBus4D4npdO54Z5+mL33T4mz=Cem7J5X+6RveXTL7Q@mail.gmail.com>
+ <CANVYNa_utbh3Umvxpqd+bjwUv7h67JRhUik=xLHphdNusMr0yg@mail.gmail.com>
+ <CAMJW5=2ZHyZDzBy-EhHyM=0srB9UNnWYVUFt5UqhZX=kf2jBQA@mail.gmail.com>
+ <CANVYNa-S82Qkd04KX4TrPkrFMO1gRVtpcSa68cDQ_zF+e=gmNA@mail.gmail.com>
+ <op.v8b5j5am735up4@sraven> <1327744001-sup-4371@stapelberg.de>
+ <CAMJW5=3-OT5Lf0Ef5t2mRa-6p_6NB80CKfjS39QQ03p2DcWP8Q@mail.gmail.com>
+Message-ID: <1327767281-sup-8641@stapelberg.de>
+
+Hi Raven,
+
+Excerpts from DR's message of 2012-01-28 12:48:12 +0000:
+> Sorry for that. I'll re-send the patch.
+Thanks.
+
+> The expected result is that urxvt would be transparent without
+> transset-df (and this is how urxvt in most other wm works).
+> 
+> With wm like wmii, you only need to put:
+> 
+> URxvt.depth:        32
+> Urxvt.background:      rgba:0000/0000/0000/7777
+> 
+> In your .Xresources, and start xcompmgr, urxvt would be transparent.
+I see, thanks for describing.
+
+I basically re-implemented your patch because I wanted to eliminate more
+round-trips for this patch. Have a look at how I did it if you are interested
+in the issues. The most important things were lack of documentation and
+introduction of three functions dealing with visuals where one loop is enough.
+To make the borders visible, you just need to set the high bits of each
+colorpixel to FF.
+
+I pushed this in a separate branch:
+http://code.stapelberg.de/git/i3/commit/?h=transparency&id=78cc929cdaaf75abea297241fd88977bd58b6e19
+
+Please check out the branch and confirm that it works for you (it worked in my
+quick tests). Note that you need to start i3 with --enable-32bit-visual ? I
+decided to make this opt-in since it makes workspace switching and redrawing
+considerably slower on my computer.
+
+Best regards,
+Michael
+
+From marcus.moeller at gmx.ch  Sat Jan 28 20:13:55 2012
+From: marcus.moeller at gmx.ch (Marcus Moeller)
+Date: Sat, 28 Jan 2012 20:13:55 +0100
+Subject: [i3] question about layout
+Message-ID: <4F2448F3.9050308@gmx.ch>
+
+Hi all.
+
+In general I work in tabbed mode, meaning not using tiling at all. But 
+now I want to ask if it is possible to start one application (my jabber 
+client) besides the main tabbed window, with a predefined width?
+
+Greets
+Marcus
+
+From fh at fhaun.de  Sat Jan 28 20:26:51 2012
+From: fh at fhaun.de (Frank Haun)
+Date: Sat, 28 Jan 2012 20:26:51 +0100
+Subject: [i3] question about layout
+In-Reply-To: <4F2448F3.9050308@gmx.ch> (Marcus Moeller's message of "Sat, 28
+ Jan 2012 20:13:55 +0100")
+References: <4F2448F3.9050308@gmx.ch>
+Message-ID: <874nvfvdac.fsf@m7000.fhaun.de>
+
+Marcus Moeller <marcus.moeller at gmx.ch> writes:
+
+> In general I work in tabbed mode, meaning not using tiling at all. But
+> now I want to ask if it is possible to start one application (my
+> jabber client) besides the main tabbed window, with a predefined
+> width?
+
+This works with i3 from git:
+
+  mod-a, mod-h, then call the program
+
+
+Related part in the config:
+
+  # focus the parent container
+  bindsym $mod+a focus parent
+
+  # split in horizontal orientation
+  bindsym $mod+h split h
+
+
+Resizing must done manually.
+
+Frank
+
+From fh at fhaun.de  Sun Jan 29 00:35:08 2012
+From: fh at fhaun.de (Frank Haun)
+Date: Sun, 29 Jan 2012 00:35:08 +0100
+Subject: [i3] question about layout
+In-Reply-To: <4F2448F3.9050308@gmx.ch> (Marcus Moeller's message of "Sat, 28
+ Jan 2012 20:13:55 +0100")
+References: <4F2448F3.9050308@gmx.ch>
+Message-ID: <87liortn83.fsf@m7000.fhaun.de>
+
+Marcus Moeller <marcus.moeller at gmx.ch> writes:
+
+> In general I work in tabbed mode, meaning not using tiling at all. But
+> now I want to ask if it is possible to start one application (my
+> jabber client) besides the main tabbed window, with a predefined
+> width?
+
+You can completely script such tasks. I use 'xdotool' for such
+jobs. Look your i3 config for the related keys to resize (shrink and
+grow) windows.
+
+'xmodemap' and 'xev' helps to get the names for xdotool.
+
+Example with _my_ i3 config:
+
+#! /bin/sh
+xdotool key Super_L+a  # focus the parent container
+xdotool key Super_L+h  # split in horizontal orientation
+jabberclient &         # run program
+sleep 1                # FIXME maybe longer [1]
+xdotool key Super_L+r  # initiate resizing
+xdotool key j          # shrink the new window
+xdotool key j          # "" 
+xdotool key Escape     # end resizing
+
+Maybe there are better salutions, I'm quite new to i3. ;-)
+
+Frank
+
+Footnotes: [1] I use an ugly hack in my shell script for waiting of
+programs in i3. This works for me and I realized a nice autostart with
+several programs and documents.
+
+#---------------------------------------------------#
+wait_for () {
+    n=0
+    while true
+    do
+	if $1; then
+	    break
+	else
+	    # 20 seconds timeout
+	    if [ $n -eq 20 ]; then
+		xmessage "Error executing: $1"
+		break
+	    else
+		n=`expr $n + 1`
+		sleep 1
+	    fi
+	fi
+    done
+}
+
+wait_for "xdotool search --name emacs"
+#---------------------------------------------------#
+
+From michael+i3 at stapelberg.de  Sun Jan 29 01:15:36 2012
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 29 Jan 2012 00:15:36 +0000
+Subject: [i3] question about layout
+In-Reply-To: <87liortn83.fsf@m7000.fhaun.de>
+References: <4F2448F3.9050308@gmx.ch> <87liortn83.fsf@m7000.fhaun.de>
+Message-ID: <1327795806-sup-6543@stapelberg.de>
+
+Hi Frank,
+
+Excerpts from Frank Haun's message of 2012-01-28 23:35:08 +0000:
+> You can completely script such tasks. I use 'xdotool' for such
+> jobs. Look your i3 config for the related keys to resize (shrink and
+> grow) windows.
+A better way than sending commands to X11 which sends them to i3 is to directly
+execute i3 commands, for example with i3-msg. In your example, you can use:
+
+> xdotool key Super_L+a  # focus the parent container
+i3-msg focus parent
+> xdotool key Super_L+h  # split in horizontal orientation
+i3-msg split horizontal
+> jabberclient &         # run program
+> sleep 1                # FIXME maybe longer [1]
+> xdotool key Super_L+r  # initiate resizing
+> xdotool key j          # shrink the new window
+> xdotool key j          # "" 
+> xdotool key Escape     # end resizing
+i3-msg resize shrink left
+
+> #---------------------------------------------------#
+> wait_for () {
+>     n=0
+>     while true
+>     do
+>     if $1; then
+>         break
+>     else
+>         # 20 seconds timeout
+>         if [ $n -eq 20 ]; then
+>         xmessage "Error executing: $1"
+>         break
+>         else
+>         n=`expr $n + 1`
+>         sleep 1
+>         fi
+>     fi
+>     done
+> }
+> 
+> wait_for "xdotool search --name emacs"
+> #---------------------------------------------------#
+Hm, basically you could use the for_window configuration directive here:
+
+    for_window [class="emacs"] exec ~/.bin/my_script_for_emacs.sh
+
+(I didn?t test whether emacs actually sets its class to 'emacs'.)
+If you only want to have this match the first time such a window appears you
+might want to some configuration file tricks, like keeping the for_window
+directives in a separate file and your other configuration in another file,
+then cat them together in your xsession and after all your windows have
+appeared, only write your base configuration to the config file and reload i3.
+
+Best regards,
+Michael
+
+From marcus.moeller at gmx.ch  Sun Jan 29 08:58:19 2012
+From: marcus.moeller at gmx.ch (Marcus Moeller)
+Date: Sun, 29 Jan 2012 08:58:19 +0100
+Subject: [i3] question about layout
+In-Reply-To: <874nvfvdac.fsf@m7000.fhaun.de>
+References: <4F2448F3.9050308@gmx.ch> <874nvfvdac.fsf@m7000.fhaun.de>
+Message-ID: <4F24FC1B.8070803@gmx.ch>
+
+Hi again,
+
+>> In general I work in tabbed mode, meaning not using tiling at all. But
+>> now I want to ask if it is possible to start one application (my
+>> jabber client) besides the main tabbed window, with a predefined
+>> width?
+>
+> This works with i3 from git:
+>
+>    mod-a, mod-h, then call the program
+>
+>
+> Related part in the config:
+>
+>    # focus the parent container
+>    bindsym $mod+a focus parent
+>
+>    # split in horizontal orientation
+>    bindsym $mod+h split h
+>
+>
+> Resizing must done manually.
+
+Ok, just a general question on that: I have now tried to move the window 
+out of my main tab group, using Mod+Shift+right (in the default 
+configuration). Does this result in the same as you described?
+
+Is the window that I have moved you the group a new container?
+
+Greets
+Marcus
+
+From marcus.moeller at gmx.ch  Sun Jan 29 09:02:46 2012
+From: marcus.moeller at gmx.ch (Marcus Moeller)
+Date: Sun, 29 Jan 2012 09:02:46 +0100
+Subject: [i3] question about layout
+In-Reply-To: <4F24FC1B.8070803@gmx.ch>
+References: <4F2448F3.9050308@gmx.ch> <874nvfvdac.fsf@m7000.fhaun.de>
+ <4F24FC1B.8070803@gmx.ch>
+Message-ID: <4F24FD26.8050907@gmx.ch>
+
+Am 29.01.2012 08:58, schrieb Marcus Moeller:
+> Hi again,
+>
+>>> In general I work in tabbed mode, meaning not using tiling at all. But
+>>> now I want to ask if it is possible to start one application (my
+>>> jabber client) besides the main tabbed window, with a predefined
+>>> width?
+>>
+>> This works with i3 from git:
+>>
+>> mod-a, mod-h, then call the program
+>>
+>>
+>> Related part in the config:
+>>
+>> # focus the parent container
+>> bindsym $mod+a focus parent
+>>
+>> # split in horizontal orientation
+>> bindsym $mod+h split h
+>>
+>>
+>> Resizing must done manually.
+>
+> Ok, just a general question on that: I have now tried to move the window
+> out of my main tab group, using Mod+Shift+right (in the default
+> configuration). Does this result in the same as you described?
+>
+> Is the window that I have moved you the group a new container?
+
+Sorry, meant "out of the group"
+
+> Greets
+> Marcus
+
+
+From marcus.moeller at gmx.ch  Sun Jan 29 09:35:57 2012
+From: marcus.moeller at gmx.ch (Marcus Moeller)
+Date: Sun, 29 Jan 2012 09:35:57 +0100
+Subject: [i3] track changes on the doc page
+Message-ID: <4F2504ED.5080704@gmx.ch>
+
+Hi all,
+
+is there a way to receive a notification if the user doc page has been 
+extended/changed?
+
+Greets
+Marcus
+
+From fh at fhaun.de  Sun Jan 29 11:47:08 2012
+From: fh at fhaun.de (Frank Haun)
+Date: Sun, 29 Jan 2012 11:47:08 +0100
+Subject: [i3] question about layout
+In-Reply-To: <1327795806-sup-6543@stapelberg.de> (Michael Stapelberg's message
+ of "Sun, 29 Jan 2012 00:15:36 +0000")
+References: <4F2448F3.9050308@gmx.ch> <87liortn83.fsf@m7000.fhaun.de>
+ <1327795806-sup-6543@stapelberg.de>
+Message-ID: <87aa56u6oj.fsf@m7000.fhaun.de>
+
+Michael Stapelberg <michael+i3 at stapelberg.de> writes:
+
+> Excerpts from Frank Haun's message of 2012-01-28 23:35:08 +0000:
+>> You can completely script such tasks. I use 'xdotool' for such
+>> jobs. Look your i3 config for the related keys to resize (shrink and
+>> grow) windows.
+> A better way than sending commands to X11 which sends them to i3 is to
+> directly execute i3 commands, for example with i3-msg. In your
+> example, you can use:
+>
+>> xdotool key Super_L+a  # focus the parent container
+> i3-msg focus parent
+
+Ah, thx for the hint. That's much better. I've used i3-msg only to set
+borders to none. Sorry. :-)
+
+Wow, and with this I can define how much to shrink, great!
+
+  i3-msg resize shrink left 15 px or 15 ppt
+
+
+
+[Waiting for a program]
+
+>> #---------------------------------------------------#
+>> wait_for () {
+>>     n=0
+>>     while true
+>>     do
+>>     if $1; then
+>>         break
+>>     else
+>>         # 20 seconds timeout
+>>         if [ $n -eq 20 ]; then
+>>         xmessage "Error executing: $1"
+>>         break
+>>         else
+>>         n=`expr $n + 1`
+>>         sleep 1
+>>         fi
+>>     fi
+>>     done
+>> }
+>> 
+>> wait_for "xdotool search --name emacs"
+>> #---------------------------------------------------#
+> Hm, basically you could use the for_window configuration directive here:
+>
+>     for_window [class="emacs"] exec ~/.bin/my_script_for_emacs.sh
+>
+> (I didn?t test whether emacs actually sets its class to 'emacs'.)
+
+The class name of emacs is Emacs, I think.
+
+> If you only want to have this match the first time such a window
+> appears you might want to some configuration file tricks, like keeping
+> the for_window directives in a separate file and your other
+> configuration in another file, then cat them together in your xsession
+> and after all your windows have appeared, only write your base
+> configuration to the config file and reload i3.
+
+Ops, that sounds much complicated. But I'll investigate more time using
+this or other methods.
+
+My goal was to have only _one_ clean autostart file for i3 with a
+_special_ layout. That was something I missed when I start using i3.
+
+
+Just an example, this works for me with my autostart.
+
+
+|emacs--------|ding(no border---|
+|             |                 |
+|             |                 |
+|             |pdf--------------|
+|             |browser----------|
+|             |fileman----------|
+|             |                 |
+|xterm--------|                 |
+|             |                 |
+|             |                 |
+|-------------|-----------------|
+
+
+Thanks very much,
+Frank
+
+
+From michael+i3 at stapelberg.de  Sun Jan 29 11:53:10 2012
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 29 Jan 2012 10:53:10 +0000
+Subject: [i3] question about layout
+In-Reply-To: <87aa56u6oj.fsf@m7000.fhaun.de>
+References: <4F2448F3.9050308@gmx.ch> <87liortn83.fsf@m7000.fhaun.de>
+ <1327795806-sup-6543@stapelberg.de> <87aa56u6oj.fsf@m7000.fhaun.de>
+Message-ID: <1327834344-sup-7166@stapelberg.de>
+
+Hi Frank,
+
+Excerpts from Frank Haun's message of 2012-01-29 10:47:08 +0000:
+> Ops, that sounds much complicated. But I'll investigate more time using
+> this or other methods.
+Yes, it?s a bit complicated. Just to be clear: Starting with pre-defined
+layouts and session saving is on our agenda, but far from usable yet.
+
+Best regards,
+Michael
+
+From fh at fhaun.de  Sun Jan 29 12:20:35 2012
+From: fh at fhaun.de (Frank Haun)
+Date: Sun, 29 Jan 2012 12:20:35 +0100
+Subject: [i3] question about layout
+In-Reply-To: <4F24FD26.8050907@gmx.ch> (Marcus Moeller's message of "Sun, 29
+ Jan 2012 09:02:46 +0100")
+References: <4F2448F3.9050308@gmx.ch> <874nvfvdac.fsf@m7000.fhaun.de>
+ <4F24FC1B.8070803@gmx.ch> <4F24FD26.8050907@gmx.ch>
+Message-ID: <871uqiu54s.fsf@m7000.fhaun.de>
+
+Marcus Moeller <marcus.moeller at gmx.ch> writes:
+
+> Am 29.01.2012 08:58, schrieb Marcus Moeller:
+>> Hi again,
+>>
+>>>> In general I work in tabbed mode, meaning not using tiling at all. But
+>>>> now I want to ask if it is possible to start one application (my
+>>>> jabber client) besides the main tabbed window, with a predefined
+>>>> width?
+>>>
+>>> This works with i3 from git:
+>>>
+>>> mod-a, mod-h, then call the program
+>>>
+>>>
+>>> Related part in the config:
+>>>
+>>> # focus the parent container
+>>> bindsym $mod+a focus parent
+>>>
+>>> # split in horizontal orientation
+>>> bindsym $mod+h split h
+>>>
+>>>
+>>> Resizing must done manually.
+>>
+>> Ok, just a general question on that: I have now tried to move the window
+>> out of my main tab group, using Mod+Shift+right (in the default
+>> configuration). Does this result in the same as you described?
+
+Yes, the result is the same.
+
+>> Is the window that I have moved you the group a new container?
+>
+> Sorry, meant "out of the group"
+
+Hm, I think not at this moment. mod-a (focus parent) selects still all
+windows.
+
+You must first tell how to split, use mod-v or mod-h. And if you want
+this layout stacked you can hit mod-s after it.
+
+I hope this helps. ;-)
+
+At the beginning I was very confused with all this stuff. It's a quite
+good idea to play with several xterms on a free workspace.
+
+Frank
+
+From michael+i3 at stapelberg.de  Sun Jan 29 13:38:08 2012
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 29 Jan 2012 12:38:08 +0000
+Subject: [i3] track changes on the doc page
+In-Reply-To: <4F2504ED.5080704@gmx.ch>
+References: <4F2504ED.5080704@gmx.ch>
+Message-ID: <1327840637-sup-8276@stapelberg.de>
+
+Hi Marcus,
+
+Excerpts from Marcus Moeller's message of 2012-01-29 08:35:57 +0000:
+> is there a way to receive a notification if the user doc page has been 
+> extended/changed?
+I can?t think of anything better than a simple script which updates a local git
+clone of our repository and alerts you whenever docs/userguide has been
+changed.
+
+Best regards,
+Michael
+
+From mail at merovius.de  Sun Jan 29 13:43:01 2012
+From: mail at merovius.de (Axel Wagner)
+Date: Sun, 29 Jan 2012 13:43:01 +0100
+Subject: [i3] track changes on the doc page
+In-Reply-To: <4F2504ED.5080704@gmx.ch>
+References: <4F2504ED.5080704@gmx.ch>
+Message-ID: <1327840930-sup-2425@merovius.de>
+
+Excerpts from Marcus Moeller's message of 2012-01-29 09:35:57 +0100:
+> is there a way to receive a notification if the user doc page has been 
+> extended/changed?
+
+http://code.stapelberg.de/git/i3/atom/docs/userguide?h=master
+
+replace ?master? by the branch you want to track.
+
+Regards,
+
+Axel
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 198 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120129/2c0576dd/attachment.pgp>
+
+From marcus.moeller at gmx.ch  Sun Jan 29 17:25:45 2012
+From: marcus.moeller at gmx.ch (Marcus Moeller)
+Date: Sun, 29 Jan 2012 17:25:45 +0100
+Subject: [i3] .xinitrc
+Message-ID: <4F257309.4010203@gmx.ch>
+
+Hi all.
+
+I am trying to set:
+
+export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
+
+in .xinitrc but it seems to be ignored. Does one of you perhaps know why?
+
+Greets
+Marcus
+
+From fernandotcl at gmail.com  Sun Jan 29 17:48:47 2012
+From: fernandotcl at gmail.com (Fernando Lemos)
+Date: Sun, 29 Jan 2012 14:48:47 -0200
+Subject: [i3] .xinitrc
+In-Reply-To: <4F257309.4010203@gmx.ch>
+References: <4F257309.4010203@gmx.ch>
+Message-ID: <CANVYNa9tZawmhROJ2vbSOUES42x0QWuHbvq8KCrU_NHFfz5aKA@mail.gmail.com>
+
+Hi,
+
+On Sun, Jan 29, 2012 at 2:25 PM, Marcus Moeller <marcus.moeller at gmx.ch> wrote:
+> Hi all.
+>
+> I am trying to set:
+>
+> export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
+>
+> in .xinitrc but it seems to be ignored. Does one of you perhaps know why?
+
+Please note that .xinitrc is only read by xinit (startx). If you're
+using a DM, you can use .xsession or .xsessionrc.
+
+Regards,
+
+From alex at halogen-dg.com  Sun Jan 29 17:50:32 2012
+From: alex at halogen-dg.com (Alex V. Koval)
+Date: Sun, 29 Jan 2012 18:50:32 +0200 (EET)
+Subject: [i3] question about 'containers'
+Message-ID: <alpine.LNX.2.00.1201291845450.7846@avk-v131-2>
+
+
+Hi,
+
+I am using i3 for a few days now, the impressions are: that is *great* 
+thing!
+
+I've experienced a few issues, I will post them. And have some additional
+questions.
+
+For example, I can not find any information what does mean 'another 
+container' which appears sometimes on top? I can not find this mentioned
+anywhere in documentation.
+
+
+--
+Alex V. Koval
+
+From mail at merovius.de  Sun Jan 29 18:54:41 2012
+From: mail at merovius.de (Axel Wagner)
+Date: Sun, 29 Jan 2012 18:54:41 +0100
+Subject: [i3] question about 'containers'
+In-Reply-To: <alpine.LNX.2.00.1201291845450.7846@avk-v131-2>
+References: <alpine.LNX.2.00.1201291845450.7846@avk-v131-2>
+Message-ID: <1327858710-sup-4925@merovius.de>
+
+Hi Alex,
+
+Excerpts from Alex V. Koval's message of 2012-01-29 17:50:32 +0100:
+> For example, I can not find any information what does mean 'another 
+> container' which appears sometimes on top?
+
+This is the title of a container, that does not contain a window, but
+only other containers.
+Let me illustrate this with an example:
+
+1. You open up a terminal
+
+This creates a container with a window. The title of the container
+becomes the title of the terminal.
+
+2. You open a second terminal
+
+This does the same as above, but it will also do more - the two
+containers are now put together into a bigger one. Each child will have
+the title of the terminal it contains, but the parent-container does not
+contain a window, so it get's the title ?another container?. You
+normally don't see that, because containers without windows don't get
+titles. There are however a few exceptions:
+
+3. You put the parent in stacked mode. This will show a seperate titlebar
+for every child of the parent, displaying it's title.
+    
+4. You then select one of the children and split it up (and say, just for
+the sake of the argument, that you open up another terminal there after
+that).
+
+Now you have a tree like this:
+  C1
+ / \
+T1  C2
+   / \
+  T2  T3
+Where T stands for a container having a window (the terminals) and
+C{1,2} are containers, that merely have child-containers.
+Now the title of C2 will be ?another container? (as above and normally
+not shown) and be shown in the titlebars of C1.
+
+So I hope that cleared it up somehow. Just think of ?another container?
+as meaning ?there isn't just a window below this, but a whole tree?.
+I think the wording ?another container? is a remnant from times, where
+the tree-thing was still very experimental and that it will be replaced
+by something more meaningfull in the future.
+
+Kind regards,
+
+Axel
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 198 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120129/a07a80b3/attachment.pgp>
+
+From michael+i3 at stapelberg.de  Sun Jan 29 19:05:01 2012
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sun, 29 Jan 2012 18:05:01 +0000
+Subject: [i3] question about 'containers'
+In-Reply-To: <1327858710-sup-4925@merovius.de>
+References: <alpine.LNX.2.00.1201291845450.7846@avk-v131-2>
+ <1327858710-sup-4925@merovius.de>
+Message-ID: <1327860241-sup-4286@stapelberg.de>
+
+Hi Axel,
+
+Excerpts from Axel Wagner's message of 2012-01-29 17:54:41 +0000:
+> I think the wording ?another container? is a remnant from times, where
+> the tree-thing was still very experimental and that it will be replaced
+> by something more meaningfull in the future.
+Correct. See also the relevant source code:
+
+        /* this is a non-leaf container, we need to make up a good description */
+        // TODO: use a good description instead of just "another container"
+        draw_text("another container", strlen("another container"), false,
+	?
+
+Best regards,
+Michael
+
+From dunric29a at gmail.com  Mon Jan 30 18:39:52 2012
+From: dunric29a at gmail.com (David Unric)
+Date: Mon, 30 Jan 2012 18:39:52 +0100
+Subject: [i3] Why i3 leaves garbage in /tmp ?
+Message-ID: <CABRYzzXGhrHx+PdvxoTgSOuyTDtaJzgnXCfzcM9pwSK1mJxSmA@mail.gmail.com>
+
+Hi,
+
+just curious if it's a bug or a feature  i3 does not clean up temporary
+directory in /tmp (like /tmp/i3-<uname>.UID) and files it places there like
+errorlog or ipc socket ?
+I did a peek in sources and it seems there is no code to do such cleanups ?
+
+So after several sessions the /tmp directory is full with i3's _temporary_
+files created at every startup :(
+
+Am I missing something here ?
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120130/6ceacae3/attachment.html>
+
+From alex at ua2web.com  Tue Jan 31 03:25:23 2012
+From: alex at ua2web.com (Alex V. Koval)
+Date: Tue, 31 Jan 2012 04:25:23 +0200 (EET)
+Subject: [i3] problem with tray applications on screen change
+Message-ID: <alpine.LNX.2.00.1201310423020.30235@avk-v131-2>
+
+
+Hi,
+
+I experience certain problem with tray apps and screen change.
+
+When either:
+   a) add/remove primary screen
+
+OR
+
+  b) going into sleep mode
+
+Some of tray icons disappear. Some applications (which were
+not active on screen) would die.
+
+Exactly the behavior depends on application:
+
+   1) pidgin if was not active on screen would completely
+      disappear
+
+   2) skype most probably would stay on
+
+   3) parcellite will disappear and exit
+
+
+Part of log file does not reveal anything to me, but very
+probably its about "X11 Error received"?:
+
+----- via dmenu I replace current screen with bigger one -------
+01/30/2012 07:56:36 PM - executing: dmenu_run -fn 
+'-xos4-*-bold-*-*-*-16-*-*-*-*-*-iso10646-1' -nb '#222222' -sf '#00ff00' -sb 
+'#050505' -nf "#ffffff"
+single command completely parsed, dropping state...
+done, json output = (null)
+01/30/2012 07:56:36 PM - Not a managed window, ignoring UnmapNotify event
+01/30/2012 07:56:43 PM - Checking window 0x00c00007 (class i3bar)
+01/30/2012 07:56:43 PM - dock status does not match
+01/30/2012 07:56:43 PM - Checking window 0x00c00007 (class i3bar)
+01/30/2012 07:56:43 PM - dock status matches
+01/30/2012 07:56:43 PM - Not a managed window, ignoring UnmapNotify event
+01/30/2012 07:56:43 PM - ERROR: X11 Error received! sequence 0x924, error_code 
+= 4
+01/30/2012 07:56:43 PM - ERROR: X11 Error received! sequence 0x925, error_code 
+= 13
+01/30/2012 07:56:43 PM - Not a managed window, ignoring UnmapNotify event
+01/30/2012 07:56:43 PM - ERROR: X11 Error received! sequence 0x927, error_code 
+= 4
+01/30/2012 07:56:43 PM - ERROR: X11 Error received! sequence 0x928, error_code 
+= 13
+01/30/2012 07:56:43 PM - Not a managed window, ignoring UnmapNotify event
+01/30/2012 07:56:43 PM - ERROR: X11 Error received! sequence 0x92a, error_code 
+= 4
+01/30/2012 07:56:43 PM - ERROR: X11 Error received! sequence 0x92b, error_code 
+= 13
+01/30/2012 07:56:43 PM - Not a managed window, ignoring UnmapNotify event
+01/30/2012 07:56:43 PM - ERROR: X11 Error received! sequence 0x92d, error_code 
+= 4
+01/30/2012 07:56:43 PM - ERROR: X11 Error received! sequence 0x92e, error_code 
+= 13
+01/30/2012 07:56:43 PM - workspace visible? fs = 0x20a5bf0, ws = 0x20a5bf0
+01/30/2012 07:56:43 PM - workspace visible? fs = 0x20a5bf0, ws = 0x20a5bf0
+01/30/2012 07:56:43 PM - workspace visible? fs = 0x20a5bf0, ws = 0x20a5bf0
+01/30/2012 07:56:43 PM - workspace visible? fs = 0x20a5bf0, ws = 0x20a5bf0
+01/30/2012 07:56:43 PM - WM_CLASS changed to i3bar (instance), i3bar (class)
+01/30/2012 07:56:43 PM - WM_NAME changed to "i3bar for output HDMI1"
+01/30/2012 07:56:43 PM - Using legacy window title. Note that in order to get 
+Unicode window titles in i3, the application has to set _NET_WM_NAME (UTF-8)
+01/30/2012 07:56:43 PM - This window is of type dock
+01/30/2012 07:56:43 PM - Checking window 0x00c00011 (class i3bar)
+01/30/2012 07:56:43 PM - dock status does not match
+01/30/2012 07:56:43 PM - Checking window 0x00c00011 (class i3bar)
+01/30/2012 07:56:43 PM - dock status matches
+01/30/2012 07:56:43 PM - Not a managed window, ignoring UnmapNotify event
+01/30/2012 07:56:43 PM - expose event for unknown window, ignoring
+01/30/2012 07:56:43 PM - Not a managed window, ignoring UnmapNotify event
+01/30/2012 07:56:43 PM - Not a managed window, ignoring UnmapNotify event
+01/30/2012 07:56:43 PM - ERROR: X11 Error received! sequence 0xa5e, error_code 
+= 3
+01/30/2012 07:56:43 PM - Not a managed window, ignoring UnmapNotify event
+01/30/2012 07:56:43 PM - Not a managed window, ignoring UnmapNotify event
+Has notifications support True
+Loading...
+Connecting to daemon...
+Connected.
+displaytray True
+Done loading.
+----------------- end of loading ----------------------------------
+
+I've made command to restart tray applications after screen change:
+
+------------------------------------ ~/bin/my-tray-start ---------
+#!/bin/bash
+
+for p in `cat ~/.tray-progs`
+do
+      if test -z "`ps axf|grep $p|grep -v grep`"
+ 	 then
+ 	 echo Starting $p ...
+ 	 $p &
+ 	 else
+ 	 echo Skipping already started program: $p ...
+     fi
+done
+
+------------------------------------------------------------------
+
+My tray progs (~/.tray-progs):
+skype pidgin wicd-client dropbox parcellite
+
+So:
+   1) Skype stays on
+   2) pidgin stays on only on screen, tray icon disappears
+   3) wicd-client disappears, and even if it was on screen during
+      screen change it would exit
+   4) dropbox exits as well.
+
+What should/can I do to help fixing this problem? My C knowelerge
+is limited, but I can run gdb and look at some variables/trace, if this
+is required.
+
+Best Regards,
+    Alex Koval
+
+From fernandotcl at gmail.com  Tue Jan 31 03:29:16 2012
+From: fernandotcl at gmail.com (Fernando Lemos)
+Date: Tue, 31 Jan 2012 00:29:16 -0200
+Subject: [i3] problem with tray applications on screen change
+In-Reply-To: <alpine.LNX.2.00.1201310423020.30235@avk-v131-2>
+References: <alpine.LNX.2.00.1201310423020.30235@avk-v131-2>
+Message-ID: <CANVYNa9TgZDfbh5g58jCZx2+TaPe59G3DSw2EzTymnAV7rQCFg@mail.gmail.com>
+
+Hi, Alex
+
+On Tue, Jan 31, 2012 at 12:25 AM, Alex V. Koval <alex at ua2web.com> wrote:
+>
+> Hi,
+>
+> I experience certain problem with tray apps and screen change.
+>
+> When either:
+> ?a) add/remove primary screen
+>
+> OR
+>
+> ?b) going into sleep mode
+>
+> Some of tray icons disappear. Some applications (which were
+> not active on screen) would die.
+
+This might be bug #550:
+
+http://bugs.i3wm.org/report/ticket/550
+
+If you can reproduce it with the code in the -next branch, please
+comment in the bug report. If possible, detail your steps to reproduce
+the problem in that report too.
+
+Thanks,
+
+From michael+i3 at stapelberg.de  Tue Jan 31 14:33:07 2012
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Tue, 31 Jan 2012 13:33:07 +0000
+Subject: [i3] Why i3 leaves garbage in /tmp ?
+In-Reply-To: <CABRYzzXGhrHx+PdvxoTgSOuyTDtaJzgnXCfzcM9pwSK1mJxSmA@mail.gmail.com>
+References: <CABRYzzXGhrHx+PdvxoTgSOuyTDtaJzgnXCfzcM9pwSK1mJxSmA@mail.gmail.com>
+Message-ID: <1328016610-sup-2035@stapelberg.de>
+
+Hi David,
+
+Excerpts from David Unric's message of 2012-01-30 17:39:52 +0000:
+> just curious if it's a bug or a feature  i3 does not clean up temporary
+> directory in /tmp (like /tmp/i3-<uname>.UID) and files it places there like
+> errorlog or ipc socket ?
+> I did a peek in sources and it seems there is no code to do such cleanups ?
+> 
+> So after several sessions the /tmp directory is full with i3's _temporary_
+> files created at every startup :(
+That?s correct, we don?t clean up /tmp. Since the files are really tiny, it
+shouldn?t really matter. And usually, you start just one i3 session anyways.
+
+However, if you are really bothered by this, either switch to a system which
+provides XDG_RUNTIME_DIR (such as systemd) or set XDG_RUNTIME_DIR to a custom
+path before starting i3, like this:
+XDG_RUNTIME_DIR=/tmp/i3/ i3
+This will lead to i3 putting all of its file in a single directory, which might
+be better for your use case.
+
+The default is to generate a secure tempfile location in order to make it hard
+for people to DoS multi-user systems. Even if we were to add code to cleanup
+the tempfiles, in case of an i3 crash they would stay there.
+
+Best regards,
+Michael
+

@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3 announcement] i3 v4.2 released
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-announce%40infra.in.zekjur.net?Subject=Re%3A%20%5Bi3%20announcement%5D%20i3%20v4.2%20released&In-Reply-To=%3C20120425214336.9230.95598%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000029.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3 announcement] i3 v4.2 released</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-announce%40infra.in.zekjur.net?Subject=Re%3A%20%5Bi3%20announcement%5D%20i3%20v4.2%20released&In-Reply-To=%3C20120425214336.9230.95598%40midna.zekjur.net%3E"
+       TITLE="[i3 announcement] i3 v4.2 released">michael at i3wm.org
+       </A><BR>
+    <I>Wed Apr 25 23:43:36 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000029.html">[i3 announcement] i3lock 2.4 released
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#30">[ date ]</a>
+              <a href="thread.html#30">[ thread ]</a>
+              <a href="subject.html#30">[ subject ]</a>
+              <a href="author.html#30">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I just released i3 v4.2. The changes follow:
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Release notes for i3 v4.2    &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+This is the second release of the new major version of i3, v4.2. It is
+considered stable. All users of i3 are strongly encouraged to upgrade.
+
+A big change with this release is (again) a new parser for commands. You might
+get the impression that we like rewriting parsers, but check the commit message
+of commit a532f5a for rationale on this decision.
+
+A more visible change to users is the introduction of a scratchpad command:
+This is useful to have a permanent editor session ready whenever you need it.
+Or your music player. Or email client? Or $programming-language REPL? Give it a
+try!
+
+Also, you are finally able to move workspaces between the different outputs if
+you are using multiple monitors. You can rename workspaces on the fly and
+identify named workspaces by their number. So you can rename &quot;1: www&quot; to &quot;1:
+code&quot; with one simple rename command and all your keybindings will still work.
+
+A subtle indicator of the split state of containers has been introduced: In
+case you are in a split container with precisely one window (a situation which
+you could not recognize by looking at your screen previously), i3 will
+highlight the bottom/right border of the split container in a lighter blue.
+This should reduce confusion about whether you are dealing with a split
+container or not.
+
+And finally, i3bar now supports a JSON input protocol, so that with a
+subsequent release of i3status, you will be able to use colors in your bar!
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Changes in v4.2            &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+  &#8226; i3-sensible-*: don&#8217;t call which without parameters
+  &#8226; i3-config-wizard: Mark the currently selected modifier with an arrow
+  &#8226; i3bar: kick tray clients after output configuration changed
+  &#8226; i3bar: kill child processes when exit()ing (they might be stopped)
+  &#8226; i3bar now supports a JSON input format to provide colors and more (later)
+  &#8226; Support different modifier keys for showing i3bar in hide mode
+  &#8226; bar config: add i3bar_command for non-standard setups
+  &#8226; Implement scratchpad functionality
+  &#8226; Implement 'focus output left|right|up|down'
+  &#8226; Implement 'workspace next_on_output|prev_on_output'
+  &#8226; Implement 'move workspace to output &lt;output&gt;'
+  &#8226; Implement a new parser for commands
+  &#8226; Implement 'workspace number &lt;number&gt;' to switch to named workspaces
+  &#8226; Implement 'move [container|window] to workspace number &lt;number&gt;'
+  &#8226; Implement 'rename workspace &lt;old_name&gt; to &lt;new_name&gt;'
+  &#8226; Re-implement borders in the workspace bar
+  &#8226; Draw a separator line after each tab in tabbed mode
+  &#8226; Ignore aspect ratio during fullscreen mode (fixes MPlayer subtitles)
+  &#8226; Correctly restore focus after in-place restarts
+  &#8226; Highlight the right/bottom border of split windows (&quot;indicator&quot;)
+  &#8226; Install /usr/share/applications/i3.desktop so that you can select i3 as a
+    window manager in GNOME
+  &#8226; Don&#8217;t migrate unfocused empty workspaces when disabling an output
+  &#8226; randr: Skip workspaces which are assigned to a different output when
+    creating a new workspace
+  &#8226; Implement an urgency flag criterion
+  &#8226; Render only once for all matching assignments
+  &#8226; Implement support for user configuration of constraints on floating window
+    dimensions
+  &#8226; Extend move command for floating windows
+  &#8226; Added option to select primary display on tray_output
+  &#8226; Implement resize &lt;grow|shrink&gt; &lt;width|height&gt;, use it in the default config
+  &#8226; Replace the old fullscreen container when requesting fullscreen
+  &#8226; Prevent changing focus outside a container when scrolling on the
+    decorations
+  &#8226; Only resize when the left/right mouse button is used, not when scrolling
+  &#8226; docs: replace the refcard with an HTML version
+  &#8226; cfgparse: accept force-xinerama as a synonym of force_xinerama
+  &#8226; Implement support for 32 bit visuals (necessary for transparency)
+  &#8226; X11: only copy the requested region from buffer pixmaps in ExposeEvents
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Bugfixes                   &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+  &#8226; Bugfix: Don&#8217;t leak IPC file descriptors
+  &#8226; Bugfix: fix empty tray icon areas in i3bar
+  &#8226; Bugfix: properly handle workspace names with double quotes
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Thanks!                    &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+Thanks for testing, bugfixes, discussions and everything I forgot go out to:
+
+  Aaron Small, ablepharus, aksr, alexander, badboy, B-con, beauby, ben, biiter,
+  binzter, cg, cradle, darkraven, dbp, dcoppa, Don, dothebart, D Thompson,
+  eeemsi, f8l, Fandekasp, fernandotcl, gamo, garga, gregkh, Han, helgikrs,
+  Jeremy O'Brien, jjfoerch, joepd, Jose Pereira, Jure Ziberna, MasterofJOKers,
+  Merovius, mhcerri, migueldvb, moemoe, mseed, mxf, nh2, noxxun, Paul, Pavel
+  L&#246;bl, Peter Bui, Phlogistique, phnom, piroko, rami, SardemFF7, xeen, xpt,
+  zeus
+
+-- Michael Stapelberg, 2012-04-25
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000029.html">[i3 announcement] i3lock 2.4 released
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#30">[ date ]</a>
+              <a href="thread.html#30">[ thread ]</a>
+              <a href="subject.html#30">[ subject ]</a>
+              <a href="author.html#30">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-announce">More information about the i3-announce
+mailing list</a><br>
+</body></html>

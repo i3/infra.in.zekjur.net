@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3 not capturing key syms
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%20not%20capturing%20key%20syms&In-Reply-To=%3Cx6mwfzqtjh.fsf%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001657.html">
+   <LINK REL="Next"  HREF="001659.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3 not capturing key syms</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%20not%20capturing%20key%20syms&In-Reply-To=%3Cx6mwfzqtjh.fsf%40midna.zekjur.net%3E"
+       TITLE="[i3] i3 not capturing key syms">michael at i3wm.org
+       </A><BR>
+    <I>Sun Apr  6 00:51:30 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001657.html">[i3] i3 not capturing key syms
+</A></li>
+        <LI>Next message: <A HREF="001659.html">[i3] i3 not capturing key syms
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1658">[ date ]</a>
+              <a href="thread.html#1658">[ thread ]</a>
+              <a href="subject.html#1658">[ subject ]</a>
+              <a href="author.html#1658">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Tobias,
+
+Tobias Frilling &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">tobias at frilling-online.de</A>&gt; writes:
+&gt;<i> I'm currently trying an alternative keyboard layout, Neo2, but I'm
+</I>&gt;<i> having trouble with i3. It seems like i3 isn't capturing any key syms,
+</I>&gt;<i> so no 'bindsym' is triggered.
+</I>I use neo2 since many years, and all i3 features work perfectly fine for
+me.
+
+&gt;<i> Here's the console output from i3-config-wizard for pressing Super_L,
+</I>&gt;<i> Return and a, once as it should be with keymap de, then broken with
+</I>&gt;<i> de-neo:
+</I>&gt;<i> [&#8230;]
+</I>&gt;<i> Keypress 133, state raw = 16
+</I>&gt;<i> sym =  (0)
+</I>&gt;<i> Modifier keycode for Mod1: 0x40
+</I>&gt;<i> Modifier keycode for Mod1: 0xcd
+</I>&gt;<i> Modifier keycode for Mod4: 0x85
+</I>&gt;<i> This is Mod4!
+</I>&gt;<i> Modifier keycode for Mod4: 0x86
+</I>&gt;<i> Modifier keycode for Mod4: 0xce
+</I>&gt;<i> Modifier keycode for Mod4: 0xcf
+</I>&gt;<i> Keypress 36, state raw = 16
+</I>&gt;<i> sym =  (0)
+</I>&gt;<i> Modifier keycode for Mod1: 0x40
+</I>&gt;<i> Modifier keycode for Mod1: 0xcd
+</I>&gt;<i> Modifier keycode for Mod4: 0x85
+</I>&gt;<i> Modifier keycode for Mod4: 0x86
+</I>&gt;<i> Modifier keycode for Mod4: 0xce
+</I>&gt;<i> Modifier keycode for Mod4: 0xcf
+</I>&gt;<i> Keypress 38, state raw = 16
+</I>&gt;<i> sym =  (0)
+</I>&gt;<i> Modifier keycode for Mod1: 0x40
+</I>&gt;<i> Modifier keycode for Mod1: 0xcd
+</I>&gt;<i> Modifier keycode for Mod4: 0x85
+</I>&gt;<i> Modifier keycode for Mod4: 0x86
+</I>&gt;<i> Modifier keycode for Mod4: 0xce
+</I>&gt;<i> Modifier keycode for Mod4: 0xcf
+</I>So i3-config-wizard cannot translate the keysyms. This could be a bug in
+how i3-config-wizard works &#8212; keyboard handling in XCB is tricky.
+
+Can you test whether i3lock from git (it has to be the git version)
+works with neo2 for you?
+
+Also, which i3 version are you using? And can you append the output of
+xmodmap -pke?
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001657.html">[i3] i3 not capturing key syms
+</A></li>
+	<LI>Next message: <A HREF="001659.html">[i3] i3 not capturing key syms
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1658">[ date ]</a>
+              <a href="thread.html#1658">[ thread ]</a>
+              <a href="subject.html#1658">[ subject ]</a>
+              <a href="author.html#1658">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

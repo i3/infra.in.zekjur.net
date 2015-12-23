@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] Block outward events while processing commands.
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Block%20outward%20events%20while%20processing%20commands.&In-Reply-To=%3CCAMJW5%3D1F%3D3CP8KNaE1C947bWQxhka3qk_z_zfCGYcMNZNUkB9Q%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000740.html">
+   <LINK REL="Next"  HREF="000743.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] Block outward events while processing commands.</H1>
+    <B>DR</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Block%20outward%20events%20while%20processing%20commands.&In-Reply-To=%3CCAMJW5%3D1F%3D3CP8KNaE1C947bWQxhka3qk_z_zfCGYcMNZNUkB9Q%40mail.gmail.com%3E"
+       TITLE="[i3] [PATCH] Block outward events while processing commands.">drdarkraven at gmail.com
+       </A><BR>
+    <I>Sun Jun 24 12:44:43 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000740.html">[i3] [PATCH] Block outward events while processing commands.
+</A></li>
+        <LI>Next message: <A HREF="000743.html">[i3] [PATCH] Block outward events while processing commands.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#742">[ date ]</a>
+              <a href="thread.html#742">[ thread ]</a>
+              <a href="subject.html#742">[ subject ]</a>
+              <a href="author.html#742">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+Thanks for the quick reply, i re-format my patch according to your
+suggestion. Hope it's better this time.
+
+On Sun, Jun 24, 2012 at 6:10 AM, Fernando Lemos &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">fernandotcl at gmail.com</A>&gt;wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Fri, Jun 22, 2012 at 10:14 AM, DR &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">drdarkraven at gmail.com</A>&gt; wrote:
+</I>&gt;<i> &gt; (Eventually I've got some time to rework patches I sent previously. I
+</I>&gt;<i> divide
+</I>&gt;<i> &gt; them into mutually unrelated parts, and will send them in different
+</I>&gt;<i> threads,
+</I>&gt;<i> &gt; according to Fernando's suggestion. So this is the first one).
+</I>&gt;<i>
+</I>&gt;<i> Thanks for addressing those concerns.
+</I>&gt;<i>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Currently i3 sends event with quite bad timing. For example, the
+</I>&gt;<i> workspaces
+</I>&gt;<i> &gt; event 'focus' is sent before the tree_render() is called (in other words,
+</I>&gt;<i> &gt; the focus has not been actually changed, only the internal states of
+</I>&gt;<i> i3wm is
+</I>&gt;<i> &gt; changed). Although the differences is just fractions of a second, it may
+</I>&gt;<i> &gt; confuse some applications which rely heavily on the correct timing (for
+</I>&gt;<i> &gt; example, i3bar with my upcoming patches).
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; So I add facilities to queue outward events up until the tree_render is
+</I>&gt;<i> &gt; done.
+</I>&gt;<i>
+</I>&gt;<i> That does make sense to me. Is there any reason why we might not want
+</I>&gt;<i> to queue the events? If so, the IPC API could be simplified a bit. I'd
+</I>&gt;<i> prefer if ipc_queue/unqueue_event() were renamed to ipc_start_queuing
+</I>&gt;<i> and ipc_stop_queuing_and_drain. ipc_send_event_unqueue doesn't fully
+</I>&gt;<i> describe what the function does either.
+</I>&gt;<i>
+</I>&gt;<i> That said, in situations like this, when you have to make a design
+</I>&gt;<i> decision, I'd recommend talking to Michael before actually working on
+</I>&gt;<i> the code.
+</I>&gt;<i>
+</I>
+I think I can express my idea clearer with code, and code could help
+Michael make decision more easily.
+
+Anyway, I code for my own needs. If this patch got rejected, I will use it
+with my i3wm.
+
+&gt;<i>
+</I>&gt;<i> Other than those pending design decisions, the patch looks good. A few
+</I>&gt;<i> nitpicks:
+</I>&gt;<i>
+</I>&gt;<i> * Please make ipc_is_queued static.
+</I>&gt;<i>
+</I>&gt;<i> * Please use foo(void) instead of foo(). foo(void) is the prototype of
+</I>&gt;<i> an ANSI C function that takes no arguments, whereas foo() is the
+</I>&gt;<i> declaration of a K&amp;R function.
+</I>&gt;<i>
+</I>&gt;<i> * Keep the functions separated by an empty line in ipc.c (check how
+</I>&gt;<i> other functions are separated in that file).
+</I>&gt;<i>
+</I>&gt;<i> * In ipc.h, add the documentation on top of the function prototypes,
+</I>&gt;<i> using &quot;/**&quot; in the first line of the comment (take a look at other
+</I>&gt;<i> functions).
+</I>&gt;<i>
+</I>&gt;<i> * You might want to document ipc_send_event_unqueue better. Also,
+</I>&gt;<i> please punctuate the documentation of a function.
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120624/0d1415f1/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120624/0d1415f1/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000740.html">[i3] [PATCH] Block outward events while processing commands.
+</A></li>
+	<LI>Next message: <A HREF="000743.html">[i3] [PATCH] Block outward events while processing commands.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#742">[ date ]</a>
+              <a href="thread.html#742">[ thread ]</a>
+              <a href="subject.html#742">[ subject ]</a>
+              <a href="author.html#742">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

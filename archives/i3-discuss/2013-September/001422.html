@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3 bug #1073: pango &#8220;Profont&#8221; is missing a few pixels
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%0A%20%3D%3Futf-8%3Fb%3FaTMgYnVnICMxMDczOiBwYW5nbyDigJxQcm9mb2504oCdIGlz%3F%3D%0A%20%3D%3Futf-8%3Fq%3F_missing_a_few_pixels%3F%3D&In-Reply-To=%3C5224C959.9020103%40necoro.eu%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001421.html">
+   <LINK REL="Next"  HREF="001423.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3 bug #1073: pango &#8220;Profont&#8221; is missing a few pixels</H1>
+    <B>Ren&#233; Neumann</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%0A%20%3D%3Futf-8%3Fb%3FaTMgYnVnICMxMDczOiBwYW5nbyDigJxQcm9mb2504oCdIGlz%3F%3D%0A%20%3D%3Futf-8%3Fq%3F_missing_a_few_pixels%3F%3D&In-Reply-To=%3C5224C959.9020103%40necoro.eu%3E"
+       TITLE="[i3] i3 bug #1073: pango &#8220;Profont&#8221; is missing a few pixels">lists at necoro.eu
+       </A><BR>
+    <I>Mon Sep  2 19:22:33 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001421.html">[i3] i3 bug #1073: pango &#8220;Profont&#8221; is missing a few pixels
+</A></li>
+        <LI>Next message: <A HREF="001423.html">[i3] [OT] shellex - shell based launcher
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1422">[ date ]</a>
+              <a href="thread.html#1422">[ thread ]</a>
+              <a href="subject.html#1422">[ subject ]</a>
+              <a href="author.html#1422">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>There is something like a fallback font (I know that when rendering
+mathematical symbols that are not covered by my monospace font, it falls
+back to DejaVu Sans -- resulting in those symbols to be way too big).
+
+Some googling shows f.ex.
+
+<A HREF="http://unix.stackexchange.com/questions/57394/how-to-block-glyph-fallback-on-linux">http://unix.stackexchange.com/questions/57394/how-to-block-glyph-fallback-on-linux</A>
+
+:<i>)
+</I>
+- Ren&#233;
+
+Am 02.09.2013 13:24, schrieb Fernando Lemos:
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> Sorry for the delay, I was mostly offline this weekend.
+</I>&gt;<i> 
+</I>&gt;<i> I don't think there's a fallback, if the fonts weren't visible then you'd see those Unicode squares. At least that's what happens if I recall correctly when your font doesn't support diacritics or arab characters, for instance.
+</I>&gt;<i> 
+</I>&gt;<i> I don't know from where Pango extracts the size information, but if it's part of the font metadata, it might be a bug in the font itself. Or maybe it's just cap height + descent, and some glyphs may exceed those boundaries. pango_layout_get_font_size doesn't specify anything about what &quot;size&quot; is&#8230; :-/
+</I>&gt;<i> 
+</I>&gt;<i> Regards,
+</I>&gt;<i> 
+</I>&gt;<i> Em 31/08/2013, &#224;s 07:54, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt; escreveu:
+</I>&gt;<i> 
+</I>&gt;&gt;<i> Hi SardemFF7, fernandotcl,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> you guys are knowledgable in all things pango :). Recently,
+</I>&gt;&gt;<i> <A HREF="http://bugs.i3wm.org/query/ticket/1073">http://bugs.i3wm.org/query/ticket/1073</A> was reported and I don&#8217;t really
+</I>&gt;&gt;<i> know what the issue is here.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> With some text, e.g. &#8220;&#9834;: 100%&#8221; (try a couple others if that doesn&#8217;t
+</I>&gt;&gt;<i> trigger it on your machine), the font height is 15 pixels instead of the
+</I>&gt;&gt;<i> 12 pixels that were determined in load_pango_font(), leading to 3
+</I>&gt;&gt;<i> missing pixels.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I figured this out by adding the following code:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> --- i/libi3/font.c
+</I>&gt;&gt;<i> +++ w/libi3/font.c
+</I>&gt;&gt;<i> @@ -98,6 +98,10 @@ static void draw_text_pango(const char *text, size_t text_len,
+</I>&gt;&gt;<i>     pango_cairo_update_layout(cr, layout);
+</I>&gt;&gt;<i>     pango_cairo_show_layout(cr, layout);
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> +    gint height;
+</I>&gt;&gt;<i> +    pango_layout_get_pixel_size(layout, NULL, &amp;height);
+</I>&gt;&gt;<i> +    LOG(&quot;saved height = %d, height = %d\n&quot;, savedFont-&gt;height, height);
+</I>&gt;&gt;<i> +
+</I>&gt;&gt;<i>     /* Free resources */
+</I>&gt;&gt;<i>     g_object_unref(layout);
+</I>&gt;&gt;<i>     cairo_destroy(cr);
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> However, I am not sure why this happens. Is there some kind of font
+</I>&gt;&gt;<i> fallback involved for the &#8220;unusual&#8221; unicode glyphs?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Is there something we can do to fix this?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thanks.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> -- 
+</I>&gt;&gt;<i> Best regards,
+</I>&gt;&gt;<i> Michael
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 555 bytes
+Desc: OpenPGP digital signature
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130902/ec6fc77f/attachment.sig">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130902/ec6fc77f/attachment.sig</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001421.html">[i3] i3 bug #1073: pango &#8220;Profont&#8221; is missing a few pixels
+</A></li>
+	<LI>Next message: <A HREF="001423.html">[i3] [OT] shellex - shell based launcher
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1422">[ date ]</a>
+              <a href="thread.html#1422">[ thread ]</a>
+              <a href="subject.html#1422">[ subject ]</a>
+              <a href="author.html#1422">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

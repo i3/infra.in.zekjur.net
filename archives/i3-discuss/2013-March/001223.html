@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] decent kde integration with i3?
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20decent%20kde%20integration%20with%20i3%3F&In-Reply-To=%3C20130320193825.GA579%40anton%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001222.html">
+   <LINK REL="Next"  HREF="001224.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] decent kde integration with i3?</H1>
+    <B>eeno</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20decent%20kde%20integration%20with%20i3%3F&In-Reply-To=%3C20130320193825.GA579%40anton%3E"
+       TITLE="[i3] decent kde integration with i3?">eeno at cox.net
+       </A><BR>
+    <I>Wed Mar 20 20:38:25 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001222.html">[i3] decent kde integration with i3?
+</A></li>
+        <LI>Next message: <A HREF="001224.html">[i3] decent kde integration with i3?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1223">[ date ]</a>
+              <a href="thread.html#1223">[ thread ]</a>
+              <a href="subject.html#1223">[ subject ]</a>
+              <a href="author.html#1223">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Marius you are a gentleman, and a scholar! Thanks for taking the time to
+produce &amp; provide these patches and info - very much appreciated!
+
+I'll apply these over the weekend, and will send a response with my
+results to the list just for follow-up. I'm wondering, you said:
+
+&gt;<i> I have a set of patches on top of the i3 next branch 
+</I>
+... does this mean I can simply compile from git to get these changes
+rather than applying them manually? 
+
+
+
+On Wed, Mar 20, 2013 at 10:56:40AM -0700, Marius Muja wrote:
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> I'm running kde with i3 as window manager and it's working very well. I did
+</I>&gt;<i> have to make a few changes to i3 to make them play nicely together, which I'll
+</I>&gt;<i> describe below.
+</I>&gt;<i> 
+</I>&gt;<i> First of all to tell kde to use i3 instead of kwin I used the KDEWM environment
+</I>&gt;<i> variable which is set inside the .kde/env/set_window_manager.sh shell script.
+</I>&gt;<i> 
+</I>&gt;<i> Inside i3's config file I have added the following commands to prevent various
+</I>&gt;<i> kde pop-ups from being decorated/tiled:
+</I>&gt;<i> 
+</I>&gt;<i> for_window [class=&quot;Plasma-desktop&quot;] border none
+</I>&gt;<i> for_window [class=&quot;krunner&quot;] border none
+</I>&gt;<i> for_window [class=&quot;Kmix&quot;] floating enable;
+</I>&gt;<i> for_window [class=&quot;Plasmoidviewer&quot;] floating enable;
+</I>&gt;<i> for_window [class=&quot;Klipper&quot;] floating enable; border none
+</I>&gt;<i> 
+</I>&gt;<i> Lastly, I have a set of patches on top of the i3 next branch (they should apply
+</I>&gt;<i> fine on top of 4.5 as well), which I'm attaching to this email. Not all are
+</I>&gt;<i> needed for kde/i3 integration, I'm including all of them here because I don't
+</I>&gt;<i> have time to check if they apply cleanly when some are missing.
+</I>&gt;<i> 
+</I>&gt;<i> 0001-Fix-crash-in-some-situations.patch 
+</I>&gt;<i> This should fix the krunner crash.
+</I>&gt;<i> 
+</I>&gt;<i> 0002-Added-support-for-window-icons-_NET_WM_ICON-property.patch
+</I>&gt;<i> This adds support for displaying the window icons (_NET_WM_ICON) on the
+</I>&gt;<i> window's title. I find that when I have many windows in tabbed/stacked mode
+</I>&gt;<i> it's much quicker to find some window if there are icons next to the window
+</I>&gt;<i> titles. Not needed for kde/i3 integration.
+</I>&gt;<i> 
+</I>&gt;<i> 0003-Close-window-s-on-middle-click.patch
+</I>&gt;<i> This added support for closing a window by middle clicking on it's title. Not
+</I>&gt;<i> needed for kde/i3 integration.
+</I>&gt;<i> 
+</I>&gt;<i> 0004-Don-t-manage-desktop-type-windows-only-map-them.patch
+</I>&gt;<i> This adds &quot;support&quot; for desktop windows(_NET_WM_WINDOW_TYPE_DESKTOP) by just
+</I>&gt;<i> mapping them instead of managing them.
+</I>&gt;<i> 
+</I>&gt;<i> 0005-Handling-_NET_WM_STATE_STAYS_ON_TOP-window-state-use.patch
+</I>&gt;<i> Implements support for _NET_WM_STATE_STAYS_ON_TOP window states (useful for
+</I>&gt;<i> most KDE4 popups).
+</I>&gt;<i> 
+</I>&gt;<i> 0006-Allow-focusing-to-change-to-worskpaces-that-are-not-.patch
+</I>&gt;<i> Allows focus change to workspaces that are not visible. Not needed for kde/i3
+</I>&gt;<i> integration.
+</I>&gt;<i> 
+</I>&gt;<i> 0007-Workaround-for-resize-to-work-while-krunner-is-start.patch
+</I>&gt;<i> Window resizing using the mouse doesn't work while krunner is started. This
+</I>&gt;<i> patch is a workaround to fix that.
+</I>&gt;<i> 
+</I>&gt;<i> 0008-Fix-for-invisible-borders-after-restart-when-composi.patch
+</I>&gt;<i> I using a compositor, after restarting i3 some window borders become invisible.
+</I>&gt;<i> This patch is a workaround to fix that, not needed for kde/i3 integration.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Hope this helps,
+</I>&gt;<i> Marius
+</I>&gt;<i> 
+</I></PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001222.html">[i3] decent kde integration with i3?
+</A></li>
+	<LI>Next message: <A HREF="001224.html">[i3] decent kde integration with i3?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1223">[ date ]</a>
+              <a href="thread.html#1223">[ thread ]</a>
+              <a href="subject.html#1223">[ subject ]</a>
+              <a href="author.html#1223">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

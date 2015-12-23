@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Call for testing
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Call%20for%20testing&In-Reply-To=%3Cm2r4qb37lg.fsf%40informatik.uni-tuebingen.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000907.html">
+   <LINK REL="Next"  HREF="000909.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Call for testing</H1>
+    <B>Marcus Crestani</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Call%20for%20testing&In-Reply-To=%3Cm2r4qb37lg.fsf%40informatik.uni-tuebingen.de%3E"
+       TITLE="[i3] Call for testing">crestani at informatik.uni-tuebingen.de
+       </A><BR>
+    <I>Sun Sep  9 10:48:11 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000907.html">[i3] Call for testing
+</A></li>
+        <LI>Next message: <A HREF="000909.html">[i3] Call for testing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#908">[ date ]</a>
+              <a href="thread.html#908">[ thread ]</a>
+              <a href="subject.html#908">[ subject ]</a>
+              <a href="author.html#908">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>&gt;&gt;&gt;&gt;&gt;<i>&quot;MS&quot; == Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt; writes:
+</I>MS&gt; If you have any bugfix or ticket that you feel is important enough to be
+MS&gt; included in this release, please speak up now and make me aware of it.
+
+I have not yet been able to build i3-4.3 on OS X 10.8 (Mountain Lion).
+
+I've attached one patch that works around &quot;readlink -f&quot; that does not
+exist on OS X.  I think &quot;pwd -P&quot; does what we need, but I'm not
+completly sure about it.  Comments welcome!
+
+Other than that I see a couple of warnings and errors.  Since I won't be
+able to look at these problems in detail in the next few days, I'll just
+post them here:
+
+[i3] CC src/cmdparse.tab.c
+src/cmdparse.y:49:16: error: redefinition of 'owindow'
+typedef struct owindow {
+               ^
+include/commands.h:23:16: note: previous definition is here
+typedef struct owindow {
+               ^
+src/cmdparse.y:52:3: error: typedef redefinition with different types ('struct owindow' (aka 'owindow') vs
+      'struct owindow')
+} owindow;
+  ^
+include/commands.h:26:3: note: previous definition is here
+} owindow;
+  ^
+src/cmdparse.y:53:19: error: redefinition of 'owindows_head'
+static TAILQ_HEAD(owindows_head, owindow) owindows;
+                  ^
+include/queue.h:307:8: note: expanded from macro 'TAILQ_HEAD'
+struct name {                                                           \
+       ^
+include/commands.h:28:20: note: previous definition is here
+typedef TAILQ_HEAD(owindows_head, owindow) owindows_head;
+                   ^
+include/queue.h:307:8: note: expanded from macro 'TAILQ_HEAD'
+struct name {                                                           \
+       ^
+src/cmdparse.y:243:30: error: initializing 'struct owindows_head' with an expression of incompatible type 'struct
+      &lt;anonymous struct at src/cmdparse.y:53:8&gt;'
+        struct owindows_head old = owindows;
+                             ^     ~~~~~~~~
+src/cmdparse.y:260:32: warning: incompatible pointer types passing 'struct regex *' to parameter of type
+      'const char *' [-Wincompatible-pointer-types]
+                    strcasecmp(current_match.mark, current-&gt;con-&gt;mark) == 0) {
+                               ^~~~~~~~~~~~~~~~~~
+/usr/include/strings.h:82:29: note: passing argument to parameter here
+int      strcasecmp(const char *, const char *);
+                                ^
+src/cmdparse.y:293:29: warning: incompatible pointer types assigning to 'struct regex *' from 'char *'
+      [-Wincompatible-pointer-types]
+        current_match.class = (yyvsp[(3) - (3)].string);
+                            ^ ~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cmdparse.y:328:28: warning: incompatible pointer types assigning to 'struct regex *' from 'char *'
+      [-Wincompatible-pointer-types]
+        current_match.mark = (yyvsp[(3) - (3)].string);
+                           ^ ~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cmdparse.y:333:29: warning: incompatible pointer types assigning to 'struct regex *' from 'char *'
+      [-Wincompatible-pointer-types]
+        current_match.title = (yyvsp[(3) - (3)].string);
+                            ^ ~~~~~~~~~~~~~~~~~~~~~~~~~
+src/cmdparse.y:368:52: error: too few arguments to function call, expected 2, have 1
+        start_application((yyvsp[(2) - (2)].string));
+        ~~~~~~~~~~~~~~~~~                          ^
+include/startup.h:32:1: note: 'start_application' declared here
+void start_application(const char *command, bool no_startup_id);
+^
+src/cmdparse.y:418:28: warning: incompatible pointer types passing 'char *' to parameter of type 'Con *'
+      (aka 'struct Con *') [-Wincompatible-pointer-types]
+            workspace_show(ws-&gt;name);
+                           ^~~~~~~~
+include/workspace.h:60:26: note: passing argument to parameter 'ws' here
+void workspace_show(Con *ws);
+                         ^
+src/cmdparse.y:522:74: error: too few arguments to function call, expected 4, have 3
+                tree_close(current-&gt;con, (yyvsp[(2) - (2)].number), false);
+                ~~~~~~~~~~                                               ^
+include/tree.h:86:1: note: 'tree_close' declared here
+bool tree_close(Con *con, kill_window_t kill_window, bool dont_kill_parent, bool force_set_focus);
+^
+/usr/bin/../lib/clang/4.0/include/stdbool.h:31:14: note: expanded from macro 'bool'
+#define bool _Bool
+             ^
+src/cmdparse.y:550:24: warning: incompatible pointer types passing 'char *' to parameter of type 'Con *'
+      (aka 'struct Con *') [-Wincompatible-pointer-types]
+        workspace_show((yyvsp[(2) - (2)].string));
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~
+include/workspace.h:60:26: note: passing argument to parameter 'ws' here
+void workspace_show(Con *ws);
+                         ^
+src/cmdparse.y:688:51: error: too few arguments to function call, expected 4, have 2
+            con_move_to_workspace(current-&gt;con, ws);
+            ~~~~~~~~~~~~~~~~~~~~~                 ^
+include/con.h:165:1: note: 'con_move_to_workspace' declared here
+void con_move_to_workspace(Con *con, Con *workspace, bool fix_coordinates, bool dont_warp);
+^
+6 warnings and 7 errors generated.
+make: *** [src/cmdparse.tab.o] Error 1
+
+-- 
+Marcus
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-readlink-f-does-not-work-on-OS-X-use-pwd-P-instead.patch
+Type: text/x-patch
+Size: 1107 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120909/32f1b140/attachment.bin">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120909/32f1b140/attachment.bin</A>&gt;
+</PRE>
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000907.html">[i3] Call for testing
+</A></li>
+	<LI>Next message: <A HREF="000909.html">[i3] Call for testing
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#908">[ date ]</a>
+              <a href="thread.html#908">[ thread ]</a>
+              <a href="subject.html#908">[ subject ]</a>
+              <a href="author.html#908">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

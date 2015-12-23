@@ -1,0 +1,806 @@
+From zeus at ibs.dn.ua  Mon Nov  4 10:57:34 2013
+From: zeus at ibs.dn.ua (Zeus Panchenko)
+Date: Mon, 04 Nov 2013 11:57:34 +0200
+Subject: [i3] urgency hint
+In-Reply-To: Your message of Thu,
+ 31 Oct 2013 20:40:01 +0100 <x661sdw7ou.fsf@midna.lan>
+References: <20131031091810.18007@relay.ibs.dn.ua> <x661sdw7ou.fsf@midna.lan>
+Message-ID: <20131104115734.24802@relay.ibs.dn.ua>
+
+Michael Stapelberg <michael at i3wm.org> wrote:
+> > please, help to discover the problem?
+> Please post a logfile of this happening. Remember to keep the session
+> (and thus the logfile) minimal and compress it using bzip2. See also
+> http://i3wm.org/docs/debugging.html
+
+please, find two log files attached (.dump.log is result of i3-dump-log
+and .log is configured during i3 start)
+
+> uname -a
+FreeBSD 9.2 amd64
+
+> i3 --version
+i3 version 4.6 (2013-08-07, branch "tags/4.6") ?? 2009-2013 Michael Stapelberg and contributors
+
+> pkg info|grep "firef\|emacs"
+emacs-24.3
+firefox-23.0.1
+
+
+what was done:
+
+1. start i3 (it starts emacs and firefox automatically)
+2. switch to emacs desktop (No.4) and started jabber.el mode
+3. switched to desktop No.1 and launched terminal
+4. sent myself test message from another box
+
+   desktop No.4 indicator remained as was
+
+5. switched to firefox desktop (No.10) and started to download file
+6. switched to desktop No.1 and waited until ff spawns info popup
+   concerning the download completion
+
+   desktop No.10 indicator remained as was (may be because of ff pop, but
+   in older versions of i3 I remember it was showing the event)
+
+7. prepared log files
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: i3log-20131104_111417.dump.log.bz2
+Type: application/x-bzip2
+Size: 19222 bytes
+Desc: i3-dump-log > i3log-20131104_111417.dump.log
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20131104/75ecb8d2/attachment-0002.bin>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: i3log-20131104_111417.log.bz2
+Type: application/x-bzip2
+Size: 19290 bytes
+Desc: i3 started from .xinitrc as: /usr/local/bin/i3 --shmlog-size=26214400 -V -d all >/var/tmp/i3log-$(date +'%Y%m%d_%H%M%S') 2>&1
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20131104/75ecb8d2/attachment-0003.bin>
+-------------- next part --------------
+-- 
+Zeus V. Panchenko				jid:zeus at im.ibs.dn.ua
+IT Dpt., I.B.S. LLC					  GMT+2 (EET)
+
+From michael at i3wm.org  Mon Nov  4 22:38:56 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 04 Nov 2013 22:38:56 +0100
+Subject: [i3] urgency hint
+In-Reply-To: <20131104115734.24802@relay.ibs.dn.ua>
+References: <20131031091810.18007@relay.ibs.dn.ua> <x661sdw7ou.fsf@midna.lan>
+ <20131104115734.24802@relay.ibs.dn.ua>
+Message-ID: <x6ob5zu9sf.fsf@midna.lan>
+
+Hi Zeus,
+
+Zeus Panchenko <zeus at ibs.dn.ua> writes:
+> 1. start i3 (it starts emacs and firefox automatically)
+> 2. switch to emacs desktop (No.4) and started jabber.el mode
+> 3. switched to desktop No.1 and launched terminal
+> 4. sent myself test message from another box
+>
+>    desktop No.4 indicator remained as was
+i3 is not seeing any urgency hint changes, which you can verify by using
+bzgrep -i urgen i3log-20131104_111417.dump.log.bz2 ? all the lines show
+that either the urgency state changes to 0, or it is ignored because the
+window is currently focused.
+
+So, I?d check jabber.el to see whether it properly updates the urgency
+hint.
+
+> 5. switched to firefox desktop (No.10) and started to download file
+> 6. switched to desktop No.1 and waited until ff spawns info popup
+>    concerning the download completion
+>
+>    desktop No.10 indicator remained as was (may be because of ff pop, but
+>    in older versions of i3 I remember it was showing the event)
+I think the following commit adresses this:
+http://code.stapelberg.de/git/i3/commit/?h=next&id=e99158e419d4204bbce16ea5df249c630636ed3d
+(it?s newer than the version of i3 you are running)
+
+-- 
+Best regards,
+Michael
+
+From elmico.filos at gmail.com  Fri Nov 22 11:03:14 2013
+From: elmico.filos at gmail.com (=?ISO-8859-1?Q?Mico_Fil=F3s?=)
+Date: Fri, 22 Nov 2013 11:03:14 +0100
+Subject: [i3] Fwd: Minimalistic borders
+In-Reply-To: <CAAO_bfNe2oXyxKY_YgGYT9Avr+tgP53fED3OALU6QqkrSrjbsA@mail.gmail.com>
+References: <CAAO_bfNe2oXyxKY_YgGYT9Avr+tgP53fED3OALU6QqkrSrjbsA@mail.gmail.com>
+Message-ID: <CAAO_bfO=Po=57Bq_m-WZ_1TP0p5ZrHxiQBoSKyoHR-M20Vppaw@mail.gmail.com>
+
+Hi everyone,
+
+I am very happy with i3 so far, and I am deeply grateful to the
+developers for such a useful, clean, and well-documented piece of
+software. I have however an obsession with maximizing  screen real
+state, and I wonder if it is possible in i3 to do a couple of things.
+
+First of all, I wonder if I can suppress the generic borders around
+windows and have instead separators of fixed width between them (with
+separators appearing only when it is necessary to delimit windows),
+more or less like tmux does to separate panes (or like ion3/notion to
+separate frames, for that matter). In such a situation, the separators
+would not change color according to the state of the windows (only the
+color of the window titles would indicate the state). My goal is to
+show borders only when they are needed, and when that's the case, use
+a 1px line.
+
+Second, can I set the border between containers in a different color
+than the background color? If I am not mistaken, the background color
+sets both the background of the window title as well as the color
+around the window, and I'd like to set them separately.
+
+In case I didn't explain myself well, here is an image summarizing
+what I'd like to achieve: http://postimg.org/image/csjo2oqjh/
+
+Thanks a lot for your attention,
+
+Dani
+
+From michael at i3wm.org  Fri Nov 22 12:17:20 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 22 Nov 2013 12:17:20 +0100
+Subject: [i3] Fwd: Minimalistic borders
+In-Reply-To: <CAAO_bfO=Po=57Bq_m-WZ_1TP0p5ZrHxiQBoSKyoHR-M20Vppaw@mail.gmail.com>
+References: <CAAO_bfNe2oXyxKY_YgGYT9Avr+tgP53fED3OALU6QqkrSrjbsA@mail.gmail.com>
+ <CAAO_bfO=Po=57Bq_m-WZ_1TP0p5ZrHxiQBoSKyoHR-M20Vppaw@mail.gmail.com>
+Message-ID: <x6y54gy9bz.fsf@midna.lan>
+
+Hi Mico,
+
+Mico Fil?s <elmico.filos at gmail.com> writes:
+> First of all, I wonder if I can suppress the generic borders around
+> windows and have instead separators of fixed width between them (with
+> separators appearing only when it is necessary to delimit windows),
+> more or less like tmux does to separate panes (or like ion3/notion to
+> separate frames, for that matter). In such a situation, the separators
+> would not change color according to the state of the windows (only the
+> color of the window titles would indicate the state). My goal is to
+> show borders only when they are needed, and when that's the case, use
+> a 1px line.
+>
+> Second, can I set the border between containers in a different color
+> than the background color? If I am not mistaken, the background color
+> sets both the background of the window title as well as the color
+> around the window, and I'd like to set them separately.
+>
+> In case I didn't explain myself well, here is an image summarizing
+> what I'd like to achieve: http://postimg.org/image/csjo2oqjh/
+The relevant options we have in i3 for tuning the behavior in the areas
+you are talking about are:
+
+http://i3wm.org/docs/userguide.html#_border_style_for_new_windows
+(border 1pixel)
+
+http://i3wm.org/docs/userguide.html#_hiding_vertical_borders
+(hide_edge_borders both)
+
+Apart from that, see
+http://i3wm.org/docs/userguide.html#_changing_colors for the colors and
+experiment some.
+
+More customization options than that for border style and colors are
+extremely unlikely to be accepted into i3. We already have a high number
+of options, and I don?t see this as an area that is so important that it
+would justify introducing more complexity. See also
+https://faq.i3wm.org/question/778/why-is-patch-not-merged-and-made-optional/
+
+Hope that helps.
+
+-- 
+Best regards,
+Michael
+
+From elmico.filos at gmail.com  Fri Nov 22 14:22:39 2013
+From: elmico.filos at gmail.com (=?ISO-8859-1?Q?Mico_Fil=F3s?=)
+Date: Fri, 22 Nov 2013 14:22:39 +0100
+Subject: [i3] Fwd: Minimalistic borders
+In-Reply-To: <x6y54gy9bz.fsf@midna.lan>
+References: <CAAO_bfNe2oXyxKY_YgGYT9Avr+tgP53fED3OALU6QqkrSrjbsA@mail.gmail.com>
+ <CAAO_bfO=Po=57Bq_m-WZ_1TP0p5ZrHxiQBoSKyoHR-M20Vppaw@mail.gmail.com>
+ <x6y54gy9bz.fsf@midna.lan>
+Message-ID: <CAAO_bfN50JDLb5dr6e-YfepcNK7eHRwjdGzDEuPAkHua4ww1yA@mail.gmail.com>
+
+Hi Michael,
+
+thanks for your quick answer and comments. I had read the
+documentation and experienced with the colors, and I didn't get what I
+was looking for. In any case, I perfectly understand your policy of
+not incorporating more options unless it is a necessary feature.
+
+All the best
+
+On Fri, Nov 22, 2013 at 12:17 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+> Hi Mico,
+>
+> Mico Fil?s <elmico.filos at gmail.com> writes:
+>> First of all, I wonder if I can suppress the generic borders around
+>> windows and have instead separators of fixed width between them (with
+>> separators appearing only when it is necessary to delimit windows),
+>> more or less like tmux does to separate panes (or like ion3/notion to
+>> separate frames, for that matter). In such a situation, the separators
+>> would not change color according to the state of the windows (only the
+>> color of the window titles would indicate the state). My goal is to
+>> show borders only when they are needed, and when that's the case, use
+>> a 1px line.
+>>
+>> Second, can I set the border between containers in a different color
+>> than the background color? If I am not mistaken, the background color
+>> sets both the background of the window title as well as the color
+>> around the window, and I'd like to set them separately.
+>>
+>> In case I didn't explain myself well, here is an image summarizing
+>> what I'd like to achieve: http://postimg.org/image/csjo2oqjh/
+> The relevant options we have in i3 for tuning the behavior in the areas
+> you are talking about are:
+>
+> http://i3wm.org/docs/userguide.html#_border_style_for_new_windows
+> (border 1pixel)
+>
+> http://i3wm.org/docs/userguide.html#_hiding_vertical_borders
+> (hide_edge_borders both)
+>
+> Apart from that, see
+> http://i3wm.org/docs/userguide.html#_changing_colors for the colors and
+> experiment some.
+>
+> More customization options than that for border style and colors are
+> extremely unlikely to be accepted into i3. We already have a high number
+> of options, and I don?t see this as an area that is so important that it
+> would justify introducing more complexity. See also
+> https://faq.i3wm.org/question/778/why-is-patch-not-merged-and-made-optional/
+>
+> Hope that helps.
+>
+> --
+> Best regards,
+> Michael
+
+From tfarina at chromium.org  Fri Nov 22 16:29:57 2013
+From: tfarina at chromium.org (Thiago Farina)
+Date: Fri, 22 Nov 2013 13:29:57 -0200
+Subject: [i3] dependencies
+In-Reply-To: <CAFenBsYf8h=FCvKg-Efowf=M3uwjC8n98f5CM6=oX+FtpapYrQ@mail.gmail.com>
+References: <CAFenBsYf8h=FCvKg-Efowf=M3uwjC8n98f5CM6=oX+FtpapYrQ@mail.gmail.com>
+Message-ID: <CAFenBsa3LkAXXF5mujKD_gBxjks8mKhf45o-LrLq_3YzUJwMsQ@mail.gmail.com>
+
+Reposting to the right email address.
+
+On Wed, Nov 20, 2013 at 8:11 PM, Thiago Farina <tfarina at chromium.org> wrote:
+> Hi,
+>
+> I have installed libxkbcommon-dev, but I'm still getting this error:
+>
+> clang -std=c99 -pipe -Wall -I/usr/include/cairo
+> -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include
+> -I/usr/include/pixman-1 -I/usr/include/freetype2
+> -I/usr/include/libpng12   -D_GNU_SOURCE -DVERSION=\""2.5-12-g4cd711b
+> (2013-11-20)"\"  -c -o i3lock.o i3lock.c
+> i3lock.c:27:10: fatal error: 'xkbcommon/xkbcommon.h' file not found
+> #include <xkbcommon/xkbcommon.h>
+>          ^
+> 1 error generated.
+> make: *** [i3lock.o] Error 1
+>
+> Does anyone knows how to fix this?
+>
+> Thanks,
+>
+> --
+> Thiago
+
+-- 
+Thiago
+
+From tfarina at chromium.org  Fri Nov 22 16:30:27 2013
+From: tfarina at chromium.org (Thiago Farina)
+Date: Fri, 22 Nov 2013 13:30:27 -0200
+Subject: [i3] keyboard layout issue
+In-Reply-To: <CAFenBsakk_UH0zjEu4QdNjhMfguOLHkboXcO2PRRnMzmugL7VQ@mail.gmail.com>
+References: <CAFenBsakk_UH0zjEu4QdNjhMfguOLHkboXcO2PRRnMzmugL7VQ@mail.gmail.com>
+Message-ID: <CAFenBsZeCiWRKo81-QO7XP_Ah3hdpda_ddWiz_47A0GcLLwSjQ@mail.gmail.com>
+
+Reposting to the right email address.
+
+On Tue, Nov 19, 2013 at 7:58 PM, Thiago Farina <tfarina at chromium.org> wrote:
+> Hi,
+>
+> i3 wm treats my keyboard as if it had US/EN layout. But my keyboard
+> has pt-BR layout.
+>
+> It has http://en.wikipedia.org/wiki/%C3%87, tilde accent, and I need
+> those when writing in portuguese.
+>
+> How can I configure i3 to specify my keyboard layout?
+>
+> This is a big pain because I can't even find the question mark.
+>
+> Thanks!
+>
+> --
+> Thiago
+
+
+-- 
+Thiago
+
+From okraits at arcor.de  Fri Nov 22 16:41:53 2013
+From: okraits at arcor.de (Oliver Kraitschy)
+Date: Fri, 22 Nov 2013 16:41:53 +0100
+Subject: [i3] dependencies
+In-Reply-To: <CAFenBsa3LkAXXF5mujKD_gBxjks8mKhf45o-LrLq_3YzUJwMsQ@mail.gmail.com>
+References: <CAFenBsYf8h=FCvKg-Efowf=M3uwjC8n98f5CM6=oX+FtpapYrQ@mail.gmail.com>
+ <CAFenBsa3LkAXXF5mujKD_gBxjks8mKhf45o-LrLq_3YzUJwMsQ@mail.gmail.com>
+Message-ID: <528F7B41.308@arcor.de>
+
+Hi Thiago,
+
+you need the devel package of libxkbcommon: something like 
+libxkbcommon-dev (the exact name depends on the distro you are using.
+
+Greetings,
+
+Oliver
+
+Am 22.11.2013 16:29, schrieb Thiago Farina:
+> Reposting to the right email address.
+>
+> On Wed, Nov 20, 2013 at 8:11 PM, Thiago Farina <tfarina at chromium.org> wrote:
+>> Hi,
+>>
+>> I have installed libxkbcommon-dev, but I'm still getting this error:
+>>
+>> clang -std=c99 -pipe -Wall -I/usr/include/cairo
+>> -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include
+>> -I/usr/include/pixman-1 -I/usr/include/freetype2
+>> -I/usr/include/libpng12   -D_GNU_SOURCE -DVERSION=\""2.5-12-g4cd711b
+>> (2013-11-20)"\"  -c -o i3lock.o i3lock.c
+>> i3lock.c:27:10: fatal error: 'xkbcommon/xkbcommon.h' file not found
+>> #include <xkbcommon/xkbcommon.h>
+>>           ^
+>> 1 error generated.
+>> make: *** [i3lock.o] Error 1
+>>
+>> Does anyone knows how to fix this?
+>>
+>> Thanks,
+>>
+>> --
+>> Thiago
+>
+
+
+From okraits at arcor.de  Fri Nov 22 16:47:17 2013
+From: okraits at arcor.de (Oliver Kraitschy)
+Date: Fri, 22 Nov 2013 16:47:17 +0100
+Subject: [i3] dependencies
+In-Reply-To: <528F7B41.308@arcor.de>
+References: <CAFenBsYf8h=FCvKg-Efowf=M3uwjC8n98f5CM6=oX+FtpapYrQ@mail.gmail.com>
+ <CAFenBsa3LkAXXF5mujKD_gBxjks8mKhf45o-LrLq_3YzUJwMsQ@mail.gmail.com>
+ <528F7B41.308@arcor.de>
+Message-ID: <528F7C85.5060809@arcor.de>
+
+Hi Thiago,
+
+sorry, forget what i wrote, i didn't read that you already installed 
+that package.
+
+Greetings,
+
+Oliver
+
+Am 22.11.2013 16:41, schrieb Oliver Kraitschy:
+> Hi Thiago,
+>
+> you need the devel package of libxkbcommon: something like
+> libxkbcommon-dev (the exact name depends on the distro you are using.
+>
+> Greetings,
+>
+> Oliver
+>
+> Am 22.11.2013 16:29, schrieb Thiago Farina:
+>> Reposting to the right email address.
+>>
+>> On Wed, Nov 20, 2013 at 8:11 PM, Thiago Farina <tfarina at chromium.org>
+>> wrote:
+>>> Hi,
+>>>
+>>> I have installed libxkbcommon-dev, but I'm still getting this error:
+>>>
+>>> clang -std=c99 -pipe -Wall -I/usr/include/cairo
+>>> -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include
+>>> -I/usr/include/pixman-1 -I/usr/include/freetype2
+>>> -I/usr/include/libpng12   -D_GNU_SOURCE -DVERSION=\""2.5-12-g4cd711b
+>>> (2013-11-20)"\"  -c -o i3lock.o i3lock.c
+>>> i3lock.c:27:10: fatal error: 'xkbcommon/xkbcommon.h' file not found
+>>> #include <xkbcommon/xkbcommon.h>
+>>>           ^
+>>> 1 error generated.
+>>> make: *** [i3lock.o] Error 1
+>>>
+>>> Does anyone knows how to fix this?
+>>>
+>>> Thanks,
+>>>
+>>> --
+>>> Thiago
+>>
+>
+
+
+From tfarina at chromium.org  Fri Nov 22 16:54:08 2013
+From: tfarina at chromium.org (Thiago Farina)
+Date: Fri, 22 Nov 2013 13:54:08 -0200
+Subject: [i3] dependencies
+In-Reply-To: <528F7C85.5060809@arcor.de>
+References: <CAFenBsYf8h=FCvKg-Efowf=M3uwjC8n98f5CM6=oX+FtpapYrQ@mail.gmail.com>
+ <CAFenBsa3LkAXXF5mujKD_gBxjks8mKhf45o-LrLq_3YzUJwMsQ@mail.gmail.com>
+ <528F7B41.308@arcor.de> <528F7C85.5060809@arcor.de>
+Message-ID: <CAFenBsatLHGJV6WpGJ5ezQ9XfeR=q2N4oLYhWdJMmNzrvptPQw@mail.gmail.com>
+
+On Fri, Nov 22, 2013 at 1:47 PM, Oliver Kraitschy <okraits at arcor.de> wrote:
+> Hi Thiago,
+>
+> sorry, forget what i wrote, i didn't read that you already installed that
+> package.
+>
+If I'm not wrong I ran (I'm not at my main dev machine to verify):
+
+sudo apt-get install libxkbcommon-dev
+
+I'm at Ubuntu 12.04.
+
+-- 
+Thiago
+
+From philippe.virouleau at imag.fr  Fri Nov 22 17:06:20 2013
+From: philippe.virouleau at imag.fr (Philippe Virouleau)
+Date: Fri, 22 Nov 2013 17:06:20 +0100
+Subject: [i3] dependencies
+In-Reply-To: <CAFenBsa3LkAXXF5mujKD_gBxjks8mKhf45o-LrLq_3YzUJwMsQ@mail.gmail.com>
+References: <CAFenBsYf8h=FCvKg-Efowf=M3uwjC8n98f5CM6=oX+FtpapYrQ@mail.gmail.com>
+ <CAFenBsa3LkAXXF5mujKD_gBxjks8mKhf45o-LrLq_3YzUJwMsQ@mail.gmail.com>
+Message-ID: <20131122160620.GD25460@daisy>
+
+Maybe it's installed at some weird location :
+You should try something like "locate xkbcommon.h", check that it's installed at some location, and add "-I/path/to/the/directory" to the CFLAGS of i3.
+Be sure to add the path to the directory containing the "xkbcommon" directory.
+
+
+On Fri, Nov 22, 2013 at 01:29:57PM -0200, Thiago Farina wrote:
+> Reposting to the right email address.
+> 
+> On Wed, Nov 20, 2013 at 8:11 PM, Thiago Farina <tfarina at chromium.org> wrote:
+> > Hi,
+> >
+> > I have installed libxkbcommon-dev, but I'm still getting this error:
+> >
+> > clang -std=c99 -pipe -Wall -I/usr/include/cairo
+> > -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include
+> > -I/usr/include/pixman-1 -I/usr/include/freetype2
+> > -I/usr/include/libpng12   -D_GNU_SOURCE -DVERSION=\""2.5-12-g4cd711b
+> > (2013-11-20)"\"  -c -o i3lock.o i3lock.c
+> > i3lock.c:27:10: fatal error: 'xkbcommon/xkbcommon.h' file not found
+> > #include <xkbcommon/xkbcommon.h>
+> >          ^
+> > 1 error generated.
+> > make: *** [i3lock.o] Error 1
+> >
+> > Does anyone knows how to fix this?
+> >
+> > Thanks,
+> >
+> > --
+> > Thiago
+> 
+> -- 
+> Thiago
+
+-- 
+Philippe Virouleau
+IJD INRIA - ?quipe MOAIS
+
+From michael at i3wm.org  Fri Nov 22 17:30:57 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 22 Nov 2013 17:30:57 +0100
+Subject: [i3] dependencies
+In-Reply-To: <CAFenBsa3LkAXXF5mujKD_gBxjks8mKhf45o-LrLq_3YzUJwMsQ@mail.gmail.com>
+References: <CAFenBsYf8h=FCvKg-Efowf=M3uwjC8n98f5CM6=oX+FtpapYrQ@mail.gmail.com>
+ <CAFenBsa3LkAXXF5mujKD_gBxjks8mKhf45o-LrLq_3YzUJwMsQ@mail.gmail.com>
+Message-ID: <x6fvqoxuta.fsf@midna.lan>
+
+Hi Thiago,
+
+Thiago Farina <tfarina at chromium.org> writes:
+> Reposting to the right email address.
+>
+> On Wed, Nov 20, 2013 at 8:11 PM, Thiago Farina <tfarina at chromium.org> wrote:
+>> Hi,
+>>
+>> I have installed libxkbcommon-dev, but I'm still getting this error:
+>>
+>> clang -std=c99 -pipe -Wall -I/usr/include/cairo
+>> -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include
+>> -I/usr/include/pixman-1 -I/usr/include/freetype2
+>> -I/usr/include/libpng12   -D_GNU_SOURCE -DVERSION=\""2.5-12-g4cd711b
+>> (2013-11-20)"\"  -c -o i3lock.o i3lock.c
+>> i3lock.c:27:10: fatal error: 'xkbcommon/xkbcommon.h' file not found
+>> #include <xkbcommon/xkbcommon.h>
+>>          ^
+>> 1 error generated.
+>> make: *** [i3lock.o] Error 1
+>>
+>> Does anyone knows how to fix this?
+My strong guess is that your version of libxkbcommon-dev is too old. You
+need ? 0.2.0, anything earlier than that will not work.
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Fri Nov 22 17:33:01 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 22 Nov 2013 17:33:01 +0100
+Subject: [i3] keyboard layout issue
+In-Reply-To: <CAFenBsZeCiWRKo81-QO7XP_Ah3hdpda_ddWiz_47A0GcLLwSjQ@mail.gmail.com>
+References: <CAFenBsakk_UH0zjEu4QdNjhMfguOLHkboXcO2PRRnMzmugL7VQ@mail.gmail.com>
+ <CAFenBsZeCiWRKo81-QO7XP_Ah3hdpda_ddWiz_47A0GcLLwSjQ@mail.gmail.com>
+Message-ID: <x6d2lsxupu.fsf@midna.lan>
+
+Hi Thiago,
+
+Thiago Farina <tfarina at chromium.org> writes:
+
+> Reposting to the right email address.
+>
+> On Tue, Nov 19, 2013 at 7:58 PM, Thiago Farina <tfarina at chromium.org> wrote:
+>> Hi,
+>>
+>> i3 wm treats my keyboard as if it had US/EN layout. But my keyboard
+>> has pt-BR layout.
+i3 has nothing to do with keyboards (apart from grabbing the keybindings
+you configure in i3).
+
+If the layout is different from what you expect, use setxkbmap to change
+it, e.g. ?setxkbmap br?.
+
+-- 
+Best regards,
+Michael
+
+From tfarina at chromium.org  Fri Nov 22 23:59:27 2013
+From: tfarina at chromium.org (Thiago Farina)
+Date: Fri, 22 Nov 2013 20:59:27 -0200
+Subject: [i3] dependencies
+In-Reply-To: <x6fvqoxuta.fsf@midna.lan>
+References: <CAFenBsYf8h=FCvKg-Efowf=M3uwjC8n98f5CM6=oX+FtpapYrQ@mail.gmail.com>
+ <CAFenBsa3LkAXXF5mujKD_gBxjks8mKhf45o-LrLq_3YzUJwMsQ@mail.gmail.com>
+ <x6fvqoxuta.fsf@midna.lan>
+Message-ID: <CAFenBsaQcqfofyLSvsXhZfLL6bGA5EKd86THYZBGEz3XAuc0=Q@mail.gmail.com>
+
+Hi,
+
+On Fri, Nov 22, 2013 at 2:30 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+> Hi Thiago,
+>
+> Thiago Farina <tfarina at chromium.org> writes:
+>> Reposting to the right email address.
+>>
+>> On Wed, Nov 20, 2013 at 8:11 PM, Thiago Farina <tfarina at chromium.org> wrote:
+>>> Hi,
+>>>
+>>> I have installed libxkbcommon-dev, but I'm still getting this error:
+>>>
+>>> clang -std=c99 -pipe -Wall -I/usr/include/cairo
+>>> -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include
+>>> -I/usr/include/pixman-1 -I/usr/include/freetype2
+>>> -I/usr/include/libpng12   -D_GNU_SOURCE -DVERSION=\""2.5-12-g4cd711b
+>>> (2013-11-20)"\"  -c -o i3lock.o i3lock.c
+>>> i3lock.c:27:10: fatal error: 'xkbcommon/xkbcommon.h' file not found
+>>> #include <xkbcommon/xkbcommon.h>
+>>>          ^
+>>> 1 error generated.
+>>> make: *** [i3lock.o] Error 1
+>>>
+>>> Does anyone knows how to fix this?
+> My strong guess is that your version of libxkbcommon-dev is too old. You
+> need ? 0.2.0, anything earlier than that will not work.
+>
+I have installed it from source as suggested in
+http://infra.in.zekjur.net/pipermail/i3-discuss/2012-December/001070.html
+
+-- 
+Thiago
+
+From michael at i3wm.org  Sat Nov 23 14:23:52 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 23 Nov 2013 14:23:52 +0100
+Subject: [i3] dependencies
+In-Reply-To: <CAFenBsaQcqfofyLSvsXhZfLL6bGA5EKd86THYZBGEz3XAuc0=Q@mail.gmail.com>
+References: <CAFenBsYf8h=FCvKg-Efowf=M3uwjC8n98f5CM6=oX+FtpapYrQ@mail.gmail.com>
+ <CAFenBsa3LkAXXF5mujKD_gBxjks8mKhf45o-LrLq_3YzUJwMsQ@mail.gmail.com>
+ <x6fvqoxuta.fsf@midna.lan>
+ <CAFenBsaQcqfofyLSvsXhZfLL6bGA5EKd86THYZBGEz3XAuc0=Q@mail.gmail.com>
+Message-ID: <x6mwkvl09j.fsf@midna.lan>
+
+Hi Thiago,
+
+Thiago Farina <tfarina at chromium.org> writes:
+>>>> I have installed libxkbcommon-dev, but I'm still getting this error:
+>>>>
+>>>> clang -std=c99 -pipe -Wall -I/usr/include/cairo
+>>>> -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include
+>>>> -I/usr/include/pixman-1 -I/usr/include/freetype2
+>>>> -I/usr/include/libpng12   -D_GNU_SOURCE -DVERSION=\""2.5-12-g4cd711b
+>>>> (2013-11-20)"\"  -c -o i3lock.o i3lock.c
+>>>> i3lock.c:27:10: fatal error: 'xkbcommon/xkbcommon.h' file not found
+>>>> #include <xkbcommon/xkbcommon.h>
+>>>>          ^
+>>>> 1 error generated.
+>>>> make: *** [i3lock.o] Error 1
+>>>>
+>>>> Does anyone knows how to fix this?
+>> My strong guess is that your version of libxkbcommon-dev is too old. You
+>> need ? 0.2.0, anything earlier than that will not work.
+>>
+> I have installed it from source as suggested in
+> http://infra.in.zekjur.net/pipermail/i3-discuss/2012-December/001070.html
+What do the following commands return?
+
+pkg-config --list-all | grep xkbcommon
+pkg-config --cflags --libs xkbcommon
+
+Also, did you pass --prefix=/usr? My guess is that the version installed
+by your package manager takes precedence over the one that you installed
+locally.
+
+Given that you are a Chromium contributor apparently, I would?ve
+expected you to be familiar with C, libraries and their typical
+installation procedure :). This stuff is really not i3 specific.
+
+-- 
+Best regards,
+Michael
+
+From tfarina at chromium.org  Sat Nov 23 20:11:08 2013
+From: tfarina at chromium.org (Thiago Farina)
+Date: Sat, 23 Nov 2013 17:11:08 -0200
+Subject: [i3] i3lock: undefined symbol: xkb_context_new
+Message-ID: <CAFenBsYuMNERS7Q=phcSDg6M3f6mV2drXFzR7sciJdV26=tO9w@mail.gmail.com>
+
+Hi,
+
+Anyone knows, or have any clue, why I might be getting this:
+
+$ ./i3lock
+./i3lock: symbol lookup error: ./i3lock: undefined symbol: xkb_context_new
+
+$ pkg-config --cflags xkbcommon
+-I/usr/local/include
+
+$ pkg-config --libs xkbcommon
+-L/usr/local/lib -lxkbcommon
+
+In my libxkbcommon checkout I ran:
+$ sudo make install
+
+Do I need to install it elsewhere or do something else?
+
+Regards,
+
+-- 
+Thiago
+
+From tfarina at chromium.org  Sat Nov 23 20:15:36 2013
+From: tfarina at chromium.org (Thiago Farina)
+Date: Sat, 23 Nov 2013 17:15:36 -0200
+Subject: [i3] dependencies
+In-Reply-To: <x6mwkvl09j.fsf@midna.lan>
+References: <CAFenBsYf8h=FCvKg-Efowf=M3uwjC8n98f5CM6=oX+FtpapYrQ@mail.gmail.com>
+ <CAFenBsa3LkAXXF5mujKD_gBxjks8mKhf45o-LrLq_3YzUJwMsQ@mail.gmail.com>
+ <x6fvqoxuta.fsf@midna.lan>
+ <CAFenBsaQcqfofyLSvsXhZfLL6bGA5EKd86THYZBGEz3XAuc0=Q@mail.gmail.com>
+ <x6mwkvl09j.fsf@midna.lan>
+Message-ID: <CAFenBsYV7cpf+KMaA_6u0w1z_57oV=osWj7NSn-Sby1BTPiyHQ@mail.gmail.com>
+
+On Sat, Nov 23, 2013 at 11:23 AM, Michael Stapelberg <michael at i3wm.org> wrote:
+> Hi Thiago,
+>
+> Thiago Farina <tfarina at chromium.org> writes:
+>>>>> I have installed libxkbcommon-dev, but I'm still getting this error:
+>>>>>
+>>>>> clang -std=c99 -pipe -Wall -I/usr/include/cairo
+>>>>> -I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include
+>>>>> -I/usr/include/pixman-1 -I/usr/include/freetype2
+>>>>> -I/usr/include/libpng12   -D_GNU_SOURCE -DVERSION=\""2.5-12-g4cd711b
+>>>>> (2013-11-20)"\"  -c -o i3lock.o i3lock.c
+>>>>> i3lock.c:27:10: fatal error: 'xkbcommon/xkbcommon.h' file not found
+>>>>> #include <xkbcommon/xkbcommon.h>
+>>>>>          ^
+>>>>> 1 error generated.
+>>>>> make: *** [i3lock.o] Error 1
+>>>>>
+>>>>> Does anyone knows how to fix this?
+>>> My strong guess is that your version of libxkbcommon-dev is too old. You
+>>> need ? 0.2.0, anything earlier than that will not work.
+>>>
+>> I have installed it from source as suggested in
+>> http://infra.in.zekjur.net/pipermail/i3-discuss/2012-December/001070.html
+> What do the following commands return?
+>
+> pkg-config --list-all | grep xkbcommon
+$ sudo pkg-config --list-all | grep xkbcommon
+Variable 'datarootdir' not defined in
+'/usr/lib/pkgconfig/libxfce4sensors-1.0.pc'
+
+> pkg-config --cflags --libs xkbcommon
+>
+$ sudo pkg-config --cflags --libs xkbcommon
+-I/usr/local/include  -L/usr/local/lib -lxkbcommon
+
+> Also, did you pass --prefix=/usr?
+No.
+
+> My guess is that the version installed
+> by your package manager takes precedence over the one that you installed
+> locally.
+>
+> Given that you are a Chromium contributor apparently, I would?ve
+> expected you to be familiar with C, libraries and their typical
+> installation procedure :).
+Passed to much time without having to worry about this. We don't have
+such worries there, everything is setup for us.
+https://chromium.googlesource.com/chromium/chromium/+/trunk/build/install-build-deps.sh
+We have gclient, tons of utilities in depot_tools, gyp, and so on.
+That we don't have to fight the system and deal with such in the
+day-by-day.
+
+-- 
+Thiago
+
+From tfarina at chromium.org  Sat Nov 23 20:18:03 2013
+From: tfarina at chromium.org (Thiago Farina)
+Date: Sat, 23 Nov 2013 17:18:03 -0200
+Subject: [i3] i3lock: undefined symbol: xkb_context_new
+In-Reply-To: <CAFenBsYuMNERS7Q=phcSDg6M3f6mV2drXFzR7sciJdV26=tO9w@mail.gmail.com>
+References: <CAFenBsYuMNERS7Q=phcSDg6M3f6mV2drXFzR7sciJdV26=tO9w@mail.gmail.com>
+Message-ID: <CAFenBsaJoZcmPdXyunDThYbNBQ3Ooi1Cri8fZrXC=4Bv9-7BNA@mail.gmail.com>
+
+On Sat, Nov 23, 2013 at 5:11 PM, Thiago Farina <tfarina at chromium.org> wrote:
+> Hi,
+>
+> Anyone knows, or have any clue, why I might be getting this:
+>
+> $ ./i3lock
+> ./i3lock: symbol lookup error: ./i3lock: undefined symbol: xkb_context_new
+>
+> $ pkg-config --cflags xkbcommon
+> -I/usr/local/include
+>
+> $ pkg-config --libs xkbcommon
+> -L/usr/local/lib -lxkbcommon
+>
+> In my libxkbcommon checkout I ran:
+> $ sudo make install
+>
+> Do I need to install it elsewhere or do something else?
+>
+Got it!
+
+In libxkbcommon:
+$ ./configure --prefix=/usr
+$ make
+$ sudo make install
+
+Then in i3lock:
+$ make
+$ ./i3lock
+
+-- 
+Thiago
+

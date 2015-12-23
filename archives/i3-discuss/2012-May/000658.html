@@ -1,0 +1,246 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Gnome-less wm
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Gnome-less%20wm&In-Reply-To=%3C20120511131701.180981eb%40avk-v131.local%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000668.html">
+   <LINK REL="Next"  HREF="000659.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Gnome-less wm</H1>
+    <B>Alex V. Koval</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Gnome-less%20wm&In-Reply-To=%3C20120511131701.180981eb%40avk-v131.local%3E"
+       TITLE="[i3] Gnome-less wm">alex at ua2web.com
+       </A><BR>
+    <I>Fri May 11 12:17:01 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000668.html">[i3] Gnome-less wm
+</A></li>
+        <LI>Next message: <A HREF="000659.html">[i3] Gnome-less wm
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#658">[ date ]</a>
+              <a href="thread.html#658">[ thread ]</a>
+              <a href="subject.html#658">[ subject ]</a>
+              <a href="author.html#658">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi Bruno,
+
+On Fri, 11 May 2012 12:17:52 +1000
+&quot;BRAGA, Bruno&quot; &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">bruno.braga at gmail.com</A>&gt; wrote:
+ 
+&gt;<i> Right now, I am still reluctant to do everything by hand (like
+</I>&gt;<i> configuring wifi network, setting up bluetooth, etc)
+</I>
+I am not limited by CPU resources, RAM or disk speed, so my preferences
+are mostly about the convenience of the environment.
+
+Usually due to different reasons I do install both Gnome &amp; KDE with all
+their applications, but I only use a few of them at a time.
+
+Current setup:
+ 1. Chromium as a browser
+ 2. Claws-mail as primary mail client (99% of usage), and Apline as
+ backup. (also have Thunderbird installed but not much used at all)
+ 3. Wicd as network manager.
+ 4. Skype (just as is)
+ 5. Pidgin as a multi-client for all other IMs (a few Jabber , ICQ
+    accounts, MSN, Yahoo, AIM for talking with various customers)
+ 6. Dropbox
+ 7. Parcellite.
+ 8. Emacs (99%) or Kate as text editors.
+ 9. xterm as a main basic terminal. I do have Konsole (from KDE)
+    and gnome-terminal, but don't use them because they are both slow
+    to appear/work and also cluttered with a lot of unnecessary details.
+ 10. dmenu to run apps
+ 11. kde dialogs as a file-mime processor
+ 12. direct control of brightness from python script
+ 13. same about sound volume
+ 14. a set of programs to sleep, restore, add/remove external monitor
+ etc.
+ 15. htop
+ 16. iptraf - network stats
+
+
+Exactly:
+ 1) Chromium
+
+tied via key:
+bindsym Mod4+c exec /home/avk/bin/chromium
+
+ 2) I just run it via dmenu. typing 'cla' and RETURN
+
+ 3) wicd. I both start it in .xinitrc AND also have a hotkey
+    to run it in text terminal:
+
+bindsym Mod4+n exec xterm -e wicd-curses
+
+ 4,5,6,7) Skype just starts in ~/.xinitrc or manually
+
+#!/bin/bash
+
+for p in `cat ~/.tray-progs`
+do
+    if test -z &quot;`ps axf|grep $p|grep -v grep`&quot;
+	then
+	echo Starting $p ...
+	$p &amp;
+	else
+	echo Skipping already started program: $p ...
+    fi
+done
+
+where: ~/.tray-progs are:
+wicd-client dropbox parcellite skype pidgin
+ 
+ 8) My emacs config: <A HREF="http://avk-emacs.hg.public.halogen-dg.com/">http://avk-emacs.hg.public.halogen-dg.com/</A>
+
+ 9) xterm settings (in ~/.Xresources)
+
+xterm*geometry: 80x25
+xterm*faceName: dejavu sans mono
+xterm*faceSize: 11
+xterm*saveLines: 10000
+xterm*background: #0c2f35
+xterm*foreground:       #f5deb3
+
+ 10) dmenu
+bindsym Mod4+r exec dmenu_run -fn
+ '-xos4-*-bold-*-*-*-16-*-*-*-*-*-iso10646-1' -nb '#222222' -sf
+ '#00ff00' -sb '#050505' -nf &quot;#ffffff&quot;
+
+ 11) KDE dialogs, add this in ~/.xinitrc:
+export DE=kde
+ 12) 
+# monitor brightness
+bindsym XF86MonBrightnessUp   exec incr_brightness
+bindsym XF86MonBrightnessDown exec decr_brightness
+
+~/bin/incr_brightness:
+sudo ~/bin/_brightness.py -i
+
+.py:
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import optparse
+
+BR_FILE = '/sys/class/backlight/acpi_video0/brightness'
+BR_MAX = 10
+BR_MIN = 0
+
+
+def br_set(value):
+    open(BR_FILE,&quot;w&quot;).write(&quot;%d\n&quot; % value)
+
+
+def br_increase(current):
+    if current &gt;= BR_MAX:
+        print &quot;can not increase more then %d&quot; % BR_MAX
+        return
+    br_set((current+1))
+
+def br_decrease(current):
+    if current &lt;= BR_MIN:
+        print &quot;can not decrease less then %d&quot; % BR_MIN
+        return
+    br_set((current-1))
+
+
+def main():
+    p = optparse.OptionParser()
+    p.add_option(&quot;--increase&quot;, '-i', action='store_true')
+    p.add_option(&quot;--decrease&quot;, '-d', action='store_true')
+    p.add_option(&quot;--set&quot;, '-s')
+    options, arguments = p.parse_args()
+    current = int(open(BR_FILE).read())
+    if options.increase:
+        br_increase(current)
+    elif options.decrease:
+        br_decrease(current)
+    elif options.set:
+        br_set(int(options.set))
+
+
+if __name__ == '__main__':
+    main()
+
+
+ 13) sound:
+
+bindsym XF86AudioRaiseVolume exec amixer set Master 2dB+
+bindsym XF86AudioLowerVolume exec amixer set Master 2dB-
+bindsym XF86AudioMute exec amixer set Master toggle
+
+ 14) dwm_sleep:
+#!/bin/bash
+xlock &amp;
+sudo ~avk/bin/sleep_mem
+
+sleep_mem:
+echo mem &gt; /sys/power/state
+
+
+ 15) htop - nice program to see processlist
+
+bindsym Mod4+Escape exec xterm -e sudo htop
+
+ 16) iptraf - network stats
+
+bindsym Mod1+F1 exec xterm -e sudo iptraf
+
+Thats just a quick answer. If you have particular questions please ask
+me.
+
+Good luck with i3! 
+
+ WBR, Alex
+
+-- 
+UA2WEB - Ukrainian team developing Web sites &amp; services 
+</PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000668.html">[i3] Gnome-less wm
+</A></li>
+	<LI>Next message: <A HREF="000659.html">[i3] Gnome-less wm
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#658">[ date ]</a>
+              <a href="thread.html#658">[ thread ]</a>
+              <a href="subject.html#658">[ subject ]</a>
+              <a href="author.html#658">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

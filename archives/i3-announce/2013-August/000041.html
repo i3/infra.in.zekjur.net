@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3 announcement] i3 v4.6 released
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-announce%40infra.in.zekjur.net?Subject=Re%3A%20%5Bi3%20announcement%5D%20i3%20v4.6%20released&In-Reply-To=%3Cx6wqnxe2gt.fsf%40midna.lan%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3 announcement] i3 v4.6 released</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-announce%40infra.in.zekjur.net?Subject=Re%3A%20%5Bi3%20announcement%5D%20i3%20v4.6%20released&In-Reply-To=%3Cx6wqnxe2gt.fsf%40midna.lan%3E"
+       TITLE="[i3 announcement] i3 v4.6 released">michael at i3wm.org
+       </A><BR>
+    <I>Wed Aug  7 21:16:18 CEST 2013</I>
+    <P><UL>
+        
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#41">[ date ]</a>
+              <a href="thread.html#41">[ thread ]</a>
+              <a href="subject.html#41">[ subject ]</a>
+              <a href="author.html#41">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+I just released i3 v4.6. Release Notes follow:
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Release notes for i3 v4.6    &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+This is the i3 v4.6. This version is considered stable. All users of i3 are
+strongly encouraged to upgrade.
+
+The main improvement of this release is increased compatibility. We made a few
+tiny code changes and hope that Mathematica and Java applications will work
+better with i3 now. i3-nagbar should work with more terminal emulators than
+before.
+
+For debugging, the shmlog and debuglog commands can be sent via IPC to enable
+shared memory logging while i3 is running. For the large number of users using
+a release version (i.e. a version without shared memory logging by default),
+this will make debugging their issues much simpler.
+
+i3bar now supports click events and can be hidden/shown via an i3 IPC command.
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Changes in v4.6            &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+  &#8226; docs/userguide: mention forgotten layout splitv/splith
+  &#8226; docs/multi-monitor: nVidia &#8805; 302.17 works just fine
+  &#8226; docs/wsbar: update (we have i3bar now, i3-wsbar is just an example)
+  &#8226; docs/testsuite: Document fixes and workarounds for test failures
+  &#8226; man/i3-msg.man: updated man page to include all options
+  &#8226; lib/i3test: clarify how to identify open_window() windows in i3 commands
+  &#8226; Use a saner sanity check for floating_reposition
+  &#8226; tabbed: floor(), put extra pixels into the last tab
+  &#8226; raise fullscreen windows on top of all other X11 windows
+  &#8226; Draw indicator border only for split layouts
+  &#8226; re-shuffle struct members to save a bit of memory
+  &#8226; Add 'NoDisplay=true' to i3.application.desktop
+  &#8226; Store aspect_ratio instead of weird proportional_{width,height}
+  &#8226; Implement shmlog command
+  &#8226; Implement debuglog command
+  &#8226; Implement unmark command
+  &#8226; actively delete _NET_WORKAREA on startup
+  &#8226; Handle the _NET_REQUEST_FRAME_EXTENTS ClientMessage (java compat)
+  &#8226; i3bar: add click events
+  &#8226; i3bar: fix -b parameter, fix usage description
+  &#8226; i3bar: restore compatibility with libyajl version 1
+  &#8226; i3bar: unhide hidden i3bar when mode is active
+  &#8226; i3bar: fix font display height in i3bar
+  &#8226; i3bar: introduced i3 command for changing the hidden state and mode
+  &#8226; i3bar: fix wrong placement of i3bar when connecting/disconnecting outputs
+  &#8226; i3bar: draw workspace buttons at x=0 instead of x=1
+  &#8226; i3-nagbar: take our terminal execution kludge to the next level
+  &#8226; i3-nagbar: Bugfix: -m requires an argument (crashes if none specified)
+  &#8226; i3-dmenu-desktop: run commands when they don&#8217;t match a .desktop file
+    (e.g. enter &#8220;i3 layout stacking&#8221;)
+  &#8226; i3-dmenu-desktop: honor Path= key
+  &#8226; contrib/dump-asy.pl: Fix $ and &amp; in window titles
+  &#8226; contrib/dump-asy.pl: Display nicer double-quotes
+  &#8226; contrib/gtk-tree-watch.pl: Remove bogus default socket path
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Bugfixes                   &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+  &#8226; Bugfix: ipc: use correct workspace in workspace change event
+  &#8226; Bugfix: fix floating window size with hide_edge_borders
+  &#8226; Bugfix: Fix parsing of comments in the config file
+  &#8226; Bugfix: Fix error messages for the debug log
+  &#8226; Bugfix: shm_unlink the correct file when handling errors
+  &#8226; Bugfix: Fix shm logging on FreeBSD
+  &#8226; Bugfix: Fix restarting with 32 bit depth windows
+  &#8226; Bugfix: Fix scratchpad_show on non-scratchpad windows
+  &#8226; Bugfix: i3bar: mark IPC fd CLOEXEC
+  &#8226; Bugfix: fix crash when not having tray_output configured
+  &#8226; Bugfix: make sure that resize will take place even if pixel is smaller
+    than size increments.
+  &#8226; Bugfix: render_con: fix height rounding in aspect ratio computation
+  &#8226; Bugfix: fix problem when moving fullscreen window to scratchpad
+  &#8226; Bugfix: Unmap windows before reparenting them to the root window
+    (fixes Mathematica)
+  &#8226; Bugfix: update parent urgency hint if a child is removed.
+  &#8226; Bugfix: fix bus error on OpenBSD/sparc64
+  &#8226; Bugfix: fix focus handling in 'floating disable' on non-visible windows
+  &#8226; Bugfix: ignore spaces in front of default workspace name
+  &#8226; Bugfix: call i3-nagbar correctly for configfiles without the font directive
+  &#8226; Bugfix: resize and center a scratchpad even when a criteria is used.
+
+ &#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+ &#9474; Thanks!                    &#9474;
+ &#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+Thanks for testing, bugfixes, discussions and everything I forgot go out to:
+
+  Alexander, Alexander Berntsen, Arun Persaud, badboy, Baptiste Daroussin,
+  Cl&#233;ment B&#339;sch, Diego Ongaro, Eelis van der Weegen, Eika Enge, enkore, Eric S.
+  Raymond, Franck Michea, haptix, HedgeMage, koebi, Layus, Mayhem, Merovius,
+  necoro, oblique, Philippe Virouleau, phillip, psychon, Simon Elsbrock, Simon
+  Wesp, Thomas Adam, tobiasu, vandannen, xeen, Yuxuan Shui
+
+-- Michael Stapelberg, 2013-08-07
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#41">[ date ]</a>
+              <a href="thread.html#41">[ thread ]</a>
+              <a href="subject.html#41">[ subject ]</a>
+              <a href="author.html#41">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-announce">More information about the i3-announce
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Help: Code Review Software
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Help%3A%20Code%20Review%20Software&In-Reply-To=%3CCAMJW5%3D0O2ADx6inDQZggZy-eUAFi_569n3gUz1xY_HC%3D7N-LQQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000964.html">
+   <LINK REL="Next"  HREF="000970.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Help: Code Review Software</H1>
+    <B>DR</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Help%3A%20Code%20Review%20Software&In-Reply-To=%3CCAMJW5%3D0O2ADx6inDQZggZy-eUAFi_569n3gUz1xY_HC%3D7N-LQQ%40mail.gmail.com%3E"
+       TITLE="[i3] Help: Code Review Software">drdarkraven at gmail.com
+       </A><BR>
+    <I>Thu Sep 27 11:38:48 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000964.html">[i3] Help: Code Review Software
+</A></li>
+        <LI>Next message: <A HREF="000970.html">[i3] Help: Code Review Software
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#969">[ date ]</a>
+              <a href="thread.html#969">[ thread ]</a>
+              <a href="subject.html#969">[ subject ]</a>
+              <a href="author.html#969">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Michael,
+On Thu, Sep 27, 2012 at 3:57 PM, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt;wrote:
+
+&gt;<i> Hi darkraven,
+</I>&gt;<i>
+</I>&gt;<i> DR &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">drdarkraven at gmail.com</A>&gt; writes:
+</I>&gt;<i> &gt; I've read your criteria at <A HREF="http://www.featurequest.org/FRQ$CodeReview.">http://www.featurequest.org/FRQ$CodeReview.</A>
+</I>&gt;<i> From
+</I>&gt;<i> &gt; what I've read I think GitHub is good enough for you.
+</I>&gt;<i> No. GitHub (while being a cool company with a good product) is
+</I>&gt;<i> proprietary. I cannot host their review software on my own
+</I>&gt;<i> server, thus using GitHub for code reviews is a vendor lock-in.
+</I>
+I won't try to persuade you to use GitHub, but I think some of your points
+are quite arguable.
+
+&gt;<i>
+</I>&gt;<i> I want to avoid such a vendor lock-in for several reasons:
+</I>&gt;<i>
+</I>&gt;<i> 1) Building free software should not depend on closed-source
+</I>&gt;<i>    software. I&#8217;m not saying this in a _very_ religios fashion such as
+</I>&gt;<i>    rms (who&#8217;d argue that my server&#8217;s BIOS is probably unfree), but it
+</I>&gt;<i>    seems reasonable to avoid closed-source if we can reasonably live
+</I>&gt;<i>    without it. We&#8217;ve seen what happened with BitKeeper and the Linux
+</I>&gt;<i>    kernel.
+</I>&gt;<i>
+</I>I'm quite new on linux, and BitKeeper is long gone before I even heard of
+linux, so I could be wrong on this. But for what I understand, it's
+religious people like RMS who forced linux and BitKeeper to part ways, not
+BitKeeper's being proprietary limited the development of kernel.
+
+&gt;<i>
+</I>&gt;<i> 2) If we want to improve the code review workflow in some detail, we
+</I>&gt;<i>    cannot do it. Unless GitHub is friendly enough to do it, if it makes
+</I>&gt;<i>    sense for them at all. This is the major reason why I switched to a
+</I>&gt;<i>    FOSS operating system and software. Similarly, they have the option
+</I>&gt;<i>    of modifying the software as they see fit, without asking us first
+</I>&gt;<i>    and without an alternative for us.
+</I>&gt;<i>
+</I>Imagine I switched to linux distributions from Windows, and change it to
+look&amp;behave exactly the same as Windows, then why would I make the change?
+If you not really have a better idea, why not just use the existing
+solution, even if it's closed?
+I don't know you, maybe you have a definitely better idea of how a code
+reviewing system should be than GitHub. But if not, why not using GitHub
+for now, and when you eventually feel the itch to make changes, you could
+start making your own. And by that time, what you make will definitely  be
+better.
+Oops, this sounds like persuading. Anyway, I'm just using GitHub as an
+example to make my point.
+
+&gt;<i>
+</I>&gt;<i> 3) GitHub requires an account to submit a pull request. This is
+</I>&gt;<i>    reasonable from GitHub&#8217;s point of view but unacceptable from ours. No
+</I>&gt;<i>    account creation barriers to reporting bugs and sending improvements
+</I>&gt;<i>    has been one of our principles since the very beginning of the
+</I>&gt;<i>    project.
+</I>&gt;<i>
+</I>This could be a problem. But GitHub is not dedicated to i3, so people who
+want to contribute might &quot;happens&quot; to have a GitHub account.
+
+&gt;<i>
+</I>&gt;<i> 4) With using GitHub for reviews, we effectively have to use GitHub for
+</I>&gt;<i>    our git repository. Otherwise we&#8217;d have to mirror it, but having two
+</I>&gt;<i>    copies which might be out of sync is stupid, so we&#8217;d have to push to
+</I>&gt;<i>    both locations. GitHub (in my daily life) is slow. And sometimes it&#8217;s
+</I>&gt;<i>    down. My own server is much more reliable for our little
+</I>&gt;<i>    project. Also, it seems wise to avoid a central point-of-failure and
+</I>&gt;<i>    encourage a distributed system (many git servers instead of every
+</I>&gt;<i>    FOSS project on GitHub).
+</I>&gt;<i>
+</I>My perception of &quot;distribution&quot; is a bit different as yours. I think being
+distributed means every one who clone the repo have complete history of the
+repo. So have one *more* clone on GitHub won't harm this kind of
+distribution at all.
+There are no two copies of one repo, there are two different branches which
+could pull from each other. I think out-of-sync would be too big a problem.
+And the network problem is a matter of view point. GitHub might be slow for
+you, but faster for someone else, and your server might be fast for you,
+but slow for someone else.
+
+
+&gt;<i> --
+</I>&gt;<i>
+</I>If my points sound stupid, point that out and help cure my stupidity,
+thanks!
+
+&gt;<i>  Best regards,
+</I>&gt;<i> Michael
+</I>&gt;<i>
+</I>Best regards.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120927/751af435/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120927/751af435/attachment.html</A>&gt;
+</PRE>
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000964.html">[i3] Help: Code Review Software
+</A></li>
+	<LI>Next message: <A HREF="000970.html">[i3] Help: Code Review Software
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#969">[ date ]</a>
+              <a href="thread.html#969">[ thread ]</a>
+              <a href="subject.html#969">[ subject ]</a>
+              <a href="author.html#969">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

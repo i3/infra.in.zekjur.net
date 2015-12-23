@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Can't figure out a way to redirect screen session to workspace
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Can%27t%20figure%20out%20a%20way%20to%20redirect%20screen%20session%20to%20workspace&In-Reply-To=%3C504755CF.1020300%40tvk.rwth-aachen.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000936.html">
+   <LINK REL="Next"  HREF="000892.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Can't figure out a way to redirect screen session to workspace</H1>
+    <B>Lukas J&#252;nger</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Can%27t%20figure%20out%20a%20way%20to%20redirect%20screen%20session%20to%20workspace&In-Reply-To=%3C504755CF.1020300%40tvk.rwth-aachen.de%3E"
+       TITLE="[i3] Can't figure out a way to redirect screen session to workspace">autonomy at tvk.rwth-aachen.de
+       </A><BR>
+    <I>Wed Sep  5 15:38:23 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000936.html">[i3] [RFC]render.c cleanup.
+</A></li>
+        <LI>Next message: <A HREF="000892.html">[i3] Can't figure out a way to redirect screen session to	workspace
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#891">[ date ]</a>
+              <a href="thread.html#891">[ thread ]</a>
+              <a href="subject.html#891">[ subject ]</a>
+              <a href="author.html#891">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi guys,
+
+I somehow can't figure out a way to make my mcabber screen session pop
+up on workspace 2. Here is the part of my conf:
+
+assign [class=&quot;Firefox&quot;] 1
+assign [title=&quot;[screen 0: mcabber] &quot;] 2
+assign [class=&quot;Thunderbird&quot;] 3
+exec firefox
+exec jabmcab
+exec thunderbird
+exec --no-startup-id nitrogen --restore
+
+And here is the xprop of the mcabber window:
+
+WM_STATE(WM_STATE):
+		window state: Normal
+		icon window: 0x0
+_NET_WM_PID(CARDINAL) = 11948
+WM_PROTOCOLS(ATOM): protocols  WM_DELETE_WINDOW, _NET_WM_PING
+WM_LOCALE_NAME(STRING) = &quot;de_DE.utf8&quot;
+WM_CLASS(STRING) = &quot;urxvt&quot;, &quot;URxvt&quot;
+WM_HINTS(WM_HINTS):
+		Client accepts input or input focus: True
+		Initial state is Normal State.
+		window id # of group leader: 0xa00009
+WM_NORMAL_HINTS(WM_SIZE_HINTS):
+		program specified minimum size: 12 by 18
+		program specified resize increment: 8 by 14
+		program specified base size: 4 by 4
+		window gravity: NorthWest
+WM_CLIENT_MACHINE(STRING) = &quot;bla bla taken out&quot;
+WM_COMMAND(STRING) = { &quot;urxvt&quot;, &quot;-e&quot;, &quot;zsh&quot;, &quot;-c&quot;, &quot;screen -rx mcabber
+||<i> screen -S mcabber \\mcabber&quot; }
+</I>_NET_WM_ICON_NAME(UTF8_STRING) = &quot;zsh&quot;
+WM_ICON_NAME(STRING) = &quot;zsh&quot;
+_NET_WM_NAME(UTF8_STRING) = &quot;[screen 0: mcabber] &quot;
+WM_NAME(STRING) = &quot;[screen 0: mcabber] &quot;
+
+Can you give me a little hint? If i leave out the whitespace in
+
+assign [title=&quot;[screen 0: mcabber] &quot;] 2
+
+all my urxvt windows pop up on workspace 2.
+
+Regards
+Lukas
+</PRE>
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000936.html">[i3] [RFC]render.c cleanup.
+</A></li>
+	<LI>Next message: <A HREF="000892.html">[i3] Can't figure out a way to redirect screen session to	workspace
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#891">[ date ]</a>
+              <a href="thread.html#891">[ thread ]</a>
+              <a href="subject.html#891">[ subject ]</a>
+              <a href="author.html#891">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

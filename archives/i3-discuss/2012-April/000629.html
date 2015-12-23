@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Predefined Layouts
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Predefined%20Layouts&In-Reply-To=%3C20120425100920.5fdaf5c9%40xs4all.nl%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000628.html">
+   <LINK REL="Next"  HREF="000630.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Predefined Layouts</H1>
+    <B>Joep van Delft</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Predefined%20Layouts&In-Reply-To=%3C20120425100920.5fdaf5c9%40xs4all.nl%3E"
+       TITLE="[i3] Predefined Layouts">joepvandelft at xs4all.nl
+       </A><BR>
+    <I>Wed Apr 25 10:09:20 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000628.html">[i3] Predefined Layouts
+</A></li>
+        <LI>Next message: <A HREF="000630.html">[i3] Predefined Layouts
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#629">[ date ]</a>
+              <a href="thread.html#629">[ thread ]</a>
+              <a href="subject.html#629">[ subject ]</a>
+              <a href="author.html#629">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>You can also separate the commands with a &amp;&amp;: 
+
+i3-msg split h  &amp;&amp; \
+i3-msg exec urxvt &amp;&amp; \
+i3-msg exec urxvt  &amp;&amp; \
+i3-msg split v  &amp;&amp; \
+i3-msg exec urxvt
+
+
+joep
+
+
+On Wed, 25 Apr 2012 17:17:53 +1000
+James Robertson &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">j at mesrobertson.com</A>&gt; wrote:
+
+&gt;<i> &gt; Use:
+</I>&gt;<i> &gt; i3-msg split h
+</I>&gt;<i> &gt; i3-msg exec urxvt
+</I>&gt;<i> &gt; i3-msg exec urxvt
+</I>&gt;<i> &gt; i3-msg split v
+</I>&gt;<i> &gt; i3-msg exec urxvt
+</I>&gt;<i> 
+</I>&gt;<i> That doesn't work and it simply opens 3 terminals vertically for me.
+</I>&gt;<i> I had a hunch that it was executing faster than urxvt could load and
+</I>&gt;<i> so added some sleeps as follows:
+</I>&gt;<i> 
+</I>&gt;<i> i3-msg split h
+</I>&gt;<i> i3-msg exec urxvt
+</I>&gt;<i> sleep 1
+</I>&gt;<i> i3-msg exec urxvt
+</I>&gt;<i> sleep 1
+</I>&gt;<i> i3-msg split v
+</I>&gt;<i> i3-msg exec urxvt
+</I>&gt;<i> 
+</I>&gt;<i> This works exactly as intended and the terminals are loaded in the
+</I>&gt;<i> right positions, albeit slowly...
+</I>&gt;<i> 
+</I>&gt;<i> The following is logged when I run the command with the sleeps:
+</I>&gt;<i> 
+</I>&gt;<i> Apr 25 17:09:46 sidbox x-session: should execute /tmp/foo.sh,
+</I>&gt;<i> no_startup_id = 0 Apr 25 17:09:46 sidbox x-session: single command
+</I>&gt;<i> completely parsed, dropping state...
+</I>&gt;<i> Apr 25 17:09:46 sidbox x-session: done, json output = (null)
+</I>&gt;<i> Apr 25 17:09:46 sidbox x-session: splitting in direction h
+</I>&gt;<i> Apr 25 17:09:46 sidbox x-session: single command completely parsed,
+</I>&gt;<i> dropping state...
+</I>&gt;<i> Apr 25 17:09:46 sidbox x-session: done, json output = (null)
+</I>&gt;<i> Apr 25 17:09:46 sidbox x-session: {&quot;success&quot;:true}
+</I>&gt;<i> Apr 25 17:09:46 sidbox x-session: anything else: *u*
+</I>&gt;<i> Apr 25 17:09:46 sidbox x-session: should execute urxvt,
+</I>&gt;<i> no_startup_id = 0 Apr 25 17:09:46 sidbox x-session: single command
+</I>&gt;<i> completely parsed, dropping state...
+</I>&gt;<i> Apr 25 17:09:46 sidbox x-session: done, json output = (null)
+</I>&gt;<i> Apr 25 17:09:46 sidbox x-session: {&quot;success&quot;:true}
+</I>&gt;<i> Apr 25 17:09:47 sidbox x-session: anything else: *u*
+</I>&gt;<i> Apr 25 17:09:47 sidbox x-session: should execute urxvt,
+</I>&gt;<i> no_startup_id = 0 Apr 25 17:09:47 sidbox x-session: single command
+</I>&gt;<i> completely parsed, dropping state...
+</I>&gt;<i> Apr 25 17:09:47 sidbox x-session: done, json output = (null)
+</I>&gt;<i> Apr 25 17:09:47 sidbox x-session: {&quot;success&quot;:true}
+</I>&gt;<i> Apr 25 17:09:48 sidbox x-session: splitting in direction v
+</I>&gt;<i> Apr 25 17:09:48 sidbox x-session: single command completely parsed,
+</I>&gt;<i> dropping state...
+</I>&gt;<i> Apr 25 17:09:48 sidbox x-session: done, json output = (null)
+</I>&gt;<i> Apr 25 17:09:48 sidbox x-session: {&quot;success&quot;:true}
+</I>&gt;<i> Apr 25 17:09:48 sidbox x-session: anything else: *u*
+</I>&gt;<i> Apr 25 17:09:48 sidbox x-session: should execute urxvt,
+</I>&gt;<i> no_startup_id = 0 Apr 25 17:09:48 sidbox x-session: single command
+</I>&gt;<i> completely parsed, dropping state...
+</I>&gt;<i> Apr 25 17:09:48 sidbox x-session: done, json output = (null)
+</I>&gt;<i> Apr 25 17:09:48 sidbox x-session: {&quot;success&quot;:true}
+</I>&gt;<i> Apr 25 17:09:49 sidbox x-session: single command completely parsed,
+</I>&gt;<i> dropping state...
+</I>&gt;<i> Apr 25 17:09:49 sidbox x-session: done, json output = (null)
+</I>&gt;<i> 
+</I>&gt;<i> Without the sleeps...
+</I>&gt;<i> 
+</I>&gt;<i> Apr 25 17:11:49 sidbox x-session: should execute /tmp/foo.sh,
+</I>&gt;<i> no_startup_id = 0 Apr 25 17:11:49 sidbox x-session: single command
+</I>&gt;<i> completely parsed, dropping state...
+</I>&gt;<i> Apr 25 17:11:49 sidbox x-session: done, json output = (null)
+</I>&gt;<i> Apr 25 17:11:49 sidbox x-session: splitting in direction h
+</I>&gt;<i> Apr 25 17:11:49 sidbox x-session: single command completely parsed,
+</I>&gt;<i> dropping state...
+</I>&gt;<i> Apr 25 17:11:49 sidbox x-session: done, json output = (null)
+</I>&gt;<i> Apr 25 17:11:49 sidbox x-session: {&quot;success&quot;:true}
+</I>&gt;<i> Apr 25 17:11:49 sidbox x-session: anything else: *u*
+</I>&gt;<i> Apr 25 17:11:49 sidbox x-session: should execute urxvt,
+</I>&gt;<i> no_startup_id = 0 Apr 25 17:11:49 sidbox x-session: single command
+</I>&gt;<i> completely parsed, dropping state...
+</I>&gt;<i> Apr 25 17:11:49 sidbox x-session: done, json output = (null)
+</I>&gt;<i> Apr 25 17:11:49 sidbox x-session: {&quot;success&quot;:true}
+</I>&gt;<i> Apr 25 17:11:49 sidbox x-session: anything else: *u*
+</I>&gt;<i> Apr 25 17:11:49 sidbox x-session: should execute urxvt,
+</I>&gt;<i> no_startup_id = 0 Apr 25 17:11:49 sidbox x-session: single command
+</I>&gt;<i> completely parsed, dropping state...
+</I>&gt;<i> Apr 25 17:11:49 sidbox x-session: done, json output = (null)
+</I>&gt;<i> Apr 25 17:11:49 sidbox x-session: {&quot;success&quot;:true}
+</I>&gt;<i> Apr 25 17:11:49 sidbox x-session: splitting in direction v
+</I>&gt;<i> Apr 25 17:11:49 sidbox x-session: single command completely parsed,
+</I>&gt;<i> dropping state...
+</I>&gt;<i> Apr 25 17:11:49 sidbox x-session: done, json output = (null)
+</I>&gt;<i> Apr 25 17:11:49 sidbox x-session: {&quot;success&quot;:true}
+</I>&gt;<i> Apr 25 17:11:49 sidbox x-session: anything else: *u*
+</I>&gt;<i> Apr 25 17:11:49 sidbox x-session: should execute urxvt,
+</I>&gt;<i> no_startup_id = 0 Apr 25 17:11:49 sidbox x-session: single command
+</I>&gt;<i> completely parsed, dropping state...
+</I>&gt;<i> Apr 25 17:11:49 sidbox x-session: done, json output = (null)
+</I>&gt;<i> Apr 25 17:11:49 sidbox x-session: {&quot;success&quot;:true}
+</I>&gt;<i> 
+</I>&gt;<i> I cannot make out any difference except the execution delay between
+</I>&gt;<i> them.  Is there anything I can do to troubleshoot this?
+</I>&gt;<i> 
+</I>&gt;<i> Thanks
+</I>
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000628.html">[i3] Predefined Layouts
+</A></li>
+	<LI>Next message: <A HREF="000630.html">[i3] Predefined Layouts
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#629">[ date ]</a>
+              <a href="thread.html#629">[ thread ]</a>
+              <a href="subject.html#629">[ subject ]</a>
+              <a href="author.html#629">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

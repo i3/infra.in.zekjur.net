@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3 announcement] i3lock 2.5 released
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-announce%40infra.in.zekjur.net?Subject=Re%3A%20%5Bi3%20announcement%5D%20i3lock%202.5%20released&In-Reply-To=%3Cx6a9mz1u2m.fsf%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3 announcement] i3lock 2.5 released</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-announce%40infra.in.zekjur.net?Subject=Re%3A%20%5Bi3%20announcement%5D%20i3lock%202.5%20released&In-Reply-To=%3Cx6a9mz1u2m.fsf%40midna.zekjur.net%3E"
+       TITLE="[i3 announcement] i3lock 2.5 released">michael at i3wm.org
+       </A><BR>
+    <I>Sun Jun  9 12:01:37 CEST 2013</I>
+    <P><UL>
+        
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#40">[ date ]</a>
+              <a href="thread.html#40">[ thread ]</a>
+              <a href="subject.html#40">[ subject ]</a>
+              <a href="author.html#40">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+i3lock 2.5 was just released. It requires libxkbcommon &#8805; 0.2.0, but in
+turn does much better input handling.
+
+Here is the changelog:
+
+ &#8226; NEW DEPENDENCY: Use libxkbcommon for input handling
+   This makes input handling much better for many edge cases.
+ &#8226; Bugfix: fix argument parsing on ARM (s/char/int/)
+ &#8226; Bugfix: free(reply) to avoid memory leak
+ &#8226; Bugfix: Use ev_loop_fork after fork, fixes forking on kqueue based OSes
+ &#8226; Bugfix: Fix centering the indicator in the no-xinerama case
+ &#8226; Only use mlock() on Linux, FreeBSD (for example) requires root
+ &#8226; promote the &quot;could not load image&quot; message from debug to normal
+ &#8226; s/pam_message/pam_response/ (Thanks Tucos)
+ &#8226; remove support for NOLIBCAIRO, cairo-xcb is widespread by now
+ &#8226; Allow XKB_KEY_XF86ScreenSaver as synonym for enter
+   This keysym is generated on convertible tablets by pressing a hardware
+   lock/unlock button.
+ &#8226; Allow passwordless PAM conversations (e.g. fingerprint)
+ &#8226; Add ctrl+u password reset
+ &#8226; Set window name to i3lock
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#40">[ date ]</a>
+              <a href="thread.html#40">[ thread ]</a>
+              <a href="subject.html#40">[ subject ]</a>
+              <a href="author.html#40">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-announce">More information about the i3-announce
+mailing list</a><br>
+</body></html>

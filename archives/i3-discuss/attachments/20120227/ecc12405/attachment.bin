@@ -1,0 +1,369 @@
+From 292171120015f7c888b79ab812a1b86fae810739 Mon Sep 17 00:00:00 2001
+From: darkraven <drdarkraven@gmail.com>
+Date: Mon, 27 Feb 2012 23:08:03 +0800
+Subject: [PATCH] =?UTF-8?q?Use=2032bit=20visual=20only=20when=20needed.=20Th?=
+ =?UTF-8?q?us=20we=20could=20drop=20the=20--enable-32bit-visual=20option.=20?=
+ =?UTF-8?q?	<RavenChan>=20sECuRE,=20I=20wrote=20a=20patch=20to=20just=20use=20?=
+ =?UTF-8?q?	32bit=20visual=20for=20windows=20which=20need=20it.=20	<RavenCha?=
+ =?UTF-8?q?n>=20sECuRE,=20so=20the=20--enable-32bit-visual=20	option=20is=20?=
+ =?UTF-8?q?no=20longer=20needed=20	<sECuRE>=20ok.=20how=20do=20you=20figure=20?=
+ =?UTF-8?q?out=20whether=20a=20window=20	needs=20it=3F=20	<RavenChan>=20sECu?=
+ =?UTF-8?q?RE,=20use=20xcb=5Fget=5Fwindow=5Fattribute=20	to=20get=20the=20vi?=
+ =?UTF-8?q?sual=20the=20window=20use,=20and=20then=20we=20	could=20get=20the?=
+ =?UTF-8?q?=20depth=20of=20that=20visual=20	<sECuRE>=20hm.=20can=E2=80=99t=20?=
+ =?UTF-8?q?we=20just=20use=20the=20same=20visual=20	directory,=20without=20c?=
+ =?UTF-8?q?hecking=20the=20depth=3F=20	<sECuRE>=20s/directory/directly=20	<R?=
+ =?UTF-8?q?avenChan>=20sECuRE,=20cause=20xcb=5Fcreate=5Fwindow=20needs=20a=20?=
+ =?UTF-8?q?depth=20	<sECuRE>=20i=20see?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ include/data.h |    3 +++
+ include/x.h    |    2 +-
+ include/xcb.h  |    8 ++++++--
+ src/con.c      |    6 ++++--
+ src/main.c     |   33 -------------------------------
+ src/manage.c   |    1 +
+ src/resize.c   |    4 ++--
+ src/x.c        |   60 ++++++++++++++++++++++++++++++++++++++------------------
+ src/xcb.c      |   52 +++++++++++++++++++++++++++++++++++++++++++++---
+ 9 files changed, 107 insertions(+), 62 deletions(-)
+
+diff --git a/include/data.h b/include/data.h
+index 6cf3515..5952ae9 100644
+--- a/include/data.h
++++ b/include/data.h
+@@ -322,6 +322,9 @@ struct Window {
+      * (assignments run only once) */
+     uint32_t nr_assignments;
+     Assignment **ran_assignments;
++    
++    /** Depth of the window */
++    uint16_t depth;
+ };
+ 
+ /**
+diff --git a/include/x.h b/include/x.h
+index afc1645..36c7743 100644
+--- a/include/x.h
++++ b/include/x.h
+@@ -19,7 +19,7 @@ extern xcb_window_t focused_id;
+  * every container from con_new().
+  *
+  */
+-void x_con_init(Con *con);
++void x_con_init(Con *con, uint16_t depth);
+ 
+ /**
+  * Moves a child window from Container src to Container dest.
+diff --git a/include/xcb.h b/include/xcb.h
+index 8c7d542..3d3db68 100644
+--- a/include/xcb.h
++++ b/include/xcb.h
+@@ -56,8 +56,8 @@ extern unsigned int xcb_numlock_mask;
+  * generating an ID and checking for errors.
+  *
+  */
+-xcb_window_t create_window(xcb_connection_t *conn, Rect r, uint16_t window_class,
+-        enum xcursor_cursor_t cursor, bool map, uint32_t mask, uint32_t *values);
++xcb_window_t create_window(xcb_connection_t *conn, Rect r, uint16_t depth, xcb_visualid_t visual,
++        uint16_t window_class, enum xcursor_cursor_t cursor, bool map, uint32_t mask, uint32_t *values);
+ 
+ /**
+  * Draws a line from x,y to to_x,to_y using the given color
+@@ -117,4 +117,8 @@ void xcb_warp_pointer_rect(xcb_connection_t *conn, Rect *rect);
+  */
+ void xcb_set_root_cursor(int cursor);
+ 
++uint16_t get_visual_depth(xcb_visualid_t visual_id);
++
++xcb_visualid_t get_visualid_by_depth(uint16_t depth);
++
+ #endif
+diff --git a/src/con.c b/src/con.c
+index 537b443..8414fe9 100644
+--- a/src/con.c
++++ b/src/con.c
+@@ -49,8 +49,10 @@ Con *con_new(Con *parent, i3Window *window) {
+     cnt++;
+     if ((cnt % (sizeof(colors) / sizeof(char*))) == 0)
+         cnt = 0;
+-
+-    x_con_init(new);
++    if (window)
++        x_con_init(new, window->depth);
++    else
++        x_con_init(new, 0);
+ 
+     TAILQ_INIT(&(new->floating_head));
+     TAILQ_INIT(&(new->nodes_head));
+diff --git a/src/main.c b/src/main.c
+index 76ea838..553467a 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -250,7 +250,6 @@ int main(int argc, char *argv[]) {
+     bool delete_layout_path = false;
+     bool force_xinerama = false;
+     bool disable_signalhandler = false;
+-    bool enable_32bit_visual = false;
+     static struct option long_options[] = {
+         {"no-autostart", no_argument, 0, 'a'},
+         {"config", required_argument, 0, 'c'},
+@@ -265,8 +264,6 @@ int main(int argc, char *argv[]) {
+         {"shmlog_size", required_argument, 0, 0},
+         {"get-socketpath", no_argument, 0, 0},
+         {"get_socketpath", no_argument, 0, 0},
+-        {"enable-32bit-visual", no_argument, 0, 0},
+-        {"enable_32bit_visual", no_argument, 0, 0},
+         {0, 0, 0, 0}
+     };
+     int option_index = 0, opt;
+@@ -368,11 +365,6 @@ int main(int argc, char *argv[]) {
+                     layout_path = sstrdup(optarg);
+                     delete_layout_path = true;
+                     break;
+-                } else if (strcmp(long_options[option_index].name, "enable_32bit_visual") == 0 ||
+-                           strcmp(long_options[option_index].name, "enable-32bit-visual") == 0) {
+-                    LOG("Enabling 32 bit visual (if available)\n");
+-                    enable_32bit_visual = true;
+-                    break;
+                 }
+                 /* fall-through */
+             default:
+@@ -399,10 +391,6 @@ int main(int argc, char *argv[]) {
+                                 "\tto 0 disables SHM logging entirely.\n"
+                                 "\tThe default is %d bytes.\n", shmlog_size);
+                 fprintf(stderr, "\n");
+-                fprintf(stderr, "\t--enable-32bit-visual\n"
+-                                "\tMakes i3 use a 32 bit visual, if available. Necessary for\n"
+-                                "\tpseudo-transparency with xcompmgr.\n");
+-                fprintf(stderr, "\n");
+                 fprintf(stderr, "If you pass plain text arguments, i3 will interpret them as a command\n"
+                                 "to send to a currently running i3 (like i3-msg). This allows you to\n"
+                                 "use nice and logical commands, such as:\n"
+@@ -522,27 +510,6 @@ int main(int argc, char *argv[]) {
+     visual_id = root_screen->root_visual;
+     colormap = root_screen->default_colormap;
+ 
+-    if (enable_32bit_visual) {
+-        xcb_depth_iterator_t depth_iter;
+-        xcb_visualtype_iterator_t visual_iter;
+-        for (depth_iter = xcb_screen_allowed_depths_iterator(root_screen);
+-             depth_iter.rem;
+-             xcb_depth_next(&depth_iter)) {
+-            if (depth_iter.data->depth != 32)
+-                continue;
+-            visual_iter = xcb_depth_visuals_iterator(depth_iter.data);
+-            if (!visual_iter.rem)
+-                continue;
+-
+-            visual_id = visual_iter.data->visual_id;
+-            root_depth = depth_iter.data->depth;
+-            colormap = xcb_generate_id(conn);
+-            colormap_cookie = xcb_create_colormap_checked(conn, XCB_COLORMAP_ALLOC_NONE, colormap, root, visual_id);
+-            DLOG("Found a visual with 32 bit depth.\n");
+-            break;
+-        }
+-    }
+-
+     DLOG("root_depth = %d, visual_id = 0x%08x.\n", root_depth, visual_id);
+ 
+     xcb_get_geometry_cookie_t gcookie = xcb_get_geometry(conn, root);
+diff --git a/src/manage.c b/src/manage.c
+index 653de15..b0a6aaf 100644
+--- a/src/manage.c
++++ b/src/manage.c
+@@ -149,6 +149,7 @@ void manage_window(xcb_window_t window, xcb_get_window_attributes_cookie_t cooki
+ 
+     i3Window *cwindow = scalloc(sizeof(i3Window));
+     cwindow->id = window;
++    cwindow->depth = get_visual_depth(attr->visual);
+ 
+     /* We need to grab the mouse buttons for click to focus */
+     xcb_grab_button(conn, false, window, XCB_EVENT_MASK_BUTTON_PRESS,
+diff --git a/src/resize.c b/src/resize.c
+index a1897b6..af4f108 100644
+--- a/src/resize.c
++++ b/src/resize.c
+@@ -69,7 +69,7 @@ int resize_graphical_handler(Con *first, Con *second, orientation_t orientation,
+ 
+     /* Open a new window, the resizebar. Grab the pointer and move the window around
+        as the user moves the pointer. */
+-    xcb_window_t grabwin = create_window(conn, output->rect, XCB_WINDOW_CLASS_INPUT_ONLY, XCURSOR_CURSOR_POINTER, true, mask, values);
++    xcb_window_t grabwin = create_window(conn, output->rect, 0, 0, XCB_WINDOW_CLASS_INPUT_ONLY, XCURSOR_CURSOR_POINTER, true, mask, values);
+ 
+     Rect helprect;
+     if (orientation == HORIZ) {
+@@ -92,7 +92,7 @@ int resize_graphical_handler(Con *first, Con *second, orientation_t orientation,
+     mask |= XCB_CW_OVERRIDE_REDIRECT;
+     values[1] = 1;
+ 
+-    xcb_window_t helpwin = create_window(conn, helprect, XCB_WINDOW_CLASS_INPUT_OUTPUT,
++    xcb_window_t helpwin = create_window(conn, helprect, 0, 0, XCB_WINDOW_CLASS_INPUT_OUTPUT,
+                                          (orientation == HORIZ ?
+                                           XCURSOR_CURSOR_RESIZE_HORIZONTAL :
+                                           XCURSOR_CURSOR_RESIZE_VERTICAL), true, mask, values);
+diff --git a/src/x.c b/src/x.c
+index fe64d3e..f846350 100644
+--- a/src/x.c
++++ b/src/x.c
+@@ -85,7 +85,7 @@ static con_state *state_for_frame(xcb_window_t window) {
+  * every container from con_new().
+  *
+  */
+-void x_con_init(Con *con) {
++void x_con_init(Con *con, uint16_t depth) {
+     /* TODO: maybe create the window when rendering first? we could then even
+      * get the initial geometry right */
+ 
+@@ -96,25 +96,41 @@ void x_con_init(Con *con) {
+      * don’t even have a border) because the X11 server requires us to when
+      * using 32 bit color depths, see
+      * http://stackoverflow.com/questions/3645632 */
+-    mask |= XCB_CW_BACK_PIXEL;
+-    values[0] = root_screen->black_pixel;
+-
+-    mask |= XCB_CW_BORDER_PIXEL;
+-    values[1] = root_screen->black_pixel;
+-
+-    /* our own frames should not be managed */
+-    mask |= XCB_CW_OVERRIDE_REDIRECT;
+-    values[2] = 1;
+-
+-    /* see include/xcb.h for the FRAME_EVENT_MASK */
+-    mask |= XCB_CW_EVENT_MASK;
+-    values[3] = FRAME_EVENT_MASK & ~XCB_EVENT_MASK_ENTER_WINDOW;
+-
+-    mask |= XCB_CW_COLORMAP;
+-    values[4] = colormap;
++    xcb_visualid_t visual = 0;
++    if (depth != root_depth && depth != 0) {
++        visual = get_visualid_by_depth(depth);
++        xcb_colormap_t win_colormap = xcb_generate_id(conn);
++        xcb_create_colormap_checked(conn, XCB_COLORMAP_ALLOC_NONE, win_colormap, root, visual);
++        
++        mask |= XCB_CW_BACK_PIXEL;
++        values[0] = root_screen->black_pixel;
++
++        mask |= XCB_CW_BORDER_PIXEL;
++        values[1] = root_screen->black_pixel;
++
++        /* our own frames should not be managed */
++        mask |= XCB_CW_OVERRIDE_REDIRECT;
++        values[2] = 1;
++
++        /* see include/xcb.h for the FRAME_EVENT_MASK */
++        mask |= XCB_CW_EVENT_MASK;
++        values[3] = FRAME_EVENT_MASK & ~XCB_EVENT_MASK_ENTER_WINDOW;
++
++        mask |= XCB_CW_COLORMAP;
++        values[4] = win_colormap;
++    } else {
++        mask = XCB_CW_OVERRIDE_REDIRECT;
++        values[0] = 1;
++        
++        mask |= XCB_CW_EVENT_MASK;
++        values[1] = FRAME_EVENT_MASK & ~XCB_EVENT_MASK_ENTER_WINDOW;
++        
++        mask |= XCB_CW_COLORMAP;
++        values[2] = colormap;
++    }
+ 
+     Rect dims = { -15, -15, 10, 10 };
+-    con->frame = create_window(conn, dims, XCB_WINDOW_CLASS_INPUT_OUTPUT, XCURSOR_CURSOR_POINTER, false, mask, values);
++    con->frame = create_window(conn, dims, depth, visual, XCB_WINDOW_CLASS_INPUT_OUTPUT, XCURSOR_CURSOR_POINTER, false, mask, values);
+ 
+     struct con_state *state = scalloc(sizeof(struct con_state));
+     state->id = con->frame;
+@@ -614,7 +630,13 @@ void x_push_node(Con *con) {
+                 xcb_free_pixmap(conn, con->pixmap);
+                 xcb_free_gc(conn, con->pm_gc);
+             }
+-            xcb_create_pixmap(conn, root_depth, con->pixmap, con->frame, rect.width, rect.height);
++
++            uint16_t win_depth = root_depth;
++            if (con->window)
++                win_depth = con->window->depth;
++            
++            xcb_create_pixmap(conn, win_depth, con->pixmap, con->frame, rect.width, rect.height);
++            
+             /* For the graphics context, we disable GraphicsExposure events.
+              * Those will be sent when a CopyArea request cannot be fulfilled
+              * properly due to parts of the source being unmapped or otherwise
+diff --git a/src/xcb.c b/src/xcb.c
+index 5aa74b3..a038ca4 100644
+--- a/src/xcb.c
++++ b/src/xcb.c
+@@ -16,14 +16,17 @@ unsigned int xcb_numlock_mask;
+  * for errors.
+  *
+  */
+-xcb_window_t create_window(xcb_connection_t *conn, Rect dims, uint16_t window_class,
++xcb_window_t create_window(xcb_connection_t *conn, Rect dims,
++        uint16_t depth, xcb_visualid_t visual, uint16_t window_class,
+         enum xcursor_cursor_t cursor, bool map, uint32_t mask, uint32_t *values) {
+     xcb_window_t result = xcb_generate_id(conn);
+ 
+     /* By default, the color depth determined in src/main.c is used (32 bit if
+      * available, otherwise the X11 root window’s default depth). */
+-    uint16_t depth = root_depth;
+-    xcb_visualid_t visual = visual_id;
++    if (depth == 0)
++        depth = root_depth;
++    if (visual == 0)
++        visual = visual_id;
+ 
+     /* If the window class is XCB_WINDOW_CLASS_INPUT_ONLY, we copy depth and
+      * visual id from the parent window. */
+@@ -203,3 +206,46 @@ void xcb_set_root_cursor(int cursor) {
+     xcb_free_cursor(conn, cursor_id);
+     xcb_flush(conn);
+ }
++
++/*
++ * Get depth of visual specified by visualid
++ * 
++ */
++uint16_t get_visual_depth(xcb_visualid_t visual_id){
++    xcb_depth_iterator_t depth_iter;
++
++    depth_iter = xcb_screen_allowed_depths_iterator (root_screen);
++    for (; depth_iter.rem; xcb_depth_next (&depth_iter)) {
++        xcb_visualtype_iterator_t visual_iter;
++
++        visual_iter = xcb_depth_visuals_iterator (depth_iter.data);
++        for (; visual_iter.rem; xcb_visualtype_next (&visual_iter)) {
++            if (visual_id == visual_iter.data->visual_id) {
++                return depth_iter.data->depth;
++            }
++        }
++    }
++    return 0;
++}
++
++/*
++ * Get visualid with specified depth
++ * 
++ */
++xcb_visualid_t get_visualid_by_depth(uint16_t depth){
++    xcb_depth_iterator_t depth_iter;
++
++    depth_iter = xcb_screen_allowed_depths_iterator (root_screen);
++    for (; depth_iter.rem; xcb_depth_next (&depth_iter)) {
++        if (depth_iter.data->depth != depth)
++            continue;
++        
++        xcb_visualtype_iterator_t visual_iter;
++
++        visual_iter = xcb_depth_visuals_iterator (depth_iter.data);
++        if (!visual_iter.rem)
++            continue;
++        return visual_iter.data->visual_id;
++    }
++    return 0;
++}
+-- 
+1.7.9.2
+

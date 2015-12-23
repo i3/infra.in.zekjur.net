@@ -1,0 +1,45 @@
+From honza801 at gmail.com  Wed May  4 16:37:49 2011
+From: honza801 at gmail.com (Jan Krcmar)
+Date: Wed, 4 May 2011 16:37:49 +0200
+Subject: [i3] floating resize window bug
+Message-ID: <BANLkTim79Kuu6=kZttHyApVinjdhxrTDWg@mail.gmail.com>
+
+hi,
+
+there is a bug in src/floating.c/floating_resize_window function
+
+it assigns BORDER_RIGHT instead of BORDER BOTTOM while resizing floating window
+
+@@ -512,7 +554,7 @@ void floating_resize_window(Con *con, bool proportional,
+
+     if (event->event_y <= (con->rect.height / 2))
+         corner |= BORDER_TOP;
+-    else corner |= BORDER_RIGHT;
++    else corner |= BORDER_BOTTOM;
+
+     struct resize_window_callback_params params = { corner,
+proportional, event };
+
+clould someone please fix it
+thanks
+fous
+
+From michael+i3 at stapelberg.de  Fri May  6 13:11:46 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Fri, 06 May 2011 13:11:46 +0200
+Subject: [i3] floating resize window bug
+In-Reply-To: <BANLkTim79Kuu6=kZttHyApVinjdhxrTDWg@mail.gmail.com>
+References: <BANLkTim79Kuu6=kZttHyApVinjdhxrTDWg@mail.gmail.com>
+Message-ID: <1304680277-sup-5398@midna.zekjur.net>
+
+Hi Jan,
+
+Excerpts from Jan Krcmar's message of 2011-05-04 16:37:49 +0200:
+> there is a bug in src/floating.c/floating_resize_window function
+> 
+> it assigns BORDER_RIGHT instead of BORDER BOTTOM while resizing floating window
+Correct, fixed. Thanks.
+
+Best regards,
+Michael
+

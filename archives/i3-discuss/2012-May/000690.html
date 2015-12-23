@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Unicode in Window Title
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Unicode%20in%20Window%20Title&In-Reply-To=%3CCAB%2BhAsWLnRA9-nHSg-RS%3DRvTycH4D_0h20Cw8S%3D%3DPLgWyhEL3Q%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000689.html">
+   <LINK REL="Next"  HREF="000691.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Unicode in Window Title</H1>
+    <B>zeroxia</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Unicode%20in%20Window%20Title&In-Reply-To=%3CCAB%2BhAsWLnRA9-nHSg-RS%3DRvTycH4D_0h20Cw8S%3D%3DPLgWyhEL3Q%40mail.gmail.com%3E"
+       TITLE="[i3] Unicode in Window Title">zeroxia at gmail.com
+       </A><BR>
+    <I>Sat May 19 10:23:34 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000689.html">[i3] Unicode in Window Title
+</A></li>
+        <LI>Next message: <A HREF="000691.html">[i3] [PATCH] Replace deprecated XKeycodeToKeysym() with	XkbKeycodeToKeysym()
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#690">[ date ]</a>
+              <a href="thread.html#690">[ thread ]</a>
+              <a href="subject.html#690">[ subject ]</a>
+              <a href="author.html#690">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Bruno,
+
+I noted that the font is a &quot;bitmap&quot; font, I think the package should
+be &quot;xfonts-wqy - WenQuanYi Bitmap Song CJK font for X&quot; (at least for
+Debian squeeze).
+$ apt-cache search wqy
+ttf-wqy-microhei - A droid derived Sans-Seri style CJK font
+ttf-wqy-zenhei - &quot;WenQuanYi Zen Hei&quot; A Hei-Ti Style (sans-serif) Chinese font
+xfonts-wqy - WenQuanYi Bitmap Song CJK font for X
+
+I get the &quot;font description&quot; line from &quot;xlsfonts&quot; command, you may try
+this to get the font description line:
+
+$ xlsfonts | grep wenquanyi | grep 10646
+-wenquanyi-wenquanyi bitmap song-bold-r-normal--0-0-75-75-p-0-iso10646-1
+-wenquanyi-wenquanyi bitmap song-bold-r-normal--12-120-75-75-p-119-iso10646-1
+-wenquanyi-wenquanyi bitmap song-bold-r-normal--13-130-75-75-p-80-iso10646-1
+-wenquanyi-wenquanyi bitmap song-bold-r-normal--15-150-75-75-p-80-iso10646-1
+-wenquanyi-wenquanyi bitmap song-bold-r-normal--16-160-75-75-p-80-iso10646-1
+-wenquanyi-wenquanyi bitmap song-medium-r-normal--0-0-75-75-p-0-iso10646-1
+-wenquanyi-wenquanyi bitmap song-medium-r-normal--12-120-75-75-p-119-iso10646-1
+-wenquanyi-wenquanyi bitmap song-medium-r-normal--13-130-75-75-p-80-iso10646-1
+-wenquanyi-wenquanyi bitmap song-medium-r-normal--15-150-75-75-p-80-iso10646-1
+-wenquanyi-wenquanyi bitmap song-medium-r-normal--16-160-75-75-p-80-iso10646-1
+
+This font should contain Chinese and probably Japanese as I
+experimented before, but I find that it does not have Korean
+characters.
+
+I found using &quot;xlsfonts&quot; to try out different font configurations more
+reliable than using &quot;xfontsel&quot;, though this is more cumbersome.
+
+If it's still not working, I suggest you may just try some other typefaces.
+
+Regards, Xia.
+
+On Fri, May 18, 2012 at 10:42 PM, BRAGA, Bruno &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">bruno.braga at gmail.com</A>&gt; wrote:
+&gt;<i> Hei Xia,
+</I>&gt;<i>
+</I>&gt;<i> Thanks for the info... I guess you are right.
+</I>&gt;<i>
+</I>&gt;<i> I tried a combination of different fonts, but could not find one that fit
+</I>&gt;<i> Japanese and Chinese altogether.
+</I>&gt;<i>
+</I>&gt;<i> I installed the packages you advised but the font could not be loaded by i3,
+</I>&gt;<i> I guess it is because I could not find them in the xfontsel either... any
+</I>&gt;<i> thoughts on why are they not available as they were supposed to?
+</I>&gt;<i>
+</I>&gt;<i> Thanks again!
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Braga, Bruno
+</I>&gt;<i> www.brunobraga.net
+</I>&gt;<i> <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">bruno.braga at gmail.com</A>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Fri, May 18, 2012 at 11:56 AM, zeroxia &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">zeroxia at gmail.com</A>&gt; wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I use this settings for font in ~/.config/i3/config:
+</I>&gt;&gt;<i> font -wenquanyi-wenquanyi bitmap
+</I>&gt;&gt;<i> song-medium-r-normal--0-0-75-75-p-0-iso10646-1
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> There is a snapshot, I grabbed some random Japanese text and made a
+</I>&gt;&gt;<i> directory, then cd into it to display the text in the window title:
+</I>&gt;&gt;<i> <A HREF="http://ww3.sinaimg.cn/large/61260048gw1dt28l6s221j.jpg">http://ww3.sinaimg.cn/large/61260048gw1dt28l6s221j.jpg</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The font should be installed from one of these packages, but I don't
+</I>&gt;&gt;<i> know exactly which, because I installed all of them:
+</I>&gt;&gt;<i> xfonts-intl-chinese-big - International fonts for X -- Chinese big
+</I>&gt;&gt;<i> xfonts-intl-chinese - International fonts for X -- Chinese
+</I>&gt;&gt;<i> ttf-wqy-microhei - A droid derived Sans-Seri style CJK font
+</I>&gt;&gt;<i> ttf-wqy-zenhei - &quot;WenQuanYi Zen Hei&quot; A Hei-Ti Style (sans-serif) Chinese
+</I>&gt;&gt;<i> font
+</I>&gt;&gt;<i> xfonts-wqy - WenQuanYi Bitmap Song CJK font for X
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> By the way, the font setting for urxvt is as follows:
+</I>&gt;&gt;<i> URxvt.font:
+</I>&gt;&gt;<i> -misc-fixed-medium-r-normal--15-140-75-75-c-90-iso10646-1,-wenquanyi-wenquanyi
+</I>&gt;&gt;<i> bitmap song-medium-r-normal--13-130-75-75-p-80-iso10646-1
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I think the &quot;fixed&quot; typeface may not have non-latin glyphs?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Regards,
+</I>&gt;&gt;<i> Xia.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Fri, May 18, 2012 at 8:26 AM, BRAGA, Bruno &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">bruno.braga at gmail.com</A>&gt;
+</I>&gt;&gt;<i> wrote:
+</I>&gt;&gt;<i> &gt; Hi Michael,
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; Somehow I lost this message here. Sorry for the late reply.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; I just wondered that, because if the ISO10646, both Chinese or Japanese
+</I>&gt;&gt;<i> &gt; (or
+</I>&gt;&gt;<i> &gt; any other language character for that matter) could be properly
+</I>&gt;&gt;<i> &gt; rendered,
+</I>&gt;&gt;<i> &gt; the same way the browser is capable of doing it.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; It actually does not bother me that much, but it would be nice to solve
+</I>&gt;&gt;<i> &gt; this, which increases odds for more international adoption.
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; What would be your suggestion to handle this? Any ideas?
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; Regards,
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; --
+</I>&gt;&gt;<i> &gt; Braga, Bruno
+</I>&gt;&gt;<i> &gt; www.brunobraga.net
+</I>&gt;&gt;<i> &gt; <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">bruno.braga at gmail.com</A>
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; On Thu, Apr 12, 2012 at 12:55 AM, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt;
+</I>&gt;&gt;<i> &gt; wrote:
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; Hi Bruno,
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; Excerpts from BRAGA, Bruno's message of 2012-04-11 16:53:11 +0200:
+</I>&gt;&gt;<i> &gt;&gt; &gt; # font for window titles. ISO 10646 = Unicode
+</I>&gt;&gt;<i> &gt;&gt; &gt; font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+</I>&gt;&gt;<i> &gt;&gt; &gt; Do you guys know what could I be missing?
+</I>&gt;&gt;<i> &gt;&gt; Probably the font does not include these Japanese glyphs?
+</I>&gt;&gt;<i> &gt;&gt;
+</I>&gt;&gt;<i> &gt;&gt; Best regards,
+</I>&gt;&gt;<i> &gt;&gt; Michael
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i> Regards,
+</I>&gt;&gt;<i> Xia Zuoling
+</I>&gt;&gt;<i> <A HREF="http://zeroxia.org/blog/">http://zeroxia.org/blog/</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> QQ: 153570344
+</I>&gt;&gt;<i> MSN: <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">zerox at live.com</A>
+</I>&gt;&gt;<i> The world is beautiful for you.
+</I>&gt;<i>
+</I>&gt;<i>
+</I></PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000689.html">[i3] Unicode in Window Title
+</A></li>
+	<LI>Next message: <A HREF="000691.html">[i3] [PATCH] Replace deprecated XKeycodeToKeysym() with	XkbKeycodeToKeysym()
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#690">[ date ]</a>
+              <a href="thread.html#690">[ thread ]</a>
+              <a href="subject.html#690">[ subject ]</a>
+              <a href="author.html#690">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

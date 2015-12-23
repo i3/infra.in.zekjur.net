@@ -1,0 +1,274 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH 5/5] Added window insets (similar to herbstluftwm)
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%205/5%5D%20Added%20window%20insets%20%28similar%20to%20herbstluftwm%29&In-Reply-To=%3CCAD_zNMC-2zO38qaEcjR5morWRgjKwcT%3D36sRDBwPMwf-a-b4eg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001056.html">
+   <LINK REL="Next"  HREF="001046.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH 5/5] Added window insets (similar to herbstluftwm)</H1>
+    <B>Sebastian Ullrich</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%205/5%5D%20Added%20window%20insets%20%28similar%20to%20herbstluftwm%29&In-Reply-To=%3CCAD_zNMC-2zO38qaEcjR5morWRgjKwcT%3D36sRDBwPMwf-a-b4eg%40mail.gmail.com%3E"
+       TITLE="[i3] [PATCH 5/5] Added window insets (similar to herbstluftwm)">sebasti at nullri.ch
+       </A><BR>
+    <I>Sun Nov 18 14:12:13 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001056.html">[i3] [PATCH 5/5] Added window insets (similar to herbstluftwm)
+</A></li>
+        <LI>Next message: <A HREF="001046.html">[i3] [PATCH 5/5] Added window insets (similar to herbstluftwm)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1045">[ date ]</a>
+              <a href="thread.html#1045">[ thread ]</a>
+              <a href="subject.html#1045">[ subject ]</a>
+              <a href="author.html#1045">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>These insets are gorgeous and I'd be happy to use the patch even if it
+wouldn't be accepted into the main project. However, there are some
+bugs/unusual behavior:
+* background fills up with black artifacts if not using
+enable_alpha_channel from patch #1 in conjunction with a compositing
+manager. Even then, compton's shadows seem to trigger the same
+behavior: <A HREF="http://i.imgur.com/Q0MiK.png">http://i.imgur.com/Q0MiK.png</A>
+* clicking on the background focuses the whole workspace
+
+On Sun, Nov 18, 2012 at 11:56 AM, Kevin Murphy &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">kemurphy.cmu at gmail.com</A>&gt; wrote:
+&gt;<i> From: Kevin Murphy &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">kemurphy at andrew.cmu.edu</A>&gt;
+</I>&gt;<i>
+</I>&gt;<i> ---
+</I>&gt;<i>  include/render.h |  2 +-
+</I>&gt;<i>  src/floating.c   |  6 +++---
+</I>&gt;<i>  src/manage.c     |  2 +-
+</I>&gt;<i>  src/randr.c      |  2 +-
+</I>&gt;<i>  src/render.c     | 35 +++++++++++++++++++++++++++--------
+</I>&gt;<i>  src/tree.c       |  2 +-
+</I>&gt;<i>  6 files changed, 34 insertions(+), 15 deletions(-)
+</I>&gt;<i>
+</I>&gt;<i> diff --git a/include/render.h b/include/render.h
+</I>&gt;<i> index 0a5949f..d458bd3 100644
+</I>&gt;<i> --- a/include/render.h
+</I>&gt;<i> +++ b/include/render.h
+</I>&gt;<i> @@ -19,6 +19,6 @@
+</I>&gt;<i>   * updated in X11.
+</I>&gt;<i>   *
+</I>&gt;<i>   */
+</I>&gt;<i> -void render_con(Con *con, bool render_fullscreen);
+</I>&gt;<i> +void render_con(Con *con, bool render_fullscreen, bool already_inset);
+</I>&gt;<i>
+</I>&gt;<i>  #endif
+</I>&gt;<i> diff --git a/src/floating.c b/src/floating.c
+</I>&gt;<i> index b884a18..7347fcc 100644
+</I>&gt;<i> --- a/src/floating.c
+</I>&gt;<i> +++ b/src/floating.c
+</I>&gt;<i> @@ -251,8 +251,8 @@ void floating_enable(Con *con, bool automatic) {
+</I>&gt;<i>      TAILQ_INSERT_TAIL(&amp;(nc-&gt;focus_head), con, focused);
+</I>&gt;<i>
+</I>&gt;<i>      /* render the cons to get initial window_rect correct */
+</I>&gt;<i> -    render_con(nc, false);
+</I>&gt;<i> -    render_con(con, false);
+</I>&gt;<i> +    render_con(nc, false, true);
+</I>&gt;<i> +    render_con(con, false, true);
+</I>&gt;<i>
+</I>&gt;<i>      if (set_focus)
+</I>&gt;<i>          con_focus(con);
+</I>&gt;<i> @@ -376,7 +376,7 @@ DRAGGING_CB(drag_window_callback) {
+</I>&gt;<i>      con-&gt;rect.x = old_rect-&gt;x + (new_x - event-&gt;root_x);
+</I>&gt;<i>      con-&gt;rect.y = old_rect-&gt;y + (new_y - event-&gt;root_y);
+</I>&gt;<i>
+</I>&gt;<i> -    render_con(con, false);
+</I>&gt;<i> +    render_con(con, false, true);
+</I>&gt;<i>      x_push_node(con);
+</I>&gt;<i>      xcb_flush(conn);
+</I>&gt;<i>
+</I>&gt;<i> diff --git a/src/manage.c b/src/manage.c
+</I>&gt;<i> index 10aa3a8..24290be 100644
+</I>&gt;<i> --- a/src/manage.c
+</I>&gt;<i> +++ b/src/manage.c
+</I>&gt;<i> @@ -415,7 +415,7 @@ void manage_window(xcb_window_t window, xcb_get_window_attributes_cookie_t cooki
+</I>&gt;<i>           * workspace at all. However, just calling render_con() on the
+</I>&gt;<i>           * workspace isn&#8217;t enough either &#8212; it needs the rect. */
+</I>&gt;<i>          ws-&gt;rect = ws-&gt;parent-&gt;rect;
+</I>&gt;<i> -        render_con(ws, true);
+</I>&gt;<i> +        render_con(ws, true, false);
+</I>&gt;<i>      }
+</I>&gt;<i>      tree_render();
+</I>&gt;<i>
+</I>&gt;<i> diff --git a/src/randr.c b/src/randr.c
+</I>&gt;<i> index 267d6e4..9b22788 100644
+</I>&gt;<i> --- a/src/randr.c
+</I>&gt;<i> +++ b/src/randr.c
+</I>&gt;<i> @@ -351,7 +351,7 @@ void init_ws_for_output(Output *output, Con *content) {
+</I>&gt;<i>           * Then, we need to work with the &quot;content&quot; container, since we cannot
+</I>&gt;<i>           * be sure that the workspace itself was rendered at all (in case it&#8217;s
+</I>&gt;<i>           * invisible, it won&#8217;t be rendered). */
+</I>&gt;<i> -        render_con(workspace_out, false);
+</I>&gt;<i> +        render_con(workspace_out, false, true);
+</I>&gt;<i>          Con *ws_out_content = output_get_content(workspace_out);
+</I>&gt;<i>
+</I>&gt;<i>          Con *floating_con;
+</I>&gt;<i> diff --git a/src/render.c b/src/render.c
+</I>&gt;<i> index 1216241..63a9deb 100644
+</I>&gt;<i> --- a/src/render.c
+</I>&gt;<i> +++ b/src/render.c
+</I>&gt;<i> @@ -54,7 +54,7 @@ static void render_l_output(Con *con) {
+</I>&gt;<i>      if (fullscreen) {
+</I>&gt;<i>          fullscreen-&gt;rect = con-&gt;rect;
+</I>&gt;<i>          x_raise_con(fullscreen);
+</I>&gt;<i> -        render_con(fullscreen, true);
+</I>&gt;<i> +        render_con(fullscreen, true, false);
+</I>&gt;<i>          return;
+</I>&gt;<i>      }
+</I>&gt;<i>
+</I>&gt;<i> @@ -94,7 +94,7 @@ static void render_l_output(Con *con) {
+</I>&gt;<i>          DLOG(&quot;child at (%d, %d) with (%d x %d)\n&quot;,
+</I>&gt;<i>                  child-&gt;rect.x, child-&gt;rect.y, child-&gt;rect.width, child-&gt;rect.height);
+</I>&gt;<i>          x_raise_con(child);
+</I>&gt;<i> -        render_con(child, false);
+</I>&gt;<i> +        render_con(child, false, child-&gt;type == CT_DOCKAREA);
+</I>&gt;<i>      }
+</I>&gt;<i>  }
+</I>&gt;<i>
+</I>&gt;<i> @@ -106,7 +106,7 @@ static void render_l_output(Con *con) {
+</I>&gt;<i>   * updated in X11.
+</I>&gt;<i>   *
+</I>&gt;<i>   */
+</I>&gt;<i> -void render_con(Con *con, bool render_fullscreen) {
+</I>&gt;<i> +void render_con(Con *con, bool render_fullscreen, bool already_inset) {
+</I>&gt;<i>      int children = con_num_children(con);
+</I>&gt;<i>      DLOG(&quot;Rendering %snode %p / %s / layout %d / children %d\n&quot;,
+</I>&gt;<i>           (render_fullscreen ? &quot;fullscreen &quot; : &quot;&quot;), con, con-&gt;name, con-&gt;layout,
+</I>&gt;<i> @@ -124,6 +124,25 @@ void render_con(Con *con, bool render_fullscreen) {
+</I>&gt;<i>          rect.width -= 2 * 2;
+</I>&gt;<i>          rect.height -= 2 * 2;
+</I>&gt;<i>      }
+</I>&gt;<i> +
+</I>&gt;<i> +    bool should_inset = ((con_is_leaf(con) ||
+</I>&gt;<i> +                          (children &gt; 0 &amp;&amp;
+</I>&gt;<i> +                           (con-&gt;layout == L_STACKED ||
+</I>&gt;<i> +                            con-&gt;layout == L_TABBED))) &amp;&amp;
+</I>&gt;<i> +                         con-&gt;type != CT_FLOATING_CON &amp;&amp;
+</I>&gt;<i> +                         con-&gt;type != CT_WORKSPACE);
+</I>&gt;<i> +    if ((!already_inset &amp;&amp; should_inset)) {
+</I>&gt;<i> +        Rect inset = (Rect) {4, 4, 4 * -2, 4 * -2};
+</I>&gt;<i> +        rect = rect_add(rect, inset);
+</I>&gt;<i> +        if (!render_fullscreen) {
+</I>&gt;<i> +            con-&gt;rect = rect_add(con-&gt;rect, inset);
+</I>&gt;<i> +            if (con-&gt;window) {
+</I>&gt;<i> +                con-&gt;window_rect = rect_add(con-&gt;window_rect, inset);
+</I>&gt;<i> +            }
+</I>&gt;<i> +        }
+</I>&gt;<i> +        inset.height = 0;
+</I>&gt;<i> +        con-&gt;deco_rect = rect_add(con-&gt;deco_rect, inset);
+</I>&gt;<i> +    }
+</I>&gt;<i>
+</I>&gt;<i>      int x = rect.x;
+</I>&gt;<i>      int y = rect.y;
+</I>&gt;<i> @@ -191,7 +210,7 @@ void render_con(Con *con, bool render_fullscreen) {
+</I>&gt;<i>      if (fullscreen) {
+</I>&gt;<i>          fullscreen-&gt;rect = rect;
+</I>&gt;<i>          x_raise_con(fullscreen);
+</I>&gt;<i> -        render_con(fullscreen, true);
+</I>&gt;<i> +        render_con(fullscreen, true, false);
+</I>&gt;<i>          return;
+</I>&gt;<i>      }
+</I>&gt;<i>
+</I>&gt;<i> @@ -231,7 +250,7 @@ void render_con(Con *con, bool render_fullscreen) {
+</I>&gt;<i>      } else if (con-&gt;type == CT_ROOT) {
+</I>&gt;<i>          Con *output;
+</I>&gt;<i>          TAILQ_FOREACH(output, &amp;(con-&gt;nodes_head), nodes) {
+</I>&gt;<i> -            render_con(output, false);
+</I>&gt;<i> +            render_con(output, false, false);
+</I>&gt;<i>          }
+</I>&gt;<i>
+</I>&gt;<i>          /* We need to render floating windows after rendering all outputs&#8217;
+</I>&gt;<i> @@ -269,7 +288,7 @@ void render_con(Con *con, bool render_fullscreen) {
+</I>&gt;<i>                  DLOG(&quot;floating child at (%d,%d) with %d x %d\n&quot;,
+</I>&gt;<i>                       child-&gt;rect.x, child-&gt;rect.y, child-&gt;rect.width, child-&gt;rect.height);
+</I>&gt;<i>                  x_raise_con(child);
+</I>&gt;<i> -                render_con(child, false);
+</I>&gt;<i> +                render_con(child, false, true);
+</I>&gt;<i>              }
+</I>&gt;<i>          }
+</I>&gt;<i>
+</I>&gt;<i> @@ -365,7 +384,7 @@ void render_con(Con *con, bool render_fullscreen) {
+</I>&gt;<i>          DLOG(&quot;child at (%d, %d) with (%d x %d)\n&quot;,
+</I>&gt;<i>                  child-&gt;rect.x, child-&gt;rect.y, child-&gt;rect.width, child-&gt;rect.height);
+</I>&gt;<i>          x_raise_con(child);
+</I>&gt;<i> -        render_con(child, false);
+</I>&gt;<i> +        render_con(child, false, should_inset || already_inset);
+</I>&gt;<i>          i++;
+</I>&gt;<i>      }
+</I>&gt;<i>
+</I>&gt;<i> @@ -378,7 +397,7 @@ void render_con(Con *con, bool render_fullscreen) {
+</I>&gt;<i>               * that we have a non-leaf-container inside the stack. In that
+</I>&gt;<i>               * case, the children of the non-leaf-container need to be raised
+</I>&gt;<i>               * aswell. */
+</I>&gt;<i> -            render_con(child, false);
+</I>&gt;<i> +            render_con(child, false, true);
+</I>&gt;<i>          }
+</I>&gt;<i>
+</I>&gt;<i>          if (children != 1)
+</I>&gt;<i> diff --git a/src/tree.c b/src/tree.c
+</I>&gt;<i> index 7a5fb9f..12d3b9d 100644
+</I>&gt;<i> --- a/src/tree.c
+</I>&gt;<i> +++ b/src/tree.c
+</I>&gt;<i> @@ -474,7 +474,7 @@ void tree_render(void) {
+</I>&gt;<i>      mark_unmapped(croot);
+</I>&gt;<i>      croot-&gt;mapped = true;
+</I>&gt;<i>
+</I>&gt;<i> -    render_con(croot, false);
+</I>&gt;<i> +    render_con(croot, false, false);
+</I>&gt;<i>
+</I>&gt;<i>      x_push_changes(croot);
+</I>&gt;<i>      DLOG(&quot;-- END RENDERING --\n&quot;);
+</I>&gt;<i> --
+</I>&gt;<i> 1.8.0
+</I>&gt;<i>
+</I></PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001056.html">[i3] [PATCH 5/5] Added window insets (similar to herbstluftwm)
+</A></li>
+	<LI>Next message: <A HREF="001046.html">[i3] [PATCH 5/5] Added window insets (similar to herbstluftwm)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1045">[ date ]</a>
+              <a href="thread.html#1045">[ thread ]</a>
+              <a href="subject.html#1045">[ subject ]</a>
+              <a href="author.html#1045">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

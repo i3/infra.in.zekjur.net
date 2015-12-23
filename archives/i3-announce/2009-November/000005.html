@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3 announcement] i3 v3.&#948; released
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-announce%40i3.zekjur.net?Subject=%5Bi3%20announcement%5D%20%3D%3Futf-8%3Fq%3Fi3_v3%3D2E%3DCE%3DB4_released%3F%3D&In-Reply-To=">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3 announcement] i3 v3.&#948; released</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-announce%40i3.zekjur.net?Subject=%5Bi3%20announcement%5D%20%3D%3Futf-8%3Fq%3Fi3_v3%3D2E%3DCE%3DB4_released%3F%3D&In-Reply-To="
+       TITLE="[i3 announcement] i3 v3.&#948; released">michael+i3 at stapelberg.de
+       </A><BR>
+    <I>Mon Nov  9 23:09:44 CET 2009</I>
+    <P><UL>
+        
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5">[ date ]</a>
+              <a href="thread.html#5">[ thread ]</a>
+              <a href="subject.html#5">[ subject ]</a>
+              <a href="author.html#5">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+a few minutes ago, i3 v3.&#948; was released. Below are the release notes for this
+version:
+
+This is the third version (3.&#948;, transcribed 3.d) of i3. It is considered
+stable.
+
+This release features tabbing and some more advanced modifications of the
+stacking window (see the user&#8217;s guide), vim-like marks, support for the
+urgency hint, horizontal resizing of containers (finally), modes (which can
+make your keybindings a lot simpler), an unlimited amount of workspaces
+and several bugfixes (see below for the complete list of changes).
+
+Furthermore, the configuration file parsing has been rewritten to use a
+lex/yacc based lexer/parser. This makes our configuration file more easy to
+understand and more flexible from the point of view of a developer. For some
+of the new features, you already need the new lexer/parser. To not break your
+current configuration, however, the old parser is still included and used by
+default. I strongly recommend you to add the flag -l when starting i3 and
+switch your configuration file to the new lexer/parser. This should only
+require minor changes, if at all. In the next released version of i3, the
+old configuration file parsing will be removed!
+
+Also, this release includes the testcases which were developed in a separate
+branch so far. They use Perl, together with X11::XCB, which you can download
+from CPAN. Please make sure you are not doing anything important when running
+the testcases, as they may modify your layout and use different workspaces.
+They also might, of course, actually find bugs and crash i3 ;-).
+
+Thanks for this release go out to xeen, mist, badboy, Mikael, mxf, Atsutane,
+tsdh, litemotiv, shatter, msi, yurifury, dirkson, Scytale, Grauwolf and all
+other people who reported bugs/made suggestions.
+
+A list of changes follows:
+
+  * Implement tabbing (command &quot;T&quot;)
+  * Implement horizontal resize of containers (containers! not windows)
+  * Implement the urgency hint for windows/workspaces
+  * Implement vim-like marks (mark/goto command)
+  * Implement stack-limit for further defining how stack windows should look
+  * Implement modes which allow you to use a different set of keybindings
+    when inside a specific mode
+  * Implement changing the default mode of containers
+  * Implement long options (--version, --no-autostart, --help, --config)
+  * Implement 'bt' to toggle between the different border styles
+  * Implement an option to specify the default border style
+  * Use a yacc/lex parser/lexer for the configuration file
+  * The number of workspaces is now dynamic instead of limited to 10
+  * Floating windows (and tiled containers) can now be resized using
+    floating_modifier and right mouse button
+  * Dock windows can now reconfigure their height
+  * Bugfix: Correctly handle multiple messages on the IPC socket
+  * Bugfix: Correctly use base_width, base_height and size increment hints
+  * Bugfix: Correctly send fake configure_notify events
+  * Bugfix: Don&#8217;t crash if the numlock symbol cannot be found
+  * Bugfix: Don&#8217;t display a colon after unnamed workspaces
+  * Bugfix: If the pointer is outside of the screen when starting, fall back to
+    the first screen.
+  * Bugfix: Initialize screens correctly when not using Xinerama
+  * Bugfix: Correctly handle unmap_notify events when resizing
+  * Bugfix: Correctly warp pointer after rendering the layout
+  * Bugfix: Fix NULL pointer dereference when reconfiguring screens
+
+ -- Michael Stapelberg, 2009-11-09
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5">[ date ]</a>
+              <a href="thread.html#5">[ thread ]</a>
+              <a href="subject.html#5">[ subject ]</a>
+              <a href="author.html#5">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://p2pdfs.zekjur.net/mailman/listinfo.cgi/i3-announce">More information about the i3-announce
+mailing list</a><br>
+</body></html>

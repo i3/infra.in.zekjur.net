@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH 0/5] Assorted Patches
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%200/5%5D%20Assorted%20Patches&In-Reply-To=%3C1353236215-32206-1-git-send-email-kemurphy.cmu%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001036.html">
+   <LINK REL="Next"  HREF="001038.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH 0/5] Assorted Patches</H1>
+    <B>Kevin Murphy</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%200/5%5D%20Assorted%20Patches&In-Reply-To=%3C1353236215-32206-1-git-send-email-kemurphy.cmu%40gmail.com%3E"
+       TITLE="[i3] [PATCH 0/5] Assorted Patches">kemurphy.cmu at gmail.com
+       </A><BR>
+    <I>Sun Nov 18 11:56:50 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001036.html">[i3] i3 + Fedora 17 on Thinkpad
+</A></li>
+        <LI>Next message: <A HREF="001038.html">[i3] [PATCH 1/5] Fixes for true transparency.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1037">[ date ]</a>
+              <a href="thread.html#1037">[ thread ]</a>
+              <a href="subject.html#1037">[ subject ]</a>
+              <a href="author.html#1037">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>From: Kevin Murphy &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">kemurphy at andrew.cmu.edu</A>&gt;
+
+Here are some patches I've been sitting on that enhance the appearance of i3.
+(Yes, looks matter; I, for one, can't be efficient if the environment I stare
+at all day is an eyesore :) )
+
+0001 is a fix for true transparency that I worked on a while ago -- I still need
+to reimplement the rendering cache since apparently it makes a noticable
+difference in performance, and I don't expect this one to be accepted as is, but
+I'd like to put it out there for those who want it early and don't see the
+perf hit.
+
+0005 is for window borders to be inset on the tiling layer, which looks pretty
+cool.  I intend to make the inset size configurable, and don't expect this one
+to be accepted just yet either, but I'd also like this one to at least be out
+there for those that want it.  Feedback would also be appreciated.
+
+Thanks for reading!
+
+Kevin Murphy (5):
+  Fixes for true transparency.
+  Added &quot;focus&quot; IPC message/event.
+  Show title of focused window in i3bar
+  Alignment fixes for i3bar
+  Added window insets (similar to herbstluftwm)
+
+ docs/userguide              |  16 ++++
+ i3-config-wizard/main.c     |   1 +
+ i3bar/include/common.h      |   3 +
+ i3bar/include/focus.h       |  23 ++++++
+ i3bar/include/xcb.h         |   6 ++
+ i3bar/src/focus.c           | 111 ++++++++++++++++++++++++++
+ i3bar/src/ipc.c             |  27 ++++++-
+ i3bar/src/main.c            |   1 +
+ i3bar/src/xcb.c             | 164 +++++++++++++++++++++++++++++++++-----
+ include/config.h            |   8 ++
+ include/config_directives.h |   1 +
+ include/data.h              |   3 -
+ include/i3/ipc.h            |   9 +++
+ include/libi3.h             |   8 +-
+ include/render.h            |   2 +-
+ include/x.h                 |   2 +-
+ include/xcb.h               |  16 +---
+ libi3/font.c                |  29 ++++++-
+ libi3/get_visualtype.c      |  25 +++---
+ parser-specs/config.spec    |   6 ++
+ src/cfgparse.l              |   2 +
+ src/cfgparse.y              |  10 +++
+ src/commands.c              |   4 +-
+ src/con.c                   |   7 +-
+ src/config_directives.c     |   4 +
+ src/floating.c              |   6 +-
+ src/handlers.c              |   3 +
+ src/ipc.c                   |  45 ++++++++++-
+ src/main.c                  |  62 ++++++++++++---
+ src/manage.c                |   3 +-
+ src/randr.c                 |   2 +-
+ src/render.c                |  35 ++++++--
+ src/resize.c                |   7 +-
+ src/tree.c                  |   2 +-
+ src/x.c                     | 190 ++++++++++++--------------------------------
+ src/xcb.c                   |  51 ++----------
+ 36 files changed, 615 insertions(+), 279 deletions(-)
+ create mode 100644 i3bar/include/focus.h
+ create mode 100644 i3bar/src/focus.c
+
+-- 
+1.8.0
+
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001036.html">[i3] i3 + Fedora 17 on Thinkpad
+</A></li>
+	<LI>Next message: <A HREF="001038.html">[i3] [PATCH 1/5] Fixes for true transparency.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1037">[ date ]</a>
+              <a href="thread.html#1037">[ thread ]</a>
+              <a href="subject.html#1037">[ subject ]</a>
+              <a href="author.html#1037">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

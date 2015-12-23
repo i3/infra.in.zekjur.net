@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3-input shell out
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3-input%20shell%20out&In-Reply-To=%3C20140423062724.GD1932%40anton-t430s.int.op5.se%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001692.html">
+   <LINK REL="Next"  HREF="001694.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3-input shell out</H1>
+    <B>Anton Löfgren</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3-input%20shell%20out&In-Reply-To=%3C20140423062724.GD1932%40anton-t430s.int.op5.se%3E"
+       TITLE="[i3] i3-input shell out">anton.lofgren at gmail.com
+       </A><BR>
+    <I>Wed Apr 23 08:27:24 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001692.html">[i3] Questions regarding bindsym through ipc, tabbed layout,	etc.
+</A></li>
+        <LI>Next message: <A HREF="001694.html">[i3] i3-input shell out
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1693">[ date ]</a>
+              <a href="thread.html#1693">[ thread ]</a>
+              <a href="subject.html#1693">[ subject ]</a>
+              <a href="author.html#1693">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi list,
+
+I've been looking around for a while to get some sort of auto-completion
+going for switching between temporary named workspaces. I'm currently using
+i3-input, as such:
+
+bindsym $mod+t exec i3-input -F 'workspace %s' -P 'Switch to: '
+
+to allow me to switch between workspaces.
+
+Now, this works completely fine, but becomes a bit cumbersome when you
+want to give your workspaces more descriptive names.
+
+My current idea (and I'm not sure if it's a terrible one or not, hence
+this message), is to patch i3-input to allow some sort of shell-out
+functionality. Let's consider a hypothetical -U option, which is
+probably dependent on the -F option and which takes as
+an argument any old string:
+
+-U &lt;string&gt;
+
+&lt;string&gt; here (likely a shell command), would be something that takes
+the input (as provided by the user), does &quot;something&quot; with it, and
+instead of interpolating the format string with the user input,
+interpolates it with &lt;string&gt;'s output.
+
+Reusing my binding from above, I'd like to do something similar to:
+
+bindsym $mod+t exec i3-input -F 'workspace %s' -U '~/bin/autocomplete-i3-workspace %s'  -P 'Switch to: '
+
+which executes the autocomplete-i3-workspace program, which in turn
+returns a workspace autocompletion of my input, interpolates that into
+the command and switches the workspace for me, without me having to type
+the entire name of the workspace.
+
+Possibly, you'd want some sort of checking of the exit code of the
+subshell as well to allow for graceful handling of failures.
+
+Am I making sense? Is this something that might be desirable for the
+community in general? If so, what would you change about the proposal
+outlined here? If not, is there a better way to do this already?
+
+I've considered using dmenu to achieve basically the same thing. if I
+remember correctly, I once had a wmii setup like that, but I wanted to
+run the idea by you all first, and hear your input, since I feel like
+it'd be a neat feature to have built-in.
+
+Anton
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001692.html">[i3] Questions regarding bindsym through ipc, tabbed layout,	etc.
+</A></li>
+	<LI>Next message: <A HREF="001694.html">[i3] i3-input shell out
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1693">[ date ]</a>
+              <a href="thread.html#1693">[ thread ]</a>
+              <a href="subject.html#1693">[ subject ]</a>
+              <a href="author.html#1693">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

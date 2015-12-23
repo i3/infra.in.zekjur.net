@@ -1,0 +1,46 @@
+From 33712d8e2f9faaedbf6c883ddcac91cadccc305d Mon Sep 17 00:00:00 2001
+From: darkraven <drdarkraven@gmail.com>
+Date: Wed, 22 Feb 2012 13:45:42 +0800
+Subject: [PATCH 2/3] fix resize bar
+
+---
+ src/resize.c |   12 ++++++++++--
+ 1 files changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/src/resize.c b/src/resize.c
+index a1897b6..f9a4635 100644
+--- a/src/resize.c
++++ b/src/resize.c
+@@ -62,7 +62,7 @@ int resize_graphical_handler(Con *first, Con *second, orientation_t orientation,
+     xcb_flush(conn);
+ 
+     uint32_t mask = 0;
+-    uint32_t values[2];
++    uint32_t values[4];
+ 
+     mask = XCB_CW_OVERRIDE_REDIRECT;
+     values[0] = 1;
+@@ -86,11 +86,19 @@ int resize_graphical_handler(Con *first, Con *second, orientation_t orientation,
+         new_position = event->root_y;
+     }
+ 
++
++
+     mask = XCB_CW_BACK_PIXEL;
+     values[0] = config.client.focused.border;
+ 
++    mask |= XCB_CW_BORDER_PIXEL;
++    values[1] = root_screen->black_pixel;
++
+     mask |= XCB_CW_OVERRIDE_REDIRECT;
+-    values[1] = 1;
++    values[2] = 1;
++
++    mask |= XCB_CW_COLORMAP;
++    values[3] = colormap;
+ 
+     xcb_window_t helpwin = create_window(conn, helprect, XCB_WINDOW_CLASS_INPUT_OUTPUT,
+                                          (orientation == HORIZ ?
+-- 
+1.7.9.1
+

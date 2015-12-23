@@ -1,0 +1,1941 @@
+From karkhaz at gmail.com  Mon Aug  3 16:14:12 2015
+From: karkhaz at gmail.com (Kareem)
+Date: Mon, 3 Aug 2015 15:14:12 +0100
+Subject: [i3] IPC scripting with Ruby
+In-Reply-To: <556E00A2.2020001@dubstepdish.com>
+References: <20150602212033.GA3897@red_water.cs.ucl.ac.uk>
+ <556E00A2.2020001@dubstepdish.com>
+Message-ID: <20150803141412.GA11383@red_water.cs.ucl.ac.uk>
+
+Hi all,
+
+Vitalii Elenhaupt pointed me to this i3 IPC library for ruby:
+
+https://github.com/veelenga/i3ipc-ruby
+
+which is a fork of the i3-ipc library mentioned on the i3 website.
+
+I would like to recommend that veelenga/i3ipc-ruby be added to the i3
+website, and badboy/i3-ipc be removed or at least marked as
+unmaintained. veelenga/i3ipc-ruby is more featureful than badboy's
+one, including the ability to subscribe to events.
+
+Kareem
+
+On 2015-06-02 1514, Tony Crisci wrote:
+> This is a known bug with i3. Any command that does not include a
+> `restart` should work correctly. Try to use `reload` whenever you
+> can.  If `reload` does not do something you think it should do that
+> `restart` does, make an issue on github.
+> 
+> https://github.com/i3/i3/issues/1581
+> 
+> On 06/02/2015 05:20 PM, Kareem Khazem wrote:
+> > Hi all, wondering if somebody could tell me what's wrong with my
+> > script that's trying to talk with i3's IPC.
+> > 
+> > Whenever I try to read a reply from the socket, I apparently just
+> > get an empty string.
+> > 
+> > I've already read the warning about using a library and not
+> > implementing my own, thanks, but the Ruby library is unmaintained
+> > and doesn't include recent IPC features.
+> > 
+> > I'm doing this:
+> > 
+> > ___________________ 8>< snip ><8
+> > _____________________________________ #!/usr/bin/env ruby require
+> > 'socket' socket  = Socket.unix(`i3 --get-socketpath`.strip)
+> > 
+> > payload = "restart" type    = 0 length  = payload.length
+> > 
+> > bytes = socket.write("i3-ipc#{[length,
+> > type].pack("LL")}#{payload}")
+> > 
+> > response = socket.read.unpack("L")
+> > ______________________________________________________________________
+> > 
+> > 
+> > `bytes' gets the number of bytes written, as expected, and i3 does
+> > indeed restart, so the message was successful. But `response'
+> > seems to be nil. If I just ask for socket.read, I just get the
+> > empty string.
+> > 
+> > Can anyone help? thanks!
+
+From velenhaupt at gmail.com  Mon Aug  3 18:14:49 2015
+From: velenhaupt at gmail.com (Vitalii Elenhaupt)
+Date: Mon, 3 Aug 2015 19:14:49 +0300
+Subject: [i3] IPC scripting with Ruby
+In-Reply-To: <20150803141412.GA11383@red_water.cs.ucl.ac.uk>
+References: <20150602212033.GA3897@red_water.cs.ucl.ac.uk>
+ <556E00A2.2020001@dubstepdish.com>
+ <20150803141412.GA11383@red_water.cs.ucl.ac.uk>
+Message-ID: <CABUpvNREHGknAKXbu-hbq+uMRbcdP2TJwQF709S7s5AcK0Szww@mail.gmail.com>
+
+Hi Kareem,
+
+Thank you for your recommendation. Really nice to hear that somebody likes
+it.
+I have already asked Michael to add it on i3 ipc web page. And actually, it
+is already there:
+
+http://build.i3wm.org/docs/ipc.html#_see_also_existing_libraries
+
+But that is still the latest development doc. I am not aware when it will
+be moved to the main stream.
+
+Thanks,
+Vitalii
+
+On Mon, Aug 3, 2015 at 5:14 PM, Kareem <karkhaz at gmail.com> wrote:
+
+> Hi all,
+>
+> Vitalii Elenhaupt pointed me to this i3 IPC library for ruby:
+>
+> https://github.com/veelenga/i3ipc-ruby
+>
+> which is a fork of the i3-ipc library mentioned on the i3 website.
+>
+> I would like to recommend that veelenga/i3ipc-ruby be added to the i3
+> website, and badboy/i3-ipc be removed or at least marked as
+> unmaintained. veelenga/i3ipc-ruby is more featureful than badboy's
+> one, including the ability to subscribe to events.
+>
+> Kareem
+>
+> On 2015-06-02 1514, Tony Crisci wrote:
+> > This is a known bug with i3. Any command that does not include a
+> > `restart` should work correctly. Try to use `reload` whenever you
+> > can.  If `reload` does not do something you think it should do that
+> > `restart` does, make an issue on github.
+> >
+> > https://github.com/i3/i3/issues/1581
+> >
+> > On 06/02/2015 05:20 PM, Kareem Khazem wrote:
+> > > Hi all, wondering if somebody could tell me what's wrong with my
+> > > script that's trying to talk with i3's IPC.
+> > >
+> > > Whenever I try to read a reply from the socket, I apparently just
+> > > get an empty string.
+> > >
+> > > I've already read the warning about using a library and not
+> > > implementing my own, thanks, but the Ruby library is unmaintained
+> > > and doesn't include recent IPC features.
+> > >
+> > > I'm doing this:
+> > >
+> > > ___________________ 8>< snip ><8
+> > > _____________________________________ #!/usr/bin/env ruby require
+> > > 'socket' socket  = Socket.unix(`i3 --get-socketpath`.strip)
+> > >
+> > > payload = "restart" type    = 0 length  = payload.length
+> > >
+> > > bytes = socket.write("i3-ipc#{[length,
+> > > type].pack("LL")}#{payload}")
+> > >
+> > > response = socket.read.unpack("L")
+> > > ______________________________________________________________________
+> > >
+> > >
+> > > `bytes' gets the number of bytes written, as expected, and i3 does
+> > > indeed restart, so the message was successful. But `response'
+> > > seems to be nil. If I just ask for socket.read, I just get the
+> > > empty string.
+> > >
+> > > Can anyone help? thanks!
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150803/4cdc384d/attachment.html>
+
+From mailinglists at xgm.de  Mon Aug 10 15:48:36 2015
+From: mailinglists at xgm.de (Florian Lindner)
+Date: Mon, 10 Aug 2015 15:48:36 +0200
+Subject: [i3] Problems setting multi monitor
+Message-ID: <3390004.382BWmSPyp@asaru>
+
+Hello,
+
+I try to launch an xrandr script to set the multi monitor configuration. The script works when called standalone after i3 startup, but not at startup
+
+#!env python
+
+import functools, subprocess, sys
+call = functools.partial(subprocess.check_call, shell=True)
+
+call("sleep 3")
+
+if sys.argv[1] == "uni":
+    call("xrandr --output DP2-2 --auto --primary")
+    call("xrandr --output eDP1  --auto --left-of DP2-2")
+    call("xrandr --output HDMI1 --auto --right-of DP2-2")
+    
+
+The sleep 3 I put just to test, shouldn't be needed.
+
+It is launched as my first exec in my i3 config:
+
+exec --no-startup-id /home/florian/software/bin/screen_config uni
+
+but seems to have no effect at all, configuration is not changed.
+
+What can be the problem there?
+
+Thanks,
+Florian
+
+
+
+From anton.lofgren at gmail.com  Mon Aug 10 18:30:13 2015
+From: anton.lofgren at gmail.com (=?ISO-8859-1?Q?Anton_L=F6fgren?=)
+Date: Mon, 10 Aug 2015 18:30:13 +0200
+Subject: [i3] Problems setting multi monitor
+In-Reply-To: <3390004.382BWmSPyp@asaru>
+References: <3390004.382BWmSPyp@asaru>
+Message-ID: <572232AF-967D-433B-A57A-FC23349A7D87@gmail.com>
+
+AFAIK, the shebang must be an absolute path. That is, you'll probably have more luck replacing #!env with #!/usr/bin/env.
+
+How do you call it standalone? I'm assuming by invoking python manually. 
+
+/Anton 
+
+On August 10, 2015 3:48:36 PM CEST, Florian Lindner <mailinglists at xgm.de> wrote:
+>Hello,
+>
+>I try to launch an xrandr script to set the multi monitor
+>configuration. The script works when called standalone after i3
+>startup, but not at startup
+>
+>#!env python
+>
+>import functools, subprocess, sys
+>call = functools.partial(subprocess.check_call, shell=True)
+>
+>call("sleep 3")
+>
+>if sys.argv[1] == "uni":
+>    call("xrandr --output DP2-2 --auto --primary")
+>    call("xrandr --output eDP1  --auto --left-of DP2-2")
+>    call("xrandr --output HDMI1 --auto --right-of DP2-2")
+>    
+>
+>The sleep 3 I put just to test, shouldn't be needed.
+>
+>It is launched as my first exec in my i3 config:
+>
+>exec --no-startup-id /home/florian/software/bin/screen_config uni
+>
+>but seems to have no effect at all, configuration is not changed.
+>
+>What can be the problem there?
+>
+>Thanks,
+>Florian
+
+-- 
+Sent from my Android device with K-9 Mail. Please excuse my brevity.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150810/55ce447c/attachment.html>
+
+From mailinglists at xgm.de  Tue Aug 11 13:54:17 2015
+From: mailinglists at xgm.de (Florian Lindner)
+Date: Tue, 11 Aug 2015 13:54:17 +0200
+Subject: [i3] Problems setting multi monitor
+In-Reply-To: <572232AF-967D-433B-A57A-FC23349A7D87@gmail.com>
+References: <3390004.382BWmSPyp@asaru>
+ <572232AF-967D-433B-A57A-FC23349A7D87@gmail.com>
+Message-ID: <2307213.YLSeVjEmtn@asaru>
+
+Am Montag, 10. August 2015, 18:30:13 schrieb Anton Löfgren:
+> AFAIK, the shebang must be an absolute path. That is, you'll probably have more luck replacing #!env with #!/usr/bin/env.
+
+It seemed to be a problem with PATH. Starting /usr/bin/python explicitly makes it work.
+ 
+> How do you call it standalone? I'm assuming by invoking python manually. 
+
+No, without python.
+
+
+Some more questions:
+
+*) The monitor in the middle is set primary and assigned workspace 2. Howeve the i3-nagbar always appears at workspace 1 (left of 2). How can I make the nagbar appears on the primary output?
+
+*) For setting my backgrounds I use feh:
+
+exec --no-startup-id feh --randomize --bg-max Bilder/Backgrounds 
+
+This works fine if executed in a shell, after i3 startup. Each display is assigned a different background image, if the aspect ratio does not fit there are black bars. But if I put in my i3 config it behaves differently. It gives each screen the same background image. Instead of black bars there is another image under it when aspect ration does not fit. This question may not fit here, but maybe someone has an idea...
+
+*) 
+bar {
+        status_command i3status
+        # tray_output primary
+}
+
+puts the tray output on workspace 3, left of my primary. Activating the tray_output primary and restart (mod+shift+r) and it works like it should, tray on the primary. But a real restart (exit and log in again) screws it. There are no tray icons at all. The owncloud client (which is started using dex -ae i3) opens in a window, instead minmized. However, all programs that should appear in the tray are running (klipper, kmix)
+
+Sorry for putting so much questions at you ;-)
+
+Thanks!
+Florian
+
+> 
+> /Anton 
+> 
+> On August 10, 2015 3:48:36 PM CEST, Florian Lindner <mailinglists at xgm.de> wrote:
+> >Hello,
+> >
+> >I try to launch an xrandr script to set the multi monitor
+> >configuration. The script works when called standalone after i3
+> >startup, but not at startup
+> >
+> >#!env python
+> >
+> >import functools, subprocess, sys
+> >call = functools.partial(subprocess.check_call, shell=True)
+> >
+> >call("sleep 3")
+> >
+> >if sys.argv[1] == "uni":
+> >    call("xrandr --output DP2-2 --auto --primary")
+> >    call("xrandr --output eDP1  --auto --left-of DP2-2")
+> >    call("xrandr --output HDMI1 --auto --right-of DP2-2")
+> >    
+> >
+> >The sleep 3 I put just to test, shouldn't be needed.
+> >
+> >It is launched as my first exec in my i3 config:
+> >
+> >exec --no-startup-id /home/florian/software/bin/screen_config uni
+> >
+> >but seems to have no effect at all, configuration is not changed.
+> >
+> >What can be the problem there?
+> >
+> >Thanks,
+> >Florian
+> 
+> 
+
+From ultrabug at ultrabug.net  Tue Aug 11 15:03:17 2015
+From: ultrabug at ultrabug.net (Ultrabug)
+Date: Tue, 11 Aug 2015 15:03:17 +0200
+Subject: [i3] Problems setting multi monitor
+In-Reply-To: <2307213.YLSeVjEmtn@asaru>
+References: <3390004.382BWmSPyp@asaru>
+ <572232AF-967D-433B-A57A-FC23349A7D87@gmail.com> <2307213.YLSeVjEmtn@asaru>
+Message-ID: <55C9F295.20805@ultrabug.net>
+
+On 11/08/2015 13:54, Florian Lindner wrote:
+> Am Montag, 10. August 2015, 18:30:13 schrieb Anton Löfgren:
+>> AFAIK, the shebang must be an absolute path. That is, you'll probably have more luck replacing #!env with #!/usr/bin/env.
+> It seemed to be a problem with PATH. Starting /usr/bin/python explicitly makes it work.
+>  
+>> How do you call it standalone? I'm assuming by invoking python manually. 
+> No, without python.
+
+Hi
+
+It may not answer all your questions but I wanted to point out that
+*py3status* [1] provides a *xrandr* *module* to handle your screen
+layouts easily and automatically if you want (with click event support
+to switch easily).
+
+You can maybe take a look at the source code [2] to get inspiration for
+your own or use it through py3status and contribute to it if you want ;)
+
+DISCLAIMER : I created py3status, so ofc I'm biased but I sincerly think
+that this module could help you one way or another
+
+[1] py3status : https://github.com/ultrabug/py3status
+[2] xrandr module :
+https://github.com/ultrabug/py3status/blob/master/py3status/modules/xrandr.py
+
+Have a nice day
+
+>
+> Some more questions:
+>
+> *) The monitor in the middle is set primary and assigned workspace 2. Howeve the i3-nagbar always appears at workspace 1 (left of 2). How can I make the nagbar appears on the primary output?
+>
+> *) For setting my backgrounds I use feh:
+>
+> exec --no-startup-id feh --randomize --bg-max Bilder/Backgrounds 
+>
+> This works fine if executed in a shell, after i3 startup. Each display is assigned a different background image, if the aspect ratio does not fit there are black bars. But if I put in my i3 config it behaves differently. It gives each screen the same background image. Instead of black bars there is another image under it when aspect ration does not fit. This question may not fit here, but maybe someone has an idea...
+>
+> *) 
+> bar {
+>         status_command i3status
+>         # tray_output primary
+> }
+>
+> puts the tray output on workspace 3, left of my primary. Activating the tray_output primary and restart (mod+shift+r) and it works like it should, tray on the primary. But a real restart (exit and log in again) screws it. There are no tray icons at all. The owncloud client (which is started using dex -ae i3) opens in a window, instead minmized. However, all programs that should appear in the tray are running (klipper, kmix)
+>
+> Sorry for putting so much questions at you ;-)
+>
+> Thanks!
+> Florian
+>
+>> /Anton 
+>>
+>> On August 10, 2015 3:48:36 PM CEST, Florian Lindner <mailinglists at xgm.de> wrote:
+>>> Hello,
+>>>
+>>> I try to launch an xrandr script to set the multi monitor
+>>> configuration. The script works when called standalone after i3
+>>> startup, but not at startup
+>>>
+>>> #!env python
+>>>
+>>> import functools, subprocess, sys
+>>> call = functools.partial(subprocess.check_call, shell=True)
+>>>
+>>> call("sleep 3")
+>>>
+>>> if sys.argv[1] == "uni":
+>>>    call("xrandr --output DP2-2 --auto --primary")
+>>>    call("xrandr --output eDP1  --auto --left-of DP2-2")
+>>>    call("xrandr --output HDMI1 --auto --right-of DP2-2")
+>>>    
+>>>
+>>> The sleep 3 I put just to test, shouldn't be needed.
+>>>
+>>> It is launched as my first exec in my i3 config:
+>>>
+>>> exec --no-startup-id /home/florian/software/bin/screen_config uni
+>>>
+>>> but seems to have no effect at all, configuration is not changed.
+>>>
+>>> What can be the problem there?
+>>>
+>>> Thanks,
+>>> Florian
+>>
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150811/c09b1fee/attachment.html>
+
+From i3.thegrue at spamgourmet.com  Tue Aug 11 18:37:23 2015
+From: i3.thegrue at spamgourmet.com (i3.thegrue at spamgourmet.com)
+Date: Tue, 11 Aug 2015 18:37:23 +0200
+Subject: [i3] append layout works from commandline, but not from .i3/config
+Message-ID: <20150811183723.6aeded21@haktar.galaxy.home>
+
+Hello,
+
+I have a layout stored in emacs.json (attached). When I run this command from
+the commandline, everything works fine:
+
+markus at haktar % i3-msg 'append_layout /home/markus/.i3/emacs.json'
+
+But when I run this command from .i3/config, one placeholder is missing: the
+one in the horizontal container next to emacs:
+
+exec --no-startup-id i3-msg 'workspace $wsp3;
+append_layout /home/markus/.i3/emacs.json'
+
+What am I doing wrong?
+
+Thanks for your help,
+-- 
+Markus Grunwald
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: emacs.json
+Type: application/json
+Size: 4999 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150811/4ad293e3/attachment.json>
+
+From michael at i3wm.org  Tue Aug 11 19:10:21 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 11 Aug 2015 19:10:21 +0200
+Subject: [i3] append layout works from commandline,
+	but not from .i3/config
+In-Reply-To: <20150811183723.6aeded21@haktar.galaxy.home>
+References: <20150811183723.6aeded21@haktar.galaxy.home>
+Message-ID: <CANnVG6kfJq2hXZpT_3eHgMTaAgxowJhTFz3foOyJERGKHnc-LA@mail.gmail.com>
+
+On Tue, Aug 11, 2015 at 6:37 PM,  <i3.thegrue at spamgourmet.com> wrote:
+> Hello,
+>
+> I have a layout stored in emacs.json (attached). When I run this command from
+> the commandline, everything works fine:
+>
+> markus at haktar % i3-msg 'append_layout /home/markus/.i3/emacs.json'
+>
+> But when I run this command from .i3/config, one placeholder is missing: the
+> one in the horizontal container next to emacs:
+>
+> exec --no-startup-id i3-msg 'workspace $wsp3;
+> append_layout /home/markus/.i3/emacs.json'
+>
+> What am I doing wrong?
+
+append_layout is a command, not a configuration directive. Just like
+the workspace command you are using a line above, you’ll need to use
+i3-msg to send it.
+
+>
+> Thanks for your help,
+> --
+> Markus Grunwald
+
+
+
+-- 
+Best regards,
+Michael
+
+From i3.thegrue at spamgourmet.com  Tue Aug 11 19:17:43 2015
+From: i3.thegrue at spamgourmet.com (i3.thegrue at spamgourmet.com)
+Date: Tue, 11 Aug 2015 19:17:43 +0200
+Subject: [i3] append layout works from commandline,
+ (i3: to exclusive) but not from .i3/config
+In-Reply-To: <CANnVG6kfJq2hXZpT_3eHgMTaAgxowJhTFz3foOyJERGKHnc-LA@mail.gmail.com>
+References: <20150811183723.6aeded21@haktar.galaxy.home>
+ <CANnVG6kfJq2hXZpT_3eHgMTaAgxowJhTFz3foOyJERGKHnc-LA@mail.gmail.com>
+Message-ID: <20150811191743.6fc76edd@haktar.galaxy.home>
+
+Hello Michael,
+
+
+> >
+> > What am I doing wrong?  
+> 
+> append_layout is a command, not a configuration directive. Just like
+> the workspace command you are using a line above, you’ll need to use
+> i3-msg to send it.
+
+Sorry, my fault: the statement above is in one line (the tickmarks might be a
+hint that's easily overlooked...
+
+Hope, that's in one line now:
+
+exec --no-startup-id i3-msg 'workspace $wsp3; append_layout /home/markus/.i3/emacs.json'
+
+-- 
+Markus Grunwald
+https://www.the-grue.de
+
+Fragen zur Mail? https://www.the-grue.de/mail_und_co
+https://www.the-grue.de/~markus/markus_grunwald.gpg
+
+From michael at i3wm.org  Tue Aug 11 19:21:09 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 11 Aug 2015 19:21:09 +0200
+Subject: [i3] append layout works from commandline,
+ (i3: to exclusive) but not from .i3/config
+In-Reply-To: <20150811191743.6fc76edd@haktar.galaxy.home>
+References: <20150811183723.6aeded21@haktar.galaxy.home>
+ <CANnVG6kfJq2hXZpT_3eHgMTaAgxowJhTFz3foOyJERGKHnc-LA@mail.gmail.com>
+ <20150811191743.6fc76edd@haktar.galaxy.home>
+Message-ID: <CANnVG6==G_zvUH1quhGMWeNH8jDhcNpLEYx5HzTkjY5kqTUTnA@mail.gmail.com>
+
+Please don’t break threading in your replies, that makes it hard for
+people to follow the discussion.
+
+On Tue, Aug 11, 2015 at 7:17 PM,  <i3.thegrue at spamgourmet.com> wrote:
+> Hello Michael,
+>
+>
+>> >
+>> > What am I doing wrong?
+>>
+>> append_layout is a command, not a configuration directive. Just like
+>> the workspace command you are using a line above, you’ll need to use
+>> i3-msg to send it.
+>
+> Sorry, my fault: the statement above is in one line (the tickmarks might be a
+> hint that's easily overlooked...
+>
+> Hope, that's in one line now:
+>
+> exec --no-startup-id i3-msg 'workspace $wsp3; append_layout /home/markus/.i3/emacs.json'
+
+See http://i3wm.org/docs/debugging.html for how to look at i3’s log.
+It should give you some more details about what’s going on.
+
+>
+> --
+> Markus Grunwald
+> https://www.the-grue.de
+>
+> Fragen zur Mail? https://www.the-grue.de/mail_und_co
+> https://www.the-grue.de/~markus/markus_grunwald.gpg
+
+
+
+-- 
+Best regards,
+Michael
+
+From mailinglists at xgm.de  Wed Aug 12 01:21:07 2015
+From: mailinglists at xgm.de (Florian Lindner)
+Date: Wed, 12 Aug 2015 01:21:07 +0200
+Subject: [i3] Problems setting multi monitor
+In-Reply-To: <55C9F295.20805@ultrabug.net>
+References: <3390004.382BWmSPyp@asaru> <2307213.YLSeVjEmtn@asaru>
+ <55C9F295.20805@ultrabug.net>
+Message-ID: <1638242.Sg851KAFm9@horus>
+
+Hello,
+
+Am Dienstag, 11. August 2015, 15:03:17 schrieb Ultrabug:
+> On 11/08/2015 13:54, Florian Lindner wrote:
+>
+> It may not answer all your questions but I wanted to point out that
+> *py3status* [1] provides a *xrandr* *module* to handle your screen
+> layouts easily and automatically if you want (with click event support
+> to switch easily).
+> 
+> You can maybe take a look at the source code [2] to get inspiration for
+> your own or use it through py3status and contribute to it if you want ;)
+> 
+> DISCLAIMER : I created py3status, so ofc I'm biased but I sincerly think
+> that this module could help you one way or another
+> 
+> [1] py3status : https://github.com/ultrabug/py3status
+> [2] xrandr module :
+> https://github.com/ultrabug/py3status/blob/master/py3status/modules/xrandr.py
+
+Thanks for pointing me to py3status. Especially the xrandr plugin looks very interesting.
+
+In fact I installed it today and actually started to play around with the battery_level plugin.
+
+However it seems to be quite simplicistic like no notificiation on low battery and has some issues with multiple batteries. 
+
+I also came along i3pystatus, which seems to be strive for the same like py3status, right? They have a more elaborate battery plugin, but no display configuration plugin at all. Are py3status and i3pystatus compatible anyhow?
+
+Best Regards,
+Florian
+
+From ultrabug at ultrabug.net  Wed Aug 12 10:56:50 2015
+From: ultrabug at ultrabug.net (Ultrabug)
+Date: Wed, 12 Aug 2015 10:56:50 +0200
+Subject: [i3] Problems setting multi monitor
+In-Reply-To: <1638242.Sg851KAFm9@horus>
+References: <3390004.382BWmSPyp@asaru> <2307213.YLSeVjEmtn@asaru>
+ <55C9F295.20805@ultrabug.net> <1638242.Sg851KAFm9@horus>
+Message-ID: <55CB0A52.5070008@ultrabug.net>
+
+On 12/08/2015 01:21, Florian Lindner wrote:
+> Hello,
+Hi
+>
+> Am Dienstag, 11. August 2015, 15:03:17 schrieb Ultrabug:
+>> On 11/08/2015 13:54, Florian Lindner wrote:
+>>
+>> It may not answer all your questions but I wanted to point out that
+>> *py3status* [1] provides a *xrandr* *module* to handle your screen
+>> layouts easily and automatically if you want (with click event support
+>> to switch easily).
+>>
+>> You can maybe take a look at the source code [2] to get inspiration for
+>> your own or use it through py3status and contribute to it if you want ;)
+>>
+>> DISCLAIMER : I created py3status, so ofc I'm biased but I sincerly think
+>> that this module could help you one way or another
+>>
+>> [1] py3status : https://github.com/ultrabug/py3status
+>> [2] xrandr module :
+>> https://github.com/ultrabug/py3status/blob/master/py3status/modules/xrandr.py
+> Thanks for pointing me to py3status. Especially the xrandr plugin looks very interesting.
+>
+> In fact I installed it today and actually started to play around with the battery_level plugin.
+>
+> However it seems to be quite simplicistic like no notificiation on low battery and has some issues with multiple batteries. 
+Some other modules (pomodoro) indeed provide notifications, it's just
+that it has not been implemented/contributed in the battery_level one.
+
+I'm always open to suggestions and contributions, feel free to come on
+Freenode IRC #py3status channel if you want to talk about it more
+"lively" or email me ;)
+>
+> I also came along i3pystatus, which seems to be strive for the same like py3status, right? They have a more elaborate battery plugin, but no display configuration plugin at all. Are py3status and i3pystatus compatible anyhow?
+Even tho they use python as their primary language, these are two
+separate projects with different approaches to enhance your i3bar. I
+think the main one is still that py3status uses natively your
+i3status.conf and enhance it [2] so you don't need any other config file
+[1].
+
+They both provide their own set of modules but those are not directly
+compatible between them since their implementation is different. So I
+guess it's just a matter of taste and contribution / discussion :)
+> Best Regards,
+> Florian
+[1]
+https://github.com/ultrabug/py3status/wiki/Load-and-order-py3status-modules-directly-from-your-current-i3status-config
+[2]
+https://github.com/ultrabug/py3status/wiki/Handle-click-events-directly-from-your-i3status-config
+
+Have a nice day,
+
+Kindly
+
+
+From mailinglists at xgm.de  Mon Aug 17 09:06:59 2015
+From: mailinglists at xgm.de (Florian Lindner)
+Date: Mon, 17 Aug 2015 09:06:59 +0200
+Subject: [i3] Behavior of force_focus_wrapping
+Message-ID: <3237431.maXOASm2kh@asaru>
+
+Hello,
+
+I have force_focus_wrapping yes set, which afaik is also the default.
+
+Now having a container layout of a Browser and another container stacked. In this container is an Emacs and a Konsole, horizontally (in the sense that their border is a horizontal line).
+
+(Stack Browser (H-Split Emacs Konsole) ;; Lisp like notation
+
+Now I expect focus up to move focus from Konsole to Emacs and then to Browser. But is cycles only between Konsole and Emacs. I can focus parent and reach the Browser that way. When I move focus up from the Browser is moves to Konsole and then Emacs, I'm again in the cycle.
+
+Or do I understand focus_wrapping wrong?
+
+Thanks,
+Florian
+
+From holger at zedat.fu-berlin.de  Mon Aug 17 09:27:03 2015
+From: holger at zedat.fu-berlin.de (Holger =?iso-8859-1?Q?Wei=DF?=)
+Date: Mon, 17 Aug 2015 09:27:03 +0200
+Subject: [i3] Behavior of force_focus_wrapping
+In-Reply-To: <3237431.maXOASm2kh@asaru>
+References: <3237431.maXOASm2kh@asaru>
+Message-ID: <20150817072703.GY13667@zedat.fu-berlin.de>
+
+* Florian Lindner <mailinglists at xgm.de> [2015-08-17 09:06]:
+> Now having a container layout of a Browser and another container
+> stacked. In this container is an Emacs and a Konsole, horizontally (in
+> the sense that their border is a horizontal line).
+> 
+> (Stack Browser (H-Split Emacs Konsole) ;; Lisp like notation
+> 
+> Now I expect focus up to move focus from Konsole to Emacs and then to
+> Browser. But is cycles only between Konsole and Emacs. I can focus
+> parent and reach the Browser that way. When I move focus up from the
+> Browser is moves to Konsole and then Emacs, I'm again in the cycle.
+
+This sounds like you've set "force_focus_wrapping yes":
+
+http://i3wm.org/docs/userguide.html#_focus_wrapping
+
+Holger
+
+From andi at geekosphere.org  Mon Aug 17 09:47:58 2015
+From: andi at geekosphere.org (Andreas Herz)
+Date: Mon, 17 Aug 2015 09:47:58 +0200
+Subject: [i3] Make disabling output config option
+Message-ID: <20150817074758.GF21654@kvmbude>
+
+With 4.10.3 this fix was introduced:
+
+https://github.com/i3/i3/commit/14e95e765eeb1fd103ee8821656b43bf69c5519d
+
+This makes total sense, but in some cases it might be annoying.
+I have a setup with 3 LCDs (all the same HP ZR24w) connected to an
+nvidia gpu. 2 LCDs are connected via DVI and the 3rd one is connected
+via DP.
+I let my workstation run 24/7 so i just turn the screens on/off. While
+the 2 LCDs on DVI are staying "connected" in the xrandr output when
+turned off, the LCD on DP is "disconnected" (althought still physical
+attached). So the workspaces from the 3rd LCD (DP) are moved to the
+other ones, so i have to move them back to the 3rd LCD everytime i get
+back home and turn the LCDs on again.
+
+So it might be an idea to add an option to disable this feature.
+Or does anyone have an idea how to let randr know that the device is
+connected and just turned off?
+
+-- 
+Andreas Herz
+
+From rob at mrrob.info  Mon Aug 17 09:48:30 2015
+From: rob at mrrob.info (Mrrob)
+Date: Mon, 17 Aug 2015 15:48:30 +0800
+Subject: [i3] Behavior of force_focus_wrapping
+In-Reply-To: <20150817072703.GY13667@zedat.fu-berlin.de>
+References: <3237431.maXOASm2kh@asaru>
+ <20150817072703.GY13667@zedat.fu-berlin.de>
+Message-ID: <55D191CE.7090201@mrrob.info>
+
+On 17/08/15 15:27, Holger Weiß wrote:
+> * Florian Lindner <mailinglists at xgm.de> [2015-08-17 09:06]:
+>> Now having a container layout of a Browser and another container
+>> stacked. In this container is an Emacs and a Konsole, horizontally (in
+>> the sense that their border is a horizontal line).
+>>
+>> (Stack Browser (H-Split Emacs Konsole) ;; Lisp like notation
+>>
+>> Now I expect focus up to move focus from Konsole to Emacs and then to
+>> Browser. But is cycles only between Konsole and Emacs. I can focus
+>> parent and reach the Browser that way. When I move focus up from the
+>> Browser is moves to Konsole and then Emacs, I'm again in the cycle.
+>
+> This sounds like you've set "force_focus_wrapping yes":
+>
+> http://i3wm.org/docs/userguide.html#_focus_wrapping
+>
+> Holger
+>
+>
+
+Florian,
+
+"force_focus_wrapping yes" is not the default. The default behaviour may 
+be just what you're looking for (as Holger suggested)
+
+ From what I can tell: force_focus_wrapping prevents focus from 
+ascending up to the parent container.
+
+Regards,
+
+---
+mrrob
+---
+
+From andi at geekosphere.org  Wed Aug 19 22:08:58 2015
+From: andi at geekosphere.org (Andreas Herz)
+Date: Wed, 19 Aug 2015 22:08:58 +0200
+Subject: [i3] Make disabling output config option
+In-Reply-To: <20150817074758.GF21654@kvmbude>
+References: <20150817074758.GF21654@kvmbude>
+Message-ID: <20150819200858.GP21654@kvmbude>
+
+FYI:
+
+i just had to put
+
+> workspace "3: multimedia" output DP-1
+
+into my config, so the workspace is moved to that output when it's back.
+
+On 17/08/15 at 09:47, Andreas Herz wrote:
+> With 4.10.3 this fix was introduced:
+> 
+> https://github.com/i3/i3/commit/14e95e765eeb1fd103ee8821656b43bf69c5519d
+> 
+> This makes total sense, but in some cases it might be annoying.
+> I have a setup with 3 LCDs (all the same HP ZR24w) connected to an
+> nvidia gpu. 2 LCDs are connected via DVI and the 3rd one is connected
+> via DP.
+> I let my workstation run 24/7 so i just turn the screens on/off. While
+> the 2 LCDs on DVI are staying "connected" in the xrandr output when
+> turned off, the LCD on DP is "disconnected" (althought still physical
+> attached). So the workspaces from the 3rd LCD (DP) are moved to the
+> other ones, so i have to move them back to the 3rd LCD everytime i get
+> back home and turn the LCDs on again.
+> 
+> So it might be an idea to add an option to disable this feature.
+> Or does anyone have an idea how to let randr know that the device is
+> connected and just turned off?
+> 
+> -- 
+> Andreas Herz
+
+-- 
+Andreas Herz
+
+From michael at i3wm.org  Sat Aug 22 23:44:49 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 22 Aug 2015 23:44:49 +0200
+Subject: [i3] Make disabling output config option
+In-Reply-To: <20150819200858.GP21654@kvmbude>
+References: <20150817074758.GF21654@kvmbude> <20150819200858.GP21654@kvmbude>
+Message-ID: <CANnVG6mjV=HF64omPpUUfxCtpOv7Oi1HA8QuHvnL6+G87L6Ndw@mail.gmail.com>
+
+On Wed, Aug 19, 2015 at 10:08 PM, Andreas Herz <andi at geekosphere.org> wrote:
+> FYI:
+>
+> i just had to put
+>
+>> workspace "3: multimedia" output DP-1
+>
+> into my config, so the workspace is moved to that output when it's back.
+
+That sounds like a good solution to me.
+
+>
+> On 17/08/15 at 09:47, Andreas Herz wrote:
+>> With 4.10.3 this fix was introduced:
+>>
+>> https://github.com/i3/i3/commit/14e95e765eeb1fd103ee8821656b43bf69c5519d
+>>
+>> This makes total sense, but in some cases it might be annoying.
+>> I have a setup with 3 LCDs (all the same HP ZR24w) connected to an
+>> nvidia gpu. 2 LCDs are connected via DVI and the 3rd one is connected
+>> via DP.
+>> I let my workstation run 24/7 so i just turn the screens on/off. While
+>> the 2 LCDs on DVI are staying "connected" in the xrandr output when
+>> turned off, the LCD on DP is "disconnected" (althought still physical
+>> attached). So the workspaces from the 3rd LCD (DP) are moved to the
+>> other ones, so i have to move them back to the 3rd LCD everytime i get
+>> back home and turn the LCDs on again.
+>>
+>> So it might be an idea to add an option to disable this feature.
+
+I’m not convinced i3 is the right layer to introduce options for this.
+
+It sounds to me like your graphics driver incorrectly detects a
+display as disconnected when you are using DisplayPort and the display
+is turned off. Consider filing a bug against your graphics driver :).
+
+-- 
+Best regards,
+Michael
+
+From andi at geekosphere.org  Mon Aug 24 14:40:17 2015
+From: andi at geekosphere.org (Andreas Herz)
+Date: Mon, 24 Aug 2015 14:40:17 +0200
+Subject: [i3] Make disabling output config option
+In-Reply-To: <CANnVG6mjV=HF64omPpUUfxCtpOv7Oi1HA8QuHvnL6+G87L6Ndw@mail.gmail.com>
+References: <20150817074758.GF21654@kvmbude> <20150819200858.GP21654@kvmbude>
+ <CANnVG6mjV=HF64omPpUUfxCtpOv7Oi1HA8QuHvnL6+G87L6Ndw@mail.gmail.com>
+Message-ID: <20150824124017.GH29140@kvmbude>
+
+On 22/08/15 at 23:44, Michael Stapelberg wrote:
+> On Wed, Aug 19, 2015 at 10:08 PM, Andreas Herz <andi at geekosphere.org> wrote:
+> > FYI:
+> >
+> > i just had to put
+> >
+> >> workspace "3: multimedia" output DP-1
+> >
+> > into my config, so the workspace is moved to that output when it's back.
+> 
+> That sounds like a good solution to me.
+> 
+
+And is perfectly fine with me :)
+
+> >
+> > On 17/08/15 at 09:47, Andreas Herz wrote:
+> >> With 4.10.3 this fix was introduced:
+> >>
+> >> https://github.com/i3/i3/commit/14e95e765eeb1fd103ee8821656b43bf69c5519d
+> >>
+> >> This makes total sense, but in some cases it might be annoying.
+> >> I have a setup with 3 LCDs (all the same HP ZR24w) connected to an
+> >> nvidia gpu. 2 LCDs are connected via DVI and the 3rd one is connected
+> >> via DP.
+> >> I let my workstation run 24/7 so i just turn the screens on/off. While
+> >> the 2 LCDs on DVI are staying "connected" in the xrandr output when
+> >> turned off, the LCD on DP is "disconnected" (althought still physical
+> >> attached). So the workspaces from the 3rd LCD (DP) are moved to the
+> >> other ones, so i have to move them back to the 3rd LCD everytime i get
+> >> back home and turn the LCDs on again.
+> >>
+> >> So it might be an idea to add an option to disable this feature.
+> 
+> I’m not convinced i3 is the right layer to introduce options for this.
+> 
+> It sounds to me like your graphics driver incorrectly detects a
+> display as disconnected when you are using DisplayPort and the display
+> is turned off. Consider filing a bug against your graphics driver :).
+
+Since there is a workaround i agree that it's nothing i3 should do. Was
+just luck that it didn't occur earlier.
+
+-- 
+Andreas Herz
+
+From bsamwel at gmail.com  Mon Aug 24 21:42:44 2015
+From: bsamwel at gmail.com (Bart Samwel)
+Date: Mon, 24 Aug 2015 19:42:44 +0000
+Subject: [i3] X session ends when last monitor turns off
+Message-ID: <CACn7RsKzCng7jv=41sKE=cDoe9fY+j1C1nw=aJ0ZSEpN=C9fFg@mail.gmail.com>
+
+I have a multi-monitor setup where I want to use *either* my laptop screen
+*or* my external monitor. I've set up an "autoxrandr" script like this, to
+enable an external monitor if it's connected, and to enable the laptop
+panel otherwise:
+
+#!/bin/bash
+for output in $(xrandr | grep '\Wconnected' | awk '{ print $1 }'); do
+    if [[ ! $output =~ ^LVDS.*$ ]]; then
+       other=$output
+    fi
+done
+
+if [ "$other" != "" ] ; then
+  xrandr --output $other --auto --primary --output LVDS1 --off
+else
+  xrandr --output LVDS1 --auto --primary
+fi
+
+The trouble is that when the laptop is connected to an external screen, and
+when I turn the monitor off, it seems that i3 exits. What I want instead is
+that it either keeps running so that I can switch the laptop screen on, or
+that I can configure it to automatically turn the laptop screen on.
+
+I have no clue where to debug this. This is on Ubuntu 14.04 and using
+lightdm. The lightdm logs say that the session (i3) exits and that's why
+its stopping the session. I don't think I can get i3 logs using the
+instructions at http://i3wm.org/docs/debugging.html because both i3 and the
+X session are dead after this happens.
+
+Any idea what I could try here?
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150824/8071135c/attachment.html>
+
+From michael at i3wm.org  Mon Aug 24 22:28:28 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 24 Aug 2015 13:28:28 -0700
+Subject: [i3] X session ends when last monitor turns off
+In-Reply-To: <CACn7RsKzCng7jv=41sKE=cDoe9fY+j1C1nw=aJ0ZSEpN=C9fFg@mail.gmail.com>
+References: <CACn7RsKzCng7jv=41sKE=cDoe9fY+j1C1nw=aJ0ZSEpN=C9fFg@mail.gmail.com>
+Message-ID: <CANnVG6nE2vmvbg8JMbqsdQ+Y5-hFtguj1X1xEszLBDGch=oCGw@mail.gmail.com>
+
+See https://github.com/i3/i3/pull/1638 (not yet in any released version).
+
+Refer to http://i3wm.org/docs/repositories.html for automatically
+built packages from git.
+
+On Mon, Aug 24, 2015 at 12:42 PM, Bart Samwel <bsamwel at gmail.com> wrote:
+> I have a multi-monitor setup where I want to use *either* my laptop screen
+> *or* my external monitor. I've set up an "autoxrandr" script like this, to
+> enable an external monitor if it's connected, and to enable the laptop panel
+> otherwise:
+>
+> #!/bin/bash
+> for output in $(xrandr | grep '\Wconnected' | awk '{ print $1 }'); do
+>     if [[ ! $output =~ ^LVDS.*$ ]]; then
+>        other=$output
+>     fi
+> done
+>
+> if [ "$other" != "" ] ; then
+>   xrandr --output $other --auto --primary --output LVDS1 --off
+> else
+>   xrandr --output LVDS1 --auto --primary
+> fi
+>
+> The trouble is that when the laptop is connected to an external screen, and
+> when I turn the monitor off, it seems that i3 exits. What I want instead is
+> that it either keeps running so that I can switch the laptop screen on, or
+> that I can configure it to automatically turn the laptop screen on.
+>
+> I have no clue where to debug this. This is on Ubuntu 14.04 and using
+> lightdm. The lightdm logs say that the session (i3) exits and that's why its
+> stopping the session. I don't think I can get i3 logs using the instructions
+> at http://i3wm.org/docs/debugging.html because both i3 and the X session are
+> dead after this happens.
+>
+> Any idea what I could try here?
+
+
+
+-- 
+Best regards,
+Michael
+
+From bsamwel at gmail.com  Tue Aug 25 09:16:57 2015
+From: bsamwel at gmail.com (Bart Samwel)
+Date: Tue, 25 Aug 2015 07:16:57 +0000
+Subject: [i3] X session ends when last monitor turns off
+In-Reply-To: <CANnVG6nE2vmvbg8JMbqsdQ+Y5-hFtguj1X1xEszLBDGch=oCGw@mail.gmail.com>
+References: <CACn7RsKzCng7jv=41sKE=cDoe9fY+j1C1nw=aJ0ZSEpN=C9fFg@mail.gmail.com>
+ <CANnVG6nE2vmvbg8JMbqsdQ+Y5-hFtguj1X1xEszLBDGch=oCGw@mail.gmail.com>
+Message-ID: <CACn7RsL77wPPN6iO3y47KcEM3q2qNsdT+dyZST1V+cZD66pVvw@mail.gmail.com>
+
+Excellent, thanks! I can manage to live with it until this hits a release.
+:)
+
+On Mon, Aug 24, 2015 at 10:29 PM Michael Stapelberg <michael at i3wm.org>
+wrote:
+
+> See https://github.com/i3/i3/pull/1638 (not yet in any released version).
+>
+> Refer to http://i3wm.org/docs/repositories.html for automatically
+> built packages from git.
+>
+> On Mon, Aug 24, 2015 at 12:42 PM, Bart Samwel <bsamwel at gmail.com> wrote:
+> > I have a multi-monitor setup where I want to use *either* my laptop
+> screen
+> > *or* my external monitor. I've set up an "autoxrandr" script like this,
+> to
+> > enable an external monitor if it's connected, and to enable the laptop
+> panel
+> > otherwise:
+> >
+> > #!/bin/bash
+> > for output in $(xrandr | grep '\Wconnected' | awk '{ print $1 }'); do
+> >     if [[ ! $output =~ ^LVDS.*$ ]]; then
+> >        other=$output
+> >     fi
+> > done
+> >
+> > if [ "$other" != "" ] ; then
+> >   xrandr --output $other --auto --primary --output LVDS1 --off
+> > else
+> >   xrandr --output LVDS1 --auto --primary
+> > fi
+> >
+> > The trouble is that when the laptop is connected to an external screen,
+> and
+> > when I turn the monitor off, it seems that i3 exits. What I want instead
+> is
+> > that it either keeps running so that I can switch the laptop screen on,
+> or
+> > that I can configure it to automatically turn the laptop screen on.
+> >
+> > I have no clue where to debug this. This is on Ubuntu 14.04 and using
+> > lightdm. The lightdm logs say that the session (i3) exits and that's why
+> its
+> > stopping the session. I don't think I can get i3 logs using the
+> instructions
+> > at http://i3wm.org/docs/debugging.html because both i3 and the X
+> session are
+> > dead after this happens.
+> >
+> > Any idea what I could try here?
+>
+>
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150825/53b7e4ed/attachment.html>
+
+From jkevin1 at umbc.edu  Tue Aug 25 17:21:55 2015
+From: jkevin1 at umbc.edu (Kevin J)
+Date: Tue, 25 Aug 2015 11:21:55 -0400
+Subject: [i3] GLFW_FLOATING window
+Message-ID: <CADbJNDgSd1vqWub-xL0Ty8co8NMvUqS9Bu10hy0N0YsjU3Y=_g@mail.gmail.com>
+
+Hi everyone,
+
+GLFW has a window creation flag to make a window FLOATING, it uses
+_NET_WM_STATE_ABOVE
+to do this in x11_window.c
+<https://github.com/glfw/glfw/blob/b69b4a9f2a66159f670c5802d8105db211bfec3d/src/x11_window.c#L350-L357>
+.
+
+I have tried adding to the if statement in manage.c
+<https://github.com/i3/i3/blob/next/src/manage.c#L374-L384> and the
+corresponding xmacro to atoms.xmacro, but it still doesn't open as a
+floating window.  After adding this, GLFW's check in x11_init.c
+<https://github.com/glfw/glfw/blob/afe4aadade132f088a1d88145baed0b384c8d4e0/src/x11_init.c#L438-L439>
+works,
+it didn't before, so it seems to be registered within i3 correctly, but the
+xcb_reply_contains_atom(state_reply, A__NET_WM_STATE_ABOVE) check still
+fails.  Any idea why this could be happening?
+
+Additionally, if I do get it working, would this be something worthy of
+submitting? or should GLFW be changed to use something other than the
+WM_STATE_ABOVE atom to make floating windows?  ...although none of the
+tests used by i3 seem to be the right fit.
+
+Thanks,
+Kevin
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150825/2acb0374/attachment.html>
+
+From michael at i3wm.org  Tue Aug 25 17:40:00 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 25 Aug 2015 17:40:00 +0200
+Subject: [i3] GLFW_FLOATING window
+In-Reply-To: <CADbJNDgSd1vqWub-xL0Ty8co8NMvUqS9Bu10hy0N0YsjU3Y=_g@mail.gmail.com>
+References: <CADbJNDgSd1vqWub-xL0Ty8co8NMvUqS9Bu10hy0N0YsjU3Y=_g@mail.gmail.com>
+Message-ID: <CANnVG6kVK_5ouF2LNDGy3mS6r27MYMGAO6M5Vpg2SGPvYbenyA@mail.gmail.com>
+
+http://standards.freedesktop.org/wm-spec/1.3/ar01s05.html contains:
+
+"""
+_NET_WM_STATE_ABOVE indicates that the window should be on top of most
+windows (see the section called “Stacking order” for details).
+
+_NET_WM_STATE_BELOW indicates that the window should be below most
+windows (see the section called “Stacking order” for details).
+
+_NET_WM_STATE_ABOVE and _NET_WM_STATE_BELOW are mainly meant for user
+preferences and should not be used by applications e.g. for drawing
+attention to their dialogs (the Urgency hint should be used in that
+case, see the section called “Urgency”).
+"""
+
+>From that, I don’t think using _NET_WM_STATE_ABOVE to make a window
+floating is the correct way.
+
+Taking a step back, why does the window need to be floating at all? i3
+deliberately only makes dialog windows floating, and if your window is
+not a dialog window, it not being floating is working as intended.
+
+On Tue, Aug 25, 2015 at 5:21 PM, Kevin J <jkevin1 at umbc.edu> wrote:
+> Hi everyone,
+>
+> GLFW has a window creation flag to make a window FLOATING, it uses
+> _NET_WM_STATE_ABOVE to do this in x11_window.c.
+>
+> I have tried adding to the if statement in manage.c and the corresponding
+> xmacro to atoms.xmacro, but it still doesn't open as a floating window.
+> After adding this, GLFW's check in x11_init.c works, it didn't before, so it
+> seems to be registered within i3 correctly, but the
+> xcb_reply_contains_atom(state_reply, A__NET_WM_STATE_ABOVE) check still
+> fails.  Any idea why this could be happening?
+>
+> Additionally, if I do get it working, would this be something worthy of
+> submitting? or should GLFW be changed to use something other than the
+> WM_STATE_ABOVE atom to make floating windows?  ...although none of the tests
+> used by i3 seem to be the right fit.
+>
+> Thanks,
+> Kevin
+
+
+
+-- 
+Best regards,
+Michael
+
+From admin at airblader.de  Tue Aug 25 17:42:11 2015
+From: admin at airblader.de (=?ISO-8859-1?Q?Ingo_B=FCrk?=)
+Date: Tue, 25 Aug 2015 17:42:11 +0200
+Subject: [i3] GLFW_FLOATING window
+In-Reply-To: <CADbJNDgSd1vqWub-xL0Ty8co8NMvUqS9Bu10hy0N0YsjU3Y=_g@mail.gmail.com>
+References: <CADbJNDgSd1vqWub-xL0Ty8co8NMvUqS9Bu10hy0N0YsjU3Y=_g@mail.gmail.com>
+Message-ID: <0269a6eb-a0d7-421a-8603-6108df8522fe@typeapp.com>
+
+Hi Kevin, 
+
+On the bottom of manage.c you also need to increase the number of atoms that i3 lists as supported. Also make sure you added the new atom not at the very end of atoms.xmacro as not all of them are copied into the supported list and GLFW seems to actually check for support. 
+
+If all of this is correct, it could only be that GLFW only sets the atom after the window is created. In this case you'd have to modify the handler. 
+
+Regards 
+Ingo 
+
+Sent from TypeMail
+
+
+
+On Aug 25, 2015, 17:22, at 17:22, Kevin J <jkevin1 at umbc.edu> wrote:
+>Hi everyone,
+>
+>GLFW has a window creation flag to make a window FLOATING, it uses
+>_NET_WM_STATE_ABOVE
+>to do this in x11_window.c
+><https://github.com/glfw/glfw/blob/b69b4a9f2a66159f670c5802d8105db211bfec3d/src/x11_window.c#L350-L357>
+>.
+>
+>I have tried adding to the if statement in manage.c
+><https://github.com/i3/i3/blob/next/src/manage.c#L374-L384> and the
+>corresponding xmacro to atoms.xmacro, but it still doesn't open as a
+>floating window.  After adding this, GLFW's check in x11_init.c
+><https://github.com/glfw/glfw/blob/afe4aadade132f088a1d88145baed0b384c8d4e0/src/x11_init.c#L438-L439>
+>works,
+>it didn't before, so it seems to be registered within i3 correctly, but
+>the
+>xcb_reply_contains_atom(state_reply, A__NET_WM_STATE_ABOVE) check still
+>fails.  Any idea why this could be happening?
+>
+>Additionally, if I do get it working, would this be something worthy of
+>submitting? or should GLFW be changed to use something other than the
+>WM_STATE_ABOVE atom to make floating windows?  ...although none of the
+>tests used by i3 seem to be the right fit.
+>
+>Thanks,
+>Kevin
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150825/2b03e75a/attachment.html>
+
+From admin at airblader.de  Tue Aug 25 17:44:42 2015
+From: admin at airblader.de (=?ISO-8859-1?Q?Ingo_B=FCrk?=)
+Date: Tue, 25 Aug 2015 17:44:42 +0200
+Subject: [i3] GLFW_FLOATING window
+In-Reply-To: <CANnVG6kVK_5ouF2LNDGy3mS6r27MYMGAO6M5Vpg2SGPvYbenyA@mail.gmail.com>
+References: <CADbJNDgSd1vqWub-xL0Ty8co8NMvUqS9Bu10hy0N0YsjU3Y=_g@mail.gmail.com>
+ <CANnVG6kVK_5ouF2LNDGy3mS6r27MYMGAO6M5Vpg2SGPvYbenyA@mail.gmail.com>
+Message-ID: <d0d4307d-32fd-4bb8-8aea-195732cb6c7b@typeapp.com>
+
+Hi Michael, 
+
+I agree that there are better choices. On a side note, I noticed the other day that Google Hangout screen sharing opens a window to offer ending the screen share session with this very atom. That window definitely needs to float, though it's easy to argue that Chrome is at fault here and should use a more suitable atom.
+
+Either way, i3 doesn't claim to support this atom and that alone should cause applications to not rely on it and instead use a more suitable atom. 
+
+Ingo
+
+Sent from TypeMail
+
+
+
+On Aug 25, 2015, 17:40, at 17:40, Michael Stapelberg <michael at i3wm.org> wrote:
+>http://standards.freedesktop.org/wm-spec/1.3/ar01s05.html contains:
+>
+>"""
+>_NET_WM_STATE_ABOVE indicates that the window should be on top of most
+>windows (see the section called “Stacking order” for details).
+>
+>_NET_WM_STATE_BELOW indicates that the window should be below most
+>windows (see the section called “Stacking order” for details).
+>
+>_NET_WM_STATE_ABOVE and _NET_WM_STATE_BELOW are mainly meant for user
+>preferences and should not be used by applications e.g. for drawing
+>attention to their dialogs (the Urgency hint should be used in that
+>case, see the section called “Urgency”).
+>"""
+>
+>From that, I don’t think using _NET_WM_STATE_ABOVE to make a window
+>floating is the correct way.
+>
+>Taking a step back, why does the window need to be floating at all? i3
+>deliberately only makes dialog windows floating, and if your window is
+>not a dialog window, it not being floating is working as intended.
+>
+>On Tue, Aug 25, 2015 at 5:21 PM, Kevin J <jkevin1 at umbc.edu> wrote:
+>> Hi everyone,
+>>
+>> GLFW has a window creation flag to make a window FLOATING, it uses
+>> _NET_WM_STATE_ABOVE to do this in x11_window.c.
+>>
+>> I have tried adding to the if statement in manage.c and the
+>corresponding
+>> xmacro to atoms.xmacro, but it still doesn't open as a floating
+>window.
+>> After adding this, GLFW's check in x11_init.c works, it didn't
+>before, so it
+>> seems to be registered within i3 correctly, but the
+>> xcb_reply_contains_atom(state_reply, A__NET_WM_STATE_ABOVE) check
+>still
+>> fails.  Any idea why this could be happening?
+>>
+>> Additionally, if I do get it working, would this be something worthy
+>of
+>> submitting? or should GLFW be changed to use something other than the
+>> WM_STATE_ABOVE atom to make floating windows?  ...although none of
+>the tests
+>> used by i3 seem to be the right fit.
+>>
+>> Thanks,
+>> Kevin
+>
+>
+>
+>-- 
+>Best regards,
+>Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150825/76c14edd/attachment.html>
+
+From jkevin1 at umbc.edu  Tue Aug 25 17:53:32 2015
+From: jkevin1 at umbc.edu (Kevin J)
+Date: Tue, 25 Aug 2015 11:53:32 -0400
+Subject: [i3] GLFW_FLOATING window
+In-Reply-To: <d0d4307d-32fd-4bb8-8aea-195732cb6c7b@typeapp.com>
+References: <CADbJNDgSd1vqWub-xL0Ty8co8NMvUqS9Bu10hy0N0YsjU3Y=_g@mail.gmail.com>
+ <CANnVG6kVK_5ouF2LNDGy3mS6r27MYMGAO6M5Vpg2SGPvYbenyA@mail.gmail.com>
+ <d0d4307d-32fd-4bb8-8aea-195732cb6c7b@typeapp.com>
+Message-ID: <CADbJNDhLRi9QcoOGMwRaf4Et_JH8Vwt=7aCpAtDkvvqhLzJy-w@mail.gmail.com>
+
+Michael:
+The reason I want the window to float is if I want a specific resolution
+for the window (I'm working on an OpenGL project).  Especially if the
+window is set to be not user-resizeable, i3 will still resize it to fit it
+to a tile.  I had read that and thought that maybe that wouldn't be the
+correct atom to use, but none of the ones i3 uses to determine whether to
+make a window floating seem correct either (MODAL, DIALOG, UTILITY,
+TOOLBAR, and SPLASH)
+
+Ingo:
+Thanks, I will look into that once I get back from work.  Also "instead use
+a more suitable atom" do you know of any that would work? Otherwise should
+this atom be added to i3's floating window detection?
+
+On Tue, Aug 25, 2015 at 11:44 AM, Ingo Bürk <admin at airblader.de> wrote:
+
+> Hi Michael,
+>
+> I agree that there are better choices. On a side note, I noticed the other
+> day that Google Hangout screen sharing opens a window to offer ending the
+> screen share session with this very atom. That window definitely needs to
+> float, though it's easy to argue that Chrome is at fault here and should
+> use a more suitable atom.
+>
+> Either way, i3 doesn't claim to support this atom and that alone should
+> cause applications to not rely on it and instead use a more suitable atom.
+>
+> Ingo
+>
+> Sent from TypeMail <http://www.typeapp.com/r>
+>
+> On Aug 25, 2015, at 17:40, Michael Stapelberg <michael at i3wm.org> wrote:
+>
+>> http://standards.freedesktop.org/wm-spec/1.3/ar01s05.html contains:
+>>
+>> """
+>> _NET_WM_STATE_ABOVE indicates that the window should be on top of most
+>> windows (see the section called “Stacking order” for details).
+>>
+>> _NET_WM_STATE_BELOW indicates that the window should be below most
+>> windows (see the section called “Stacking order” for details).
+>>
+>> _NET_WM_STATE_ABOVE and _NET_WM_STATE_BELOW are mainly meant for user
+>> preferences and should not be used by applications e.g. for drawing
+>> attention to their dialogs (the Urgency hint should be used in that
+>> case, see the section called “Urgency”).
+>> """
+>>
+>> From that, I don’t think using _NET_WM_STATE_ABOVE to make a window
+>> floating is the correct way.
+>>
+>> Taking a step back, why does the window need to be floating at all? i3
+>> deliberately only makes dialog windows floating, and if your window
+>> is
+>> not a dialog window, it not being floating is working as intended.
+>>
+>> On Tue, Aug 25, 2015 at 5:21 PM, Kevin J <jkevin1 at umbc.edu> wrote:
+>>
+>>>  Hi everyone,
+>>>
+>>>  GLFW has a window creation flag to make a window FLOATING, it uses
+>>>  _NET_WM_STATE_ABOVE to do this in x11_window.c.
+>>>
+>>>  I have tried adding to the if statement in manage.c and the corresponding
+>>>  xmacro to atoms.xmacro, but it still doesn't open as a floating window.
+>>>  After adding this, GLFW's check in x11_init.c works, it didn't before, so it
+>>>  seems to be registered within i3 correctly, but the
+>>>  xcb_reply_contains_atom(state_reply, A__NET_WM_STATE_ABOVE) check still
+>>>  fails.  Any idea why this could be happening?
+>>>
+>>>  Additionally, if I do get it working, would this be something worthy of
+>>>  submitting? or should GLFW be changed to use something other than the<
+>>>  br>
+>>> WM_STATE_ABOVE atom to make floating windows?  ...although none of the tests
+>>>  used by i3 seem to be the right fit.
+>>>
+>>>  Thanks,
+>>>  Kevin
+>>>
+>>
+>>
+>>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150825/f4d897f3/attachment-0001.html>
+
+From michael at i3wm.org  Tue Aug 25 17:56:58 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 25 Aug 2015 17:56:58 +0200
+Subject: [i3] GLFW_FLOATING window
+In-Reply-To: <CADbJNDhLRi9QcoOGMwRaf4Et_JH8Vwt=7aCpAtDkvvqhLzJy-w@mail.gmail.com>
+References: <CADbJNDgSd1vqWub-xL0Ty8co8NMvUqS9Bu10hy0N0YsjU3Y=_g@mail.gmail.com>
+ <CANnVG6kVK_5ouF2LNDGy3mS6r27MYMGAO6M5Vpg2SGPvYbenyA@mail.gmail.com>
+ <d0d4307d-32fd-4bb8-8aea-195732cb6c7b@typeapp.com>
+ <CADbJNDhLRi9QcoOGMwRaf4Et_JH8Vwt=7aCpAtDkvvqhLzJy-w@mail.gmail.com>
+Message-ID: <CANnVG6mkQC2HRm_ZqryfHBRdy1WHS7oaBwXpWQGgnZ+VVDb6vg@mail.gmail.com>
+
+On Tue, Aug 25, 2015 at 5:53 PM, Kevin J <jkevin1 at umbc.edu> wrote:
+> Michael:
+> The reason I want the window to float is if I want a specific resolution for
+> the window (I'm working on an OpenGL project).  Especially if the window is
+
+Use for_window with floating enable:
+http://i3wm.org/docs/userguide.html#_arbitrary_commands_for_specific_windows_for_window
+
+> set to be not user-resizeable, i3 will still resize it to fit it to a tile.
+
+Yes, and that’s intentional. You can resize your tiles to show as much
+of the window content as you need, and application authors should not
+have a say on how you think arranging your workspace is best.
+
+> I had read that and thought that maybe that wouldn't be the correct atom to
+> use, but none of the ones i3 uses to determine whether to make a window
+> floating seem correct either (MODAL, DIALOG, UTILITY, TOOLBAR, and SPLASH)
+>
+> Ingo:
+> Thanks, I will look into that once I get back from work.  Also "instead use
+> a more suitable atom" do you know of any that would work? Otherwise should
+> this atom be added to i3's floating window detection?
+
+I don’t think it should be added to the floating window detection. In
+fact, I don’t think the window you are describing should be floating,
+unless users explicitly set it to floating.
+
+>
+> On Tue, Aug 25, 2015 at 11:44 AM, Ingo Bürk <admin at airblader.de> wrote:
+>>
+>> Hi Michael,
+>>
+>> I agree that there are better choices. On a side note, I noticed the other
+>> day that Google Hangout screen sharing opens a window to offer ending the
+>> screen share session with this very atom. That window definitely needs to
+>> float, though it's easy to argue that Chrome is at fault here and should use
+>> a more suitable atom.
+>>
+>> Either way, i3 doesn't claim to support this atom and that alone should
+>> cause applications to not rely on it and instead use a more suitable atom.
+>>
+>> Ingo
+>>
+>> Sent from TypeMail
+>>
+>> On Aug 25, 2015, at 17:40, Michael Stapelberg <michael at i3wm.org> wrote:
+>>>
+>>> http://standards.freedesktop.org/wm-spec/1.3/ar01s05.html contains:
+>>>
+>>> """
+>>> _NET_WM_STATE_ABOVE indicates that the window should be on top of most
+>>> windows (see the section called “Stacking order” for details).
+>>>
+>>> _NET_WM_STATE_BELOW indicates that the window should be below most
+>>> windows (see the section called “Stacking order” for details).
+>>>
+>>> _NET_WM_STATE_ABOVE and _NET_WM_STATE_BELOW are mainly meant for user
+>>> preferences and should not be used by applications e.g. for drawing
+>>> attention to their dialogs (the Urgency hint should be used in that
+>>> case, see the section called “Urgency”).
+>>> """
+>>>
+>>> From that, I don’t think using _NET_WM_STATE_ABOVE to make a window
+>>> floating is the correct way.
+>>>
+>>> Taking a step back, why does the window need to be floating at all? i3
+>>> deliberately only makes dialog windows floating, and if your window
+>>> is
+>>> not a dialog window, it not being floating is working as intended.
+>>>
+>>> On Tue, Aug 25, 2015 at 5:21 PM, Kevin J <jkevin1 at umbc.edu> wrote:
+>>>>
+>>>>  Hi everyone,
+>>>>
+>>>>  GLFW has a window creation flag to make a window FLOATING, it uses
+>>>>  _NET_WM_STATE_ABOVE to do this in x11_window.c.
+>>>>
+>>>>  I have tried adding to the if statement in manage.c and the
+>>>> corresponding
+>>>>  xmacro to atoms.xmacro, but it still doesn't open as a floating window.
+>>>>  After adding this, GLFW's check in x11_init.c works, it didn't before,
+>>>> so it
+>>>>  seems to be registered within i3 correctly, but the
+>>>>  xcb_reply_contains_atom(state_reply, A__NET_WM_STATE_ABOVE) check still
+>>>>  fails.  Any idea why this could be happening?
+>>>>
+>>>>  Additionally, if I do get it working, would this be something worthy of
+>>>>  submitting? or should GLFW be changed to use something other than the<
+>>>>  br>
+>>>> WM_STATE_ABOVE atom to make floating windows?  ...although none of the
+>>>> tests
+>>>>  used by i3 seem to be the right fit.
+>>>>
+>>>>  Thanks,
+>>>>  Kevin
+>>>
+>>>
+>>>
+>
+
+
+
+-- 
+Best regards,
+Michael
+
+From admin at airblader.de  Tue Aug 25 17:59:27 2015
+From: admin at airblader.de (=?ISO-8859-1?Q?Ingo_B=FCrk?=)
+Date: Tue, 25 Aug 2015 17:59:27 +0200
+Subject: [i3] GLFW_FLOATING window
+In-Reply-To: <CADbJNDhLRi9QcoOGMwRaf4Et_JH8Vwt=7aCpAtDkvvqhLzJy-w@mail.gmail.com>
+References: <CADbJNDgSd1vqWub-xL0Ty8co8NMvUqS9Bu10hy0N0YsjU3Y=_g@mail.gmail.com>
+ <CANnVG6kVK_5ouF2LNDGy3mS6r27MYMGAO6M5Vpg2SGPvYbenyA@mail.gmail.com>
+ <d0d4307d-32fd-4bb8-8aea-195732cb6c7b@typeapp.com>
+ <CADbJNDhLRi9QcoOGMwRaf4Et_JH8Vwt=7aCpAtDkvvqhLzJy-w@mail.gmail.com>
+Message-ID: <c05d3062-dea3-4c9b-ad50-07a76c6c0bf0@typeapp.com>
+
+Hi Kevin, 
+
+Applications generally shouldn't dictate how the window manager has to manage windows. In fact the specs clearly state that the window manager is allowed to deny, allow or modify such requests and that the application needs to deal with that. Also note that if you provide proper information on the window (class or role etc.), any user can make sure that the window will float.
+
+As for supporting the atom in i3, I'm all for i3 supporting more of the standards, but we need to find the appropriate way to handle these atoms and fully understand the consequences. It doesn't seem immediately clear to me that such windows must be floated. I think Michael seems to see it similarly. 
+
+Regards 
+Ingo 
+
+Sent from TypeMail
+
+
+
+On Aug 25, 2015, 17:53, at 17:53, Kevin J <jkevin1 at umbc.edu> wrote:
+>Michael:
+>The reason I want the window to float is if I want a specific
+>resolution
+>for the window (I'm working on an OpenGL project).  Especially if the
+>window is set to be not user-resizeable, i3 will still resize it to fit
+>it
+>to a tile.  I had read that and thought that maybe that wouldn't be the
+>correct atom to use, but none of the ones i3 uses to determine whether
+>to
+>make a window floating seem correct either (MODAL, DIALOG, UTILITY,
+>TOOLBAR, and SPLASH)
+>
+>Ingo:
+>Thanks, I will look into that once I get back from work.  Also "instead
+>use
+>a more suitable atom" do you know of any that would work? Otherwise
+>should
+>this atom be added to i3's floating window detection?
+>
+>On Tue, Aug 25, 2015 at 11:44 AM, Ingo Bürk <admin at airblader.de> wrote:
+>
+>> Hi Michael,
+>>
+>> I agree that there are better choices. On a side note, I noticed the
+>other
+>> day that Google Hangout screen sharing opens a window to offer ending
+>the
+>> screen share session with this very atom. That window definitely
+>needs to
+>> float, though it's easy to argue that Chrome is at fault here and
+>should
+>> use a more suitable atom.
+>>
+>> Either way, i3 doesn't claim to support this atom and that alone
+>should
+>> cause applications to not rely on it and instead use a more suitable
+>atom.
+>>
+>> Ingo
+>>
+>> Sent from TypeMail <http://www.typeapp.com/r>
+>>
+>> On Aug 25, 2015, at 17:40, Michael Stapelberg <michael at i3wm.org>
+>wrote:
+>>
+>>> http://standards.freedesktop.org/wm-spec/1.3/ar01s05.html contains:
+>>>
+>>> """
+>>> _NET_WM_STATE_ABOVE indicates that the window should be on top of
+>most
+>>> windows (see the section called “Stacking order” for details).
+>>>
+>>> _NET_WM_STATE_BELOW indicates that the window should be below most
+>>> windows (see the section called “Stacking order” for details).
+>>>
+>>> _NET_WM_STATE_ABOVE and _NET_WM_STATE_BELOW are mainly meant for
+>user
+>>> preferences and should not be used by applications e.g. for drawing
+>>> attention to their dialogs (the Urgency hint should be used in that
+>>> case, see the section called “Urgency”).
+>>> """
+>>>
+>>> From that, I don’t think using _NET_WM_STATE_ABOVE to make a window
+>>> floating is the correct way.
+>>>
+>>> Taking a step back, why does the window need to be floating at all?
+>i3
+>>> deliberately only makes dialog windows floating, and if your window
+>>> is
+>>> not a dialog window, it not being floating is working as intended.
+>>>
+>>> On Tue, Aug 25, 2015 at 5:21 PM, Kevin J <jkevin1 at umbc.edu> wrote:
+>>>
+>>>>  Hi everyone,
+>>>>
+>>>>  GLFW has a window creation flag to make a window FLOATING, it uses
+>>>>  _NET_WM_STATE_ABOVE to do this in x11_window.c.
+>>>>
+>>>>  I have tried adding to the if statement in manage.c and the
+>corresponding
+>>>>  xmacro to atoms.xmacro, but it still doesn't open as a floating
+>window.
+>>>>  After adding this, GLFW's check in x11_init.c works, it didn't
+>before, so it
+>>>>  seems to be registered within i3 correctly, but the
+>>>>  xcb_reply_contains_atom(state_reply, A__NET_WM_STATE_ABOVE) check
+>still
+>>>>  fails.  Any idea why this could be happening?
+>>>>
+>>>>  Additionally, if I do get it working, would this be something
+>worthy of
+>>>>  submitting? or should GLFW be changed to use something other than
+>the<
+>>>>  br>
+>>>> WM_STATE_ABOVE atom to make floating windows?  ...although none of
+>the tests
+>>>>  used by i3 seem to be the right fit.
+>>>>
+>>>>  Thanks,
+>>>>  Kevin
+>>>>
+>>>
+>>>
+>>>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150825/a07a427c/attachment.html>
+
+From i3.thegrue at spamgourmet.com  Tue Aug 25 12:53:32 2015
+From: i3.thegrue at spamgourmet.com (i3.thegrue at spamgourmet.com)
+Date: Tue, 25 Aug 2015 12:53:32 +0200
+Subject: [i3] append layout works from commandline but not from
+ .i3/config
+In-Reply-To: <CANnVG6==G_zvUH1quhGMWeNH8jDhcNpLEYx5HzTkjY5kqTUTnA@mail.gmail.com>
+References: <20150811183723.6aeded21@haktar.galaxy.home>
+ <CANnVG6kfJq2hXZpT_3eHgMTaAgxowJhTFz3foOyJERGKHnc-LA@mail.gmail.com>
+ <20150811191743.6fc76edd@haktar.galaxy.home>
+ <CANnVG6==G_zvUH1quhGMWeNH8jDhcNpLEYx5HzTkjY5kqTUTnA@mail.gmail.com>
+Message-ID: <20150825125332.2cc46cb6@haktar.galaxy.home>
+
+Hello Michael!
+
+> Please don’t break threading in your replies, that makes it hard for
+> people to follow the discussion.
+
+Ups, I'm sorry. It seems that using spamgourmet on the list might not be the
+best idea... I hope, the thread isn't broken this time...?
+
+ 
+> > Hope, that's in one line now:
+> >
+> > exec --no-startup-id i3-msg 'workspace $wsp3; append_layout /home/markus/.i3/emacs.json'
+> 
+> See http://i3wm.org/docs/debugging.html for how to look at i3’s log.
+> It should give you some more details about what’s going on.
+
+Now I had the opportunity to follow those instructions. This is the log:
+http://logs.i3wm.org/logs/5665370564198400.bz2
+
+I had a look at it - but the data is a bit too much and I couldn't find any
+hint. Maybe you could help me?
+
+To remind you: the line mentioned above works fine when started from a
+terminal (without exec... of course), but when called from the config file,
+the placeholder for the window to the right of the emacs terminal is missing...
+
+Thanks for your help!
+(And if the threading is broken again, I'll re-subscribe without spamgourmet)
+
+cu
+-- 
+Markus Grunwald
+https://www.the-grue.de
+
+Fragen zur Mail? https://www.the-grue.de/mail_und_co
+https://www.the-grue.de/~markus/markus_grunwald.gpg
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 811 bytes
+Desc: Digitale Signatur von OpenPGP
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150825/bd5a8a1c/attachment.sig>
+
+From michael at i3wm.org  Tue Aug 25 22:16:28 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 25 Aug 2015 22:16:28 +0200
+Subject: [i3] append layout works from commandline but not from
+	.i3/config
+In-Reply-To: <20150825125332.2cc46cb6@haktar.galaxy.home>
+References: <20150811183723.6aeded21@haktar.galaxy.home>
+ <CANnVG6kfJq2hXZpT_3eHgMTaAgxowJhTFz3foOyJERGKHnc-LA@mail.gmail.com>
+ <20150811191743.6fc76edd@haktar.galaxy.home>
+ <CANnVG6==G_zvUH1quhGMWeNH8jDhcNpLEYx5HzTkjY5kqTUTnA@mail.gmail.com>
+ <20150825125332.2cc46cb6@haktar.galaxy.home>
+Message-ID: <CANnVG6mjZA5b5ijpK7QofF7=DYoJysA6H78Ap3ZBfqwP4WVjUg@mail.gmail.com>
+
+On Tue, Aug 25, 2015 at 12:53 PM,  <i3.thegrue at spamgourmet.com> wrote:
+> Hello Michael!
+>
+>> Please don’t break threading in your replies, that makes it hard for
+>> people to follow the discussion.
+>
+> Ups, I'm sorry. It seems that using spamgourmet on the list might not be the
+> best idea... I hope, the thread isn't broken this time...?
+
+It’s broken again at least in gmail, and you didn’t have a To: address
+set, which mailman didn’t like.
+
+>
+>
+>> > Hope, that's in one line now:
+>> >
+>> > exec --no-startup-id i3-msg 'workspace $wsp3; append_layout /home/markus/.i3/emacs.json'
+>>
+>> See http://i3wm.org/docs/debugging.html for how to look at i3’s log.
+>> It should give you some more details about what’s going on.
+>
+> Now I had the opportunity to follow those instructions. This is the log:
+> http://logs.i3wm.org/logs/5665370564198400.bz2
+>
+> I had a look at it - but the data is a bit too much and I couldn't find any
+> hint. Maybe you could help me?
+>
+> To remind you: the line mentioned above works fine when started from a
+> terminal (without exec... of course), but when called from the config file,
+> the placeholder for the window to the right of the emacs terminal is missing...
+
+Can you also provide the contents of /home/markus/.i3/emacs.json
+please? Also, a screenshot of the working/non-working version would be
+helpful.
+
+While you’re at it, please file this as a bug at
+https://github.com/i3/i3, so that we have all bugs in one place.
+Thanks.
+
+>
+> Thanks for your help!
+> (And if the threading is broken again, I'll re-subscribe without spamgourmet)
+>
+> cu
+> --
+> Markus Grunwald
+> https://www.the-grue.de
+>
+> Fragen zur Mail? https://www.the-grue.de/mail_und_co
+> https://www.the-grue.de/~markus/markus_grunwald.gpg
+
+
+
+-- 
+Best regards,
+Michael
+
+From mailinglists at xgm.de  Thu Aug 27 09:21:51 2015
+From: mailinglists at xgm.de (Florian Lindner)
+Date: Thu, 27 Aug 2015 09:21:51 +0200
+Subject: [i3] Killing of floating windows with mouse
+Message-ID: <18009816.yTg8Ztdkxu@asaru>
+
+Hello,
+
+I have that line in my i3 config:
+
+# The middle button over a titlebar kills the window
+bindsym --release button2 kill
+
+Which works perfectly on tiling windows, but not on floating windows. Instead I can grabe and move the window with the middle mouse button.
+
+There is no other line containing "button2" in my config.
+
+Thanks,
+Florian
+
+From michael at i3wm.org  Fri Aug 28 08:42:57 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 28 Aug 2015 08:42:57 +0200
+Subject: [i3] Killing of floating windows with mouse
+In-Reply-To: <18009816.yTg8Ztdkxu@asaru>
+References: <18009816.yTg8Ztdkxu@asaru>
+Message-ID: <CANnVG6mPsTbQ-rcZHkd-0+3U1BkP153trtgikoFvhtM962Ntuw@mail.gmail.com>
+
+Sounds like a bug to me. Please report it at https://github.com/i3/i3
+
+On Thu, Aug 27, 2015 at 9:21 AM, Florian Lindner <mailinglists at xgm.de> wrote:
+> Hello,
+>
+> I have that line in my i3 config:
+>
+> # The middle button over a titlebar kills the window
+> bindsym --release button2 kill
+>
+> Which works perfectly on tiling windows, but not on floating windows. Instead I can grabe and move the window with the middle mouse button.
+>
+> There is no other line containing "button2" in my config.
+>
+> Thanks,
+> Florian
+
+
+
+-- 
+Best regards,
+Michael
+
+From mailinglists at xgm.de  Mon Aug 31 09:37:11 2015
+From: mailinglists at xgm.de (Florian Lindner)
+Date: Mon, 31 Aug 2015 09:37:11 +0200
+Subject: [i3] Killing of floating windows with mouse
+In-Reply-To: <CANnVG6mPsTbQ-rcZHkd-0+3U1BkP153trtgikoFvhtM962Ntuw@mail.gmail.com>
+References: <18009816.yTg8Ztdkxu@asaru>
+ <CANnVG6mPsTbQ-rcZHkd-0+3U1BkP153trtgikoFvhtM962Ntuw@mail.gmail.com>
+Message-ID: <6463222.AUi3VkzSqv@asaru>
+
+Took some days, but here it is https://github.com/i3/i3/issues/1882
+
+Logs will be added as soon as I can restart my X session.
+
+Florian
+
+Am Freitag, 28. August 2015, 08:42:57 schrieb Michael Stapelberg:
+> Sounds like a bug to me. Please report it at https://github.com/i3/i3
+> 
+> On Thu, Aug 27, 2015 at 9:21 AM, Florian Lindner <mailinglists at xgm.de> wrote:
+> > Hello,
+> >
+> > I have that line in my i3 config:
+> >
+> > # The middle button over a titlebar kills the window
+> > bindsym --release button2 kill
+> >
+> > Which works perfectly on tiling windows, but not on floating windows. Instead I can grabe and move the window with the middle mouse button.
+> >
+> > There is no other line containing "button2" in my config.
+> >
+> > Thanks,
+> > Florian
+> 
+> 
+> 
+> 
+
+From michael at i3wm.org  Mon Aug 31 09:39:05 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 31 Aug 2015 09:39:05 +0200
+Subject: [i3] Killing of floating windows with mouse
+In-Reply-To: <6463222.AUi3VkzSqv@asaru>
+References: <18009816.yTg8Ztdkxu@asaru>
+ <CANnVG6mPsTbQ-rcZHkd-0+3U1BkP153trtgikoFvhtM962Ntuw@mail.gmail.com>
+ <6463222.AUi3VkzSqv@asaru>
+Message-ID: <CANnVG6n3Ksbw91g=mXs+Lr9gzr+ZtNhyLPeup1wAuPoA_xfDXA@mail.gmail.com>
+
+On Mon, Aug 31, 2015 at 9:37 AM, Florian Lindner <mailinglists at xgm.de> wrote:
+> Took some days, but here it is https://github.com/i3/i3/issues/1882
+>
+> Logs will be added as soon as I can restart my X session.
+
+Are you aware of http://i3wm.org/docs/userguide.html#shmlog? You don’t
+need to restart your X session.
+
+>
+> Florian
+>
+> Am Freitag, 28. August 2015, 08:42:57 schrieb Michael Stapelberg:
+>> Sounds like a bug to me. Please report it at https://github.com/i3/i3
+>>
+>> On Thu, Aug 27, 2015 at 9:21 AM, Florian Lindner <mailinglists at xgm.de> wrote:
+>> > Hello,
+>> >
+>> > I have that line in my i3 config:
+>> >
+>> > # The middle button over a titlebar kills the window
+>> > bindsym --release button2 kill
+>> >
+>> > Which works perfectly on tiling windows, but not on floating windows. Instead I can grabe and move the window with the middle mouse button.
+>> >
+>> > There is no other line containing "button2" in my config.
+>> >
+>> > Thanks,
+>> > Florian
+>>
+>>
+>>
+>>
+
+
+
+-- 
+Best regards,
+Michael
+

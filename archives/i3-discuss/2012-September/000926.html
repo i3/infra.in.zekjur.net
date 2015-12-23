@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [RFC]render.c cleanup.
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BRFC%5Drender.c%20cleanup.&In-Reply-To=%3Cx68vc9et2q.fsf%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000898.html">
+   <LINK REL="Next"  HREF="000936.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [RFC]render.c cleanup.</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BRFC%5Drender.c%20cleanup.&In-Reply-To=%3Cx68vc9et2q.fsf%40midna.zekjur.net%3E"
+       TITLE="[i3] [RFC]render.c cleanup.">michael at i3wm.org
+       </A><BR>
+    <I>Sun Sep 16 20:11:25 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000898.html">[i3] [RFC]render.c cleanup.
+</A></li>
+        <LI>Next message: <A HREF="000936.html">[i3] [RFC]render.c cleanup.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#926">[ date ]</a>
+              <a href="thread.html#926">[ thread ]</a>
+              <a href="subject.html#926">[ subject ]</a>
+              <a href="author.html#926">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi darkraven,
+
+Thanks for updating the patches. The size of the patches is okay now.
+
+In the second patch, you move rendering of the floating containers to
+the CT_WORKSPACE level. I think this breaks rendering because floating
+windows are then no longer guaranteed to always be on-top of tiling
+windows in multi-monitor setups. Consider this case:
+
+On the left 1024x768 output (let&#8217;s call it LVDS), I have workspace 1. On
+that workspace, there is a floating window with size 200x100 pixels at
+position (1000, 100).
+
+On the right 1024x768 output (let&#8217;s call it VGA), I have workspace 2
+with only tiling windows.
+
+Now, your code will render LVDS first (and even if it doesn&#8217;t, we can
+reverse the example) and raise floating windows. Then it will render VGA
+and raise the tiling window above the floating window.
+
+The comment at 
+<A HREF="http://code.stapelberg.de/git/i3/tree/src/render.c?h=next#n237">http://code.stapelberg.de/git/i3/tree/src/render.c?h=next#n237</A> tries to
+express what I just described.
+
+In the fourth patch, you have an indentation change for no apparent
+reason (first few lines). Can you get rid of that please?
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000898.html">[i3] [RFC]render.c cleanup.
+</A></li>
+	<LI>Next message: <A HREF="000936.html">[i3] [RFC]render.c cleanup.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#926">[ date ]</a>
+              <a href="thread.html#926">[ thread ]</a>
+              <a href="subject.html#926">[ subject ]</a>
+              <a href="author.html#926">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

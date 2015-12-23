@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH 2/2] Automatically run gdb to get a trace when crashed
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%202/2%5D%20Automatically%20run%20gdb%20to%20get%20a%20trace%20when%20crashed&In-Reply-To=%3C1345628593-16072-2-git-send-email-baspape%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000866.html">
+   <LINK REL="Next"  HREF="000877.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH 2/2] Automatically run gdb to get a trace when crashed</H1>
+    <B>Bas Pape</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%202/2%5D%20Automatically%20run%20gdb%20to%20get%20a%20trace%20when%20crashed&In-Reply-To=%3C1345628593-16072-2-git-send-email-baspape%40gmail.com%3E"
+       TITLE="[i3] [PATCH 2/2] Automatically run gdb to get a trace when crashed">baspape at gmail.com
+       </A><BR>
+    <I>Wed Aug 22 11:43:13 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000866.html">[i3] [PATCH 1/2] Replace exit option with core-dump when crashed
+</A></li>
+        <LI>Next message: <A HREF="000877.html">[i3] [PATCH 2/2] Automatically run gdb to get a trace when	crashed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#867">[ date ]</a>
+              <a href="thread.html#867">[ thread ]</a>
+              <a href="subject.html#867">[ subject ]</a>
+              <a href="author.html#867">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>---
+ src/sighandler.c | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
+
+diff --git a/src/sighandler.c b/src/sighandler.c
+index d7a756a..241610b 100644
+--- a/src/sighandler.c
++++ b/src/sighandler.c
+@@ -17,6 +17,10 @@
+ #include &lt;iconv.h&gt;
+ #include &lt;signal.h&gt;
+ #include &lt;unistd.h&gt;
++#include &lt;limits.h&gt;
++#include &lt;sys/types.h&gt;
++#include &lt;sys/stat.h&gt;
++#include &lt;fcntl.h&gt;
+ 
+ #include &lt;xcb/xcb_event.h&gt;
+ 
+@@ -96,6 +100,44 @@ static int sig_handle_key_press(void *ignored, xcb_connection_t *conn, xcb_key_p
+     if (sym == 'c') {
+         DLOG(&quot;User issued core-dump command.\n&quot;);
+         coredump(raised_signal);
++
++        /* wait for the child to dump its core */
++        sleep(1);
++
++        /* run gdb */
++        char filename[PATH_MAX] = &quot;/tmp/&quot;;
++        char pattern[PATH_MAX] = { 0 };
++        int patternfd;
++        int found;
++        if ((patternfd = open(&quot;/proc/sys/kernel/core_pattern&quot;, O_RDONLY)) &gt;= 0) {
++            if (read(patternfd, pattern, sizeof(pattern)) &gt; 0) {
++                /* strip the trailing newline */
++                memset(pattern + strlen(pattern) - 1, 0, 1);
++                strncat(filename, pattern, PATH_MAX - 5);
++                found = 1;
++            }
++        }
++
++        if (!found)
++            return 0;
++
++        pid_t pid = fork();
++        if (pid == 0) {
++            /* child */
++            char *args[] = {
++                &quot;gdb&quot;,
++                start_argv[0],
++                filename,
++                &quot;-batch&quot;,
++                &quot;-nx&quot;,
++                &quot;-ex&quot;, &quot;set logging file backtrace&quot;,
++                &quot;-ex&quot;, &quot;set logging on&quot;,
++                &quot;-ex&quot;, &quot;bt full&quot;,
++                NULL
++            };
++            execvp(&quot;gdb&quot;, args);
++            exit(0);
++        }
+     }
+ 
+     if (sym == 'r')
+-- 
+1.7.12
+
+</PRE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000866.html">[i3] [PATCH 1/2] Replace exit option with core-dump when crashed
+</A></li>
+	<LI>Next message: <A HREF="000877.html">[i3] [PATCH 2/2] Automatically run gdb to get a trace when	crashed
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#867">[ date ]</a>
+              <a href="thread.html#867">[ thread ]</a>
+              <a href="subject.html#867">[ subject ]</a>
+              <a href="author.html#867">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

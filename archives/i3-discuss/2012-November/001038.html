@@ -1,0 +1,993 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH 1/5] Fixes for true transparency.
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%3D%3Futf-8%3Fq%3F%3D5BPATCH_1/5%3D5D_Fixes_for_true_transparency%3D2E%3F%3D&In-Reply-To=%3C1353236215-32206-2-git-send-email-kemurphy.cmu%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001037.html">
+   <LINK REL="Next"  HREF="001039.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH 1/5] Fixes for true transparency.</H1>
+    <B>Kevin Murphy</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%3D%3Futf-8%3Fq%3F%3D5BPATCH_1/5%3D5D_Fixes_for_true_transparency%3D2E%3F%3D&In-Reply-To=%3C1353236215-32206-2-git-send-email-kemurphy.cmu%40gmail.com%3E"
+       TITLE="[i3] [PATCH 1/5] Fixes for true transparency.">kemurphy.cmu at gmail.com
+       </A><BR>
+    <I>Sun Nov 18 11:56:51 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001037.html">[i3] [PATCH 0/5] Assorted Patches
+</A></li>
+        <LI>Next message: <A HREF="001039.html">[i3] [PATCH 2/5] Added &quot;focus&quot; IPC message/event.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1038">[ date ]</a>
+              <a href="thread.html#1038">[ thread ]</a>
+              <a href="subject.html#1038">[ subject ]</a>
+              <a href="author.html#1038">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>From: Kevin Murphy &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">kemurphy at andrew.cmu.edu</A>&gt;
+
+Reverts commit 9d68d78 &quot;Use 32bit visual only when needed&quot;, as the
+definition of &quot;needed&quot; in that context was incorrect.  32-bit visuals
+are now enabled by either the enable_alpha_channel config setting or the
+--enable-alpha-channel command line switch.  This patch also simplifies
+the drawing routine in x.c, as even after reverting 9d68d78, there were
+still visible artifacts behind windows due to overdrawing.
+
+A nice side effect of this patch is it also happens to fix issues with
+borders disappearing and windows losing transparency after an i3
+restart.
+---
+ docs/userguide              |  16 ++++
+ i3-config-wizard/main.c     |   1 +
+ include/config.h            |   8 ++
+ include/config_directives.h |   1 +
+ include/data.h              |   3 -
+ include/libi3.h             |   8 +-
+ include/x.h                 |   2 +-
+ include/xcb.h               |  16 +---
+ libi3/font.c                |  29 ++++++-
+ libi3/get_visualtype.c      |  25 +++---
+ parser-specs/config.spec    |   6 ++
+ src/cfgparse.l              |   2 +
+ src/cfgparse.y              |  10 +++
+ src/commands.c              |   4 +-
+ src/con.c                   |   6 +-
+ src/config_directives.c     |   4 +
+ src/main.c                  |  62 ++++++++++++---
+ src/manage.c                |   1 -
+ src/resize.c                |   7 +-
+ src/x.c                     | 190 ++++++++++++--------------------------------
+ src/xcb.c                   |  51 ++----------
+ 21 files changed, 214 insertions(+), 238 deletions(-)
+
+diff --git a/docs/userguide b/docs/userguide
+index 99fb072..e64df52 100644
+--- a/docs/userguide
++++ b/docs/userguide
+@@ -871,6 +871,22 @@ force_xinerama yes
+ Also note that your output names are not descriptive (like +HDMI1+) when using
+ Xinerama, instead they are counted up, starting at 0: +xinerama-0+, +xinerama-1+, &#8230;
+ 
++=== Enabling Transparency
++
++Those who wish to enable transparency can turn on the alpha channel with either
++the --enable-alpha-channel commandline switch, or the enable_alpha_channel
++configuration option.
++
++*Syntax*:
++-----------------------
++enable_alpha_channel &lt;yes|no&gt;
++-----------------------
++
++*Example*:
++------------------
++enable_alpha_channel yes
++------------------
++
+ === Automatic back-and-forth when switching to the current workspace
+ 
+ This configuration directive enables automatic +workspace back_and_forth+ (see
+diff --git a/i3-config-wizard/main.c b/i3-config-wizard/main.c
+index f033f9f..937d293 100644
+--- a/i3-config-wizard/main.c
++++ b/i3-config-wizard/main.c
+@@ -77,6 +77,7 @@ static xcb_window_t win;
+ static xcb_pixmap_t pixmap;
+ static xcb_gcontext_t pixmap_gc;
+ static xcb_key_symbols_t *symbols;
++xcb_screen_t *root_screen;
+ xcb_window_t root;
+ Display *dpy;
+ 
+diff --git a/include/config.h b/include/config.h
+index 04f1c85..4c46d16 100644
+--- a/include/config.h
++++ b/include/config.h
+@@ -143,6 +143,14 @@ struct Config {
+      * is fetched once and never updated. */
+     bool force_xinerama;
+ 
++    /** By default, use the default X11 visual, which typically uses 24-bit
++     * color.  This doesn't allow transparency to work properly, so we provide
++     * the option to enable the alpha channel for 32-bit color.
++     *
++     * Note: this option only takes effect upon i3 startup; it cannot be
++     * changed once i3 is running without an in-place restart. */
++    bool enable_alpha_channel;
++
+     /** Overwrites output detection (for testing), see src/fake_outputs.c */
+     char *fake_outputs;
+ 
+diff --git a/include/config_directives.h b/include/config_directives.h
+index 1faaa97..2daeb42 100644
+--- a/include/config_directives.h
++++ b/include/config_directives.h
+@@ -41,6 +41,7 @@ CFGFUN(default_orientation, const char *orientation);
+ CFGFUN(workspace_layout, const char *layout);
+ CFGFUN(workspace_back_and_forth, const char *value);
+ CFGFUN(focus_follows_mouse, const char *value);
++CFGFUN(enable_alpha_channel, const char *value);
+ CFGFUN(force_focus_wrapping, const char *value);
+ CFGFUN(force_xinerama, const char *value);
+ CFGFUN(fake_outputs, const char *outputs);
+diff --git a/include/data.h b/include/data.h
+index 63b18b2..5fe06fa 100644
+--- a/include/data.h
++++ b/include/data.h
+@@ -340,9 +340,6 @@ struct Window {
+      * (assignments run only once) */
+     uint32_t nr_assignments;
+     Assignment **ran_assignments;
+-
+-    /** Depth of the window */
+-    uint16_t depth;
+ };
+ 
+ /**
+diff --git a/include/libi3.h b/include/libi3.h
+index 7547845..dc1f1b4 100644
+--- a/include/libi3.h
++++ b/include/libi3.h
+@@ -346,7 +346,13 @@ int predict_text_width(i3String *text);
+  * Returns the visual type associated with the given screen.
+  *
+  */
+-xcb_visualtype_t *get_visualtype(xcb_screen_t *screen);
++xcb_visualtype_t *get_visualtype_for_screen(xcb_screen_t *screen);
++
++/**
++ * Returns the visual type associated with the given depth for the given screen.
++ *
++ */
++xcb_visualtype_t *get_visualtype_for_depth(xcb_screen_t *screen, uint8_t depth);
+ 
+ /**
+  * Returns true if this version of i3 is a debug build (anything which is not a
+diff --git a/include/x.h b/include/x.h
+index c3d4ffc..61046b8 100644
+--- a/include/x.h
++++ b/include/x.h
+@@ -19,7 +19,7 @@ extern xcb_window_t focused_id;
+  * every container from con_new().
+  *
+  */
+-void x_con_init(Con *con, uint16_t depth);
++void x_con_init(Con *con);
+ 
+ /**
+  * Moves a child window from Container src to Container dest.
+diff --git a/include/xcb.h b/include/xcb.h
+index 15d3e28..d041915 100644
+--- a/include/xcb.h
++++ b/include/xcb.h
+@@ -56,8 +56,8 @@ extern unsigned int xcb_numlock_mask;
+  * generating an ID and checking for errors.
+  *
+  */
+-xcb_window_t create_window(xcb_connection_t *conn, Rect r, uint16_t depth, xcb_visualid_t visual,
+-        uint16_t window_class, enum xcursor_cursor_t cursor, bool map, uint32_t mask, uint32_t *values);
++xcb_window_t create_window(xcb_connection_t *conn, Rect r, uint16_t window_class,
++        enum xcursor_cursor_t cursor, bool map, uint32_t mask, uint32_t *values);
+ 
+ /**
+  * Draws a line from x,y to to_x,to_y using the given color
+@@ -117,16 +117,4 @@ void xcb_warp_pointer_rect(xcb_connection_t *conn, Rect *rect);
+  */
+ void xcb_set_root_cursor(int cursor);
+ 
+-/**
+- * Get depth of visual specified by visualid
+- *
+- */
+-uint16_t get_visual_depth(xcb_visualid_t visual_id);
+-
+-/**
+- * Get visualid with specified depth
+- *
+- */
+-xcb_visualid_t get_visualid_by_depth(uint16_t depth);
+-
+ #endif
+diff --git a/libi3/font.c b/libi3/font.c
+index a2162c4..c257287 100644
+--- a/libi3/font.c
++++ b/libi3/font.c
+@@ -30,6 +30,20 @@ static double pango_font_red;
+ static double pango_font_green;
+ static double pango_font_blue;
+ 
++static uint8_t get_depth_of_drawable(xcb_drawable_t drawable) {
++    xcb_get_geometry_reply_t *geom;
++    int depth = 0;
++
++    geom = xcb_get_geometry_reply(conn, xcb_get_geometry(conn, drawable), 0);
++
++    if (geom) {
++        depth = geom-&gt;depth;
++        free(geom);
++    }
++
++    return depth;
++}
++
+ /*
+  * Loads a Pango font description into an i3Font structure. Returns true
+  * on success, false otherwise.
+@@ -51,7 +65,7 @@ static bool load_pango_font(i3Font *font, const char *desc) {
+     /* We cache root_visual_type here, since you must call
+      * load_pango_font before any other pango function
+      * that would need root_visual_type */
+-    root_visual_type = get_visualtype(root_screen);
++    root_visual_type = get_visualtype_for_screen(root_screen);
+ 
+     /* Create a dummy Pango layout to compute the font height */
+     cairo_surface_t *surface = cairo_xcb_surface_create(conn, root_screen-&gt;root, root_visual_type, 1, 1);
+@@ -80,10 +94,19 @@ static bool load_pango_font(i3Font *font, const char *desc) {
+  */
+ static void draw_text_pango(const char *text, size_t text_len,
+         xcb_drawable_t drawable, int x, int y, int max_width) {
++    /* Query the depth of the drawable to get the proper visualtype */
++    xcb_visualtype_t *visual_type;
++    uint8_t depth = get_depth_of_drawable(drawable);
++    if (depth) {
++        visual_type = get_visualtype_for_depth(root_screen, depth);
++    } else {
++        /* Fall back to root_screen's visual */
++        visual_type = root_visual_type;
++    }
++
+     /* Create the Pango layout */
+-    /* root_visual_type is cached in load_pango_font */
+     cairo_surface_t *surface = cairo_xcb_surface_create(conn, drawable,
+-            root_visual_type, x + max_width, y + savedFont-&gt;height);
++            visual_type, x + max_width, y + savedFont-&gt;height);
+     cairo_t *cr = cairo_create(surface);
+     PangoLayout *layout = pango_cairo_create_layout(cr);
+     pango_layout_set_font_description(layout, savedFont-&gt;specific.pango_desc);
+diff --git a/libi3/get_visualtype.c b/libi3/get_visualtype.c
+index d11722f..f1e7ad0 100644
+--- a/libi3/get_visualtype.c
++++ b/libi3/get_visualtype.c
+@@ -6,23 +6,20 @@
+  *
+  */
+ #include &quot;libi3.h&quot;
++#include &lt;xcb/xcb_util.h&gt;
+ 
+ /*
+  * Returns the visual type associated with the given screen.
+  *
+  */
+-xcb_visualtype_t *get_visualtype(xcb_screen_t *screen) {
+-    xcb_depth_iterator_t depth_iter;
+-    for (depth_iter = xcb_screen_allowed_depths_iterator(screen);
+-         depth_iter.rem;
+-         xcb_depth_next(&amp;depth_iter)) {
+-        xcb_visualtype_iterator_t visual_iter;
+-        for (visual_iter = xcb_depth_visuals_iterator(depth_iter.data);
+-             visual_iter.rem;
+-             xcb_visualtype_next(&amp;visual_iter)) {
+-            if (screen-&gt;root_visual == visual_iter.data-&gt;visual_id)
+-                return visual_iter.data;
+-        }
+-    }
+-    return NULL;
++xcb_visualtype_t *get_visualtype_for_screen(xcb_screen_t *screen) {
++    return xcb_aux_find_visual_by_id(screen, screen-&gt;root_visual);
++}
++
++/*
++ * Returns the visual type associated with the given depth for the given screen.
++ *
++ */
++xcb_visualtype_t *get_visualtype_for_depth(xcb_screen_t *screen, uint8_t depth) {
++    return xcb_aux_find_visual_by_attrs(screen, -1, depth);
+ }
+diff --git a/parser-specs/config.spec b/parser-specs/config.spec
+index 1c11bf9..70a4ff5 100644
+--- a/parser-specs/config.spec
++++ b/parser-specs/config.spec
+@@ -31,6 +31,7 @@ state INITIAL:
+   'for_window'                             -&gt; FOR_WINDOW
+   'assign'                                 -&gt; ASSIGN
+   'focus_follows_mouse'                    -&gt; FOCUS_FOLLOWS_MOUSE
++  'enable_alpha_channel'                   -&gt; ENABLE_ALPHA_CHANNEL
+   'force_focus_wrapping'                   -&gt; FORCE_FOCUS_WRAPPING
+   'force_xinerama', 'force-xinerama'       -&gt; FORCE_XINERAMA
+   'workspace_auto_back_and_forth'          -&gt; WORKSPACE_BACK_AND_FORTH
+@@ -171,6 +172,11 @@ state FOCUS_FOLLOWS_MOUSE:
+   value = word
+       -&gt; call cfg_focus_follows_mouse($value)
+ 
++# enable_alpha_channel bool
++state ENABLE_ALPHA_CHANNEL:
++  value = word
++      -&gt; call cfg_enable_alpha_channel($value)
++
+ # force_focus_wrapping
+ state FORCE_FOCUS_WRAPPING:
+   value = word
+diff --git a/src/cfgparse.l b/src/cfgparse.l
+index 6eef8a5..d6b2757 100644
+--- a/src/cfgparse.l
++++ b/src/cfgparse.l
+@@ -212,6 +212,8 @@ focus_follows_mouse             { return TOKFOCUSFOLLOWSMOUSE; }
+ force_focus_wrapping            { return TOK_FORCE_FOCUS_WRAPPING; }
+ force_xinerama                  { return TOK_FORCE_XINERAMA; }
+ force-xinerama                  { return TOK_FORCE_XINERAMA; }
++enable_alpha_channel            { return TOK_ENABLE_ALPHA_CHANNEL; }
++enable-alpha-channel            { return TOK_ENABLE_ALPHA_CHANNEL; }
+ fake_outputs                    { WS_STRING; return TOK_FAKE_OUTPUTS; }
+ fake-outputs                    { WS_STRING; return TOK_FAKE_OUTPUTS; }
+ workspace_auto_back_and_forth   { return TOK_WORKSPACE_AUTO_BAF; }
+diff --git a/src/cfgparse.y b/src/cfgparse.y
+index 2a22aae..17f8f55 100644
+--- a/src/cfgparse.y
++++ b/src/cfgparse.y
+@@ -755,6 +755,7 @@ void parse_file(const char *f) {
+ %token                  TOKFOCUSFOLLOWSMOUSE        &quot;focus_follows_mouse&quot;
+ %token                  TOK_FORCE_FOCUS_WRAPPING    &quot;force_focus_wrapping&quot;
+ %token                  TOK_FORCE_XINERAMA          &quot;force_xinerama&quot;
++%token                  TOK_ENABLE_ALPHA_CHANNEL    &quot;enable_alpha_channel&quot;
+ %token                  TOK_FAKE_OUTPUTS            &quot;fake_outputs&quot;
+ %token                  TOK_WORKSPACE_AUTO_BAF      &quot;workspace_auto_back_and_forth&quot;
+ %token                  TOK_WORKSPACE_URGENCY_TIMER &quot;force_display_urgency_hint&quot;
+@@ -861,6 +862,7 @@ line:
+     | focus_follows_mouse
+     | force_focus_wrapping
+     | force_xinerama
++    | enable_alpha_channel
+     | fake_outputs
+     | force_display_urgency_hint
+     | workspace_back_and_forth
+@@ -1570,6 +1572,14 @@ force_xinerama:
+     }
+     ;
+ 
++enable_alpha_channel:
++    TOK_ENABLE_ALPHA_CHANNEL bool
++    {
++        DLOG(&quot;enable alpha channel = %d\n&quot;, $2);
++        config.enable_alpha_channel = $2;
++    }
++    ;
++
+ fake_outputs:
+     TOK_FAKE_OUTPUTS STR
+     {
+diff --git a/src/commands.c b/src/commands.c
+index cb53a31..a7cdaa0 100644
+--- a/src/commands.c
++++ b/src/commands.c
+@@ -584,8 +584,10 @@ static void cmd_resize_floating(I3_CMD, char *way, char *direction, Con *floatin
+     } else if (strcmp(direction, &quot;left&quot;) == 0) {
+         floating_con-&gt;rect.x -= px;
+         floating_con-&gt;rect.width += px;
+-    } else {
++    } else if (strcmp(direction, &quot;width&quot;) == 0) {
+         floating_con-&gt;rect.width += px;
++    } else {
++        floating_con-&gt;rect.height += px;
+     }
+ }
+ 
+diff --git a/src/con.c b/src/con.c
+index ad5025a..5b5dce9 100644
+--- a/src/con.c
++++ b/src/con.c
+@@ -66,10 +66,8 @@ Con *con_new(Con *parent, i3Window *window) {
+     cnt++;
+     if ((cnt % (sizeof(colors) / sizeof(char*))) == 0)
+         cnt = 0;
+-    if (window)
+-        x_con_init(new, window-&gt;depth);
+-    else
+-        x_con_init(new, XCB_COPY_FROM_PARENT);
++
++    x_con_init(new);
+ 
+     TAILQ_INIT(&amp;(new-&gt;floating_head));
+     TAILQ_INIT(&amp;(new-&gt;nodes_head));
+diff --git a/src/config_directives.c b/src/config_directives.c
+index 8b636c0..317e43d 100644
+--- a/src/config_directives.c
++++ b/src/config_directives.c
+@@ -340,6 +340,10 @@ CFGFUN(focus_follows_mouse, const char *value) {
+     config.disable_focus_follows_mouse = !eval_boolstr(value);
+ }
+ 
++CFGFUN(enable_alpha_channel, const char *value) {
++    config.enable_alpha_channel = eval_boolstr(value);
++}
++
+ CFGFUN(force_xinerama, const char *value) {
+     config.force_xinerama = eval_boolstr(value);
+ }
+diff --git a/src/main.c b/src/main.c
+index 6d0f80c..bbbd771 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -248,6 +248,7 @@ int main(int argc, char *argv[]) {
+     char *layout_path = NULL;
+     bool delete_layout_path = false;
+     bool force_xinerama = false;
++    bool enable_alpha_channel = false;
+     char *fake_outputs = NULL;
+     bool disable_signalhandler = false;
+     static struct option long_options[] = {
+@@ -262,6 +263,8 @@ int main(int argc, char *argv[]) {
+         {&quot;restart&quot;, required_argument, 0, 0},
+         {&quot;force-xinerama&quot;, no_argument, 0, 0},
+         {&quot;force_xinerama&quot;, no_argument, 0, 0},
++        {&quot;enable-alpha-channel&quot;, no_argument, 0, 0},
++        {&quot;enable_alpha_channel&quot;, no_argument, 0, 0},
+         {&quot;disable-signalhandler&quot;, no_argument, 0, 0},
+         {&quot;shmlog-size&quot;, required_argument, 0, 0},
+         {&quot;shmlog_size&quot;, required_argument, 0, 0},
+@@ -273,6 +276,7 @@ int main(int argc, char *argv[]) {
+         {0, 0, 0, 0}
+     };
+     int option_index = 0, opt;
++    xcb_void_cookie_t colormap_cookie;
+ 
+     setlocale(LC_ALL, &quot;&quot;);
+ 
+@@ -343,6 +347,10 @@ int main(int argc, char *argv[]) {
+                          &quot;Please check if your driver really does not support RandR &quot;
+                          &quot;and disable this option as soon as you can.\n&quot;);
+                     break;
++                } else if (strcmp(long_options[option_index].name, &quot;enable-alpha-channel&quot;) == 0 ||
++                           strcmp(long_options[option_index].name, &quot;enable_alpha_channel&quot;) == 0) {
++                    enable_alpha_channel = true;
++                    break;
+                 } else if (strcmp(long_options[option_index].name, &quot;disable-signalhandler&quot;) == 0) {
+                     disable_signalhandler = true;
+                     break;
+@@ -396,6 +404,9 @@ int main(int argc, char *argv[]) {
+                                 &quot;\told nVidia closed source driver (older than 302.17), which does\n&quot;
+                                 &quot;\tnot support RandR.\n&quot;);
+                 fprintf(stderr, &quot;\n&quot;);
++                fprintf(stderr, &quot;\t--enable-alpha-channel\n&quot;
++                                &quot;\tUse a 32-bit visual for transparency support.\n&quot;);
++                fprintf(stderr, &quot;\n&quot;);
+                 fprintf(stderr, &quot;\t--get-socketpath\n&quot;
+                                 &quot;\tRetrieve the i3 IPC socket path from X11, print it, then exit.\n&quot;);
+                 fprintf(stderr, &quot;\n&quot;);
+@@ -511,29 +522,41 @@ int main(int argc, char *argv[]) {
+     main_loop = EV_DEFAULT;
+     if (main_loop == NULL)
+             die(&quot;Could not initialize libev. Bad LIBEV_FLAGS?\n&quot;);
+-
++    
+     root_screen = xcb_aux_get_screen(conn, conn_screen);
+     root = root_screen-&gt;root;
+ 
++    load_configuration(conn, override_configpath, false);
++    if (only_check_config) {
++        LOG(&quot;Done checking configuration file. Exiting.\n&quot;);
++        exit(0);
++    }
++
++    if (config.enable_alpha_channel)
++        enable_alpha_channel = true;
++
+     /* By default, we use the same depth and visual as the root window, which
+      * usually is TrueColor (24 bit depth) and the corresponding visual.
+      * However, we also check if a 32 bit depth and visual are available (for
+      * transparency) and use it if so. */
+-    root_depth = root_screen-&gt;root_depth;
+-    visual_id = root_screen-&gt;root_visual;
+-    colormap = root_screen-&gt;default_colormap;
++    bool found_visual = false;
++    if (enable_alpha_channel) {
++        xcb_visualtype_t *visualtype = NULL;
++        if ((visualtype = xcb_aux_find_visual_by_attrs(root_screen, -1, 32)) != NULL) {
++            root_depth = 32;
++            visual_id = visualtype-&gt;visual_id;
++            colormap = xcb_generate_id(conn);
++            colormap_cookie = xcb_create_colormap_checked(conn, XCB_COLORMAP_ALLOC_NONE, colormap, root, visual_id);
++            found_visual = true;
++            DLOG(&quot;Found a visual with 32 bit depth.\n&quot;);
++        }
++    }
+ 
+     DLOG(&quot;root_depth = %d, visual_id = 0x%08x.\n&quot;, root_depth, visual_id);
+ 
+     xcb_get_geometry_cookie_t gcookie = xcb_get_geometry(conn, root);
+     xcb_query_pointer_cookie_t pointercookie = xcb_query_pointer(conn, root);
+ 
+-    load_configuration(conn, override_configpath, false);
+-    if (only_check_config) {
+-        LOG(&quot;Done checking configuration file. Exiting.\n&quot;);
+-        exit(0);
+-    }
+-
+     if (config.ipc_socket_path == NULL) {
+         /* Fall back to a file name in /tmp/ based on the PID */
+         if ((config.ipc_socket_path = getenv(&quot;I3SOCK&quot;)) == NULL)
+@@ -555,6 +578,25 @@ int main(int argc, char *argv[]) {
+     cookie = xcb_change_window_attributes_checked(conn, root, mask, values);
+     check_error(conn, cookie, &quot;Another window manager seems to be running&quot;);
+ 
++    /* By now we already checked for replies once, so let&#8217;s see if colormap
++     * creation worked (if requested), and fall back to default if it failed
++     * or if the alpha channel wasn't enabled. */
++    do {
++        if (enable_alpha_channel &amp;&amp; found_visual) {
++            xcb_generic_error_t *error = xcb_request_check(conn, colormap_cookie);
++            if (error == NULL) {
++                break;
++            } else {
++                ELOG(&quot;Could not create ColorMap for 32 bit visual, falling back to X11 default.\n&quot;);
++                DLOG(&quot;root_depth = %d, visual_id = 0x%08x.\n&quot;, root_depth, visual_id);
++                free(error);
++            }
++        }
++        root_depth = root_screen-&gt;root_depth;
++        visual_id = root_screen-&gt;root_visual;
++        colormap = root_screen-&gt;default_colormap;
++    } while (0);
++
+     xcb_get_geometry_reply_t *greply = xcb_get_geometry_reply(conn, gcookie, NULL);
+     if (greply == NULL) {
+         ELOG(&quot;Could not get geometry of the root window, exiting\n&quot;);
+diff --git a/src/manage.c b/src/manage.c
+index 9835aa2..10aa3a8 100644
+--- a/src/manage.c
++++ b/src/manage.c
+@@ -162,7 +162,6 @@ void manage_window(xcb_window_t window, xcb_get_window_attributes_cookie_t cooki
+ 
+     i3Window *cwindow = scalloc(sizeof(i3Window));
+     cwindow-&gt;id = window;
+-    cwindow-&gt;depth = get_visual_depth(attr-&gt;visual);
+ 
+     /* We need to grab the mouse buttons for click to focus */
+     xcb_grab_button(conn, false, window, XCB_EVENT_MASK_BUTTON_PRESS,
+diff --git a/src/resize.c b/src/resize.c
+index 268dc3f..8508713 100644
+--- a/src/resize.c
++++ b/src/resize.c
+@@ -71,8 +71,7 @@ int resize_graphical_handler(Con *first, Con *second, orientation_t orientation,
+ 
+     /* Open a new window, the resizebar. Grab the pointer and move the window around
+        as the user moves the pointer. */
+-    xcb_window_t grabwin = create_window(conn, output-&gt;rect, XCB_COPY_FROM_PARENT, XCB_COPY_FROM_PARENT,
+-            XCB_WINDOW_CLASS_INPUT_ONLY, XCURSOR_CURSOR_POINTER, true, mask, values);
++    xcb_window_t grabwin = create_window(conn, output-&gt;rect, XCB_WINDOW_CLASS_INPUT_ONLY, XCURSOR_CURSOR_POINTER, true, mask, values);
+ 
+     Rect helprect;
+     if (orientation == HORIZ) {
+@@ -95,8 +94,8 @@ int resize_graphical_handler(Con *first, Con *second, orientation_t orientation,
+     mask |= XCB_CW_OVERRIDE_REDIRECT;
+     values[1] = 1;
+ 
+-    xcb_window_t helpwin = create_window(conn, helprect, XCB_COPY_FROM_PARENT, XCB_COPY_FROM_PARENT,
+-            XCB_WINDOW_CLASS_INPUT_OUTPUT, (orientation == HORIZ ?
++    xcb_window_t helpwin = create_window(conn, helprect, XCB_WINDOW_CLASS_INPUT_OUTPUT,
++                                         (orientation == HORIZ ?
+                                           XCURSOR_CURSOR_RESIZE_HORIZONTAL :
+                                           XCURSOR_CURSOR_RESIZE_VERTICAL), true, mask, values);
+ 
+diff --git a/src/x.c b/src/x.c
+index 78c6de3..6535d07 100644
+--- a/src/x.c
++++ b/src/x.c
+@@ -87,60 +87,36 @@ static con_state *state_for_frame(xcb_window_t window) {
+  * every container from con_new().
+  *
+  */
+-void x_con_init(Con *con, uint16_t depth) {
++void x_con_init(Con *con) {
+     /* TODO: maybe create the window when rendering first? we could then even
+      * get the initial geometry right */
+ 
+     uint32_t mask = 0;
+     uint32_t values[5];
+ 
+-    xcb_visualid_t visual = XCB_COPY_FROM_PARENT;
+-    xcb_colormap_t win_colormap = XCB_NONE;
+-    if (depth != root_depth &amp;&amp; depth != XCB_COPY_FROM_PARENT) {
+-        /* For custom visuals, we need to create a colormap before creating
+-         * this window. It will be freed directly after creating the window. */
+-        visual = get_visualid_by_depth(depth);
+-        win_colormap = xcb_generate_id(conn);
+-        xcb_create_colormap_checked(conn, XCB_COLORMAP_ALLOC_NONE, win_colormap, root, visual);
+-
+-        /* We explicitly set a background color and border color (even though we
+-         * don&#8217;t even have a border) because the X11 server requires us to when
+-         * using 32 bit color depths, see
+-         * <A HREF="http://stackoverflow.com/questions/3645632">http://stackoverflow.com/questions/3645632</A> */
+-        mask |= XCB_CW_BACK_PIXEL;
+-        values[0] = root_screen-&gt;black_pixel;
+-
+-        mask |= XCB_CW_BORDER_PIXEL;
+-        values[1] = root_screen-&gt;black_pixel;
+-
+-        /* our own frames should not be managed */
+-        mask |= XCB_CW_OVERRIDE_REDIRECT;
+-        values[2] = 1;
+-
+-        /* see include/xcb.h for the FRAME_EVENT_MASK */
+-        mask |= XCB_CW_EVENT_MASK;
+-        values[3] = FRAME_EVENT_MASK &amp; ~XCB_EVENT_MASK_ENTER_WINDOW;
+-
+-        mask |= XCB_CW_COLORMAP;
+-        values[4] = win_colormap;
+-    } else {
+-        /* our own frames should not be managed */
+-        mask = XCB_CW_OVERRIDE_REDIRECT;
+-        values[0] = 1;
++    /* We explicitly set a background color and border color (even though we
++     * don&#8217;t even have a border) because the X11 server requires us to when
++     * using 32 bit color depths, see
++     * <A HREF="http://stackoverflow.com/questions/3645632">http://stackoverflow.com/questions/3645632</A> */
++    mask |= XCB_CW_BACK_PIXEL;
++    values[0] = root_screen-&gt;black_pixel;
+ 
+-        /* see include/xcb.h for the FRAME_EVENT_MASK */
+-        mask |= XCB_CW_EVENT_MASK;
+-        values[1] = FRAME_EVENT_MASK &amp; ~XCB_EVENT_MASK_ENTER_WINDOW;
++    mask |= XCB_CW_BORDER_PIXEL;
++    values[1] = root_screen-&gt;black_pixel;
+ 
+-        mask |= XCB_CW_COLORMAP;
+-        values[2] = colormap;
+-    }
++    /* our own frames should not be managed */
++    mask |= XCB_CW_OVERRIDE_REDIRECT;
++    values[2] = 1;
+ 
+-    Rect dims = { -15, -15, 10, 10 };
+-    con-&gt;frame = create_window(conn, dims, depth, visual, XCB_WINDOW_CLASS_INPUT_OUTPUT, XCURSOR_CURSOR_POINTER, false, mask, values);
++    /* see include/xcb.h for the FRAME_EVENT_MASK */
++    mask |= XCB_CW_EVENT_MASK;
++    values[3] = FRAME_EVENT_MASK &amp; ~XCB_EVENT_MASK_ENTER_WINDOW;
+ 
+-    if (win_colormap != XCB_NONE)
+-        xcb_free_colormap(conn, win_colormap);
++    mask |= XCB_CW_COLORMAP;
++    values[4] = colormap;
++
++    Rect dims = { -15, -15, 10, 10 };
++    con-&gt;frame = create_window(conn, dims, XCB_WINDOW_CLASS_INPUT_OUTPUT, XCURSOR_CURSOR_POINTER, false, mask, values);
+ 
+     struct con_state *state = scalloc(sizeof(struct con_state));
+     state-&gt;id = con-&gt;frame;
+@@ -322,12 +298,6 @@ void x_draw_decoration(Con *con) {
+     if (con-&gt;rect.height == 0)
+         return;
+ 
+-    /* Skip containers whose pixmap has not yet been created (can happen when
+-     * decoration rendering happens recursively for a window for which
+-     * x_push_node() was not yet called) */
+-    if (leaf &amp;&amp; con-&gt;pixmap == XCB_NONE)
+-        return;
+-
+     /* 1: build deco_params and compare with cache */
+     struct deco_render_params *p = scalloc(sizeof(struct deco_render_params));
+ 
+@@ -352,29 +322,12 @@ void x_draw_decoration(Con *con) {
+     p-&gt;con_is_leaf = con_is_leaf(con);
+     p-&gt;parent_orientation = con_orientation(parent);
+ 
+-    if (con-&gt;deco_render_params != NULL &amp;&amp;
+-        (con-&gt;window == NULL || !con-&gt;window-&gt;name_x_changed) &amp;&amp;
+-        !parent-&gt;pixmap_recreated &amp;&amp;
+-        !con-&gt;pixmap_recreated &amp;&amp;
+-        memcmp(p, con-&gt;deco_render_params, sizeof(struct deco_render_params)) == 0) {
+-        free(p);
+-        goto copy_pixmaps;
+-    }
+-
+-    Con *next = con;
+-    while ((next = TAILQ_NEXT(next, nodes))) {
+-        FREE(next-&gt;deco_render_params);
+-    }
+-
+     FREE(con-&gt;deco_render_params);
+     con-&gt;deco_render_params = p;
+ 
+     if (con-&gt;window != NULL &amp;&amp; con-&gt;window-&gt;name_x_changed)
+         con-&gt;window-&gt;name_x_changed = false;
+ 
+-    parent-&gt;pixmap_recreated = false;
+-    con-&gt;pixmap_recreated = false;
+-
+     /* 2: draw the client.background, but only for the parts around the client_rect */
+     if (con-&gt;window != NULL) {
+         xcb_rectangle_t background[] = {
+@@ -450,7 +403,7 @@ void x_draw_decoration(Con *con) {
+                         { r-&gt;width + br.width + br.x, br.y, r-&gt;width, r-&gt;height + br.height } });
+             else
+                 xcb_poly_fill_rectangle(conn, con-&gt;pixmap, con-&gt;pm_gc, 1, (xcb_rectangle_t[]){
+-                        { br.x, r-&gt;height + br.height + br.y, r-&gt;width - (2 * br.x), r-&gt;height } });
++                        { br.x, r-&gt;height + br.height + br.y, r-&gt;width + br.width, -(br.height + br.y) } });
+         }
+ 
+     }
+@@ -458,7 +411,7 @@ void x_draw_decoration(Con *con) {
+     /* if this is a borderless/1pixel window, we don&#8217;t need to render the
+      * decoration. */
+     if (p-&gt;border_style != BS_NORMAL)
+-        goto copy_pixmaps;
++        return;
+ 
+     /* 4: paint the bar */
+     xcb_change_gc(conn, parent-&gt;pm_gc, XCB_GC_FOREGROUND, (uint32_t[]){ p-&gt;color-&gt;background });
+@@ -505,11 +458,11 @@ void x_draw_decoration(Con *con) {
+                 con-&gt;deco_rect.width - 2);
+         free(title);
+ 
+-        goto copy_pixmaps;
++        return;
+     }
+ 
+     if (win-&gt;name == NULL)
+-        goto copy_pixmaps;
++        return;
+ 
+     int indent_level = 0,
+         indent_mult = 0;
+@@ -555,9 +508,6 @@ void x_draw_decoration(Con *con) {
+ 
+     xcb_change_gc(conn, parent-&gt;pm_gc, XCB_GC_FOREGROUND, (uint32_t[]){ p-&gt;color-&gt;border });
+     xcb_poly_segment(conn, parent-&gt;pixmap, parent-&gt;pm_gc, 2, segments);
+-
+-copy_pixmaps:
+-    xcb_copy_area(conn, con-&gt;pixmap, con-&gt;frame, con-&gt;pm_gc, 0, 0, 0, 0, con-&gt;rect.width, con-&gt;rect.height);
+ }
+ 
+ /*
+@@ -570,7 +520,32 @@ void x_deco_recurse(Con *con) {
+     Con *current;
+     bool leaf = TAILQ_EMPTY(&amp;(con-&gt;nodes_head)) &amp;&amp;
+                 TAILQ_EMPTY(&amp;(con-&gt;floating_head));
+-    con_state *state = state_for_frame(con-&gt;frame);
++    bool should_draw = (con-&gt;type != CT_ROOT &amp;&amp; con-&gt;type != CT_OUTPUT) &amp;&amp;
++                       (!leaf || con-&gt;mapped);
++
++    if (should_draw) {
++        if (con-&gt;pixmap == 0) {
++            con-&gt;pixmap = xcb_generate_id(conn);
++            con-&gt;pm_gc = xcb_generate_id(conn);
++        } else {
++            xcb_free_pixmap(conn, con-&gt;pixmap);
++            xcb_free_gc(conn, con-&gt;pm_gc);
++        }
++        
++        xcb_create_pixmap(conn, root_depth, con-&gt;pixmap, con-&gt;frame, con-&gt;rect.width, con-&gt;rect.height);
++        
++        /* For the graphics context, we disable GraphicsExposure events.
++         * Those will be sent when a CopyArea request cannot be fulfilled
++         * properly due to parts of the source being unmapped or otherwise
++         * unavailable. Since we always copy from pixmaps to windows, this
++         * is not a concern for us. */
++        xcb_create_gc(conn, con-&gt;pm_gc, con-&gt;pixmap, XCB_GC_GRAPHICS_EXPOSURES, (uint32_t[]) { 0 });
++
++        /* Clear stale data from behind the window */
++        xcb_change_gc(conn, con-&gt;pm_gc, XCB_GC_FOREGROUND, (uint32_t[]){ 0 /* Pure transparent */ });
++        xcb_poly_fill_rectangle(conn, con-&gt;pixmap, con-&gt;pm_gc, 1, (xcb_rectangle_t[]){
++                { 0, 0, con-&gt;rect.width, con-&gt;rect.height } });
++    }
+ 
+     if (!leaf) {
+         TAILQ_FOREACH(current, &amp;(con-&gt;nodes_head), nodes)
+@@ -578,14 +553,12 @@ void x_deco_recurse(Con *con) {
+ 
+         TAILQ_FOREACH(current, &amp;(con-&gt;floating_head), floating_windows)
+             x_deco_recurse(current);
+-
+-        if (state-&gt;mapped)
+-            xcb_copy_area(conn, con-&gt;pixmap, con-&gt;frame, con-&gt;pm_gc, 0, 0, 0, 0, con-&gt;rect.width, con-&gt;rect.height);
+     }
+ 
+-    if ((con-&gt;type != CT_ROOT &amp;&amp; con-&gt;type != CT_OUTPUT) &amp;&amp;
+-        (!leaf || con-&gt;mapped))
++    if (should_draw) {
+         x_draw_decoration(con);
++        xcb_copy_area(conn, con-&gt;pixmap, con-&gt;frame, con-&gt;pm_gc, 0, 0, 0, 0, con-&gt;rect.width, con-&gt;rect.height);
++    }
+ }
+ 
+ /*
+@@ -657,61 +630,9 @@ void x_push_node(Con *con) {
+     /* Set new position if rect changed (and if height &gt; 0) */
+     if (memcmp(&amp;(state-&gt;rect), &amp;rect, sizeof(Rect)) != 0 &amp;&amp;
+         rect.height &gt; 0) {
+-        /* We first create the new pixmap, then render to it, set it as the
+-         * background and only afterwards change the window size. This reduces
+-         * flickering. */
+-
+-        /* As the pixmap only depends on the size and not on the position, it
+-         * is enough to check if width/height have changed. Also, we don&#8217;t
+-         * create a pixmap at all when the window is actually not visible
+-         * (height == 0). */
+-        if ((state-&gt;rect.width != rect.width ||
+-            state-&gt;rect.height != rect.height)) {
+-            if (con-&gt;pixmap == 0) {
+-                con-&gt;pixmap = xcb_generate_id(conn);
+-                con-&gt;pm_gc = xcb_generate_id(conn);
+-            } else {
+-                xcb_free_pixmap(conn, con-&gt;pixmap);
+-                xcb_free_gc(conn, con-&gt;pm_gc);
+-            }
+-
+-            uint16_t win_depth = root_depth;
+-            if (con-&gt;window)
+-                win_depth = con-&gt;window-&gt;depth;
+-
+-            xcb_create_pixmap(conn, win_depth, con-&gt;pixmap, con-&gt;frame, rect.width, rect.height);
+-
+-            /* For the graphics context, we disable GraphicsExposure events.
+-             * Those will be sent when a CopyArea request cannot be fulfilled
+-             * properly due to parts of the source being unmapped or otherwise
+-             * unavailable. Since we always copy from pixmaps to windows, this
+-             * is not a concern for us. */
+-            uint32_t values[] = { 0 };
+-            xcb_create_gc(conn, con-&gt;pm_gc, con-&gt;pixmap, XCB_GC_GRAPHICS_EXPOSURES, values);
+-
+-            con-&gt;pixmap_recreated = true;
+-
+-            /* Don&#8217;t render the decoration for windows inside a stack which are
+-             * not visible right now */
+-            if (!con-&gt;parent ||
+-                con-&gt;parent-&gt;layout != L_STACKED ||
+-                TAILQ_FIRST(&amp;(con-&gt;parent-&gt;focus_head)) == con)
+-                /* Render the decoration now to make the correct decoration visible
+-                 * from the very first moment. Later calls will be cached, so this
+-                 * doesn&#8217;t hurt performance. */
+-                x_deco_recurse(con);
+-        }
+ 
+         DLOG(&quot;setting rect (%d, %d, %d, %d)\n&quot;, rect.x, rect.y, rect.width, rect.height);
+-        /* flush to ensure that the following commands are sent in a single
+-         * buffer and will be processed directly afterwards (the contents of a
+-         * window get lost when resizing it, therefore we want to provide it as
+-         * fast as possible) */
+-        xcb_flush(conn);
+         xcb_set_window_rect(conn, con-&gt;frame, rect);
+-        if (con-&gt;pixmap != XCB_NONE)
+-            xcb_copy_area(conn, con-&gt;pixmap, con-&gt;frame, con-&gt;pm_gc, 0, 0, 0, 0, con-&gt;rect.width, con-&gt;rect.height);
+-        xcb_flush(conn);
+ 
+         memcpy(&amp;(state-&gt;rect), &amp;rect, sizeof(Rect));
+         fake_notify = true;
+@@ -760,11 +681,6 @@ void x_push_node(Con *con) {
+         values[0] = FRAME_EVENT_MASK;
+         xcb_change_window_attributes(conn, con-&gt;frame, XCB_CW_EVENT_MASK, values);
+ 
+-        /* copy the pixmap contents to the frame window immediately after mapping */
+-        if (con-&gt;pixmap != XCB_NONE)
+-            xcb_copy_area(conn, con-&gt;pixmap, con-&gt;frame, con-&gt;pm_gc, 0, 0, 0, 0, con-&gt;rect.width, con-&gt;rect.height);
+-        xcb_flush(conn);
+-
+         DLOG(&quot;mapping container %08x (serial %d)\n&quot;, con-&gt;frame, cookie.sequence);
+         state-&gt;mapped = con-&gt;mapped;
+     }
+diff --git a/src/xcb.c b/src/xcb.c
+index caa203f..2ef87d4 100644
+--- a/src/xcb.c
++++ b/src/xcb.c
+@@ -18,11 +18,15 @@ unsigned int xcb_numlock_mask;
+  * for errors.
+  *
+  */
+-xcb_window_t create_window(xcb_connection_t *conn, Rect dims,
+-        uint16_t depth, xcb_visualid_t visual, uint16_t window_class,
++xcb_window_t create_window(xcb_connection_t *conn, Rect dims, uint16_t window_class,
+         enum xcursor_cursor_t cursor, bool map, uint32_t mask, uint32_t *values) {
+     xcb_window_t result = xcb_generate_id(conn);
+ 
++    /* By default, the color depth determined in src/main.c is used (32 bit if
++     * available, otherwise the X11 root window&#8217;s default depth). */
++    uint16_t depth = root_depth;
++    xcb_visualid_t visual = visual_id;
++
+     /* If the window class is XCB_WINDOW_CLASS_INPUT_ONLY, we copy depth and
+      * visual id from the parent window. */
+     if (window_class == XCB_WINDOW_CLASS_INPUT_ONLY) {
+@@ -203,46 +207,3 @@ void xcb_set_root_cursor(int cursor) {
+     xcb_free_cursor(conn, cursor_id);
+     xcb_flush(conn);
+ }
+-
+-/*
+- * Get depth of visual specified by visualid
+- *
+- */
+-uint16_t get_visual_depth(xcb_visualid_t visual_id){
+-    xcb_depth_iterator_t depth_iter;
+-
+-    depth_iter = xcb_screen_allowed_depths_iterator(root_screen);
+-    for (; depth_iter.rem; xcb_depth_next(&amp;depth_iter)) {
+-        xcb_visualtype_iterator_t visual_iter;
+-
+-        visual_iter = xcb_depth_visuals_iterator(depth_iter.data);
+-        for (; visual_iter.rem; xcb_visualtype_next(&amp;visual_iter)) {
+-            if (visual_id == visual_iter.data-&gt;visual_id) {
+-                return depth_iter.data-&gt;depth;
+-            }
+-        }
+-    }
+-    return 0;
+-}
+-
+-/*
+- * Get visualid with specified depth
+- *
+- */
+-xcb_visualid_t get_visualid_by_depth(uint16_t depth){
+-    xcb_depth_iterator_t depth_iter;
+-
+-    depth_iter = xcb_screen_allowed_depths_iterator(root_screen);
+-    for (; depth_iter.rem; xcb_depth_next(&amp;depth_iter)) {
+-        if (depth_iter.data-&gt;depth != depth)
+-            continue;
+-
+-        xcb_visualtype_iterator_t visual_iter;
+-
+-        visual_iter = xcb_depth_visuals_iterator(depth_iter.data);
+-        if (!visual_iter.rem)
+-            continue;
+-        return visual_iter.data-&gt;visual_id;
+-    }
+-    return 0;
+-}
+-- 
+1.8.0
+
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001037.html">[i3] [PATCH 0/5] Assorted Patches
+</A></li>
+	<LI>Next message: <A HREF="001039.html">[i3] [PATCH 2/5] Added &quot;focus&quot; IPC message/event.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1038">[ date ]</a>
+              <a href="thread.html#1038">[ thread ]</a>
+              <a href="subject.html#1038">[ subject ]</a>
+              <a href="author.html#1038">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

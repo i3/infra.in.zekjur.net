@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Configuration for steam big picture mode
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Configuration%20for%20steam%20big%20picture%20mode&In-Reply-To=%3C20150908172641.3c183bde%40Blickensderfer%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002181.html">
+   <LINK REL="Next"  HREF="002183.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Configuration for steam big picture mode</H1>
+    <B>Mateusz Poszwa</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Configuration%20for%20steam%20big%20picture%20mode&In-Reply-To=%3C20150908172641.3c183bde%40Blickensderfer%3E"
+       TITLE="[i3] Configuration for steam big picture mode">old4 at o2.pl
+       </A><BR>
+    <I>Tue Sep  8 17:26:41 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002181.html">[i3] Configuration for steam big picture mode
+</A></li>
+        <LI>Next message: <A HREF="002183.html">[i3] Configuration for steam big picture mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2182">[ date ]</a>
+              <a href="thread.html#2182">[ thread ]</a>
+              <a href="subject.html#2182">[ subject ]</a>
+              <a href="author.html#2182">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Je 2015-09-07 08:56:26
+Mrrob &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">rob at mrrob.info</A>&gt; skribis:
+
+&gt;<i> On 06/09/15 19:51, Mateusz Poszwa wrote:
+</I>&gt;<i> &gt; Hello.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Je 2015-09-06 08:20:53
+</I>&gt;<i> &gt; Jeff Abrahamson &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jeff at purple.com</A>&gt; skribis:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; When you say &quot;big picture mode&quot;, I understand what i3 calls fullscreen mode
+</I>&gt;<i> &gt;&gt; &lt;<A HREF="https://i3wm.org/docs/userguide.html#_toggling_fullscreen_mode_for_a_window">https://i3wm.org/docs/userguide.html#_toggling_fullscreen_mode_for_a_window</A>&gt;
+</I>&gt;<i> &gt;&gt; .
+</I>&gt;<i> &gt;&gt; Does it work for you simply to switch to full screen after game launch?
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt; I think I remember seeing some hooks that permit you to match certain
+</I>&gt;<i> &gt;&gt; actions to certain events.  I can't find the documentation now, but maybe
+</I>&gt;<i> &gt;&gt; someone else can fill in.  So I think you can express &quot;when this type of
+</I>&gt;<i> &gt;&gt; window maps, I'd like this action (toggle fullscreen) to happen&quot;.  (Or
+</I>&gt;<i> &gt;&gt; maybe I'm thinking of workspace assignment
+</I>&gt;<i> &gt;&gt; &lt;<A HREF="https://i3wm.org/docs/userguide.html#_automatically_putting_clients_on_specific_workspaces">https://i3wm.org/docs/userguide.html#_automatically_putting_clients_on_specific_workspaces</A>&gt;
+</I>&gt;<i> &gt;&gt; and I'm wrong.)
+</I>&gt;<i> &gt; (…)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; You probably meant to point to this:
+</I>&gt;<i> &gt; <A HREF="http://i3wm.org/docs/userguide.html#_arbitrary_commands_for_specific_windows_for_window">http://i3wm.org/docs/userguide.html#_arbitrary_commands_for_specific_windows_for_window</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; On 5 September 2015 at 11:19, Liang Ying-Ruei &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">thumbd03803 at gmail.com</A>&gt; wrote:
+</I>&gt;<i> &gt;&gt;
+</I>&gt;<i> &gt;&gt;&gt; I love i3 but this confuse me a while.
+</I>&gt;<i> &gt;&gt;&gt; I's possible to enter big picture mode with fullscreen enable, but
+</I>&gt;<i> &gt;&gt;&gt; after launching game i3 won't focus to the new window but stay.
+</I>&gt;<i> &gt;&gt;&gt; Is there any config or workaround that could provide the best
+</I>&gt;<i> &gt;&gt;&gt; experience for big picture mode on i3?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; As far as I understand, (and I don’t know what you mean by big picture
+</I>&gt;<i> &gt; mode, so I’ll just assume you mean fullscreen mode) you are trying
+</I>&gt;<i> &gt; to launch a program with a fullscreen window while running another
+</I>&gt;<i> &gt; program, which already has a fullscreen window. By default i3 prevents
+</I>&gt;<i> &gt; that, as usually when you make a window fullscreen, this means you want
+</I>&gt;<i> &gt; to completely focus on it, and anything that tries to steal that focus
+</I>&gt;<i> &gt; is inhibited. However, this behaviour can be changed. For details, see:
+</I>&gt;<i> &gt; <A HREF="http://i3wm.org/docs/userguide.html#_popups_during_fullscreen_mode">http://i3wm.org/docs/userguide.html#_popups_during_fullscreen_mode</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> 
+</I>&gt;<i> Hi all,
+</I>&gt;<i> 
+</I>&gt;<i> Liang is talking about &quot;Steam Big Picture Mode&quot; which is a &lt;hipster 
+</I>&gt;<i> accent&gt; 10-foot interface for the Steam digital distribution, DRM, 
+</I>&gt;<i> multiplayer and social networking platform &lt;/hipster accent&gt;. Sorry, I'm 
+</I>&gt;<i> trying to be funny not patronising.
+</I>&gt;<i> 
+</I>&gt;<i> The Big Picture Mode starts in i3's fullscreen mode but launches new 
+</I>&gt;<i> windows for games/software. Liang's (and my) desire would seem to be for 
+</I>&gt;<i> these new windows to go fullscreen in front of the Big Picture UI.
+</I>&gt;<i> 
+</I>&gt;<i> Userguide Section 4.20 does not seem to provide an option for the above 
+</I>&gt;<i> behaviour and I haven't thought of a smart way to workaround this.
+</I>
+Have you tried to set popup_during_fullscreen to leave_fullscreen?
+If so, please describe how it behaves, and how would you prefer
+it to behave instead. If not, try it and do the above.
+
+Thanks.
+
+-- 
+Mateusz Poszwa
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002181.html">[i3] Configuration for steam big picture mode
+</A></li>
+	<LI>Next message: <A HREF="002183.html">[i3] Configuration for steam big picture mode
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2182">[ date ]</a>
+              <a href="thread.html#2182">[ thread ]</a>
+              <a href="subject.html#2182">[ subject ]</a>
+              <a href="author.html#2182">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

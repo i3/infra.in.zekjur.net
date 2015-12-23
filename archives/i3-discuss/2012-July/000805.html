@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] gVim with Terminus and slow rendering
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20gVim%20with%20Terminus%20and%20slow%20rendering&In-Reply-To=%3C20120718220730.568d1791%40reoc.zag.pp.ua%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000804.html">
+   <LINK REL="Next"  HREF="000808.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] gVim with Terminus and slow rendering</H1>
+    <B>Eugen Zagorodniy</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20gVim%20with%20Terminus%20and%20slow%20rendering&In-Reply-To=%3C20120718220730.568d1791%40reoc.zag.pp.ua%3E"
+       TITLE="[i3] gVim with Terminus and slow rendering">e.zagorodniy at gmail.com
+       </A><BR>
+    <I>Wed Jul 18 21:07:30 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000804.html">[i3] i3-discuss Digest, Vol 27, Issue 11
+</A></li>
+        <LI>Next message: <A HREF="000808.html">[i3] Ordering t-shirts, who wants some?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#805">[ date ]</a>
+              <a href="thread.html#805">[ thread ]</a>
+              <a href="subject.html#805">[ subject ]</a>
+              <a href="author.html#805">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I hit the same problem and found three ways to solve it:
+
+1. Downgrade to xf86-video-intel-2.18.0-3. There is no need to
+downgrade kernel; all you need is rebuild the package (i.e. via ABS) to
+link it against new versions of libraries. Note that occasionaly you'll
+have to rebuild it again after system upgrades.
+
+2. Downgrade to cairo-1.10.2-3 (possibly newer version prior to
+1.12.2-2 will do). I tried it after reading comments to bug
+<A HREF="https://bugs.freedesktop.org/show_bug.cgi?id=48395">https://bugs.freedesktop.org/show_bug.cgi?id=48395</A> and it also solved
+the problem (without downgrading xf86-video-intel).
+
+3. Replace xf86-video-intel-uxa with xf86-video-intel-sna. This may not
+work for every platform, but this solution seems to be the most
+convenient since it doesn't require keeping outdated packages in the
+system.
+
+Hope it hepls.
+</PRE>
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000804.html">[i3] i3-discuss Digest, Vol 27, Issue 11
+</A></li>
+	<LI>Next message: <A HREF="000808.html">[i3] Ordering t-shirts, who wants some?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#805">[ date ]</a>
+              <a href="thread.html#805">[ thread ]</a>
+              <a href="subject.html#805">[ subject ]</a>
+              <a href="author.html#805">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

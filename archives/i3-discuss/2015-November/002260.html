@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] binding the same key to revert the command?
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20binding%20the%20same%20key%20to%20revert%20the%20command%3F&In-Reply-To=%3C563FCBEE.7040303%40airblader.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002259.html">
+   <LINK REL="Next"  HREF="002256.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] binding the same key to revert the command?</H1>
+    <B>Ingo Bürk</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20binding%20the%20same%20key%20to%20revert%20the%20command%3F&In-Reply-To=%3C563FCBEE.7040303%40airblader.de%3E"
+       TITLE="[i3] binding the same key to revert the command?">admin at airblader.de
+       </A><BR>
+    <I>Sun Nov  8 23:25:50 CET 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002259.html">[i3] binding the same key to revert the command?
+</A></li>
+        <LI>Next message: <A HREF="002256.html">[i3] binding the same key to revert the command?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2260">[ date ]</a>
+              <a href="thread.html#2260">[ thread ]</a>
+              <a href="subject.html#2260">[ subject ]</a>
+              <a href="author.html#2260">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+sorry, my last email didn't go to the mailing list which I diidn't even
+notice until this email. Below is my previous email as a quote which
+also has a script using /proc/../stat. Never hurts to have multiple
+solutions :)
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> here's a script using /proc/.../stat. The usage is as before. The only
+</I>&gt;<i> assumption now is that the process is running exactly once.
+</I>&gt;<i>
+</I>&gt;<i> ====
+</I>&gt;<i> #!/usr/bin/env bash
+</I>&gt;<i> PROCESS=${1}
+</I>&gt;<i> STATE=$(cat /proc/$(pgrep ${PROCESS})/stat | awk -F' ' '{print $3}')
+</I>&gt;<i>
+</I>&gt;<i> [[ &quot;${STATE}&quot; = &quot;T&quot; ]] &amp;&amp; pkill -SIGCONT ${PROCESS} || pkill -SIGSTOP
+</I>&gt;<i> ${PROCESS}
+</I>&gt;<i> =====
+</I>
+
+
+On 11/08/2015 05:22 PM, Joep van Delft wrote:
+&gt;<i> Elaborating on Ingo's hints: Something like this could be used to not
+</I>&gt;<i> to have
+</I>&gt;<i> to maintain the state somewhere on disk:
+</I>&gt;<i>
+</I>&gt;<i> ===========
+</I>&gt;<i> #!/usr/bin/env bash
+</I>&gt;<i> process_name=$1
+</I>&gt;<i> for pid in $(pgrep --exact $process_name); do
+</I>&gt;<i>     # Assumes there is no space in the command name
+</I>&gt;<i>     if   awk '$3==&quot;T&quot;{exit 1}' /proc/$pid/stat 2&gt;/dev/null
+</I>&gt;<i>     then kill -SIGCONT $pid
+</I>&gt;<i>     else kill -SIGKILL $pid
+</I>&gt;<i>     fi
+</I>&gt;<i> done
+</I>&gt;<i> ===========
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Kind regards,
+</I>&gt;<i>
+</I>&gt;<i> Joep
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Ingo Bürk schreef op 2015-11-08 10:30:
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> one possible solution: save the following as /some/path/stopcont.sh
+</I>&gt;&gt;<i> and bind
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>     bindsym $mod+p exec --no-startup-id /some/path/stopcont.sh
+</I>&gt;&gt;<i> &lt;processname&gt;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Script:
+</I>&gt;&gt;<i> ===========
+</I>&gt;&gt;<i> #!/usr/bin/env bash
+</I>&gt;&gt;<i> PROCESS=${1}
+</I>&gt;&gt;<i> FILE=&quot;/tmp/${PROCESS}.signal&quot;
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> if [[ -f &quot;${FILE}&quot; ]]; then
+</I>&gt;&gt;<i>   rm ${FILE}
+</I>&gt;&gt;<i>   pkill -SIGCONT ${PROCESS}
+</I>&gt;&gt;<i> else
+</I>&gt;&gt;<i>   touch ${FILE}
+</I>&gt;&gt;<i>   pkill -SIGSTOP ${PROCESS}
+</I>&gt;&gt;<i> fi
+</I>&gt;&gt;<i> ===========
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> This will, of course, assume that the process isn't paused by anything
+</I>&gt;&gt;<i> else as that would make it go out of sync. A better and more robust way
+</I>&gt;&gt;<i> would be to write the script such that it instead uses the information
+</I>&gt;&gt;<i> of /proc/&lt;pid&gt;/stat to check whether the process is currently paused. If
+</I>&gt;&gt;<i> you use a higher-level language such as Python, you can do this nicely
+</I>&gt;&gt;<i> instead of manually parsing the output. See [1] for some more
+</I>&gt;&gt;<i> information.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> [1]
+</I>&gt;&gt;<i> <A HREF="http://stackoverflow.com/questions/6021771/is-there-a-way-to-determine-if-a-linux-pid-is-paused-or-not">http://stackoverflow.com/questions/6021771/is-there-a-way-to-determine-if-a-linux-pid-is-paused-or-not</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Ingo
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On 11/08/2015 04:16 AM, Zenny wrote:
+</I>&gt;&gt;&gt;<i> Hi,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I am trying to use a keybinding to pause a process temporily,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> bindsym $mod+p exec pkill -SIGSTOP &lt;processname&gt;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> But I could not figure out how to make pressing to same keybinding to
+</I>&gt;&gt;&gt;<i> restart the process?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Currenlty I am using,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> bindsym $mod+c exec pkill -SIGCONT &lt;processname&gt;
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Instead, I want something like re-pressing $mod+p executes pkill
+</I>&gt;&gt;&gt;<i> -SIGCONT &lt;processname&gt;.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Thanks!
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> /z
+</I>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151108/1235384e/attachment-0001.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151108/1235384e/attachment-0001.html</A>&gt;
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002259.html">[i3] binding the same key to revert the command?
+</A></li>
+	<LI>Next message: <A HREF="002256.html">[i3] binding the same key to revert the command?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2260">[ date ]</a>
+              <a href="thread.html#2260">[ thread ]</a>
+              <a href="subject.html#2260">[ subject ]</a>
+              <a href="author.html#2260">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

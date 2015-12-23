@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] Customizable click actions on i3bar
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Customizable%20click%20actions%20on%20i3bar&In-Reply-To=%3CCAH2Exs5uGNH%2B%2BSzB4pPYwexBk8bbXW9QrDzzB40MyFa55oNDjA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001115.html">
+   <LINK REL="Next"  HREF="001117.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] Customizable click actions on i3bar</H1>
+    <B>Francisco J. V&#225;zquez</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Customizable%20click%20actions%20on%20i3bar&In-Reply-To=%3CCAH2Exs5uGNH%2B%2BSzB4pPYwexBk8bbXW9QrDzzB40MyFa55oNDjA%40mail.gmail.com%3E"
+       TITLE="[i3] [PATCH] Customizable click actions on i3bar">fjvazquezaraujo at gmail.com
+       </A><BR>
+    <I>Mon Dec 24 15:16:58 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001115.html">[i3] i3status: Color for muted volume
+</A></li>
+        <LI>Next message: <A HREF="001117.html">[i3] [PATCH] Customizable click actions on i3bar
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1116">[ date ]</a>
+              <a href="thread.html#1116">[ thread ]</a>
+              <a href="subject.html#1116">[ subject ]</a>
+              <a href="author.html#1116">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I made this patch that allows i3status to pass a &quot;command&quot; option for
+each module, to be executed on mouse click. This is the i3 part.
+
+Fran
+
+diff -ruN i3-4.4/i3bar/include/common.h i3-4.4.mine/i3bar/include/common.h
+--- i3-4.4/i3bar/include/common.h    2012-12-12 00:08:17.000000000 +0100
++++ i3-4.4.mine/i3bar/include/common.h    2012-12-24 13:30:11.508648736 +0100
+@@ -39,6 +39,7 @@
+     i3String *full_text;
+
+     char *color;
++    char *command;
+     uint32_t min_width;
+     blockalign_t align;
+
+diff -ruN i3-4.4/i3bar/src/child.c i3-4.4.mine/i3bar/src/child.c
+--- i3-4.4/i3bar/src/child.c    2012-12-12 00:08:17.000000000 +0100
++++ i3-4.4.mine/i3bar/src/child.c    2012-12-24 13:30:11.517648295 +0100
+@@ -129,6 +129,9 @@
+     if (strcasecmp(ctx-&gt;last_map_key, &quot;full_text&quot;) == 0) {
+         ctx-&gt;block.full_text = i3string_from_utf8_with_length((const
+char *)val, len);
+     }
++    if (strcasecmp(ctx-&gt;last_map_key, &quot;command&quot;) == 0) {
++        sasprintf(&amp;(ctx-&gt;block.command), &quot;%.*s&quot;, len, val);
++    }
+     if (strcasecmp(ctx-&gt;last_map_key, &quot;color&quot;) == 0) {
+         sasprintf(&amp;(ctx-&gt;block.color), &quot;%.*s&quot;, len, val);
+     }
+@@ -176,6 +179,7 @@
+     TAILQ_FOREACH(current, &amp;statusline_head, blocks) {
+         DLOG(&quot;full_text = %s\n&quot;, i3string_as_utf8(current-&gt;full_text));
+         DLOG(&quot;color = %s\n&quot;, current-&gt;color);
++        if (current-&gt;command != NULL) DLOG(&quot;command = %s\n&quot;, current-&gt;command);
+     }
+     DLOG(&quot;end of dump\n&quot;);
+     return 1;
+diff -ruN i3-4.4/i3bar/src/xcb.c i3-4.4.mine/i3bar/src/xcb.c
+--- i3-4.4/i3bar/src/xcb.c    2012-12-12 00:08:17.000000000 +0100
++++ i3-4.4.mine/i3bar/src/xcb.c    2012-12-24 14:00:13.387152314 +0100
+@@ -271,6 +271,17 @@
+ #undef PARSE_COLOR
+ }
+
++static void start_application(const char *command) {
++    DLOG(&quot;executing: %s\n&quot;, command);
++    if (fork() == 0) {
++        static const char *shell = NULL;
++        if (shell == NULL)
++            if ((shell = getenv(&quot;SHELL&quot;)) == NULL)
++                shell = &quot;/bin/sh&quot;;
++        execl(shell, shell, &quot;-c&quot;, command, (void*)NULL);
++    }
++}
++
+ /*
+  * Handle a button-press-event (i.e. a mouse click on one of our bars).
+  * We determine, whether the click occured on a ws-button or if the scroll-
+@@ -312,8 +323,10 @@
+
+     switch (event-&gt;detail) {
+         case 1:
++        {
+             /* Left Mousbutton. We determine, which button was clicked
+              * and set cur_ws accordingly */
++            int xorig = x;
+             TAILQ_FOREACH(cur_ws, walk-&gt;workspaces, tailq) {
+                 DLOG(&quot;x = %d\n&quot;, x);
+                 if (x &gt;= 0 &amp;&amp; x &lt; cur_ws-&gt;name_width + 10) {
+@@ -322,9 +335,31 @@
+                 x -= cur_ws-&gt;name_width + 11;
+             }
+             if (cur_ws == NULL) {
++                trayclient *trayclient;
++                int traypx = 0;
++                TAILQ_FOREACH(trayclient, walk-&gt;trayclients, tailq) {
++                    if (!trayclient-&gt;mapped)
++                        continue;
++                    traypx += font.height + 2;
++                }
++                if (traypx &gt; 0)
++                    traypx += 2;
++                x = xorig;
++                struct status_block *block, *clicked_block = NULL;
++                int xinit = walk-&gt;rect.w - statusline_width - traypx - 4;
++                TAILQ_FOREACH(block, &amp;statusline_head, blocks) {
++                    if (x &gt; xinit &amp;&amp; x &lt; xinit + block-&gt;width) {
++                        clicked_block = block;
++                        break;
++                    }
++                    xinit += block-&gt;width;
++                }
++                if (clicked_block != NULL &amp;&amp; clicked_block-&gt;command != NULL)
++                    start_application(clicked_block-&gt;command);
+                 return;
+             }
+             break;
++        }
+         case 4:
+             /* Mouse wheel up. We select the previous ws, if any.
+              * If there is no more workspace, don&#8217;t even send the workspace
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001115.html">[i3] i3status: Color for muted volume
+</A></li>
+	<LI>Next message: <A HREF="001117.html">[i3] [PATCH] Customizable click actions on i3bar
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1116">[ date ]</a>
+              <a href="thread.html#1116">[ thread ]</a>
+              <a href="subject.html#1116">[ subject ]</a>
+              <a href="author.html#1116">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

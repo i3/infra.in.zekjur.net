@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Weird keybinding issue after suspend
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Weird%20keybinding%20issue%20after%20suspend&In-Reply-To=%3CCAKV6X6zBc%3DEf%2BjdTYKizS_LcR2pJGv9AAqpwuARN2yWbGkB07A%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002236.html">
+   <LINK REL="Next"  HREF="002253.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Weird keybinding issue after suspend</H1>
+    <B>Benjamin Kaiser</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Weird%20keybinding%20issue%20after%20suspend&In-Reply-To=%3CCAKV6X6zBc%3DEf%2BjdTYKizS_LcR2pJGv9AAqpwuARN2yWbGkB07A%40mail.gmail.com%3E"
+       TITLE="[i3] Weird keybinding issue after suspend">benjaminjkaiser at gmail.com
+       </A><BR>
+    <I>Mon Nov  2 10:54:00 CET 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002236.html">[i3] Weird keybinding issue after suspend
+</A></li>
+        <LI>Next message: <A HREF="002253.html">[i3] Weird keybinding issue after suspend
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2237">[ date ]</a>
+              <a href="thread.html#2237">[ thread ]</a>
+              <a href="subject.html#2237">[ subject ]</a>
+              <a href="author.html#2237">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thanks for the reply Michael,
+
+I had the issue happen again yesterday and ran `sudo
+libinput-debug-events`, then changed back to i3, run a bunch of shortcuts
+and pressed a bunch of keys (all of which did nothing) then changed back to
+the tty only to see that it was registering those keys being pressed.
+
+I'll try running `setxkbmap` and `xev` from a TTY next time the issue
+occurs to see if it fixes it / gives me any more information.
+
+Also another small thing I noticed. To get out of the situation I click the
+workspaces, but the keyboard only works if I click a different workspace
+the the one I am currently in, it doesn't do anything (keyboard still won't
+register shortcuts) if I click the current workspace.
+
+modified my i3config to that (i3lock then systemctl suspend), I think it
+was that at some point and the issue still occurred, but I'll try it out
+let you know if the issue happens again.
+
+Cheers,
+Ben Kaiser
+
+On Mon, 2 Nov 2015 at 19:00 Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt; wrote:
+
+&gt;<i> When this situation happens:
+</I>&gt;<i>
+</I>&gt;<i> 1. Does running xev(1) still show keyboard events?
+</I>&gt;<i>
+</I>&gt;<i> 2. Does using setxkbmap to set your layout make the problem go away? That
+</I>&gt;<i> should force i3 to re-grab all keys.
+</I>&gt;<i>
+</I>&gt;<i> On Fri, Oct 30, 2015 at 12:38 PM, Benjamin Kaiser &lt;
+</I>&gt;<i> <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">benjaminjkaiser at gmail.com</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Hello,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I've got a really weird issue that's been bothering me for perhaps the
+</I>&gt;&gt;<i> last 6 months (before then it worked fine, perhaps could have been around
+</I>&gt;&gt;<i> when I switched to using my keyboard to suspend). Sometimes when I resume
+</I>&gt;&gt;<i> from suspend (I have i3lock launching at the same time as when I suspend) I
+</I>&gt;&gt;<i> can unlock my computer, but then no more keyboard events work. The keyboard
+</I>&gt;&gt;<i> remains active (lights on) and I can switch to a TTY, but none of the i3
+</I>&gt;&gt;<i> events fire. The only way I can fix it is to use the mouse (which is still
+</I>&gt;&gt;<i> working) to click on a workspace in the statusbar and then the keyboard
+</I>&gt;&gt;<i> responds again.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>  As mentioned above, it only happens sometimes, and as a fellow dev it
+</I>&gt;&gt;<i> really annoys me to no end when something is unreproducible. Things I have
+</I>&gt;&gt;<i> tried to reproduce are just suspending, then detaching my keyboard and
+</I>&gt;&gt;<i> attaching it again before resuming from suspend, but that doesn't trigger
+</I>&gt;&gt;<i> the issue. Just about the only common thing I can find is time (after being
+</I>&gt;&gt;<i> suspended for a long time, 12hours+, it seems to happen more frequently).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> One idea I've had is that because I use a keyboard shortcut to suspend
+</I>&gt;&gt;<i> (`bindsym --release $mod+Control+Shift+s exec &quot;systemctl suspend; i3lock&quot;`
+</I>&gt;&gt;<i> in my config, the --
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> nit: you should i3lock first, then suspend. That way, your screen is
+</I>&gt;<i> guaranteed to be locked in a race-free way when you resume. “i3lock &amp;&amp;
+</I>&gt;<i> systemctl” suspend should work.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> release was me weeks ago trying to rectify the issue, but it still
+</I>&gt;&gt;<i> persisted) i3wm is somehow holding onto the keyboard before flushing, but
+</I>&gt;&gt;<i> then post-suspend, i3lock takes the keyboards focus, i3wm holds onto an old
+</I>&gt;&gt;<i> un-flushed pointer to the keyboard (not sure if that is how that works) and
+</I>&gt;&gt;<i> doesn't refresh it upon i3lock giving up focus.
+</I>&gt;&gt;<i> From searching around in the i3 source code, seeing the line in
+</I>&gt;&gt;<i> main.c:main() with the comment annotation
+</I>&gt;&gt;<i>     /* Grab the keyboard to get all input */
+</I>&gt;&gt;<i>     xcb_flush(conn);
+</I>&gt;&gt;<i> And that function also occuring in click.c:route_click() (i.e. when I
+</I>&gt;&gt;<i> click the workspaces in the status bar)
+</I>&gt;&gt;<i>     xcb_flush(conn);
+</I>&gt;&gt;<i> Maybe this is what is allowing the keyboard to work again. Is there some
+</I>&gt;&gt;<i> way this could be run upon i3lock giving up focus / i3wm resuming focus?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Any help in solving this would be much appreciated!
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Here is some information about my system:
+</I>&gt;&gt;<i> Mouse: Razer Naga, (one with 12 buttons on side)
+</I>&gt;&gt;<i> Keyboard: ducky shine 3 with mini usb cable for connection (issue has
+</I>&gt;&gt;<i> occurred on my laptops internal keyboard also though)
+</I>&gt;&gt;<i> Distro: Arch Linux
+</I>&gt;&gt;<i> i3 Version: 4.11
+</I>&gt;&gt;<i> Kernel version: 4.2.3-1-ARCH
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Cheers,
+</I>&gt;&gt;<i> Ben Kaiser
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Michael
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151102/57dd053d/attachment-0001.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151102/57dd053d/attachment-0001.html</A>&gt;
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002236.html">[i3] Weird keybinding issue after suspend
+</A></li>
+	<LI>Next message: <A HREF="002253.html">[i3] Weird keybinding issue after suspend
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2237">[ date ]</a>
+              <a href="thread.html#2237">[ thread ]</a>
+              <a href="subject.html#2237">[ subject ]</a>
+              <a href="author.html#2237">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

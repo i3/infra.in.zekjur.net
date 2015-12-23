@@ -1,0 +1,327 @@
+From fd4df52ec70aa5b99c7e2925bcb2feab573e05ee Mon Sep 17 00:00:00 2001
+From: darkraven <drdarkraven@gmail.com>
+Date: Sat, 23 Jun 2012 19:39:42 +0800
+Subject: [PATCH 1/2] i3bar: Utilize workspace information in events.
+
+	Use the workspace information in events to update i3bar states,
+	this eliminates the need to send get_workspace message for every
+	events received.
+---
+ i3bar/include/ipc.h        |   1 +
+ i3bar/include/workspaces.h |   1 +
+ i3bar/include/xcb.h        |   7 ++
+ i3bar/src/ipc.c            |   3 +-
+ i3bar/src/workspaces.c     | 172 +++++++++++++++++++++++++++++++++++++++++++++
+ i3bar/src/xcb.c            |   6 +-
+ 6 files changed, 184 insertions(+), 6 deletions(-)
+
+diff --git a/i3bar/include/ipc.h b/i3bar/include/ipc.h
+index a0c4970..9d6c062 100644
+--- a/i3bar/include/ipc.h
++++ b/i3bar/include/ipc.h
+@@ -11,6 +11,7 @@
+ #define IPC_H_
+ 
+ #include <stdint.h>
++#include <i3/ipc.h>
+ 
+ /*
+  * Initiate a connection to i3.
+diff --git a/i3bar/include/workspaces.h b/i3bar/include/workspaces.h
+index dfd93d9..5b4a603 100644
+--- a/i3bar/include/workspaces.h
++++ b/i3bar/include/workspaces.h
+@@ -23,6 +23,7 @@ TAILQ_HEAD(ws_head, i3_ws);
+  *
+  */
+ void parse_workspaces_json(char *json);
++void parse_workspaces_event_json(char *json);
+ 
+ /*
+  * free() all workspace data-structures
+diff --git a/i3bar/include/xcb.h b/i3bar/include/xcb.h
+index 9ed2149..c8c76ce 100644
+--- a/i3bar/include/xcb.h
++++ b/i3bar/include/xcb.h
+@@ -113,6 +113,13 @@ void reconfig_windows();
+ void draw_bars();
+ 
+ /*
++ * Hide/unhide bars
++ *
++ */
++void hide_bars();
++void unhide_bars();
++
++/*
+  * Redraw the bars, i.e. simply copy the buffer to the barwindow
+  *
+  */
+diff --git a/i3bar/src/ipc.c b/i3bar/src/ipc.c
+index 41b8e15..ff89e2a 100644
+--- a/i3bar/src/ipc.c
++++ b/i3bar/src/ipc.c
+@@ -15,7 +15,6 @@
+ #include <errno.h>
+ #include <sys/socket.h>
+ #include <sys/un.h>
+-#include <i3/ipc.h>
+ #include <ev.h>
+ 
+ #include "common.h"
+@@ -123,7 +122,7 @@ handler_t reply_handlers[] = {
+  */
+ void got_workspace_event(char *event) {
+     DLOG("Got Workspace Event!\n");
+-    i3_send_msg(I3_IPC_MESSAGE_TYPE_GET_WORKSPACES, NULL);
++    parse_workspaces_event_json(event);
+ }
+ 
+ /*
+diff --git a/i3bar/src/workspaces.c b/i3bar/src/workspaces.c
+index 5df1899..76fa022 100644
+--- a/i3bar/src/workspaces.c
++++ b/i3bar/src/workspaces.c
+@@ -24,6 +24,38 @@ struct workspaces_json_params {
+     char           *json;
+ };
+ 
++struct workspace_event_json_params {
++    i3_ws *workspace;
++    char *change;
++    int cur_key;
++};
++
++static int urgent_ws;
++static i3_ws *focused;
++
++static i3_ws *get_workspace_by_name(const char *name){
++    i3_output *outputs_walk;
++    SLIST_FOREACH(outputs_walk, outputs, slist) {
++        i3_ws *ws_walk;
++        TAILQ_FOREACH(ws_walk, outputs_walk->workspaces, tailq) {
++            if (strcmp(ws_walk->name, name) == 0)
++                return ws_walk;
++        }
++    }
++    return NULL;
++}
++
++static i3_ws *get_workspace_by_num(int val){
++    i3_output *outputs_walk;
++    SLIST_FOREACH(outputs_walk, outputs, slist) {
++        i3_ws *ws_walk;
++        TAILQ_FOREACH(ws_walk, outputs_walk->workspaces, tailq) {
++            if (ws_walk->num == val)
++                return ws_walk;
++        }
++    }
++    return NULL;
++}
+ /*
+  * Parse a boolean value (visible, focused, urgent)
+  *
+@@ -39,12 +71,16 @@ static int workspaces_boolean_cb(void *params_, int val) {
+ 
+     if (!strcmp(params->cur_key, "focused")) {
+         params->workspaces_walk->focused = val;
++        if (val)
++            focused = params->workspaces_walk;
+         FREE(params->cur_key);
+         return 1;
+     }
+ 
+     if (!strcmp(params->cur_key, "urgent")) {
+         params->workspaces_walk->urgent = val;
++        if (val)
++            urgent_ws++;
+         FREE(params->cur_key);
+         return 1;
+     }
+@@ -266,6 +302,139 @@ void parse_workspaces_json(char *json) {
+ }
+ 
+ /*
++ * Parse a string (name, change)
++ *
++ */
++#if YAJL_MAJOR >= 2
++static int workspaces_event_string_cb(void *params_, const unsigned char *val, size_t len) {
++#else
++static int workspaces_event_string_cb(void *params_, const unsigned char *val, unsigned int len) {
++#endif
++    struct workspace_event_json_params *param = params_;
++
++    if(param->cur_key == 2)
++        return 0;
++    if(param->cur_key == 0)
++        param->change = strndup((const char *)val, len);
++    else
++        param->workspace = get_workspace_by_name((const char *)val);
++    return 1;
++}
++
++/*
++ * Parse an integer (num of the workspace)
++ *
++ */
++#if YAJL_MAJOR >= 2
++static int workspaces_event_integer_cb(void *params_, long long val) {
++#else
++static int workspaces_event_integer_cb(void *params_, long val) {
++#endif
++    struct workspace_event_json_params *param = params_;
++
++    if(param->cur_key != 2)
++        return 0;
++    if (!param->workspace)
++        param->workspace = get_workspace_by_num(val);
++    return 1;
++}
++/*
++ * Parse a key.
++ *
++ * Essentially we just save it in the parsing-state
++ *
++ */
++#if YAJL_MAJOR >= 2
++static int workspaces_event_map_key_cb(void *params_, const unsigned char *keyVal, size_t keyLen) {
++#else
++static int workspaces_event_map_key_cb(void *params_, const unsigned char *keyVal, unsigned int keyLen) {
++#endif
++    struct workspace_event_json_params *param = (struct workspace_event_json_params *)params_;
++
++    if (strncmp((const char *)keyVal, "change", keyLen) == 0)
++        param->cur_key = 0;
++    else if (strncmp((const char *)keyVal, "name", keyLen) == 0)
++        param->cur_key = 1;
++    else if (strncmp((const char *)keyVal, "num", keyLen) == 0)
++        param->cur_key =2;
++    else
++        return 0;
++    return 1;
++}
++/* A datastructure to pass all these callbacks to yajl */
++yajl_callbacks workspaces_event_callbacks = {
++    NULL,
++    NULL,
++    &workspaces_event_integer_cb,
++    NULL,
++    NULL,
++    &workspaces_event_string_cb,
++    NULL,
++    &workspaces_event_map_key_cb,
++    NULL,
++    NULL,
++    NULL
++};
++void parse_workspaces_event_json(char *json) {
++    struct workspace_event_json_params param;
++    param.workspace = NULL;
++
++    yajl_handle handle;
++    yajl_status state;
++#if YAJL_MAJOR < 2
++    yajl_parser_config parse_conf = { 0, 0 };
++
++    handle = yajl_alloc(&workspaces_event_callbacks, &parse_conf, NULL, (void*) &param);
++#else
++    handle = yajl_alloc(&workspaces_event_callbacks, NULL, (void*) &param);
++#endif
++
++    state = yajl_parse(handle, (const unsigned char*) json, strlen(json));
++
++    /* FIXME: Propper errorhandling for JSON-parsing */
++    switch (state) {
++        case yajl_status_ok:
++            break;
++        case yajl_status_client_canceled:
++#if YAJL_MAJOR < 2
++        case yajl_status_insufficient_data:
++#endif
++        case yajl_status_error:
++            ELOG("Could not parse workspaces-event!\n");
++            exit(EXIT_FAILURE);
++            break;
++    }
++
++    yajl_free(handle);
++
++    if (0 == strcmp(param.change, "empty") || 0 == strcmp(param.change, "init")){
++        i3_send_msg(I3_IPC_MESSAGE_TYPE_GET_WORKSPACES, NULL);
++        return;
++    }
++
++    if(!param.workspace) return;
++    if (0 == strcmp(param.change, "urgent")) {
++        unhide_bars();
++
++        draw_bars();
++    } else if (0 == strcmp(param.change, "focus")) {
++        if (param.workspace == focused)
++            return;
++
++        if (focused)
++            focused->focused = false;
++        focused = param.workspace;
++        focused->focused = true;
++        focused->visible = true;
++
++        draw_bars();
++    } else if (0 == strcmp(param.change, "invisible")) {
++        param.workspace->visible = false;
++        draw_bars();
++    }
++}
++
++/*
+  * free() all workspace data-structures. Does not free() the heads of the tailqueues.
+  *
+  */
+@@ -285,4 +454,7 @@ void free_workspaces() {
+             FREE_TAILQ(outputs_walk->workspaces, i3_ws);
+         }
+     }
++
++    urgent_ws = 0;
++    focused = NULL;
+ }
+diff --git a/i3bar/src/xcb.c b/i3bar/src/xcb.c
+index b930479..f7bb79b 100644
+--- a/i3bar/src/xcb.c
++++ b/i3bar/src/xcb.c
+@@ -161,7 +161,7 @@ void refresh_statusline() {
+  *
+  */
+ void hide_bars() {
+-    if (!config.hide_on_modifier) {
++    if (!config.hide_on_modifier || mod_pressed) {
+         return;
+     }
+ 
+@@ -792,12 +792,12 @@ void xkb_io_cb(struct ev_loop *loop, ev_io *watcher, int revents) {
+     } while (0)
+ 
+     if (modstate != mod_pressed) {
++        mod_pressed = modstate;
+         if (modstate == 0) {
+             DLOGMOD(config.modifier, released, hide_bars);
+         } else {
+             DLOGMOD(config.modifier, pressed, unhide_bars);
+         }
+-        mod_pressed = modstate;
+     }
+ 
+ #undef DLOGMOD
+@@ -1479,8 +1479,6 @@ void draw_bars() {
+                 fg_color = colors.urgent_ws_fg;
+                 bg_color = colors.urgent_ws_bg;
+                 border_color = colors.urgent_ws_border;
+-                /* The urgent-hint should get noticed, so we unhide the bars shortly */
+-                unhide_bars();
+             }
+             uint32_t mask = XCB_GC_FOREGROUND | XCB_GC_BACKGROUND;
+             uint32_t vals_border[] = { border_color, border_color };
+-- 
+1.7.11
+

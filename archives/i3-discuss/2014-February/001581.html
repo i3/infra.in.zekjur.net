@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Viable testing strategy?
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Viable%20testing%20strategy%3F&In-Reply-To=%3C52F6A391.6010105%40hunsicker.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001580.html">
+   <LINK REL="Next"  HREF="001582.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Viable testing strategy?</H1>
+    <B>Marco Hunsicker</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Viable%20testing%20strategy%3F&In-Reply-To=%3C52F6A391.6010105%40hunsicker.de%3E"
+       TITLE="[i3] Viable testing strategy?">i3 at hunsicker.de
+       </A><BR>
+    <I>Sat Feb  8 22:37:21 CET 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001580.html">[i3] Clone just one workspace between displays
+</A></li>
+        <LI>Next message: <A HREF="001582.html">[i3] Resize direction does not behave how I&#8217;d expect
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1581">[ date ]</a>
+              <a href="thread.html#1581">[ thread ]</a>
+              <a href="subject.html#1581">[ subject ]</a>
+              <a href="author.html#1581">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Howdy,
+
+I'm currently playing with the i3 testing framework in order to learn 
+how to provide a test case for the proposed IPC event extension.
+
+After some fiddling, I've come up with the following test case to ensure 
+that opening a window results in two window events, &quot;new&quot; and &quot;focus&quot;, 
+in that order.
+
+Below is the source code of the test:
+
+======================================================
+#!perl
+
+use i3test;
+use threads;
+use threads::shared;
+
+my $i3 = i3(get_socket_path());
+$i3-&gt;connect()-&gt;recv;
+
+################################
+# Window event
+################################
+
+# Events
+
+my @events :shared;
+my $subscribed :shared;
+
+sub record_events() {
+     $i3-&gt;subscribe({
+         window =&gt; sub {
+             my ($event) = @_;
+             say 'received '.$event-&gt;{change};
+             push @events, $event-&gt;{change};
+         }
+     })-&gt;recv;
+
+     $subscribed = 1;
+
+     say 'subscribed';
+
+     AE::cv-&gt;recv;
+}
+
+sub count_events() {
+     my $count = 0;
+
+     while ($count &lt; 15 &amp;&amp; @events &lt; 2) {
+         $count++;
+         select(undef, undef, undef, 0.1);
+     }
+}
+
+my $t1 = threads-&gt;new( {'void' =&gt; 1}, sub { record_events() });
+my $t2 = threads-&gt;new( {'void' =&gt; 1}, sub { count_events() });
+
+while (!$subscribed) {
+     select(undef, undef, undef, 0.1);
+}
+
+open_window;
+
+$t2-&gt;join();
+
+say 'number of events '<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">. at events</A> ;
+
+foreach (@events) {
+     say 'event='.$_;
+  }
+
+ok(@events eq 2, 'Window event count correct');
+ok($events[0] eq 'new', 'Window &quot;new&quot; event received');
+ok($events[1] eq 'focus', 'Window &quot;focus&quot; event received');
+
+done_testing;
+======================================================
+
+
+Now, this seems to work most of the time, but sometimes the test fails 
+with the following output:
+
+
+======================================================
+Test output:
+[:1] t/205-ipc-windows.t: starting
+[:1] t/205-ipc-windows.t: finished
+output for t/205-ipc-windows.t:
+subscribed
+received focus
+number of events 1
+event=focus
+not ok 1 - Window event count correct
+
+#   Failed test 'Window event count correct'
+#   at ./t/205-ipc-windows.t line 79.
+not ok 2 - Window &quot;new&quot; event received
+
+#   Failed test 'Window &quot;new&quot; event received'
+#   at ./t/205-ipc-windows.t line 80.
+Use of uninitialized value $events[1] in string eq at 
+./t/205-ipc-windows.t line 81.
+not ok 3 - Window &quot;focus&quot; event received
+
+#   Failed test 'Window &quot;focus&quot; event received'
+#   at ./t/205-ipc-windows.t line 81.
+1..3
+======================================================
+
+
+Only the focus event is received. But when I check the corresponding log 
+file, it clearly says two events have been sent! (See the attached log 
+file).
+
+This makes me wonder. Is this approach ill fated and simply not robust 
+enough? Or does it seem suspicious that only one event is received while 
+two events were sent? The subscription seems to be established before 
+any event is sent, but the first event is still lost!?
+
+Thanks for any feedback you can provide.
+
+Cheers,
+   Marco
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: i3-log-for-205-ipc-windows.t
+Type: text/troff
+Size: 58252 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140208/97b6b8f0/attachment-0001.bin">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140208/97b6b8f0/attachment-0001.bin</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001580.html">[i3] Clone just one workspace between displays
+</A></li>
+	<LI>Next message: <A HREF="001582.html">[i3] Resize direction does not behave how I&#8217;d expect
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1581">[ date ]</a>
+              <a href="thread.html#1581">[ thread ]</a>
+              <a href="subject.html#1581">[ subject ]</a>
+              <a href="author.html#1581">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

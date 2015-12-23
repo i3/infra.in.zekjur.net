@@ -1,0 +1,49 @@
+>From c2a8004f62f6ffef70d285ed9c8d1a3b4cfb1072 Mon Sep 17 00:00:00 2001
+From: Aaron Small <a.small@unb.ca>
+Date: Thu, 5 Jan 2012 18:54:41 -0500
+Subject: [PATCH 2/2] Use a single pixel vertical line instead of a box and
+ only use for tabbed and default horizontal layout
+
+---
+ src/x.c |   18 ++++++++++++------
+ 1 files changed, 12 insertions(+), 6 deletions(-)
+
+diff --git a/src/x.c b/src/x.c
+index 37af9d8..f1ad830 100644
+--- a/src/x.c
++++ b/src/x.c
+@@ -406,12 +406,7 @@ void x_draw_decoration(Con *con) {
+     };
+     xcb_poly_segment(conn, parent->pixmap, parent->pm_gc, 2, segments);
+ 
+-    /* 6: draw the title box */
+-    xcb_rectangle_t brect = { con->deco_rect.x, con->deco_rect.y + 1, con->deco_rect.width - 2, con->deco_rect.height - 2 };
+-    xcb_change_gc(conn, parent->pm_gc, XCB_GC_FOREGROUND, (uint32_t[]){ p->color->text });
+-    xcb_poly_rectangle(conn, parent->pixmap, parent->pm_gc, 1, &brect);
+-
+-    /* 7: draw the title */
++    /* 6: draw the title */
+     set_font_colors(parent->pm_gc, p->color->text, p->color->background);
+     int text_offset_y = (con->deco_rect.height - config.font.height) / 2;
+ 
+@@ -448,6 +443,17 @@ void x_draw_decoration(Con *con) {
+             con->deco_rect.x + 2 + indent_px, con->deco_rect.y + text_offset_y,
+             con->deco_rect.width - 2 - indent_px);
+ 
++    if ((parent->layout == L_DEFAULT ||
++        parent->layout == L_TABBED) &&
++        parent->orientation == HORIZ &&
++        TAILQ_FIRST(&(con->parent->nodes_head)) != con
++       ){
++        /* draw a separator after all but the first tab, so tabs can be easily distinguished */
++        xcb_point_t points[2] = {{ con->deco_rect.x, con->deco_rect.y }, {con->deco_rect.x, con->deco_rect.y + con->deco_rect.height}};
++        xcb_change_gc(conn, parent->pm_gc, XCB_GC_FOREGROUND, (uint32_t[]){ p->color->text });
++        xcb_poly_line(conn, XCB_COORD_MODE_ORIGIN, parent->pixmap, parent->pm_gc, 2, points);
++    }
++
+ copy_pixmaps:
+     xcb_copy_area(conn, con->pixmap, con->frame, con->pm_gc, 0, 0, 0, 0, con->rect.width, con->rect.height);
+ }
+-- 
+1.7.7.3
+

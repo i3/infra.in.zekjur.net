@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] key bindings not working
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20key%20bindings%20not%20working&In-Reply-To=%3C20130712144051.0efd69c2%40debelianear%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001347.html">
+   <LINK REL="Next"  HREF="001354.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] key bindings not working</H1>
+    <B>Mateusz Poszwa</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20key%20bindings%20not%20working&In-Reply-To=%3C20130712144051.0efd69c2%40debelianear%3E"
+       TITLE="[i3] key bindings not working">old4 at o2.pl
+       </A><BR>
+    <I>Fri Jul 12 14:40:51 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001347.html">[i3] key bindings not working
+</A></li>
+        <LI>Next message: <A HREF="001354.html">[i3] key bindings not working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1351">[ date ]</a>
+              <a href="thread.html#1351">[ thread ]</a>
+              <a href="subject.html#1351">[ subject ]</a>
+              <a href="author.html#1351">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Fri, 12 Jul 2013 01:08:03 +0200
+lee &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">lee at yun.yagibdah.de</A>&gt; wrote:
+
+&gt;<i> Mateusz Poszwa &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">old4 at o2.pl</A>&gt; writes:
+</I>&gt;<i> 
+</I>&gt;<i> &gt; On Sun, 07 Jul 2013 05:29:03 +0200
+</I>&gt;<i> &gt; lee &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">lee at yun.yagibdah.de</A>&gt; wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;&gt; Hi,
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; what might be the reason for the following key bindings in the config to
+</I>&gt;<i> &gt;&gt; be ignored:
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; bind $mod+periodcentered workspace next
+</I>&gt;<i> &gt;&gt; bind $mod+Shift+abovedot workspace prev
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; $mod is AltGr, and I have
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; keycode  61 = minus underscore minus underscore periodcentered abovedot periodcentered
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; 
+</I>&gt;<i> &gt;&gt; in my xmodmap.  I can type these symbols just fine, as if i3 is totally
+</I>&gt;<i> &gt;&gt; ignoring these key bindings.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I'd try with:
+</I>&gt;<i> &gt; &#8222;
+</I>&gt;<i> &gt; bindsym $mod+minus workspace next
+</I>&gt;<i> &gt; bindsym $mod+Shift+minus workspace prev
+</I>&gt;<i> &gt; &#8221;
+</I>&gt;<i> &gt; in this case.
+</I>&gt;<i> 
+</I>&gt;<i> Oh thank you!  That works perfectly!
+</I>&gt;<i> 
+</I>&gt;<i> My understanding was that you need to use the actual key symbol (as used
+</I>&gt;<i> in xmodmap) that is being produced.  For example, when you have
+</I>&gt;<i> 
+</I>&gt;<i> bindsym $mod+Shift+J move left
+</I>&gt;<i> 
+</I>&gt;<i> a capital 'J' is being produced.  When you have the some binding without
+</I>&gt;<i> Shift, like
+</I>&gt;<i> 
+</I>&gt;<i> bindsym $mod+j move left
+</I>&gt;<i> 
+</I>&gt;<i> it's a small 'j' because Shift isn't pressed.
+</I>
+&#8222;
+bindsym $mod+Shift+j move left
+&#8221;
+would work too. Maybe the names are case insensitive?
+
+
+&gt;<i> This shows throughout the default configuration file.  The documentation
+</I>&gt;<i> says:
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> ,---- [ <A HREF="http://i3wm.org/docs/userguide.html#keybindings">http://i3wm.org/docs/userguide.html#keybindings</A>]
+</I>&gt;<i> |
+</I>&gt;<i> | A keysym (key symbol) is a description for a specific symbol, like &quot;a&quot;
+</I>&gt;<i> | or &quot;b&quot;, but also more strange ones like &quot;underscore&quot; instead of
+</I>&gt;<i> | &quot;_&quot;. These are the ones you use in Xmodmap to remap your keys. To get
+</I>&gt;<i> | the current mapping of your keys, use xmodmap -pke. To interactively
+</I>&gt;<i> | enter a key and see what keysym it is configured to, use xev.
+</I>&gt;<i> |
+</I>&gt;<i> `----
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> I have been using xev to verify that pressing 'AltGr+&lt;Minus Key&gt;' and
+</I>&gt;<i> 'AltGr+Shift+&lt;Minus Key&gt;' do yield 'periodcentered' and 'abovedot',
+</I>&gt;<i> respectively.  (Those are now intercepted by i3.)
+</I>
+I don't think so, but I may be wrong.
+If it was as you say, you could write
+&#8222;
+bindsym abovedot workspace prev
+&#8221;
+instead of
+&#8222;
+bindsym $mod+Shift+minus workspace prev
+&#8221;
+To be honest, I haven't checked if the former works.
+You can do it as an exercise and let me know if you succeed. ;-)
+I'd be surprised, but I don't say it's impossible.
+
+&gt;<i> Actually, 'Shift+&lt;Minus Key&gt;' produces an underscore.  How come that
+</I>&gt;<i> 'AltGr+Shift+minus' even works?  Shouldn't that rather be
+</I>&gt;<i> 'AltGr+Shift+underscore'?[1]
+</I>
+I think i3 maps keysyms (&#8222;plain&#8221; keysyms &#8212; without modifiers)
+to keycodes and applies modifiers itself.
+
+
+&gt;<i> Is the documentation misleading, or is there some inconsistency with how
+</I>&gt;<i> i3 perceives (some) keystrokes or key symbols?
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> [1]:
+</I>&gt;<i> KeyRelease event, serial 27, synthetic NO, window 0x1e00001,
+</I>&gt;<i>     root 0x2a5, subw 0x0, time 93058061, (280,163), root:(1152,655),
+</I>&gt;<i>     state 0x10, keycode 61 (keysym 0x2d, minus), same_screen YES,
+</I>&gt;<i>     XLookupString gives 1 bytes: (2d) &quot;-&quot;
+</I>&gt;<i>     XFilterEvent returns: False
+</I>&gt;<i> 
+</I>&gt;<i> keycode  61 = minus underscore minus underscore periodcentered abovedot periodcentered
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> &gt; As a side note, I don't think using AltGr as a modifier is a good idea&#8230;
+</I>&gt;<i> 
+</I>&gt;<i> How come you think so?  It works great and allows for some easy
+</I>&gt;<i> one-handed i3-operations.  Since I have modified my xmodmap so that I
+</I>&gt;<i> can type braces and brackets without pressing AltGr, there are only four
+</I>&gt;<i> keys that come to mind for which I need AltGr: '@', '|', '&#223;' and '\'.
+</I>&gt;<i> That leaves me pretty much all of the other 98 keys to bind i3 stuff to
+</I>&gt;<i> :)  Do you know of any application which would be aware that there's such
+</I>&gt;<i> a thing as an AltGr key?
+</I>
+How about '&#246;'? ;-P
+You are right. It seems good in you case.
+I use the Colemak keyboard layout, which uses AltGr heavily
+for diacritics input, and there's quite many of them in Polish.
+
+As for AltGr-aware applications, probably
+some old games may use that key.
+
+&gt;<i> (I'm using a Model M keyboard that doesn't have the obsolete keys newer
+</I>&gt;<i> ones have, so there aren't any keys around Space, Alt, AltGr and Ctrl
+</I>&gt;<i> that would get persistently in the way.)
+</I>
+I have plenty of &#8222;obsolete&#8221; keys on my TypeMatrix 2020,
+such as Super (captioned &#8222;Start&#8221;), which I use for i3's bindings,
+or Caps Lock, which I have bound a minus to. ;-)
+
+-- 
+Mateusz Poszwa
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001347.html">[i3] key bindings not working
+</A></li>
+	<LI>Next message: <A HREF="001354.html">[i3] key bindings not working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1351">[ date ]</a>
+              <a href="thread.html#1351">[ thread ]</a>
+              <a href="subject.html#1351">[ subject ]</a>
+              <a href="author.html#1351">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

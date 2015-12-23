@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Help: Code Review Software
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Help%3A%20Code%20Review%20Software&In-Reply-To=%3Cx6fw636gpx.fsf%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000962.html">
+   <LINK REL="Next"  HREF="000969.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Help: Code Review Software</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Help%3A%20Code%20Review%20Software&In-Reply-To=%3Cx6fw636gpx.fsf%40midna.zekjur.net%3E"
+       TITLE="[i3] Help: Code Review Software">michael at i3wm.org
+       </A><BR>
+    <I>Thu Sep 27 09:57:14 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000962.html">[i3] Help: Code Review Software
+</A></li>
+        <LI>Next message: <A HREF="000969.html">[i3] Help: Code Review Software
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#964">[ date ]</a>
+              <a href="thread.html#964">[ thread ]</a>
+              <a href="subject.html#964">[ subject ]</a>
+              <a href="author.html#964">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi darkraven,
+
+DR &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">drdarkraven at gmail.com</A>&gt; writes:
+&gt;<i> I've read your criteria at <A HREF="http://www.featurequest.org/FRQ$CodeReview.">http://www.featurequest.org/FRQ$CodeReview.</A> From
+</I>&gt;<i> what I've read I think GitHub is good enough for you.
+</I>No. GitHub (while being a cool company with a good product) is
+proprietary. I cannot host their review software on my own
+server, thus using GitHub for code reviews is a vendor lock-in.
+
+I want to avoid such a vendor lock-in for several reasons:
+
+1) Building free software should not depend on closed-source
+   software. I&#8217;m not saying this in a _very_ religios fashion such as
+   rms (who&#8217;d argue that my server&#8217;s BIOS is probably unfree), but it
+   seems reasonable to avoid closed-source if we can reasonably live
+   without it. We&#8217;ve seen what happened with BitKeeper and the Linux
+   kernel.
+
+2) If we want to improve the code review workflow in some detail, we
+   cannot do it. Unless GitHub is friendly enough to do it, if it makes
+   sense for them at all. This is the major reason why I switched to a
+   FOSS operating system and software. Similarly, they have the option
+   of modifying the software as they see fit, without asking us first
+   and without an alternative for us.
+
+3) GitHub requires an account to submit a pull request. This is
+   reasonable from GitHub&#8217;s point of view but unacceptable from ours. No
+   account creation barriers to reporting bugs and sending improvements
+   has been one of our principles since the very beginning of the
+   project.
+
+4) With using GitHub for reviews, we effectively have to use GitHub for
+   our git repository. Otherwise we&#8217;d have to mirror it, but having two
+   copies which might be out of sync is stupid, so we&#8217;d have to push to
+   both locations. GitHub (in my daily life) is slow. And sometimes it&#8217;s
+   down. My own server is much more reliable for our little
+   project. Also, it seems wise to avoid a central point-of-failure and
+   encourage a distributed system (many git servers instead of every
+   FOSS project on GitHub).
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000962.html">[i3] Help: Code Review Software
+</A></li>
+	<LI>Next message: <A HREF="000969.html">[i3] Help: Code Review Software
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#964">[ date ]</a>
+              <a href="thread.html#964">[ thread ]</a>
+              <a href="subject.html#964">[ subject ]</a>
+              <a href="author.html#964">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

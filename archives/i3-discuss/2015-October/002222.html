@@ -1,0 +1,258 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] managing wifi with i3
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20managing%20wifi%20with%20i3&In-Reply-To=%3C15061abb3eb.f92f877e43296.6661296519769071952%40web.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002218.html">
+   <LINK REL="Next"  HREF="002210.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] managing wifi with i3</H1>
+    <B>Robert Grah</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20managing%20wifi%20with%20i3&In-Reply-To=%3C15061abb3eb.f92f877e43296.6661296519769071952%40web.de%3E"
+       TITLE="[i3] managing wifi with i3">smilingmolecule at web.de
+       </A><BR>
+    <I>Tue Oct 13 16:47:34 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002218.html">[i3] managing wifi with i3
+</A></li>
+        <LI>Next message: <A HREF="002210.html">[i3] Mouse capture problem i3 and OBS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2222">[ date ]</a>
+              <a href="thread.html#2222">[ thread ]</a>
+              <a href="subject.html#2222">[ subject ]</a>
+              <a href="author.html#2222">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>thanks guys,
+
+
+
+you helped me a lot!
+
+
+
+
+
+
+
+
+
+ ---- On Sa, 03 Okt 2015 09:00:17 +0200 Mart Lubbers &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">mart at martlubbers.net</A>&gt; wrote ----
+
+
+
+
+I use netctltray. A simple netctl profile switcher with a tray icon.
+
+ <A HREF="https://aur.archlinux.org/packages/netctltray/">https://aur.archlinux.org/packages/netctltray/</A>
+
+ 
+
+ Works great and no bloat.
+
+
+
+On 3 October 2015 08:50:20 CEST, Valentin Rusu &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3wm at rusu.info</A>&gt; wrote:
+
+No problem with that on ArchLinux.
+
+However, wicd-curses crashes when the connection is up, but by that time
+
+I no longer need it so that won't bother me ;-)
+
+
+
+* Jeff Bauer &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jeffrubic at gmail.com</A>&gt; [2015-10-01 14:53:37 -0500]:
+
+
+
+I use wicd with i3, but it always fails when I attempt to connect to a network
+
+ that requires authentication (virtually all of them, these days). There's some
+
+ error in the Python code that I have tracked down yet, so I log into new
+
+ networks with nm-applet the first time, then with wicd thereafter.
+
+ 
+
+ -Jeff
+
+ 
+
+ 
+
+ On Thu, Oct 01, 2015 at 10:13:49PM +0300, Valentin Rusu wrote:
+
+I use wicd instead of NetworkManager and I'm very happy with it. It
+
+ would connect as soon as I login in text mode, so by the time I3 is up,
+
+ the connection is already there.
+
+
+
+ * Jeff Abrahamson &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jeff at purple.com</A>&gt; [2015-10-01 10:41:53 +0200]:
+
+
+
+I have the following in my ~/.xsessionrc, and it works correctly:
+
+
+
+ if [ &quot;X$DESKTOP_SESSION&quot; = Xi3 ]; then
+
+ nm-applet &amp;
+
+ # and other stuff
+
+ fi
+
+
+
+ Jeff Abrahamson
+
+ +33 6 24 40 01 57
+
+ +44 7920 594 255 &lt;-- only when I'm in the UK
+
+
+
+ *<A HREF="http://www.ml-week.com/fr/*">http://www.ml-week.com/fr/*</A> &lt;<A HREF="http://www.ml-week.com/fr/&amp;gt;*">http://www.ml-week.com/fr/&gt;*</A> 2-5 novembre
+
+ 2015*
+
+
+
+ <A HREF="http://jeff.purple.com/">http://jeff.purple.com/</A>
+
+ <A HREF="http://blog.purple.com/jeff/">http://blog.purple.com/jeff/</A>
+
+
+
+ On 1 October 2015 at 10:36, Ingo Bürk &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">admin at airblader.de</A>&gt; wrote:
+
+
+
+The window manager is neither responsible nor involved in network
+
+ management at all, so I'm afraid you're looking in the wrong direction
+
+ here.
+
+
+
+ On 10/01/2015 10:34 AM, Robert Grah wrote:
+
+
+
+ Hey there,
+
+
+
+
+
+
+
+ I am having some problems getting wifi to work in i3. I tried to add
+
+
+
+
+
+
+
+ exec--no-startup-id nm-applet
+
+ to my config and this braught me the icon, but it can not find any wifi
+
+networks.
+
+
+
+ It seems that there are some problems with the session or similar. I
+
+also tried wicd or gnome-network-manager all without results.
+
+
+
+
+
+
+
+ I am using Ubuntu 15.04 and i3 4.10.4.
+
+
+
+
+
+
+
+ Any ideas?
+
+
+
+
+
+
+
+
+
+
+
+
+
+ --
+
+ Valentin Rusu
+
+ IRC: valir
+
+
+
+
+ -- 
+
+ Sent from my Android device with K-9 Mail. Please excuse my brevity.
+
+
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151013/900710bd/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151013/900710bd/attachment.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002218.html">[i3] managing wifi with i3
+</A></li>
+	<LI>Next message: <A HREF="002210.html">[i3] Mouse capture problem i3 and OBS
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2222">[ date ]</a>
+              <a href="thread.html#2222">[ thread ]</a>
+              <a href="subject.html#2222">[ subject ]</a>
+              <a href="author.html#2222">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

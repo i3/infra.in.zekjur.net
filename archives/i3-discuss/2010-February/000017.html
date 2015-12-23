@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3 hangs, when I execute this script =&gt; bug?
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%20hangs%2C%20when%20I%20execute%20this%20script%20%3D%3E%20bug%3F&In-Reply-To=%3C20100206115245.GA4387%40Archlinux%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000016.html">
+   <LINK REL="Next"  HREF="000018.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3 hangs, when I execute this script =&gt; bug?</H1>
+    <B>Uli Armbruster</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3%20hangs%2C%20when%20I%20execute%20this%20script%20%3D%3E%20bug%3F&In-Reply-To=%3C20100206115245.GA4387%40Archlinux%3E"
+       TITLE="[i3] i3 hangs, when I execute this script =&gt; bug?">uli.armbruster at googlemail.com
+       </A><BR>
+    <I>Sat Feb  6 12:52:45 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000016.html">[i3] The SysV-IPC -- cannot create socket
+</A></li>
+        <LI>Next message: <A HREF="000018.html">[i3] i3 hangs, when I execute this script =&gt; bug?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#17">[ date ]</a>
+              <a href="thread.html#17">[ thread ]</a>
+              <a href="subject.html#17">[ subject ]</a>
+              <a href="author.html#17">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi, it's me again, the new mister i3-user ;-)
+
+
+I managed to configure everything the way I want it, am really happy with i3. But there's one little thing that disturbs me and I can't figure out, what's the problem.
+
+I have a tv card and I have to use mplayer to watch tv, because it's the only app which can handle my tv card. So I have a script for watching tv, which looks like this
+
+
+#!/bin/bash
+mplayer <A HREF="tv://">tv://</A> -tv driver=v4l2:norm=PAL:fps=25:width=768:height=576:device=/dev/video0:chanlist=europe-west:alsa=yes:adevice=plughw.1,0:audiorate=32000:forceaudio:immediatemode=0:channels=\
+E7-ARD,\
+E6-ZDF,\
+E5-SWR_BW,\
+SE10-BR,\
+E10-Sat1,\
+SE14-Pro7,\
+E9-RTL,\
+SE7-MTV,\
+SE12-VIVA,\
+SE6-Kabel1,\
+SE5-VOX,\
+E12,DSF,\
+SE4-Tele5,\
+SE9-Phoenix,\
+SE11-SuperRTL,\
+SE13-3sat,\
+SE15-EuroSport,\
+E11-ZDF-Doku,\
+SE16-RTL2,\
+SE17-WDR,\
+SE18-NDR,\
+22-SF_DRS,\
+47-SF2,\
+24-ORF1,\
+23-ORF2,\
+25-RegioTV,\
+26-N24,\
+27-NTV,\
+28-MDR,\
+31-ARTE,\
+34-DMAX,\
+36-Das_Vierte,\
+41-BR_alpha,\
+42-HR,\
+44-CNN,\
+45-Bloomberg,\
+50-AnixeSD,\
+51-RBB\
+-af volnorm -vf pp=lb -vo xv -delay 0.2
+
+(I still have to find a good chanel order ;-) )
+
+It works, when I run it from urxvt, but when I start it with dmenu, i3 completely crashes. But it cannot be a dmenu issue, because it worked in musca (which uses dmenu as well). All I can do is go to tty and hit ^C. Here's an output, which tells me something like &quot;mplayer crashed. that should not happen&quot; (in case it's really relevant, I can provide the complete output).
+
+
+Anyone with an idea?
+
+Regards
+Army
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000016.html">[i3] The SysV-IPC -- cannot create socket
+</A></li>
+	<LI>Next message: <A HREF="000018.html">[i3] i3 hangs, when I execute this script =&gt; bug?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#17">[ date ]</a>
+              <a href="thread.html#17">[ thread ]</a>
+              <a href="subject.html#17">[ subject ]</a>
+              <a href="author.html#17">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

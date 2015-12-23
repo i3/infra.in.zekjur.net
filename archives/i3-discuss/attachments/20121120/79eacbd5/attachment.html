@@ -1,0 +1,41 @@
+<tt>
+&lt;div&gt;On&nbsp;Tue,&nbsp;Nov&nbsp;20,&nbsp;2012&nbsp;at&nbsp;6:30&nbsp;AM,&nbsp;Michael&nbsp;Stapelberg&nbsp;&lt;span&nbsp;dir=&quot;ltr&quot;&gt;&lt;&lt;a&nbsp;href=&quot;mailto:michael@i3wm.org&quot;&nbsp;target=&quot;_blank&quot;&gt;michael@i3wm.org&lt;/a&gt;&gt;&lt;/span&gt;&nbsp;wrote:&lt;br&gt;&lt;/div&gt;&lt;div&nbsp;class=&quot;gmail_extra&quot;&gt;&lt;div&nbsp;class=&quot;gmail_quote&quot;&gt;<br>
+&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;&gt;&gt;&nbsp;@@&nbsp;-130,7&nbsp;+130,7&nbsp;@@&nbsp;void&nbsp;refresh_statusline(void)&nbsp;{&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; block-&gt;width&nbsp;=&nbsp;predict_text_width(block-&gt;full_text);&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; /*&nbsp;If&nbsp;this&nbsp;is&nbsp;not&nbsp;the&nbsp;last&nbsp;block,&nbsp;add&nbsp;some&nbsp;pixels&nbsp;for&nbsp;a&lt;br&gt;<br>
+&gt;&gt;&nbsp;separator.&nbsp;*/&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if&nbsp;(TAILQ_NEXT(block,&nbsp;blocks)&nbsp;!=&nbsp;NULL)&lt;br&gt;<br>
+&gt;&gt;&nbsp;-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; block-&gt;width&nbsp;+=&nbsp;9;&lt;br&gt;<br>
+&gt;&gt;&nbsp;+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; block-&gt;width&nbsp;+=&nbsp;10;&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; statusline_width&nbsp;+=&nbsp;block-&gt;width;&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; }&lt;br&gt;&lt;/blockquote&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;I&nbsp;don&#39;t&nbsp;use&nbsp;JSON&nbsp;input,&nbsp;so&nbsp;I&nbsp;can&#39;t&nbsp;really&nbsp;tell&nbsp;whether&nbsp;or&nbsp;not&nbsp;this&nbsp;the&nbsp;separator&nbsp;was&nbsp;visually&nbsp;misaligned.&nbsp;This&nbsp;looks&nbsp;correct&nbsp;to&nbsp;me,&nbsp;though,&nbsp;since&nbsp;we&#39;re&nbsp;using&nbsp;a&nbsp;5px&nbsp;padding&nbsp;before&nbsp;the&nbsp;separator,&nbsp;and&nbsp;this&nbsp;means&nbsp;the&nbsp;separator&nbsp;should&nbsp;be&nbsp;placed&nbsp;in&nbsp;the&nbsp;middle.&lt;/div&gt;<br>
+&lt;div&gt; &lt;br&gt;&lt;/div&gt;&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;<br>
+&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;@@&nbsp;-141,7&nbsp;+141,7&nbsp;@@&nbsp;void&nbsp;refresh_statusline(void)&nbsp;{&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; realloc_sl_buffer();&lt;br&gt;<br>
+&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; /*&nbsp;Clear&nbsp;the&nbsp;statusline&nbsp;pixmap.&nbsp;*/&lt;br&gt;<br>
+&gt;&gt;&nbsp;-&nbsp; &nbsp; xcb_rectangle_t&nbsp;rect&nbsp;=&nbsp;{&nbsp;0,&nbsp;0,&nbsp;root_screen-&gt;width_in_pixels,&lt;br&gt;<br>
+&gt;&gt;&nbsp;font.height&nbsp;};&lt;br&gt;<br>
+&gt;&gt;&nbsp;+&nbsp; &nbsp; xcb_rectangle_t&nbsp;rect&nbsp;=&nbsp;{&nbsp;0,&nbsp;0,&nbsp;root_screen-&gt;width_in_pixels,&lt;br&gt;<br>
+&gt;&gt;&nbsp;font.height&nbsp;+&nbsp;4&nbsp;};&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; xcb_poly_fill_rectangle(xcb_connection,&nbsp;statusline_pm,&lt;br&gt;<br>
+&gt;&gt;&nbsp;statusline_clear,&nbsp;1,&nbsp;&amp;rect);&lt;br&gt;&lt;/blockquote&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Not&nbsp;sure&nbsp;why&nbsp;that&#39;s&nbsp;needed,&nbsp;since&nbsp;we&nbsp;shouldn&#39;t&nbsp;be&nbsp;drawing&nbsp;past&nbsp;font.height.&nbsp;Am&nbsp;I&nbsp;missing&nbsp;something?&lt;/div&gt;&lt;div&gt; &lt;/div&gt;&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;<br>
+<br>
+&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; /*&nbsp;Draw&nbsp;the&nbsp;text&nbsp;of&nbsp;each&nbsp;block.&nbsp;*/&lt;br&gt;<br>
+&gt;&gt;&nbsp;@@&nbsp;-1576,7&nbsp;+1576,7&nbsp;@@&nbsp;void&nbsp;draw_bars(bool&nbsp;unhide)&nbsp;{&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; outputs_walk-&gt;buffer,&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; outputs_walk-&gt;bargc,&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; MAX(0,&nbsp;(int16_t)(statusline_width&nbsp;-&lt;br&gt;<br>
+&gt;&gt;&nbsp;outputs_walk-&gt;rect.w&nbsp;+&nbsp;4)),&nbsp;0,&lt;br&gt;<br>
+&gt;&gt;&nbsp;-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; MAX(0,&nbsp;(int16_t)(outputs_walk-&gt;rect.w&nbsp;-&lt;br&gt;<br>
+&gt;&gt;&nbsp;statusline_width&nbsp;-&nbsp;traypx&nbsp;-&nbsp;4)),&nbsp;3,&lt;br&gt;<br>
+&gt;&gt;&nbsp;+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; MAX(0,&nbsp;(int16_t)(outputs_walk-&gt;rect.w&nbsp;-&lt;br&gt;<br>
+&gt;&gt;&nbsp;statusline_width&nbsp;-&nbsp;traypx&nbsp;-&nbsp;4)),&nbsp;2,&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; MIN(outputs_walk-&gt;rect.w&nbsp;-&nbsp;traypx&nbsp;-&nbsp;4,&lt;br&gt;<br>
+&gt;&gt;&nbsp;statusline_width),&nbsp;font.height);&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }&lt;br&gt;&lt;/blockquote&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;I&nbsp;didn&#39;t&nbsp;try&nbsp;this&nbsp;patch,&nbsp;but&nbsp;this&nbsp;makes&nbsp;sense&nbsp;to&nbsp;me.&nbsp;The&nbsp;status&nbsp;line&nbsp;alignment&nbsp;seems&nbsp;to&nbsp;be&nbsp;off-by-one,&nbsp;I&nbsp;believe&nbsp;this&nbsp;would&nbsp;fix&nbsp;that.&nbsp;What&nbsp;I&#39;d&nbsp;like&nbsp;to&nbsp;see&nbsp;is&nbsp;the&nbsp;workspace&nbsp;buttons&nbsp;text&nbsp;being&nbsp;aligned&nbsp;with&nbsp;the&nbsp;status&nbsp;text&nbsp;as&nbsp;well.&nbsp;It&nbsp;seems&nbsp;to&nbsp;be&nbsp;off&nbsp;by&nbsp;one&nbsp;or&nbsp;two&nbsp;pixels&nbsp;at&nbsp;the&nbsp;moment.&lt;/div&gt;<br>
+&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Regards,&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;<br>
+
+</tt>

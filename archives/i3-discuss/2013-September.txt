@@ -1,0 +1,1513 @@
+From michael at i3wm.org  Sun Sep  1 10:03:20 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 01 Sep 2013 10:03:20 +0200
+Subject: [i3] i3lock doesn't process keypad correctly
+In-Reply-To: <87zjrxaplv.fsf@yun.yagibdah.de>
+References: <8761uobk1w.fsf@yun.yagibdah.de> <20130829152500.GA1012@anonymous>
+ <x6txi81p4i.fsf@midna.lan> <8761un9tn2.fsf@yun.yagibdah.de>
+ <87zjrxaplv.fsf@yun.yagibdah.de>
+Message-ID: <x6bo4dynnb.fsf@midna.lan>
+
+Hi,
+
+lee <lee at yun.yagibdah.de> writes:
+> One of the devs has answered and says it needs to be fixed in i3lock.
+I pushed http://code.stapelberg.de/git/i3lock/commit/?id=2f17b73e2,
+hopefully that fixes the problem. Could you build from source and
+confirm please?
+
+-- 
+Best regards,
+Michael
+
+From mainly_green at hotmail.com  Mon Sep  2 09:34:11 2013
+From: mainly_green at hotmail.com (Anonymous)
+Date: Mon, 2 Sep 2013 07:34:11 +0000 (UTC)
+Subject: [i3] help maybe?
+Message-ID: <loom.20130902T093255-528@post.gmane.org>
+
+Also I like to point out that it also happens with characters not in the 
+font used.
+
+
+From fernandotcl at gmail.com  Mon Sep  2 13:24:10 2013
+From: fernandotcl at gmail.com (Fernando Lemos)
+Date: Mon, 2 Sep 2013 08:24:10 -0300
+Subject: [i3]
+ =?utf-8?b?aTMgYnVnICMxMDczOiBwYW5nbyDigJxQcm9mb2504oCdIGlz?=
+ =?utf-8?q?_missing_a_few_pixels?=
+In-Reply-To: <x6k3j2yvtn.fsf@midna.lan>
+References: <x6k3j2yvtn.fsf@midna.lan>
+Message-ID: <C2026B46-2FDA-4278-85FA-65805BF7DD50@gmail.com>
+
+Hi,
+
+Sorry for the delay, I was mostly offline this weekend.
+
+I don't think there's a fallback, if the fonts weren't visible then you'd see those Unicode squares. At least that's what happens if I recall correctly when your font doesn't support diacritics or arab characters, for instance.
+
+I don't know from where Pango extracts the size information, but if it's part of the font metadata, it might be a bug in the font itself. Or maybe it's just cap height + descent, and some glyphs may exceed those boundaries. pango_layout_get_font_size doesn't specify anything about what "size" is? :-/
+
+Regards,
+
+Em 31/08/2013, ?s 07:54, Michael Stapelberg <michael at i3wm.org> escreveu:
+
+> Hi SardemFF7, fernandotcl,
+> 
+> you guys are knowledgable in all things pango :). Recently,
+> http://bugs.i3wm.org/query/ticket/1073 was reported and I don?t really
+> know what the issue is here.
+> 
+> With some text, e.g. ??: 100%? (try a couple others if that doesn?t
+> trigger it on your machine), the font height is 15 pixels instead of the
+> 12 pixels that were determined in load_pango_font(), leading to 3
+> missing pixels.
+> 
+> I figured this out by adding the following code:
+> 
+> --- i/libi3/font.c
+> +++ w/libi3/font.c
+> @@ -98,6 +98,10 @@ static void draw_text_pango(const char *text, size_t text_len,
+>     pango_cairo_update_layout(cr, layout);
+>     pango_cairo_show_layout(cr, layout);
+> 
+> +    gint height;
+> +    pango_layout_get_pixel_size(layout, NULL, &height);
+> +    LOG("saved height = %d, height = %d\n", savedFont->height, height);
+> +
+>     /* Free resources */
+>     g_object_unref(layout);
+>     cairo_destroy(cr);
+> 
+> However, I am not sure why this happens. Is there some kind of font
+> fallback involved for the ?unusual? unicode glyphs?
+> 
+> Is there something we can do to fix this?
+> 
+> Thanks.
+> 
+> -- 
+> Best regards,
+> Michael
+
+
+From lists at necoro.eu  Mon Sep  2 19:22:33 2013
+From: lists at necoro.eu (=?UTF-8?B?UmVuw6kgTmV1bWFubg==?=)
+Date: Mon, 02 Sep 2013 19:22:33 +0200
+Subject: [i3]
+ =?utf-8?b?aTMgYnVnICMxMDczOiBwYW5nbyDigJxQcm9mb2504oCdIGlz?=
+ =?utf-8?q?_missing_a_few_pixels?=
+In-Reply-To: <C2026B46-2FDA-4278-85FA-65805BF7DD50@gmail.com>
+References: <x6k3j2yvtn.fsf@midna.lan>
+ <C2026B46-2FDA-4278-85FA-65805BF7DD50@gmail.com>
+Message-ID: <5224C959.9020103@necoro.eu>
+
+There is something like a fallback font (I know that when rendering
+mathematical symbols that are not covered by my monospace font, it falls
+back to DejaVu Sans -- resulting in those symbols to be way too big).
+
+Some googling shows f.ex.
+
+http://unix.stackexchange.com/questions/57394/how-to-block-glyph-fallback-on-linux
+
+:)
+
+- Ren?
+
+Am 02.09.2013 13:24, schrieb Fernando Lemos:
+> Hi,
+> 
+> Sorry for the delay, I was mostly offline this weekend.
+> 
+> I don't think there's a fallback, if the fonts weren't visible then you'd see those Unicode squares. At least that's what happens if I recall correctly when your font doesn't support diacritics or arab characters, for instance.
+> 
+> I don't know from where Pango extracts the size information, but if it's part of the font metadata, it might be a bug in the font itself. Or maybe it's just cap height + descent, and some glyphs may exceed those boundaries. pango_layout_get_font_size doesn't specify anything about what "size" is? :-/
+> 
+> Regards,
+> 
+> Em 31/08/2013, ?s 07:54, Michael Stapelberg <michael at i3wm.org> escreveu:
+> 
+>> Hi SardemFF7, fernandotcl,
+>>
+>> you guys are knowledgable in all things pango :). Recently,
+>> http://bugs.i3wm.org/query/ticket/1073 was reported and I don?t really
+>> know what the issue is here.
+>>
+>> With some text, e.g. ??: 100%? (try a couple others if that doesn?t
+>> trigger it on your machine), the font height is 15 pixels instead of the
+>> 12 pixels that were determined in load_pango_font(), leading to 3
+>> missing pixels.
+>>
+>> I figured this out by adding the following code:
+>>
+>> --- i/libi3/font.c
+>> +++ w/libi3/font.c
+>> @@ -98,6 +98,10 @@ static void draw_text_pango(const char *text, size_t text_len,
+>>     pango_cairo_update_layout(cr, layout);
+>>     pango_cairo_show_layout(cr, layout);
+>>
+>> +    gint height;
+>> +    pango_layout_get_pixel_size(layout, NULL, &height);
+>> +    LOG("saved height = %d, height = %d\n", savedFont->height, height);
+>> +
+>>     /* Free resources */
+>>     g_object_unref(layout);
+>>     cairo_destroy(cr);
+>>
+>> However, I am not sure why this happens. Is there some kind of font
+>> fallback involved for the ?unusual? unicode glyphs?
+>>
+>> Is there something we can do to fix this?
+>>
+>> Thanks.
+>>
+>> -- 
+>> Best regards,
+>> Michael
+> 
+> 
+
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 555 bytes
+Desc: OpenPGP digital signature
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130902/ec6fc77f/attachment.sig>
+
+From mail at merovius.de  Tue Sep  3 16:32:41 2013
+From: mail at merovius.de (Axel Wagner)
+Date: Tue, 03 Sep 2013 16:32:41 +0200
+Subject: [i3] [OT] shellex - shell based launcher
+Message-ID: <1378218304-sup-2732@merovius.de>
+
+Hi all,
+
+though not really i3-specific, there were a few people in the
+past who asked in the IRC-channel for a command launcher with history
+support and tab-completion. Some people use bashrun for that, some
+people where referred to shellex, an old try at a zsh based launcher of
+mine, which was in no state to use.
+
+I recently restarted work on shellex [1] and would like to announce it here
+in case anyone is still looking for such a thing. It is still WIP and
+not yet as comfortable to use as dmenu, but I now consider it stable
+enough to be used and to be usefull (for example history and tab
+completion worked on every system I tried).
+
+Kind Regards,
+
+Merovius
+
+[1] https://github.com/Merovius/shellex
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 198 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130903/e1e3c16a/attachment.sig>
+
+From pausiert at gmail.com  Wed Sep  4 00:57:32 2013
+From: pausiert at gmail.com (pausiert)
+Date: Tue, 3 Sep 2013 17:57:32 -0500
+Subject: [i3] constant sidebar
+Message-ID: <20130903225732.GB25746@black>
+
+Hi,
+I was wondering if there's a way to have some sort of a sidebar,
+displayed on every worspace with a constant width, even if there are no
+other windows on the workspace. Usefull as I think for a chat/rss
+programs.
+So far I haven't found any configuration to do this.
+Thanks,
+Pau
+
+
+-- 
+
+From bruno.braga at gmail.com  Wed Sep  4 07:15:28 2013
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Wed, 4 Sep 2013 15:15:28 +1000
+Subject: [i3] constant sidebar
+In-Reply-To: <20130903225732.GB25746@black>
+References: <20130903225732.GB25746@black>
+Message-ID: <CAAuVr732ZNke5vWQciXVwiRf6Qx8_B5eDHtHe0dVHe6YC0nvAA@mail.gmail.com>
+
+Not that I am aware of.
+
+If there are no windows on a workspace, it is not displayed on i3bar...
+this is by design.
+
+You could use the i3status (or conky) for displaying other stuff you want,
+which is available in the bottom (or top) of the screen no matter where you
+are.
+
+
+--
+*Bruno Braga*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Wed, Sep 4, 2013 at 8:57 AM, pausiert <pausiert at gmail.com> wrote:
+
+> Hi,
+> I was wondering if there's a way to have some sort of a sidebar,
+> displayed on every worspace with a constant width, even if there are no
+> other windows on the workspace. Usefull as I think for a chat/rss
+> programs.
+> So far I haven't found any configuration to do this.
+> Thanks,
+> Pau
+>
+>
+> --
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130904/44a97b88/attachment.html>
+
+From bruno.braga at gmail.com  Wed Sep  4 07:20:01 2013
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Wed, 4 Sep 2013 15:20:01 +1000
+Subject: [i3] [OT] shellex - shell based launcher
+In-Reply-To: <1378218304-sup-2732@merovius.de>
+References: <1378218304-sup-2732@merovius.de>
+Message-ID: <CAAuVr73WbKLQ7j7yoGQp2NufsP00EuzRBRXZZPmkCM=5Eri6fg@mail.gmail.com>
+
+This is awesome idea!
+
+Right now, any more complicated commands I need to run I wrap on a script
+and leave on my $PATH for dmenu to find it...
+More recently I am using Synapse, which is even worse in this case (I need
+to create an app desktop file, similar to what i3-dmenu does).
+
+This would definitely improve things!
+
+
+--
+*Bruno Braga*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Wed, Sep 4, 2013 at 12:32 AM, Axel Wagner <mail at merovius.de> wrote:
+
+> Hi all,
+>
+> though not really i3-specific, there were a few people in the
+> past who asked in the IRC-channel for a command launcher with history
+> support and tab-completion. Some people use bashrun for that, some
+> people where referred to shellex, an old try at a zsh based launcher of
+> mine, which was in no state to use.
+>
+> I recently restarted work on shellex [1] and would like to announce it here
+> in case anyone is still looking for such a thing. It is still WIP and
+> not yet as comfortable to use as dmenu, but I now consider it stable
+> enough to be used and to be usefull (for example history and tab
+> completion worked on every system I tried).
+>
+> Kind Regards,
+>
+> Merovius
+>
+> [1] https://github.com/Merovius/shellex
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130904/f4086403/attachment.html>
+
+From pausiert at gmail.com  Wed Sep  4 19:32:37 2013
+From: pausiert at gmail.com (Pau Senlos)
+Date: Wed, 4 Sep 2013 12:32:37 -0500
+Subject: [i3] constant sidebar
+In-Reply-To: <CAAuVr732ZNke5vWQciXVwiRf6Qx8_B5eDHtHe0dVHe6YC0nvAA@mail.gmail.com>
+References: <20130903225732.GB25746@black>
+ <CAAuVr732ZNke5vWQciXVwiRf6Qx8_B5eDHtHe0dVHe6YC0nvAA@mail.gmail.com>
+Message-ID: <CACkVLsPot_fV77pwf+Ve8PP11Gc0HpCSw5SPvgP1v_ub=moAPQ@mail.gmail.com>
+
+I mean a sidebar for programs like chat or a rss reader, a constant space
+for any kind of programs on every workspace
+
+
+On 4 September 2013 00:15, BRAGA, Bruno <bruno.braga at gmail.com> wrote:
+
+> Not that I am aware of.
+>
+> If there are no windows on a workspace, it is not displayed on i3bar...
+> this is by design.
+>
+> You could use the i3status (or conky) for displaying other stuff you want,
+> which is available in the bottom (or top) of the screen no matter where you
+> are.
+>
+>
+> --
+> *Bruno Braga*
+> www.brunobraga.net
+> bruno.braga at gmail.com
+>
+>
+> On Wed, Sep 4, 2013 at 8:57 AM, pausiert <pausiert at gmail.com> wrote:
+>
+>> Hi,
+>> I was wondering if there's a way to have some sort of a sidebar,
+>> displayed on every worspace with a constant width, even if there are no
+>> other windows on the workspace. Usefull as I think for a chat/rss
+>> programs.
+>> So far I haven't found any configuration to do this.
+>> Thanks,
+>> Pau
+>>
+>>
+>> --
+>>
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130904/abeb072a/attachment.html>
+
+From michael at i3wm.org  Wed Sep  4 20:24:43 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 04 Sep 2013 20:24:43 +0200
+Subject: [i3] constant sidebar
+In-Reply-To: <CACkVLsPot_fV77pwf+Ve8PP11Gc0HpCSw5SPvgP1v_ub=moAPQ@mail.gmail.com>
+References: <20130903225732.GB25746@black>
+ <CAAuVr732ZNke5vWQciXVwiRf6Qx8_B5eDHtHe0dVHe6YC0nvAA@mail.gmail.com>
+ <CACkVLsPot_fV77pwf+Ve8PP11Gc0HpCSw5SPvgP1v_ub=moAPQ@mail.gmail.com>
+Message-ID: <x6vc2gwil0.fsf@midna.lan>
+
+Hi Pau,
+
+Pau Senlos <pausiert at gmail.com> writes:
+> I mean a sidebar for programs like chat or a rss reader, a constant space
+> for any kind of programs on every workspace
+I think you mean sticky windows:
+
+http://bugs.i3wm.org/query/ticket/11
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Mon Sep  9 02:49:56 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 09 Sep 2013 02:49:56 +0200
+Subject: [i3] Timeout for i3lock?
+In-Reply-To: <5228F44B.1050801@gmail.com>
+References: <5228F44B.1050801@gmail.com>
+Message-ID: <x67geqx1hn.fsf@midna.lan>
+
+Hi Jay,
+
+Jay Terk <areray2 at gmail.com> writes:
+> Hey you guys, I just discovered i3lock.? Very nice program, but
+> shouldn't it have a timeout, either built-in or user-specified???????? 
+> The way it is now, if i3lock is running and text is entered, it 
+> goes from "DPMS off" to the black screen (or whatever the user 
+> configured), and it just waits there for the Enter key to be
+> pressed-- and if the Enter key is never pressed, it just stays on
+> the black screen.? Wouldn't a timeout be better, so that after 
+> <some number> of seconds, it will timeout and revert to "DPMS off"?
+The only thing i3lock does is turning off the screen when there is no
+input in the buffer. Turning the screen on (and off after a timeout) is
+the X11 server?s doing, so you need to check your DPMS settings.
+
+The next time, please write to either the mailing list i3-discuss
+(cc'ed) or open a bugreport in order to get a more timely response and
+publicly archive the question/response.
+
+-- 
+Best regards,
+Michael
+
+From theistian at gmx.com  Sat Sep 14 12:59:58 2013
+From: theistian at gmx.com (Carlos =?iso-8859-1?Q?Pe=F1as?=)
+Date: Sat, 14 Sep 2013 12:59:58 +0200
+Subject: [i3] Can for_window change client color?
+Message-ID: <20130914105958.GA4626@flanagan.thchq.com>
+
+Hi!.
+
+I'm tried to change client color for clients titled 'MUTT' with
+
+for_window [title="MUTT"] client.unfocused #000000 #000000 #ff0000
+for_window [title="MUTT"] client.focused_inactive #000000 #000000 #ff0000
+
+This pass ok the configuration check but don't seems to work.
+
+Is it possible to alter colors on one client only during runtime?
+
+Thanks
+
+
+-- 
+Carlos Pe?as San Jos?
+carlos at adoptales.es
+
+
+From michael at i3wm.org  Sat Sep 14 16:47:14 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 14 Sep 2013 16:47:14 +0200
+Subject: [i3] Can for_window change client color?
+In-Reply-To: <20130914105958.GA4626@flanagan.thchq.com>
+References: <20130914105958.GA4626@flanagan.thchq.com>
+Message-ID: <x6ob7v1mvh.fsf@midna.lan>
+
+Hi Carlos,
+
+Carlos Pe?as <theistian at gmx.com> writes:
+> for_window [title="MUTT"] client.unfocused #000000 #000000 #ff0000
+> for_window [title="MUTT"] client.focused_inactive #000000 #000000 #ff0000
+>
+> This pass ok the configuration check but don't seems to work.
+>
+> Is it possible to alter colors on one client only during runtime?
+No. The colors are a configuration directive, and for_window only
+accepts commands. There are no plans of changing this.
+
+-- 
+Best regards,
+Michael
+
+From manuelschneid3r at googlemail.com  Sun Sep 15 10:39:57 2013
+From: manuelschneid3r at googlemail.com (Manuel)
+Date: Sun, 15 Sep 2013 10:39:57 +0200
+Subject: [i3] Can for_window change client color?
+In-Reply-To: <x6ob7v1mvh.fsf@midna.lan>
+References: <20130914105958.GA4626@flanagan.thchq.com>
+ <x6ob7v1mvh.fsf@midna.lan>
+Message-ID: <39eb7b4e-849c-43a6-a256-f3342bd12a05@email.android.com>
+
+would it be possible with i3-msg?
+
+
+
+Michael Stapelberg <michael at i3wm.org> schrieb:
+>Hi Carlos,
+>
+>Carlos Pe?as <theistian at gmx.com> writes:
+>> for_window [title="MUTT"] client.unfocused #000000 #000000 #ff0000
+>> for_window [title="MUTT"] client.focused_inactive #000000 #000000
+>#ff0000
+>>
+>> This pass ok the configuration check but don't seems to work.
+>>
+>> Is it possible to alter colors on one client only during runtime?
+>No. The colors are a configuration directive, and for_window only
+>accepts commands. There are no plans of changing this.
+
+
+From michael at i3wm.org  Sun Sep 15 18:29:54 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 15 Sep 2013 18:29:54 +0200
+Subject: [i3] Can for_window change client color?
+In-Reply-To: <39eb7b4e-849c-43a6-a256-f3342bd12a05@email.android.com>
+References: <20130914105958.GA4626@flanagan.thchq.com>
+ <x6ob7v1mvh.fsf@midna.lan>
+ <39eb7b4e-849c-43a6-a256-f3342bd12a05@email.android.com>
+Message-ID: <x6zjrecakd.fsf@midna.lan>
+
+Hi Manuel,
+
+Manuel <manuelschneid3r at googlemail.com> writes:
+> would it be possible with i3-msg?
+No. i3-msg just sends commands, see http://i3wm.org/docs/ipc.html
+
+-- 
+Best regards,
+Michael
+
+From okraits at arcor.de  Wed Sep 18 04:21:53 2013
+From: okraits at arcor.de (Oliver Kraitschy)
+Date: Wed, 18 Sep 2013 04:21:53 +0200
+Subject: [i3] i3-theme script and a small collection of themes
+Message-ID: <20130918022152.GA5861@cisa85.de>
+
+Dear i3 community,
+
+i have developed a script named i3-theme. Its purpose is
+to easily set and switch between several sets of
+configuration options ("themes") for the i3 window
+manager. These sets of configuration options are supposed
+to contain options regarding the looks of the window
+manager, that is window colors, borderstyle, i3bar colors,
+fonts, etc.
+There's a bunch of theme files which are distributed
+together with the i3-theme script to give the user a
+variety of configurations to choose from.
+
+The tarball containing the script, the themes and a README
+can be found at:
+
+http://www.okraits.de/upload/i3-theme-0.3.tar.gz
+
+Please feel free to send me feedback and contributions
+regarding bugreports, feature requests, improvements,
+themes, etc. via mail at okraits at arcor.de. You can also
+contact me on irc.twice-irc.de in #i3.
+
+I'm looking forward to your feedback.
+
+Greetings,
+
+Oliver
+
+From okraits at arcor.de  Thu Sep 19 09:38:33 2013
+From: okraits at arcor.de (Oliver Kraitschy)
+Date: Thu, 19 Sep 2013 09:38:33 +0200
+Subject: [i3] i3-theme script and a small collection of themes
+In-Reply-To: <20130918022152.GA5861@cisa85.de>
+References: <20130918022152.GA5861@cisa85.de>
+Message-ID: <20130919073832.GC5861@cisa85.de>
+
+Hi all,
+
+FYI, there's a new version of the script with more themes available at
+
+http://www.okraits.de/upload/i3-theme-0.4.tar.gz
+
+Please check the README for the changelog.
+
+I will add an i3-theme section to my website http://okraits.de where the newest version will be available.
+
+Greetings,
+
+Oliver
+
+On Wed, Sep 18, 2013 at 04:21:53AM +0200, Oliver Kraitschy wrote:
+> Dear i3 community,
+> 
+> i have developed a script named i3-theme. Its purpose is
+> to easily set and switch between several sets of
+> configuration options ("themes") for the i3 window
+> manager. These sets of configuration options are supposed
+> to contain options regarding the looks of the window
+> manager, that is window colors, borderstyle, i3bar colors,
+> fonts, etc.
+> There's a bunch of theme files which are distributed
+> together with the i3-theme script to give the user a
+> variety of configurations to choose from.
+> 
+> The tarball containing the script, the themes and a README
+> can be found at:
+> 
+> http://www.okraits.de/upload/i3-theme-0.3.tar.gz
+> 
+> Please feel free to send me feedback and contributions
+> regarding bugreports, feature requests, improvements,
+> themes, etc. via mail at okraits at arcor.de. You can also
+> contact me on irc.twice-irc.de in #i3.
+> 
+> I'm looking forward to your feedback.
+> 
+> Greetings,
+> 
+> Oliver
+
+From veljko3 at gmail.com  Thu Sep 19 11:21:25 2013
+From: veljko3 at gmail.com (Veljko)
+Date: Thu, 19 Sep 2013 11:21:25 +0200
+Subject: [i3] i3-theme script and a small collection of themes
+In-Reply-To: <20130919073832.GC5861@cisa85.de>
+References: <20130918022152.GA5861@cisa85.de> <20130919073832.GC5861@cisa85.de>
+Message-ID: <20130919092125.GA6336@angelina.example.com>
+
+On Thu, Sep 19, 2013 at 09:38:33AM +0200, Oliver Kraitschy wrote:
+> Hi all,
+> 
+> FYI, there's a new version of the script with more themes available at
+> 
+> http://www.okraits.de/upload/i3-theme-0.4.tar.gz
+> 
+> Please check the README for the changelog.
+> 
+> I will add an i3-theme section to my website http://okraits.de where the newest version will be available.
+
+
+Hi Oliver,
+
+Thanks for this great script and themes, much appreciated. Just tried it and I
+love it.
+
+
+Regards,
+Veljko
+
+From bruno.braga at gmail.com  Fri Sep 20 02:20:54 2013
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Fri, 20 Sep 2013 10:20:54 +1000
+Subject: [i3] i3-theme script and a small collection of themes
+In-Reply-To: <20130919092125.GA6336@angelina.example.com>
+References: <20130918022152.GA5861@cisa85.de> <20130919073832.GC5861@cisa85.de>
+ <20130919092125.GA6336@angelina.example.com>
+Message-ID: <CAAuVr73M4Utstp5QEJ3SDcvq2gSVZpd-RH0ApOWeR8mcwu034A@mail.gmail.com>
+
+Share some screenshots of what it does, that would be nice...
+
+
+--
+*Bruno Braga*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Thu, Sep 19, 2013 at 7:21 PM, Veljko <veljko3 at gmail.com> wrote:
+
+> On Thu, Sep 19, 2013 at 09:38:33AM +0200, Oliver Kraitschy wrote:
+> > Hi all,
+> >
+> > FYI, there's a new version of the script with more themes available at
+> >
+> > http://www.okraits.de/upload/i3-theme-0.4.tar.gz
+> >
+> > Please check the README for the changelog.
+> >
+> > I will add an i3-theme section to my website http://okraits.de where
+> the newest version will be available.
+>
+>
+> Hi Oliver,
+>
+> Thanks for this great script and themes, much appreciated. Just tried it
+> and I
+> love it.
+>
+>
+> Regards,
+> Veljko
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130920/aeb247d5/attachment.html>
+
+From public at enkore.de  Fri Sep 20 02:39:04 2013
+From: public at enkore.de (mabe)
+Date: Fri, 20 Sep 2013 02:39:04 +0200
+Subject: [i3] i3-theme script and a small collection of themes
+In-Reply-To: <20130919073832.GC5861@cisa85.de>
+References: <20130918022152.GA5861@cisa85.de> <20130919073832.GC5861@cisa85.de>
+Message-ID: <523B9928.3060701@enkore.de>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+- -pedantic:
+
+I'd suggest using argparse (or optparse) instead of manual cmd line
+parsing.
+
+On 09/19/2013 09:38 AM, Oliver Kraitschy wrote:
+> Hi all,
+> 
+> FYI, there's a new version of the script with more themes available
+> at
+> 
+> http://www.okraits.de/upload/i3-theme-0.4.tar.gz
+> 
+> Please check the README for the changelog.
+> 
+> I will add an i3-theme section to my website http://okraits.de
+> where the newest version will be available.
+> 
+> Greetings,
+> 
+> Oliver
+> 
+> On Wed, Sep 18, 2013 at 04:21:53AM +0200, Oliver Kraitschy wrote:
+>> Dear i3 community,
+>> 
+>> i have developed a script named i3-theme. Its purpose is to
+>> easily set and switch between several sets of configuration
+>> options ("themes") for the i3 window manager. These sets of
+>> configuration options are supposed to contain options regarding
+>> the looks of the window manager, that is window colors,
+>> borderstyle, i3bar colors, fonts, etc. There's a bunch of theme
+>> files which are distributed together with the i3-theme script to
+>> give the user a variety of configurations to choose from.
+>> 
+>> The tarball containing the script, the themes and a README can be
+>> found at:
+>> 
+>> http://www.okraits.de/upload/i3-theme-0.3.tar.gz
+>> 
+>> Please feel free to send me feedback and contributions regarding
+>> bugreports, feature requests, improvements, themes, etc. via mail
+>> at okraits at arcor.de. You can also contact me on irc.twice-irc.de
+>> in #i3.
+>> 
+>> I'm looking forward to your feedback.
+>> 
+>> Greetings,
+>> 
+>> Oliver
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.21 (GNU/Linux)
+
+iQIcBAEBAgAGBQJSO5knAAoJEAOmTcUxK/swQAMP/0iLXtuzhyt8dRVUl1YyJf98
+YIGUP1zNAdLwhYSzQ3yRIXOWXQRVuTAF0Dc6guIrOaA7nbOEepQgkOa4S8smaXgd
+2cJSF6WqSLDWFHv0lUjhJwLLFRcmSI8f160Ba/jqirOvy/jH5V8ibk0Sb1OEG5Op
+sougV03i/fR7ZL4FuT8q97pvNfmDYn9wRZdz3Av966YbCNmCFdpNkjlU2+ON9xpY
+zRUIaY2t5fdvG7Gwi+dh1lAfHu0NVNRxlUdHFEosNsoj6fP/i7bRkGuJOnhX9KgV
+4XQzqI8p0S0w0VUtrYwKHrIHelHPqJflXp7cQ2Yxems5XNYBWMZwsHvsy3G5rnfr
+uBzuEB5ON7kdL52vUmVNEatIeVyxBAp7RrSsqJtYK2KQBNof5jin8WgdCv7hWyot
+r4W3bYuTqNuNJcnYJ8ASkfhzYBj9FioLV7kkgJx4m1tjN31IvhFm/gntsaDOlBmY
+cRN1eyUdm768A3eItHzmsK3UMB1t14WmjQm4JvWNj7bShS6GBXIuajzV8lgKnq/p
+AyxOPQNnAuZdvMexoQV56LYzKZTNESzhSNYKuyXN/49gFilLKRx8Qg09UpJCxu1C
+Ix39nGJLeNk4h+VjVJ7fjpe70x9ZU3yrjDRXIz9eWWDUgJlsLoCwHAofBbL519lo
+69cBwbpmhB90bBR9IVkJ
+=vjWv
+-----END PGP SIGNATURE-----
+
+From veljko3 at gmail.com  Fri Sep 20 12:18:25 2013
+From: veljko3 at gmail.com (Veljko)
+Date: Fri, 20 Sep 2013 12:18:25 +0200
+Subject: [i3] i3-theme script and a small collection of themes
+In-Reply-To: <CAAuVr73M4Utstp5QEJ3SDcvq2gSVZpd-RH0ApOWeR8mcwu034A@mail.gmail.com>
+References: <20130918022152.GA5861@cisa85.de> <20130919073832.GC5861@cisa85.de>
+ <20130919092125.GA6336@angelina.example.com>
+ <CAAuVr73M4Utstp5QEJ3SDcvq2gSVZpd-RH0ApOWeR8mcwu034A@mail.gmail.com>
+Message-ID: <20130920101825.GA11979@angelina.example.com>
+
+On Fri, Sep 20, 2013 at 10:20:54AM +1000, BRAGA, Bruno wrote:
+> Share some screenshots of what it does, that would be nice...
+
+Sure, Bruno.
+
+There are seven themes packed besides default one.
+
+archlinux
+http://img826.imageshack.us/img826/1414/tc2c.png
+
+bear2
+http://img21.imageshack.us/img21/3324/a4yy.png
+
+debian
+http://img707.imageshack.us/img707/9383/ekpf.png
+
+ion3
+http://img692.imageshack.us/img692/5794/7lj9.png
+
+okraits
+http://img6.imageshack.us/img6/6664/1cl.png
+
+solarized
+http://img812.imageshack.us/img812/4471/zquo.png
+
+ubuntu
+http://img202.imageshack.us/img202/4865/e015.png
+
+Regards,
+Veljko
+
+From nashpapa at gmail.com  Fri Sep 20 12:36:32 2013
+From: nashpapa at gmail.com (avinash r)
+Date: Fri, 20 Sep 2013 16:06:32 +0530
+Subject: [i3] i3-theme script and a small collection of themes
+In-Reply-To: <20130920101825.GA11979@angelina.example.com>
+References: <20130918022152.GA5861@cisa85.de> <20130919073832.GC5861@cisa85.de>
+ <20130919092125.GA6336@angelina.example.com>
+ <CAAuVr73M4Utstp5QEJ3SDcvq2gSVZpd-RH0ApOWeR8mcwu034A@mail.gmail.com>
+ <20130920101825.GA11979@angelina.example.com>
+Message-ID: <CAHCistew6zuYMg6jtXboNdncisPhibNYs0Jt6sLCr=d_rAyc2w@mail.gmail.com>
+
+Veljko,
+
+Will you be putting this on a git repo somewhere?
+On Sep 20, 2013 3:48 PM, "Veljko" <veljko3 at gmail.com> wrote:
+
+> On Fri, Sep 20, 2013 at 10:20:54AM +1000, BRAGA, Bruno wrote:
+> > Share some screenshots of what it does, that would be nice...
+>
+> Sure, Bruno.
+>
+> There are seven themes packed besides default one.
+>
+> archlinux
+> http://img826.imageshack.us/img826/1414/tc2c.png
+>
+> bear2
+> http://img21.imageshack.us/img21/3324/a4yy.png
+>
+> debian
+> http://img707.imageshack.us/img707/9383/ekpf.png
+>
+> ion3
+> http://img692.imageshack.us/img692/5794/7lj9.png
+>
+> okraits
+> http://img6.imageshack.us/img6/6664/1cl.png
+>
+> solarized
+> http://img812.imageshack.us/img812/4471/zquo.png
+>
+> ubuntu
+> http://img202.imageshack.us/img202/4865/e015.png
+>
+> Regards,
+> Veljko
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130920/f1ef244e/attachment.html>
+
+From nashpapa at gmail.com  Fri Sep 20 12:38:31 2013
+From: nashpapa at gmail.com (avinash r)
+Date: Fri, 20 Sep 2013 16:08:31 +0530
+Subject: [i3] i3-theme script and a small collection of theme
+Message-ID: <CAHCistcGScL41Q9+Af2jX8KhXYM2L8uSFFEtLN97+w=69MVOWg@mail.gmail.com>
+
+On Sep 20, 2013 4:06 PM, "avinash r" <nashpapa at gmail.com> wrote:
+>
+> Veljko,
+>
+> Will you be putting this on a git repo somewhere?
+Sorry meant to ask Oliver Kraitschy.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130920/38a42b23/attachment.html>
+
+From okraits at arcor.de  Fri Sep 20 13:05:35 2013
+From: okraits at arcor.de (Oliver Kraitschy)
+Date: Fri, 20 Sep 2013 13:05:35 +0200
+Subject: [i3] i3-theme script and a small collection of themes
+In-Reply-To: <20130920101825.GA11979@angelina.example.com>
+References: <20130918022152.GA5861@cisa85.de> <20130919073832.GC5861@cisa85.de>
+ <20130919092125.GA6336@angelina.example.com>
+ <CAAuVr73M4Utstp5QEJ3SDcvq2gSVZpd-RH0ApOWeR8mcwu034A@mail.gmail.com>
+ <20130920101825.GA11979@angelina.example.com>
+Message-ID: <20130920110535.GD5861@cisa85.de>
+
+Hi Veljko,
+
+thank you for providing screenshots. I have done screenshots too, but i have to add an i3-theme section to my website first and will then add the screenshots there. Maybe this will happen in some hours.
+
+Greetings,
+
+Oliver
+
+On Fri, Sep 20, 2013 at 12:18:25PM +0200, Veljko wrote:
+> On Fri, Sep 20, 2013 at 10:20:54AM +1000, BRAGA, Bruno wrote:
+> > Share some screenshots of what it does, that would be nice...
+> 
+> Sure, Bruno.
+> 
+> There are seven themes packed besides default one.
+> 
+> archlinux
+> http://img826.imageshack.us/img826/1414/tc2c.png
+> 
+> bear2
+> http://img21.imageshack.us/img21/3324/a4yy.png
+> 
+> debian
+> http://img707.imageshack.us/img707/9383/ekpf.png
+> 
+> ion3
+> http://img692.imageshack.us/img692/5794/7lj9.png
+> 
+> okraits
+> http://img6.imageshack.us/img6/6664/1cl.png
+> 
+> solarized
+> http://img812.imageshack.us/img812/4471/zquo.png
+> 
+> ubuntu
+> http://img202.imageshack.us/img202/4865/e015.png
+> 
+> Regards,
+> Veljko
+
+From okraits at arcor.de  Fri Sep 20 13:09:24 2013
+From: okraits at arcor.de (Oliver Kraitschy)
+Date: Fri, 20 Sep 2013 13:09:24 +0200
+Subject: [i3] i3-theme script and a small collection of theme
+In-Reply-To: <CAHCistcGScL41Q9+Af2jX8KhXYM2L8uSFFEtLN97+w=69MVOWg@mail.gmail.com>
+References: <CAHCistcGScL41Q9+Af2jX8KhXYM2L8uSFFEtLN97+w=69MVOWg@mail.gmail.com>
+Message-ID: <20130920110924.GE5861@cisa85.de>
+
+Hi Avinash,
+
+right now i have the code only in my private svn repo (i haven't gotten around to switch to git yet), but if you would like to contribute, you're welcome to send me your contribution.
+
+Greetings,
+
+Oliver
+
+On Fri, Sep 20, 2013 at 04:08:31PM +0530, avinash r wrote:
+> 
+> On Sep 20, 2013 4:06 PM, "avinash r" <nashpapa at gmail.com> wrote:
+> >
+> > Veljko,
+> >
+> > Will you be putting this on a git repo somewhere?
+> Sorry meant to ask Oliver Kraitschy.
+> 
+
+From okraits at arcor.de  Fri Sep 20 13:39:41 2013
+From: okraits at arcor.de (Oliver Kraitschy)
+Date: Fri, 20 Sep 2013 13:39:41 +0200
+Subject: [i3] i3-theme script and a small collection of themes
+In-Reply-To: <CAHCistew6zuYMg6jtXboNdncisPhibNYs0Jt6sLCr=d_rAyc2w@mail.gmail.com>
+References: <20130918022152.GA5861@cisa85.de> <20130919073832.GC5861@cisa85.de>
+ <20130919092125.GA6336@angelina.example.com>
+ <CAAuVr73M4Utstp5QEJ3SDcvq2gSVZpd-RH0ApOWeR8mcwu034A@mail.gmail.com>
+ <20130920101825.GA11979@angelina.example.com>
+ <CAHCistew6zuYMg6jtXboNdncisPhibNYs0Jt6sLCr=d_rAyc2w@mail.gmail.com>
+Message-ID: <20130920113941.GG5861@cisa85.de>
+
+Hi Avinash,
+
+this is the correct thread ;)
+
+Right now i have the code only in my private svn repo (i haven't gotten around
+to switch to git yet), but if you would like to contribute, you're welcome to
+send me your contribution.
+
+Greetings,
+
+Oliver
+
+On Fri, Sep 20, 2013 at 04:06:32PM +0530, avinash r wrote:
+> Veljko,
+> 
+> Will you be putting this on a git repo somewhere?
+> 
+> On Sep 20, 2013 3:48 PM, "Veljko" <veljko3 at gmail.com> wrote:
+> 
+>     On Fri, Sep 20, 2013 at 10:20:54AM +1000, BRAGA, Bruno wrote:
+>     > Share some screenshots of what it does, that would be nice...
+> 
+>     Sure, Bruno.
+> 
+>     There are seven themes packed besides default one.
+> 
+>     archlinux
+>     http://img826.imageshack.us/img826/1414/tc2c.png
+> 
+>     bear2
+>     http://img21.imageshack.us/img21/3324/a4yy.png
+> 
+>     debian
+>     http://img707.imageshack.us/img707/9383/ekpf.png
+> 
+>     ion3
+>     http://img692.imageshack.us/img692/5794/7lj9.png
+> 
+>     okraits
+>     http://img6.imageshack.us/img6/6664/1cl.png
+> 
+>     solarized
+>     http://img812.imageshack.us/img812/4471/zquo.png
+> 
+>     ubuntu
+>     http://img202.imageshack.us/img202/4865/e015.png
+> 
+>     Regards,
+>     Veljko
+> 
+
+From okraits at arcor.de  Fri Sep 20 14:16:29 2013
+From: okraits at arcor.de (Oliver Kraitschy)
+Date: Fri, 20 Sep 2013 14:16:29 +0200
+Subject: [i3] i3-theme script and a small collection of themes
+In-Reply-To: <523B9928.3060701@enkore.de>
+References: <20130918022152.GA5861@cisa85.de> <20130919073832.GC5861@cisa85.de>
+ <523B9928.3060701@enkore.de>
+Message-ID: <20130920121629.GH5861@cisa85.de>
+
+Hi,
+
+thank you for the hint - i'll have a look at that.
+
+Greetings,
+
+Oliver
+
+On Fri, Sep 20, 2013 at 02:39:04AM +0200, [mabe] wrote:
+> -----BEGIN PGP SIGNED MESSAGE-----
+> Hash: SHA1
+> 
+> - -pedantic:
+> 
+> I'd suggest using argparse (or optparse) instead of manual cmd line
+> parsing.
+> 
+
+From obrien654j at gmail.com  Sat Sep 21 19:58:29 2013
+From: obrien654j at gmail.com (Jeremy O'Brien)
+Date: Sat, 21 Sep 2013 13:58:29 -0400
+Subject: [i3] i3-theme script and a small collection of themes
+In-Reply-To: <20130918022152.GA5861@cisa85.de>
+References: <20130918022152.GA5861@cisa85.de>
+Message-ID: <20130921175829.GA45428@hahaha.sbx10787.masonoh.wayport.net>
+
+On Wed, Sep 18, 2013 at 04:21:53AM +0200, Oliver Kraitschy wrote:
+> Dear i3 community,
+> 
+> i have developed a script named i3-theme. Its purpose is
+> to easily set and switch between several sets of
+> configuration options ("themes") for the i3 window
+> manager. These sets of configuration options are supposed
+> to contain options regarding the looks of the window
+> manager, that is window colors, borderstyle, i3bar colors,
+> fonts, etc.
+> There's a bunch of theme files which are distributed
+> together with the i3-theme script to give the user a
+> variety of configurations to choose from.
+> 
+> The tarball containing the script, the themes and a README
+> can be found at:
+> 
+> http://www.okraits.de/upload/i3-theme-0.3.tar.gz
+> 
+> Please feel free to send me feedback and contributions
+> regarding bugreports, feature requests, improvements,
+> themes, etc. via mail at okraits at arcor.de. You can also
+> contact me on irc.twice-irc.de in #i3.
+> 
+> I'm looking forward to your feedback.
+> 
+> Greetings,
+> 
+> Oliver
+
+I just wanted to say thank you for this! It works really and I love the themes!
+
+From obrien654j at gmail.com  Sat Sep 21 20:00:33 2013
+From: obrien654j at gmail.com (Jeremy O'Brien)
+Date: Sat, 21 Sep 2013 14:00:33 -0400
+Subject: [i3] i3-theme script and a small collection of themes
+In-Reply-To: <20130921175829.GA45428@hahaha.sbx10787.masonoh.wayport.net>
+References: <20130918022152.GA5861@cisa85.de>
+ <20130921175829.GA45428@hahaha.sbx10787.masonoh.wayport.net>
+Message-ID: <20130921180033.GA45558@hahaha.sbx10787.masonoh.wayport.net>
+
+On Sat, Sep 21, 2013 at 01:58:29PM -0400, Jeremy O'Brien wrote:
+> On Wed, Sep 18, 2013 at 04:21:53AM +0200, Oliver Kraitschy wrote:
+> > Dear i3 community,
+> > 
+> > i have developed a script named i3-theme. Its purpose is
+> > to easily set and switch between several sets of
+> > configuration options ("themes") for the i3 window
+> > manager. These sets of configuration options are supposed
+> > to contain options regarding the looks of the window
+> > manager, that is window colors, borderstyle, i3bar colors,
+> > fonts, etc.
+> > There's a bunch of theme files which are distributed
+> > together with the i3-theme script to give the user a
+> > variety of configurations to choose from.
+> > 
+> > The tarball containing the script, the themes and a README
+> > can be found at:
+> > 
+> > http://www.okraits.de/upload/i3-theme-0.3.tar.gz
+> > 
+> > Please feel free to send me feedback and contributions
+> > regarding bugreports, feature requests, improvements,
+> > themes, etc. via mail at okraits at arcor.de. You can also
+> > contact me on irc.twice-irc.de in #i3.
+> > 
+> > I'm looking forward to your feedback.
+> > 
+> > Greetings,
+> > 
+> > Oliver
+> 
+> I just wanted to say thank you for this! It works really and I love the themes!
+
+s/well/really well/! My excitement made me typo!!!!
+
+From public at enkore.de  Sun Sep 22 19:48:59 2013
+From: public at enkore.de (mabe)
+Date: Sun, 22 Sep 2013 19:48:59 +0200
+Subject: [i3] Dissolve container?
+Message-ID: <523F2D8B.1070803@enkore.de>
+
+I wondered if there is a command to remove a container and move all
+children to the parent of the now removed container?
+
+[mabe]
+
+From veljko3 at gmail.com  Tue Sep 24 14:01:16 2013
+From: veljko3 at gmail.com (Veljko)
+Date: Tue, 24 Sep 2013 14:01:16 +0200
+Subject: [i3] Fullscreen over two monitors
+Message-ID: <20130924120116.GA7343@angelina.cable.vektor.net>
+
+Hi,
+
+Is it possible to make window fullscreen over two or all monitors? It
+can be handy when one have some really long line in editor. I know I can
+make that window floating and then stretch it over both visibe
+workspaces, but is there some native, tiling wm method?
+
+Regards,
+Veljko
+
+
+From holger at zedat.fu-berlin.de  Tue Sep 24 14:06:46 2013
+From: holger at zedat.fu-berlin.de (Holger =?iso-8859-1?Q?Wei=DF?=)
+Date: Tue, 24 Sep 2013 14:06:46 +0200
+Subject: [i3] Fullscreen over two monitors
+In-Reply-To: <20130924120116.GA7343@angelina.cable.vektor.net>
+References: <20130924120116.GA7343@angelina.cable.vektor.net>
+Message-ID: <20130924120646.GV512861@zedat.fu-berlin.de>
+
+* Veljko <veljko3 at gmail.com> [2013-09-24 14:01]:
+> Is it possible to make window fullscreen over two or all monitors? It
+> can be handy when one have some really long line in editor. I know I can
+> make that window floating and then stretch it over both visibe
+> workspaces, but is there some native, tiling wm method?
+
+| There is also a global fullscreen mode in i3 in which the client will
+| span all available outputs (the command is 'fullscreen global').
+
+[ http://i3wm.org/docs/userguide.html#_toggling_fullscreen_mode_for_a_window ]
+
+Holger
+
+From veljko3 at gmail.com  Tue Sep 24 14:33:33 2013
+From: veljko3 at gmail.com (Veljko)
+Date: Tue, 24 Sep 2013 14:33:33 +0200
+Subject: [i3] Fullscreen over two monitors
+In-Reply-To: <20130924120646.GV512861@zedat.fu-berlin.de>
+References: <20130924120116.GA7343@angelina.cable.vektor.net>
+ <20130924120646.GV512861@zedat.fu-berlin.de>
+Message-ID: <20130924123333.GB7343@angelina.cable.vektor.net>
+
+On Tue, Sep 24, 2013 at 02:06:46PM +0200, Holger Wei? wrote:
+> * Veljko <veljko3 at gmail.com> [2013-09-24 14:01]:
+> > Is it possible to make window fullscreen over two or all monitors? It
+> > can be handy when one have some really long line in editor. I know I can
+> > make that window floating and then stretch it over both visibe
+> > workspaces, but is there some native, tiling wm method?
+> 
+> | There is also a global fullscreen mode in i3 in which the client will
+> | span all available outputs (the command is 'fullscreen global').
+> 
+> [ http://i3wm.org/docs/userguide.html#_toggling_fullscreen_mode_for_a_window ]
+> 
+> Holger
+
+That seams to be what I need, but it doesn't work quite right. It moves
+window on left workspace and makes it fullscreen only on that workspace.
+Right workspace is empty, without i3-bar or any other window.
+
+Regards,
+Veljko
+
+
+From michael at i3wm.org  Tue Sep 24 18:12:41 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 24 Sep 2013 18:12:41 +0200
+Subject: [i3] Fullscreen over two monitors
+In-Reply-To: <20130924123333.GB7343@angelina.cable.vektor.net>
+References: <20130924120116.GA7343@angelina.cable.vektor.net>
+ <20130924120646.GV512861@zedat.fu-berlin.de>
+ <20130924123333.GB7343@angelina.cable.vektor.net>
+Message-ID: <x6y56m2o7a.fsf@midna.lan>
+
+Hi Veljko,
+
+Veljko <veljko3 at gmail.com> writes:
+> On Tue, Sep 24, 2013 at 02:06:46PM +0200, Holger Wei? wrote:
+>> * Veljko <veljko3 at gmail.com> [2013-09-24 14:01]:
+>> > Is it possible to make window fullscreen over two or all monitors? It
+>> > can be handy when one have some really long line in editor. I know I can
+>> > make that window floating and then stretch it over both visibe
+>> > workspaces, but is there some native, tiling wm method?
+>> 
+>> | There is also a global fullscreen mode in i3 in which the client will
+>> | span all available outputs (the command is 'fullscreen global').
+>> 
+>> [ http://i3wm.org/docs/userguide.html#_toggling_fullscreen_mode_for_a_window ]
+>> 
+>> Holger
+>
+> That seams to be what I need, but it doesn't work quite right. It moves
+> window on left workspace and makes it fullscreen only on that workspace.
+> Right workspace is empty, without i3-bar or any other window.
+Most likely fixed with
+http://code.stapelberg.de/git/i3/commit/?h=next&id=93463bc3932e820bc86383fc4de1a07c82356967
+
+-- 
+Best regards,
+Michael
+
+From pausiert at gmail.com  Tue Sep 24 21:27:47 2013
+From: pausiert at gmail.com (pausiert)
+Date: Tue, 24 Sep 2013 14:27:47 -0500
+Subject: [i3] i3lock run script
+Message-ID: <20130924181509.GA7062@black>
+
+hello, is there a way to run a script every time a wrong password is
+entered in i3lock? I'm just curious how often people try to get access.
+
+Pau
+
+-- 
+
+From popoffka at gmail.com  Tue Sep 24 21:27:24 2013
+From: popoffka at gmail.com (Aleksejs Popovs)
+Date: Tue, 24 Sep 2013 22:27:24 +0300
+Subject: [i3] i3lock run script
+In-Reply-To: <20130924181509.GA7062@black>
+References: <20130924181509.GA7062@black>
+Message-ID: <CAPgtAyWs9xuFogAAgi5XcrCO-hn1O8brY5p+W+nWAiZ7jSketw@mail.gmail.com>
+
+There's no built-in way, but you can always patch i3lock to do it, its
+code is really simple.
+
+Also, I'm maintaining a fork of i3lock which features a wrong attempt
+number display: https://github.com/popoffka/i3lock
+
+On 24 September 2013 22:27, pausiert <pausiert at gmail.com> wrote:
+> hello, is there a way to run a script every time a wrong password is
+> entered in i3lock? I'm just curious how often people try to get access.
+>
+> Pau
+>
+> --
+
+
+
+-- 
+Best regards,
+Aleksejs Popovs
+Riga, Latvia
+
+From baspape at gmail.com  Tue Sep 24 22:03:46 2013
+From: baspape at gmail.com (Bas Pape)
+Date: Tue, 24 Sep 2013 22:03:46 +0200
+Subject: [i3] i3lock run script
+In-Reply-To: <CAPgtAyWs9xuFogAAgi5XcrCO-hn1O8brY5p+W+nWAiZ7jSketw@mail.gmail.com>
+References: <20130924181509.GA7062@black>
+ <CAPgtAyWs9xuFogAAgi5XcrCO-hn1O8brY5p+W+nWAiZ7jSketw@mail.gmail.com>
+Message-ID: <CAMoU6ubL5GNwzr3VVibb3StXyScQTHge5kL2iCE7wz3d0+sMRQ@mail.gmail.com>
+
+On 24 September 2013 22:27, pausiert <pausiert at gmail.com> wrote:
+> hello, is there a way to run a script every time a wrong password is
+> entered in i3lock? I'm just curious how often people try to get access.
+
+As i3lock just uses PAM to authenticate users, you can use pam_tally2
+in combination with faillog (see [1]). Alternatively the unix_chkpwd
+(i.e. the regular password checking module) logs failures to syslog,
+which you could count.
+
+[1] http://www.cyberciti.biz/tips/rhel-centos-fedora-linux-log-failed-login.html
+
+--
+Tucos
+
+From okraits at arcor.de  Wed Sep 25 02:01:40 2013
+From: okraits at arcor.de (Oliver Kraitschy)
+Date: Wed, 25 Sep 2013 02:01:40 +0200
+Subject: [i3] i3-theme script and a small collection of themes
+In-Reply-To: <20130919073832.GC5861@cisa85.de>
+References: <20130918022152.GA5861@cisa85.de> <20130919073832.GC5861@cisa85.de>
+Message-ID: <20130925000140.GM5861@cisa85.de>
+
+Hi all,
+
+FYI, there's an i3-theme page on my website now.
+
+It contains a link to the latest tarball and
+screenshots of all included themes.
+
+You can find it here:
+
+http://www.okraits.de/index.php?section=projects&page=i3-theme
+
+There are some things on the TODO list, so i'll work on that so
+that you can expect a new version in the near future.
+
+Greetings,
+
+Oliver
+
+On Thu, Sep 19, 2013 at 09:38:33AM +0200, Oliver Kraitschy wrote:
+> Hi all,
+> 
+> FYI, there's a new version of the script with more themes available at
+> 
+> http://www.okraits.de/upload/i3-theme-0.4.tar.gz
+> 
+> Please check the README for the changelog.
+> 
+> I will add an i3-theme section to my website http://okraits.de where the newest version will be available.
+> 
+> Greetings,
+> 
+> Oliver
+> 
+> On Wed, Sep 18, 2013 at 04:21:53AM +0200, Oliver Kraitschy wrote:
+
+From veljko3 at gmail.com  Fri Sep 27 11:30:54 2013
+From: veljko3 at gmail.com (Veljko)
+Date: Fri, 27 Sep 2013 11:30:54 +0200
+Subject: [i3] Fullscreen over two monitors
+In-Reply-To: <x6y56m2o7a.fsf@midna.lan>
+References: <20130924120116.GA7343@angelina.cable.vektor.net>
+ <20130924120646.GV512861@zedat.fu-berlin.de>
+ <20130924123333.GB7343@angelina.cable.vektor.net>
+ <x6y56m2o7a.fsf@midna.lan>
+Message-ID: <20130927093054.GA10596@angelina.example.com>
+
+Hi Michael,
+
+> Most likely fixed with
+> http://code.stapelberg.de/git/i3/commit/?h=next&id=93463bc3932e820bc86383fc4de1a07c82356967
+
+Is version with that patch available in Debian? Is it in 4.6-1?
+
+Regards,
+Veljko
+
+
+From michael at i3wm.org  Fri Sep 27 18:24:08 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 27 Sep 2013 18:24:08 +0200
+Subject: [i3] Fullscreen over two monitors
+In-Reply-To: <20130927093054.GA10596@angelina.example.com>
+References: <20130924120116.GA7343@angelina.cable.vektor.net>
+ <20130924120646.GV512861@zedat.fu-berlin.de>
+ <20130924123333.GB7343@angelina.cable.vektor.net> <x6y56m2o7a.fsf@midna.lan>
+ <20130927093054.GA10596@angelina.example.com>
+Message-ID: <x638oq2pxz.fsf@midna.lan>
+
+Hi Veljko,
+
+Veljko <veljko3 at gmail.com> writes:
+>> Most likely fixed with
+>> http://code.stapelberg.de/git/i3/commit/?h=next&id=93463bc3932e820bc86383fc4de1a07c82356967
+>
+> Is version with that patch available in Debian? Is it in 4.6-1?
+4.6 does not contain that commit. See
+http://i3wm.org/docs/repositories.html for the Debian repository with
+builds from the latest source.
+
+-- 
+Best regards,
+Michael
+
+From veljko3 at gmail.com  Sun Sep 29 09:13:53 2013
+From: veljko3 at gmail.com (Veljko)
+Date: Sun, 29 Sep 2013 09:13:53 +0200
+Subject: [i3] Fullscreen over two monitors
+In-Reply-To: <x638oq2pxz.fsf@midna.lan>
+References: <20130924120116.GA7343@angelina.cable.vektor.net>
+ <20130924120646.GV512861@zedat.fu-berlin.de>
+ <20130924123333.GB7343@angelina.cable.vektor.net>
+ <x6y56m2o7a.fsf@midna.lan>
+ <20130927093054.GA10596@angelina.example.com>
+ <x638oq2pxz.fsf@midna.lan>
+Message-ID: <20130929071353.GA4001@angelina.example.com>
+
+On Fri, Sep 27, 2013 at 06:24:08PM +0200, Michael Stapelberg wrote:
+> Hi Veljko,
+> 
+> Veljko <veljko3 at gmail.com> writes:
+> >> Most likely fixed with
+> >> http://code.stapelberg.de/git/i3/commit/?h=next&id=93463bc3932e820bc86383fc4de1a07c82356967
+> >
+> > Is version with that patch available in Debian? Is it in 4.6-1?
+> 4.6 does not contain that commit. See
+> http://i3wm.org/docs/repositories.html for the Debian repository with
+> builds from the latest source.
+
+
+Thanks, Michael, I missed that one.
+
+Regards,
+Veljko
+
+From S.J.Eglen at damtp.cam.ac.uk  Mon Sep 30 17:48:03 2013
+From: S.J.Eglen at damtp.cam.ac.uk (Stephen Eglen)
+Date: Mon, 30 Sep 2013 16:48:03 +0100
+Subject: [i3] keeping one window protected?
+Message-ID: <m2bo3anwek.fsf@damtp.cam.ac.uk>
+
+Hello,
+
+I'm just experimenting with i3wm, as my first tiling manager.  Is the
+following possible?
+
+Within workspace 1, I'd like to have my Emacs window on the left half of
+the window, and keep it 'pinned there' to half the screen.  On the right
+hand half, I'd like the remaining space to be used by whatever
+application (a terminal, Firefox, evince) needs it -- and those other
+windows exist in e.g. tabbed mode.
+
+What I don't want to happen is for Emacs to shrink as other applications
+get added to workspace one.  Does that make sense?
+
+Thanks for a great piece of software.
+
+Stephen Eglen
+
+From philippe.virouleau at imag.fr  Mon Sep 30 18:08:31 2013
+From: philippe.virouleau at imag.fr (Philippe Virouleau)
+Date: Mon, 30 Sep 2013 18:08:31 +0200
+Subject: [i3] keeping one window protected?
+In-Reply-To: <m2bo3anwek.fsf@damtp.cam.ac.uk>
+References: <m2bo3anwek.fsf@damtp.cam.ac.uk>
+Message-ID: <20130930160831.GC31574@daisy.inrialpes.fr>
+
+Hi,
+
+On Mon, Sep 30, 2013 at 04:48:03PM +0100, Stephen Eglen wrote:
+> Hello,
+> 
+> I'm just experimenting with i3wm, as my first tiling manager.  Is the
+> following possible?
+> 
+> Within workspace 1, I'd like to have my Emacs window on the left half of
+> the window, and keep it 'pinned there' to half the screen.  On the right
+> hand half, I'd like the remaining space to be used by whatever
+> application (a terminal, Firefox, evince) needs it -- and those other
+> windows exist in e.g. tabbed mode.
+You can try the following : start emacs, hit split-horizontal if it's not your default, start whatever application you want and focus it, hit split-vertical or split-horizontal, select your preferred mode and finally start some other appications.
+
+I don't know a way of keeping this setup if you close all the application but emacs : since the container for the right half of your workspace wil be destroyed, I don't think it's possible.
+
+-- 
+Philippe Virouleau
+IJD INRIA - ?quipe MOAIS
+
+From michael at i3wm.org  Mon Sep 30 19:10:06 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 30 Sep 2013 19:10:06 +0200
+Subject: [i3] keeping one window protected?
+In-Reply-To: <20130930160831.GC31574@daisy.inrialpes.fr>
+References: <m2bo3anwek.fsf@damtp.cam.ac.uk>
+ <20130930160831.GC31574@daisy.inrialpes.fr>
+Message-ID: <x6d2nq1bip.fsf@midna.lan>
+
+Hi Philippe,
+
+Philippe Virouleau <philippe.virouleau at imag.fr> writes:
+>> Within workspace 1, I'd like to have my Emacs window on the left half of
+>> the window, and keep it 'pinned there' to half the screen.  On the right
+>> hand half, I'd like the remaining space to be used by whatever
+>> application (a terminal, Firefox, evince) needs it -- and those other
+>> windows exist in e.g. tabbed mode.
+> You can try the following : start emacs, hit split-horizontal if it's
+> not your default, start whatever application you want and focus it,
+> hit split-vertical or split-horizontal, select your preferred mode and
+> finally start some other appications.
+>
+> I don't know a way of keeping this setup if you close all the
+> application but emacs : since the container for the right half of your
+> workspace wil be destroyed, I don't think it's possible.
+You are correct. I?d recommend a stacked or tabbed container on the
+right, which you just never empty entirely.
+
+-- 
+Best regards,
+Michael
+

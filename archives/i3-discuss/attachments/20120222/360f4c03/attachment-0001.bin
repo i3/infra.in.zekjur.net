@@ -1,0 +1,90 @@
+From 0598e6f2a7f839497a9d97c250c46b69ca4c9d9f Mon Sep 17 00:00:00 2001
+From: darkraven <drdarkraven@gmail.com>
+Date: Wed, 22 Feb 2012 14:19:24 +0800
+Subject: 	When a workspace marked 'urgent', i3bar unhide
+ itself. if I want to hide it again, I must press the
+ modifier.This sometimes annoys me. 	In this patch I
+ change the above behavior to this: If a urgent
+ workspace occurs, i3bar will unhide itself; and when
+ you navigates away from the last urgent workspace and
+ there is no more urgent workspace, i3bar will hide
+ itself again.
+
+---
+ i3bar/src/xcb.c |   25 +++++++++++++++++++++++--
+ 1 files changed, 23 insertions(+), 2 deletions(-)
+
+diff --git a/i3bar/src/xcb.c b/i3bar/src/xcb.c
+index 2b173ee..84f43fe 100644
+--- a/i3bar/src/xcb.c
++++ b/i3bar/src/xcb.c
+@@ -161,7 +161,7 @@ void refresh_statusline() {
+  *
+  */
+ void hide_bars() {
+-    if (!config.hide_on_modifier) {
++    if (!config.hide_on_modifier || bar_hidden) {
+         return;
+     }
+ 
+@@ -180,7 +180,7 @@ void hide_bars() {
+  *
+  */
+ void unhide_bars() {
+-    if (!config.hide_on_modifier) {
++    if (!config.hide_on_modifier || bar_hidden) {
+         return;
+     }
+ 
+@@ -1429,6 +1429,9 @@ void draw_bars() {
+         }
+ 
+         i3_ws *ws_walk;
++        static char *last_urgent_ws = NULL;
++        bool has_urgent = false, walks_away = true;
++
+         TAILQ_FOREACH(ws_walk, outputs_walk->workspaces, tailq) {
+             DLOG("Drawing Button for WS %s at x = %d, len = %d\n", ws_walk->name, i, ws_walk->name_width);
+             uint32_t fg_color = colors.inactive_ws_fg;
+@@ -1443,6 +1446,8 @@ void draw_bars() {
+                     fg_color = colors.focus_ws_fg;
+                     bg_color = colors.focus_ws_bg;
+                     border_color = colors.focus_ws_border;
++                    if(last_urgent_ws && strcmp(ws_walk->name, last_urgent_ws) == 0)
++                        walks_away = false;
+                 }
+             }
+             if (ws_walk->urgent) {
+@@ -1451,6 +1456,9 @@ void draw_bars() {
+                 bg_color = colors.urgent_ws_bg;
+                 border_color = colors.urgent_ws_border;
+                 /* The urgent-hint should get noticed, so we unhide the bars shortly */
++                has_urgent = true;
++                free(last_urgent_ws);
++                last_urgent_ws = strdup(ws_walk->name);
+                 unhide_bars();
+             }
+             uint32_t mask = XCB_GC_FOREGROUND | XCB_GC_BACKGROUND;
+@@ -1482,6 +1490,19 @@ void draw_bars() {
+             i += 10 + ws_walk->name_width + 1;
+         }
+ 
++        if(!has_urgent && !mod_pressed) {
++            if(last_urgent_ws){
++                if(walks_away){
++                    /* Navigated away from the urgent workspace */
++                    free(last_urgent_ws);
++                    last_urgent_ws = NULL;
++                    hide_bars();
++                }
++            } else
++                /* No urgent and modifier is not pressed */
++                hide_bars();
++        }
++
+         i = 0;
+     }
+ 
+-- 
+1.7.9.1
+

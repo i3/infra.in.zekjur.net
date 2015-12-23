@@ -1,0 +1,616 @@
+From dcoppa at gmail.com  Wed Apr  6 13:00:44 2011
+From: dcoppa at gmail.com (David Coppa)
+Date: Wed, 6 Apr 2011 13:00:44 +0200
+Subject: [i3] A_WM_TAKE_FOCUS ???
+Message-ID: <20110406110044.GA18158@d630.dacolab.dom>
+
+
+cc -O2 -pipe -Wall -std=c99 -pipe -Wall -Wunused-value -Iinclude -I/usr/local/include -DI3_VERSION=\""3.e-bf2 (2011-01-19)"\" -I/usr/X11R6/include -gdwarf-2 -g3 -DLOGLEVEL="(1 << 16)" -c -o src/manage.o src/manage.c
+src/manage.c: In function 'reparent_window':
+src/manage.c:480: error: 'A_WM_TAKE_FOCUS' undeclared (first use in this function)
+src/manage.c:480: error: (Each undeclared identifier is reported only once
+src/manage.c:480: error: for each function it appears in.)
+
+Shouldn't it be "WM_TAKE_FOCUS"? Where am I wrong?
+
+Cheers, 
+David
+
+
+From michael+i3 at stapelberg.de  Wed Apr  6 13:06:59 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Wed, 06 Apr 2011 13:06:59 +0200
+Subject: [i3] A_WM_TAKE_FOCUS ???
+In-Reply-To: <20110406110044.GA18158@d630.dacolab.dom>
+References: <20110406110044.GA18158@d630.dacolab.dom>
+Message-ID: <1302087968-sup-7862@midna.zekjur.net>
+
+Hi David,
+
+Excerpts from David Coppa's message of 2011-04-06 13:00:44 +0200:
+> cc -O2 -pipe -Wall -std=c99 -pipe -Wall -Wunused-value -Iinclude -I/usr/local/include -DI3_VERSION=\""3.e-bf2 (2011-01-19)"\" -I/usr/X11R6/include -gdwarf-2 -g3 -DLOGLEVEL="(1 << 16)" -c -o src/manage.o src/manage.c
+> src/manage.c: In function 'reparent_window':
+> src/manage.c:480: error: 'A_WM_TAKE_FOCUS' undeclared (first use in this function)
+> src/manage.c:480: error: (Each undeclared identifier is reported only once
+> src/manage.c:480: error: for each function it appears in.)
+> 
+> Shouldn't it be "WM_TAKE_FOCUS"? Where am I wrong?
+It shouldn?t (since commit 86117db4345190302b73ca4e95e8431459b3868b). Are you
+sure you did 'make clean' before making? Compilation works fine for me here.
+
+Best regards,
+Michael
+
+From honza801 at gmail.com  Wed Apr 20 10:46:52 2011
+From: honza801 at gmail.com (Jan Krcmar)
+Date: Wed, 20 Apr 2011 10:46:52 +0200
+Subject: [i3] sticky tray?
+Message-ID: <BANLkTikP9nO0EGQ9xAGFmrKakM+fVe62Bg@mail.gmail.com>
+
+hi,
+
+is it possible or does anyone know about existing tray program, that
+stays on all workspaces for i3?
+i'm using dzen2+stalonetray.
+
+dzen2 completely meet my needs of bar, but i can't force stalonetray
+to stay on all workspaces :(
+
+thanks for hints
+fous
+
+From fernandotcl at gmail.com  Wed Apr 20 18:46:47 2011
+From: fernandotcl at gmail.com (Fernando Lemos)
+Date: Wed, 20 Apr 2011 13:46:47 -0300
+Subject: [i3] sticky tray?
+In-Reply-To: <BANLkTikP9nO0EGQ9xAGFmrKakM+fVe62Bg@mail.gmail.com>
+References: <BANLkTikP9nO0EGQ9xAGFmrKakM+fVe62Bg@mail.gmail.com>
+Message-ID: <BANLkTi=_uOSTO=T3ePCma+b92Bvr_2BipA@mail.gmail.com>
+
+Hi,
+
+On Wed, Apr 20, 2011 at 5:46 AM, Jan Krcmar <honza801 at gmail.com> wrote:
+> is it possible or does anyone know about existing tray program, that
+> stays on all workspaces for i3?
+> i'm using dzen2+stalonetray.
+
+There's an open enhancement request asking for sticky clients (#11),
+that might solve your problem in the long term.
+
+I haven't used a "tray area" in some time now, but I remember pypanel
+and fbpanel worked well (if you don't mind an extra bar). I don't know
+if they'll work properly with i3 as i3 doesn't support all hints (for
+workspace switching with the pager, for example).
+
+Hope that helps.
+
+Regards,
+
+From honza801 at gmail.com  Thu Apr 21 15:49:28 2011
+From: honza801 at gmail.com (Jan Krcmar)
+Date: Thu, 21 Apr 2011 15:49:28 +0200
+Subject: [i3] egde snapping for floating windows
+In-Reply-To: <1296209361-sup-851@midna.zekjur.net>
+References: <AANLkTikqYCFPK2Y7ic3Aw+UP6j=6rbeLDtd_T1za2aY8@mail.gmail.com>
+	<1296209361-sup-851@midna.zekjur.net>
+Message-ID: <BANLkTinfV0pfy5syM4Mo2uKyOJB6Hao06g@mail.gmail.com>
+
+hi,
+
+finally i've got some time to spend with i3
+the 'tree' branch compiles, but
+
+i3: ev.c:2621: ev_io_start: Assertion `("libev: ev_io_start called
+with negative fd", fd >= 0)' failed.
+
+while starting, so i couldn test anything on this...
+
+anyway, i've got snapping patch for the master branch
+http://home.zcu.cz/~honza801/i3-floating.diff
+
+features: snapps floating windows, snap floating window to the
+workspace, align even non-touching floating windows on the workspace
+
+please enjoy and keep in mind, that i'm not a C-programator
+fous
+
+2011/1/28 Michael Stapelberg <michael+i3 at stapelberg.de>:
+> Hi Jan,
+>
+> Excerpts from Jan Krcmar's message of 2011-01-28 10:35:22 +0100:
+>> is there any option to turn on edge snapping of floating windows?
+>> i got used to it on fluxbox/wmii/gnome/kde
+> No, unfortunately not. Keep in mind that i3 is primarily a tiling window
+> manager, not a floating one :). You could submit a feature request (but it
+> doesn?t have high priority right now) or a patch (if you decide for the patch,
+> please use the tree branch).
+>
+> Best regards,
+> Michael
+>
+
+From fernandotcl at gmail.com  Fri Apr 22 04:52:48 2011
+From: fernandotcl at gmail.com (Fernando Lemos)
+Date: Thu, 21 Apr 2011 23:52:48 -0300
+Subject: [i3] egde snapping for floating windows
+In-Reply-To: <BANLkTinfV0pfy5syM4Mo2uKyOJB6Hao06g@mail.gmail.com>
+References: <AANLkTikqYCFPK2Y7ic3Aw+UP6j=6rbeLDtd_T1za2aY8@mail.gmail.com>
+	<1296209361-sup-851@midna.zekjur.net>
+	<BANLkTinfV0pfy5syM4Mo2uKyOJB6Hao06g@mail.gmail.com>
+Message-ID: <BANLkTi=8gtHAaFU-aQW2KXyRsrknOafWdw@mail.gmail.com>
+
+Hi,
+
+On Thu, Apr 21, 2011 at 10:49 AM, Jan Krcmar <honza801 at gmail.com> wrote:
+> finally i've got some time to spend with i3
+> the 'tree' branch compiles, but
+>
+> i3: ev.c:2621: ev_io_start: Assertion `("libev: ev_io_start called
+> with negative fd", fd >= 0)' failed.
+
+I haven't really looked at the patch (thanks anyways, it's always
+appreciated), but can you reproduce it with the current -tree? If so,
+could you please add a printf (or DLOG or whatever) above each call to
+ev_io_start (3 in main.c, 1 in ipc.c) and file a bug report?
+
+Thanks,
+
+From honza801 at gmail.com  Fri Apr 22 10:47:50 2011
+From: honza801 at gmail.com (Jan Krcmar)
+Date: Fri, 22 Apr 2011 10:47:50 +0200
+Subject: [i3] egde snapping for floating windows
+In-Reply-To: <BANLkTi=8gtHAaFU-aQW2KXyRsrknOafWdw@mail.gmail.com>
+References: <AANLkTikqYCFPK2Y7ic3Aw+UP6j=6rbeLDtd_T1za2aY8@mail.gmail.com>
+	<1296209361-sup-851@midna.zekjur.net>
+	<BANLkTinfV0pfy5syM4Mo2uKyOJB6Hao06g@mail.gmail.com>
+	<BANLkTi=8gtHAaFU-aQW2KXyRsrknOafWdw@mail.gmail.com>
+Message-ID: <BANLkTinMr4A3v66g-LcBSssOamTMF=gbYw@mail.gmail.com>
+
+hi,
+made your wishes come true
+
+04/22/2011 10:44:23 AM - main.c: ev_io_start ipc_io
+04/22/2011 10:44:23 AM - main.c: ev_io_start xcb_watcher
+i3: ev.c:2621: ev_io_start: Assertion `("libev: ev_io_start called
+with negative fd", fd >= 0)' failed.
+Aborted
+
+so the problem is in theese lines of main.c
+
+ev_io_init(xcb_watcher, xcb_got_event, xcb_get_file_descriptor(conn), EV_READ);
+LOG("main.c: ev_io_start xcb_watcher\n");
+ev_io_start(loop, xcb_watcher);
+
+do you need any additional informations?
+btw, i'm trying to run i3 in the Xnest, could this be the problem?
+
+regards
+fous
+
+2011/4/22 Fernando Lemos <fernandotcl at gmail.com>:
+> Hi,
+>
+> On Thu, Apr 21, 2011 at 10:49 AM, Jan Krcmar <honza801 at gmail.com> wrote:
+>> finally i've got some time to spend with i3
+>> the 'tree' branch compiles, but
+>>
+>> i3: ev.c:2621: ev_io_start: Assertion `("libev: ev_io_start called
+>> with negative fd", fd >= 0)' failed.
+>
+> I haven't really looked at the patch (thanks anyways, it's always
+> appreciated), but can you reproduce it with the current -tree? If so,
+> could you please add a printf (or DLOG or whatever) above each call to
+> ev_io_start (3 in main.c, 1 in ipc.c) and file a bug report?
+>
+> Thanks,
+>
+
+From honza801 at gmail.com  Fri Apr 22 15:28:17 2011
+From: honza801 at gmail.com (Jan Krcmar)
+Date: Fri, 22 Apr 2011 15:28:17 +0200
+Subject: [i3] egde snapping for floating windows
+In-Reply-To: <BANLkTinMr4A3v66g-LcBSssOamTMF=gbYw@mail.gmail.com>
+References: <AANLkTikqYCFPK2Y7ic3Aw+UP6j=6rbeLDtd_T1za2aY8@mail.gmail.com>
+	<1296209361-sup-851@midna.zekjur.net>
+	<BANLkTinfV0pfy5syM4Mo2uKyOJB6Hao06g@mail.gmail.com>
+	<BANLkTi=8gtHAaFU-aQW2KXyRsrknOafWdw@mail.gmail.com>
+	<BANLkTinMr4A3v66g-LcBSssOamTMF=gbYw@mail.gmail.com>
+Message-ID: <BANLkTimP18j7XjbNNjXiixF3E-3FMr8dcQ@mail.gmail.com>
+
+hi again,
+
+the problem was in the Xnest, running it on vt works good, but...
+
+the second problem is in the randr extension.
+in src/randr.c: void randr_init function breaks the file descriptor of
+the xcb via xcb_randr_select_input function
+
+i think that all the xrandr functions shouldn't be called if the
+xrandr extension is missing. anyway the debug log says "Checking for
+XRandR..." but it does not check anythink, it just calls the randr
+functions.
+
+so, here is my patched rand_init function, it is definetly NOT a good
+workaround, but it works. ;)
+
+void randr_init(int *event_base) {
+    const xcb_query_extension_reply_t *extreply;
+
+    extreply = xcb_get_extension_data(conn, &xcb_randr_id);
+    if (!extreply->present) {
+        disable_randr(conn);
+        return;
+    }
+
+    randr_query_outputs();
+
+    if (event_base != NULL)
+        *event_base = extreply->first_event;
+
+    xcb_randr_select_input(conn, root,
+            XCB_RANDR_NOTIFY_MASK_SCREEN_CHANGE |
+            XCB_RANDR_NOTIFY_MASK_OUTPUT_CHANGE |
+            XCB_RANDR_NOTIFY_MASK_CRTC_CHANGE |
+            XCB_RANDR_NOTIFY_MASK_OUTPUT_PROPERTY);
+
+    xcb_flush(conn);
+}
+
+hope this helped...
+
+regards
+fous
+
+
+2011/4/22 Jan Krcmar <honza801 at gmail.com>:
+> hi,
+> made your wishes come true
+>
+> 04/22/2011 10:44:23 AM - main.c: ev_io_start ipc_io
+> 04/22/2011 10:44:23 AM - main.c: ev_io_start xcb_watcher
+> i3: ev.c:2621: ev_io_start: Assertion `("libev: ev_io_start called
+> with negative fd", fd >= 0)' failed.
+> Aborted
+>
+> so the problem is in theese lines of main.c
+>
+> ev_io_init(xcb_watcher, xcb_got_event, xcb_get_file_descriptor(conn), EV_READ);
+> LOG("main.c: ev_io_start xcb_watcher\n");
+> ev_io_start(loop, xcb_watcher);
+>
+> do you need any additional informations?
+> btw, i'm trying to run i3 in the Xnest, could this be the problem?
+>
+> regards
+> fous
+>
+> 2011/4/22 Fernando Lemos <fernandotcl at gmail.com>:
+>> Hi,
+>>
+>> On Thu, Apr 21, 2011 at 10:49 AM, Jan Krcmar <honza801 at gmail.com> wrote:
+>>> finally i've got some time to spend with i3
+>>> the 'tree' branch compiles, but
+>>>
+>>> i3: ev.c:2621: ev_io_start: Assertion `("libev: ev_io_start called
+>>> with negative fd", fd >= 0)' failed.
+>>
+>> I haven't really looked at the patch (thanks anyways, it's always
+>> appreciated), but can you reproduce it with the current -tree? If so,
+>> could you please add a printf (or DLOG or whatever) above each call to
+>> ev_io_start (3 in main.c, 1 in ipc.c) and file a bug report?
+>>
+>> Thanks,
+>>
+>
+
+From fernandotcl at gmail.com  Fri Apr 22 20:29:34 2011
+From: fernandotcl at gmail.com (Fernando Lemos)
+Date: Fri, 22 Apr 2011 15:29:34 -0300
+Subject: [i3] egde snapping for floating windows
+In-Reply-To: <BANLkTimP18j7XjbNNjXiixF3E-3FMr8dcQ@mail.gmail.com>
+References: <AANLkTikqYCFPK2Y7ic3Aw+UP6j=6rbeLDtd_T1za2aY8@mail.gmail.com>
+	<1296209361-sup-851@midna.zekjur.net>
+	<BANLkTinfV0pfy5syM4Mo2uKyOJB6Hao06g@mail.gmail.com>
+	<BANLkTi=8gtHAaFU-aQW2KXyRsrknOafWdw@mail.gmail.com>
+	<BANLkTinMr4A3v66g-LcBSssOamTMF=gbYw@mail.gmail.com>
+	<BANLkTimP18j7XjbNNjXiixF3E-3FMr8dcQ@mail.gmail.com>
+Message-ID: <BANLkTinWhzyq3nqimpHWARUJdJb5dT-Fng@mail.gmail.com>
+
+Hi,
+
+On Fri, Apr 22, 2011 at 10:28 AM, Jan Krcmar <honza801 at gmail.com> wrote:
+> the problem was in the Xnest, running it on vt works good, but...
+
+Thanks for the info. I can reproduce that one, xcb_get_file_descriptor
+is returning -1 in Xnest. The docs for xcb_get_file_descriptor say:
+
+"Accessor for the file descriptor that was passed to the
+xcb_connect_to_fd call that returned c. "
+
+The way I see it, we it doesn't guarantee we'll get a descriptor
+unless we used xcb_connect_to_fd instead of xcb_connect, but it seems
+natural that xcb_connect would call xcb_connect_to_fd. I wouldn't be
+surprised if this was just a bug in XCB or Xnest. Xnest is kinda dead
+these days, isn't it? I think Xephyr is the new "de facto" X within X,
+and i3-tree does work in Xephyr.
+
+> the second problem is in the randr extension.
+> in src/randr.c: void randr_init function breaks the file descriptor of
+> the xcb via xcb_randr_select_input function
+>
+> i think that all the xrandr functions shouldn't be called if the
+> xrandr extension is missing. anyway the debug log says "Checking for
+> XRandR..." but it does not check anythink, it just calls the randr
+> functions.
+>
+> so, here is my patched rand_init function, it is definetly NOT a good
+> workaround, but it works. ;)
+
+It looks correct to me, I don't see why we would want to be notified
+about RandR events if we don't support them. But then again I don't
+know anything about RandR.
+
+Regards,
+
+From honza801 at gmail.com  Tue Apr 26 18:37:22 2011
+From: honza801 at gmail.com (Jan Krcmar)
+Date: Tue, 26 Apr 2011 18:37:22 +0200
+Subject: [i3] egde snapping for floating windows
+In-Reply-To: <BANLkTinWhzyq3nqimpHWARUJdJb5dT-Fng@mail.gmail.com>
+References: <AANLkTikqYCFPK2Y7ic3Aw+UP6j=6rbeLDtd_T1za2aY8@mail.gmail.com>
+	<1296209361-sup-851@midna.zekjur.net>
+	<BANLkTinfV0pfy5syM4Mo2uKyOJB6Hao06g@mail.gmail.com>
+	<BANLkTi=8gtHAaFU-aQW2KXyRsrknOafWdw@mail.gmail.com>
+	<BANLkTinMr4A3v66g-LcBSssOamTMF=gbYw@mail.gmail.com>
+	<BANLkTimP18j7XjbNNjXiixF3E-3FMr8dcQ@mail.gmail.com>
+	<BANLkTinWhzyq3nqimpHWARUJdJb5dT-Fng@mail.gmail.com>
+Message-ID: <BANLkTikfgOR3t1MzgNQzsh1RUSgDM5Cp-A@mail.gmail.com>
+
+hi,
+
+i didn't know Xephyr... :)
+
+so, here is the patch for the tree branch
+http://home.zcu.cz/~honza801/i3-floating-tree.diff
+
+cheers
+fous
+
+
+2011/4/22 Fernando Lemos <fernandotcl at gmail.com>:
+> Hi,
+>
+> On Fri, Apr 22, 2011 at 10:28 AM, Jan Krcmar <honza801 at gmail.com> wrote:
+>> the problem was in the Xnest, running it on vt works good, but...
+>
+> Thanks for the info. I can reproduce that one, xcb_get_file_descriptor
+> is returning -1 in Xnest. The docs for xcb_get_file_descriptor say:
+>
+> "Accessor for the file descriptor that was passed to the
+> xcb_connect_to_fd call that returned c. "
+>
+> The way I see it, we it doesn't guarantee we'll get a descriptor
+> unless we used xcb_connect_to_fd instead of xcb_connect, but it seems
+> natural that xcb_connect would call xcb_connect_to_fd. I wouldn't be
+> surprised if this was just a bug in XCB or Xnest. Xnest is kinda dead
+> these days, isn't it? I think Xephyr is the new "de facto" X within X,
+> and i3-tree does work in Xephyr.
+>
+>> the second problem is in the randr extension.
+>> in src/randr.c: void randr_init function breaks the file descriptor of
+>> the xcb via xcb_randr_select_input function
+>>
+>> i think that all the xrandr functions shouldn't be called if the
+>> xrandr extension is missing. anyway the debug log says "Checking for
+>> XRandR..." but it does not check anythink, it just calls the randr
+>> functions.
+>>
+>> so, here is my patched rand_init function, it is definetly NOT a good
+>> workaround, but it works. ;)
+>
+> It looks correct to me, I don't see why we would want to be notified
+> about RandR events if we don't support them. But then again I don't
+> know anything about RandR.
+>
+> Regards,
+>
+
+From badboy at archlinux.us  Tue Apr 26 23:42:55 2011
+From: badboy at archlinux.us (badboy at archlinux.us)
+Date: Tue, 26 Apr 2011 23:42:55 +0200
+Subject: [i3] [PATCH] fix code to work with yajl 2.0.0
+Message-ID: <1303854175-26020-1-git-send-email-badboy@archlinux.us>
+
+From: Jan-Erik Rediger <badboy at archlinux.us>
+
+---
+ src/ipc.c |   14 +++++++-------
+ 1 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/src/ipc.c b/src/ipc.c
+index fcda355..2cdc0bd 100644
+--- a/src/ipc.c
++++ b/src/ipc.c
+@@ -85,7 +85,7 @@ static bool mkdirp(const char *path) {
+ }
+ 
+ static void ipc_send_message(int fd, const unsigned char *payload,
+-                             int message_type, int message_size) {
++                             int message_type, size_t message_size) {
+         int buffer_size = strlen("i3-ipc") + sizeof(uint32_t) +
+                           sizeof(uint32_t) + message_size;
+         char msg[buffer_size];
+@@ -182,7 +182,7 @@ IPC_HANDLER(get_workspaces) {
+         if (last_focused == SLIST_END(&(c_ws->focus_stack)))
+                 last_focused = NULL;
+ 
+-        yajl_gen gen = yajl_gen_alloc(NULL, NULL);
++        yajl_gen gen = yajl_gen_alloc(NULL);
+         y(array_open);
+ 
+         TAILQ_FOREACH(ws, workspaces, workspaces) {
+@@ -226,7 +226,7 @@ IPC_HANDLER(get_workspaces) {
+         y(array_close);
+ 
+         const unsigned char *payload;
+-        unsigned int length;
++        size_t length;
+         y(get_buf, &payload, &length);
+ 
+         ipc_send_message(fd, payload, I3_IPC_REPLY_TYPE_WORKSPACES, length);
+@@ -241,7 +241,7 @@ IPC_HANDLER(get_workspaces) {
+ IPC_HANDLER(get_outputs) {
+         Output *output;
+ 
+-        yajl_gen gen = yajl_gen_alloc(NULL, NULL);
++        yajl_gen gen = yajl_gen_alloc(NULL);
+         y(array_open);
+ 
+         TAILQ_FOREACH(output, &outputs, outputs) {
+@@ -276,7 +276,7 @@ IPC_HANDLER(get_outputs) {
+         y(array_close);
+ 
+         const unsigned char *payload;
+-        unsigned int length;
++        size_t length;
+         y(get_buf, &payload, &length);
+ 
+         ipc_send_message(fd, payload, I3_IPC_REPLY_TYPE_OUTPUTS, length);
+@@ -288,7 +288,7 @@ IPC_HANDLER(get_outputs) {
+  *
+  */
+ static int add_subscription(void *extra, const unsigned char *s,
+-                            unsigned int len) {
++                            size_t len) {
+         ipc_client *client = extra;
+ 
+         DLOG("should add subscription to extra %p, sub %.*s\n", client, len, s);
+@@ -338,7 +338,7 @@ IPC_HANDLER(subscribe) {
+         memset(&callbacks, 0, sizeof(yajl_callbacks));
+         callbacks.yajl_string = add_subscription;
+ 
+-        p = yajl_alloc(&callbacks, NULL, NULL, (void*)client);
++        p = yajl_alloc(&callbacks, NULL, (void*)client);
+         stat = yajl_parse(p, (const unsigned char*)message, message_size);
+         if (stat != yajl_status_ok) {
+                 unsigned char *err;
+-- 
+1.7.4.4
+
+
+From michael+i3 at stapelberg.de  Wed Apr 27 20:07:08 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Wed, 27 Apr 2011 20:07:08 +0200
+Subject: [i3] [PATCH] fix code to work with yajl 2.0.0
+In-Reply-To: <1303854175-26020-1-git-send-email-badboy@archlinux.us>
+References: <1303854175-26020-1-git-send-email-badboy@archlinux.us>
+Message-ID: <1303927593-sup-3067@midna.zekjur.net>
+
+Hi,
+
+This patch has been merged in a modified version into the master/tree/next
+branches. Thanks.
+
+Best regards,
+Michael
+
+From dcoppa at openbsd.org  Thu Apr 28 10:13:11 2011
+From: dcoppa at openbsd.org (David Coppa)
+Date: Thu, 28 Apr 2011 02:13:11 -0600
+Subject: [i3] ipc.c: unaligned memory accesses on sparc
+Message-ID: <20110428081311.GA2517@cvs.openbsd.org>
+
+
+Hi!
+
+There's an unaligned memory accesses on sparc that makes i3 crash
+when you run i3-wsbar or i3bar by Merovius.
+
+Here's the backtrace:
+
+
+GNU gdb 6.3
+Copyright 2004 Free Software Foundation, Inc.
+GDB is free software, covered by the GNU General Public License, and you are
+welcome to change it and/or distribute copies of it under certain conditions.
+Type "show copying" to see the conditions.
+There is absolutely no warranty for GDB.  Type "show warranty" for details.
+This GDB was configured as "sparc64-unknown-openbsd4.9"...
+(gdb) run
+Starting program: /usr/local/bin/i3 
+font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+
+	...
+
+	Found binding mod9 with key 27 and command restart
+
+Program received signal SIGBUS, Bus error.
+ipc_receive_message (loop=Variable "loop" is not available.
+) at src/ipc.c:440
+440	                uint32_t message_size = *((uint32_t*)message);
+(gdb) bt
+#0  ipc_receive_message (loop=Variable "loop" is not available.
+) at src/ipc.c:440
+#1  0x000000020c5ab6d8 in ev_invoke_pending () from /usr/local/lib/libev.so.2.1
+#2  0x000000020c5b074c in ev_run () from /usr/local/lib/libev.so.2.1
+#3  0x0000000000114b94 in main (argc=Variable "argc" is not available.
+) at ev.h:810
+(gdb) bt full
+#0  ipc_receive_message (loop=Variable "loop" is not available.
+) at src/ipc.c:440
+	message_size = Variable "message_size" is not available.
+(gdb) quit
+The program is running.  Exit anyway? (y or n)
+
+
+The following diff fixes the issue for me:
+
+
+From: David Coppa <dcoppa at gmail.com>
+
+---
+ src/ipc.c |    6 ++++--
+ 1 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/src/ipc.c b/src/ipc.c
+index b3052a2..8792868 100644
+--- a/src/ipc.c
++++ b/src/ipc.c
+@@ -458,7 +458,8 @@ static void ipc_receive_message(EV_P_ struct ev_io *w, int revents) {
+                 n -= strlen(I3_IPC_MAGIC);
+ 
+                 /* The next 32 bit after the magic are the message size */
+-                uint32_t message_size = *((uint32_t*)message);
++                uint32_t message_size;
++                memcpy(&message_size, (uint32_t*)message, sizeof(uint32_t));
+                 message += sizeof(uint32_t);
+                 n -= sizeof(uint32_t);
+ 
+@@ -468,7 +469,8 @@ static void ipc_receive_message(EV_P_ struct ev_io *w, int revents) {
+                 }
+ 
+                 /* The last 32 bits of the header are the message type */
+-                uint32_t message_type = *((uint32_t*)message);
++                uint32_t message_type;
++                memcpy(&message_type, (uint32_t*)message, sizeof(uint32_t));
+                 message += sizeof(uint32_t);
+                 n -= sizeof(uint32_t);
+ 
+
+From michael+i3 at stapelberg.de  Thu Apr 28 21:48:58 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Thu, 28 Apr 2011 21:48:58 +0200
+Subject: [i3] ipc.c: unaligned memory accesses on sparc
+In-Reply-To: <20110428081311.GA2517@cvs.openbsd.org>
+References: <20110428081311.GA2517@cvs.openbsd.org>
+Message-ID: <1304020103-sup-7299@midna.zekjur.net>
+
+Hi David,
+
+Excerpts from David Coppa's message of 2011-04-28 10:13:11 +0200:
+> The following diff fixes the issue for me:
+Thanks, I have merged your fix in all branches.
+
+Best regards,
+Michael
+

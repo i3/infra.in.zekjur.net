@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Suggestion: Configuration with lua
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Suggestion%3A%20Configuration%20with%20lua&In-Reply-To=%3C20141004220852.GB1327%40Discworld.fritz.box%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001893.html">
+   <LINK REL="Next"  HREF="001898.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Suggestion: Configuration with lua</H1>
+    <B>Timo Schmiade</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Suggestion%3A%20Configuration%20with%20lua&In-Reply-To=%3C20141004220852.GB1327%40Discworld.fritz.box%3E"
+       TITLE="[i3] Suggestion: Configuration with lua">the_isz at gmx.de
+       </A><BR>
+    <I>Sun Oct  5 00:08:52 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001893.html">[i3] Suggestion: Configuration with lua
+</A></li>
+        <LI>Next message: <A HREF="001898.html">[i3] Suggestion: Configuration with lua
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1896">[ date ]</a>
+              <a href="thread.html#1896">[ thread ]</a>
+              <a href="subject.html#1896">[ subject ]</a>
+              <a href="author.html#1896">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Tony,
+
+thanks for your reply!
+
+&gt;<i> As for a configuration file format, there are a lot of complications with
+</I>&gt;<i> using a script, such as requiring people to learn a programming language to
+</I>&gt;<i> configure the window manager as well as the technical complexity and the
+</I>&gt;<i> matter of backwards compatability.
+</I>
+I admit that integrating lua into i3 is potentially a bit more complex
+than keeping an already existing parser. I thought it would've been
+worth a try.
+
+I don't agree with your argument about people having to learn a
+programming language, though. First, i3's configuration language is a
+language that needs to be learned, too. And secondly: If you want to
+script i3 as it is now, you not only have to learn a programming
+language, you also need to write, run and maintain your own process
+communicating with i3.
+
+However, I will definitely experiment with i3's IPC interface. The good
+thing is that there is a python API. Like this, I even get to use my
+favourite programming language :)
+
+Kind regards,
+
+Timo
+
+On Sat, Oct 04, 2014 at 05:40:26PM -0400, Tony Crisci wrote:
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> As for a configuration file format, there are a lot of complications with
+</I>&gt;<i> using a script, such as requiring people to learn a programming language to
+</I>&gt;<i> configure the window manager as well as the technical complexity and the
+</I>&gt;<i> matter of backwards compatability. For those reasons, I think we are better
+</I>&gt;<i> off where we are for now.
+</I>&gt;<i> 
+</I>&gt;<i> However, i3 is already fully scriptable in Lua with the i3ipc-glib project
+</I>&gt;<i> (<A HREF="https://github.com/acrisci/i3ipc-glib">https://github.com/acrisci/i3ipc-glib</A>).
+</I>&gt;<i> 
+</I>&gt;<i> I even created a wrapper library especially for lua which you can find here:
+</I>&gt;<i> <A HREF="https://github.com/acrisci/i3ipc-lua">https://github.com/acrisci/i3ipc-lua</A>
+</I>&gt;<i> 
+</I>&gt;<i> You are welcome to contribute to either of these projects if you don't find
+</I>&gt;<i> the features you want by contributing code or making feature requests on
+</I>&gt;<i> those projects.
+</I>&gt;<i> 
+</I>&gt;<i> You can do all the things you mentioned with the ipc events.
+</I>&gt;<i> 
+</I>&gt;<i> Check out all the different window events you can subscribe to:
+</I>&gt;<i> <A HREF="http://build.i3wm.org/docs/ipc.html#_window_event">http://build.i3wm.org/docs/ipc.html#_window_event</A>
+</I>&gt;<i> 
+</I>&gt;<i> We even just added a &quot;binding&quot; event in the development version you can use
+</I>&gt;<i> to listen for keypresses that are bound to a command:
+</I>&gt;<i> <A HREF="http://build.i3wm.org/docs/ipc.html#_binding_event">http://build.i3wm.org/docs/ipc.html#_binding_event</A>
+</I>&gt;<i> 
+</I>&gt;<i> I support this library on the mailing list, the official i3 faq, and in the
+</I>&gt;<i> irc channel (nick: TonyC).
+</I>&gt;<i> 
+</I>&gt;<i> On 10/04/2014 05:15 PM, Timo Schmiade wrote:
+</I>&gt;<i> &gt;Hi all,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;first off: Thanks for this wonderful window manager! I've tried many
+</I>&gt;<i> &gt;others before and this is the only one that doesn't make me look for
+</I>&gt;<i> &gt;other alternatives :)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;On topic:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;The only thing I think could be improved in i3 is the config. i3 uses
+</I>&gt;<i> &gt;its own configuration file format which is quite restricted. Therefor, I
+</I>&gt;<i> &gt;suggest moving to a well-established scripting language that can be
+</I>&gt;<i> &gt;embedded into i3's C code - lua comes to mind.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;The advantages I see:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;- Profit from lua's development history to have a safe, stable and yet
+</I>&gt;<i> &gt;   feature-rich embedded scripting language
+</I>&gt;<i> &gt;- Avoid maintenance of own configuration file format (features + bug
+</I>&gt;<i> &gt;   fixes)
+</I>&gt;<i> &gt;- Open lua for scripting: Allow lua callback functions to modify lua's
+</I>&gt;<i> &gt;   behaviour in situations like &quot;New window created&quot; or &quot;Key combination
+</I>&gt;<i> &gt;   pressed&quot;
+</I>&gt;<i> &gt;- Allow users to script configuration, e.g. use for-loop from 0-9 to
+</I>&gt;<i> &gt;   bind keys for switching to workspaces or moving windows to workspaces
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;What I did so far:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;I created a purely C- and lua-based test application which allows:
+</I>&gt;<i> &gt;- Call lua functions from C
+</I>&gt;<i> &gt;- Call C functions from lua
+</I>&gt;<i> &gt;- Pass C structs to lua script
+</I>&gt;<i> &gt;- Modify C structs in lua script
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;What I could do next:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;- Integrate the functionality into i3's codebase
+</I>&gt;<i> &gt;- Create a public git branch (based on i3 'next') to demonstrate and
+</I>&gt;<i> &gt;   discuss
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;What I can't do:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;- Give any guarantees on development time
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;What I need to know:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;- Is this something the i3 developers would want?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;Thanks in advance for your time.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;Kind regards,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;Timo
+</I>&gt;<i> 
+</I></PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001893.html">[i3] Suggestion: Configuration with lua
+</A></li>
+	<LI>Next message: <A HREF="001898.html">[i3] Suggestion: Configuration with lua
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1896">[ date ]</a>
+              <a href="thread.html#1896">[ thread ]</a>
+              <a href="subject.html#1896">[ subject ]</a>
+              <a href="author.html#1896">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Predefined Layouts
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Predefined%20Layouts&In-Reply-To=%3C87zk9zzr9g.fsf%40m7000.fhaun.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000634.html">
+   <LINK REL="Next"  HREF="000644.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Predefined Layouts</H1>
+    <B>Frank Haun</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Predefined%20Layouts&In-Reply-To=%3C87zk9zzr9g.fsf%40m7000.fhaun.de%3E"
+       TITLE="[i3] Predefined Layouts">fh at fhaun.de
+       </A><BR>
+    <I>Wed Apr 25 18:54:19 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000634.html">[i3] Predefined Layouts
+</A></li>
+        <LI>Next message: <A HREF="000644.html">[i3] Predefined Layouts
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#635">[ date ]</a>
+              <a href="thread.html#635">[ thread ]</a>
+              <a href="subject.html#635">[ subject ]</a>
+              <a href="author.html#635">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Marcelo Cerri &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">mhcerri at gmail.com</A>&gt; writes:
+
+&gt;<i> Using &quot;--pid&quot; instead of &quot;--classname&quot; for xdotool may solve the
+</I>&gt;<i> problem for terminals:
+</I>&gt;<i>
+</I>&gt;<i> #! /bin/sh
+</I>&gt;<i>
+</I>&gt;<i> # Wait for program
+</I>&gt;<i> wait_for () {
+</I>&gt;<i>     echo wait
+</I>&gt;<i>     n=0
+</I>&gt;<i>     while true
+</I>&gt;<i>     do
+</I>&gt;<i>     if $1; then
+</I>&gt;<i>         break
+</I>&gt;<i>     else
+</I>&gt;<i>         # 10 seconds timeout
+</I>&gt;<i>         if [ $n -eq 100 ]; then
+</I>&gt;<i>         xmessage &quot;Error on: $1&quot;
+</I>&gt;<i>         break
+</I>&gt;<i>         else
+</I>&gt;<i>         n=`expr $n + 1`
+</I>&gt;<i>         sleep .1
+</I>&gt;<i>         fi
+</I>&gt;<i>     fi
+</I>&gt;<i>     done
+</I>&gt;<i>     sleep 1
+</I>&gt;<i> }
+</I>&gt;<i>
+</I>&gt;<i> urxvt &amp;
+</I>&gt;<i> wait_for &quot;xdotool search --onlyvisible --pid $!&quot;
+</I>&gt;<i> i3-msg split h
+</I>&gt;<i> urxvt &amp;
+</I>&gt;<i> wait_for &quot;xdotool search --onlyvisible --pid $!&quot;
+</I>&gt;<i> i3-msg split v
+</I>&gt;<i> urxvt &amp;
+</I>
+Hehe, that sounds very good. I must improve my shell knowledge.
+
+<A HREF="http://steve-parker.org/sh/quickref.shtml">http://steve-parker.org/sh/quickref.shtml</A>
+$! PID of last background command
+
+Yep, something I was looking for. I'll test it and then I update my
+example.
+
+Thanks a lot,
+  Frank
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000634.html">[i3] Predefined Layouts
+</A></li>
+	<LI>Next message: <A HREF="000644.html">[i3] Predefined Layouts
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#635">[ date ]</a>
+              <a href="thread.html#635">[ thread ]</a>
+              <a href="subject.html#635">[ subject ]</a>
+              <a href="author.html#635">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,1806 @@
+From sylvain.benner at gmail.com  Thu Aug  1 05:40:34 2013
+From: sylvain.benner at gmail.com (Sylvain Benner)
+Date: Wed, 31 Jul 2013 23:40:34 -0400
+Subject: [i3] Experimental modal UX for i3
+Message-ID: <CAGb_FfbdH--mBrZ+3Xz7VeS7gusyTZkB-cnu1kCdXorpVgFEag@mail.gmail.com>
+
+Hello,
+
+Big user of i3 here from Canada, Quebec.
+First a big thanks to the whole community for such a damn good WM.
+
+Recently I tried to encapsulate all the key bindings of i3 in a main mode
+called.... i3 which can be enabled and disabled by pressing $mod key.
+The result can be seen here:
+https://raw.github.com/syl20bnr/config/master/.i3/config
+
+It has now sub modes and their names are displayed with a breadcrumb style.
+It is possible to go up in the hierarchy by pressing backspace or discard
+any current mode with Escape or $mod.
+I read somewhere that Michael uses an ergo keyboard with some levels, I
+guess this config reproduces the feeling.
+
+The missing part is the toggle feature for the i3bar (I want to stick i3bar
+when an i3 mode is enabled and hide it when leaving a mode).
+
+Anyway being able to do it so easily in i3 is like a dream comes true. so
+here is why I'm happy to share !
+
+-syl20bnr-
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130731/b3d5a52b/attachment.html>
+
+From haptix at web.de  Thu Aug  1 11:33:03 2013
+From: haptix at web.de (justus jonas)
+Date: Thu, 01 Aug 2013 11:33:03 +0200
+Subject: [i3] Experimental modal UX for i3
+In-Reply-To: <CAGb_FfbdH--mBrZ+3Xz7VeS7gusyTZkB-cnu1kCdXorpVgFEag@mail.gmail.com>
+References: <CAGb_FfbdH--mBrZ+3Xz7VeS7gusyTZkB-cnu1kCdXorpVgFEag@mail.gmail.com>
+Message-ID: <51FA2B4F.6000709@web.de>
+
+Hi,
+
+thanks for sharing your config.
+
+Am 01.08.2013 05:40, schrieb Sylvain Benner:
+> Hello,
+> 
+> Big user of i3 here from Canada, Quebec.
+> First a big thanks to the whole community for such a damn good WM.
+> 
+> Recently I tried to encapsulate all the key bindings of i3 in a main mode
+> called.... i3 which can be enabled and disabled by pressing $mod key.
+> The result can be seen here:
+> https://raw.github.com/syl20bnr/config/master/.i3/config
+> 
+> It has now sub modes and their names are displayed with a breadcrumb style.
+> It is possible to go up in the hierarchy by pressing backspace or discard
+> any current mode with Escape or $mod.
+> I read somewhere that Michael uses an ergo keyboard with some levels, I
+> guess this config reproduces the feeling.
+> 
+> The missing part is the toggle feature for the i3bar (I want to stick i3bar
+> when an i3 mode is enabled and hide it when leaving a mode).
+
+As far as I know, i3bar (in hide mode) will show automatically when a
+mode is activated. Furthermore, in the next branch in git i3 has a
+command for showing/hiding i3bar and switching between dock and hide
+mode:
+http://code.stapelberg.de/git/i3/commit/?h=next&id=e3913093b6b233ec30ce7fc8504d095f55c5e1db
+
+> 
+> Anyway being able to do it so easily in i3 is like a dream comes true. so
+> here is why I'm happy to share !
+> 
+> -syl20bnr-
+> 
+
+Best
+jj
+
+From michael at i3wm.org  Thu Aug  1 12:09:27 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 01 Aug 2013 12:09:27 +0200
+Subject: [i3] Experimental modal UX for i3
+In-Reply-To: <CAGb_FfbdH--mBrZ+3Xz7VeS7gusyTZkB-cnu1kCdXorpVgFEag@mail.gmail.com>
+References: <CAGb_FfbdH--mBrZ+3Xz7VeS7gusyTZkB-cnu1kCdXorpVgFEag@mail.gmail.com>
+Message-ID: <x6ehad7meg.fsf@midna.lan>
+
+Hi Sylvain,
+
+Thanks for sharing.
+
+Sylvain Benner <sylvain.benner at gmail.com> writes:
+> The missing part is the toggle feature for the i3bar (I want to stick i3bar
+> when an i3 mode is enabled and hide it when leaving a mode).
+I am not sure what you are trying to say, so let me be clear and say
+that this feature exists in the git ?next? branch:
+
+http://code.stapelberg.de/git/i3/commit/?h=next&id=e3913093b6b233ec30ce7fc8504d095f55c5e1db
+
+It will be included in the next release.
+
+-- 
+Best regards,
+Michael
+
+From public at enkore.de  Thu Aug  1 14:39:29 2013
+From: public at enkore.de (public at enkore.de)
+Date: Thu, 01 Aug 2013 14:39:29 +0200
+Subject: [i3] A replacement for i3-dmenu-desktop
+Message-ID: <51FA5701.8000408@enkore.de>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Hi
+
+i3-dmenu-desktop was always a bit slow for me so one day I rewrote it
+in C/++. In the last few weeks I worked on it again for a few hours or
+two and now I think it can actually be used by people...
+
+For compiling from source it doesn't require anything except cmake and
+a compiler with some support for C++11, not much though, so GCC 4.6
+probably works, too.
+
+It doesn't support the --entry-type option i3-dmenu-desktop has, but
+allows overriding the terminal emulator directly (--term)
+
+Here you go: https://github.com/enkore/j4-dmenu-desktop
+
+[mabe]
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQEcBAEBAgAGBQJR+lb9AAoJEJuEULkdE2LBEPsIAKY9k8GL9bRDw+iswwj5Gk+s
+lpWVGpVu15jdGhBki6WJyaXeK3OSL7rpHV3Zg5+pM6RDMmuRwjG8NVEOi/BZ3zOW
+Cfsu139+FawxJVgvdLLm6Vd/WeNs6ymVNscGTMEWm66L6gUCbMbX+fz8KzHQltD6
+pmW0j+Rqc6BGPGp4p+B/wD224SfhSw9Dp/+AqUV4nz+GVJsxILDT44l3lYaWUEn5
+m84fGsW6W1GNvY8xuAzzcmYmE8wrs6p/2nP1gNEf874o6RBKKQlQ/1VBvfpcV5si
+3IWqDMMtJ9W3QJjelsSwka9QTWumYD59sDBxc1uTAHMd6m633B8RQI2lvntKRgQ=
+=Q3oZ
+-----END PGP SIGNATURE-----
+
+From sylvain.benner at gmail.com  Thu Aug  1 15:28:17 2013
+From: sylvain.benner at gmail.com (Sylvain Benner)
+Date: Thu, 1 Aug 2013 09:28:17 -0400
+Subject: [i3] Experimental modal UX for i3
+In-Reply-To: <x6ehad7meg.fsf@midna.lan>
+References: <CAGb_FfbdH--mBrZ+3Xz7VeS7gusyTZkB-cnu1kCdXorpVgFEag@mail.gmail.com>
+ <x6ehad7meg.fsf@midna.lan>
+Message-ID: <CAGb_FfYREWVYBEJBka-a3dE3GWHeWkJjM-Od5mjfq6kKjWeDYQ@mail.gmail.com>
+
+Just tried next branch and it works like justus wrote without changing
+anything in my config.
+I tested in the current release 4.5.1 and the i3 bar automatically hide
+itself even with an active mode.
+I stick with the next branch for now, thank you.
+
+Le jeudi 1 ao?t 2013, Michael Stapelberg a ?crit :
+
+> Hi Sylvain,
+>
+> Thanks for sharing.
+>
+> Sylvain Benner <sylvain.benner at gmail.com <javascript:;>> writes:
+> > The missing part is the toggle feature for the i3bar (I want to stick
+> i3bar
+> > when an i3 mode is enabled and hide it when leaving a mode).
+> I am not sure what you are trying to say, so let me be clear and say
+> that this feature exists in the git ?next? branch:
+>
+>
+> http://code.stapelberg.de/git/i3/commit/?h=next&id=e3913093b6b233ec30ce7fc8504d095f55c5e1db
+>
+> It will be included in the next release.
+>
+> --
+> Best regards,
+> Michael
+>
+
+
+-- 
+-syl20bnr-
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130801/16d378e0/attachment.html>
+
+From public at enkore.de  Fri Aug  2 01:26:06 2013
+From: public at enkore.de (public at enkore.de)
+Date: Fri, 02 Aug 2013 01:26:06 +0200
+Subject: [i3] Using variables in variable definition?
+Message-ID: <51FAEE8E.3000706@enkore.de>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Hi,
+
+the following doesn't work (it doesn't raise a config error, either):
+
+set $mod Mod4
+set $audiomod $mod+Ctrl
+bindsym $audiomod+j exec mpc ...
+
+But the following does:
+
+bindsym $mod+Ctrl+j exec mpc...
+
+Is the former method just not supported (then it should raise a config
+error instead of failing silently) or is there a wrong anywhere else?
+
+[mabe]
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQEcBAEBAgAGBQJR+u6MAAoJEJuEULkdE2LBexIH/RYycfY1nZpgUe5xBY9lPzla
+VXT8Rmv5YQaJriBsH8P68SSeud/5f7gWWUEsw+i0ZnAR/0sU3tOqDbqNG8ktuf5K
+9A7c5vNx9tUpmMyXJq8SGm9Hql0H3J+TS9kdKRQ67QhYqA3DF1vEj7vsP4MmaF5c
+so7ZQJgGyU7vsO70hUeBwkz+4saD/l9e4OzKE9Ard9AgmWv/c/oq5hFBy3OEPtlF
+yGIlAMoIoHi/Niey40u9shOs2B3Iiibj3Ao6a4iYSAmUphMiKhF6F4cH7/pPIoqn
+hecv4q8Zd6SPFhKsOlCHr3goA3U2ctL0DxHDlNz3BWkFadXieBMxN2gwa+RpqZo=
+=GZL9
+-----END PGP SIGNATURE-----
+
+From sylvain.benner at gmail.com  Fri Aug  2 02:41:36 2013
+From: sylvain.benner at gmail.com (Sylvain Benner)
+Date: Thu, 1 Aug 2013 20:41:36 -0400
+Subject: [i3] Using variables in variable definition?
+In-Reply-To: <51FAEE8E.3000706@enkore.de>
+References: <51FAEE8E.3000706@enkore.de>
+Message-ID: <CAGb_FfYU0do24qS-CAQ1_4bUQ+tEUUpzgDButJU8GuNzgneCcA@mail.gmail.com>
+
+>From the documentation:
+
+"Variables are directly replaced in the file when parsing. There is no
+fancy handling and there are absolutely no plans to change this."
+
+So variables behavior in i3 are more like macros, there is no type behind
+and it is good like this.
+If you set $var "value" then any subsequent $var will be replace by "value"
+with the double quotes.
+This is a good choice to keep it simple but I think that the lack of
+recursive evaluation is counter intuitive and fail somehow to provide all
+the potential of the KISS approach.
+
+Anyway I guess I could try to make a patch for this, it should be trivial.
+Michael ?
+
+Cheers,
+syl20bnr
+
+
+On Thu, Aug 1, 2013 at 7:26 PM, <public at enkore.de> wrote:
+
+> -----BEGIN PGP SIGNED MESSAGE-----
+> Hash: SHA1
+>
+> Hi,
+>
+> the following doesn't work (it doesn't raise a config error, either):
+>
+> set $mod Mod4
+> set $audiomod $mod+Ctrl
+> bindsym $audiomod+j exec mpc ...
+>
+> But the following does:
+>
+> bindsym $mod+Ctrl+j exec mpc...
+>
+> Is the former method just not supported (then it should raise a config
+> error instead of failing silently) or is there a wrong anywhere else?
+>
+> [mabe]
+> -----BEGIN PGP SIGNATURE-----
+> Version: GnuPG v2.0.20 (GNU/Linux)
+>
+> iQEcBAEBAgAGBQJR+u6MAAoJEJuEULkdE2LBexIH/RYycfY1nZpgUe5xBY9lPzla
+> VXT8Rmv5YQaJriBsH8P68SSeud/5f7gWWUEsw+i0ZnAR/0sU3tOqDbqNG8ktuf5K
+> 9A7c5vNx9tUpmMyXJq8SGm9Hql0H3J+TS9kdKRQ67QhYqA3DF1vEj7vsP4MmaF5c
+> so7ZQJgGyU7vsO70hUeBwkz+4saD/l9e4OzKE9Ard9AgmWv/c/oq5hFBy3OEPtlF
+> yGIlAMoIoHi/Niey40u9shOs2B3Iiibj3Ao6a4iYSAmUphMiKhF6F4cH7/pPIoqn
+> hecv4q8Zd6SPFhKsOlCHr3goA3U2ctL0DxHDlNz3BWkFadXieBMxN2gwa+RpqZo=
+> =GZL9
+> -----END PGP SIGNATURE-----
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130801/c70d0144/attachment.html>
+
+From michael at i3wm.org  Fri Aug  2 19:59:04 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 02 Aug 2013 19:59:04 +0200
+Subject: [i3] Using variables in variable definition?
+In-Reply-To: <CAGb_FfYU0do24qS-CAQ1_4bUQ+tEUUpzgDButJU8GuNzgneCcA@mail.gmail.com>
+References: <51FAEE8E.3000706@enkore.de>
+ <CAGb_FfYU0do24qS-CAQ1_4bUQ+tEUUpzgDButJU8GuNzgneCcA@mail.gmail.com>
+Message-ID: <x67gg455zr.fsf@midna.lan>
+
+Hi Sylvain,
+
+Sylvain Benner <sylvain.benner at gmail.com> writes:
+> Anyway I guess I could try to make a patch for this, it should be trivial.
+> Michael ?
+I doubt it?s trivial :). Currently I can?t think of a reason why we
+could not merge such a patch, but let?s discuss this more in depth once
+we actually have a patch.
+
+I.e.: go ahead and submit your patch to http://cr.i3wm.org/
+
+-- 
+Best regards,
+Michael
+
+From public at enkore.de  Fri Aug  2 21:00:46 2013
+From: public at enkore.de (public at enkore.de)
+Date: Fri, 02 Aug 2013 21:00:46 +0200
+Subject: [i3] Using variables in variable definition?
+In-Reply-To: <x67gg455zr.fsf@midna.lan>
+References: <51FAEE8E.3000706@enkore.de>
+ <CAGb_FfYU0do24qS-CAQ1_4bUQ+tEUUpzgDButJU8GuNzgneCcA@mail.gmail.com>
+ <x67gg455zr.fsf@midna.lan>
+Message-ID: <51FC01DE.5040108@enkore.de>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+After a quick glance on src/config_parser.c I would suggest not to
+implement this* but rather change the docs to state more clearly that
+one simply doesn't walk int... doesn't define variables using other
+variables
+
+[mabe]
+
+* I think it's complex enough, for now
+
+On 08/02/2013 07:59 PM, Michael Stapelberg wrote:
+> Hi Sylvain,
+> 
+> Sylvain Benner <sylvain.benner at gmail.com> writes:
+>> Anyway I guess I could try to make a patch for this, it should be
+>> trivial. Michael ?
+> I doubt it?s trivial :). Currently I can?t think of a reason why
+> we could not merge such a patch, but let?s discuss this more in
+> depth once we actually have a patch.
+> 
+> I.e.: go ahead and submit your patch to http://cr.i3wm.org/
+> 
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQEcBAEBAgAGBQJR/AHaAAoJEJuEULkdE2LB5eIH/j3HdVrWz6CW5j5A5B713p9M
+Lb2dmGEQ9aWMY7GbO6Qdff1p5iKgg4Faf8tTu9IC66akndOkVXV3VLKrsMWFoG01
+wbLrBd2GCo0omQZBTnGQ1r2SXM2gx/qcLqwHHPRhuPnXASkkXlqv7qETmJW9Qjlq
+9VbpgGOVemyxpSxezFno/zUWdvNu+ejr/rdm8Ia8IDqSKxkHGQ6iJfSpG5E/cNpi
+SpA2vIRo+bums9O6MCF5jADpluZkbFNo1Oa7j2xemF8XCZeVSKpGip2ecRKBgvA4
+2K/uPrM/Q1mrwd0mXleGTXlHjgXhzd6yNAXNjmCFrWahD3BCnVvqQkiqD6pdjVc=
+=rcID
+-----END PGP SIGNATURE-----
+
+From public at enkore.de  Fri Aug  2 21:08:20 2013
+From: public at enkore.de (public at enkore.de)
+Date: Fri, 02 Aug 2013 21:08:20 +0200
+Subject: [i3] [i3bar] bad rendering if text is wider than output?
+Message-ID: <51FC03A4.1010306@enkore.de>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Hi
+
+sometimes the status line can get rather long (for example if one
+displays the subject of the newest mail or the song currently played)
+and it seems as i3bar doesn't handle this situation correctly.
+
+I'm not a hundred percent sure here, but it seems like the N rightmost
+pixels become corrupted, with N beingt the same amount that the text
+is too long.
+
+As I don't think this is expected behaviour I'm trying to locate the
+issue and prepare a patch.
+
+Scrot attached
+
+[mabe]
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQEcBAEBAgAGBQJR/AOhAAoJEJuEULkdE2LBZrkH/20XJgxz+jW27zybexbtsDAy
+cMHehs0ofLttBSwzhpu99R3jrZB/pK5FXejB4rzugdiLQBzAjs1PzN/9aZBCo8iR
+Q+UgH/ocZNWH/dc8iPK8dy3ngn5wgEigrduvmTFiKdSjuEpZ1XDGh3Q38QoPWfXd
+urDpxrWGUohJRe0gfL+HQfI0zuIuwvNbsjQwL1WoexX2LNHlnWSo2crtPS7M2AOe
+uJKNjvKQ5Qny96vwClWYWHCRs05zGmOYZpGMptm41E+b9bPMDwDA4HpFVmrCSreE
+a3BtmOJESnSM+FjxjDWxko0PJRgCp243VW84CkjYKfLckkhhoSX9O3botPiaYpg=
+=w7x3
+-----END PGP SIGNATURE-----
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: i3bar_corruption.png
+Type: image/png
+Size: 3695 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130802/5cc8e1b2/attachment.png>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: i3bar_corruption.png.sig
+Type: application/pgp-signature
+Size: 287 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130802/5cc8e1b2/attachment.sig>
+
+From sylvain.benner at gmail.com  Sun Aug  4 02:13:48 2013
+From: sylvain.benner at gmail.com (Sylvain Benner)
+Date: Sat, 3 Aug 2013 20:13:48 -0400
+Subject: [i3] Using variables in variable definition?
+In-Reply-To: <51FC01DE.5040108@enkore.de>
+References: <51FAEE8E.3000706@enkore.de>
+ <CAGb_FfYU0do24qS-CAQ1_4bUQ+tEUUpzgDButJU8GuNzgneCcA@mail.gmail.com>
+ <x67gg455zr.fsf@midna.lan> <51FC01DE.5040108@enkore.de>
+Message-ID: <CAGb_FfZ7qN-8pQ+LR+DSSXN7xs0u5dN9Buwx7vOvv+vbaoyLJw@mail.gmail.com>
+
+Ok guys, thanks for saving me some time on this one :-)
+
+-syl20bnr-
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130803/798245eb/attachment.html>
+
+From sylvain.benner at gmail.com  Sun Aug  4 03:40:42 2013
+From: sylvain.benner at gmail.com (Sylvain Benner)
+Date: Sat, 3 Aug 2013 21:40:42 -0400
+Subject: [i3] Using variables in variable definition?
+In-Reply-To: <CAGb_FfZ7qN-8pQ+LR+DSSXN7xs0u5dN9Buwx7vOvv+vbaoyLJw@mail.gmail.com>
+References: <51FAEE8E.3000706@enkore.de>
+ <CAGb_FfYU0do24qS-CAQ1_4bUQ+tEUUpzgDButJU8GuNzgneCcA@mail.gmail.com>
+ <x67gg455zr.fsf@midna.lan> <51FC01DE.5040108@enkore.de>
+ <CAGb_FfZ7qN-8pQ+LR+DSSXN7xs0u5dN9Buwx7vOvv+vbaoyLJw@mail.gmail.com>
+Message-ID: <CAGb_FfbvkzaLSHPt2mRm+P3ziyV7zCGCjhPG9H407iC3k+EPxw@mail.gmail.com>
+
+I submitted a patch to update the doc and *of course* there are typos...
+what's the process to update a patch ?
+Thank you!
+
+-syl20bnr-
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130803/b64e9349/attachment.html>
+
+From sylvain.benner at gmail.com  Sun Aug  4 04:02:27 2013
+From: sylvain.benner at gmail.com (Sylvain Benner)
+Date: Sat, 3 Aug 2013 22:02:27 -0400
+Subject: [i3] Case-sensitive workspace names
+Message-ID: <CAGb_FfbbD429KwzQfRE28hDVPdQJWmK=ZbC+5FR0T4JKNhMgwQ@mail.gmail.com>
+
+Hi,
+
+First, some context to understand why it would be useful in my use case.
+I'm still experimenting in i3 config and try to work without any
+pre-defined set of workspaces, basically I try to use *anonymous*
+workspaces without any key bindings or information about workspaces stored
+in config. One benefit of this approach is to have a lot of single window
+workspaces (I start to use chromium apps feature) where the name or the
+position of the workspace don't matter, only the type of application and
+window attribute are used to navigate (coupled with back and forth).
+For this approach I wrote some scripts using dmenu to manage workspaces
+(jump, send to output) and windows (jump, send to workspace, jump for
+terminals etc).
+To select a workspace dmenu proposes all possible workspace names composed
+of only one character. I have a patched dmenu which can return
+automatically when only one candidate matches the filter so selecting a
+workspace is pretty quick since I have to press only one character.
+
+So given this context, I could have 26 more possible workspaces in i3 (and
+a whole new world of freedom and possibilities given my current mood) if
+there was support for case-sensitive workspace names.
+
+Well, I know this is borderline stuff, just asking :-))
+
+-syl20bnr-
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130803/0435225f/attachment.html>
+
+From darkstarsword at gmail.com  Sun Aug  4 06:46:54 2013
+From: darkstarsword at gmail.com (Ian Munsie)
+Date: Sun, 4 Aug 2013 14:46:54 +1000
+Subject: [i3] Case-sensitive workspace names
+In-Reply-To: <CAGb_FfbbD429KwzQfRE28hDVPdQJWmK=ZbC+5FR0T4JKNhMgwQ@mail.gmail.com>
+References: <CAGb_FfbbD429KwzQfRE28hDVPdQJWmK=ZbC+5FR0T4JKNhMgwQ@mail.gmail.com>
+Message-ID: <CAH4=b6LG0QVkvM7YaG3r-kVrBox7aDm4zkpXcmaNTq79F_g5JQ@mail.gmail.com>
+
+On 4 August 2013 12:02, Sylvain Benner <sylvain.benner at gmail.com> wrote:
+>I have a patched dmenu which can return automatically
+> when only one candidate matches the filter so selecting a workspace is
+> pretty quick since I have to press only one character.
+
+You could probably have used i3-input -l 1 to return immediately after
+one character has been pushed - I do that in my config to mark windows
+with any letter & goto them easily.
+
+-Ian
+
+-- 
+http://sites.google.com/site/DarkStarJunkSpace
+--
+http://darkstarshout.blogspot.com/
+--
+Please avoid sending me Word or PowerPoint attachments.
+See http://www.gnu.org/philosophy/no-word-attachments.html
+
+From michael at i3wm.org  Sun Aug  4 13:38:57 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 04 Aug 2013 13:38:57 +0200
+Subject: [i3] Using variables in variable definition?
+In-Reply-To: <CAGb_FfbvkzaLSHPt2mRm+P3ziyV7zCGCjhPG9H407iC3k+EPxw@mail.gmail.com>
+References: <51FAEE8E.3000706@enkore.de>
+ <CAGb_FfYU0do24qS-CAQ1_4bUQ+tEUUpzgDButJU8GuNzgneCcA@mail.gmail.com>
+ <x67gg455zr.fsf@midna.lan> <51FC01DE.5040108@enkore.de>
+ <CAGb_FfZ7qN-8pQ+LR+DSSXN7xs0u5dN9Buwx7vOvv+vbaoyLJw@mail.gmail.com>
+ <CAGb_FfbvkzaLSHPt2mRm+P3ziyV7zCGCjhPG9H407iC3k+EPxw@mail.gmail.com>
+Message-ID: <x67gg1y9bi.fsf@midna.lan>
+
+Hi Sylvain,
+
+Sylvain Benner <sylvain.benner at gmail.com> writes:
+> I submitted a patch to update the doc and *of course* there are typos...
+> what's the process to update a patch ?
+Just update another one, I will only process the newest one.
+
+Also, please make the title shorter and put the reference into the description.
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Thu Aug  8 23:13:16 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 08 Aug 2013 23:13:16 +0200
+Subject: [i3] Move container via $mod+shift+F12
+In-Reply-To: <51F54053.2050306@cookiesoft.de>
+References: <51F5173D.7080200@cookiesoft.de> <x6hafeivml.fsf@midna.lan>
+ <51F54053.2050306@cookiesoft.de>
+Message-ID: <x6y58bdgyb.fsf@midna.lan>
+
+Hi Marcel,
+
+Marcel Hellwig <keks at cookiesoft.de> writes:
+> You may be right. Xev does log an key event for Shift+F12, Meta+F12, but
+> not for Meta+Shift+F12. Any chance to find out what does block the event?
+Maybe http://unix.stackexchange.com/a/62252 helps?
+
+-- 
+Best regards,
+Michael
+
+From sylvain.benner at gmail.com  Fri Aug  9 06:25:44 2013
+From: sylvain.benner at gmail.com (Sylvain Benner)
+Date: Fri, 9 Aug 2013 00:25:44 -0400
+Subject: [i3] About "bindelse" and "time out" feature requests for binding
+	modes
+Message-ID: <CAGb_FfY=nuT8CPSbe_S5b5FpTq6dsg521Me5-H2t2fz6MQW_ag@mail.gmail.com>
+
+Hi,
+
+I read the following ticket listed as major priority:
+http://bugs.i3wm.org/report/ticket/662
+
+First it is quite old, but that's not the point.
+
+Second I doubt that any of these features would be really useful.
+The "time out" is clearly a bad idea. Letting the computer deciding itself
+to reset a mode which has been enabled by the user can introduce some sort
+of desynchronization between the user and the computer state. Depending on
+his mood one can perceive the time differently so a fixed time out value
+can be sometime confusing. It ends up that there is no good fixed value for
+such a time out.
+The "bindelse" is less "evil" but it does not address the issue, for
+instance, if I press the wrong key, my reflex is to immediately correct
+this move and press the good key. In the case of "bindelse" the first wrong
+key would reset the mode and the effect of the next good input is undefined.
+
+So I think that this post has one solution:
+http://infra.in.zekjur.net/archives/i3-discuss/2011-January/000180.html
+
+The reply is clear: "This appears to be the silver bullet!"
+This already working solution allows a fine-grained control of which inputs
+reset the mode.
+
+The next reply about sticky idea is very clever and reflect what I
+experienced when playing with binding modes. It happens that if one key
+should reset the mode then there is a high chance that the whole key
+binding group should do it too.
+
+For now I have a bunch of "mode default" and it's fine.
+
+-syl20bnr-
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130809/2f6cc3c8/attachment.html>
+
+From sylvain.benner at gmail.com  Fri Aug  9 06:29:20 2013
+From: sylvain.benner at gmail.com (Sylvain Benner)
+Date: Fri, 9 Aug 2013 00:29:20 -0400
+Subject: [i3] Case-sensitive workspace names
+In-Reply-To: <CAH4=b6LG0QVkvM7YaG3r-kVrBox7aDm4zkpXcmaNTq79F_g5JQ@mail.gmail.com>
+References: <CAGb_FfbbD429KwzQfRE28hDVPdQJWmK=ZbC+5FR0T4JKNhMgwQ@mail.gmail.com>
+ <CAH4=b6LG0QVkvM7YaG3r-kVrBox7aDm4zkpXcmaNTq79F_g5JQ@mail.gmail.com>
+Message-ID: <CAGb_FfY9h-7psRi=5raur+0p96a3tTH4nXe6rZNpr3qZYUn9qQ@mail.gmail.com>
+
+Thank you Ian, I binded "i3-input -P i3-msg " to a key, very useful for
+rarely used commands.
+For the rest I prefer dmenu, I'm currently building up a whole i3
+environment driven by dmenu. I will share it when it is ready.
+
+Soooooooooo it does not answer my question :-)
+Is it possible to have case-sensitive workspace names ?
+
+-syl20bnr-
+
+
+On Sun, Aug 4, 2013 at 12:46 AM, Ian Munsie <darkstarsword at gmail.com> wrote:
+
+> On 4 August 2013 12:02, Sylvain Benner <sylvain.benner at gmail.com> wrote:
+> >I have a patched dmenu which can return automatically
+> > when only one candidate matches the filter so selecting a workspace is
+> > pretty quick since I have to press only one character.
+>
+> You could probably have used i3-input -l 1 to return immediately after
+> one character has been pushed - I do that in my config to mark windows
+> with any letter & goto them easily.
+>
+> -Ian
+>
+> --
+> http://sites.google.com/site/DarkStarJunkSpace
+> --
+> http://darkstarshout.blogspot.com/
+> --
+> Please avoid sending me Word or PowerPoint attachments.
+> See http://www.gnu.org/philosophy/no-word-attachments.html
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130809/45b2feb1/attachment.html>
+
+From public at enkore.de  Fri Aug  9 13:49:24 2013
+From: public at enkore.de (mabe)
+Date: Fri, 09 Aug 2013 13:49:24 +0200
+Subject: [i3] Case-sensitive workspace names
+In-Reply-To: <CAGb_FfY9h-7psRi=5raur+0p96a3tTH4nXe6rZNpr3qZYUn9qQ@mail.gmail.com>
+References: <CAGb_FfbbD429KwzQfRE28hDVPdQJWmK=ZbC+5FR0T4JKNhMgwQ@mail.gmail.com>
+ <CAH4=b6LG0QVkvM7YaG3r-kVrBox7aDm4zkpXcmaNTq79F_g5JQ@mail.gmail.com>
+ <CAGb_FfY9h-7psRi=5raur+0p96a3tTH4nXe6rZNpr3qZYUn9qQ@mail.gmail.com>
+Message-ID: <5204D744.7090801@enkore.de>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+If you don't know it yet you may find quickswitch-i3 [1] useful. It
+creates dmenu menus for workspaces, clients etc.
+
+Regarding your original question: No I don't think this is possible at
+the moment. But you could monkey patch it into your dmenu script. For
+example, convert all workspace names matching "_[A-Z]" to A-Z. On
+return from dmenu you convert A-Z back to the original string by just
+prepending an underscore or some similar delimiter. Con: the workspace
+name and what you type to get to it are different.
+
+[mabe]
+
+[1] https://github.com/proxypoke/quickswitch-for-i3
+
+On 08/09/2013 06:29 AM, Sylvain Benner wrote:
+> For the rest I prefer dmenu, I'm currently building up a whole i3 
+> environment driven by dmenu. I will share it when it is ready.
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBAgAGBQJSBNdCAAoJEAOmTcUxK/swG8MQAJ0SqO2VU4n8FYSM43LmaBMS
+P6FtZ4kcvhf0mG4TrVd7924CnLPEg+cLjBZkSrwrSiWymypD0/Oyfg5HfA9YsK4I
+5cKAbxb8W+46kuk2wWOT7VPj8m0TxN64ys6R3KSrJIY9AYW6ZH8oPFIJ21HTPAvV
+i1I5jT3ibDuteNDRx5ImMANJL+my8ArmFIn2J3/CGODBV/Hv9TGwzP1+bvilS+Gd
+8m/GMg+A1SKKznu4f6L3aMT48B3Xg04kHfVA5o0sbMK/K3Mui683W/qZClgrphWt
+kZKev0FX7Hpz8pj//hcC1vv5Gj+CKnsiJErE6TTsdpMTX5hn1iTL296KTGEAf6ZG
+RNSy7zf1IjSdWUtYOs+kDofimvl2AfhxWsdSRr/amHCkeqtkjwYQ4bF1Y759Qqp0
+VdqqOfGG6GOGXxC6bDvTJ+FdLjTToOzUd6a2txqdQ1D6xue2FKCwroTadvzPavbT
+xUdjOFEpmSYbWH3pArU239u3KUkQJa1maTStzESgXNkkui6QO0F/4OmReBH2WVqv
+bRdehg22KabIxvOPqfI9ycC7ntWiLhL05QHR69k9Gw7w/2F6Ljbh84vNExrhSOwA
+gQPkqDyT4XW4erOPHryoFR72Yog8TO5DYOHkdOq7zH/J3d7glbPeTheqpzk2LD4O
+mMFVaD736Njm2SPDdECX
+=RuOG
+-----END PGP SIGNATURE-----
+
+From sylvain.benner at gmail.com  Fri Aug  9 14:39:36 2013
+From: sylvain.benner at gmail.com (Sylvain Benner)
+Date: Fri, 9 Aug 2013 08:39:36 -0400
+Subject: [i3] Case-sensitive workspace names
+In-Reply-To: <5204D744.7090801@enkore.de>
+References: <CAGb_FfbbD429KwzQfRE28hDVPdQJWmK=ZbC+5FR0T4JKNhMgwQ@mail.gmail.com>
+ <CAH4=b6LG0QVkvM7YaG3r-kVrBox7aDm4zkpXcmaNTq79F_g5JQ@mail.gmail.com>
+ <CAGb_FfY9h-7psRi=5raur+0p96a3tTH4nXe6rZNpr3qZYUn9qQ@mail.gmail.com>
+ <5204D744.7090801@enkore.de>
+Message-ID: <CAGb_FfYF_TVc+u-Ud2vDj8gQ0-myA1L7BQEK5qB03z_GJFjDWA@mail.gmail.com>
+
+quickswitch-i3 is nice.
+The monkey patch should do it perfectly, it's not a big issue that the
+actual workspace name is different. Thank you very much.
+
+Le vendredi 9 ao?t 2013, [mabe] a ?crit :
+
+> -----BEGIN PGP SIGNED MESSAGE-----
+> Hash: SHA1
+>
+> If you don't know it yet you may find quickswitch-i3 [1] useful. It
+> creates dmenu menus for workspaces, clients etc.
+>
+> Regarding your original question: No I don't think this is possible at
+> the moment. But you could monkey patch it into your dmenu script. For
+> example, convert all workspace names matching "_[A-Z]" to A-Z. On
+> return from dmenu you convert A-Z back to the original string by just
+> prepending an underscore or some similar delimiter. Con: the workspace
+> name and what you type to get to it are different.
+>
+> [mabe]
+>
+> [1] https://github.com/proxypoke/quickswitch-for-i3
+>
+> On 08/09/2013 06:29 AM, Sylvain Benner wrote:
+> > For the rest I prefer dmenu, I'm currently building up a whole i3
+> > environment driven by dmenu. I will share it when it is ready.
+>
+> -----BEGIN PGP SIGNATURE-----
+> Version: GnuPG v2.0.20 (GNU/Linux)
+>
+> iQIcBAEBAgAGBQJSBNdCAAoJEAOmTcUxK/swG8MQAJ0SqO2VU4n8FYSM43LmaBMS
+> P6FtZ4kcvhf0mG4TrVd7924CnLPEg+cLjBZkSrwrSiWymypD0/Oyfg5HfA9YsK4I
+> 5cKAbxb8W+46kuk2wWOT7VPj8m0TxN64ys6R3KSrJIY9AYW6ZH8oPFIJ21HTPAvV
+> i1I5jT3ibDuteNDRx5ImMANJL+my8ArmFIn2J3/CGODBV/Hv9TGwzP1+bvilS+Gd
+> 8m/GMg+A1SKKznu4f6L3aMT48B3Xg04kHfVA5o0sbMK/K3Mui683W/qZClgrphWt
+> kZKev0FX7Hpz8pj//hcC1vv5Gj+CKnsiJErE6TTsdpMTX5hn1iTL296KTGEAf6ZG
+> RNSy7zf1IjSdWUtYOs+kDofimvl2AfhxWsdSRr/amHCkeqtkjwYQ4bF1Y759Qqp0
+> VdqqOfGG6GOGXxC6bDvTJ+FdLjTToOzUd6a2txqdQ1D6xue2FKCwroTadvzPavbT
+> xUdjOFEpmSYbWH3pArU239u3KUkQJa1maTStzESgXNkkui6QO0F/4OmReBH2WVqv
+> bRdehg22KabIxvOPqfI9ycC7ntWiLhL05QHR69k9Gw7w/2F6Ljbh84vNExrhSOwA
+> gQPkqDyT4XW4erOPHryoFR72Yog8TO5DYOHkdOq7zH/J3d7glbPeTheqpzk2LD4O
+> mMFVaD736Njm2SPDdECX
+> =RuOG
+> -----END PGP SIGNATURE-----
+>
+
+
+-- 
+-syl20bnr-
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130809/4c9a3177/attachment.html>
+
+From michael at i3wm.org  Fri Aug  9 19:15:59 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 09 Aug 2013 19:15:59 +0200
+Subject: [i3] About "bindelse" and "time out" feature requests for
+	binding modes
+In-Reply-To: <CAGb_FfY=nuT8CPSbe_S5b5FpTq6dsg521Me5-H2t2fz6MQW_ag@mail.gmail.com>
+References: <CAGb_FfY=nuT8CPSbe_S5b5FpTq6dsg521Me5-H2t2fz6MQW_ag@mail.gmail.com>
+Message-ID: <x6y58a3hv4.fsf@midna.lan>
+
+Hi Sylvain,
+
+Your points are valid so I closed the ticket. Next time, please just
+submit your comments on the ticket.
+
+-- 
+Best regards,
+Michael
+
+From sylvain.benner at gmail.com  Fri Aug  9 19:43:38 2013
+From: sylvain.benner at gmail.com (Sylvain Benner)
+Date: Fri, 9 Aug 2013 13:43:38 -0400
+Subject: [i3] About "bindelse" and "time out" feature requests for
+	binding modes
+In-Reply-To: <x6y58a3hv4.fsf@midna.lan>
+References: <CAGb_FfY=nuT8CPSbe_S5b5FpTq6dsg521Me5-H2t2fz6MQW_ag@mail.gmail.com>
+ <x6y58a3hv4.fsf@midna.lan>
+Message-ID: <CAGb_FfbKct_TbHRNv-SvG0P3iZOquMH4+S3dUxn_wMuOyhon1Q@mail.gmail.com>
+
+True, I actually started this text in a ticket comment but wondered if it
+will lead to lot of replies or just if the community would want to update
+their thoughts on this topic.
+
+Le vendredi 9 ao?t 2013, Michael Stapelberg a ?crit :
+
+> Hi Sylvain,
+>
+> Your points are valid so I closed the ticket. Next time, please just
+> submit your comments on the ticket.
+>
+> --
+> Best regards,
+> Michael
+>
+
+
+-- 
+-syl20bnr-
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130809/83a9acca/attachment.html>
+
+From mail at profpatsch.de  Sat Aug 10 16:09:03 2013
+From: mail at profpatsch.de (Profpatsch)
+Date: Sat, 10 Aug 2013 16:09:03 +0200
+Subject: [i3] =?utf-8?q?Right_click_on_i3bar_to_switch_back_doesn=E2=80=99?=
+ =?utf-8?q?t_work_anymore?=
+Message-ID: <20130810140903.GH26501@nyx>
+
+Up until this version I could right-click the i3bar to switch back to
+the last workspace with my config (the switch-back feature for the
+currently active number turned on).
+
+I read something about how i3bar is now able to process click events but
+couldn?t find anything in the manpages for i3bar and i3.
+
+What changed? Can this be enabled again, or are there even cooler
+things possible now?
+
+-- 
+Proudly written in Mutt with Vim on Archlinux.
+Q: Why is this email five sentences or less?
+A: http://five.sentenc.es
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 836 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130810/6043f1ca/attachment.sig>
+
+From public at enkore.de  Sat Aug 10 16:12:32 2013
+From: public at enkore.de (mabe)
+Date: Sat, 10 Aug 2013 16:12:32 +0200
+Subject: [i3]
+ =?utf-8?q?Right_click_on_i3bar_to_switch_back_doesn=E2=80=99?=
+ =?utf-8?q?t_work_anymore?=
+In-Reply-To: <20130810140903.GH26501@nyx>
+References: <20130810140903.GH26501@nyx>
+Message-ID: <52064A50.4080201@enkore.de>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+See http://i3-wm.org/docs/i3bar-protocol.html#_click_events for info
+about click events.
+
+Click events basically allow i3status-like programs (i3pystatus uses
+this) to react to user input. For example in i3pystatus you can click
+on the MPD block to play/pause.
+
+When making the patch back then I was not aware of that feature and
+nobody did notice it. Seems like there wasn't a test for it.
+
+On 08/10/2013 04:09 PM, Profpatsch wrote:
+> I read something about how i3bar is now able to process click
+> events but couldn?t find anything in the manpages for i3bar and
+> i3.
+> 
+> What changed? Can this be enabled again, or are there even cooler 
+> things possible now?
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBAgAGBQJSBkpPAAoJEAOmTcUxK/swRnwQALRIj2peGQfPQcsTbVhESAtG
+A1+H/AclCY9LN2ROQ4/yiVHKDKMLkCGMQHf6zAb5lqK2dfs3FudkOW/LzrGgbLix
+Lg6/ryLp0lrroXdFmHCksU6bUIkw0OqC0e03sXBlEAFRzXIpeav3bMKksjfE+MRS
+Qhr2L3LzsxyORtvSNT5gu4thR24q/yTNKUcgiBvVP2BCES9FPoZ1s1cH0yHoIOWr
+wvSjaRd6tztm1fp4S1+jBhi9Ys/pU8I1tVwVPSclXl/woObJmFxz2i5Y5noZXR3R
+R6pbAAsyabV5ASjKN51+cIw/fwOuAY1RDsLeswV/8JdlJT28kWleVPXE48mTjuMI
+p9mmwS352fmp8YmnLzO84/kKZNBt+kfUIqT0jf+mdhCiA7uwWGW22VD1ysotVYRw
+87YPQHPPZC59UtDS0AAAvwcp/hJOuXogHksx16Mt0dKdPNF3oRDiHq+VzShs1g1Q
+ZfJSqUxO7Q9EoXb9G0syQhcXtBUtIsRczWepOWmH5INhMnpmIAp1x/ae4DE+Hd9P
+QqKLBdN+I8s9OAkDD1YGLCQNQky3t9zC63hFL6AP15/F6gdq9PGoKEU2qgaAHA1p
+mo32vDgyaVaG1TvlWt8DfSnyD/Bl9mpMc77yqZbIs87Qt3fzZy5pOlrdaH8LHMT/
+54HudiIXXLgywImGNsMA
+=9GBQ
+-----END PGP SIGNATURE-----
+
+From michael at i3wm.org  Sat Aug 10 16:18:15 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 10 Aug 2013 16:18:15 +0200
+Subject: [i3]
+ =?utf-8?q?Right_click_on_i3bar_to_switch_back_doesn=E2=80=99?=
+ =?utf-8?q?t_work_anymore?=
+In-Reply-To: <52064A50.4080201@enkore.de>
+References: <20130810140903.GH26501@nyx> <52064A50.4080201@enkore.de>
+Message-ID: <x68v09d3yw.fsf@midna.lan>
+
+Hi mabe,
+
+"[mabe]" <public at enkore.de> writes:
+> When making the patch back then I was not aware of that feature and
+> nobody did notice it. Seems like there wasn't a test for it.
+Unfortunately, there no tests for keyboard or mouse input at all.
+
+In case anyone wants to add them, that?d be a welcome addition to the
+test suite.
+
+-- 
+Best regards,
+Michael
+
+From public at enkore.de  Sat Aug 10 16:26:38 2013
+From: public at enkore.de (mabe)
+Date: Sat, 10 Aug 2013 16:26:38 +0200
+Subject: [i3]
+ =?utf-8?q?Right_click_on_i3bar_to_switch_back_doesn=E2=80=99?=
+ =?utf-8?q?t_work_anymore?=
+In-Reply-To: <20130810140903.GH26501@nyx>
+References: <20130810140903.GH26501@nyx>
+Message-ID: <52064D9E.8060602@enkore.de>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+Hmm, I just took a look at the relevant part of the source (that
+should be in i3bar/src/xcb.c in handle_button) and don't see anything
+handling a right click, besides click events.
+
+git diff 13f4a9f..5adb09 -- xcb.c (the first rev is 4.5.1, the second
+the rev immediately before click events were added) gives no changes
+at all. In 13f4a9f I don't see anything handling a right click either,
+btw.
+
+What version of i3/i3bar where you using prior to 4.6?
+
+On 08/10/2013 04:09 PM, Profpatsch wrote:
+> Up until this version I could right-click the i3bar to switch back
+> to the last workspace with my config (the switch-back feature for
+> the currently active number turned on).
+> 
+> I read something about how i3bar is now able to process click
+> events but couldn?t find anything in the manpages for i3bar and
+> i3.
+> 
+> What changed? Can this be enabled again, or are there even cooler 
+> things possible now?
+> 
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBAgAGBQJSBk2dAAoJEAOmTcUxK/sw/McP/1KOacgPE9fog9NGeb1vrYZd
+dHuDgS0AOF7FoY5Y20ITe/OrMxHUDHDx/hB0cn7fhUbkdgQDHL7z2n1LUtlq7NiT
+hCvHHRela+dr/gt0t5X1/wgvQ+//OvBZ06ISWVZvFq3HF9le9TA9tW0vWgiholYh
+VOfTgPw8VvQvCU+6Oezdn/JBPtw28zTWy78T+QPYxbAdUXn3Ni4uo/KvCVqStVQd
+VaK/e6y81FyhY7av0oiADroIidfIphxaO6BiKyni4EptiUMauO1PKjzABIeY5+zA
+QthTuL1E5BRU8TkJFyFD5atXKw4cRBwWZEtd2elo/VElkMfPIH/SQW7toZBd8mrD
+JzNhxqSVkJGQQp1qdmRm+iRor+nxbhCvz6UfSjuS9oknqxlaaNGEOyrMTzG+0nma
+nOjE75XcBu78KwYKqJTRBZuncDkwtROKLfuSiBD/MWIPPD1v5IoWezSvwrnzbPTo
+pGJrAdG2EGusvZLPKFv/1mECyawsxWNrGH9FlPRT0l8ejJMW/0zogZTUzw5OEZ16
+Yi41UTfrtkFT5puw8g6nsoySw3yX52WVy2owQyrNxhFU6hZvWhATivLA2wE1p4W1
+HffVij2+gltsNW66GE5EhAzjhjTOAeqxSBysKhMuyAsOS7bmoYf+gNsnQ2cOa75N
+1bYNdHRKZAW5h5RIRdn6
+=NtOp
+-----END PGP SIGNATURE-----
+
+From mail at profpatsch.de  Sat Aug 10 16:38:45 2013
+From: mail at profpatsch.de (Profpatsch)
+Date: Sat, 10 Aug 2013 16:38:45 +0200
+Subject: [i3]
+ =?utf-8?q?Right_click_on_i3bar_to_switch_back_doesn=E2=80=99?=
+ =?utf-8?q?t_work_anymore?=
+In-Reply-To: <x68v09d3yw.fsf@midna.lan>
+References: <20130810140903.GH26501@nyx> <52064A50.4080201@enkore.de>
+ <x68v09d3yw.fsf@midna.lan>
+Message-ID: <20130810143845.GJ26501@nyx>
+
+On 13-08-10 04:18pm, Michael Stapelberg wrote:
+> Hi mabe,
+> 
+> "[mabe]" <public at enkore.de> writes:
+> > When making the patch back then I was not aware of that feature and
+> > nobody did notice it. Seems like there wasn't a test for it.
+> Unfortunately, there no tests for keyboard or mouse input at all.
+> 
+> In case anyone wants to add them, that?d be a welcome addition to the
+> test suite.
+
+Has this been a feature or a side effect of something else? It was very
+convenient when you only had one hand on the mouse (EATING!).
+
+-- 
+Proudly written in Mutt with Vim on Archlinux.
+Q: Why is this email five sentences or less?
+A: http://five.sentenc.es
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 836 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130810/b33ca1cb/attachment.sig>
+
+From mail at profpatsch.de  Sun Aug 11 15:48:09 2013
+From: mail at profpatsch.de (Profpatsch)
+Date: Sun, 11 Aug 2013 15:48:09 +0200
+Subject: [i3]
+ =?utf-8?q?Right_click_on_i3bar_to_switch_back_doesn=E2=80=99?=
+ =?utf-8?q?t_work_anymore?=
+In-Reply-To: <52064D9E.8060602@enkore.de>
+References: <20130810140903.GH26501@nyx>
+ <52064D9E.8060602@enkore.de>
+Message-ID: <20130811134809.GA4321@nyx>
+
+On 13-08-10 04:26pm, [mabe] wrote:
+> What version of i3/i3bar where you using prior to 4.6?
+
+Always the newest (you are kind of forced to on Arch).
+
+-- 
+Proudly written in Mutt with Vim on Archlinux.
+Q: Why is this email five sentences or less?
+A: http://five.sentenc.es
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 836 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130811/9d7af73e/attachment.sig>
+
+From michael at i3wm.org  Mon Aug 12 08:57:34 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 12 Aug 2013 08:57:34 +0200
+Subject: [i3]
+ =?utf-8?q?Right_click_on_i3bar_to_switch_back_doesn=E2=80=99?=
+ =?utf-8?q?t_work_anymore?=
+In-Reply-To: <20130811134809.GA4321@nyx>
+References: <20130810140903.GH26501@nyx> <52064D9E.8060602@enkore.de>
+ <20130811134809.GA4321@nyx>
+Message-ID: <x6bo535rc1.fsf@midna.lan>
+
+Hi Profpatsch,
+
+Profpatsch <mail at profpatsch.de> writes:
+> Always the newest (you are kind of forced to on Arch).
+A pet peeve of mine is telling people that ?the newest? is a really bad
+way of specifying a version. What does it mean? The newest version that
+you cared to install? The newest that your distribution made available?
+The newest from a git repository? Which one? Which branch? Which time
+did you check out?
+
+The most reasonable way is using i3 --version and i3bar --version.
+
+I realize that you don?t have the binary around anymore, I just didn?t
+want to let your statement stand on its own here :).
+
+-- 
+Best regards,
+Michael
+
+From freestyler7 at gmail.com  Mon Aug 12 13:47:32 2013
+From: freestyler7 at gmail.com (Bill kolokithas)
+Date: Mon, 12 Aug 2013 14:47:32 +0300
+Subject: [i3]  smplayer's fullscreen seek bar,
+	not visible in latest 4.6 version
+Message-ID: <CAA+gWiyjUHtCk6fmgmC-8RwPouzukm9r=GbMnkC5-JbhFGzf0w@mail.gmail.com>
+
+When you enter full screen in smplayer while watch a video (with
+hotkey f), you can move the mouse at the bottom of the screen for the
+seek bar to appear.
+If i enter fullscreen from within smplayer and then press mod+f from
+i3, i can see the seek bar but i also have window borders + i3bar
+showing.
+
+After the upgrade to 4.6 in archlinux, it doesn't work anymore. I
+doubled checked with a downgrade that it works properly on the
+previous version 4.5.1.
+Toggling the "bypass window manager" from smplayer floating control
+settings, does change anything as well.
+
+I also just installed vlc to test and it seems it has the same
+problem. Gnome mplayer seems fine.
+
+From michael at i3wm.org  Mon Aug 12 16:02:28 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 12 Aug 2013 16:02:28 +0200
+Subject: [i3] smplayer's fullscreen seek bar,
+	not visible in latest 4.6 version
+In-Reply-To: <CAA+gWiyjUHtCk6fmgmC-8RwPouzukm9r=GbMnkC5-JbhFGzf0w@mail.gmail.com>
+References: <CAA+gWiyjUHtCk6fmgmC-8RwPouzukm9r=GbMnkC5-JbhFGzf0w@mail.gmail.com>
+Message-ID: <x6wqnrknwr.fsf@midna.lan>
+
+Hi Bill,
+
+Bill kolokithas <freestyler7 at gmail.com> writes:
+> After the upgrade to 4.6 in archlinux, it doesn't work anymore. I
+> doubled checked with a downgrade that it works properly on the
+> previous version 4.5.1.
+> Toggling the "bypass window manager" from smplayer floating control
+> settings, does change anything as well.
+I would appreciate if you can git bisect 4.5.1 and 4.6 to see which
+change precisely causes the issue.
+
+You can find plenty of guides for bisecting on the internet and ask
+specific questions in the #i3 IRC channel.
+
+Thanks.
+
+-- 
+Best regards,
+Michael
+
+From freestyler7 at gmail.com  Mon Aug 12 17:24:57 2013
+From: freestyler7 at gmail.com (Bill kolokithas)
+Date: Mon, 12 Aug 2013 18:24:57 +0300
+Subject: [i3] smplayer's fullscreen seek bar,
+	not visible in latest 4.6 version
+In-Reply-To: <x6wqnrknwr.fsf@midna.lan>
+References: <CAA+gWiyjUHtCk6fmgmC-8RwPouzukm9r=GbMnkC5-JbhFGzf0w@mail.gmail.com>
+ <x6wqnrknwr.fsf@midna.lan>
+Message-ID: <CAA+gWixSwVUp2v8=1PrzB4tRx+-ajA5jvGzMLoq=LGXaZThwLA@mail.gmail.com>
+
+Hello. I just did a bisect from 4.5.1 to 4.6.
+The offending commit is this one: raise fullscreen windows on top of
+all other X11 windows
+http://code.stapelberg.de/git/i3/commit/?id=0659a0d98ca98fcd134c277c6a61ca3c9a04544e
+
+Reverting it resolves the problem. Thanks!
+
+On Mon, Aug 12, 2013 at 5:02 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+> Hi Bill,
+>
+> Bill kolokithas <freestyler7 at gmail.com> writes:
+>> After the upgrade to 4.6 in archlinux, it doesn't work anymore. I
+>> doubled checked with a downgrade that it works properly on the
+>> previous version 4.5.1.
+>> Toggling the "bypass window manager" from smplayer floating control
+>> settings, does change anything as well.
+> I would appreciate if you can git bisect 4.5.1 and 4.6 to see which
+> change precisely causes the issue.
+>
+> You can find plenty of guides for bisecting on the internet and ask
+> specific questions in the #i3 IRC channel.
+>
+> Thanks.
+>
+> --
+> Best regards,
+> Michael
+
+From lists at necoro.eu  Tue Aug 13 17:03:17 2013
+From: lists at necoro.eu (=?ISO-8859-15?Q?Ren=E9_Neumann?=)
+Date: Tue, 13 Aug 2013 17:03:17 +0200
+Subject: [i3] Updated patch for icons in i3bar
+Message-ID: <520A4AB5.9020205@necoro.eu>
+
+Hi all,
+
+to help people googling it etc, here is the patch allowing to use icons
+in i3bar ported to version 4.6. (Note: This is no in-depth porting, but
+just tailored to 'applies, compiles and works' (TM)).
+
+NB: Patch is based upon the version of Nick Lanham [1].
+
+Remark: I'd still like to see some central i3 patch repository :).
+
+- Ren?
+
+[1] https://gist.github.com/nicklan/5169399/
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: i3bar-4.6-icons.patch
+Type: text/x-patch
+Size: 12635 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130813/73ba02f3/attachment.bin>
+
+From zhu.qunying at gmail.com  Wed Aug 14 02:38:41 2013
+From: zhu.qunying at gmail.com (Qun-Ying)
+Date: Tue, 13 Aug 2013 17:38:41 -0700
+Subject: [i3] floating window without border
+Message-ID: <CAHiy0bS+n-OsH1NoB0tBH4OUr20vy0Z6-q6nhUBU5TzoOiwxmQ@mail.gmail.com>
+
+Hi,
+
+I am running i3wm 4.6.
+
+with the following relevant settings.
+
+new_float normal
+new_window none
+
+hide_edge_borders both
+for_window [class="Xpdf"] floating enable
+
+When xpdf is launch, it is borderless.
+Not sure if this one is a bug or some configuration problem.
+
+Any other apps that I define this way as flowing window does not have
+border.
+
+-- 
+Qun-Ying
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130813/c77b40b0/attachment.html>
+
+From michael at i3wm.org  Thu Aug 15 17:51:35 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 15 Aug 2013 17:51:35 +0200
+Subject: [i3] floating window without border
+In-Reply-To: <CAHiy0bS+n-OsH1NoB0tBH4OUr20vy0Z6-q6nhUBU5TzoOiwxmQ@mail.gmail.com>
+References: <CAHiy0bS+n-OsH1NoB0tBH4OUr20vy0Z6-q6nhUBU5TzoOiwxmQ@mail.gmail.com>
+Message-ID: <x6ioz754vs.fsf@midna.lan>
+
+Hi Qun-Ying,
+
+Qun-Ying <zhu.qunying at gmail.com> writes:
+> new_float normal
+> new_window none
+>
+> hide_edge_borders both
+> for_window [class="Xpdf"] floating enable
+>
+> When xpdf is launch, it is borderless.
+> Not sure if this one is a bug or some configuration problem.
+Check the log to be sure why this is happening, see
+http://i3wm.org/docs/debugging.html
+
+In case you think what is happening here is incorrect, feel free to file
+a bugreport (with a logfile of course!) and we can investigate.
+
+-- 
+Best regards,
+Michael
+
+From jmolinaso at gmail.com  Fri Aug 16 10:02:22 2013
+From: jmolinaso at gmail.com (Julio Molina Soler)
+Date: Fri, 16 Aug 2013 10:02:22 +0200
+Subject: [i3] Proposal for default config
+Message-ID: <CABCpq7DfhV11P9V4r3FPdSyP_d9C95L=drRMQZwrgvhoV_0c8Q@mail.gmail.com>
+
+Hi all,
+
+I just joined your community as I'm few months working productively with
+i3wm, I want to give back what I get from this project.
+I've being improving i3 configuration since the day 1 to match with my
+laptop needs, I must say, it gets the 80% of everything. But I always
+missed the fact that the volume keys are not working out of the box, and
+turns out it is quite simple to achieve that, so I wonder if it can be
+added to the initial config script, as it can help users to don't bother
+about that small useful feature.
+
+I added in my config the option to raise and low the volume with amixer,
+I'm sure there must be a better way to do that, so if anyone knows better
+... share it!
+
+# Section to control the Master output
+bindSym XF86AudioRaiseVolume exec amixer set Master 1%+
+bindSym XF86AudioLowerVolume exec amixer set Master 1%-
+bindSym XF86AudioMute exec amixer -D pulse set Master 1+ toggle
+
+#Section to control the Capture (mic)
+bindSym Shift+XF86AudioRaiseVolume exec amixer set Capture 1%+
+bindSym Shift+XF86AudioLowerVolume exec amixer set Capture 1%-
+bindSym Shift+XF86AudioMute exec amixer set Capture 1+ toggle
+
+Hope easy the search from other people. I was planning to add a blog
+entrance, but I think is better that gets linked to the community.
+
+-- 
+Saludos Digitales,
+Julio Molina Soler
+
+jmolinaso at gmail.com
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130816/a4887b84/attachment.html>
+
+From manuelschneid3r at googlemail.com  Fri Aug 16 10:35:59 2013
+From: manuelschneid3r at googlemail.com (Manuel)
+Date: Fri, 16 Aug 2013 10:35:59 +0200
+Subject: [i3] Proposal for default config
+In-Reply-To: <CABCpq7DfhV11P9V4r3FPdSyP_d9C95L=drRMQZwrgvhoV_0c8Q@mail.gmail.com>
+References: <CABCpq7DfhV11P9V4r3FPdSyP_d9C95L=drRMQZwrgvhoV_0c8Q@mail.gmail.com>
+Message-ID: <520DE46F.30109@gmail.com>
+
+I think is good, too. Most of the bindings are selfexplanatory and it is 
+easier to erase bindings than to read through the user guide, which is 
+great but really long. Hence a bloated config would be fine. Adding all 
+possible options, but commented out, would be convenient too.
+
+  have something to add to Julios idea: Use the -M option of amixer. 
+"amixer set Master 1%+" increases the volume linearly. But the 
+characteristic line of the human ear is a logarithmic funtion. "-M" 
+Tries to compensate this to achieve a felt linear increasment of volume.
+
+Regards
+
+Am 16.08.2013 10:02, schrieb Julio Molina Soler:
+> Hi all,
+>
+> I just joined your community as I'm few months working productively 
+> with i3wm, I want to give back what I get from this project.
+> I've being improving i3 configuration since the day 1 to match with my 
+> laptop needs, I must say, it gets the 80% of everything. But I always 
+> missed the fact that the volume keys are not working out of the box, 
+> and turns out it is quite simple to achieve that, so I wonder if it 
+> can be added to the initial config script, as it can help users to 
+> don't bother about that small useful feature.
+>
+> I added in my config the option to raise and low the volume with 
+> amixer, I'm sure there must be a better way to do that, so if anyone 
+> knows better ... share it!
+>
+> # Section to control the Master output
+> bindSym XF86AudioRaiseVolume exec amixer set Master 1%+
+> bindSym XF86AudioLowerVolume exec amixer set Master 1%-
+> bindSym XF86AudioMute exec amixer -D pulse set Master 1+ toggle
+>
+> #Section to control the Capture (mic)
+> bindSym Shift+XF86AudioRaiseVolume exec amixer set Capture 1%+
+> bindSym Shift+XF86AudioLowerVolume exec amixer set Capture 1%-
+> bindSym Shift+XF86AudioMute exec amixer set Capture 1+ toggle
+>
+> Hope easy the search from other people. I was planning to add a blog 
+> entrance, but I think is better that gets linked to the community.
+>
+> -- 
+> Saludos Digitales,
+> Julio Molina Soler
+>
+> jmolinaso at gmail.com <mailto:jmolinaso at gmail.com>
+
+
+From mail at profpatsch.de  Fri Aug 16 11:45:36 2013
+From: mail at profpatsch.de (Profpatsch)
+Date: Fri, 16 Aug 2013 11:45:36 +0200
+Subject: [i3] Proposal for default config
+In-Reply-To: <520DE46F.30109@gmail.com>
+References: <CABCpq7DfhV11P9V4r3FPdSyP_d9C95L=drRMQZwrgvhoV_0c8Q@mail.gmail.com>
+ <520DE46F.30109@gmail.com>
+Message-ID: <20130816094536.GA23175@nyx>
+
+On 13-08-16 10:35am, Manuel wrote:
+> I think is good, too. Most of the bindings are selfexplanatory and
+> it is easier to erase bindings than to read through the user guide,
+> which is great but really long. Hence a bloated config would be
+> fine. Adding all possible options, but commented out, would be
+> convenient too.
+> 
+>  have something to add to Julios idea: Use the -M option of amixer.
+> "amixer set Master 1%+" increases the volume linearly. But the
+> characteristic line of the human ear is a logarithmic funtion. "-M"
+> Tries to compensate this to achieve a felt linear increasment of
+> volume.
+
+The problem I see with this: Some (lots of) people use Pulse, others
+Jack (and that only part of the time).
+
+If that is included, these bindings should depend on which audioserver
+is used (if that?s even detectable).
+
+-- 
+Proudly written in Mutt with Vim on Archlinux.
+Q: Why is this email five sentences or less?
+A: http://five.sentenc.es
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 836 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130816/723e3806/attachment.sig>
+
+From dcoppa at gmail.com  Fri Aug 16 11:48:34 2013
+From: dcoppa at gmail.com (David Coppa)
+Date: Fri, 16 Aug 2013 11:48:34 +0200
+Subject: [i3] Proposal for default config
+In-Reply-To: <20130816094536.GA23175@nyx>
+References: <CABCpq7DfhV11P9V4r3FPdSyP_d9C95L=drRMQZwrgvhoV_0c8Q@mail.gmail.com>
+ <520DE46F.30109@gmail.com> <20130816094536.GA23175@nyx>
+Message-ID: <20130816094834.GA25081@latitude.daco.lab>
+
+On Fri, 16 Aug 2013, Profpatsch wrote:
+
+> On 13-08-16 10:35am, Manuel wrote:
+> > I think is good, too. Most of the bindings are selfexplanatory and
+> > it is easier to erase bindings than to read through the user guide,
+> > which is great but really long. Hence a bloated config would be
+> > fine. Adding all possible options, but commented out, would be
+> > convenient too.
+> > 
+> >  have something to add to Julios idea: Use the -M option of amixer.
+> > "amixer set Master 1%+" increases the volume linearly. But the
+> > characteristic line of the human ear is a logarithmic funtion. "-M"
+> > Tries to compensate this to achieve a felt linear increasment of
+> > volume.
+> 
+> The problem I see with this: Some (lots of) people use Pulse, others
+> Jack (and that only part of the time).
+> 
+> If that is included, these bindings should depend on which audioserver
+> is used (if that's even detectable).
+
+Other people (like me) don't even use Linux...
+
+
+From public at enkore.de  Fri Aug 16 12:30:29 2013
+From: public at enkore.de (mabe)
+Date: Fri, 16 Aug 2013 12:30:29 +0200
+Subject: [i3] Proposal for default config
+In-Reply-To: <20130816094834.GA25081@latitude.daco.lab>
+References: <CABCpq7DfhV11P9V4r3FPdSyP_d9C95L=drRMQZwrgvhoV_0c8Q@mail.gmail.com>
+ <520DE46F.30109@gmail.com> <20130816094536.GA23175@nyx>
+ <20130816094834.GA25081@latitude.daco.lab>
+Message-ID: <520DFF45.4000200@enkore.de>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+I think the purpose of that bindings wouldn't be to show how to change
+volume but rather what names the media keys have.
+
+I'm always reluctant about looking those up with e.g. xev
+
+[mabe]
+
+On 08/16/2013 11:48 AM, David Coppa wrote:
+> On Fri, 16 Aug 2013, Profpatsch wrote:
+> 
+>> On 13-08-16 10:35am, Manuel wrote:
+>>> I think is good, too. Most of the bindings are selfexplanatory
+>>> and it is easier to erase bindings than to read through the
+>>> user guide, which is great but really long. Hence a bloated
+>>> config would be fine. Adding all possible options, but
+>>> commented out, would be convenient too.
+>>> 
+>>> have something to add to Julios idea: Use the -M option of
+>>> amixer. "amixer set Master 1%+" increases the volume linearly.
+>>> But the characteristic line of the human ear is a logarithmic
+>>> funtion. "-M" Tries to compensate this to achieve a felt linear
+>>> increasment of volume.
+>> 
+>> The problem I see with this: Some (lots of) people use Pulse,
+>> others Jack (and that only part of the time).
+>> 
+>> If that is included, these bindings should depend on which
+>> audioserver is used (if that's even detectable).
+> 
+> Other people (like me) don't even use Linux...
+> 
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.20 (GNU/Linux)
+
+iQIcBAEBAgAGBQJSDf9DAAoJEAOmTcUxK/swtRwQAK2t6gBIGy/OZvsxqfg1SxEV
+ECThBFp+YA9NZB1ftZABmUpKTFKtIDnHOTZe5oqLODv2bE3aECtcD/Nr6ROOOhxD
+WajxV1v4Ous0gp/Exm0CdoL47xg32VZduEca7IuKF4L8n9YHeTtvWnt61UJs6kpu
+c4dZ2PpNoOelkpUfb9fOqSNTY2gKhJ/mPczxCOrtMyqis/jlAOBO4Eh6LGVPJ/Y3
+y2+2Yb1MHvX3UnDdwbaZwvuuORNwlPkRzCYE5WKi4/l3OdFbAwkDqvwXN+Sn72Ip
+Q4WV3/YOTHhwBSj6ZrH8GLVBSqyKNOs2uxarXX6VBSKCfOA1MICoamzSEYoCqHe2
+exYGlNucPh6fDM3SPowor/oSO7xrkVFNMa8N5PqiXzyqF36h9I78rUMDLl4OWgcL
+EWOVnzpt2SlEhknTWgkVWlys3ah7A8H8zh6SqD2QFgst/Jlg0qKF4HVsKVjOnP83
+Zx/PYUkf0OMuezd6/WTVZVfY9IBHEljkweSISPIWYvMfjhv1gQZkcpotkr+F04NU
+1r2rZ4GYMZad6+cN+Ld7VToRbEYLTuUg1D72WoF9Kcy4qXaHJ2Vu0oncp8jKwu3s
+wxv86pxsY/WJjII2dX5H87Fy7Hxz5C6h1W1syutmUKM4yDyvvLjIhPVS6DWjQybx
+5yxjFxbAZQC74laUbjmq
+=y9cB
+-----END PGP SIGNATURE-----
+
+From manuelschneid3r at googlemail.com  Fri Aug 16 12:47:38 2013
+From: manuelschneid3r at googlemail.com (Manuel)
+Date: Fri, 16 Aug 2013 12:47:38 +0200
+Subject: [i3] Proposal for default config
+In-Reply-To: <520DFF45.4000200@enkore.de>
+References: <CABCpq7DfhV11P9V4r3FPdSyP_d9C95L=drRMQZwrgvhoV_0c8Q@mail.gmail.com>
+ <520DE46F.30109@gmail.com> <20130816094536.GA23175@nyx>
+ <20130816094834.GA25081@latitude.daco.lab> <520DFF45.4000200@enkore.de>
+Message-ID: <520E034A.1020406@gmail.com>
+
+I dont know if this can be taken for general, but in my case giving no 
+device takes the default device, which should be fine for everyone.
+
+bindSym XF86AudioRaiseVolume  exec --no-startup-id "amixer -qM set 
+Master 9%+"
+bindSym XF86AudioLowerVolume  exec --no-startup-id "amixer -qM set 
+Master 9%-"
+bindSym XF86AudioMute         exec --no-startup-id "amixer -q  set 
+Master toggle"
+
+These are my volume bindings. They are working flawlessly.
+
+Regards
+
+From jmolinaso at gmail.com  Fri Aug 16 13:20:27 2013
+From: jmolinaso at gmail.com (Julio Molina Soler)
+Date: Fri, 16 Aug 2013 13:20:27 +0200
+Subject: [i3] Proposal for default config
+In-Reply-To: <520E034A.1020406@gmail.com>
+References: <CABCpq7DfhV11P9V4r3FPdSyP_d9C95L=drRMQZwrgvhoV_0c8Q@mail.gmail.com>
+ <520DE46F.30109@gmail.com> <20130816094536.GA23175@nyx>
+ <20130816094834.GA25081@latitude.daco.lab>
+ <520DFF45.4000200@enkore.de> <520E034A.1020406@gmail.com>
+Message-ID: <CABCpq7BgorJC+yh405a9mq6z+OaHzkVt2vqDgADJwkyiz_4jYw@mail.gmail.com>
+
+@David, in this case the OS is irrelevant, you have to look more if you use
+X or Wayland or anything else.
+
+@Manuel, that's what I also think, at least they should appear in the
+config, it will save time googling or just the feeling not working in i3
+(when actually it works smooth!)
+
+
+On Fri, Aug 16, 2013 at 12:47 PM, Manuel <manuelschneid3r at googlemail.com>wrote:
+
+> I dont know if this can be taken for general, but in my case giving no
+> device takes the default device, which should be fine for everyone.
+>
+> bindSym XF86AudioRaiseVolume  exec --no-startup-id "amixer -qM set Master
+> 9%+"
+> bindSym XF86AudioLowerVolume  exec --no-startup-id "amixer -qM set Master
+> 9%-"
+> bindSym XF86AudioMute         exec --no-startup-id "amixer -q  set Master
+> toggle"
+>
+> These are my volume bindings. They are working flawlessly.
+>
+> Regards
+>
+
+
+
+-- 
+Saludos Digitales,
+Julio Molina Soler
+
+jmolinaso at gmail.com
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130816/09483a4b/attachment.html>
+
+From michael at i3wm.org  Sat Aug 17 09:34:55 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 17 Aug 2013 09:34:55 +0200
+Subject: [i3] Proposal for default config
+In-Reply-To: <CABCpq7DfhV11P9V4r3FPdSyP_d9C95L=drRMQZwrgvhoV_0c8Q@mail.gmail.com>
+References: <CABCpq7DfhV11P9V4r3FPdSyP_d9C95L=drRMQZwrgvhoV_0c8Q@mail.gmail.com>
+Message-ID: <x67gfkixcw.fsf@midna.lan>
+
+Hi Julio,
+
+Julio Molina Soler <jmolinaso at gmail.com> writes:
+> laptop needs, I must say, it gets the 80% of everything. But I always
+> missed the fact that the volume keys are not working out of the box, and
+> turns out it is quite simple to achieve that, so I wonder if it can be
+> added to the initial config script, as it can help users to don't bother
+> about that small useful feature.
+As others have pointed out, it?s not that simple. The following points
+are the reason why this will not be added to the default config:
+
+ ? different people have different tastes in how the volume should be
+   changed
+ ? different distributions require different ways of changing the volume
+ ? the keybinding is not generally useful; many machines don?t have it,
+   many people won?t ever use it
+
+Thanks for your proposal, though.
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Tue Aug 27 20:54:56 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 27 Aug 2013 20:54:56 +0200
+Subject: [i3] smplayer's fullscreen seek bar,
+	not visible in latest 4.6 version
+In-Reply-To: <CAA+gWixSwVUp2v8=1PrzB4tRx+-ajA5jvGzMLoq=LGXaZThwLA@mail.gmail.com>
+References: <CAA+gWiyjUHtCk6fmgmC-8RwPouzukm9r=GbMnkC5-JbhFGzf0w@mail.gmail.com>
+ <x6wqnrknwr.fsf@midna.lan>
+ <CAA+gWixSwVUp2v8=1PrzB4tRx+-ajA5jvGzMLoq=LGXaZThwLA@mail.gmail.com>
+Message-ID: <x638pv55hb.fsf@midna.lan>
+
+Hi Bill,
+
+Bill kolokithas <freestyler7 at gmail.com> writes:
+> Hello. I just did a bisect from 4.5.1 to 4.6.
+> The offending commit is this one: raise fullscreen windows on top of
+> all other X11 windows
+> http://code.stapelberg.de/git/i3/commit/?id=0659a0d98ca98fcd134c277c6a61ca3c9a04544e
+>
+> Reverting it resolves the problem. Thanks!
+Thanks, I reverted it in git.
+
+-- 
+Best regards,
+Michael
+
+From lee at yun.yagibdah.de  Thu Aug 29 17:20:27 2013
+From: lee at yun.yagibdah.de (lee)
+Date: Thu, 29 Aug 2013 17:20:27 +0200
+Subject: [i3] i3lock doesn't process keypad correctly
+Message-ID: <8761uobk1w.fsf@yun.yagibdah.de>
+
+Hi,
+
+i3lock doesn't seem to get numbers when typed on the keypad and refuses
+to unlock the screen even when the password was typed correctly.
+
+
+i3lock: version 2.5 (2013-06-09) ? 2010-2012 Michael Stapelberg
+
+
+-- 
+Debugger entered--Lisp error: (error "No error here")
+  signal(error ("No error here"))
+  error("No %s here" "error")
+
+From archmailing5 at gmail.com  Thu Aug 29 17:25:00 2013
+From: archmailing5 at gmail.com (Simon Thelen)
+Date: Thu, 29 Aug 2013 17:25:00 +0200
+Subject: [i3] i3lock doesn't process keypad correctly
+In-Reply-To: <8761uobk1w.fsf@yun.yagibdah.de>
+References: <8761uobk1w.fsf@yun.yagibdah.de>
+Message-ID: <20130829152500.GA1012@anonymous>
+
+On 29/08/13 at 17:20, lee wrote:
+> Hi,
+> 
+> i3lock doesn't seem to get numbers when typed on the keypad and refuses
+> to unlock the screen even when the password was typed correctly.
+i3lock inverts the numlock for whatever reason.
+So if you can type with your numpad when the screen is unlocked, you
+have to press the numlock key in order to type numbers when the screen
+is locked.
+> 
+> i3lock: version 2.5 (2013-06-09) ? 2010-2012 Michael Stapelberg
+
+-- 
+Simon Thelen
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 836 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130829/3c0af67e/attachment.sig>
+
+From michael at i3wm.org  Thu Aug 29 17:41:01 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 29 Aug 2013 17:41:01 +0200
+Subject: [i3] i3lock doesn't process keypad correctly
+In-Reply-To: <20130829152500.GA1012@anonymous>
+References: <8761uobk1w.fsf@yun.yagibdah.de> <20130829152500.GA1012@anonymous>
+Message-ID: <x6txi81p4i.fsf@midna.lan>
+
+Hi Simon,
+
+Simon Thelen <archmailing5 at gmail.com> writes:
+>> i3lock doesn't seem to get numbers when typed on the keypad and refuses
+>> to unlock the screen even when the password was typed correctly.
+> i3lock inverts the numlock for whatever reason.
+> So if you can type with your numpad when the screen is unlocked, you
+> have to press the numlock key in order to type numbers when the screen
+> is locked.
+>> 
+>> i3lock: version 2.5 (2013-06-09) ? 2010-2012 Michael Stapelberg
+Odd. I never use the numpad, so I didn?t notice this when testing. Since
+i3lock 2.5, we actually use libxkbcommon for the entire input
+handling. Please check that you have the latest version of that and
+report a bug with the authors at
+https://github.com/xkbcommon/libxkbcommon
+
+Thanks!
+
+-- 
+Best regards,
+Michael
+
+From lee at yun.yagibdah.de  Fri Aug 30 15:48:33 2013
+From: lee at yun.yagibdah.de (lee)
+Date: Fri, 30 Aug 2013 15:48:33 +0200
+Subject: [i3] i3lock doesn't process keypad correctly
+In-Reply-To: <x6txi81p4i.fsf@midna.lan> (Michael Stapelberg's message of "Thu, 
+ 29 Aug 2013 17:41:01 +0200")
+References: <8761uobk1w.fsf@yun.yagibdah.de> <20130829152500.GA1012@anonymous>
+ <x6txi81p4i.fsf@midna.lan>
+Message-ID: <8761un9tn2.fsf@yun.yagibdah.de>
+
+Michael Stapelberg <michael at i3wm.org> writes:
+
+> Hi Simon,
+>
+> Simon Thelen <archmailing5 at gmail.com> writes:
+>>> i3lock doesn't seem to get numbers when typed on the keypad and refuses
+>>> to unlock the screen even when the password was typed correctly.
+>> i3lock inverts the numlock for whatever reason.
+>> So if you can type with your numpad when the screen is unlocked, you
+>> have to press the numlock key in order to type numbers when the screen
+>> is locked.
+>>> 
+>>> i3lock: version 2.5 (2013-06-09) ? 2010-2012 Michael Stapelberg
+> Odd. I never use the numpad, so I didn?t notice this when testing. Since
+> i3lock 2.5, we actually use libxkbcommon for the entire input
+> handling. Please check that you have the latest version of that and
+> report a bug with the authors at
+> https://github.com/xkbcommon/libxkbcommon
+
+https://github.com/xkbcommon/libxkbcommon/issues/1
+
+
+-- 
+Debugger entered--Lisp error: (error "No error here")
+  signal(error ("No error here"))
+  error("No %s here" "error")
+
+From michael at i3wm.org  Sat Aug 31 12:54:28 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 31 Aug 2013 12:54:28 +0200
+Subject: [i3] =?utf-8?b?aTMgYnVnICMxMDczOiBwYW5nbyDigJxQcm9mb2504oCdIGlz?=
+ =?utf-8?q?_missing_a_few_pixels?=
+Message-ID: <x6k3j2yvtn.fsf@midna.lan>
+
+Hi SardemFF7, fernandotcl,
+
+you guys are knowledgable in all things pango :). Recently,
+http://bugs.i3wm.org/query/ticket/1073 was reported and I don?t really
+know what the issue is here.
+
+With some text, e.g. ??: 100%? (try a couple others if that doesn?t
+trigger it on your machine), the font height is 15 pixels instead of the
+12 pixels that were determined in load_pango_font(), leading to 3
+missing pixels.
+
+I figured this out by adding the following code:
+
+--- i/libi3/font.c
++++ w/libi3/font.c
+@@ -98,6 +98,10 @@ static void draw_text_pango(const char *text, size_t text_len,
+     pango_cairo_update_layout(cr, layout);
+     pango_cairo_show_layout(cr, layout);
+ 
++    gint height;
++    pango_layout_get_pixel_size(layout, NULL, &height);
++    LOG("saved height = %d, height = %d\n", savedFont->height, height);
++
+     /* Free resources */
+     g_object_unref(layout);
+     cairo_destroy(cr);
+
+However, I am not sure why this happens. Is there some kind of font
+fallback involved for the ?unusual? unicode glyphs?
+
+Is there something we can do to fix this?
+
+Thanks.
+
+-- 
+Best regards,
+Michael
+
+From lee at yun.yagibdah.de  Sat Aug 31 16:42:36 2013
+From: lee at yun.yagibdah.de (lee)
+Date: Sat, 31 Aug 2013 16:42:36 +0200
+Subject: [i3] i3lock doesn't process keypad correctly
+In-Reply-To: <8761un9tn2.fsf@yun.yagibdah.de> (lee@yun.yagibdah.de's message
+ of "Fri, 30 Aug 2013 15:48:33 +0200")
+References: <8761uobk1w.fsf@yun.yagibdah.de> <20130829152500.GA1012@anonymous>
+ <x6txi81p4i.fsf@midna.lan> <8761un9tn2.fsf@yun.yagibdah.de>
+Message-ID: <87zjrxaplv.fsf@yun.yagibdah.de>
+
+lee <lee at yun.yagibdah.de> writes:
+
+> Michael Stapelberg <michael at i3wm.org> writes:
+>
+>> Hi Simon,
+>>
+>> Simon Thelen <archmailing5 at gmail.com> writes:
+>>>> i3lock doesn't seem to get numbers when typed on the keypad and refuses
+>>>> to unlock the screen even when the password was typed correctly.
+>>> i3lock inverts the numlock for whatever reason.
+>>> So if you can type with your numpad when the screen is unlocked, you
+>>> have to press the numlock key in order to type numbers when the screen
+>>> is locked.
+>>>> 
+>>>> i3lock: version 2.5 (2013-06-09) ? 2010-2012 Michael Stapelberg
+>> Odd. I never use the numpad, so I didn?t notice this when testing. Since
+>> i3lock 2.5, we actually use libxkbcommon for the entire input
+>> handling. Please check that you have the latest version of that and
+>> report a bug with the authors at
+>> https://github.com/xkbcommon/libxkbcommon
+>
+> https://github.com/xkbcommon/libxkbcommon/issues/1
+
+One of the devs has answered and says it needs to be fixed in i3lock.
+
+
+-- 
+Debugger entered--Lisp error: (error "No error here")
+  signal(error ("No error here"))
+  error("No %s here" "error")
+

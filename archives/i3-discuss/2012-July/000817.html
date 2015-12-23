@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3status with battery at 100+
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3status%20with%20battery%20at%20100%2B&In-Reply-To=%3C20120723185814.12580.95396%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000816.html">
+   <LINK REL="Next"  HREF="000818.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3status with battery at 100+</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3status%20with%20battery%20at%20100%2B&In-Reply-To=%3C20120723185814.12580.95396%40midna.zekjur.net%3E"
+       TITLE="[i3] i3status with battery at 100+">michael at i3wm.org
+       </A><BR>
+    <I>Mon Jul 23 20:58:14 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000816.html">[i3] i3status with battery at 100+
+</A></li>
+        <LI>Next message: <A HREF="000818.html">[i3] Get list of workspaces
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#817">[ date ]</a>
+              <a href="thread.html#817">[ thread ]</a>
+              <a href="subject.html#817">[ subject ]</a>
+              <a href="author.html#817">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Bruno,
+
+Quoting BRAGA, Bruno (2012-07-23 16:54:37)
+&gt;<i> It is really a small thing, but decided to write about it anyway...&#160;
+</I>&gt;<i> I know it is not a i3 bug, because the proc/acpi is returning this wrongfully.
+</I>Rule of thumb: Please always describe what you are seeing. From your
+screenshots, I think you are talking about your battery having a charge
+status of more than 100%. While this might seem odd at first you have to
+understand that the design capacity is only a value which the
+manufacturer of the battery sets. It is perfectly normal that batteries
+achieve more than that in their first few discharge cycles. Just as it&#8217;s
+normal that the battery won&#8217;t achieve the full design capacity after
+some discharge cycles :).
+
+&gt;<i> 1) never allow battery value to surpass 100% (this happens specially while
+</I>&gt;<i> using last full capacity) - this is not a bug, but it makes no sense to display
+</I>&gt;<i> as such
+</I>It does make sense to display it. The information that your battery is
+fuller than normal is important, too.
+
+&gt;<i> 2) the state shows charged but i3status displays BAT, as in discharging (I
+</I>&gt;<i> believe this is a bug)
+</I>Does this happen all the time? If so, can you check if your battery
+uevent file contains the POWER_SUPPLY_STATUS key and which value it has
+please?
+
+&gt;<i> 3) when the charging is close to 100%, the battery goes red (I believe this
+</I>&gt;<i> happens because of the remaining time to become full - and looks like a bug as
+</I>&gt;<i> well)
+</I>This is weird. The remaining time is only checked when the state is
+'discharging'. But it displays CHR (charging) in your screenshot. Fixes
+welcome.
+
+Best regards,
+Michael
+</PRE>
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000816.html">[i3] i3status with battery at 100+
+</A></li>
+	<LI>Next message: <A HREF="000818.html">[i3] Get list of workspaces
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#817">[ date ]</a>
+              <a href="thread.html#817">[ thread ]</a>
+              <a href="subject.html#817">[ subject ]</a>
+              <a href="author.html#817">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

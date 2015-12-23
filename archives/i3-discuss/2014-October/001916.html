@@ -1,0 +1,92 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3-msg - move all/some workspaces to another output
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3-msg%20-%20move%20all/some%20workspaces%20to%20another%20output&In-Reply-To=%3C87siiqgtfu.fsf%40rincewind.i-did-not-set--mail-host-address--so-tickle-me%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001915.html">
+   <LINK REL="Next"  HREF="001917.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3-msg - move all/some workspaces to another output</H1>
+    <B>Axel Wagner</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3-msg%20-%20move%20all/some%20workspaces%20to%20another%20output&In-Reply-To=%3C87siiqgtfu.fsf%40rincewind.i-did-not-set--mail-host-address--so-tickle-me%3E"
+       TITLE="[i3] i3-msg - move all/some workspaces to another output">mail at merovius.de
+       </A><BR>
+    <I>Wed Oct 15 00:47:17 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001915.html">[i3] i3-msg - move all/some workspaces to another output
+</A></li>
+        <LI>Next message: <A HREF="001917.html">[i3] i3blocks 1.3 is out!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1916">[ date ]</a>
+              <a href="thread.html#1916">[ thread ]</a>
+              <a href="subject.html#1916">[ subject ]</a>
+              <a href="author.html#1916">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I actually have the *exact* same problem and assigning workspaces to
+VGA1 is not a real solution for me, as I regularly use the VGA port for
+presentations and such and then I actually *don't* want any workspaces
+(apart from the one running the presentation of course) on the beamer.
+
+I currently use something like this, to move all my workspaces to VGA1:
+
+#!/bin/sh
+for i in `seq 10`
+do
+    i3 &quot;workspace $i, move workspace to output VGA1&quot;
+done
+for i in `seq 10`
+do
+    i3 workspace $i
+done
+i3 &quot;workspace 11, move workspace to output LVDS1&quot;
+
+(I am not sure what the second loop was for… it had *some* point…), but
+it is pretty racey and very often a workspace ∈ {1,…,0} remains on LVDS1
+(most often something in {5,…,8} or so, and always an empty one).
+
+I haven't found a solution to that yet and am not annoyed enough to
+invest a lot of time into it, but *if* anyone has a race-free way of
+doing that, I would be glad to hear it ;) I guess one way *might* be to
+unroll the loop and send all workspace-switcheroo in one ipc-command, I
+guess then i3 has no choice but do it sequentally in the right order…
+
+Best,
+
+Axel Wagner
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001915.html">[i3] i3-msg - move all/some workspaces to another output
+</A></li>
+	<LI>Next message: <A HREF="001917.html">[i3] i3blocks 1.3 is out!
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1916">[ date ]</a>
+              <a href="thread.html#1916">[ thread ]</a>
+              <a href="subject.html#1916">[ subject ]</a>
+              <a href="author.html#1916">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

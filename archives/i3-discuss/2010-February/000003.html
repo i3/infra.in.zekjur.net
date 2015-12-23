@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Hi people! Looking to hack into i3 a bit.
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Hi%20people%21%20Looking%20to%20hack%20into%20i3%20a%20bit.&In-Reply-To=%3C1265144721-sup-4401%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000002.html">
+   <LINK REL="Next"  HREF="000004.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Hi people! Looking to hack into i3 a bit.</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Hi%20people%21%20Looking%20to%20hack%20into%20i3%20a%20bit.&In-Reply-To=%3C1265144721-sup-4401%40midna.zekjur.net%3E"
+       TITLE="[i3] Hi people! Looking to hack into i3 a bit.">michael+i3 at stapelberg.de
+       </A><BR>
+    <I>Tue Feb  2 22:12:52 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000002.html">[i3] Hi people! Looking to hack into i3 a bit.
+</A></li>
+        <LI>Next message: <A HREF="000004.html">[i3] tabbed layout as default?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3">[ date ]</a>
+              <a href="thread.html#3">[ thread ]</a>
+              <a href="subject.html#3">[ subject ]</a>
+              <a href="author.html#3">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Sasha,
+
+First of all: welcome and congratulations for the first post on
+this mailing list ;-).
+
+Excerpts from Sasha's message of Di Feb 02 21:53:34 +0100 2010:
+&gt;<i> 0) I didn't BUILD the docs from source -- should I? Is there 
+</I>&gt;<i> anything in there that isn't online or in the man page?
+</I>If you are using the &quot;next&quot; branch: yes. If you are using a release
+version: No, the documentation is the same as online.
+
+&gt;<i> 1) Should I submit bugs (or whatever) to the TRAC site as an 
+</I>&gt;<i> anonymous user? Seems silly. Can people subscribe/join the TRAC 
+</I>&gt;<i> site?
+</I>You can. The usual way for a bugreport is to be confirmed on IRC
+(because of the quick nature of IRC it is easier to ask questions)
+and then submit them to the bugtracker. I am not sure about the
+subscription you mentioned, but we are not happy with trac at all.
+There will be some work to replace it with something better in
+some weeks.
+
+&gt;<i> 2) I haven't noticed a way of doing wallpaper (background images) 
+</I>&gt;<i> for i3. Currently, having searched around a fair bit, I'm using 
+</I>&gt;<i> `feh` but it doesn't quite do what it should. It's nice, but not 
+</I>&gt;<i> ideal for wallpaper. And `xsetroot` doesn't work at all. Currently, 
+</I>&gt;<i> if I log into i3 from KDM, I sometimes have the KDM wallpaper as my 
+</I>&gt;<i> i3 wallpaper. Blech!
+</I>I use xdm which does not touch my wallpaper. After xdm asks me for
+login/password, I use xsetroot in my .xsession, which works fine for
+me. Other people also use &quot;feh&quot; or &quot;display&quot; (from ImageMagick).
+
+&gt;<i> My take on this is that it was due to uncleared video memory, but 
+</I>&gt;<i> still the stacked-ness or something *should* have overwrote that 
+</I>&gt;<i> chunk of memory at some point.. After moving some clients around 
+</I>&gt;<i> some more, and/or changing to stacked/tabbed/default a few times, 
+</I>&gt;<i> the weird stuff was gone. I've yet to reproduce it again.
+</I>I think this is a known bug (though there seems to be no ticket for
+it). The stack window is not correctly redrawn under some
+circumstances. I have to look into it an a few days&#8230;
+
+&gt;<i> 4) Is it going to be possible to move the status bar (at bottom, 
+</I>&gt;<i> where the workspaces are labeled) to the TOP of the screen? Or 
+</I>&gt;<i> maybe have a keybind to toggle it on or off?
+</I>It will be possible to turn it off in the next release, we plan to
+replace it with dzen2 or a similar program.
+
+&gt;<i> 5) Can it be possible to switch to an EMPTY workspace? Like, if I 
+</I>&gt;<i> have workspace 1 and 2 on my monitors, I would like to be able to 
+</I>&gt;<i> switch to the &quot;3&quot; and &quot;4&quot; workspaces while they are empty, and 
+</I>&gt;<i> start filling them up from empty. Perhaps if Xinerama is enabled, 
+</I>&gt;<i> this switching action could either go in pairs, or one at a time? 
+</I>&gt;<i> Poor description I think, but I have been awake for a long time 
+</I>&gt;<i> fiddling with my i3 :-)
+</I>Ehm, sure, just switch to it? For the Xinerama part: it is a design
+decision that workspace switches do *not* happen in pairs for
+xinerama.
+
+Best regards,
+Michael
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000002.html">[i3] Hi people! Looking to hack into i3 a bit.
+</A></li>
+	<LI>Next message: <A HREF="000004.html">[i3] tabbed layout as default?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#3">[ date ]</a>
+              <a href="thread.html#3">[ thread ]</a>
+              <a href="subject.html#3">[ subject ]</a>
+              <a href="author.html#3">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

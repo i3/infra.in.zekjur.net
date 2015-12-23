@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Issues with sur5r-keyring package
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Issues%20with%20sur5r-keyring%20package&In-Reply-To=%3C20130314061630.GA5034%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001213.html">
+   <LINK REL="Next"  HREF="001215.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Issues with sur5r-keyring package</H1>
+    <B>Miodrag Mili&#263;</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Issues%20with%20sur5r-keyring%20package&In-Reply-To=%3C20130314061630.GA5034%40gmail.com%3E"
+       TITLE="[i3] Issues with sur5r-keyring package">miodrag.milic at gmail.com
+       </A><BR>
+    <I>Thu Mar 14 07:16:30 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001213.html">[i3] Issues with sur5r-keyring package
+</A></li>
+        <LI>Next message: <A HREF="001215.html">[i3] Issues with sur5r-keyring package
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1214">[ date ]</a>
+              <a href="thread.html#1214">[ thread ]</a>
+              <a href="subject.html#1214">[ subject ]</a>
+              <a href="author.html#1214">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>The very same thing happened to me. After just running empty gpg it created few files and I repeated procedure without any errors. I am using Ubuntu repository for i3.
+
+
+On Thu, Mar 14, 2013 at 11:40:09AM +1000, BRAGA, Bruno wrote:
+&gt;<i> Hi,
+</I>&gt;<i> 
+</I>&gt;<i> I was running an apt-get update, when I noticed the following error:
+</I>&gt;<i> 
+</I>&gt;<i> $ sudo apt-get update
+</I>&gt;<i> ....
+</I>&gt;<i> Reading package lists... Done
+</I>&gt;<i> W: A error occurred during the signature verification. The repository is
+</I>&gt;<i> not updated and the previous index files will be used. GPG error:
+</I>&gt;<i> <A HREF="http://debian.sur5r.net">http://debian.sur5r.net</A> precise Release: The following signatures couldn't
+</I>&gt;<i> be verified because the public key is not available: NO_PUBKEY
+</I>&gt;<i> AE8A0CF86298B4A2
+</I>&gt;<i> 
+</I>&gt;<i> W: Failed to fetch <A HREF="http://debian.sur5r.net/i3/dists/precise/Release">http://debian.sur5r.net/i3/dists/precise/Release</A>
+</I>&gt;<i> 
+</I>&gt;<i> W: Some index files failed to download. They have been ignored, or old ones
+</I>&gt;<i> used instead.
+</I>&gt;<i> 
+</I>&gt;<i> -------------
+</I>&gt;<i> 
+</I>&gt;<i> I reinstalled the key, and noticed a GPG error:
+</I>&gt;<i> 
+</I>&gt;<i> $ sudo apt-get --allow-unauthenticated install sur5r-keyring
+</I>&gt;<i> Reading package lists... Done
+</I>&gt;<i> Building dependency tree
+</I>&gt;<i> Reading state information... Done
+</I>&gt;<i> The following NEW packages will be installed:
+</I>&gt;<i>   sur5r-keyring
+</I>&gt;<i> 0 upgraded, 1 newly installed, 0 to remove and 361 not upgraded.
+</I>&gt;<i> Need to get 2,756 B of archives.
+</I>&gt;<i> After this operation, 16.4 kB of additional disk space will be used.
+</I>&gt;<i> WARNING: The following packages cannot be authenticated!
+</I>&gt;<i>   sur5r-keyring
+</I>&gt;<i> Authentication warning overridden.
+</I>&gt;<i> Get:1 <A HREF="http://debian.sur5r.net/i3/">http://debian.sur5r.net/i3/</A> precise/universe sur5r-keyring all
+</I>&gt;<i> 2012.02.07 [2,756 B]
+</I>&gt;<i> Fetched 2,756 B in 2s (1,179 B/s)
+</I>&gt;<i> Selecting previously unselected package sur5r-keyring.
+</I>&gt;<i> (Reading database ... 472001 files and directories currently installed.)
+</I>&gt;<i> Unpacking sur5r-keyring (from .../sur5r-keyring_2012.02.07_all.deb) ...
+</I>&gt;<i> Setting up sur5r-keyring (2012.02.07) ...
+</I>&gt;<i> OK
+</I>&gt;<i> gpg: key &quot;69D5E78E&quot; not found: eof
+</I>&gt;<i> gpg: 69D5E78E: delete key failed: eof
+</I>&gt;<i> gpg: key &quot;8C2F2403&quot; not found: eof
+</I>&gt;<i> gpg: 8C2F2403: delete key failed: eof
+</I>&gt;<i> 
+</I>&gt;<i> -------------
+</I>&gt;<i> 
+</I>&gt;<i> Any ideas to fix that?
+</I>&gt;<i> 
+</I>&gt;<i> Thanks,
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> ------------- my machine details -------------
+</I>&gt;<i> 
+</I>&gt;<i> $ lsb_release -a
+</I>&gt;<i> No LSB modules are available.
+</I>&gt;<i> Distributor ID: Ubuntu
+</I>&gt;<i> Description: Ubuntu 12.04.1 LTS
+</I>&gt;<i> Release: 12.04
+</I>&gt;<i> Codename: precise
+</I>&gt;<i> 
+</I>&gt;<i> $ uname -a
+</I>&gt;<i> Linux development3 3.2.0-24-generic-pae #39-Ubuntu SMP Mon May 21 18:54:21
+</I>&gt;<i> UTC 2012 i686 i686 i386 GNU/Linux
+</I>&gt;<i> 
+</I>&gt;<i>  $ i3 --version
+</I>&gt;<i> i3 version 4.2 (2012-04-25, branch &quot;release-4.2&quot;) &#169; 2009-2012 Michael
+</I>&gt;<i> Stapelberg and contributors
+</I>&gt;<i> 
+</I>&gt;<i> ------------- my machine details -------------
+</I>&gt;<i> 
+</I>&gt;<i> --
+</I>&gt;<i> *Bruno Braga*
+</I>&gt;<i> www.brunobraga.net
+</I>&gt;<i> <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">bruno.braga at gmail.com</A>
+</I></PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001213.html">[i3] Issues with sur5r-keyring package
+</A></li>
+	<LI>Next message: <A HREF="001215.html">[i3] Issues with sur5r-keyring package
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1214">[ date ]</a>
+              <a href="thread.html#1214">[ thread ]</a>
+              <a href="subject.html#1214">[ subject ]</a>
+              <a href="author.html#1214">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Scroll Events
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Scroll%20Events&In-Reply-To=%3C5439CD3E.2050903%40ymail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001905.html">
+   <LINK REL="Next"  HREF="001907.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Scroll Events</H1>
+    <B>facetoe</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Scroll%20Events&In-Reply-To=%3C5439CD3E.2050903%40ymail.com%3E"
+       TITLE="[i3] Scroll Events">facetoe at ymail.com
+       </A><BR>
+    <I>Sun Oct 12 02:37:18 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001905.html">[i3] Scroll Events
+</A></li>
+        <LI>Next message: <A HREF="001907.html">[i3] Scroll Events
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1906">[ date ]</a>
+              <a href="thread.html#1906">[ thread ]</a>
+              <a href="subject.html#1906">[ subject ]</a>
+              <a href="author.html#1906">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On 12/10/14 08:17, facetoe wrote:
+&gt;<i> On 11/10/14 23:27, Quentin Glidic wrote:
+</I>&gt;&gt;<i> On 2014-10-11 16:09, facetoe wrote:
+</I>&gt;&gt;&gt;<i> Hello,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Can i3bar output scroll events like it does with click events?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Thanks!
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> It does already, buttons 4 and 5. :-)
+</I>&gt;&gt;<i> j4status is using it, especially the PulseAudio plugin, the MPD 
+</I>&gt;&gt;<i> plugin and the ALSA plugin (actually, any plugin which supports 
+</I>&gt;&gt;<i> actions).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Cheers,
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Hmm, the problem must be on my machine then, I'm not receiving these 
+</I>&gt;<i> events. The click events work fine but when I place my cursor over a 
+</I>&gt;<i> widget that is listening for scroll events (using my laptop trackpad) 
+</I>&gt;<i> it always just changes the workspace.
+</I>&gt;<i>
+</I>&gt;<i> I guess this isn't really an i3wm issue, but does anyone know where I 
+</I>&gt;<i> could look to begin troubleshooting this issue?
+</I>&gt;<i>
+</I>&gt;<i> Thanks!
+</I>
+I just had a look at the code and it appears that i3bar switches the 
+workspace before checking to see if the scroll event was over a status 
+block - 
+<A HREF="https://github.com/DaveDavenport/i3/blob/master/i3bar/src/xcb.c#L333-354">https://github.com/DaveDavenport/i3/blob/master/i3bar/src/xcb.c#L333-354</A>
+
+I'm probably reading this wrong, but could that be the source of the 
+problem?
+
+
+
+
+
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001905.html">[i3] Scroll Events
+</A></li>
+	<LI>Next message: <A HREF="001907.html">[i3] Scroll Events
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1906">[ date ]</a>
+              <a href="thread.html#1906">[ thread ]</a>
+              <a href="subject.html#1906">[ subject ]</a>
+              <a href="author.html#1906">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

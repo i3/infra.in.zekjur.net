@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] ssh askpass window too small + &quot;sticks around&quot;
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20ssh%20askpass%20window%20too%20small%20%2B%20%22sticks%20around%22&In-Reply-To=%3C563932D6.5050501%40airblader.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002240.html">
+   <LINK REL="Next"  HREF="002242.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] ssh askpass window too small + &quot;sticks around&quot;</H1>
+    <B>Ingo Bürk</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20ssh%20askpass%20window%20too%20small%20%2B%20%22sticks%20around%22&In-Reply-To=%3C563932D6.5050501%40airblader.de%3E"
+       TITLE="[i3] ssh askpass window too small + &quot;sticks around&quot;">admin at airblader.de
+       </A><BR>
+    <I>Tue Nov  3 23:19:02 CET 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002240.html">[i3] ssh askpass window too small + &quot;sticks around&quot;
+</A></li>
+        <LI>Next message: <A HREF="002242.html">[i3] ssh askpass window too small + &quot;sticks around&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2241">[ date ]</a>
+              <a href="thread.html#2241">[ thread ]</a>
+              <a href="subject.html#2241">[ subject ]</a>
+              <a href="author.html#2241">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Yeah, a bisect would be useful. You need to run make clean &amp;&amp; make &amp;&amp;
+sudo make install (to actually install the new binary -- unless you
+change your xinitrc to run the local file in your checkout instead).
+
+Restarting X isn't necessary, restarting i3 in-place would suffice. But
+since you have wrapped askpass around the i3 session, you'll indeed
+probably need to exit your X session and startx again.
+
+
+Ingo
+
+On 11/03/2015 04:46 PM, Dieter Plaetinck wrote:
+&gt;<i> I can confirm the first problem is gone (the window has the correct size) with 4.10.4
+</I>&gt;<i> However the ghosting problem still exists, though now it also has the correct size and a black background instead of grey like before.
+</I>&gt;<i> see <A HREF="http://i.imgur.com/2uF25R8.png">http://i.imgur.com/2uF25R8.png</A>
+</I>&gt;<i>
+</I>&gt;<i> still want me to do a bisect? for all versions i would just run make clean &amp;&amp; make &amp;&amp; restart x using the new i3 binary right? anything else needed?
+</I>&gt;<i>
+</I>&gt;<i> Dieter
+</I>&gt;<i>
+</I>&gt;<i> On Tue, 3 Nov 2015 16:05:31 -0500
+</I>&gt;<i> Ingo Bürk &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">admin at airblader.de</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Hi Dieter,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> can you do the following?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 1) Downgrade to i3 4.10.4 and see if it fixes the problem. If so, please
+</I>&gt;&gt;<i> run a git bisect to figure out which commit broke it. If 4.10.4 has the
+</I>&gt;&gt;<i> same problem, try downgrading askpass or report a bug there.
+</I>&gt;&gt;<i> 2) Provide a complete i3 log file where you started it. See the
+</I>&gt;&gt;<i> debugging docs on the i3 website for information. Also provide the
+</I>&gt;&gt;<i> output of &quot;xprop&quot; and &quot;xwininfo -all&quot; when clicking on the opened
+</I>&gt;&gt;<i> askpass window.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Ingo
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On 11/03/2015 03:32 PM, Dieter Plaetinck wrote:
+</I>&gt;&gt;&gt;<i> hello everyone,
+</I>&gt;&gt;&gt;<i> long time no see! i've been a long time i3 user but only since a recent upgrade i've started having issues with 
+</I>&gt;&gt;&gt;<i> ssh-askpass.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> to be specific, in my .xinitrc I have:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> i3 -d all &gt;&gt; ~/i3-out 2&gt;&gt; ~/i3-err &amp;
+</I>&gt;&gt;&gt;<i> waitpid=$!
+</I>&gt;&gt;&gt;<i> ssh-add ~/.ssh/id_rsa_dieter-ws-a7n8x-arch &lt; /dev/null
+</I>&gt;&gt;&gt;<i> (.. some more stuff)
+</I>&gt;&gt;&gt;<i> wait $waitpid
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> i posted my i3 config to <A HREF="https://gist.github.com/Dieterbe/d5870b230369818d2d47">https://gist.github.com/Dieterbe/d5870b230369818d2d47</A> (it's pretty much default, with a few extra binds and a different bar)
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> the ssh-add spawns the x11-ssh-askpass program and since recently i've been seeing these two problems:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> screenshots of both issues @ <A HREF="http://imgur.com/a/TbNn1">http://imgur.com/a/TbNn1</A>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> 1) the window is way too small. it used to be just the right size for the popup.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> 2) after entering the password and hitting enter, a &quot;ghost&quot; of the window stays stuck in all of my i3 workspaces.
+</I>&gt;&gt;&gt;<i> those workspaces that have windows in them will have the windows cover it, but otherwise if i go to say workspace number 5 while no windows are there, it'll show a ghost of the ask pass window.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> any idea what might be the cause? i'm using 4.11
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> thanks,
+</I>&gt;&gt;&gt;<i> Dieter  
+</I>
+</PRE>
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002240.html">[i3] ssh askpass window too small + &quot;sticks around&quot;
+</A></li>
+	<LI>Next message: <A HREF="002242.html">[i3] ssh askpass window too small + &quot;sticks around&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2241">[ date ]</a>
+              <a href="thread.html#2241">[ thread ]</a>
+              <a href="subject.html#2241">[ subject ]</a>
+              <a href="author.html#2241">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

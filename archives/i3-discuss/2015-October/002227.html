@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Error: status_command process exited unexpectedly (exit 1)
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Error%3A%20status_command%20process%20exited%20unexpectedly%20%28exit%201%29&In-Reply-To=%3CCADuF0imbJmtgTLJQ0oyoFwoFEJuhsTLZy9wxYYOOdrK77nDyUQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002229.html">
+   <LINK REL="Next"  HREF="002228.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Error: status_command process exited unexpectedly (exit 1)</H1>
+    <B>Taro Murao</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Error%3A%20status_command%20process%20exited%20unexpectedly%20%28exit%201%29&In-Reply-To=%3CCADuF0imbJmtgTLJQ0oyoFwoFEJuhsTLZy9wxYYOOdrK77nDyUQ%40mail.gmail.com%3E"
+       TITLE="[i3] Error: status_command process exited unexpectedly (exit 1)">taro.murao at gmail.com
+       </A><BR>
+    <I>Wed Oct 14 23:44:04 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002229.html">[i3] i3 new user experiences summary
+</A></li>
+        <LI>Next message: <A HREF="002228.html">[i3] Error: status_command process exited unexpectedly (exit 1)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2227">[ date ]</a>
+              <a href="thread.html#2227">[ thread ]</a>
+              <a href="subject.html#2227">[ subject ]</a>
+              <a href="author.html#2227">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello,
+
+    when I start i3status with i3 in bar {}, I get the error message: Error:
+    status_command process exited unexpectedly (exit 1). Can anyone help?
+
+    I followed the debugging instruction on
+<A HREF="http://i3wm.org/docs/debugging.html.">http://i3wm.org/docs/debugging.html.</A>
+    When the bar is displayed with
+
+    $ for c in $(i3-msg -t get_bar_config | python -c \ 'import
+    json,sys;print(&quot;\n&quot;.join(json.load(sys.stdin)))'); do \ (i3bar
+--bar_id=$c
+    &gt;i3bar.$c.log 2&gt;&amp;1) &amp; \ done;
+
+    The bar displays without error. I use Fish shell, Arch Linux and KDE.
+Below
+    is the log I obtained with &quot;verbose yes&quot;, but the log probably contains
+no
+    error messages because I don't have the error when I restart i3bar this
+way.
+
+    i3status: trying to auto-detect output_format setting
+    i3status: auto-detected &quot;i3bar&quot;
+    [libi3] libi3/font.c Using Pango font monospace, size 8
+    [libi3] libi3/font.c X11 root window dictates 96.094581 DPI
+    [i3bar/src/xcb.c:1216] Calculated font height: 13
+    [i3bar/src/xcb.c:1342] Setting bar_fg = #FFFFFF as
+_NET_SYSTEM_TRAY_COLORS
+    [i3bar/src/xcb.c:985] received an xkb event
+    [i3bar/src/ipc.c:197] Got data!
+    [i3bar/src/ipc.c:63] Parsing outputs JSON...
+
+- Ignored:
+    [i3bar/src/ipc.c:65] Reconfiguring windows...
+    [i3bar/src/xcb.c:1488] Re-allocating statusline buffer,
+statusline_width =
+    0, root_screen-&gt;width_in_pixels = 1366
+    [i3bar/src/xcb.c:1583] Destroying window for output VIRTUAL1
+    [i3bar/src/xcb.c:1583] Destroying window for output VGA1
+    [i3bar/src/xcb.c:1583] Destroying window for output HDMI3
+    [i3bar/src/xcb.c:1583] Destroying window for output HDMI2
+    [i3bar/src/xcb.c:1583] Destroying window for output HDMI1
+    [i3bar/src/xcb.c:1583] Destroying window for output DP3
+    [i3bar/src/xcb.c:1583] Destroying window for output DP2
+    [i3bar/src/xcb.c:1583] Destroying window for output DP1
+    [i3bar/src/xcb.c:1588] Creating window for output LVDS1
+    [i3bar/src/xcb.c:1259] Initializing system tray functionality
+    [i3bar/src/xcb.c:1342] Setting bar_fg = #FFFFFF as
+_NET_SYSTEM_TRAY_COLORS
+    [i3bar/src/xcb.c:1793] Drawing bars...
+    [i3bar/src/xcb.c:1801] Output VIRTUAL1 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output VGA1 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output HDMI3 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output HDMI2 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output HDMI1 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output DP3 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output DP2 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output DP1 inactive, skipping...
+    [i3bar/src/ipc.c:197] Got data!
+    [i3bar/src/ipc.c:54] Got subscribe reply: {&quot;success&quot;:true}
+    [i3bar/src/ipc.c:197] Got data!
+    [i3bar/src/ipc.c:43] Got workspace data!
+    [i3bar/src/workspaces.c:142] Got workspace canonical: 1, name: '1',
+    name_width: 7, glyphs: 1
+    [i3bar/src/workspaces.c:142] Got workspace canonical: 2, name: '2',
+    name_width: 7, glyphs: 1
+    [i3bar/src/xcb.c:1793] Drawing bars...
+    [i3bar/src/xcb.c:1801] Output VIRTUAL1 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output VGA1 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output HDMI3 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output HDMI2 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output HDMI1 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output DP3 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output DP2 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output DP1 inactive, skipping...
+    [i3bar/src/xcb.c:1825] Drawing button for WS 1 at x = 0, len = 7
+    [i3bar/src/xcb.c:1825] Drawing button for WS 2 at x = 18, len = 7
+    [i3bar/src/child.c:420] Detecting input type based on buffer
+*{&quot;version&quot;:1}
+    [
+    *
+    [i3bar/src/xcb.c:1793] Drawing bars...
+    [i3bar/src/xcb.c:1801] Output VIRTUAL1 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output VGA1 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output HDMI3 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output HDMI2 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output HDMI1 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output DP3 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output DP2 inactive, skipping...
+    [i3bar/src/xcb.c:1801] Output DP1 inactive, skipping...
+    [i3bar/src/xcb.c:1825] Drawing button for WS 1 at x = 0, len = 7
+    [i3bar/src/xcb.c:1825] Drawing button for WS 2 at x = 18, len = 7
+    [i3bar/src/child.c:297] copying statusline_buffer to statusline_head
+    [i3bar/src/child.c:301] dumping statusline:
+    [i3bar/src/child.c:304] full_text =
+2001:4c50:d4d:1200:a288:b4ff:fe9d:be44
+    [i3bar/src/child.c:305] short_text = (null)
+    [i3bar/src/child.c:306] color = #00FF00
+    [i3bar/src/child.c:304] full_text = 148.6 GiB
+    [i3bar/src/child.c:305] short_text = (null)
+    [i3bar/src/child.c:306] color = (null)
+    [i3bar/src/child.c:304] full_text = DHCP: no
+    [i3bar/src/child.c:305] short_text = (null)
+    [i3bar/src/child.c:306] color = #FF0000
+    [i3bar/src/child.c:304] full_text = VPN: no
+    [i3bar/src/child.c:305] short_text = (null)
+    [i3bar/src/child.c:306] color = #FF0000
+    [i3bar/src/child.c:304] full_text = W: (066% at Tech_D0055186)
+192.168.0.1
+
+-- 
+Taro Murao | 村尾太郎
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151014/3d4e9af8/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20151014/3d4e9af8/attachment.html</A>&gt;
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002229.html">[i3] i3 new user experiences summary
+</A></li>
+	<LI>Next message: <A HREF="002228.html">[i3] Error: status_command process exited unexpectedly (exit 1)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2227">[ date ]</a>
+              <a href="thread.html#2227">[ thread ]</a>
+              <a href="subject.html#2227">[ subject ]</a>
+              <a href="author.html#2227">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

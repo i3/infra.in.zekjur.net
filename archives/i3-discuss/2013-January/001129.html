@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] Minor fix for libi3/ipc_send_message.c
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Minor%20fix%20for%20libi3/ipc_send_message.c&In-Reply-To=%3CCANVYNa8j-ghzXnyTt%2Bsj27ox4b8OSsW7mBa%3DCa0Em-snGa04hg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001128.html">
+   <LINK REL="Next"  HREF="001130.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] Minor fix for libi3/ipc_send_message.c</H1>
+    <B>Fernando Lemos</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Minor%20fix%20for%20libi3/ipc_send_message.c&In-Reply-To=%3CCANVYNa8j-ghzXnyTt%2Bsj27ox4b8OSsW7mBa%3DCa0Em-snGa04hg%40mail.gmail.com%3E"
+       TITLE="[i3] [PATCH] Minor fix for libi3/ipc_send_message.c">fernandotcl at i3wm.org
+       </A><BR>
+    <I>Thu Jan 10 22:40:26 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001128.html">[i3] [PATCH] Minor fix for libi3/ipc_send_message.c
+</A></li>
+        <LI>Next message: <A HREF="001130.html">[i3] [PATCH] Minor fix for libi3/ipc_send_message.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1129">[ date ]</a>
+              <a href="thread.html#1129">[ thread ]</a>
+              <a href="subject.html#1129">[ subject ]</a>
+              <a href="author.html#1129">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>2013/1/10 Fernando Lemos &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">fernandotcl at i3wm.org</A>&gt;
+
+&gt;<i> 2013/1/10 David Coppa &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">dcoppa at gmail.com</A>&gt;
+</I>&gt;<i>
+</I>&gt;&gt;<i> This sync libi3/ipc_send_message.c with what i3bar/src/ipc.c does.
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> That code is using strncpy the wrong way. It's also incorrectly passing
+</I>&gt;<i> len to strncpy, as the walk pointer has advanced and len hasn't been
+</I>&gt;<i> updated. While that won't make i3bar crash if the math there is right, it's
+</I>&gt;<i> not really correct code. Check with Michael first, but I believe he would
+</I>&gt;<i> accept a patch that fixes that.
+</I>&gt;<i>
+</I>
+Actually, looking at it again, len = strlen(payload), so len is fine as
+it's what's left in the buffer. The first strncpy is still wrong, though.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130110/b9a62d22/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130110/b9a62d22/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001128.html">[i3] [PATCH] Minor fix for libi3/ipc_send_message.c
+</A></li>
+	<LI>Next message: <A HREF="001130.html">[i3] [PATCH] Minor fix for libi3/ipc_send_message.c
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1129">[ date ]</a>
+              <a href="thread.html#1129">[ thread ]</a>
+              <a href="subject.html#1129">[ subject ]</a>
+              <a href="author.html#1129">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

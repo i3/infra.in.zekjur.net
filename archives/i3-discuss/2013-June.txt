@@ -1,0 +1,774 @@
+From bruno.braga at gmail.com  Tue Jun 11 02:24:44 2013
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Tue, 11 Jun 2013 10:24:44 +1000
+Subject: [i3] i3lock hooks
+In-Reply-To: <CAAuVr700QzFbN+Jkj_vfOie_5EzzKJrjQ9XJfqLmGraka0Z8Uw@mail.gmail.com>
+References: <CAAuVr72VRB6+_NJ6nHj5f6ndKmChGAqw61wUTdzzO8-tdY1fcw@mail.gmail.com>
+ <CAMoU6ubWu8UU56fxejXVg5He5nja=tqgGOS5F=JT1t5714uyrg@mail.gmail.com>
+ <CAPUwkJ+JJtr3m=uSUOx9t8Gb9pzJeVajWuj3+=9wr9oKjH2BLQ@mail.gmail.com>
+ <87r4ilo7hy.fsf@x200.zekjur.net>
+ <CAPUwkJJ0rdO224Rq_7h1_HjiQ07ZUqd0C5t3U8q3aZux=VmZzA@mail.gmail.com>
+ <87zjx9yqj6.fsf@stapelberg.de>
+ <CAAuVr72gF7OZQ7N8KgrKNw40eRb=rq6Xjk7g6_TMdM1D3reXOg@mail.gmail.com>
+ <CAAuVr70BiURmQVF2aC41HPdzrY8umxNpyy2jv8rg=tB05E2s5A@mail.gmail.com>
+ <20130413052215.GA8103@saturn> <87eheeyhhm.fsf@stapelberg.de>
+ <20130413152429.GA12359@saturn>
+ <CAAuVr738PvGRFnDrM2D25mhU-6cr37Y3Wk+wWfJeTb1FTRn3HQ@mail.gmail.com>
+ <CAAuVr71h-fTMdqgaA8j2C-6_pmtA1ShE==yn-8jpaR2hJASYeg@mail.gmail.com>
+ <877gk4vu17.fsf@stapelberg.de>
+ <CAAuVr700QzFbN+Jkj_vfOie_5EzzKJrjQ9XJfqLmGraka0Z8Uw@mail.gmail.com>
+Message-ID: <CAAuVr70biK4j2_-+==83VH9Q1uty5WvyftrsL-pKpSs7y31C-A@mail.gmail.com>
+
+Just for reference, I published the script I am using for this
+functionality:
+
+https://gist.github.com/brunobraga/5753616
+
+Cheers,
+
+
+--
+*Bruno Braga*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Tue, Apr 23, 2013 at 9:10 AM, BRAGA, Bruno <bruno.braga at gmail.com> wrote:
+
+> Sorry guys,
+>
+> After some time looking straces and stuff, I finally figure out that I
+> missed the --nofork option to start with... doh!
+>
+> Running it as Michael described worked fine, with no problems.
+>
+> Sorry for the trouble.
+>
+> Thanks,
+>
+>
+>
+> --
+> *Bruno Braga*
+> www.brunobraga.net
+> bruno.braga at gmail.com
+>
+>
+> On Mon, Apr 15, 2013 at 10:48 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+>
+>> Hi Bruno,
+>>
+>> "BRAGA, Bruno" <bruno.braga at gmail.com> writes:
+>> > $ strace -ttt i3lock
+>> Works fine for me.
+>>
+>> Anyway, what we are interested in is not i3lock itself, but the shell
+>> process that starts it. The easiest way to get that is to strace i3:
+>>
+>> strace -p $(pidof i3) -s 2048 -f -o /tmp/strace.log
+>>
+>> Then press the key to lock your screen.
+>>
+>> --
+>> Best regards,
+>> Michael
+>>
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130611/4d39414a/attachment.html>
+
+From c1b3rh4ck at gmail.com  Tue Jun 11 03:43:21 2013
+From: c1b3rh4ck at gmail.com (c1b3rh4ck)
+Date: Mon, 10 Jun 2013 20:43:21 -0500
+Subject: [i3] i3lock hooks
+In-Reply-To: <CAAuVr70biK4j2_-+==83VH9Q1uty5WvyftrsL-pKpSs7y31C-A@mail.gmail.com>
+References: <CAAuVr72VRB6+_NJ6nHj5f6ndKmChGAqw61wUTdzzO8-tdY1fcw@mail.gmail.com>
+ <CAMoU6ubWu8UU56fxejXVg5He5nja=tqgGOS5F=JT1t5714uyrg@mail.gmail.com>
+ <CAPUwkJ+JJtr3m=uSUOx9t8Gb9pzJeVajWuj3+=9wr9oKjH2BLQ@mail.gmail.com>
+ <87r4ilo7hy.fsf@x200.zekjur.net>
+ <CAPUwkJJ0rdO224Rq_7h1_HjiQ07ZUqd0C5t3U8q3aZux=VmZzA@mail.gmail.com>
+ <87zjx9yqj6.fsf@stapelberg.de>
+ <CAAuVr72gF7OZQ7N8KgrKNw40eRb=rq6Xjk7g6_TMdM1D3reXOg@mail.gmail.com>
+ <CAAuVr70BiURmQVF2aC41HPdzrY8umxNpyy2jv8rg=tB05E2s5A@mail.gmail.com>
+ <20130413052215.GA8103@saturn> <87eheeyhhm.fsf@stapelberg.de>
+ <20130413152429.GA12359@saturn>
+ <CAAuVr738PvGRFnDrM2D25mhU-6cr37Y3Wk+wWfJeTb1FTRn3HQ@mail.gmail.com>
+ <CAAuVr71h-fTMdqgaA8j2C-6_pmtA1ShE==yn-8jpaR2hJASYeg@mail.gmail.com>
+ <877gk4vu17.fsf@stapelberg.de>
+ <CAAuVr700QzFbN+Jkj_vfOie_5EzzKJrjQ9XJfqLmGraka0Z8Uw@mail.gmail.com>
+ <CAAuVr70biK4j2_-+==83VH9Q1uty5WvyftrsL-pKpSs7y31C-A@mail.gmail.com>
+Message-ID: <CADx9LRMVYeXatPsS4dxa+b3E4pvJOm=fe+uQdD-oUrs36-W64Q@mail.gmail.com>
+
+Hi i3 is great,i would like to ask if is there any way to change the unlock
+indicator,is it implemented.
+
+Thanks in advanced.
+
+
+
+2013/6/10 BRAGA, Bruno <bruno.braga at gmail.com>
+
+> Just for reference, I published the script I am using for this
+> functionality:
+>
+> https://gist.github.com/brunobraga/5753616
+>
+> Cheers,
+>
+>
+> --
+> *Bruno Braga*
+> www.brunobraga.net
+> bruno.braga at gmail.com
+>
+>
+> On Tue, Apr 23, 2013 at 9:10 AM, BRAGA, Bruno <bruno.braga at gmail.com>wrote:
+>
+>> Sorry guys,
+>>
+>> After some time looking straces and stuff, I finally figure out that I
+>> missed the --nofork option to start with... doh!
+>>
+>> Running it as Michael described worked fine, with no problems.
+>>
+>> Sorry for the trouble.
+>>
+>> Thanks,
+>>
+>>
+>>
+>> --
+>> *Bruno Braga*
+>> www.brunobraga.net
+>> bruno.braga at gmail.com
+>>
+>>
+>> On Mon, Apr 15, 2013 at 10:48 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+>>
+>>> Hi Bruno,
+>>>
+>>> "BRAGA, Bruno" <bruno.braga at gmail.com> writes:
+>>> > $ strace -ttt i3lock
+>>> Works fine for me.
+>>>
+>>> Anyway, what we are interested in is not i3lock itself, but the shell
+>>> process that starts it. The easiest way to get that is to strace i3:
+>>>
+>>> strace -p $(pidof i3) -s 2048 -f -o /tmp/strace.log
+>>>
+>>> Then press the key to lock your screen.
+>>>
+>>> --
+>>> Best regards,
+>>> Michael
+>>>
+>>
+>>
+>
+
+
+-- 
+*Quien se infiltra en la oscuridad ,es Quien encuentra la verdad .Lao Tse *
+Debian User
+Penetration Testing
+Entusiasta Seguridad Informatica :-D
+LinuxUser #506301
+------------------------------------
+Puffy Loves
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130610/d27538cd/attachment.html>
+
+From michael at i3wm.org  Tue Jun 11 19:18:38 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 11 Jun 2013 19:18:38 +0200
+Subject: [i3] i3lock hooks
+In-Reply-To: <CADx9LRMVYeXatPsS4dxa+b3E4pvJOm=fe+uQdD-oUrs36-W64Q@mail.gmail.com>
+References: <CAAuVr72VRB6+_NJ6nHj5f6ndKmChGAqw61wUTdzzO8-tdY1fcw@mail.gmail.com>
+ <CAMoU6ubWu8UU56fxejXVg5He5nja=tqgGOS5F=JT1t5714uyrg@mail.gmail.com>
+ <CAPUwkJ+JJtr3m=uSUOx9t8Gb9pzJeVajWuj3+=9wr9oKjH2BLQ@mail.gmail.com>
+ <87r4ilo7hy.fsf@x200.zekjur.net>
+ <CAPUwkJJ0rdO224Rq_7h1_HjiQ07ZUqd0C5t3U8q3aZux=VmZzA@mail.gmail.com>
+ <87zjx9yqj6.fsf@stapelberg.de>
+ <CAAuVr72gF7OZQ7N8KgrKNw40eRb=rq6Xjk7g6_TMdM1D3reXOg@mail.gmail.com>
+ <CAAuVr70BiURmQVF2aC41HPdzrY8umxNpyy2jv8rg=tB05E2s5A@mail.gmail.com>
+ <20130413052215.GA8103@saturn> <87eheeyhhm.fsf@stapelberg.de>
+ <20130413152429.GA12359@saturn>
+ <CAAuVr738PvGRFnDrM2D25mhU-6cr37Y3Wk+wWfJeTb1FTRn3HQ@mail.gmail.com>
+ <CAAuVr71h-fTMdqgaA8j2C-6_pmtA1ShE==yn-8jpaR2hJASYeg@mail.gmail.com>
+ <877gk4vu17.fsf@stapelberg.de>
+ <CAAuVr700QzFbN+Jkj_vfOie_5EzzKJrjQ9XJfqLmGraka0Z8Uw@mail.gmail.com>
+ <CAAuVr70biK4j2_-+==83VH9Q1uty5WvyftrsL-pKpSs7y31C-A@mail.gmail.com>
+ <CADx9LRMVYeXatPsS4dxa+b3E4pvJOm=fe+uQdD-oUrs36-W64Q@mail.gmail.com>
+Message-ID: <x661xkzhu9.fsf@midna.zekjur.net>
+
+Hi,
+
+c1b3rh4ck <c1b3rh4ck at gmail.com> writes:
+> Hi i3 is great,i would like to ask if is there any way to change the unlock
+> indicator,is it implemented.
+Please don?t hijack threads.
+
+Also, changing the unlock indicator is not implemented and will not be
+merged either. The complexity/maintenance issues is definitely not worth
+it.
+
+Note that one of our stated goals is ?don?t be fancy?.
+
+-- 
+Best regards,
+Michael
+
+From marcus.moeller at gmx.ch  Sun Jun 16 09:58:04 2013
+From: marcus.moeller at gmx.ch (Marcus Moeller)
+Date: Sun, 16 Jun 2013 09:58:04 +0200
+Subject: [i3] exiting i3
+Message-ID: <51BD700C.4060007@gmx.ch>
+
+Hi all,
+
+I have configured konsole as default X terminal and tried to Exit i3 
+using Mod+Shift+E while the terminal was opened.
+
+I was then prompted if I really wanted to exit and I clicked Yes to 
+confirm (is there a Keyboard shortcut to confirm exit?).
+
+Afterwards a new message appeared below, saying: Please do not run this 
+program:
+
+https://owncloud.switch.ch/public.php?service=files&t=78580d987fc32142693175fcce3855ab
+
+Exiting works fine when no konsole is open.
+
+Greets
+Marcus
+
+From nashpapa at gmail.com  Sun Jun 16 14:38:47 2013
+From: nashpapa at gmail.com (avinash r)
+Date: Sun, 16 Jun 2013 18:08:47 +0530
+Subject: [i3] Notifyd support
+Message-ID: <CAHCistf5V6iqndMZVpNS54y8aDgXgSCzm-xAnNfhLWW2HQjO0A@mail.gmail.com>
+
+Hi,
+
+Is there any way to enable notifyd support? Right now on Xfce I'm getting
+the notification service xfce4-notifyd as an window and I have to close it
+myself. I guess this can be avoided if there was a way to hack into
+i3-nagbar to listen for notifyd and show information type messages
+
+Avinash R
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130616/69bc3126/attachment.html>
+
+From athmane at fedoraproject.org  Sun Jun 16 14:41:10 2013
+From: athmane at fedoraproject.org (Athmane Madjoudj)
+Date: Sun, 16 Jun 2013 13:41:10 +0100
+Subject: [i3] Notifyd support
+In-Reply-To: <CAHCistf5V6iqndMZVpNS54y8aDgXgSCzm-xAnNfhLWW2HQjO0A@mail.gmail.com>
+References: <CAHCistf5V6iqndMZVpNS54y8aDgXgSCzm-xAnNfhLWW2HQjO0A@mail.gmail.com>
+Message-ID: <20130616124109.GA1741@gmail.com>
+
+Hi,
+
+On Sun, Jun 16, 2013 at 06:08:47PM +0530, avinash r wrote:
+> Hi,
+> 
+> Is there any way to enable notifyd support? Right now on Xfce I'm getting
+> the notification service xfce4-notifyd as an window and I have to close it
+> myself. I guess this can be avoided if there was a way to hack into
+> i3-nagbar to listen for notifyd and show information type messages
+
+Try Dunst [1], it works perfectly with i3wm.
+
+[1] http://www.knopwob.org/dunst/
+
+Thanks.
+
+-- Athmane
+
+From thomas at xteddy.org  Sun Jun 16 17:45:28 2013
+From: thomas at xteddy.org (Thomas Adam)
+Date: Sun, 16 Jun 2013 16:45:28 +0100
+Subject: [i3] Notifyd support
+In-Reply-To: <CAHCistf5V6iqndMZVpNS54y8aDgXgSCzm-xAnNfhLWW2HQjO0A@mail.gmail.com>
+References: <CAHCistf5V6iqndMZVpNS54y8aDgXgSCzm-xAnNfhLWW2HQjO0A@mail.gmail.com>
+Message-ID: <CA+39Oz4WP0prT+_v7hMYn+SWZ8HG3eU=fVKEib1o_KT83ohbBg@mail.gmail.com>
+
+On 16 June 2013 13:38, avinash r <nashpapa at gmail.com> wrote:
+> Hi,
+>
+> Is there any way to enable notifyd support? Right now on Xfce I'm getting
+> the notification service xfce4-notifyd as an window and I have to close it
+> myself. I guess this can be avoided if there was a way to hack into
+> i3-nagbar to listen for notifyd and show information type messages
+
+This is because i3 has no understanding of the
+_NET_WM_WINDOW_TYPE_NOTIFICATION EWMH hint.  i3 would need to check
+this hint and set the window as being unmanaged.  Unfortunately, from
+what I've seen of i3's code, patching this is slightly involved
+because the checks on the container happen after it is mapped, and
+more restructuring to support this is needed.
+
+-- Thomas Adam
+
+From michael at i3wm.org  Sun Jun 16 18:02:24 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 16 Jun 2013 18:02:24 +0200
+Subject: [i3] exiting i3
+In-Reply-To: <51BD700C.4060007@gmx.ch>
+References: <51BD700C.4060007@gmx.ch>
+Message-ID: <x6vc5evyb3.fsf@midna.zekjur.net>
+
+Hi Marcus,
+
+Marcus Moeller <marcus.moeller at gmx.ch> writes:
+> I was then prompted if I really wanted to exit and I clicked Yes to 
+> confirm (is there a Keyboard shortcut to confirm exit?).
+>
+> Afterwards a new message appeared below, saying: Please do not run this 
+> program:
+>
+> https://owncloud.switch.ch/public.php?service=files&t=78580d987fc32142693175fcce3855ab
+This problem was fixed a week ago in the ?next? branch:
+http://code.stapelberg.de/git/i3/commit/?h=next&id=d51173b2
+
+See http://i3wm.org/docs/repositories.html, ?Debian repository?, for a
+repository which provides automatically built versions of i3 from the
+?next? branch, or just wait until the next release comes out ;-).
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Sun Jun 16 21:48:32 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 16 Jun 2013 21:48:32 +0200
+Subject: [i3] Notifyd support
+In-Reply-To: <CA+39Oz4WP0prT+_v7hMYn+SWZ8HG3eU=fVKEib1o_KT83ohbBg@mail.gmail.com>
+References: <CAHCistf5V6iqndMZVpNS54y8aDgXgSCzm-xAnNfhLWW2HQjO0A@mail.gmail.com>
+ <CA+39Oz4WP0prT+_v7hMYn+SWZ8HG3eU=fVKEib1o_KT83ohbBg@mail.gmail.com>
+Message-ID: <x6sj0hx2en.fsf@midna.zekjur.net>
+
+Hi Thomas,
+
+Thomas Adam <thomas at xteddy.org> writes:
+> This is because i3 has no understanding of the
+> _NET_WM_WINDOW_TYPE_NOTIFICATION EWMH hint.  i3 would need to check
+> this hint and set the window as being unmanaged.  Unfortunately, from
+> what I've seen of i3's code, patching this is slightly involved
+> because the checks on the container happen after it is mapped, and
+> more restructuring to support this is needed.
+Or, xfce-notifyd could just do it like all the other notification
+daemons and set the override_redirect property to 1, meaning the window
+is unmanaged.
+
+I really don?t get why xfce-notifyd is the only misbehaving program
+here, all the others just work.
+
+-- 
+Best regards,
+Michael
+
+From thomas at xteddy.org  Sun Jun 16 21:58:15 2013
+From: thomas at xteddy.org (Thomas Adam)
+Date: Sun, 16 Jun 2013 20:58:15 +0100
+Subject: [i3] Notifyd support
+In-Reply-To: <x6sj0hx2en.fsf@midna.zekjur.net>
+References: <CAHCistf5V6iqndMZVpNS54y8aDgXgSCzm-xAnNfhLWW2HQjO0A@mail.gmail.com>
+ <CA+39Oz4WP0prT+_v7hMYn+SWZ8HG3eU=fVKEib1o_KT83ohbBg@mail.gmail.com>
+ <x6sj0hx2en.fsf@midna.zekjur.net>
+Message-ID: <CA+39Oz7JefW1xg3pexN4recRCFAnxxH1SFtjCYHb7g4834oHTA@mail.gmail.com>
+
+On 16 Jun 2013 20:49, "Michael Stapelberg" <michael at i3wm.org> wrote:
+>
+> I really don?t get why xfce-notifyd is the only misbehaving program
+> here, all the others just work.
+
+Because that's the wrong way round. It's a valid hint to set since it's
+part of the EWMH spec, and WMs should support it. There's plenty of other
+applications setting this hint, were I to go and look. So I think i3 should
+just support it. If I have to patch that support in, I'm happy to.
+
+Kindly,
+Thomas Adam
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130616/33d5efd7/attachment.html>
+
+From michael at i3wm.org  Mon Jun 17 00:11:08 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 17 Jun 2013 00:11:08 +0200
+Subject: [i3] Notifyd support
+In-Reply-To: <CA+39Oz7JefW1xg3pexN4recRCFAnxxH1SFtjCYHb7g4834oHTA@mail.gmail.com>
+References: <CAHCistf5V6iqndMZVpNS54y8aDgXgSCzm-xAnNfhLWW2HQjO0A@mail.gmail.com>
+ <CA+39Oz4WP0prT+_v7hMYn+SWZ8HG3eU=fVKEib1o_KT83ohbBg@mail.gmail.com>
+ <x6sj0hx2en.fsf@midna.zekjur.net>
+ <CA+39Oz7JefW1xg3pexN4recRCFAnxxH1SFtjCYHb7g4834oHTA@mail.gmail.com>
+Message-ID: <x6mwqpwvsz.fsf@midna.zekjur.net>
+
+Hi Thomas,
+
+Thomas Adam <thomas at xteddy.org> writes:
+
+> On 16 Jun 2013 20:49, "Michael Stapelberg" <michael at i3wm.org> wrote:
+>>
+>> I really don?t get why xfce-notifyd is the only misbehaving program
+>> here, all the others just work.
+>
+> Because that's the wrong way round. It's a valid hint to set since
+> it's part of the EWMH spec, and WMs should support it. There's plenty
+> of other applications setting this hint, were I to go and look. So I
+> think i3 should just support it. If I have to patch that support in,
+That?s not a good reason. Why can?t it just set _both_ like all the
+other programs do?
+
+-- 
+Best regards,
+Michael
+
+From thomas at xteddy.org  Mon Jun 17 00:20:26 2013
+From: thomas at xteddy.org (Thomas Adam)
+Date: Sun, 16 Jun 2013 23:20:26 +0100
+Subject: [i3] Notifyd support
+In-Reply-To: <x6mwqpwvsz.fsf@midna.zekjur.net>
+References: <CAHCistf5V6iqndMZVpNS54y8aDgXgSCzm-xAnNfhLWW2HQjO0A@mail.gmail.com>
+ <CA+39Oz4WP0prT+_v7hMYn+SWZ8HG3eU=fVKEib1o_KT83ohbBg@mail.gmail.com>
+ <x6sj0hx2en.fsf@midna.zekjur.net>
+ <CA+39Oz7JefW1xg3pexN4recRCFAnxxH1SFtjCYHb7g4834oHTA@mail.gmail.com>
+ <x6mwqpwvsz.fsf@midna.zekjur.net>
+Message-ID: <CA+39Oz7HNy_mzbdLs8Tw5av+EGwW3ijgh1O_r_6_ZAgjDKsPBA@mail.gmail.com>
+
+Hi,
+
+On 16 June 2013 23:11, Michael Stapelberg <michael at i3wm.org> wrote:
+> Hi Thomas,
+>
+> Thomas Adam <thomas at xteddy.org> writes:
+>
+>> On 16 Jun 2013 20:49, "Michael Stapelberg" <michael at i3wm.org> wrote:
+>>>
+>>> I really don?t get why xfce-notifyd is the only misbehaving program
+>>> here, all the others just work.
+>>
+>> Because that's the wrong way round. It's a valid hint to set since
+>> it's part of the EWMH spec, and WMs should support it. There's plenty
+>> of other applications setting this hint, were I to go and look. So I
+>> think i3 should just support it. If I have to patch that support in,
+> That?s not a good reason. Why can?t it just set _both_ like all the
+> other programs do?
+
+That's a bit like saying:  "Why do people have to choose different
+colour cars, can't they all just use unpainted ones?".  I think more
+the point here is that the standard has laid down one way of setting
+these hints, and that the implication isn't necessary to enforce
+override-redirect---it's just that that's how most WMs will treat this
+property, because that's usually how WMs deal with windows they're
+never supposed to manage.
+
+At this point, it's easier for me to write the code than it is
+continue the conversation.  :)
+
+-- Thomas Adam
+
+From lee at yun.yagibdah.de  Mon Jun 17 03:17:14 2013
+From: lee at yun.yagibdah.de (lee)
+Date: Mon, 17 Jun 2013 03:17:14 +0200
+Subject: [i3] identifying windows
+Message-ID: <8738shv8md.fsf@yun.yagibdah.de>
+
+Hi,
+
+what's the equivalent of the identify module fvwm has with i3?  I'd like
+to add a few 'for_window' statements to my config, so I need to find out
+what the windows in question are.
+
+
+-- 
+"Object-oriented programming languages aren't completely convinced that
+you should be allowed to do anything with functions."
+http://www.joelonsoftware.com/items/2006/08/01.html
+
+From thomas at xteddy.org  Mon Jun 17 07:38:34 2013
+From: thomas at xteddy.org (Thomas Adam)
+Date: Mon, 17 Jun 2013 06:38:34 +0100
+Subject: [i3] identifying windows
+In-Reply-To: <8738shv8md.fsf@yun.yagibdah.de>
+References: <8738shv8md.fsf@yun.yagibdah.de>
+Message-ID: <CA+39Oz4bRZTrEuOiYBNJ4at3cQwXFdMAfKyH6h5hJF=tZsCf_Q@mail.gmail.com>
+
+On 17 Jun 2013 02:17, "lee" <lee at yun.yagibdah.de> wrote:
+>
+> Hi,
+>
+> what's the equivalent of the identify module fvwm has with i3?  I'd like
+> to add a few 'for_window' statements to my config, so I need to find out
+> what the windows in question are
+
+Use xprop.
+
+Thomas
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130617/0387d91b/attachment-0001.html>
+
+From bradfordkidd97 at gmail.com  Tue Jun 18 01:54:17 2013
+From: bradfordkidd97 at gmail.com (Bradford Kidd)
+Date: Mon, 17 Jun 2013 16:54:17 -0700
+Subject: [i3] i3bar tray location
+Message-ID: <CACOz9RiMAY=OwZphKT_ZkTj98R-9FvL_CNRR1zjCAYvD4U_8vA@mail.gmail.com>
+
+Hello,
+Is there a way to push the i3bar tray in front of the information pushed
+through i3status/conky?
+
+Thank you,
+Bradford
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130617/568e4f20/attachment.html>
+
+From lee at yun.yagibdah.de  Tue Jun 18 06:21:16 2013
+From: lee at yun.yagibdah.de (lee)
+Date: Tue, 18 Jun 2013 06:21:16 +0200
+Subject: [i3] identifying windows
+In-Reply-To: <CA+39Oz4bRZTrEuOiYBNJ4at3cQwXFdMAfKyH6h5hJF=tZsCf_Q@mail.gmail.com>
+ (Thomas Adam's message of "Mon, 17 Jun 2013 06:38:34 +0100")
+References: <8738shv8md.fsf@yun.yagibdah.de>
+ <CA+39Oz4bRZTrEuOiYBNJ4at3cQwXFdMAfKyH6h5hJF=tZsCf_Q@mail.gmail.com>
+Message-ID: <87ip1coxqb.fsf@yun.yagibdah.de>
+
+Thomas Adam <thomas at xteddy.org> writes:
+
+> On 17 Jun 2013 02:17, "lee" <lee at yun.yagibdah.de> wrote:
+>>
+>> Hi,
+>>
+>> what's the equivalent of the identify module fvwm has with i3?  I'd like
+>> to add a few 'for_window' statements to my config, so I need to find out
+>> what the windows in question are
+>
+> Use xprop.
+
+Thanks, that works perfectly :)
+
+
+-- 
+"Object-oriented programming languages aren't completely convinced that
+you should be allowed to do anything with functions."
+http://www.joelonsoftware.com/items/2006/08/01.html
+
+From michael at i3wm.org  Tue Jun 18 07:41:30 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 18 Jun 2013 07:41:30 +0200
+Subject: [i3] i3bar tray location
+In-Reply-To: <CACOz9RiMAY=OwZphKT_ZkTj98R-9FvL_CNRR1zjCAYvD4U_8vA@mail.gmail.com>
+References: <CACOz9RiMAY=OwZphKT_ZkTj98R-9FvL_CNRR1zjCAYvD4U_8vA@mail.gmail.com>
+Message-ID: <x6zjuougad.fsf@midna.zekjur.net>
+
+Hi Bradford,
+
+Bradford Kidd <bradfordkidd97 at gmail.com> writes:
+> Is there a way to push the i3bar tray in front of the information pushed
+> through i3status/conky?
+No.
+
+-- 
+Best regards,
+Michael
+
+From popoffka at gmail.com  Wed Jun 26 21:36:06 2013
+From: popoffka at gmail.com (Aleksejs Popovs)
+Date: Wed, 26 Jun 2013 22:36:06 +0300
+Subject: [i3] i3lock: additional data display
+Message-ID: <CAPgtAyUztGPQa+HXzkfjAi8axP5Q9Y9Mc_Gp1draLYLSi5H9KA@mail.gmail.com>
+
+Hi guys,
+
+I'm going to make a patch for i3lock that would let it display some
+additional information on the lock screen (such as current time, lock
+time, and number of failed login attempts). Would anyone else be
+interested in this and should I submit this patch to cr.i3wm.org (I'm
+afraid this might be contradict the "lightweight & simple" approach of
+i3*)? Also, if anyone in interested in this functionality, how much
+customization do you expect?
+
+--
+Best regards,
+Aleksejs Popovs
+Riga, Latvia
+
+From keks at cookiesoft.de  Wed Jun 26 21:48:04 2013
+From: keks at cookiesoft.de (Marcel Hellwig)
+Date: Wed, 26 Jun 2013 21:48:04 +0200
+Subject: [i3] i3lock: additional data display
+In-Reply-To: <CAPgtAyUztGPQa+HXzkfjAi8axP5Q9Y9Mc_Gp1draLYLSi5H9KA@mail.gmail.com>
+References: <CAPgtAyUztGPQa+HXzkfjAi8axP5Q9Y9Mc_Gp1draLYLSi5H9KA@mail.gmail.com>
+Message-ID: <51CB4574.50204@cookiesoft.de>
+
+On 26.06.2013 21:36, Aleksejs Popovs wrote:
+> Hi guys,
+>
+> I'm going to make a patch for i3lock that would let it display some
+> additional information on the lock screen (such as current time, lock
+> time, and number of failed login attempts). 
++1 for current time ;)
+> Would anyone else be
+> interested in this and should I submit this patch to cr.i3wm.org (I'm
+> afraid this might be contradict the "lightweight & simple" approach of
+> i3*)? Also, if anyone in interested in this functionality, how much
+> customization do you expect?
+hmm, strftime date time format should be possible at least ;)
+>
+> --
+> Best regards,
+> Aleksejs Popovs
+> Riga, Latvia
+
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 901 bytes
+Desc: OpenPGP digital signature
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130626/4c9be457/attachment.sig>
+
+From nashpapa at gmail.com  Wed Jun 26 22:04:12 2013
+From: nashpapa at gmail.com (avinash r)
+Date: Thu, 27 Jun 2013 01:34:12 +0530
+Subject: [i3] i3lock: additional data display
+In-Reply-To: <51CB4574.50204@cookiesoft.de>
+References: <CAPgtAyUztGPQa+HXzkfjAi8axP5Q9Y9Mc_Gp1draLYLSi5H9KA@mail.gmail.com>
+ <51CB4574.50204@cookiesoft.de>
+Message-ID: <CAHCistexTTC9Lh_Pw0s=3sZSOn2GZdsiYbHUm9BenM0mcfEaZw@mail.gmail.com>
+
+Also how about letting the user decide the what to show?
+
+Using a config format something like this will be great:
+date(dd:MM:yy, hh:mm:ss) command(my_custom_command.sh, 5/*refresh delay*/)
+On Jun 27, 2013 1:18 AM, "Marcel Hellwig" <keks at cookiesoft.de> wrote:
+
+> On 26.06.2013 21:36, Aleksejs Popovs wrote:
+> > Hi guys,
+> >
+> > I'm going to make a patch for i3lock that would let it display some
+> > additional information on the lock screen (such as current time, lock
+> > time, and number of failed login attempts).
+> +1 for current time ;)
+> > Would anyone else be
+> > interested in this and should I submit this patch to cr.i3wm.org (I'm
+> > afraid this might be contradict the "lightweight & simple" approach of
+> > i3*)? Also, if anyone in interested in this functionality, how much
+> > customization do you expect?
+> hmm, strftime date time format should be possible at least ;)
+> >
+> > --
+> > Best regards,
+> > Aleksejs Popovs
+> > Riga, Latvia
+>
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130627/020339cf/attachment.html>
+
+From popoffka at gmail.com  Wed Jun 26 22:19:14 2013
+From: popoffka at gmail.com (Aleksejs Popovs)
+Date: Wed, 26 Jun 2013 23:19:14 +0300
+Subject: [i3] i3lock: additional data display
+In-Reply-To: <CAHCistexTTC9Lh_Pw0s=3sZSOn2GZdsiYbHUm9BenM0mcfEaZw@mail.gmail.com>
+References: <CAPgtAyUztGPQa+HXzkfjAi8axP5Q9Y9Mc_Gp1draLYLSi5H9KA@mail.gmail.com>
+ <51CB4574.50204@cookiesoft.de>
+ <CAHCistexTTC9Lh_Pw0s=3sZSOn2GZdsiYbHUm9BenM0mcfEaZw@mail.gmail.com>
+Message-ID: <CAPgtAyVagzOH7TizzOoaeX0=4Rzf_0-QZ+ksvRS32Eh3c7CARg@mail.gmail.com>
+
+On 26 June 2013 23:04, avinash r <nashpapa at gmail.com> wrote:
+> Also how about letting the user decide the what to show?
+>
+> Using a config format something like this will be great:
+> date(dd:MM:yy, hh:mm:ss) command(my_custom_command.sh, 5/*refresh delay*/)
+
+I'd really love to hear from i3 maintainers about whether or not this
+would be considered "bloat".
+
+--
+Best regards,
+Aleksejs Popovs
+Riga, Latvia
+
+From michael at i3wm.org  Wed Jun 26 22:39:23 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 26 Jun 2013 22:39:23 +0200
+Subject: [i3] i3lock: additional data display
+In-Reply-To: <CAPgtAyUztGPQa+HXzkfjAi8axP5Q9Y9Mc_Gp1draLYLSi5H9KA@mail.gmail.com>
+References: <CAPgtAyUztGPQa+HXzkfjAi8axP5Q9Y9Mc_Gp1draLYLSi5H9KA@mail.gmail.com>
+Message-ID: <x68v1wtxms.fsf@midna.zekjur.net>
+
+Hi Aleksejs,
+
+Aleksejs Popovs <popoffka at gmail.com> writes:
+> I'm going to make a patch for i3lock that would let it display some
+> additional information on the lock screen (such as current time, lock
+> time, and number of failed login attempts). Would anyone else be
+> interested in this and should I submit this patch to cr.i3wm.org (I'm
+> afraid this might be contradict the "lightweight & simple" approach of
+> i3*)? Also, if anyone in interested in this functionality, how much
+> customization do you expect?
+I am not interested in maintaining such a patch, sorry.
+
+See
+https://faq.i3wm.org/question/778/why-is-patch-not-merged-and-made-optional/
+for some rationale behind this decision.
+
+With i3lock, the case is much stronger than with i3. It really is a
+minimal screen locker. If you need anything fancy, use a different one
+please. Also, without a GUI toolkit, you will have a bad time
+implementing this, just as a warning :).
+
+-- 
+Best regards,
+Michael
+
+From lists at necoro.eu  Thu Jun 27 10:00:12 2013
+From: lists at necoro.eu (=?ISO-8859-15?Q?Ren=E9_Neumann?=)
+Date: Thu, 27 Jun 2013 10:00:12 +0200
+Subject: [i3] i3 Patch Repository [was: i3lock: additional data display]
+In-Reply-To: <x68v1wtxms.fsf@midna.zekjur.net>
+References: <CAPgtAyUztGPQa+HXzkfjAi8axP5Q9Y9Mc_Gp1draLYLSi5H9KA@mail.gmail.com>
+ <x68v1wtxms.fsf@midna.zekjur.net>
+Message-ID: <51CBF10C.4050902@necoro.eu>
+
+Am 26.06.2013 22:39, schrieb Michael Stapelberg:
+> Hi Aleksejs,
+> 
+> Aleksejs Popovs <popoffka at gmail.com> writes:
+>> I'm going to make a patch for i3lock that would let it display some
+>> additional information on the lock screen (such as current time, lock
+>> time, and number of failed login attempts). Would anyone else be
+>> interested in this and should I submit this patch to cr.i3wm.org (I'm
+>> afraid this might be contradict the "lightweight & simple" approach of
+>> i3*)? Also, if anyone in interested in this functionality, how much
+>> customization do you expect?
+> I am not interested in maintaining such a patch, sorry.
+> 
+> See
+> https://faq.i3wm.org/question/778/why-is-patch-not-merged-and-made-optional/
+> for some rationale behind this decision.
+
+I completely understand your concerns. What would be a great thing
+though, is a page which offers those unmerged patches, so everyone who
+likes a certain idea can apply (on his own risk!) such a patch. With a
+central repository, it would be easier to have the authors maintain it
+and users find this maintained version (opposed to search the web for
+some random patch).
+
+Perhaps one could force the patch authors to add something to the
+version string, or print to the logs, to get added to the repository, so
+one could easily spot it in bug-reports.
+
+- Ren?
+

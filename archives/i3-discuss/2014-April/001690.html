@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Questions regarding bindsym through ipc, tabbed layout,	etc.
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Questions%20regarding%20bindsym%20through%20ipc%2C%20tabbed%20layout%2C%0A%09etc.&In-Reply-To=%3Cx6lhv5p58t.fsf%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001689.html">
+   <LINK REL="Next"  HREF="001691.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Questions regarding bindsym through ipc, tabbed layout,	etc.</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Questions%20regarding%20bindsym%20through%20ipc%2C%20tabbed%20layout%2C%0A%09etc.&In-Reply-To=%3Cx6lhv5p58t.fsf%40midna.zekjur.net%3E"
+       TITLE="[i3] Questions regarding bindsym through ipc, tabbed layout,	etc.">michael at i3wm.org
+       </A><BR>
+    <I>Wed Apr 16 19:13:22 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001689.html">[i3] Questions regarding bindsym through ipc, tabbed layout,	etc.
+</A></li>
+        <LI>Next message: <A HREF="001691.html">[i3] Questions regarding bindsym through ipc, tabbed layout,	etc.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1690">[ date ]</a>
+              <a href="thread.html#1690">[ thread ]</a>
+              <a href="subject.html#1690">[ subject ]</a>
+              <a href="author.html#1690">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Thomas,
+
+Thomas Sanchez &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">thomas.sanchz at gmail.com</A>&gt; writes:
+&gt;<i> * Is there any rational for bindsym not being considered as any other command ?
+</I>&gt;<i> $&gt; i3-msg 'bindsym Mod4+i exec gvim'
+</I>&gt;<i> ERROR: Your command: bindsym Mod4+i exec gvim
+</I>&gt;<i> ERROR:               ^^^^^^^^^^^^^^^^^^^^^^^^
+</I>bindsym is not a command, it’s a configuration directive. Implementing a
+command to add new configuration lines to the current configuration is
+something I had planned for some time, but I’m not entirely sure it’s a
+good idea anymore. It’d kill the very clear current mapping from a
+configuration file on-disk to what i3 keeps in memory. I suppose we’d
+need a “dump current configuration” command at least.
+
+&gt;<i> I wrote a set of script ( <A HREF="https://github.com/daedric/i3scripts">https://github.com/daedric/i3scripts</A> ) to
+</I>&gt;<i> manage dynamic workspaces according to the project I'm working on.
+</I>&gt;<i> IMO it would make sense to be able to setup some specific binding.
+</I>&gt;<i> Thus, it would make also sense to be able to delete/replace a binding.
+</I>Have you considered generating a configfile and simply issuing the
+“reload” command?
+
+&gt;<i> * Why when I have a splitted workspace with say chromium and a
+</I>&gt;<i> terminal, I can't set the layout to tabbed (or stacked) for the
+</I>&gt;<i> terminal but I can split it ?
+</I>Because the terminal is not a split container, it’s a leaf node. After
+you split it, you’ll be able to change the layout, but until you open
+more windows, you will not see any effects. See also
+<A HREF="http://www.youtube.com/watch?v=AWA8Pl57UBY">http://www.youtube.com/watch?v=AWA8Pl57UBY</A> for more details.
+
+&gt;<i> * The following binding, does not show the i3-input on the focused output
+</I>&gt;<i> bindsym $mod+m exec i3-input -P &quot;Mark: &quot; -F &quot;mark %s&quot;
+</I>There’s a bugreport for that: <A HREF="http://bugs.i3wm.org/report/ticket/1058">http://bugs.i3wm.org/report/ticket/1058</A>
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001689.html">[i3] Questions regarding bindsym through ipc, tabbed layout,	etc.
+</A></li>
+	<LI>Next message: <A HREF="001691.html">[i3] Questions regarding bindsym through ipc, tabbed layout,	etc.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1690">[ date ]</a>
+              <a href="thread.html#1690">[ thread ]</a>
+              <a href="subject.html#1690">[ subject ]</a>
+              <a href="author.html#1690">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] question about layout
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20question%20about%20layout&In-Reply-To=%3C87aa56u6oj.fsf%40m7000.fhaun.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000439.html">
+   <LINK REL="Next"  HREF="000444.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] question about layout</H1>
+    <B>Frank Haun</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20question%20about%20layout&In-Reply-To=%3C87aa56u6oj.fsf%40m7000.fhaun.de%3E"
+       TITLE="[i3] question about layout">fh at fhaun.de
+       </A><BR>
+    <I>Sun Jan 29 11:47:08 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000439.html">[i3] question about layout
+</A></li>
+        <LI>Next message: <A HREF="000444.html">[i3] question about layout
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#443">[ date ]</a>
+              <a href="thread.html#443">[ thread ]</a>
+              <a href="subject.html#443">[ subject ]</a>
+              <a href="author.html#443">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael+i3 at stapelberg.de</A>&gt; writes:
+
+&gt;<i> Excerpts from Frank Haun's message of 2012-01-28 23:35:08 +0000:
+</I>&gt;&gt;<i> You can completely script such tasks. I use 'xdotool' for such
+</I>&gt;&gt;<i> jobs. Look your i3 config for the related keys to resize (shrink and
+</I>&gt;&gt;<i> grow) windows.
+</I>&gt;<i> A better way than sending commands to X11 which sends them to i3 is to
+</I>&gt;<i> directly execute i3 commands, for example with i3-msg. In your
+</I>&gt;<i> example, you can use:
+</I>&gt;<i>
+</I>&gt;&gt;<i> xdotool key Super_L+a  # focus the parent container
+</I>&gt;<i> i3-msg focus parent
+</I>
+Ah, thx for the hint. That's much better. I've used i3-msg only to set
+borders to none. Sorry. :-)
+
+Wow, and with this I can define how much to shrink, great!
+
+  i3-msg resize shrink left 15 px or 15 ppt
+
+
+
+[Waiting for a program]
+
+&gt;&gt;<i> #---------------------------------------------------#
+</I>&gt;&gt;<i> wait_for () {
+</I>&gt;&gt;<i>     n=0
+</I>&gt;&gt;<i>     while true
+</I>&gt;&gt;<i>     do
+</I>&gt;&gt;<i>     if $1; then
+</I>&gt;&gt;<i>         break
+</I>&gt;&gt;<i>     else
+</I>&gt;&gt;<i>         # 20 seconds timeout
+</I>&gt;&gt;<i>         if [ $n -eq 20 ]; then
+</I>&gt;&gt;<i>         xmessage &quot;Error executing: $1&quot;
+</I>&gt;&gt;<i>         break
+</I>&gt;&gt;<i>         else
+</I>&gt;&gt;<i>         n=`expr $n + 1`
+</I>&gt;&gt;<i>         sleep 1
+</I>&gt;&gt;<i>         fi
+</I>&gt;&gt;<i>     fi
+</I>&gt;&gt;<i>     done
+</I>&gt;&gt;<i> }
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> wait_for &quot;xdotool search --name emacs&quot;
+</I>&gt;&gt;<i> #---------------------------------------------------#
+</I>&gt;<i> Hm, basically you could use the for_window configuration directive here:
+</I>&gt;<i>
+</I>&gt;<i>     for_window [class=&quot;emacs&quot;] exec ~/.bin/my_script_for_emacs.sh
+</I>&gt;<i>
+</I>&gt;<i> (I didn&#8217;t test whether emacs actually sets its class to 'emacs'.)
+</I>
+The class name of emacs is Emacs, I think.
+
+&gt;<i> If you only want to have this match the first time such a window
+</I>&gt;<i> appears you might want to some configuration file tricks, like keeping
+</I>&gt;<i> the for_window directives in a separate file and your other
+</I>&gt;<i> configuration in another file, then cat them together in your xsession
+</I>&gt;<i> and after all your windows have appeared, only write your base
+</I>&gt;<i> configuration to the config file and reload i3.
+</I>
+Ops, that sounds much complicated. But I'll investigate more time using
+this or other methods.
+
+My goal was to have only _one_ clean autostart file for i3 with a
+_special_ layout. That was something I missed when I start using i3.
+
+
+Just an example, this works for me with my autostart.
+
+
+|<i>emacs--------|ding(no border---|
+</I>|<i>             |                 |
+</I>|<i>             |                 |
+</I>|<i>             |pdf--------------|
+</I>|<i>             |browser----------|
+</I>|<i>             |fileman----------|
+</I>|<i>             |                 |
+</I>|<i>xterm--------|                 |
+</I>|<i>             |                 |
+</I>|<i>             |                 |
+</I>|<i>-------------|-----------------|
+</I>
+
+Thanks very much,
+Frank
+
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000439.html">[i3] question about layout
+</A></li>
+	<LI>Next message: <A HREF="000444.html">[i3] question about layout
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#443">[ date ]</a>
+              <a href="thread.html#443">[ thread ]</a>
+              <a href="subject.html#443">[ subject ]</a>
+              <a href="author.html#443">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,32 @@
+diff --git a/src/commands.c b/src/commands.c
+index 4ec501b..7d07199 100644
+--- a/src/commands.c
++++ b/src/commands.c
+@@ -984,6 +984,27 @@ void parse_command(xcb_connection_t *conn, const char *command) {
+                 return;
+         }
+ 
++        if (STARTS_WITH(command, "urgent")) {
++                const char *number = command + strlen("urgent");
++                char *result = NULL;
++                int workspace;
++
++                workspace = strtol(number, &result, 10);
++
++                if (result == NULL) {
++                        ELOG("No workspace specified\n");
++                        return;
++                }
++
++                Workspace * ws = workspace_get(workspace - 1);
++
++                if (ws)
++                        ws->urgent = true;
++
++                render_layout(conn);
++                return;
++        }
++
+         if (STARTS_WITH(command, "goto")) {
+                 const char *rest = command + strlen("goto");
+                 while (*rest == ' ')

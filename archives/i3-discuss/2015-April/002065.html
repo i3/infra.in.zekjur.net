@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Detecting screen locked
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Detecting%20screen%20locked&In-Reply-To=%3CCANnVG6n%2BKVpV2B_OvpNrAfVGeiq-eWtzD78WNWQ_RzeHX1xbrA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002064.html">
+   <LINK REL="Next"  HREF="002066.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Detecting screen locked</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Detecting%20screen%20locked&In-Reply-To=%3CCANnVG6n%2BKVpV2B_OvpNrAfVGeiq-eWtzD78WNWQ_RzeHX1xbrA%40mail.gmail.com%3E"
+       TITLE="[i3] Detecting screen locked">michael at i3wm.org
+       </A><BR>
+    <I>Fri Apr 17 09:19:20 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002064.html">[i3] Detecting screen locked
+</A></li>
+        <LI>Next message: <A HREF="002066.html">[i3] Detecting screen locked
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2065">[ date ]</a>
+              <a href="thread.html#2065">[ thread ]</a>
+              <a href="subject.html#2065">[ subject ]</a>
+              <a href="author.html#2065">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>i3lock shouldn’t hang around. Can you start stracing all your i3lock
+instances automatically and provide the corresponding strace output of a
+hung instance in a bugreport?
+
+On Fri, Apr 17, 2015 at 9:04 AM, Jeff Abrahamson &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jeff at purple.com</A>&gt; wrote:
+
+&gt;<i> I have a maintenance function that ought not bother spinning the CPU if
+</I>&gt;<i> the screen is locked.  It checks this thus:
+</I>&gt;<i>
+</I>&gt;<i> if pidof i3lock &gt;/dev/null; then
+</I>&gt;<i>     ...
+</I>&gt;<i>
+</I>&gt;<i> This is i3-specific, which is sad, but not a huge problem.  What is a
+</I>&gt;<i> problem is that i3lock sometimes hangs around even though I think it should
+</I>&gt;<i> exit on unlock.  And, indeed, most of the time it does exit on unlock.
+</I>&gt;<i> Once in a while, I find I have one or even several i3lock processes hanging
+</I>&gt;<i> around.
+</I>&gt;<i>
+</I>&gt;<i> I either lock my screen explicitly
+</I>&gt;<i>
+</I>&gt;<i> bindsym $mod+Control+L exec i3lock --dpms --inactivity-timeout 10
+</I>&gt;<i> --color=220022
+</I>&gt;<i>
+</I>&gt;<i> or else it's done by inactivity
+</I>&gt;<i>
+</I>&gt;<i> xautolock -detectsleep \
+</I>&gt;<i>     -time 3 -locker &quot;i3lock --dpms --color=220022 --inactivity-timeout 10
+</I>&gt;<i> --nofork&quot;
+</I>&gt;<i>
+</I>&gt;<i> This question thus has two parts:
+</I>&gt;<i>
+</I>&gt;<i> 1. Am I doing something wrong that I sometimes have multiple i3lock
+</I>&gt;<i> instances?
+</I>&gt;<i> 2. Is there a better way to detect screen lock than pidof i3lock?
+</I>&gt;<i>
+</I>&gt;<i> Jeff Abrahamson
+</I>&gt;<i> +33 6 24 40 01 57
+</I>&gt;<i> +44 7920 594 255    &lt;-- only if I'm in the UK
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://jeff.purple.com/">http://jeff.purple.com/</A>
+</I>&gt;<i> <A HREF="http://blog.purple.com/jeff/">http://blog.purple.com/jeff/</A>
+</I>&gt;<i>
+</I>
+
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150417/04875b8d/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150417/04875b8d/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002064.html">[i3] Detecting screen locked
+</A></li>
+	<LI>Next message: <A HREF="002066.html">[i3] Detecting screen locked
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2065">[ date ]</a>
+              <a href="thread.html#2065">[ thread ]</a>
+              <a href="subject.html#2065">[ subject ]</a>
+              <a href="author.html#2065">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

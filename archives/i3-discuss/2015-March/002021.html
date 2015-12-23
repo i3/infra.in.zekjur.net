@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Thoughts on window sizing from a new(-ish) user
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Thoughts%20on%20window%20sizing%20from%20a%20new%28-ish%29%20user&In-Reply-To=%3CCAM4Y7zzvMqW1vauPkPsoEv4-a6F9qjU--qROUytotx6XUT7A2Q%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002020.html">
+   <LINK REL="Next"  HREF="002022.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Thoughts on window sizing from a new(-ish) user</H1>
+    <B>Jeff Abrahamson</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Thoughts%20on%20window%20sizing%20from%20a%20new%28-ish%29%20user&In-Reply-To=%3CCAM4Y7zzvMqW1vauPkPsoEv4-a6F9qjU--qROUytotx6XUT7A2Q%40mail.gmail.com%3E"
+       TITLE="[i3] Thoughts on window sizing from a new(-ish) user">jeff at purple.com
+       </A><BR>
+    <I>Sat Mar 14 16:12:18 CET 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002020.html">[i3] Thoughts on window sizing from a new(-ish) user
+</A></li>
+        <LI>Next message: <A HREF="002022.html">[i3] Thoughts on window sizing from a new(-ish) user
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2021">[ date ]</a>
+              <a href="thread.html#2021">[ thread ]</a>
+              <a href="subject.html#2021">[ subject ]</a>
+              <a href="author.html#2021">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi, Stefano.
+
+I am using containers, I'm just asking the question if this is optimal (or
+if I'm missing something).
+
+You say I can create a container before I create a window.  Really?
+Imagine my screen is empty.  I'd like two side-by-side windows in their own
+containers, each container tabbed.  I think what I need to do is this:
+
+mod-H   # probably no-op most or all of the time
+mod-enter
+mod-enter
+# now I have my two windows
+mod-V
+mod-W
+# switch to other window
+mod-V
+mod-W
+
+In other words, I triggered container creation by changing split
+orientation.  If I just used mod-W, I'd put the two windows in two tabs in
+the same container.
+
+Meanwhile, if I for some reason focus the container and then create or move
+in another window, I'll change window sizes.  Bu to my mind creating a new
+window is different than creating a new frame.
+
+Jeff Abrahamson
++33 6 24 40 01 57
++44 7920 594 255    &lt;-- only if I'm in the UK
+
+<A HREF="http://jeff.purple.com/">http://jeff.purple.com/</A>
+<A HREF="http://blog.purple.com/jeff/">http://blog.purple.com/jeff/</A>
+
+On 14 March 2015 at 15:50, Stefano Ghirlanda &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">dr.ghirlanda at gmail.com</A>&gt; wrote:
+
+&gt;<i> Hi Jeff,
+</I>&gt;<i> I think what you need is the concept of a container (what you call a
+</I>&gt;<i> frame). You can create a container before you create a window, e.g.,
+</I>&gt;<i> mod-H or mod-V for horizontal or vertical splits, and then add the
+</I>&gt;<i> window in there. The creation of the container is silent until you
+</I>&gt;<i> actually place a new window in it, but when you do that the new window
+</I>&gt;<i> only resizes those that already exist in the container, without
+</I>&gt;<i> affecting size or position of other containers.. I think this is
+</I>&gt;<i> explained in one of the videos.
+</I>&gt;<i>
+</I>&gt;<i> Best,
+</I>&gt;<i> S
+</I>&gt;<i>
+</I>&gt;<i> On Sat, Mar 14, 2015 at 10:38 AM, Jeff Abrahamson &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jeff at purple.com</A>&gt; wrote:
+</I>&gt;<i> &gt; I've been using i3 for several weeks now on most of my machines [1].
+</I>&gt;<i> It's
+</I>&gt;<i> &gt; very nice, many thanks to all who have made it work so well.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I find one concept confusingly conflated, and I am curious how others see
+</I>&gt;<i> &gt; it, and if I am simply missing some bit of mental model.  It often
+</I>&gt;<i> happens
+</I>&gt;<i> &gt; that I open several windows, adjust their sizes (for example, some
+</I>&gt;<i> &gt; monitoring plots wide and short, an editor tall, etc.  But if I open a
+</I>&gt;<i> new
+</I>&gt;<i> &gt; window, it changes the sizes I've set. To get around this, I typically
+</I>&gt;<i> set
+</I>&gt;<i> &gt; up windows as I'd like them, then change each window in turn between
+</I>&gt;<i> &gt; vertical and horizontal mode to force creation of a new container, then
+</I>&gt;<i> put
+</I>&gt;<i> &gt; the window into tabbed mode so that new windows don't change its size.
+</I>&gt;<i> (If
+</I>&gt;<i> &gt; all windows are in tabbed mode, then new windows don't cause resizes.)
+</I>&gt;<i> This
+</I>&gt;<i> &gt; achieves what I want, but seems a bit long-winded.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; To my mind, this arises because i3 conflates frames with windows.  A
+</I>&gt;<i> frame
+</I>&gt;<i> &gt; is the thing that partitions screen space.  In a frame I can put one or
+</I>&gt;<i> more
+</I>&gt;<i> &gt; windows.  Of course, each frame might have precisely one window, the
+</I>&gt;<i> current
+</I>&gt;<i> &gt; behaviour.  But what I am doing is essentially creating frames and then
+</I>&gt;<i> &gt; expecting new windows to conform to those frames.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Anyway, I'm curious how others see this.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Jeff Abrahamson
+</I>&gt;<i> &gt; +33 6 24 40 01 57
+</I>&gt;<i> &gt; +44 7920 594 255    &lt;-- only if I'm in the UK
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; <A HREF="http://jeff.purple.com/">http://jeff.purple.com/</A>
+</I>&gt;<i> &gt; <A HREF="http://blog.purple.com/jeff/">http://blog.purple.com/jeff/</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; [1] One machine is still running ratpoison.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Stefano Ghirlanda - www.intercult.su.se/~stefano - drghirlanda.com
+</I>&gt;<i> Full Professor of Psychology, Biology, and Anthropology, Brooklyn College
+</I>&gt;<i> Founder and Fellow, Stockholm University Centre for the Study of
+</I>&gt;<i> Cultural Evolution
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150314/24209986/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150314/24209986/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002020.html">[i3] Thoughts on window sizing from a new(-ish) user
+</A></li>
+	<LI>Next message: <A HREF="002022.html">[i3] Thoughts on window sizing from a new(-ish) user
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2021">[ date ]</a>
+              <a href="thread.html#2021">[ thread ]</a>
+              <a href="subject.html#2021">[ subject ]</a>
+              <a href="author.html#2021">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3status questions
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3status%20questions&In-Reply-To=%3C20101114214824.GA30003%40s70206.gridserver.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000157.html">
+   <LINK REL="Next"  HREF="000159.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3status questions</H1>
+    <B>John Magolske</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3status%20questions&In-Reply-To=%3C20101114214824.GA30003%40s70206.gridserver.com%3E"
+       TITLE="[i3] i3status questions">listmail at b79.net
+       </A><BR>
+    <I>Sun Nov 14 22:48:25 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000157.html">[i3] i3status questions
+</A></li>
+        <LI>Next message: <A HREF="000159.html">[i3] i3status questions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#158">[ date ]</a>
+              <a href="thread.html#158">[ thread ]</a>
+              <a href="subject.html#158">[ subject ]</a>
+              <a href="author.html#158">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>* Fernando Lemos &lt;<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">fernandotcl at gmail.com</A>&gt; [101114 13:35]:
+&gt;<i> &gt; Question about i3status -- the man page mentions the color_good,
+</I>&gt;<i> &gt; color_degraded, color_bad and color_separator directives, but when I
+</I>&gt;<i> &gt; try something like color_good = #00FF00 in ~/.i3status.conf I get:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; &#160;.i3status.conf:5: no such option 'color_separator'
+</I>&gt;<i> 
+</I>&gt;<i> Can you post your complete .i3status.conf? Note that color_* need to
+</I>&gt;<i> be specified in the &quot;general&quot; section.
+</I>
+Here it is, with a &quot;color_good: #00FF00&quot; tossed in for a test, which
+gets a &quot;no such option 'color_good:'&quot; output:
+
+
+  general {
+          colors = true
+          color_good: #00FF00
+      interval = 5
+  }
+  
+  order  = &quot;cpu_temperature 0&quot;
+  order += &quot;load&quot;
+  order += &quot;battery 0&quot;
+  order += &quot;time&quot;
+  
+  wireless wlan0 {
+          format_up = &quot;W: (%quality at %essid) %ip&quot;
+          format_down = &quot;W: down&quot;
+  }
+  
+  ethernet eth0 {
+          # if you use %speed, i3status requires root privileges
+          format_up = &quot;E: %ip (%speed)&quot;
+      format_down = &quot;E: down&quot;
+  }
+  
+  battery 0 {
+          format = &quot;%status %percentage&quot;
+  }
+  
+  run_watch DHCP {
+          pidfile = &quot;/var/run/dhclient*.pid&quot;
+  }
+  
+  time {
+      format = &quot; %a %e %b`%y  %l:%M%P&quot;
+  }
+  
+  load {
+      format = &quot;%1min &quot;
+  }
+  
+  cpu_temperature 0 {
+      format = &quot;%degrees&#176;C&quot;
+  }
+  
+  disk &quot;/&quot; {
+      format = &quot;%free&quot;
+  }
+
+
+Regards,
+
+John
+
+-- 
+John Magolske
+<A HREF="http://B79.net/contact">http://B79.net/contact</A>
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000157.html">[i3] i3status questions
+</A></li>
+	<LI>Next message: <A HREF="000159.html">[i3] i3status questions
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#158">[ date ]</a>
+              <a href="thread.html#158">[ thread ]</a>
+              <a href="subject.html#158">[ subject ]</a>
+              <a href="author.html#158">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

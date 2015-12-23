@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Tray Icons Disappearing on i3bar
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Tray%20Icons%20Disappearing%20on%20i3bar&In-Reply-To=%3CCANVYNa_k9F35zEFuny7uV%2B%3DCmcR1deggcOvzPR2OL-y%3DtjP-1Q%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000754.html">
+   <LINK REL="Next"  HREF="000757.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Tray Icons Disappearing on i3bar</H1>
+    <B>Fernando Lemos</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Tray%20Icons%20Disappearing%20on%20i3bar&In-Reply-To=%3CCANVYNa_k9F35zEFuny7uV%2B%3DCmcR1deggcOvzPR2OL-y%3DtjP-1Q%40mail.gmail.com%3E"
+       TITLE="[i3] Tray Icons Disappearing on i3bar">fernandotcl at i3wm.org
+       </A><BR>
+    <I>Fri Jun 29 03:37:13 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000754.html">[i3] Tray Icons Disappearing on i3bar
+</A></li>
+        <LI>Next message: <A HREF="000757.html">[i3] Tray Icons Disappearing on i3bar
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#756">[ date ]</a>
+              <a href="thread.html#756">[ thread ]</a>
+              <a href="subject.html#756">[ subject ]</a>
+              <a href="author.html#756">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Thu, Jun 28, 2012 at 4:51 PM, Mateusz Loskot &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">mateusz at loskot.net</A>&gt; wrote:
+&gt;&gt;<i> this also happens for me ... i noticed that this happens always after i return
+</I>&gt;&gt;<i> from suspend mode. was issue already created?
+</I>&gt;<i>
+</I>&gt;<i> I think I've been observing similar issue.
+</I>&gt;<i>
+</I>&gt;<i> I use XChat.
+</I>&gt;<i> Everytime I restart i3 (SHIFT+mod+R) its icon disappears.
+</I>
+When i3 is restarted, so is i3bar. Looks like when i3bar quits, its
+window is destroyed and the embedded windows receive a BadWindow error
+[1]. Seems to be a design issue in XEmbed itself:
+
+&quot;The protocol, as currently constituted, is not robust against the
+embedder crashing. This will result in the embedder window being
+destroyed by the X server, and, as a consequence client's window being
+unexpectedly destroyed, which will likely cause the client to die with
+a BadWindow error.&quot;
+
+What happens here, I guess, is that some clients may try to create the
+tray icon again, while others may not. Or maybe they do, but i3bar
+wasn't up by the time they retry (I'm guessing here, I really didn't
+read XEmbed).
+
+XEmbed also says that &quot;the protocol ends&quot; when the embedded window is
+reparented to the root window [2]. So I don't know much about X, but
+maybe reparenting the embedded windows to the root window before
+terminating would be a solution? I'm not sure how the clients are
+supposed to react, though.
+
+What puzzles me is that you guys say it also happens when returning
+from suspend... I have no idea why that is, I always thought suspend
+was (mostly) transparent to applications?
+
+[1]: <A HREF="http://standards.freedesktop.org/xembed-spec/xembed-spec-latest.html#id2926011">http://standards.freedesktop.org/xembed-spec/xembed-spec-latest.html#id2926011</A>
+[2]: <A HREF="http://standards.freedesktop.org/xembed-spec/xembed-spec-latest.html#lifecycle">http://standards.freedesktop.org/xembed-spec/xembed-spec-latest.html#lifecycle</A>
+</PRE>
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000754.html">[i3] Tray Icons Disappearing on i3bar
+</A></li>
+	<LI>Next message: <A HREF="000757.html">[i3] Tray Icons Disappearing on i3bar
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#756">[ date ]</a>
+              <a href="thread.html#756">[ thread ]</a>
+              <a href="subject.html#756">[ subject ]</a>
+              <a href="author.html#756">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3status only displays the temperature from one sensor
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3status%20only%20displays%20the%20temperature%20from%20one%20sensor&In-Reply-To=%3C530B962E.2080809%40hunsicker.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001587.html">
+   <LINK REL="Next"  HREF="001589.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3status only displays the temperature from one sensor</H1>
+    <B>Marco Hunsicker</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3status%20only%20displays%20the%20temperature%20from%20one%20sensor&In-Reply-To=%3C530B962E.2080809%40hunsicker.de%3E"
+       TITLE="[i3] i3status only displays the temperature from one sensor">i3 at hunsicker.de
+       </A><BR>
+    <I>Mon Feb 24 19:57:50 CET 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001587.html">[i3] i3status only displays the temperature from one sensor
+</A></li>
+        <LI>Next message: <A HREF="001589.html">[i3] i3status only displays the temperature from one sensor
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1588">[ date ]</a>
+              <a href="thread.html#1588">[ thread ]</a>
+              <a href="subject.html#1588">[ subject ]</a>
+              <a href="author.html#1588">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Michael,
+
+thanks much for your feedback.
+
+&gt;&gt;<i> I've changed my copy to:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>       if (path == NULL) {
+</I>&gt;&gt;<i>           if (thermal_zone == NULL) {
+</I>&gt;&gt;<i>               if (path == NULL)
+</I>&gt;&gt;<i>                   asprintf(&amp;thermal_zone, THERMAL_ZONE, zone);
+</I>&gt;&gt;<i>               else
+</I>&gt;&gt;<i>                   asprintf(&amp;thermal_zone, path, zone);
+</I>&gt;&gt;<i>           }
+</I>&gt;&gt;<i>           path = thermal_zone;
+</I>&gt;&gt;<i>       }
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> as I provide the full paths to the sensor outputs in my config file.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> But before I submit a patch, I wanted to ask whether this still catches
+</I>&gt;&gt;<i> the intention of this method?
+</I>
+&gt;<i> I think your code will actually not work properly either, because
+</I>&gt;<i> thermal_zone is a static variable. I think you&#8217;ll need to kill that
+</I>&gt;<i> variable entirely to make multiple instances of the cpu_temperature
+</I>&gt;<i> module work.
+</I>
+The temperatures are correctly displayed for me. With my configuration, 
+'path' should never be NULL and therefore 'thermal_zone' never actually 
+used.
+
+But yes, I would question the use of the static variable entirely. It's 
+not clear to me what the intention here is. Thanks.
+
+Cheers,
+   Marco
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001587.html">[i3] i3status only displays the temperature from one sensor
+</A></li>
+	<LI>Next message: <A HREF="001589.html">[i3] i3status only displays the temperature from one sensor
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1588">[ date ]</a>
+              <a href="thread.html#1588">[ thread ]</a>
+              <a href="subject.html#1588">[ subject ]</a>
+              <a href="author.html#1588">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

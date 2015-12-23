@@ -1,0 +1,41 @@
+<tt>
+I&nbsp;thought&nbsp;this&nbsp;could&nbsp;be&nbsp;a&nbsp;good&nbsp;starting&nbsp;point&nbsp;for&nbsp;me&nbsp;to&nbsp;start&nbsp;looking&nbsp;at&nbsp;i3&#39;s&nbsp;code.&nbsp;So&nbsp;I&nbsp;decided&nbsp;to&nbsp;code&nbsp;a&nbsp;patch&nbsp;for&nbsp;this.&nbsp;The&nbsp;only&nbsp;thing&nbsp;is&nbsp;that&nbsp;I&nbsp;did&nbsp;add&nbsp;a&nbsp;new&nbsp;configuration&nbsp;option&nbsp;&quot;raise_on_focus&quot;&nbsp;because&nbsp;I&nbsp;don&#39;t&nbsp;want&nbsp;that&nbsp;to&nbsp;be&nbsp;my&nbsp;default&nbsp;behavior.&lt;div&gt;<br>
+Should&nbsp;I&nbsp;create&nbsp;a&nbsp;ticket&nbsp;and&nbsp;attach&nbsp;my&nbsp;patch&nbsp;to&nbsp;it? &lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;Here&#39;s&nbsp;the&nbsp;patch&lt;br&gt;&lt;br&gt;&lt;div&nbsp;class=&quot;gmail_quote&quot;&gt;On&nbsp;Thu,&nbsp;Sep&nbsp;20,&nbsp;2012&nbsp;at&nbsp;9:41&nbsp;PM,&nbsp;Michael&nbsp;Stapelberg&nbsp;&lt;span&nbsp;dir=&quot;ltr&quot;&gt;&lt;&lt;a&nbsp;href=&quot;mailto:michael@i3wm.org&quot;&nbsp;target=&quot;_blank&quot;&gt;michael@i3wm.org&lt;/a&gt;&gt;&lt;/span&gt;&nbsp;wrote:&lt;br&gt;<br>
+&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;&lt;br&gt;<br>
+Hi&nbsp;Giorgos,&lt;br&gt;<br>
+&lt;div&nbsp;class=&quot;im&quot;&gt;&lt;br&gt;<br>
+Giorgos&nbsp;Keramidas&nbsp;&lt;&lt;a&nbsp;href=&quot;mailto:gkeramidas@gmail.com&quot;&gt;gkeramidas@gmail.com&lt;/a&gt;&gt;&nbsp;writes:&lt;br&gt;<br>
+&gt;&nbsp; &nbsp;-&nbsp;When&nbsp;focused&nbsp;by&nbsp;mouse&nbsp;_click_&nbsp;events,&nbsp;raise&nbsp;immediately&lt;br&gt;<br>
+&lt;/div&gt;i3&nbsp;does&nbsp;this&nbsp;already.&lt;br&gt;<br>
+&lt;div&nbsp;class=&quot;im&quot;&gt;&lt;br&gt;<br>
+&gt;&nbsp; &nbsp;-&nbsp;When&nbsp;focused&nbsp;by&nbsp;mouse&nbsp;movement,&nbsp;_maybe_&nbsp;raise&nbsp;after&nbsp;a&nbsp;timeout&lt;br&gt;<br>
+&gt;&nbsp;(commonly&nbsp;called&nbsp;raise_on_focus)&lt;br&gt;<br>
+&lt;/div&gt;A&nbsp;timeout&nbsp;would&nbsp;feel&nbsp;weird&nbsp;and&nbsp;not&nbsp;fit&nbsp;i3’s&nbsp;look&amp;feel&nbsp;well.&lt;br&gt;<br>
+&lt;div&nbsp;class=&quot;im&quot;&gt;&lt;br&gt;<br>
+&gt;&nbsp;This&nbsp;is&nbsp;currently&nbsp;not&nbsp;supported&nbsp;AFAIK,&nbsp;but&nbsp;if&nbsp;you&#39;re&nbsp;interested&nbsp;in&lt;br&gt;<br>
+&gt;&nbsp;writing&nbsp;a&nbsp;patch,&nbsp;please&nbsp;do&nbsp;it&nbsp;:-)&lt;br&gt;<br>
+&lt;/div&gt;As&nbsp;I&nbsp;said,&nbsp;it&nbsp;is.&nbsp;Carlos&nbsp;is&nbsp;talking&nbsp;changing&nbsp;focus&nbsp;via&nbsp;keyboard,&nbsp;not&lt;br&gt;<br>
+via&nbsp;mouse.&lt;br&gt;<br>
+&lt;div&nbsp;class=&quot;im&quot;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;First,&nbsp;when&nbsp;there&nbsp;are&nbsp;two&nbsp;floating&nbsp;windows&nbsp;one&nbsp;on&nbsp;top&nbsp;of&nbsp;another,&lt;br&gt;<br>
+&gt;&gt;&nbsp;changing&nbsp;focus&nbsp;between&nbsp;them&nbsp;does&nbsp;not&nbsp;bring&nbsp;the&nbsp;lower&nbsp;one&nbsp;to&nbsp;the&nbsp;front&lt;br&gt;<br>
+&gt;&gt;&nbsp;unless&nbsp;I&nbsp;click&nbsp;on&nbsp;it&nbsp;with&nbsp;the&nbsp;mouse.&nbsp;Is&nbsp;there&nbsp;any&nbsp;way&nbsp;to&nbsp;automatically&lt;br&gt;<br>
+&gt;&gt;&nbsp;follow&nbsp;a&nbsp;&#39;change&nbsp;focus&#39;&nbsp;action&nbsp;with&nbsp;a&nbsp;&#39;bring&nbsp;to&nbsp;front&#39;&nbsp;action?&nbsp;I&nbsp;can&#39;t&lt;br&gt;<br>
+&gt;&gt;&nbsp;find&nbsp;a&nbsp;command&nbsp;for&nbsp;the&nbsp;second&nbsp;one.&lt;br&gt;<br>
+&lt;/div&gt;Patch&nbsp;welcome.&nbsp;I&nbsp;think&nbsp;raising&nbsp;a&nbsp;floating&nbsp;window&nbsp;on&nbsp;focus&nbsp;should&nbsp;be&nbsp;the&lt;br&gt;<br>
+default&nbsp;action,&nbsp;so&nbsp;no&nbsp;new&nbsp;configuration&nbsp;directives&nbsp;are&nbsp;required.&lt;br&gt;<br>
+&lt;div&nbsp;class=&quot;im&quot;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;Second,&nbsp;what&nbsp;is&nbsp;the&nbsp;closest&nbsp;method&nbsp;to&nbsp;get&nbsp;a&nbsp;floating&nbsp;layout&nbsp;to&nbsp;an&lt;br&gt;<br>
+&gt;&gt;&nbsp;entire&nbsp;workspace&nbsp;(and&nbsp;one&nbsp;that&nbsp;you&nbsp;can&nbsp;enable/disable&nbsp;dynamically)?&lt;br&gt;<br>
+&lt;/div&gt;I’m&nbsp;not&nbsp;sure&nbsp;what&nbsp;exactly&nbsp;you&nbsp;mean&nbsp;by&nbsp;that.&nbsp;Making&nbsp;all&nbsp;windows&nbsp;on&nbsp;one&lt;br&gt;<br>
+workspace&nbsp;floating&nbsp;is&nbsp;not&nbsp;supported,&nbsp;also&nbsp;marking&nbsp;workspaces&nbsp;as&lt;br&gt;<br>
+floating-by-default&nbsp;is&nbsp;not&nbsp;supported.&nbsp;i3&nbsp;is&nbsp;primarily&nbsp;a&nbsp;tiling&nbsp;window&lt;br&gt;<br>
+manager,&nbsp;floating&nbsp;windows&nbsp;are&nbsp;only&nbsp;for&nbsp;popup&nbsp;windows.&lt;br&gt;<br>
+&lt;span&nbsp;class=&quot;HOEnZb&quot;&gt;&lt;font&nbsp;color=&quot;#888888&quot;&gt;&lt;br&gt;<br>
+--&lt;br&gt;<br>
+Best&nbsp;regards,&lt;br&gt;<br>
+Michael&lt;br&gt;<br>
+&lt;/font&gt;&lt;/span&gt;&lt;/blockquote&gt;&lt;/div&gt;&lt;br&gt;&lt;br&nbsp;clear=&quot;all&quot;&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;--&nbsp;&lt;br&gt;Marcos&nbsp;Moyano&lt;br&gt;Co-Founder&nbsp;of&nbsp;Anue&lt;br&gt;Skype:&nbsp;marcosmoyano&lt;br&gt;&lt;a&nbsp;href=&quot;http://www.anue.biz/&quot;&nbsp;target=&quot;_blank&quot;&gt;http://www.anue.biz/&lt;/a&gt;&lt;br&gt;&lt;br&gt;<br>
+&lt;/div&gt;<br>
+
+</tt>

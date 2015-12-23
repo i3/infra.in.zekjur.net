@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] GLFW_FLOATING window
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20GLFW_FLOATING%20window&In-Reply-To=%3C0269a6eb-a0d7-421a-8603-6108df8522fe%40typeapp.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002156.html">
+   <LINK REL="Next"  HREF="002159.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] GLFW_FLOATING window</H1>
+    <B>Ingo Bürk</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20GLFW_FLOATING%20window&In-Reply-To=%3C0269a6eb-a0d7-421a-8603-6108df8522fe%40typeapp.com%3E"
+       TITLE="[i3] GLFW_FLOATING window">admin at airblader.de
+       </A><BR>
+    <I>Tue Aug 25 17:42:11 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002156.html">[i3] GLFW_FLOATING window
+</A></li>
+        <LI>Next message: <A HREF="002159.html">[i3] Killing of floating windows with mouse
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2152">[ date ]</a>
+              <a href="thread.html#2152">[ thread ]</a>
+              <a href="subject.html#2152">[ subject ]</a>
+              <a href="author.html#2152">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Kevin, 
+
+On the bottom of manage.c you also need to increase the number of atoms that i3 lists as supported. Also make sure you added the new atom not at the very end of atoms.xmacro as not all of them are copied into the supported list and GLFW seems to actually check for support. 
+
+If all of this is correct, it could only be that GLFW only sets the atom after the window is created. In this case you'd have to modify the handler. 
+
+Regards 
+Ingo 
+
+Sent from TypeMail
+
+
+
+On Aug 25, 2015, 17:22, at 17:22, Kevin J &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jkevin1 at umbc.edu</A>&gt; wrote:
+&gt;<i>Hi everyone,
+</I>&gt;<i>
+</I>&gt;<i>GLFW has a window creation flag to make a window FLOATING, it uses
+</I>&gt;<i>_NET_WM_STATE_ABOVE
+</I>&gt;<i>to do this in x11_window.c
+</I>&gt;<i>&lt;<A HREF="https://github.com/glfw/glfw/blob/b69b4a9f2a66159f670c5802d8105db211bfec3d/src/x11_window.c#L350-L357">https://github.com/glfw/glfw/blob/b69b4a9f2a66159f670c5802d8105db211bfec3d/src/x11_window.c#L350-L357</A>&gt;
+</I>&gt;<i>.
+</I>&gt;<i>
+</I>&gt;<i>I have tried adding to the if statement in manage.c
+</I>&gt;<i>&lt;<A HREF="https://github.com/i3/i3/blob/next/src/manage.c#L374-L384">https://github.com/i3/i3/blob/next/src/manage.c#L374-L384</A>&gt; and the
+</I>&gt;<i>corresponding xmacro to atoms.xmacro, but it still doesn't open as a
+</I>&gt;<i>floating window.  After adding this, GLFW's check in x11_init.c
+</I>&gt;<i>&lt;<A HREF="https://github.com/glfw/glfw/blob/afe4aadade132f088a1d88145baed0b384c8d4e0/src/x11_init.c#L438-L439">https://github.com/glfw/glfw/blob/afe4aadade132f088a1d88145baed0b384c8d4e0/src/x11_init.c#L438-L439</A>&gt;
+</I>&gt;<i>works,
+</I>&gt;<i>it didn't before, so it seems to be registered within i3 correctly, but
+</I>&gt;<i>the
+</I>&gt;<i>xcb_reply_contains_atom(state_reply, A__NET_WM_STATE_ABOVE) check still
+</I>&gt;<i>fails.  Any idea why this could be happening?
+</I>&gt;<i>
+</I>&gt;<i>Additionally, if I do get it working, would this be something worthy of
+</I>&gt;<i>submitting? or should GLFW be changed to use something other than the
+</I>&gt;<i>WM_STATE_ABOVE atom to make floating windows?  ...although none of the
+</I>&gt;<i>tests used by i3 seem to be the right fit.
+</I>&gt;<i>
+</I>&gt;<i>Thanks,
+</I>&gt;<i>Kevin
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150825/2b03e75a/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150825/2b03e75a/attachment.html</A>&gt;
+</PRE>
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002156.html">[i3] GLFW_FLOATING window
+</A></li>
+	<LI>Next message: <A HREF="002159.html">[i3] Killing of floating windows with mouse
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2152">[ date ]</a>
+              <a href="thread.html#2152">[ thread ]</a>
+              <a href="subject.html#2152">[ subject ]</a>
+              <a href="author.html#2152">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Questions regarding bindsym through ipc, tabbed layout,	etc.
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Questions%20regarding%20bindsym%20through%20ipc%2C%20tabbed%20layout%2C%0A%09etc.&In-Reply-To=%3CCAP8NtCz8fLY0ijb-JzfTTO1zeAD7vayNJHYi0smHmD8MK-UiEA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001687.html">
+   <LINK REL="Next"  HREF="001689.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Questions regarding bindsym through ipc, tabbed layout,	etc.</H1>
+    <B>Gerald Klein</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Questions%20regarding%20bindsym%20through%20ipc%2C%20tabbed%20layout%2C%0A%09etc.&In-Reply-To=%3CCAP8NtCz8fLY0ijb-JzfTTO1zeAD7vayNJHYi0smHmD8MK-UiEA%40mail.gmail.com%3E"
+       TITLE="[i3] Questions regarding bindsym through ipc, tabbed layout,	etc.">jk at zognet.com
+       </A><BR>
+    <I>Wed Apr 16 18:28:13 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001687.html">[i3] Questions regarding bindsym through ipc, tabbed layout, etc.
+</A></li>
+        <LI>Next message: <A HREF="001689.html">[i3] Questions regarding bindsym through ipc, tabbed layout,	etc.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1688">[ date ]</a>
+              <a href="thread.html#1688">[ thread ]</a>
+              <a href="subject.html#1688">[ subject ]</a>
+              <a href="author.html#1688">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I have found for some reason that certain key combos won't work but the
+same action will work with different keys, not to say this is ideal but
+only to make sure that the question were asking is the correct one. I am
+able to change layouts at will so that is why I mention it. I also use F1
+in my modes no problem. Here is my mark scenario.
+
+mode &quot;markIt&quot; {
+
+    bindsym m exec i3-input -F 'mark %s' -l 1 -P 'Mark: '
+    bindsym apostrophe exec i3-input -F '[con_mark=&quot;%s&quot;] focus' -l 1 -P 'Go
+to: '
+    bindsym Return mode &quot;default&quot;
+    bindsym Escape mode &quot;default&quot;
+    bindsym F3 mode &quot;default&quot;
+    bindsym $alt+apostrophe mode &quot;default&quot;
+
+}
+bindsym $alt+apostrophe mode &quot;markIt&quot;
+bindsym F3 mode &quot;markIt&quot;
+
+
+
+On Wed, Apr 16, 2014 at 11:18 AM, Thomas Sanchez &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">thomas.sanchz at gmail.com</A>&gt;wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i> First of all I wanted to say thank you for i3. I finally found a WM
+</I>&gt;<i> that answer all my needs :)
+</I>&gt;<i>
+</I>&gt;<i> However I have some questions:
+</I>&gt;<i>
+</I>&gt;<i> * Is there any rational for bindsym not being considered as any other
+</I>&gt;<i> command ?
+</I>&gt;<i> $&gt; i3-msg 'bindsym Mod4+i exec gvim'
+</I>&gt;<i> ERROR: Your command: bindsym Mod4+i exec gvim
+</I>&gt;<i> ERROR:               ^^^^^^^^^^^^^^^^^^^^^^^^
+</I>&gt;<i>
+</I>&gt;<i> I wrote a set of script ( <A HREF="https://github.com/daedric/i3scripts">https://github.com/daedric/i3scripts</A> ) to
+</I>&gt;<i> manage dynamic workspaces according to the project I'm working on.
+</I>&gt;<i> IMO it would make sense to be able to setup some specific binding.
+</I>&gt;<i> Thus, it would make also sense to be able to delete/replace a binding.
+</I>&gt;<i>
+</I>&gt;<i> I searched a bit, and I found nothing, so if it has already been asked
+</I>&gt;<i> I'm sorry.
+</I>&gt;<i>
+</I>&gt;<i> * Why when I have a splitted workspace with say chromium and a
+</I>&gt;<i> terminal, I can't set the layout to tabbed (or stacked) for the
+</I>&gt;<i> terminal but I can split it ?
+</I>&gt;<i>
+</I>&gt;<i> * Why this does not work (no error reported, but i3lock does not get
+</I>&gt;<i> executed, nothing in the logs):
+</I>&gt;<i> bindsym F1 exec i3lock
+</I>&gt;<i> or
+</I>&gt;<i> bindsym $mod+F1 exec i3lock
+</I>&gt;<i>
+</I>&gt;<i> I thought that maybe F1 is not the right symbol, but according to
+</I>&gt;<i> xmodmap -pke/xev it is
+</I>&gt;<i>
+</I>&gt;<i> * The following binding, does not show the i3-input on the focused output
+</I>&gt;<i> bindsym $mod+m exec i3-input -P &quot;Mark: &quot; -F &quot;mark %s&quot;
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i> --
+</I>&gt;<i> Thomas Sanchez
+</I>&gt;<i>
+</I>
+
+
+-- 
+
+Gerald Klein DBA
+
+<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">ContactMe at geraldklein.com</A>
+
+www.geraldklein.com &lt;<A HREF="http://geraldklein.com/">http://geraldklein.com/</A>&gt;
+
+geraldklein.wordpress.com
+
+<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">jk at zognet.com</A>
+
+708-599-0352
+
+
+Arch Awesome, Ranger &amp; Vim the coding triple threat.
+
+Linux registered user #548580
+
+Brought to you by the Amish Mafia
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140416/d6c3916d/attachment-0001.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140416/d6c3916d/attachment-0001.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001687.html">[i3] Questions regarding bindsym through ipc, tabbed layout, etc.
+</A></li>
+	<LI>Next message: <A HREF="001689.html">[i3] Questions regarding bindsym through ipc, tabbed layout,	etc.
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1688">[ date ]</a>
+              <a href="thread.html#1688">[ thread ]</a>
+              <a href="subject.html#1688">[ subject ]</a>
+              <a href="author.html#1688">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

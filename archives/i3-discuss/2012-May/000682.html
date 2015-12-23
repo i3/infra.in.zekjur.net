@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Problem with switching to named workspaces exclusive)
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Problem%20with%20switching%20to%20named%20workspaces%20exclusive%29&In-Reply-To=%3C20120516074625.0b1af786%40pc-cm-gru-virtlinux1%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000676.html">
+   <LINK REL="Next"  HREF="000679.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Problem with switching to named workspaces exclusive)</H1>
+    <B>i3.thegrue at spamgourmet.com</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Problem%20with%20switching%20to%20named%20workspaces%20exclusive%29&In-Reply-To=%3C20120516074625.0b1af786%40pc-cm-gru-virtlinux1%3E"
+       TITLE="[i3] Problem with switching to named workspaces exclusive)">i3.thegrue at spamgourmet.com
+       </A><BR>
+    <I>Wed May 16 07:46:25 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000676.html">[i3] Problem with switching to named workspaces
+</A></li>
+        <LI>Next message: <A HREF="000679.html">[i3] Problems rendering java applications
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#682">[ date ]</a>
+              <a href="thread.html#682">[ thread ]</a>
+              <a href="subject.html#682">[ subject ]</a>
+              <a href="author.html#682">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hello Tobias,
+
+&gt;<i> The only problem I have is that I can't switch to named workspaces
+</I>&gt;<i> that begin with a number, like described in the manual.
+</I>
+I remember that I had problems with this function, too. One very
+simple idea helped me very much and I think all problems were gone:
+use variables for the workspace name!
+
+    set $mod Mod4
+
+    set $wsp1 1: WWW
+    set $wsp2 2
+    set $wsp3 3: EMACS
+    set $wsp4 4
+    set $wsp5 5
+    set $wsp6 6
+    set $wsp7 7
+    set $wsp8 8: MAIL
+    set $wsp9 9: IM
+
+    bindsym $mod+1 workspace $wsp1
+    bindsym $mod+Shift+exclam      move workspace $wsp1
+    assign [class=&quot;Iceweasel&quot;] $wsp1
+
+This simplifies renaming and general handling of workspaces and you
+can be sure that you don't mess up your name with typos, whitespace
+and the like.
+
+BTW: I have to repeat that i3 is sooooo great :) Thanks to the developers!
+
+cu
+--
+Markus Grunwald                                 <A HREF="http://www.the-grue.de">http://www.the-grue.de</A>
+
+M&#228;nnerchor Markt Kirchseeon               Registered Linux User 101577
+Notenwart und Webmaster                          <A HREF="http://counter.li.org">http://counter.li.org</A>
+<A HREF="http://www.maennerchor-kirchseeon.de">http://www.maennerchor-kirchseeon.de</A>           pgp/gpg key ID 15CEDD0A
+
+     Fragen zur Mail? <A HREF="http://www.the-grue.de/mail_und_co/">http://www.the-grue.de/mail_und_co/</A>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 190 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120516/e2f4f91b/attachment.sig">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120516/e2f4f91b/attachment.sig</A>&gt;
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000676.html">[i3] Problem with switching to named workspaces
+</A></li>
+	<LI>Next message: <A HREF="000679.html">[i3] Problems rendering java applications
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#682">[ date ]</a>
+              <a href="thread.html#682">[ thread ]</a>
+              <a href="subject.html#682">[ subject ]</a>
+              <a href="author.html#682">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

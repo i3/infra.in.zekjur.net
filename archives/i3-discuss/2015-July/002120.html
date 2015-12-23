@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Binding adventures between mappings
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Binding%20adventures%20between%20mappings&In-Reply-To=%3C55950DBE.1000201%40airblader.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002119.html">
+   <LINK REL="Next"  HREF="002121.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Binding adventures between mappings</H1>
+    <B>Ingo Bürk</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Binding%20adventures%20between%20mappings&In-Reply-To=%3C55950DBE.1000201%40airblader.de%3E"
+       TITLE="[i3] Binding adventures between mappings">admin at airblader.de
+       </A><BR>
+    <I>Thu Jul  2 12:09:02 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002119.html">[i3] Binding adventures between mappings
+</A></li>
+        <LI>Next message: <A HREF="002121.html">[i3] Reloading i3wm and saving layout
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2120">[ date ]</a>
+              <a href="thread.html#2120">[ thread ]</a>
+              <a href="subject.html#2120">[ subject ]</a>
+              <a href="author.html#2120">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>These work for me. I suggest you open an issue on Github and include log
+files.
+Make sure to restart i3, then press the shortcuts and then take the log
+file, that way the file stays relatively small.
+
+
+Ingo
+
+On 07/02/2015 11:54 AM, Jeff Abrahamson wrote:
+&gt;<i> I said that wrong in the subject, let me try in more than one line:
+</I>&gt;<i>
+</I>&gt;<i> I have a somewhat modal idea of how to interact with a window manager, so
+</I>&gt;<i> my i3 config binds very little at global level, the rest is in modes.  One
+</I>&gt;<i> mode I call &quot;focus&quot;, because the items in that mode I might want to do
+</I>&gt;<i> without leaving the mode, mostly moving between windows.  In mode &quot;i3&quot;,
+</I>&gt;<i> most of the bindings end with a mode command, often back to &quot;default&quot;.
+</I>&gt;<i>
+</I>&gt;<i> I have this in my $HOME/i3/.config:
+</I>&gt;<i>
+</I>&gt;<i> set $mod Mod1
+</I>&gt;<i> bindsym $mod+Tab mode &quot;i3&quot;
+</I>&gt;<i>
+</I>&gt;<i> mode &quot;i3&quot; {
+</I>&gt;<i>     # Some things I might want to do.
+</I>&gt;<i>     # Includes a transition to focus mode.
+</I>&gt;<i>
+</I>&gt;<i>     # The mode is long, but here's an example:
+</I>&gt;<i>     bindsym c  exec urxvt; mode &quot;default&quot;
+</I>&gt;<i> }
+</I>&gt;<i>
+</I>&gt;<i> mode &quot;focus&quot; {
+</I>&gt;<i>     # A handful of actions that I want in a separate mode.
+</I>&gt;<i>
+</I>&gt;<i>     # And then there's a bunch of move/resize bindings, and then:
+</I>&gt;<i>
+</I>&gt;<i>     # If I forget where I am, do the right thing.
+</I>&gt;<i>     bindsym $mod+Tab mode &quot;i3&quot;
+</I>&gt;<i>
+</I>&gt;<i>     # Get me out of here.
+</I>&gt;<i>     bindsym Return     mode &quot;default&quot;
+</I>&gt;<i>     bindsym Escape     mode &quot;default&quot;
+</I>&gt;<i>     bindsym Control+g  mode &quot;default&quot;
+</I>&gt;<i> }
+</I>&gt;<i>
+</I>&gt;<i> This works great but for two bindings in &quot;focus&quot; mode:
+</I>&gt;<i>
+</I>&gt;<i> 1.  The $mod+Tab binding I would expect to drop me into &quot;i3&quot; mode, but it
+</I>&gt;<i> has no effect.
+</I>&gt;<i>
+</I>&gt;<i> 2.  The ESC and C-G bindings exit &quot;focus&quot; mode correctly, but RET has no
+</I>&gt;<i> effect.
+</I>&gt;<i>
+</I>&gt;<i> Any suggestions what I've done wrong?
+</I>&gt;<i>
+</I>&gt;<i> Jeff Abrahamson
+</I>&gt;<i> +33 6 24 40 01 57
+</I>&gt;<i> +44 7920 594 255    &lt;-- only if I'm in the UK
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://jeff.purple.com/">http://jeff.purple.com/</A>
+</I>&gt;<i> <A HREF="http://blog.purple.com/jeff/">http://blog.purple.com/jeff/</A>
+</I>&gt;<i>
+</I>
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002119.html">[i3] Binding adventures between mappings
+</A></li>
+	<LI>Next message: <A HREF="002121.html">[i3] Reloading i3wm and saving layout
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2120">[ date ]</a>
+              <a href="thread.html#2120">[ thread ]</a>
+              <a href="subject.html#2120">[ subject ]</a>
+              <a href="author.html#2120">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

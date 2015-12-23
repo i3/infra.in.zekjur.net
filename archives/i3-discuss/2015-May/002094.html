@@ -1,0 +1,193 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] gnome-settings-daemon not working
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20gnome-settings-daemon%20not%20working&In-Reply-To=%3CCACaqnaQJvUrN1iPaMkZYxt1-yk3rLZOtRj5acXCGvrbPwqooyQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002093.html">
+   
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] gnome-settings-daemon not working</H1>
+    <B>Eric Duncan</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20gnome-settings-daemon%20not%20working&In-Reply-To=%3CCACaqnaQJvUrN1iPaMkZYxt1-yk3rLZOtRj5acXCGvrbPwqooyQ%40mail.gmail.com%3E"
+       TITLE="[i3] gnome-settings-daemon not working">eduncan911 at gmail.com
+       </A><BR>
+    <I>Sun May 24 04:59:29 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002093.html">[i3] gnome-settings-daemon not working
+</A></li>
+        
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2094">[ date ]</a>
+              <a href="thread.html#2094">[ thread ]</a>
+              <a href="subject.html#2094">[ subject ]</a>
+              <a href="author.html#2094">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thanks.  This did it:
+
+exec_always --no-startup-id xset r rate 200 40
+
+Though I wonder why the gnome-settings-daemon is not setting it, like it
+always has for other distros (again, this is Arch).
+
+Btw, dconf is only a setting.  You don't need to execute it on every
+login.  Just run it in the shell once, and it sticks:
+
+$ dconf write /org/gnome/settings-daemon/plugins/cursor/active false
+
+And this led me down another path with Awesome, setting the OnlyShowIn to
+include i3:
+
+<A HREF="https://awesome.naquadah.org/wiki/Quickly_Setting_up_Awesome_with_Gnome">https://awesome.naquadah.org/wiki/Quickly_Setting_up_Awesome_with_Gnome</A>
+
+But that didn't seem to change anything.
+
+Last, I also changed my paths to use the 64bit versions of the daemons:
+
+# exec once in Arch Linux
+exec --no-startup-id /usr/bin/vmware-user-suid-wrapper
+exec --no-startup-id /usr/lib64/gnome-settings-daemon/gnome-settings-daemon
+&amp;
+exec --no-startup-id
+/usr/lib64/gnome-settings-daemon/gnome-settings-daemon-localeexec &amp;
+#exec --no-startup-id /usr/bin/gnome-keyring-daemon --start
+--components=pkcs11,secrets,ssh,gpg #
+/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
+
+Still didn't change anything...
+
+You'll note that I am not starting the gnome-keyring-daemon.  I am actually
+using the gnome-keyring-daemon, and I've completely disabled ssh-agent from
+managing my keys.  GDM starts the gnome-keyring-daemon for me on login,
+under my username.  I found this was different than all other distros.
+
+Maybe it's the latest versions of GDM and Gnome that is changing, as
+running under Arch you get the latest and greatest.
+
+Thanks!
+
+
+
+
+
+On Sat, May 23, 2015 at 8:18 PM, Martin Cigorraga &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">martincigorraga at gmail.com</A>
+&gt;<i> wrote:
+</I>
+&gt;<i> I forgot to mention this:
+</I>&gt;<i> exec --no-startup-id /usr/libexec/gnome-settings-daemon-localeexec
+</I>&gt;<i> exec --no-startup-id dconf write
+</I>&gt;<i> /org/gnome/settings-daemon/plugins/cursor/active false       # Fix a bug
+</I>&gt;<i> in gnome-settings-daemon:
+</I>&gt;<i> <A HREF="http://feeding.cloud.geek.nz/posts/creating-a-modern-tiling-desktop-environment-using-i3/">http://feeding.cloud.geek.nz/posts/creating-a-modern-tiling-desktop-environment-using-i3/</A>
+</I>&gt;<i>
+</I>&gt;<i> -M.
+</I>&gt;<i>
+</I>&gt;<i> On Sat, May 23, 2015 at 6:39 PM, Martin Cigorraga &lt;
+</I>&gt;<i> <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">martincigorraga at gmail.com</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Hey Eric,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> You could use xset until you figure out what's happening there:
+</I>&gt;&gt;<i> $ xset r rate 200 40
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> If you also want to specify a kbd layout:
+</I>&gt;&gt;<i> $ setxkbmap -rules evdev -model evdev -layout us -variant altgr-intl
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> HTH.
+</I>&gt;&gt;<i> -Martín
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Sat, May 23, 2015 at 5:31 PM, Eric Duncan &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">eduncan911 at gmail.com</A>&gt;
+</I>&gt;&gt;<i> wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> i3 version 4.10.2 (2015-04-16, branch &quot;4.10.2&quot;) © 2009-2014 Michael
+</I>&gt;&gt;&gt;<i> Stapelberg and contributors
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> I recently switched to Arch and I'm bringing over my i3 dot files, etc.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Got a problem... I can't see to get my Gnome 3.16 settings working in
+</I>&gt;&gt;&gt;<i> i3wm.  I haven't had a problem with my Debian (7 and Jessie Testing) and
+</I>&gt;&gt;&gt;<i> Ubuntu (14.04 and 14.10) installs in the past.  But I've installed Arch on
+</I>&gt;&gt;&gt;<i> two different machines, and on both I cannot get the gnome-settings-daemon
+</I>&gt;&gt;&gt;<i> (or at least that's what I think it is) to enable my Gnome settings.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Specifically, I can't get my Gnome setting for Keyboard short delay and
+</I>&gt;&gt;&gt;<i> faster repeat enabled.  I have not tried any other settings.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> If it matters, I am running within VMware Workstation and Fusion.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> My config looks like:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> exec --no-startup-id /usr/bin/vmware-user-suid-wrapper
+</I>&gt;&gt;&gt;<i> #exec --no-startup-id
+</I>&gt;&gt;&gt;<i> /usr/lib/gnome-settings-daemon/gnome-settings-daemon
+</I>&gt;&gt;&gt;<i> #exec --no-startup-id /usr/bin/gnome-keyring-daemon --start
+</I>&gt;&gt;&gt;<i> --components=pkcs11,secrets,ssh,gpg #
+</I>&gt;&gt;&gt;<i> /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1
+</I>&gt;&gt;&gt;<i> #exec --no-startup-id dropbox start
+</I>&gt;&gt;&gt;<i> exec --no-startup-id compton -Cb --config ~/.i3/compton.conf # -CGb
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> So when logged in, I see:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> $ ps aux | grep gnome-settings
+</I>&gt;&gt;&gt;<i> gdm         897  0.0  0.3 820888 29796 tty1     Sl+  16:24   0:00
+</I>&gt;&gt;&gt;<i> /usr/lib/gnome-settings-daemon/gnome-settings-daemon
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> If I uncomment the gnome-settings-daemon one, it starts under my
+</I>&gt;&gt;&gt;<i> username and loads a few other gnome services:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> $ ps aux | grep gnome-settings
+</I>&gt;&gt;&gt;<i> gdm         897  0.0  0.3 820888 29796 tty1     Sl+  16:24   0:00
+</I>&gt;&gt;&gt;<i> /usr/lib/gnome-settings-daemon/gnome-settings-daemon
+</I>&gt;&gt;&gt;<i> eric       1049  0.0  0.6 915224 51304 ?        Sl   16:24   0:00
+</I>&gt;&gt;&gt;<i> /usr/lib/gnome-settings-daemon/gnome-settings-daemon
+</I>&gt;&gt;&gt;<i> eric       1112  0.0  0.2 283984 18924 ?        Sl   16:24   0:00
+</I>&gt;&gt;&gt;<i> /usr/lib/gnome-settings-daemon/gsd-locate-pointer
+</I>&gt;&gt;&gt;<i> eric       1114  0.0  0.1 433304 11408 ?        Sl   16:24   0:00
+</I>&gt;&gt;&gt;<i> /usr/lib/gnome-settings-daemon/gsd-printer
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Sounds good, except no keyboard settings have taken effect.
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Thoughts?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Thanks!
+</I>&gt;&gt;&gt;<i> Eric
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150523/53628134/attachment-0001.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150523/53628134/attachment-0001.html</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002093.html">[i3] gnome-settings-daemon not working
+</A></li>
+	
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2094">[ date ]</a>
+              <a href="thread.html#2094">[ thread ]</a>
+              <a href="subject.html#2094">[ subject ]</a>
+              <a href="author.html#2094">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

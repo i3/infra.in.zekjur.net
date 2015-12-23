@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3lock hooks
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3lock%20hooks&In-Reply-To=%3CCAMoU6ubWu8UU56fxejXVg5He5nja%3DtqgGOS5F%3DJT1t5714uyrg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001252.html">
+   <LINK REL="Next"  HREF="001254.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3lock hooks</H1>
+    <B>Bas Pape</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3lock%20hooks&In-Reply-To=%3CCAMoU6ubWu8UU56fxejXVg5He5nja%3DtqgGOS5F%3DJT1t5714uyrg%40mail.gmail.com%3E"
+       TITLE="[i3] i3lock hooks">baspape at gmail.com
+       </A><BR>
+    <I>Mon Apr  8 07:15:12 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001252.html">[i3] i3lock hooks
+</A></li>
+        <LI>Next message: <A HREF="001254.html">[i3] i3lock hooks
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1253">[ date ]</a>
+              <a href="thread.html#1253">[ thread ]</a>
+              <a href="subject.html#1253">[ subject ]</a>
+              <a href="author.html#1253">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>2013/4/8 BRAGA, Bruno &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">bruno.braga at gmail.com</A>&gt;:
+&gt;<i> Would you have a wrapper example for that?
+</I>If you so desire I could write one later today.
+
+&gt;<i> If I understood right, the idea would be to wrap i3 with another
+</I>&gt;<i> application, running:
+</I>&gt;<i> - execute pre-lock commands
+</I>&gt;<i> - fork i3lock
+</I>&gt;<i> - get pid
+</I>&gt;<i> - waitpid until it is finished
+</I>&gt;<i> - execute post-lock commands
+</I>&gt;<i>
+</I>&gt;<i> is that it? Looks good to me!
+</I>Yep, that's it. Just now i noticed/realized that there is no waitpid
+binary/shell command and waitpid only works for children; so you
+probably would be better of backgrounding i3lock in the shell
+(combined with i3lock's -n), rather than letting i3lock fork; then you
+can just `wait %1`
+
+--
+Tucos
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001252.html">[i3] i3lock hooks
+</A></li>
+	<LI>Next message: <A HREF="001254.html">[i3] i3lock hooks
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1253">[ date ]</a>
+              <a href="thread.html#1253">[ thread ]</a>
+              <a href="subject.html#1253">[ subject ]</a>
+              <a href="author.html#1253">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

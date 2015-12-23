@@ -1,0 +1,41 @@
+From dbcc1a07acc86b249f0ac343413ceddbd20af91b Mon Sep 17 00:00:00 2001
+From: Marius Muja <mariusm@cs.ubc.ca>
+Date: Sat, 29 Dec 2012 04:36:05 -0800
+Subject: [PATCH 7/8] Workaround for resize to work while krunner is started.
+
+---
+ src/floating.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/src/floating.c b/src/floating.c
+index 4dd44f5..6d5ebe3 100644
+--- a/src/floating.c
++++ b/src/floating.c
+@@ -592,6 +592,7 @@ void drag_pointer(Con *con, const xcb_button_press_event_t *event, xcb_window_t
+ 
+     xcb_generic_event_t *inside_event, *last_motion_notify = NULL;
+     bool loop_done = false;
++    xcb_unmap_notify_event_t *unmap_event;
+     /* I’ve always wanted to have my own eventhandler… */
+     while (!loop_done && (inside_event = xcb_wait_for_event(conn))) {
+         /* We now handle all events we can get using xcb_poll_for_event */
+@@ -616,9 +617,15 @@ void drag_pointer(Con *con, const xcb_button_press_event_t *event, xcb_window_t
+                     break;
+ 
+                 case XCB_UNMAP_NOTIFY:
++                    handle_event(type, inside_event);
++                    unmap_event = (xcb_unmap_notify_event_t*) inside_event;
++                    if (unmap_event->window!=unmap_event->event) {
++                        DLOG("Unmap-notify, aborting\n");
++                        loop_done = true;
++                    }
++                    break;
+                 case XCB_KEY_PRESS:
+                 case XCB_KEY_RELEASE:
+-                    DLOG("Unmap-notify, aborting\n");
+                     handle_event(type, inside_event);
+                     loop_done = true;
+                     break;
+-- 
+1.7.10.4
+

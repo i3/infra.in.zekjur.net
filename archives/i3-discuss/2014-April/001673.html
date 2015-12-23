@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] monitor dependent workspaces
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20monitor%20dependent%20workspaces&In-Reply-To=%3CCAPUwkJKLSzEyOXew-NFftq5rsShJ08VQWWK32k9OQhiy7CTY6w%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001672.html">
+   <LINK REL="Next"  HREF="001675.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] monitor dependent workspaces</H1>
+    <B>Brian Grossman</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20monitor%20dependent%20workspaces&In-Reply-To=%3CCAPUwkJKLSzEyOXew-NFftq5rsShJ08VQWWK32k9OQhiy7CTY6w%40mail.gmail.com%3E"
+       TITLE="[i3] monitor dependent workspaces">brian.grossman+i3-discuss at gmail.com
+       </A><BR>
+    <I>Sat Apr 12 00:20:58 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001672.html">[i3] monitor dependent workspaces
+</A></li>
+        <LI>Next message: <A HREF="001675.html">[i3] monitor dependent workspaces
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1673">[ date ]</a>
+              <a href="thread.html#1673">[ thread ]</a>
+              <a href="subject.html#1673">[ subject ]</a>
+              <a href="author.html#1673">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Sorry, I didn't read your message well.  I've no idea how to make mod+1
+switch to workspace 1 or 11 depending on which monitor you're on.
+
+For completeness, but not answering your question, here's what I use for
+workspaces 1 and 11:
+
+set $mod Mod4
+bindsym $mod+1 workspace number 1
+bindsym $mod+Control+1 workspace number 11
+
+
+Brian
+
+
+On Fri, Apr 11, 2014 at 3:59 PM, Eric Roseman &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">Eric.Roseman at colorado.edu</A>&gt;wrote:
+
+&gt;<i> Thanks for the input. I tried this and I'm not sure how to switch to
+</I>&gt;<i> workspaces 11-20. What I'm trying to do is have workspace 1-10 per
+</I>&gt;<i> monitor, and a mod+2 or mod+3 would focus the #2 or #3 workspace of the
+</I>&gt;<i> current monitor.
+</I>&gt;<i>
+</I>&gt;<i> Thanks,
+</I>&gt;<i> Eric
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> &gt; I use something like this:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     set $dpyLeft DP1
+</I>&gt;<i> &gt;     set $dpyRight eDP1
+</I>&gt;<i> &gt;     set $mymod Control+Mod1
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     bindsym $mymod+Right focus right
+</I>&gt;<i> &gt;     bindsym $mymod+Left focus left
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     workspace 1 output $dpyLeft
+</I>&gt;<i> &gt;     workspace 2 output $dpyLeft
+</I>&gt;<i> &gt;     #      ...
+</I>&gt;<i> &gt;     workspace 10 output $dpyLeft
+</I>&gt;<i> &gt;     #
+</I>&gt;<i> &gt;     workspace 11 output $dpyRight
+</I>&gt;<i> &gt;     workspace 12 output $dpyRight
+</I>&gt;<i> &gt;     #      ...
+</I>&gt;<i> &gt;     workspace 20 output $dpyRight
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Brian
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; On Fri, Apr 11, 2014 at 2:05 PM, Eric Roseman &lt;[1]
+</I>&gt;<i> <A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">Eric.Roseman at colorado.edu</A>&gt; wrote:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     In a multi monitor setup, is it possible to configure the workspaces
+</I>&gt;<i> to
+</I>&gt;<i> &gt;     be dependent of the monitor? For instance, say there are two or three
+</I>&gt;<i> &gt;     monitors, is it configurable to have ten workspaces per monitor such
+</I>&gt;<i> &gt;     that movement between the monitors can be done with a $mod+left or
+</I>&gt;<i> right,
+</I>&gt;<i> &gt;     and $mod+{0-9} would switch to the workspace of the focused monitor?
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;     Thanks,
+</I>&gt;<i> &gt;     Eric
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; References:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; [1] mailto:<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">Eric.Roseman at colorado.edu</A>
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140411/d7ac4c14/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140411/d7ac4c14/attachment.html</A>&gt;
+</PRE>
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001672.html">[i3] monitor dependent workspaces
+</A></li>
+	<LI>Next message: <A HREF="001675.html">[i3] monitor dependent workspaces
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1673">[ date ]</a>
+              <a href="thread.html#1673">[ thread ]</a>
+              <a href="subject.html#1673">[ subject ]</a>
+              <a href="author.html#1673">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

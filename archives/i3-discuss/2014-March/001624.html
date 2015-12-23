@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [i3status] Update interval alignment glitch
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5Bi3status%5D%20Update%20interval%20alignment%20glitch&In-Reply-To=%3C531EE8F5.40008%40hunsicker.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001634.html">
+   <LINK REL="Next"  HREF="001625.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [i3status] Update interval alignment glitch</H1>
+    <B>Marco Hunsicker</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5Bi3status%5D%20Update%20interval%20alignment%20glitch&In-Reply-To=%3C531EE8F5.40008%40hunsicker.de%3E"
+       TITLE="[i3] [i3status] Update interval alignment glitch">i3 at hunsicker.de
+       </A><BR>
+    <I>Tue Mar 11 11:44:05 CET 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001634.html">[i3] KP_Return does not work
+</A></li>
+        <LI>Next message: <A HREF="001625.html">[i3] [i3status] Update interval alignment glitch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1624">[ date ]</a>
+              <a href="thread.html#1624">[ thread ]</a>
+              <a href="subject.html#1624">[ subject ]</a>
+              <a href="author.html#1624">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Howdy,
+
+i3status uses the following code to determine how much time it should 
+wait until the output is generated again:
+
+/* To provide updates on every full second (as good as possible)
+  * we don&#8217;t use sleep(interval) but we sleep until the next
+  * second (with microsecond precision) plus (interval-1)
+  * seconds. We also align to 60 seconds modulo interval such
+  * that we start with :00 on every new minute. */
+struct timeval current_timeval;
+gettimeofday(&amp;current_timeval, NULL);
+struct timespec ts = {interval - 1 - current_timeval.tv_sec % interval,
+      (10e5 - current_timeval.tv_usec) * 1000};
+
+
+This works fine if nanosleep() is not interrupted. But when interrupted 
+(to force an update by sending the USR1 signal), the alignment most 
+often means that the next invocation does not happen after 'interval' 
+seconds, but earlier (I'm using a 5 sec interval time)!
+
+Would it not be more important to enforce that updates happen (roughly) 
+every 'interval' seconds? Is it really that important to update at the 
+start of a new minute anyway?
+
+I would propose that the code is at least changed that the alignment 
+only happens once per minute in order to maximize correctness towards 
+the interval time instead of the minute alignment.
+
+Does that sound reasonable? Thanks.
+
+Cheers,
+   Marco
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001634.html">[i3] KP_Return does not work
+</A></li>
+	<LI>Next message: <A HREF="001625.html">[i3] [i3status] Update interval alignment glitch
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1624">[ date ]</a>
+              <a href="thread.html#1624">[ thread ]</a>
+              <a href="subject.html#1624">[ subject ]</a>
+              <a href="author.html#1624">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

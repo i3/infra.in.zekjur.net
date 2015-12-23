@@ -1,0 +1,759 @@
+From kubito at gmail.com  Sat Jan 22 18:51:11 2011
+From: kubito at gmail.com (Raphael Kubo da Costa)
+Date: Sat, 22 Jan 2011 15:51:11 -0200
+Subject: [i3] [PATCH] Build fix: Include xcb/xcb.h before cfgparse.tab.h.
+Message-ID: <1295718671-8539-1-git-send-email-kubito@gmail.com>
+
+cfgparse.tab.h uses uint32_t, which is defined in stdint.h, included
+by xcb/xcb.h.
+
+If the current include order is used, uint32_t is used before it is
+defined, which causes compilation to break.
+
+Should fix the build of 3.?-bf2 on FreeBSD.
+
+Signed-off-by: Raphael Kubo da Costa <kubito at gmail.com>
+---
+ src/cfgparse.l |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/src/cfgparse.l b/src/cfgparse.l
+index 0c0cee7..b5b1982 100644
+--- a/src/cfgparse.l
++++ b/src/cfgparse.l
+@@ -10,8 +10,8 @@
+  */
+ #include <stdio.h>
+ #include <string.h>
+-#include "cfgparse.tab.h"
+ #include <xcb/xcb.h>
++#include "cfgparse.tab.h"
+ 
+ #include "data.h"
+ #include "config.h"
+-- 
+1.7.3.5
+
+
+
+From kubito at gmail.com  Sat Jan 22 19:03:29 2011
+From: kubito at gmail.com (Raphael Kubo da Costa)
+Date: Sat, 22 Jan 2011 16:03:29 -0200
+Subject: [i3] [PATCH] Build fix: Explicitly include stdint.h before
+	cfgparse.tab.h
+In-Reply-To: <1295718671-8539-1-git-send-email-kubito@gmail.com>
+References: <1295718671-8539-1-git-send-email-kubito@gmail.com>
+Message-ID: <1295719409-9505-1-git-send-email-kubito@gmail.com>
+
+cfgparse.tab.h uses uint32_t, which is defined in stdint.h.
+
+Should fix the build of 3.?-bf2 on FreeBSD.
+
+Signed-off-by: Raphael Kubo da Costa <kubito at gmail.com>
+---
+ src/cfgparse.l |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/src/cfgparse.l b/src/cfgparse.l
+index 0c0cee7..2d31913 100644
+--- a/src/cfgparse.l
++++ b/src/cfgparse.l
+@@ -10,6 +10,7 @@
+  */
+ #include <stdio.h>
+ #include <string.h>
++#include <stdint.h> /* Defines uint32_t, required by cfgparse.tab.h */
+ #include "cfgparse.tab.h"
+ #include <xcb/xcb.h>
+ 
+-- 
+1.7.3.5
+
+
+
+From michael+i3 at stapelberg.de  Sat Jan 22 22:50:05 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 22 Jan 2011 22:50:05 +0100
+Subject: [i3] Testmail
+In-Reply-To: <1295732294-sup-8622@merovius.de>
+References: <1295732294-sup-8622@merovius.de>
+Message-ID: <1295732983-sup-9173@midna.zekjur.net>
+
+Hi,
+
+Excerpts from Axel Wagner's message of 2011-01-22 22:38:52 +0100:
+> This is a testmail. Hope it makes sECuRE wheep of joy ^^
+Thanks! I?m nearly done with testing now.
+
+Best regards,
+Michael
+
+
+From dwyatt at rim.com  Tue Jan 25 18:14:21 2011
+From: dwyatt at rim.com (Derek Wyatt)
+Date: Tue, 25 Jan 2011 12:14:21 -0500
+Subject: [i3] Nested key bindings?
+In-Reply-To: <1295974553-sup-392@midna.zekjur.net>
+References: <912AF00192B7E9489DA0B24692F65B3B2FD53A29@XCH108CNC.rim.net>
+	<1295974553-sup-392@midna.zekjur.net>
+Message-ID: <912AF00192B7E9489DA0B24692F65B3B2FD53A2A@XCH108CNC.rim.net>
+
+Thanks guys,
+
+Yeah, I saw that, and it looked like it might work, but what made me see if there was something better was this:
+
+mode "resize" {
+   ...
+   bind 36 mode default
+}
+
+Which you've confirmed below... you're kinda "stuck" there until you explicitly get out, as opposed to just executing the command and being done after it executes.  However, this looks like it'll do alright.
+
+Thanks a lot,
+Derek
+
+P.S. Would there be any plan to add this in the future?  I may hack at it, but it would be at work, and I'd have to fly it by legal :)
+
+-----Original Message-----
+From: i3-discuss-bounces at i3.zekjur.net [mailto:i3-discuss-bounces at i3.zekjur.net] On Behalf Of Michael Stapelberg
+Sent: Tuesday, January 25, 2011 11:59 AM
+To: i3-discuss
+Subject: Re: [i3] Nested key bindings?
+
+Hi Derek,
+
+Excerpts from Derek Wyatt's message of 2011-01-25 17:51:01 +0100:
+> This gives me more of that "vim feeling" where I can do things like: 'map ,of
+> :call ...', so I'm not holding down Shift+Mod1+Contro+k or whatever... Does
+> anyone know if this is possible or if there's some other feature that can
+> mimic this, or even do better?
+This is possible using modes, see for example [1] or take the following (untested) example:
+
+  mode "leader" {
+    bindsym t exec /usr/bin/urxvt
+    bindsym b exec /usr/bin/firefox
+    bindsym Enter mode default
+  }
+  
+  bindsym Mod1+a mode leader
+
+Please note that there is no concept of a timeout (so when pressing Mod1+a and
+then pressing nothing, you are still stuck in the leader mode and need to press
+Enter to get out of it). Also, there is no visual indication about modes at the
+moment.
+
+Best regards,
+Michael
+
+[1] http://i3.zekjur.net/docs/userguide.html#resizingconfig
+
+---------------------------------------------------------------------
+This transmission (including any attachments) may contain confidential information, privileged material (including material protected by the solicitor-client or other applicable privileges), or constitute non-public information. Any use of this information by anyone other than the intended recipient is prohibited. If you have received this transmission in error, please immediately reply to the sender and delete this information from your system. Use, dissemination, distribution, or reproduction of this transmission by unintended recipients is not authorized and may be unlawful.
+
+From edelkind+i3-discuss at gmail.com  Tue Jan 25 18:23:32 2011
+From: edelkind+i3-discuss at gmail.com (ari edelkind)
+Date: Tue, 25 Jan 2011 12:23:32 -0500
+Subject: [i3] Nested key bindings?
+In-Reply-To: <1295974553-sup-392@midna.zekjur.net>
+References: <912AF00192B7E9489DA0B24692F65B3B2FD53A29@XCH108CNC.rim.net>
+	<1295974553-sup-392@midna.zekjur.net>
+Message-ID: <AANLkTikgM6Y2hPWW4i6fE5z7qC3iw4b5tXbpJkfrjQz0@mail.gmail.com>
+
+> This is possible using modes
+
+Modes are hackish for this sort of thing (leader -> key -> enter).
+
+This is why i wrote xgsk: https://github.com/edelkind/xgsk
+
+It's a more generic option, and requires that, if you want to execute
+window manager actions, you communicate back with your window manager
+using IPC or EWMH (see `wmctrl`).  i3 doesn't currently support either
+of these _very well_, and the latter is barely supported at all.  But
+maybe it'll work for you.
+
+ari
+
+From michael+i3 at stapelberg.de  Tue Jan 25 18:28:50 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Tue, 25 Jan 2011 18:28:50 +0100
+Subject: [i3] Nested key bindings?
+In-Reply-To: <912AF00192B7E9489DA0B24692F65B3B2FD53A2A@XCH108CNC.rim.net>
+References: <912AF00192B7E9489DA0B24692F65B3B2FD53A29@XCH108CNC.rim.net>
+	<1295974553-sup-392@midna.zekjur.net>
+	<912AF00192B7E9489DA0B24692F65B3B2FD53A2A@XCH108CNC.rim.net>
+Message-ID: <1295976484-sup-5875@midna.zekjur.net>
+
+Hi Derek,
+
+Excerpts from Derek Wyatt's message of 2011-01-25 18:14:21 +0100:
+> P.S. Would there be any plan to add this in the future?  I may hack at it,
+> but it would be at work, and I'd have to fly it by legal :)
+Directly after writing the mail I added the feature to my "would be nice" list.
+Top priority at the moment is getting the tree branch in shape, afterwards we
+can think about this kind of stuff :).
+
+Best regards,
+Michael
+
+From michael+i3 at stapelberg.de  Tue Jan 25 18:36:57 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Tue, 25 Jan 2011 18:36:57 +0100
+Subject: [i3] Nested key bindings?
+In-Reply-To: <AANLkTikgM6Y2hPWW4i6fE5z7qC3iw4b5tXbpJkfrjQz0@mail.gmail.com>
+References: <912AF00192B7E9489DA0B24692F65B3B2FD53A29@XCH108CNC.rim.net>
+	<1295974553-sup-392@midna.zekjur.net>
+	<AANLkTikgM6Y2hPWW4i6fE5z7qC3iw4b5tXbpJkfrjQz0@mail.gmail.com>
+Message-ID: <1295976974-sup-8750@midna.zekjur.net>
+
+Hi ari,
+
+Excerpts from ari edelkind's message of 2011-01-25 18:23:32 +0100:
+> It's a more generic option, and requires that, if you want to execute
+> window manager actions, you communicate back with your window manager
+> using IPC or EWMH (see `wmctrl`).  i3 doesn't currently support either
+> of these _very well_, and the latter is barely supported at all.  But
+> maybe it'll work for you.
+The best way to communicate back with i3 is to use its IPC interface, which
+should cover all your needs with regard to keybindings. See i3-msg(1) for a
+readily-available tool to use the IPC interface.
+
+Best regards,
+Michael
+
+From dwyatt at rim.com  Tue Jan 25 18:52:05 2011
+From: dwyatt at rim.com (Derek Wyatt)
+Date: Tue, 25 Jan 2011 12:52:05 -0500
+Subject: [i3] Nested key bindings?
+In-Reply-To: <1295976974-sup-8750@midna.zekjur.net>
+References: <912AF00192B7E9489DA0B24692F65B3B2FD53A29@XCH108CNC.rim.net>
+	<1295974553-sup-392@midna.zekjur.net>
+	<AANLkTikgM6Y2hPWW4i6fE5z7qC3iw4b5tXbpJkfrjQz0@mail.gmail.com>
+	<1295976974-sup-8750@midna.zekjur.net>
+Message-ID: <912AF00192B7E9489DA0B24692F65B3B2FD53A2C@XCH108CNC.rim.net>
+
+Ok, thx.  So if I'm reading this right, I'd do the following:
+
+	bindsym Control+k myscript
+
+Where 'myscript' looks something like:
+
+	val=$(xgsk -r -t 500)
+	case $val in
+		k)
+			i3-msg k
+			;;
+	fi
+	return 0
+	
+Or is there a better way to go?
+
+The 'mode' binding is causing me problems... I can't seem to get the mode back to default.  If I can make this work, I'll be a happy dood.
+
+Thx,
+Derek
+
+-----Original Message-----
+From: i3-discuss-bounces at i3.zekjur.net [mailto:i3-discuss-bounces at i3.zekjur.net] On Behalf Of Michael Stapelberg
+Sent: Tuesday, January 25, 2011 12:37 PM
+To: i3-discuss
+Subject: Re: [i3] Nested key bindings?
+
+Hi ari,
+
+Excerpts from ari edelkind's message of 2011-01-25 18:23:32 +0100:
+> It's a more generic option, and requires that, if you want to execute
+> window manager actions, you communicate back with your window manager
+> using IPC or EWMH (see `wmctrl`).  i3 doesn't currently support either
+> of these _very well_, and the latter is barely supported at all.  But
+> maybe it'll work for you.
+The best way to communicate back with i3 is to use its IPC interface, which
+should cover all your needs with regard to keybindings. See i3-msg(1) for a
+readily-available tool to use the IPC interface.
+
+Best regards,
+Michael
+
+---------------------------------------------------------------------
+This transmission (including any attachments) may contain confidential information, privileged material (including material protected by the solicitor-client or other applicable privileges), or constitute non-public information. Any use of this information by anyone other than the intended recipient is prohibited. If you have received this transmission in error, please immediately reply to the sender and delete this information from your system. Use, dissemination, distribution, or reproduction of this transmission by unintended recipients is not authorized and may be unlawful.
+
+From edelkind+i3-discuss at gmail.com  Tue Jan 25 19:00:16 2011
+From: edelkind+i3-discuss at gmail.com (ari edelkind)
+Date: Tue, 25 Jan 2011 13:00:16 -0500
+Subject: [i3] Nested key bindings?
+In-Reply-To: <912AF00192B7E9489DA0B24692F65B3B2FD53A2C@XCH108CNC.rim.net>
+References: <912AF00192B7E9489DA0B24692F65B3B2FD53A29@XCH108CNC.rim.net>
+	<1295974553-sup-392@midna.zekjur.net>
+	<AANLkTikgM6Y2hPWW4i6fE5z7qC3iw4b5tXbpJkfrjQz0@mail.gmail.com>
+	<1295976974-sup-8750@midna.zekjur.net>
+	<912AF00192B7E9489DA0B24692F65B3B2FD53A2C@XCH108CNC.rim.net>
+Message-ID: <AANLkTi=Fgqs+aTQxxFhqzLsuKCpb_M+9wsL8JSD6d0_F@mail.gmail.com>
+
+> Ok, thx. ?So if I'm reading this right, I'd do the following:
+>
+> ? ? ? ?bindsym Control+k myscript
+>
+> Where 'myscript' looks something like:
+>
+> ? ? ? ?val=$(xgsk -r -t 500)
+> ? ? ? ?case $val in
+> ? ? ? ? ? ? ? ?k)
+> ? ? ? ? ? ? ? ? ? ? ? ?i3-msg k
+> ? ? ? ? ? ? ? ? ? ? ? ?;;
+> ? ? ? ?fi
+> ? ? ? ?return 0
+
+That's the idea.
+
+ari
+
+From edelkind+i3-discuss at gmail.com  Tue Jan 25 20:00:58 2011
+From: edelkind+i3-discuss at gmail.com (ari edelkind)
+Date: Tue, 25 Jan 2011 14:00:58 -0500
+Subject: [i3] Nested key bindings?
+In-Reply-To: <912AF00192B7E9489DA0B24692F65B3B2FD53A2C@XCH108CNC.rim.net>
+References: <912AF00192B7E9489DA0B24692F65B3B2FD53A29@XCH108CNC.rim.net>
+	<1295974553-sup-392@midna.zekjur.net>
+	<AANLkTikgM6Y2hPWW4i6fE5z7qC3iw4b5tXbpJkfrjQz0@mail.gmail.com>
+	<1295976974-sup-8750@midna.zekjur.net>
+	<912AF00192B7E9489DA0B24692F65B3B2FD53A2C@XCH108CNC.rim.net>
+Message-ID: <AANLkTikt_=iFfwS_aiQXmOdNb9Cg2qK1=wbkMhgSXvGK@mail.gmail.com>
+
+> The 'mode' binding is causing me problems... I can't seem to get the mode back to default. ?If I can make this work, I'll be a happy dood.
+
+I'm not currently running i3, but you could try something like the
+following, using only i3's native commands:
+
+mode "wsmode" {
+    bind 10 exec sh -c "i3-msg 1; i3-msg 'mode default'"
+    bind 11 exec sh -c "i3-msg 2; i3-msg 'mode default'"
+    bind 12 exec sh -c "i3-msg 3; i3-msg 'mode default'"
+    bind 36 mode default
+}
+
+bindsym Mod4+w mode wsmode
+
+I seem to remember i3 having problems with executing an IPC-triggered
+mode switch, but that was a while ago, and it's possible that the
+issue has since been rectified (or that i'm simply smoking crack, and
+my memory is faulty).  Either way, with this method, you won't get a
+timeout unless you're pretty creative, and you won't get a
+default-mode-switch-on-unknown-key-press without a lot of superfluous
+key bindings.  Still, if you try it, let us know if it functions as
+expected.
+
+ari
+
+From dwyatt at rim.com  Tue Jan 25 21:30:18 2011
+From: dwyatt at rim.com (Derek Wyatt)
+Date: Tue, 25 Jan 2011 15:30:18 -0500
+Subject: [i3] Nested key bindings?
+In-Reply-To: <AANLkTikt_=iFfwS_aiQXmOdNb9Cg2qK1=wbkMhgSXvGK@mail.gmail.com>
+References: <912AF00192B7E9489DA0B24692F65B3B2FD53A29@XCH108CNC.rim.net>
+	<1295974553-sup-392@midna.zekjur.net>
+	<AANLkTikgM6Y2hPWW4i6fE5z7qC3iw4b5tXbpJkfrjQz0@mail.gmail.com>
+	<1295976974-sup-8750@midna.zekjur.net>
+	<912AF00192B7E9489DA0B24692F65B3B2FD53A2C@XCH108CNC.rim.net>
+	<AANLkTikt_=iFfwS_aiQXmOdNb9Cg2qK1=wbkMhgSXvGK@mail.gmail.com>
+Message-ID: <912AF00192B7E9489DA0B24692F65B3B2FD53A30@XCH108CNC.rim.net>
+
+This appears to be the silver bullet!
+
+Thanks Ari,
+Derek
+
+-----Original Message-----
+From: i3-discuss-bounces at i3.zekjur.net [mailto:i3-discuss-bounces at i3.zekjur.net] On Behalf Of ari edelkind
+Sent: Tuesday, January 25, 2011 2:01 PM
+To: i3-discuss at i3.zekjur.net
+Subject: Re: [i3] Nested key bindings?
+
+> The 'mode' binding is causing me problems... I can't seem to get the mode back to default. ?If I can make this work, I'll be a happy dood.
+
+I'm not currently running i3, but you could try something like the
+following, using only i3's native commands:
+
+mode "wsmode" {
+    bind 10 exec sh -c "i3-msg 1; i3-msg 'mode default'"
+    bind 11 exec sh -c "i3-msg 2; i3-msg 'mode default'"
+    bind 12 exec sh -c "i3-msg 3; i3-msg 'mode default'"
+    bind 36 mode default
+}
+
+bindsym Mod4+w mode wsmode
+
+I seem to remember i3 having problems with executing an IPC-triggered
+mode switch, but that was a while ago, and it's possible that the
+issue has since been rectified (or that i'm simply smoking crack, and
+my memory is faulty).  Either way, with this method, you won't get a
+timeout unless you're pretty creative, and you won't get a
+default-mode-switch-on-unknown-key-press without a lot of superfluous
+key bindings.  Still, if you try it, let us know if it functions as
+expected.
+
+ari
+
+---------------------------------------------------------------------
+This transmission (including any attachments) may contain confidential information, privileged material (including material protected by the solicitor-client or other applicable privileges), or constitute non-public information. Any use of this information by anyone other than the intended recipient is prohibited. If you have received this transmission in error, please immediately reply to the sender and delete this information from your system. Use, dissemination, distribution, or reproduction of this transmission by unintended recipients is not authorized and may be unlawful.
+
+From nathan.middleton at gmail.com  Tue Jan 25 22:06:41 2011
+From: nathan.middleton at gmail.com (Nathan Middleton)
+Date: Tue, 25 Jan 2011 14:06:41 -0700
+Subject: [i3] Nested key bindings?
+In-Reply-To: <912AF00192B7E9489DA0B24692F65B3B2FD53A30@XCH108CNC.rim.net>
+References: <912AF00192B7E9489DA0B24692F65B3B2FD53A29@XCH108CNC.rim.net>
+	<1295974553-sup-392@midna.zekjur.net>
+	<AANLkTikgM6Y2hPWW4i6fE5z7qC3iw4b5tXbpJkfrjQz0@mail.gmail.com>
+	<1295976974-sup-8750@midna.zekjur.net>
+	<912AF00192B7E9489DA0B24692F65B3B2FD53A2C@XCH108CNC.rim.net>
+	<AANLkTikt_=iFfwS_aiQXmOdNb9Cg2qK1=wbkMhgSXvGK@mail.gmail.com>
+	<912AF00192B7E9489DA0B24692F65B3B2FD53A30@XCH108CNC.rim.net>
+Message-ID: <20110125140641.6ba42568@gmail.com>
+
+Hi,
+
+Having read the past emails on this it intrigued me.
+Maybe a 'simple' solution would be for the mode line to
+simply indicate if it was "sticky" or not. A sticky
+mode wouldn't exit, whereas a non-sticky mode would by
+default leave after the command was executed.
+
+So:
+
+mode "resize" stick { ...
+	# needed to exit mode
+	bind 36 mode default 
+}
+
+mode "skimpy" {
+	...
+	# no mode sym since each command automagically exits the mode
+}
+
+Maybe I'll download Tree and find that code. My C unfortunately is as
+good as my Perl. Caveat emptor!
+
+On Tue, 25 Jan 2011 15:30:18 -0500
+Derek Wyatt <dwyatt at rim.com> wrote:
+
+> This appears to be the silver bullet!
+> 
+> Thanks Ari,
+> Derek
+> 
+> -----Original Message-----
+> From: i3-discuss-bounces at i3.zekjur.net
+> [mailto:i3-discuss-bounces at i3.zekjur.net] On Behalf Of ari edelkind
+> Sent: Tuesday, January 25, 2011 2:01 PM To: i3-discuss at i3.zekjur.net
+> Subject: Re: [i3] Nested key bindings?
+> 
+> > The 'mode' binding is causing me problems... I can't seem to get
+> > the mode back to default. ?If I can make this work, I'll be a happy
+> > dood.
+> 
+> I'm not currently running i3, but you could try something like the
+> following, using only i3's native commands:
+> 
+> mode "wsmode" {
+>     bind 10 exec sh -c "i3-msg 1; i3-msg 'mode default'"
+>     bind 11 exec sh -c "i3-msg 2; i3-msg 'mode default'"
+>     bind 12 exec sh -c "i3-msg 3; i3-msg 'mode default'"
+>     bind 36 mode default
+> }
+> 
+> bindsym Mod4+w mode wsmode
+> 
+> I seem to remember i3 having problems with executing an IPC-triggered
+> mode switch, but that was a while ago, and it's possible that the
+> issue has since been rectified (or that i'm simply smoking crack, and
+> my memory is faulty).  Either way, with this method, you won't get a
+> timeout unless you're pretty creative, and you won't get a
+> default-mode-switch-on-unknown-key-press without a lot of superfluous
+> key bindings.  Still, if you try it, let us know if it functions as
+> expected.
+> 
+> ari
+> 
+> ---------------------------------------------------------------------
+> This transmission (including any attachments) may contain
+> confidential information, privileged material (including material
+> protected by the solicitor-client or other applicable privileges), or
+> constitute non-public information. Any use of this information by
+> anyone other than the intended recipient is prohibited. If you have
+> received this transmission in error, please immediately reply to the
+> sender and delete this information from your system. Use,
+> dissemination, distribution, or reproduction of this transmission by
+> unintended recipients is not authorized and may be unlawful.
+
+
+
+-- 
+Nathan Middleton
+nathan\dot\middleton/at/gmail\dot\com
+
+From mail at merovius.de  Tue Jan 25 23:24:58 2011
+From: mail at merovius.de (Axel Wagner)
+Date: Tue, 25 Jan 2011 23:24:58 +0100
+Subject: [i3] Nested key bindings?
+In-Reply-To: <20110125140641.6ba42568@gmail.com>
+References: <912AF00192B7E9489DA0B24692F65B3B2FD53A29@XCH108CNC.rim.net>
+	<1295974553-sup-392@midna.zekjur.net>
+	<AANLkTikgM6Y2hPWW4i6fE5z7qC3iw4b5tXbpJkfrjQz0@mail.gmail.com>
+	<1295976974-sup-8750@midna.zekjur.net>
+	<912AF00192B7E9489DA0B24692F65B3B2FD53A2C@XCH108CNC.rim.net>
+	<AANLkTikt_=iFfwS_aiQXmOdNb9Cg2qK1=wbkMhgSXvGK@mail.gmail.com>
+	<912AF00192B7E9489DA0B24692F65B3B2FD53A30@XCH108CNC.rim.net>
+	<20110125140641.6ba42568@gmail.com>
+Message-ID: <1295993883-sup-4235@merovius.de>
+
+Hi,
+
+if I'm not totally mistaken, the new command-parser of -tree was
+supposed to support command-chaining, I remember explicitly talking
+about that to sECuRE. So with command-chaining you could do something
+like the ?bind Mod1+34 exec 'i3-msg "h"; i3-msg "mode default"'?-stuff
+with i3-internals.
+Iirc the mode-stuff was one of the reasons I suggested command-chaining
+as a vital part of any new command-syntax in the first place.
+
+So though sECuRE noted it as ?nice to have? my answer would have
+actually been ?planned for -tree? ;)
+
+Greetings,
+
+Merovius
+
+From honza801 at gmail.com  Fri Jan 28 10:35:22 2011
+From: honza801 at gmail.com (Jan Krcmar)
+Date: Fri, 28 Jan 2011 10:35:22 +0100
+Subject: [i3] egde snapping for floating windows
+Message-ID: <AANLkTikqYCFPK2Y7ic3Aw+UP6j=6rbeLDtd_T1za2aY8@mail.gmail.com>
+
+hi,
+
+is there any option to turn on edge snapping of floating windows?
+i got used to it on fluxbox/wmii/gnome/kde
+
+thanks f.
+
+From michael+i3 at stapelberg.de  Fri Jan 28 11:10:33 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Fri, 28 Jan 2011 11:10:33 +0100
+Subject: [i3] egde snapping for floating windows
+In-Reply-To: <AANLkTikqYCFPK2Y7ic3Aw+UP6j=6rbeLDtd_T1za2aY8@mail.gmail.com>
+References: <AANLkTikqYCFPK2Y7ic3Aw+UP6j=6rbeLDtd_T1za2aY8@mail.gmail.com>
+Message-ID: <1296209361-sup-851@midna.zekjur.net>
+
+Hi Jan,
+
+Excerpts from Jan Krcmar's message of 2011-01-28 10:35:22 +0100:
+> is there any option to turn on edge snapping of floating windows?
+> i got used to it on fluxbox/wmii/gnome/kde
+No, unfortunately not. Keep in mind that i3 is primarily a tiling window
+manager, not a floating one :). You could submit a feature request (but it
+doesn?t have high priority right now) or a patch (if you decide for the patch,
+please use the tree branch).
+
+Best regards,
+Michael
+
+From mail at merovius.de  Sat Jan 22 22:39:54 2011
+From: mail at merovius.de (Axel Wagner)
+Date: Sat, 22 Jan 2011 21:39:54 -0000
+Subject: [i3] Testmail
+Message-ID: <1295732294-sup-8622@merovius.de>
+
+This is a testmail. Hope it makes sECuRE wheep of joy ^^
+
+From michael+i3 at stapelberg.de  Sat Jan 22 22:50:06 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 22 Jan 2011 21:50:06 -0000
+Subject: [i3] Testmail
+In-Reply-To: <1295732294-sup-8622@merovius.de>
+References: <1295732294-sup-8622@merovius.de>
+Message-ID: <1295732983-sup-9173@midna.zekjur.net>
+
+Hi,
+
+Excerpts from Axel Wagner's message of 2011-01-22 22:38:52 +0100:
+> This is a testmail. Hope it makes sECuRE wheep of joy ^^
+Thanks! I?m nearly done with testing now.
+
+Best regards,
+Michael
+
+From honza801 at gmail.com  Tue Jan 25 13:51:18 2011
+From: honza801 at gmail.com (Jan Krcmar)
+Date: Tue, 25 Jan 2011 12:51:18 -0000
+Subject: [i3] how to get window names
+Message-ID: <AANLkTim+WjdrL72Z3c0UXcyO=AzqcsFiDiC-DJ4_VgJA@mail.gmail.com>
+
+hi,
+
+i am trying to get names of all windows handled by the wm.
+is it even possible?
+
+usually (in other wms) the 'wmctrl -l' commands meets my needs.
+
+thanks
+fous
+
+From michael+i3 at stapelberg.de  Tue Jan 25 14:09:50 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Tue, 25 Jan 2011 13:09:50 -0000
+Subject: [i3] how to get window names
+In-Reply-To: <AANLkTim+WjdrL72Z3c0UXcyO=AzqcsFiDiC-DJ4_VgJA@mail.gmail.com>
+References: <AANLkTim+WjdrL72Z3c0UXcyO=AzqcsFiDiC-DJ4_VgJA@mail.gmail.com>
+Message-ID: <1295960864-sup-9576@midna.zekjur.net>
+
+Hi Jan,
+
+Excerpts from Jan Krcmar's message of 2011-01-25 13:51:17 +0100:
+> i am trying to get names of all windows handled by the wm.
+> is it even possible?
+A window manager handles all windows except for those with override_redirect =
+1. You can get a list of all windows/their IDs using 'xwininfo -root -children'
+on the commandline. To find out if a window has the override_redirect flag,
+use:
+
+$ xwininfo -id 0x121286b|grep 'Override Redirect'
+  Override Redirect State: yes
+
+Of course, doing this in a program rather than on shell is most likely more
+performant. Probably there are also other solutions. i3 itself won?t help you
+much on this one, though (there?s no IPC function to do this).
+
+Best regards,
+Michael
+
+From honza801 at gmail.com  Tue Jan 25 15:38:42 2011
+From: honza801 at gmail.com (Jan Krcmar)
+Date: Tue, 25 Jan 2011 14:38:42 -0000
+Subject: [i3] how to get window names
+In-Reply-To: <1295960864-sup-9576@midna.zekjur.net>
+References: <AANLkTim+WjdrL72Z3c0UXcyO=AzqcsFiDiC-DJ4_VgJA@mail.gmail.com>
+	<1295960864-sup-9576@midna.zekjur.net>
+Message-ID: <AANLkTikcjHoGkqgY2g5Kxp4bpxcH+Ls2PE9mAqY0dhBn@mail.gmail.com>
+
+thanks for help
+
+i wanted to display current song from audacious. this helped me,
+attaching command, that tells me the information
+
+xwininfo -root -tree  | grep Audacious2 | perl -ne 'print $1 if
+m/"(\d+[^"]*)"/;'
+
+fous
+
+2011/1/25 Michael Stapelberg <michael+i3 at stapelberg.de>:
+> Hi Jan,
+>
+> Excerpts from Jan Krcmar's message of 2011-01-25 13:51:17 +0100:
+>> i am trying to get names of all windows handled by the wm.
+>> is it even possible?
+> A window manager handles all windows except for those with override_redirect =
+> 1. You can get a list of all windows/their IDs using 'xwininfo -root -children'
+> on the commandline. To find out if a window has the override_redirect flag,
+> use:
+>
+> $ xwininfo -id 0x121286b|grep 'Override Redirect'
+> ?Override Redirect State: yes
+>
+> Of course, doing this in a program rather than on shell is most likely more
+> performant. Probably there are also other solutions. i3 itself won?t help you
+> much on this one, though (there?s no IPC function to do this).
+>
+> Best regards,
+> Michael
+>
+
+From dwyatt at rim.com  Tue Jan 25 17:51:04 2011
+From: dwyatt at rim.com (Derek Wyatt)
+Date: Tue, 25 Jan 2011 16:51:04 -0000
+Subject: [i3] Nested key bindings?
+Message-ID: <912AF00192B7E9489DA0B24692F65B3B2FD53A29@XCH108CNC.rim.net>
+
+Hi,
+
+I'm taking a stab at getting i3 configured on Ubuntu 10.10, coming from using ion many years ago.  One of the great features I liked about ion was the nested key bindings you could have, something like:
+
+bindsym Control+k {
+            bindsym k wck
+            bindsym j wcj
+            ...
+}
+
+This gives me more of that "vim feeling" where I can do things like: 'map ,of :call ...', so I'm not holding down Shift+Mod1+Contro+k or whatever... Does anyone know if this is possible or if there's some other feature that can mimic this, or even do better?
+
+Thanks a lot,
+Derek
+
+---------------------------------------------------------------------
+This transmission (including any attachments) may contain confidential information, privileged material (including material protected by the solicitor-client or other applicable privileges), or constitute non-public information. Any use of this information by anyone other than the intended recipient is prohibited. If you have received this transmission in error, please immediately reply to the sender and delete this information from your system. Use, dissemination, distribution, or reproduction of this transmission by unintended recipients is not authorized and may be unlawful.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20110125/61a9db48/attachment-0001.html>
+
+From fernandotcl at gmail.com  Tue Jan 25 17:55:45 2011
+From: fernandotcl at gmail.com (Fernando Lemos)
+Date: Tue, 25 Jan 2011 16:55:45 -0000
+Subject: [i3] Nested key bindings?
+In-Reply-To: <912AF00192B7E9489DA0B24692F65B3B2FD53A29@XCH108CNC.rim.net>
+References: <912AF00192B7E9489DA0B24692F65B3B2FD53A29@XCH108CNC.rim.net>
+Message-ID: <AANLkTikOyTb=jgk4w1pJF0FUtGGE-sM=uWLE5yG0iX49@mail.gmail.com>
+
+Hi, Derek
+
+On Tue, Jan 25, 2011 at 2:51 PM, Derek Wyatt <dwyatt at rim.com> wrote:
+[...]
+> bindsym Control+k {
+>
+> ??????????? bindsym k wck
+>
+> ??????????? bindsym j wcj
+>
+> ??????????? ?
+>
+> }
+
+Have you seen this?
+
+http://i3.zekjur.net/docs/userguide.html#resizingconfig
+
+
+Regards,
+
+From michael+i3 at stapelberg.de  Tue Jan 25 17:59:03 2011
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Tue, 25 Jan 2011 16:59:03 -0000
+Subject: [i3] Nested key bindings?
+In-Reply-To: <912AF00192B7E9489DA0B24692F65B3B2FD53A29@XCH108CNC.rim.net>
+References: <912AF00192B7E9489DA0B24692F65B3B2FD53A29@XCH108CNC.rim.net>
+Message-ID: <1295974553-sup-392@midna.zekjur.net>
+
+Hi Derek,
+
+Excerpts from Derek Wyatt's message of 2011-01-25 17:51:01 +0100:
+> This gives me more of that "vim feeling" where I can do things like: 'map ,of
+> :call ...', so I'm not holding down Shift+Mod1+Contro+k or whatever... Does
+> anyone know if this is possible or if there's some other feature that can
+> mimic this, or even do better?
+This is possible using modes, see for example [1] or take the following (untested) example:
+
+  mode "leader" {
+    bindsym t exec /usr/bin/urxvt
+    bindsym b exec /usr/bin/firefox
+    bindsym Enter mode default
+  }
+  
+  bindsym Mod1+a mode leader
+
+Please note that there is no concept of a timeout (so when pressing Mod1+a and
+then pressing nothing, you are still stuck in the leader mode and need to press
+Enter to get out of it). Also, there is no visual indication about modes at the
+moment.
+
+Best regards,
+Michael
+
+[1] http://i3.zekjur.net/docs/userguide.html#resizingconfig
+

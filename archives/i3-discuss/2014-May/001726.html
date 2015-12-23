@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Google hangouts extension
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Google%20hangouts%20extension&In-Reply-To=%3CCANOdGiyeAL5Gs5nH%3Dxnm%3DVGMYLsX%2BSujZpbiJ_bjZ7PV4%2BGqug%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001725.html">
+   <LINK REL="Next"  HREF="001727.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Google hangouts extension</H1>
+    <B>Anders Aagaard</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Google%20hangouts%20extension&In-Reply-To=%3CCANOdGiyeAL5Gs5nH%3Dxnm%3DVGMYLsX%2BSujZpbiJ_bjZ7PV4%2BGqug%40mail.gmail.com%3E"
+       TITLE="[i3] Google hangouts extension">aagaande at gmail.com
+       </A><BR>
+    <I>Sun May 25 20:58:11 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001725.html">[i3] Google hangouts extension
+</A></li>
+        <LI>Next message: <A HREF="001727.html">[i3] Google hangouts extension
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1726">[ date ]</a>
+              <a href="thread.html#1726">[ thread ]</a>
+              <a href="subject.html#1726">[ subject ]</a>
+              <a href="author.html#1726">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Very nice, I've looked over the documentation several times without
+noticing there was a ipc interface.
+
+I'l definitely check out that out. Do you think it would be worth it
+to add a IPC event for a denied focus request? I can have a go at
+making a pull request for it if you'd be interested, but it might be a
+bit of a corner case..
+
+On Sun, May 25, 2014 at 6:38 PM, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt; wrote:
+&gt;<i> Hi Anders,
+</I>&gt;<i>
+</I>&gt;<i> Anders Aagaard &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">aagaande at gmail.com</A>&gt; writes:
+</I>&gt;&gt;<i> Question 1:
+</I>&gt;&gt;<i> I regularly use multiple different screens (with different
+</I>&gt;&gt;<i> resolutions), I'd love to use for_window to lock the hangouts window
+</I>&gt;&gt;<i> to the lower right corner of my screen, but I can't really do this by
+</I>&gt;&gt;<i> px, as the resolutions will constantly change. Can I specify move
+</I>&gt;&gt;<i> position up 20px, left 20px, with the lower right corner as gravity
+</I>&gt;&gt;<i> somehow?
+</I>&gt;<i> Nope. You'll need a custom script for that using the IPC interface, see
+</I>&gt;<i> <A HREF="http://build.i3wm.org/docs/ipc.html">http://build.i3wm.org/docs/ipc.html</A>
+</I>&gt;<i>
+</I>&gt;&gt;<i> Question 2:
+</I>&gt;&gt;<i> Often when clicking on the extension (or a person in the chat) I'll
+</I>&gt;&gt;<i> have a window open with that content on another workspace. In those
+</I>&gt;&gt;<i> cases chrome will request that window gets focus, but since it's on
+</I>&gt;&gt;<i> another workspace I won't see that. Is there any option to either
+</I>&gt;&gt;<i> switch me to the workspace/move the window to the current workspace
+</I>&gt;&gt;<i> when a window requests focus? (.. and I do realize this option could
+</I>&gt;&gt;<i> be absolutely horrid if some random window has bad behavior and
+</I>&gt;&gt;<i> requests focus constantly.. :/ )
+</I>&gt;<i> We intentionally disallow these kinds of focus requests for exactly the
+</I>&gt;<i> reason you cite in your last sentence. src/handlers.c:728 is the place
+</I>&gt;<i> in the code if you want to patch it yourself and see what happens in
+</I>&gt;<i> your setup.
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Michael
+</I>
+
+
+-- 
+Weeks of coding can save you hours of planning.
+- <A HREF="http://www.codebox.no">http://www.codebox.no</A>
+- <A HREF="http://code.google.com/p/aagaande/">http://code.google.com/p/aagaande/</A>
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001725.html">[i3] Google hangouts extension
+</A></li>
+	<LI>Next message: <A HREF="001727.html">[i3] Google hangouts extension
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1726">[ date ]</a>
+              <a href="thread.html#1726">[ thread ]</a>
+              <a href="subject.html#1726">[ subject ]</a>
+              <a href="author.html#1726">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

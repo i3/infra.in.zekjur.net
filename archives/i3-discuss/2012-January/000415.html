@@ -1,0 +1,216 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] Transparency support
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Transparency%20support&In-Reply-To=%3CCANVYNa_utbh3Umvxpqd%2BbjwUv7h67JRhUik%3DxLHphdNusMr0yg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000413.html">
+   <LINK REL="Next"  HREF="000416.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] Transparency support</H1>
+    <B>Fernando Lemos</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Transparency%20support&In-Reply-To=%3CCANVYNa_utbh3Umvxpqd%2BbjwUv7h67JRhUik%3DxLHphdNusMr0yg%40mail.gmail.com%3E"
+       TITLE="[i3] [PATCH] Transparency support">fernandotcl at gmail.com
+       </A><BR>
+    <I>Sat Jan 14 22:14:04 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000413.html">[i3] [PATCH] Transparency support
+</A></li>
+        <LI>Next message: <A HREF="000416.html">[i3] [PATCH] Transparency support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#415">[ date ]</a>
+              <a href="thread.html#415">[ thread ]</a>
+              <a href="subject.html#415">[ subject ]</a>
+              <a href="author.html#415">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Sat, Jan 14, 2012 at 10:38 AM, DR &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">drdarkraven at gmail.com</A>&gt; wrote:
+&gt;<i> This patch is in a very early stage. It may break something, or I may have
+</I>&gt;<i> done this in a way differ from what you would expect. So please review and
+</I>&gt;<i> give me some response.
+</I>&gt;<i>
+</I>&gt;<i> This patch is largely copied from the awesome window manager, which acquire
+</I>&gt;<i> a argb visual at startup, and use this visual for every xcb_create_window().
+</I>
+That sounds good. I don't have enough X experience, but a few things stand out:
+
+&gt;<i> +static xcb_visualtype_t *
+</I>&gt;<i> +a_argb_visual(xcb_screen_t *s)
+</I>&gt;<i> +{
+</I>&gt;<i> + &#160; &#160;xcb_depth_iterator_t depth_iter =
+</I>&gt;<i> xcb_screen_allowed_depths_iterator(s);
+</I>&gt;<i> +
+</I>&gt;<i> + &#160; &#160;if(depth_iter.data)
+</I>&gt;<i> + &#160; &#160; &#160; &#160;for(; depth_iter.rem; xcb_depth_next (&amp;depth_iter))
+</I>&gt;<i> + &#160; &#160; &#160; &#160; &#160; &#160;if(depth_iter.data-&gt;depth == 32)
+</I>&gt;<i> + &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;for(xcb_visualtype_iterator_t visual_iter =
+</I>&gt;<i> xcb_depth_visuals_iterator(depth_iter.data);
+</I>&gt;<i> + &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;visual_iter.rem; xcb_visualtype_next (&amp;visual_iter))
+</I>&gt;<i> + &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;return visual_iter.data;
+</I>&gt;<i> +
+</I>&gt;<i> + &#160; &#160;return NULL;
+</I>&gt;<i> +}
+</I>&gt;<i> +
+</I>&gt;<i> +static uint8_t
+</I>&gt;<i> +a_visual_depth(xcb_screen_t *s, xcb_visualid_t vis)
+</I>&gt;<i> +{
+</I>&gt;<i> + &#160; &#160;xcb_depth_iterator_t depth_iter =
+</I>&gt;<i> xcb_screen_allowed_depths_iterator(s);
+</I>&gt;<i> +
+</I>&gt;<i> + &#160; &#160;if(depth_iter.data)
+</I>&gt;<i> + &#160; &#160; &#160; &#160;for(; depth_iter.rem; xcb_depth_next (&amp;depth_iter))
+</I>&gt;<i> + &#160; &#160; &#160; &#160; &#160; &#160;for(xcb_visualtype_iterator_t visual_iter =
+</I>&gt;<i> xcb_depth_visuals_iterator(depth_iter.data);
+</I>&gt;<i> + &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;visual_iter.rem; xcb_visualtype_next (&amp;visual_iter))
+</I>&gt;<i> + &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;if(vis == visual_iter.data-&gt;visual_id)
+</I>&gt;<i> + &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;return depth_iter.data-&gt;depth;
+</I>&gt;<i> + &#160; &#160;return 24;
+</I>&gt;<i> +}
+</I>
+You might want to adapt the code to the i3 style. Take a look at other
+functions, conditionals and for loops. Also, those function names
+might not be ideal.
+
+&gt;<i> + &#160; &#160;/* Acquire a argb visual */
+</I>&gt;<i> + &#160; &#160;default_visual = a_argb_visual(root_screen);
+</I>&gt;<i> + &#160; &#160;default_depth = a_visual_depth(root_screen, default_visual-&gt;visual_id);
+</I>&gt;<i> + &#160; &#160;/* Acquire corresponding colormap */
+</I>&gt;<i> + &#160; &#160;default_colormap = root_screen-&gt;default_colormap;
+</I>&gt;<i> + &#160; &#160;if(default_depth != root_depth){
+</I>&gt;<i> + &#160; &#160; &#160; &#160;default_colormap = xcb_generate_id(conn);
+</I>&gt;<i> + &#160; &#160; &#160; &#160;xcb_create_colormap(conn, XCB_COLORMAP_ALLOC_NONE,
+</I>&gt;<i> + &#160; &#160; &#160; &#160; &#160; &#160;default_colormap, root,
+</I>&gt;<i> + &#160; &#160; &#160; &#160; &#160; &#160;default_visual-&gt;visual_id);
+</I>&gt;<i> + &#160; &#160;}
+</I>
+If we can't find an ARGB visual, i3 will segfault. Is an ARGB visual
+always going to be present? If yes, then please use asserts to
+indicate that. Otherwise handle the cases where we can't find an ARGB
+visual.
+
+I'd also prefer if you renamed default_* to argb_*, since I plan to
+introduce vars like root_visual_type for Pango support, and that can
+be confusing.
+
+&gt;<i> diff --git a/src/x.c b/src/x.c
+</I>&gt;<i> index e8bfaeb..281e961 100644
+</I>&gt;<i> --- a/src/x.c
+</I>&gt;<i> +++ b/src/x.c
+</I>&gt;<i> @@ -90,15 +90,24 @@ void x_con_init(Con *con) {
+</I>&gt;<i> &#160; &#160; &#160; * get the initial geometry right */
+</I>&gt;<i>
+</I>&gt;<i> &#160; &#160; &#160;uint32_t mask = 0;
+</I>&gt;<i> - &#160; &#160;uint32_t values[2];
+</I>&gt;<i> + &#160; &#160;uint32_t values[5];
+</I>&gt;<i> +
+</I>&gt;<i> + &#160; &#160;mask |= XCB_CW_BACK_PIXEL;
+</I>&gt;<i> + &#160; &#160;values[0] = root_screen-&gt;black_pixel;
+</I>&gt;<i> +
+</I>&gt;<i> + &#160; &#160;mask |= XCB_CW_BORDER_PIXEL;
+</I>&gt;<i> + &#160; &#160;values[1] = root_screen-&gt;black_pixel;
+</I>&gt;<i>
+</I>&gt;<i> &#160; &#160; &#160;/* our own frames should not be managed */
+</I>&gt;<i> &#160; &#160; &#160;mask |= XCB_CW_OVERRIDE_REDIRECT;
+</I>&gt;<i> - &#160; &#160;values[0] = 1;
+</I>&gt;<i> + &#160; &#160;values[2] = 1;
+</I>&gt;<i>
+</I>&gt;<i> &#160; &#160; &#160;/* see include/xcb.h for the FRAME_EVENT_MASK */
+</I>&gt;<i> &#160; &#160; &#160;mask |= XCB_CW_EVENT_MASK;
+</I>&gt;<i> - &#160; &#160;values[1] = FRAME_EVENT_MASK &amp; ~XCB_EVENT_MASK_ENTER_WINDOW;
+</I>&gt;<i> + &#160; &#160;values[3] = FRAME_EVENT_MASK &amp; ~XCB_EVENT_MASK_ENTER_WINDOW;
+</I>&gt;<i> +
+</I>&gt;<i> + &#160; &#160;mask |= XCB_CW_COLORMAP;
+</I>&gt;<i> + &#160; &#160;values[4] = default_colormap;
+</I>&gt;<i>
+</I>&gt;<i> &#160; &#160; &#160;Rect dims = { -15, -15, 10, 10 };
+</I>&gt;<i> &#160; &#160; &#160;con-&gt;frame = create_window(conn, dims, XCB_WINDOW_CLASS_INPUT_OUTPUT,
+</I>&gt;<i> XCURSOR_CURSOR_POINTER, false, mask, values);
+</I>&gt;<i> @@ -586,7 +595,7 @@ void x_push_node(Con *con) {
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;xcb_free_pixmap(conn, con-&gt;pixmap);
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160; &#160;xcb_free_gc(conn, con-&gt;pm_gc);
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160;}
+</I>&gt;<i> - &#160; &#160; &#160; &#160; &#160; &#160;xcb_create_pixmap(conn, root_depth, con-&gt;pixmap, con-&gt;frame,
+</I>&gt;<i> rect.width, rect.height);
+</I>&gt;<i> + &#160; &#160; &#160; &#160; &#160; &#160;xcb_create_pixmap(conn, default_depth, con-&gt;pixmap, con-&gt;frame,
+</I>&gt;<i> rect.width, rect.height);
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160;/* For the graphics context, we disable GraphicsExposure
+</I>&gt;<i> events.
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; * Those will be sent when a CopyArea request cannot be
+</I>&gt;<i> fulfilled
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160; * properly due to parts of the source being unmapped or
+</I>&gt;<i> otherwise
+</I>&gt;<i> diff --git a/src/xcb.c b/src/xcb.c
+</I>&gt;<i> index aa761ca..eb7c61e 100644
+</I>&gt;<i> --- a/src/xcb.c
+</I>&gt;<i> +++ b/src/xcb.c
+</I>&gt;<i> @@ -21,7 +21,8 @@ xcb_window_t create_window(xcb_connection_t *conn, Rect
+</I>&gt;<i> dims, uint16_t window_cl
+</I>&gt;<i> &#160; &#160; &#160;xcb_window_t result = xcb_generate_id(conn);
+</I>&gt;<i>
+</I>&gt;<i> &#160; &#160; &#160;/* If the window class is XCB_WINDOW_CLASS_INPUT_ONLY, depth has to be
+</I>&gt;<i> 0 */
+</I>&gt;<i> - &#160; &#160;uint16_t depth = (window_class == XCB_WINDOW_CLASS_INPUT_ONLY ? 0 :
+</I>&gt;<i> XCB_COPY_FROM_PARENT);
+</I>&gt;<i> + &#160; &#160;uint16_t depth = (window_class == XCB_WINDOW_CLASS_INPUT_ONLY ? 0 :
+</I>&gt;<i> default_depth);
+</I>&gt;<i> + &#160; &#160;xcb_visualid_t visual_id= (window_class == XCB_WINDOW_CLASS_INPUT_ONLY
+</I>&gt;<i> ? XCB_WINDOW_CLASS_COPY_FROM_PARENT : default_visual-&gt;visual_id);
+</I>&gt;<i>
+</I>&gt;<i> &#160; &#160; &#160;xcb_create_window(conn,
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160;depth,
+</I>&gt;<i> @@ -30,7 +31,8 @@ xcb_window_t create_window(xcb_connection_t *conn, Rect
+</I>&gt;<i> dims, uint16_t window_cl
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160;dims.x, dims.y, dims.width, dims.height, /* dimensions */
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160;0, /* border = 0, we draw our own */
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160;window_class,
+</I>&gt;<i> - &#160; &#160; &#160; &#160; &#160; &#160;XCB_WINDOW_CLASS_COPY_FROM_PARENT, /* copy visual from parent
+</I>&gt;<i> */
+</I>&gt;<i> + &#160; &#160; &#160; &#160; &#160; &#160;visual_id,
+</I>&gt;<i> + &#160; &#160; &#160; &#160; &#160; &#160;//XCB_WINDOW_CLASS_COPY_FROM_PARENT, /* copy visual from parent
+</I>&gt;<i> */
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160;mask,
+</I>&gt;<i> &#160; &#160; &#160; &#160; &#160; &#160; &#160;values);
+</I>
+All this also needs handling for cases where we can't find an ARGB visual, no?
+
+Also, don't comment out stuff, just remove it, we have history in the VCS.
+
+Regards,
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000413.html">[i3] [PATCH] Transparency support
+</A></li>
+	<LI>Next message: <A HREF="000416.html">[i3] [PATCH] Transparency support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#415">[ date ]</a>
+              <a href="thread.html#415">[ thread ]</a>
+              <a href="subject.html#415">[ subject ]</a>
+              <a href="author.html#415">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

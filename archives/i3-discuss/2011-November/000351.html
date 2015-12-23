@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Preventing OSD notification from stealing focus
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Preventing%20OSD%20notification%20from%20stealing%20focus&In-Reply-To=%3CCAD%2BeWSUkLkuNx%3DLmiNjfxUsqwexiqGtkKQ289Hk8urABpQtc8Q%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000348.html">
+   <LINK REL="Next"  HREF="000349.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Preventing OSD notification from stealing focus</H1>
+    <B>CheerXiao</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Preventing%20OSD%20notification%20from%20stealing%20focus&In-Reply-To=%3CCAD%2BeWSUkLkuNx%3DLmiNjfxUsqwexiqGtkKQ289Hk8urABpQtc8Q%40mail.gmail.com%3E"
+       TITLE="[i3] Preventing OSD notification from stealing focus">xiaqqaix at gmail.com
+       </A><BR>
+    <I>Sat Nov 26 19:11:11 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000348.html">[i3] Preventing OSD notification from stealing focus
+</A></li>
+        <LI>Next message: <A HREF="000349.html">[i3] Preventing OSD notification from stealing focus
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#351">[ date ]</a>
+              <a href="thread.html#351">[ thread ]</a>
+              <a href="subject.html#351">[ subject ]</a>
+              <a href="author.html#351">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>2011/11/26 Mateusz Poszwa &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">old4 at o2.pl</A>&gt;:
+&gt;<i> Hello.
+</I>&gt;<i>
+</I>&gt;<i> On Sat, 26 Nov 2011 11:36:06 +0000
+</I>&gt;<i> Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael+i3 at stapelberg.de</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> Hi CheerXiao,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Excerpts from CheerXiao's message of 2011-11-26 11:31:22 +0000:
+</I>&gt;&gt;<i> &gt; I discovered i3 a week ago and now I'm quite happy with it. But I'm
+</I>&gt;&gt;<i> &gt; using an OSD daemon (xfce4-notifyd) which pops up sometimes. I was
+</I>&gt;&gt;<i> &gt; able to fix its appearance with
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; for_window [class=&quot;Xfce4-notifyd&quot;] floating enable; border none
+</I>&gt;&gt;<i> &gt;
+</I>&gt;&gt;<i> &gt; in my ~/.i3/config. But I don't know how to prevent it from stealing
+</I>&gt;&gt;<i> &gt; focus. Any hints?
+</I>&gt;<i>
+</I>&gt;<i> I had the same problem with xfce4-notifyd.
+</I>&gt;<i> As a workaround I have the following line in my ~/.i3/config:
+</I>&gt;<i>
+</I>&gt;<i> for_window [class=&quot;^Xfce4-notifyd$&quot;] floating enable; border none; focus mode_toggle
+</I>&gt;<i>
+</I>&gt;<i> It's not perfect as it changes focus if popup occurs when floating
+</I>&gt;<i> window is focused. What is more, it steals focus for a short moment,
+</I>&gt;<i> so when xfce4-notifyd pops up during typing an address
+</I>&gt;<i> into Midori's address bar, the input is interrupted. :-(
+</I>&gt;<i>
+</I>
+I have thought of this approach, but gave it up due to the exact
+reason you give.
+
+&gt;&gt;<i> Why does it even create managed windows? The &quot;standard&quot; libnotify thing does
+</I>&gt;&gt;<i> create unmanaged windows which do not change focus.
+</I>&gt;<i>
+</I>&gt;<i> I guess xfce4-notifyd could be changed to resemble notify-daemon's
+</I>&gt;<i> standard behaviour, but it would not be desired in Xfce desktop,
+</I>&gt;<i> as xfwm4 can be configured to be a compositing window manager
+</I>&gt;<i> and it would not be able to apply transparency to xfce4-notifyd's popups.
+</I>&gt;<i>
+</I>&gt;<i> Managing xfce4-notifyd's windows can be useful &#8211; it allows you
+</I>&gt;<i> to use your keyboard to press buttons on the popups.
+</I>&gt;<i>
+</I>&gt;<i> I think having an option to exclude windows from being managed
+</I>&gt;<i> or from being able to steal focus would be nice.
+</I>&gt;<i>
+</I>&gt;<i> What do you think?
+</I>&gt;<i>
+</I>
+I suppose the WM hint things could be more complex than expected...
+I have captured the results of xprop upon notification-daemon and
+xfce4-notifyd and put them in attachments.
+
+&gt;<i>
+</I>&gt;<i> Best regards.
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Mateusz Poszwa
+</I>&gt;<i>
+</I>
+
+
+-- 
+Regards,
+Cheer Xiao aka. xiaq
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: notification-daemon.xprop
+Type: application/octet-stream
+Size: 1013 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20111127/89f5cbbd/attachment.obj">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20111127/89f5cbbd/attachment.obj</A>&gt;
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: xfce4-notifyd.xprop
+Type: application/octet-stream
+Size: 1242 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20111127/89f5cbbd/attachment-0001.obj">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20111127/89f5cbbd/attachment-0001.obj</A>&gt;
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000348.html">[i3] Preventing OSD notification from stealing focus
+</A></li>
+	<LI>Next message: <A HREF="000349.html">[i3] Preventing OSD notification from stealing focus
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#351">[ date ]</a>
+              <a href="thread.html#351">[ thread ]</a>
+              <a href="subject.html#351">[ subject ]</a>
+              <a href="author.html#351">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,31 @@
+From fa51a320364c0c615b4aa4fd6d840ca56e53124a Mon Sep 17 00:00:00 2001
+From: David Coppa <dcoppa@gmail.com>
+Date: Thu, 17 May 2012 12:31:36 +0200
+Subject: [PATCH] Fix errors in i3.config.keycodes (bindsym -> bindcode)
+
+---
+ i3.config.keycodes |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/i3.config.keycodes b/i3.config.keycodes
+index 8f17051..e360fff 100644
+--- a/i3.config.keycodes
++++ b/i3.config.keycodes
+@@ -120,10 +120,10 @@ mode "resize" {
+         bindcode 47 resize grow width 10 px or 10 ppt
+ 
+         # same bindings, but for the arrow keys
+-        bindsym 113 resize shrink width 10 px or 10 ppt
+-        bindsym 116 resize grow height 10 px or 10 ppt
+-        bindsym 111 resize shrink height 10 px or 10 ppt
+-        bindsym 114 resize grow width 10 px or 10 ppt
++        bindcode 113 resize shrink width 10 px or 10 ppt
++        bindcode 116 resize grow height 10 px or 10 ppt
++        bindcode 111 resize shrink height 10 px or 10 ppt
++        bindcode 114 resize grow width 10 px or 10 ppt
+ 
+         # back to normal: Enter or Escape
+         bindcode 36 mode "default"
+-- 
+1.7.10.2
+

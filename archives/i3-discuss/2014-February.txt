@@ -1,0 +1,872 @@
+From tom at tksfz.org  Sun Feb  2 20:31:20 2014
+From: tom at tksfz.org (Thomas Kim)
+Date: Sun, 2 Feb 2014 11:31:20 -0800
+Subject: [i3] ideas on layout using mouse
+Message-ID: <CAF8zdKsFhmWcbDEmCfdt-pM2R536mYU22Ed8CYOKE_R2b_=OfA@mail.gmail.com>
+
+Apologies if these ideas have been considered before:
+
+I'd love to see the ability to layout windows by dragging them, similar to
+the way Eclipse (the IDE) does it:
+- You can drag a window into any container.
+- Dragging towards the left or right of the container causes it to split
+horizontally and place the window to the left or right.
+- Dragging towards the top or bottom of the container causes it to split
+vertically and place the window above or below.
+- Dragging towards the middle of an untabbed container creates a tabbed
+layout and places the window in a new tab.
+- Dragging to the tab bar of a tabbed container places the window in a new
+tab.
+
+I realize i3 isn't meant to be mouse-oriented, but this would make window
+re-organization more efficient for me. It takes too many operations to
+reorganize window layout since containers must be split *first* before a
+window can be moved into it.  Using mouse-dragging, this becomes a one-step
+operation.
+
+-tom
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140202/4ce97efe/attachment.html>
+
+From michael at i3wm.org  Mon Feb  3 21:58:14 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 03 Feb 2014 21:58:14 +0100
+Subject: [i3] ideas on layout using mouse
+In-Reply-To: <CAF8zdKsFhmWcbDEmCfdt-pM2R536mYU22Ed8CYOKE_R2b_=OfA@mail.gmail.com>
+References: <CAF8zdKsFhmWcbDEmCfdt-pM2R536mYU22Ed8CYOKE_R2b_=OfA@mail.gmail.com>
+Message-ID: <x6ha8fvrq1.fsf@midna.zekjur.net>
+
+Hi tom,
+
+Thomas Kim <tom at tksfz.org> writes:
+> I'd love to see the ability to layout windows by dragging them, similar to
+> the way Eclipse (the IDE) does it:
+> - You can drag a window into any container.
+> - Dragging towards the left or right of the container causes it to split
+> horizontally and place the window to the left or right.
+> - Dragging towards the top or bottom of the container causes it to split
+> vertically and place the window above or below.
+> - Dragging towards the middle of an untabbed container creates a tabbed
+> layout and places the window in a new tab.
+> - Dragging to the tab bar of a tabbed container places the window in a new
+> tab.
+>
+> I realize i3 isn't meant to be mouse-oriented, but this would make window
+> re-organization more efficient for me. It takes too many operations to
+> reorganize window layout since containers must be split *first* before a
+> window can be moved into it.  Using mouse-dragging, this becomes a one-step
+> operation.
+I?m not convinced that this is a good idea. Specifically, my suspicion
+is that once a feature like this is implemented, it won?t suit enough
+users and people will want to customize the behavior in detail (leading
+to lots of complexity, code paths and option explosion). Also, I suspect
+it?ll require quite a bit of new code.
+
+That said, I reserve the right to change my mind after seeing a well
+done patch and demonstration of how awesome such a feature is.
+
+-- 
+Best regards,
+Michael
+
+From ziphilt at gmail.com  Wed Feb  5 03:41:26 2014
+From: ziphilt at gmail.com (Cal Stepanian)
+Date: Tue, 4 Feb 2014 21:41:26 -0500
+Subject: [i3] Clone just one workspace between displays
+Message-ID: <CAM+8gfV1daexKjFyj-jHJT2MdyjqFFCjQCYT66psPqjsL6nNeA@mail.gmail.com>
+
+I am going to do a presentation, hopefully with i3. Ideally, I'd be able to
+have one workspace on my laptop cloned to the projector, so that I can have
+notes hidden but also be able to see what I'm typing on the big screen
+without having to crane my neck. I have read that this is not possible with
+vanilla i3, as it does not do compositing. (
+http://i3wm.org/docs/userguide.html#presentations,
+https://faq.i3wm.org/question/2517/assign-an-app-to-multiple-workstations/).
+I would like to know: how *can* I do this? Is there a program that can add
+this functionality (maybe just clone individual windows)? Is there another
+tiling window manager known to be able to do this?
+
+Cal
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140204/12c46a9c/attachment.html>
+
+From i3 at hunsicker.de  Sat Feb  8 22:37:21 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Sat, 08 Feb 2014 22:37:21 +0100
+Subject: [i3] Viable testing strategy?
+Message-ID: <52F6A391.6010105@hunsicker.de>
+
+Howdy,
+
+I'm currently playing with the i3 testing framework in order to learn 
+how to provide a test case for the proposed IPC event extension.
+
+After some fiddling, I've come up with the following test case to ensure 
+that opening a window results in two window events, "new" and "focus", 
+in that order.
+
+Below is the source code of the test:
+
+======================================================
+#!perl
+
+use i3test;
+use threads;
+use threads::shared;
+
+my $i3 = i3(get_socket_path());
+$i3->connect()->recv;
+
+################################
+# Window event
+################################
+
+# Events
+
+my @events :shared;
+my $subscribed :shared;
+
+sub record_events() {
+     $i3->subscribe({
+         window => sub {
+             my ($event) = @_;
+             say 'received '.$event->{change};
+             push @events, $event->{change};
+         }
+     })->recv;
+
+     $subscribed = 1;
+
+     say 'subscribed';
+
+     AE::cv->recv;
+}
+
+sub count_events() {
+     my $count = 0;
+
+     while ($count < 15 && @events < 2) {
+         $count++;
+         select(undef, undef, undef, 0.1);
+     }
+}
+
+my $t1 = threads->new( {'void' => 1}, sub { record_events() });
+my $t2 = threads->new( {'void' => 1}, sub { count_events() });
+
+while (!$subscribed) {
+     select(undef, undef, undef, 0.1);
+}
+
+open_window;
+
+$t2->join();
+
+say 'number of events '. at events ;
+
+foreach (@events) {
+     say 'event='.$_;
+  }
+
+ok(@events eq 2, 'Window event count correct');
+ok($events[0] eq 'new', 'Window "new" event received');
+ok($events[1] eq 'focus', 'Window "focus" event received');
+
+done_testing;
+======================================================
+
+
+Now, this seems to work most of the time, but sometimes the test fails 
+with the following output:
+
+
+======================================================
+Test output:
+[:1] t/205-ipc-windows.t: starting
+[:1] t/205-ipc-windows.t: finished
+output for t/205-ipc-windows.t:
+subscribed
+received focus
+number of events 1
+event=focus
+not ok 1 - Window event count correct
+
+#   Failed test 'Window event count correct'
+#   at ./t/205-ipc-windows.t line 79.
+not ok 2 - Window "new" event received
+
+#   Failed test 'Window "new" event received'
+#   at ./t/205-ipc-windows.t line 80.
+Use of uninitialized value $events[1] in string eq at 
+./t/205-ipc-windows.t line 81.
+not ok 3 - Window "focus" event received
+
+#   Failed test 'Window "focus" event received'
+#   at ./t/205-ipc-windows.t line 81.
+1..3
+======================================================
+
+
+Only the focus event is received. But when I check the corresponding log 
+file, it clearly says two events have been sent! (See the attached log 
+file).
+
+This makes me wonder. Is this approach ill fated and simply not robust 
+enough? Or does it seem suspicious that only one event is received while 
+two events were sent? The subscription seems to be established before 
+any event is sent, but the first event is still lost!?
+
+Thanks for any feedback you can provide.
+
+Cheers,
+   Marco
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: i3-log-for-205-ipc-windows.t
+Type: text/troff
+Size: 58252 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140208/97b6b8f0/attachment-0001.bin>
+
+From mail at profpatsch.de  Wed Feb 12 16:02:10 2014
+From: mail at profpatsch.de (Profpatsch)
+Date: Wed, 12 Feb 2014 16:02:10 +0100
+Subject: [i3] =?utf-8?q?Resize_direction_does_not_behave_how_I=E2=80=99d_e?=
+ =?utf-8?q?xpect?=
+Message-ID: <20140212150210.GA20731@nyx>
+
+When I have a (vertical) split and use resize, then hit an arrow key,
+the split border oftentimes is moved in the *opposite* direction, making
+the whole process highly non-deterministic from a user?s perspective.
+
+When I move the left window right and attempt it again, the direction
+the window border moves is changed.
+
+The same happens with horizontal splits.
+
+After some messing around I assume that the concept is not to move the
+border, but to make the window smaller or to embiggen (sic!) it.
+But then, why is making it horizontally bigger/smaller mapped to down/up
+and not up/down? And what?s the reasoning behind the assignment of
+left/right?
+
+
+Another thing that gets me everytime is to be in resize mode and
+forgetting about it. A timeout for that would be nice.
+
+
+Yet another thing that bugs me is that I can only use the hardware
+escape, and e.g. neo2?s ESC on Layer 4 doesn?t work. Is this because the
+key?s hardcoded?
+
+
+I didn?t want to open bugs on trac because I don?t know which have been
+filed yet (the search function is not very helpful), which ones are
+design decisions and the Yet-Another-One-Shot-Account problem.
+
+-- 
+Proudly written in Mutt with Vim on Archlinux.
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 836 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140212/10e7850f/attachment.sig>
+
+From mattator at gmail.com  Wed Feb 12 16:25:57 2014
+From: mattator at gmail.com (Teto)
+Date: Wed, 12 Feb 2014 16:25:57 +0100
+Subject: [i3]
+	=?utf-8?q?Resize_direction_does_not_behave_how_I=E2=80=99d_e?=
+	=?utf-8?q?xpect?=
+In-Reply-To: <20140212150210.GA20731@nyx>
+References: <20140212150210.GA20731@nyx>
+Message-ID: <CADHp1NxvTy9xYpi-COiXxvwTkns_BD7bvW8JHdkaN75k+6XXGA@mail.gmail.com>
+
+I found the default bindings misleading as well. then I stumbled on
+that configuration which may makemore sense:
+ mode "resize" {
+
+       # Pressing right will grow the window?s width.
+        # Pressing up will shrink the window?s height.
+        # Pressing down will grow the window?s height.
+        bindsym j resize grow left 10 px or 10 ppt
+        bindsym Shift+j resize shrink left 10 px or 10 ppt
+
+        bindsym k resize grow up  10 px or 10 ppt
+        bindsym Shift+k resize shrink up 10 px or 10 ppt
+
+        bindsym l resize grow down 10 px or 10 ppt
+        bindsym Shift+l resize shrink down 10 px or 10 ppt
+
+        bindsym m resize grow right 10 px or 10 ppt
+        bindsym Shift+m resize shrink right 10 px or 10 ppt
+}
+Hope that helps
+
+2014-02-12 16:02 GMT+01:00 Profpatsch <mail at profpatsch.de>:
+> When I have a (vertical) split and use resize, then hit an arrow key,
+> the split border oftentimes is moved in the *opposite* direction, making
+> the whole process highly non-deterministic from a user?s perspective.
+>
+> When I move the left window right and attempt it again, the direction
+> the window border moves is changed.
+>
+> The same happens with horizontal splits.
+>
+> After some messing around I assume that the concept is not to move the
+> border, but to make the window smaller or to embiggen (sic!) it.
+> But then, why is making it horizontally bigger/smaller mapped to down/up
+> and not up/down? And what?s the reasoning behind the assignment of
+> left/right?
+>
+>
+> Another thing that gets me everytime is to be in resize mode and
+> forgetting about it. A timeout for that would be nice.
+>
+>
+> Yet another thing that bugs me is that I can only use the hardware
+> escape, and e.g. neo2?s ESC on Layer 4 doesn?t work. Is this because the
+> key?s hardcoded?
+>
+>
+> I didn?t want to open bugs on trac because I don?t know which have been
+> filed yet (the search function is not very helpful), which ones are
+> design decisions and the Yet-Another-One-Shot-Account problem.
+>
+> --
+> Proudly written in Mutt with Vim on Archlinux.
+
+From michael at i3wm.org  Thu Feb 13 21:53:45 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 13 Feb 2014 21:53:45 +0100
+Subject: [i3]
+ =?utf-8?q?Resize_direction_does_not_behave_how_I=E2=80=99d_e?=
+ =?utf-8?q?xpect?=
+In-Reply-To: <20140212150210.GA20731@nyx>
+References: <20140212150210.GA20731@nyx>
+Message-ID: <x6ppmqpwdi.fsf@midna.zekjur.net>
+
+Hi Profpatsch,
+
+Profpatsch <mail at profpatsch.de> writes:
+> Another thing that gets me everytime is to be in resize mode and
+> forgetting about it. A timeout for that would be nice.
+i3 ? 4.4 has a mode indicator in i3bar which is fairly well visible.
+Timeouts have been discussed here:
+http://infra.in.zekjur.net/archives/i3-discuss/2013-August/001385.html
+
+> Yet another thing that bugs me is that I can only use the hardware
+> escape, and e.g. neo2?s ESC on Layer 4 doesn?t work. Is this because the
+> key?s hardcoded?
+With regards to ?hard-coding?: depends on your configuration file. The
+default config uses ?bindsym Escape?, which should work with every
+escape key. That said, I can reproduce the bug, i.e. the layer 4 escape
+does not work for me either.
+
+> I didn?t want to open bugs on trac because I don?t know which have been
+> filed yet (the search function is not very helpful), which ones are
+> design decisions and the Yet-Another-One-Shot-Account problem.
+Note that you don?t need an account to report bugs at i3, for precisely
+that reason.
+
+-- 
+Best regards,
+Michael
+
+From darkstarsword at gmail.com  Fri Feb 14 07:06:56 2014
+From: darkstarsword at gmail.com (Ian Munsie)
+Date: Fri, 14 Feb 2014 17:06:56 +1100
+Subject: [i3] Resize direction does not behave how I'd expect
+In-Reply-To: <20140212150210.GA20731@nyx>
+References: <20140212150210.GA20731@nyx>
+Message-ID: <CAH4=b6JpyrCccVABqbb9+gHsv11K93pVHhb2ZTF0-Q88jksSLw@mail.gmail.com>
+
+> Another thing that gets me everytime is to be in resize mode and
+> forgetting about it. A timeout for that would be nice.
+
+Personally I bind mod+control+j/k/l/; to resize. Then I don't need to
+switch modes at all to resize. IMO mode switching should be reserved
+for ultra-rare actions (and preferably a one-shot thing that returns
+to the default mode as part of it's action) and resizing windows is
+something I do quite frequently.
+
+
+I do find I often mix up the directions to resize and have to correct myself:
+
+- If I'm resizing a window that happens to be at the top-left,
+everything is fine because the directions correspond to the direction
+that the only free corner (i.e. the bottom-right corner) will move.
+
+- If I'm resizing a window that happens to be at the bottom-right, I
+get everything backwards because the directions still correspond to
+the bottom-right corner, but that isn't the corner that is moving (the
+top-left corner will move).
+
+- If I'm resizing a window somewhere in the middle of the screen I
+tend to get mixed up some/most of the time, because although I'm
+pressing ONE direction, the window resizes in TWO directions (i.e. I
+pressed resize right, but the window expanded both left and right).
+
+I'm not really sure what a good solution to that is :-/
+
+I'm thinking about swapping the vertical resize keys so both expand
+keys (l/;) are on the right and both shrink keys are on the left
+(h/j), but I'll probably end up with just as much brainfuck, only in
+different circumstances...
+
+Cheers,
+-Ian
+
+-- 
+http://darkstarshout.blogspot.com
+http://github.com/DarkStarSword
+http://sites.google.com/site/DarkStarJunkSpace
+--
+Please avoid sending me Word or PowerPoint attachments.
+See http://www.gnu.org/philosophy/no-word-attachments.html
+
+From i3 at hunsicker.de  Sat Feb 22 14:11:47 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Sat, 22 Feb 2014 14:11:47 +0100
+Subject: [i3] i3status only displays the temperature from one sensor
+Message-ID: <5308A213.3060201@hunsicker.de>
+
+Howdy,
+
+I've ran into a small problem with i3status. I want to show temperatures 
+for all CPU cores, but i3status always shows the same temperature for 
+all cores!
+
+
+My relevant config looks like this:
+
+order += "cpu_temperature 1"
+order += "cpu_temperature 2"
+order += "cpu_temperature 3"
+order += "cpu_temperature 4"
+
+cpu_temperature 1 {
+     format = "%degrees?"
+     path = "/sys/devices/platform/coretemp.0/temp2_input"
+     max_threshold = 70
+}
+cpu_temperature 2 {
+     format = "%degrees?"
+     path = "/sys/devices/platform/coretemp.0/temp3_input"
+     max_threshold = 70
+}
+cpu_temperature 3 {
+     format = "%degrees?"
+     path = "/sys/devices/platform/coretemp.0/temp4_input"
+     max_threshold = 70
+}
+cpu_temperature 4 {
+     format = "%degrees?"
+     path = "/sys/devices/platform/coretemp.0/temp5_input"
+     max_threshold = 70
+}
+
+The output is:
+
+[
+{"name":"cpu_temperature","instance":"/sys/devices/platform/coretemp.0/temp1_input","full_text":"28?"},
+{"name":"cpu_temperature","instance":"/sys/devices/platform/coretemp.0/temp1_input","full_text":"28?"},
+{"name":"cpu_temperature","instance":"/sys/devices/platform/coretemp.0/temp1_input","full_text":"28?"},
+{"name":"cpu_temperature","instance":"/sys/devices/platform/coretemp.0/temp1_input","full_text":"28?"}
+]
+
+Always the same path is used!
+
+
+Looking at src/print_cpu_temperature.c, the following code seems to be 
+the culprit:
+
+     if (thermal_zone == NULL) {
+         if (path == NULL)
+             asprintf(&thermal_zone, THERMAL_ZONE, zone);
+         else
+             asprintf(&thermal_zone, path, zone);
+     }
+     path = thermal_zone;
+
+
+
+I've changed my copy to:
+
+     if (path == NULL) {
+         if (thermal_zone == NULL) {
+             if (path == NULL)
+                 asprintf(&thermal_zone, THERMAL_ZONE, zone);
+             else
+                 asprintf(&thermal_zone, path, zone);
+         }
+         path = thermal_zone;
+     }
+
+as I provide the full paths to the sensor outputs in my config file.
+
+But before I submit a patch, I wanted to ask whether this still catches 
+the intention of this method?
+
+The man page only rudimentary describes this feature and it's not clear 
+to me whether the parameter substitution should always take place.
+
+Can anybody please clarify? Thanks!
+
+Cheers,
+   Marco
+
+From michael at i3wm.org  Mon Feb 24 19:41:46 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 24 Feb 2014 19:41:46 +0100
+Subject: [i3] i3status only displays the temperature from one sensor
+In-Reply-To: <5308A213.3060201@hunsicker.de>
+References: <5308A213.3060201@hunsicker.de>
+Message-ID: <x6d2icjqtx.fsf@midna.zekjur.net>
+
+Hi Marco,
+
+Marco Hunsicker <i3 at hunsicker.de> writes:
+> Looking at src/print_cpu_temperature.c, the following code seems to be 
+> the culprit:
+>
+>      if (thermal_zone == NULL) {
+>          if (path == NULL)
+>              asprintf(&thermal_zone, THERMAL_ZONE, zone);
+>          else
+>              asprintf(&thermal_zone, path, zone);
+>      }
+>      path = thermal_zone;
+>
+>
+>
+> I've changed my copy to:
+>
+>      if (path == NULL) {
+>          if (thermal_zone == NULL) {
+>              if (path == NULL)
+>                  asprintf(&thermal_zone, THERMAL_ZONE, zone);
+>              else
+>                  asprintf(&thermal_zone, path, zone);
+>          }
+>          path = thermal_zone;
+>      }
+>
+> as I provide the full paths to the sensor outputs in my config file.
+>
+> But before I submit a patch, I wanted to ask whether this still catches 
+> the intention of this method?
+I think your code will actually not work properly either, because
+thermal_zone is a static variable. I think you?ll need to kill that
+variable entirely to make multiple instances of the cpu_temperature
+module work.
+
+-- 
+Best regards,
+Michael
+
+From i3 at hunsicker.de  Mon Feb 24 19:57:50 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Mon, 24 Feb 2014 19:57:50 +0100
+Subject: [i3] i3status only displays the temperature from one sensor
+In-Reply-To: <x6d2icjqtx.fsf@midna.zekjur.net>
+References: <5308A213.3060201@hunsicker.de> <x6d2icjqtx.fsf@midna.zekjur.net>
+Message-ID: <530B962E.2080809@hunsicker.de>
+
+Hello Michael,
+
+thanks much for your feedback.
+
+>> I've changed my copy to:
+>>
+>>       if (path == NULL) {
+>>           if (thermal_zone == NULL) {
+>>               if (path == NULL)
+>>                   asprintf(&thermal_zone, THERMAL_ZONE, zone);
+>>               else
+>>                   asprintf(&thermal_zone, path, zone);
+>>           }
+>>           path = thermal_zone;
+>>       }
+>>
+>> as I provide the full paths to the sensor outputs in my config file.
+>>
+>> But before I submit a patch, I wanted to ask whether this still catches
+>> the intention of this method?
+
+> I think your code will actually not work properly either, because
+> thermal_zone is a static variable. I think you?ll need to kill that
+> variable entirely to make multiple instances of the cpu_temperature
+> module work.
+
+The temperatures are correctly displayed for me. With my configuration, 
+'path' should never be NULL and therefore 'thermal_zone' never actually 
+used.
+
+But yes, I would question the use of the static variable entirely. It's 
+not clear to me what the intention here is. Thanks.
+
+Cheers,
+   Marco
+
+From i3 at hunsicker.de  Mon Feb 24 20:28:34 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Mon, 24 Feb 2014 20:28:34 +0100
+Subject: [i3] i3status only displays the temperature from one sensor
+In-Reply-To: <x6d2icjqtx.fsf@midna.zekjur.net>
+References: <5308A213.3060201@hunsicker.de> <x6d2icjqtx.fsf@midna.zekjur.net>
+Message-ID: <530B9D62.5080406@hunsicker.de>
+
+>>       if (path == NULL) {
+>>           if (thermal_zone == NULL) {
+>>               if (path == NULL)
+>>                   asprintf(&thermal_zone, THERMAL_ZONE, zone);
+>>               else
+>>                   asprintf(&thermal_zone, path, zone);
+>>           }
+>>           path = thermal_zone;
+>>       }
+
+> I think your code will actually not work properly either, because
+> thermal_zone is a static variable. I think you?ll need to kill that
+> variable entirely to make multiple instances of the cpu_temperature
+> module work.
+
+I think inlining the variable is the right thing to do:
+
+         char *thermal_zone;
+
+         if (path == NULL)
+                 asprintf(&thermal_zone, THERMAL_ZONE, zone);
+         else
+                 asprintf(&thermal_zone, path, zone);
+
+         path = thermal_zone;
+
+	[...]
+
+	free(thermal_zone);
+
+
+This way multiple instances work - with our without parameter substitution.
+
+Cheers,
+   Marco
+
+From i3 at hunsicker.de  Thu Feb 27 21:24:06 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Thu, 27 Feb 2014 21:24:06 +0100
+Subject: [i3] [i3status] Don't display vertical separators
+Message-ID: <530F9EE6.4030007@hunsicker.de>
+
+Howdy,
+
+I don't fancy the vertical separators i3status uses to separate the 
+different modules.
+
+I know that it's possible to alter the generated JSON (when one uses the 
+i3bar format) to get rid of the separators. But I think it would be 
+nice, if i3status could support it out-of-the-box for all formats.
+
+I would propose the addition of a new "separator(true|false)" directive 
+to the general section. When set to 'false', separators would be simply 
+hidden with i3bar. For the other formats, a blank space would be generated.
+
+It this something that sounds acceptable? Thanks.
+
+Cheers,
+   Marco
+
+From alexander at plaimi.net  Thu Feb 27 21:34:34 2014
+From: alexander at plaimi.net (Alexander Berntsen)
+Date: Thu, 27 Feb 2014 21:34:34 +0100
+Subject: [i3] [i3status] Don't display vertical separators
+In-Reply-To: <530F9EE6.4030007@hunsicker.de>
+References: <530F9EE6.4030007@hunsicker.de>
+Message-ID: <530FA15A.9050606@plaimi.net>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+On 27/02/14 21:24, Marco Hunsicker wrote:
+> I would propose the addition of a new "separator(true|false)" 
+> directive to the general section. When set to 'false', separators 
+> would be simply hidden with i3bar. For the other formats, a blank 
+> space would be generated.
+I would prefer an implicit-separator, or explicit-separator option.
+That way, if separators were explicit, you would have to insert them
+yourself with `order += separator', giving full flexibility in the matter.
+
+- -- 
+Alexander
+alexander at plaimi.net
+https://secure.plaimi.net/~alexander
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+
+iF4EAREIAAYFAlMPoVoACgkQRtClrXBQc7UZSQEAm6XAFJYpm40y1JMbXfGPGlFS
+uWRl+wQvdsyEIfwcr5IBAJgsivpc+iOkkYWa9SH5bOz8BG6SZ+zKGI3RnYL3pudM
+=QQ9P
+-----END PGP SIGNATURE-----
+
+From michael at i3wm.org  Thu Feb 27 23:38:17 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 27 Feb 2014 23:38:17 +0100
+Subject: [i3] [i3status] Don't display vertical separators
+In-Reply-To: <530F9EE6.4030007@hunsicker.de>
+References: <530F9EE6.4030007@hunsicker.de>
+Message-ID: <x68uswgp0m.fsf@midna.zekjur.net>
+
+Hi Marco,
+
+Marco Hunsicker <i3 at hunsicker.de> writes:
+> It this something that sounds acceptable? Thanks.
+Yeah.
+
+-- 
+Best regards,
+Michael
+
+From i3 at hunsicker.de  Fri Feb 28 18:05:31 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Fri, 28 Feb 2014 18:05:31 +0100
+Subject: [i3] [i3status] Don't display vertical separators
+In-Reply-To: <530FA15A.9050606@plaimi.net>
+References: <530F9EE6.4030007@hunsicker.de> <530FA15A.9050606@plaimi.net>
+Message-ID: <5310C1DB.4010201@hunsicker.de>
+
+Hello Alexander,
+
+> I would prefer an implicit-separator, or explicit-separator option.
+> That way, if separators were explicit, you would have to insert them
+> yourself with `order += separator', giving full flexibility in the matter.
+
+IMHO this would be too much of a hassle for little gain as it would 
+require all users to adjust their configuration.
+
+I've forwarded a patch for code review that allows a bit more freedom as 
+my initial proposal.
+
+It allows one to configure the separator string that should be used. An 
+empty string disables the insertion of a default separator altogether.
+
+This way it's possible to allow customization for all output formats, 
+but only with i3bar one is required to resort to the module format 
+string for the actual definition, while with the other formats you can 
+conveniently define it just once and avoid the otherwise probably 
+necessary duplication in the module definitions.
+
+This should support your use case as well. Disable the default 
+separator. Then add any necessary separation as part of a module's 
+format string.
+
+Cheers,
+   Marco
+
+From alexander at plaimi.net  Fri Feb 28 18:12:26 2014
+From: alexander at plaimi.net (Alexander Berntsen)
+Date: Fri, 28 Feb 2014 18:12:26 +0100
+Subject: [i3] [i3status] Don't display vertical separators
+In-Reply-To: <5310C1DB.4010201@hunsicker.de>
+References: <530F9EE6.4030007@hunsicker.de> <530FA15A.9050606@plaimi.net>
+ <5310C1DB.4010201@hunsicker.de>
+Message-ID: <5310C37A.90904@plaimi.net>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+On 28/02/14 18:05, Marco Hunsicker wrote:
+> IMHO this would be too much of a hassle for little gain as it would
+>  require all users to adjust their configuration.
+That's not necessary -- no overriding could just be inferred to mean
+"the old style".
+
+> I've forwarded a patch for code review that allows a bit more
+> freedom as my initial proposal.
+> 
+> It allows one to configure the separator string that should be
+> used. An empty string disables the insertion of a default
+> separator altogether.
+> 
+> This way it's possible to allow customization for all output
+> formats, but only with i3bar one is required to resort to the
+> module format string for the actual definition, while with the
+> other formats you can conveniently define it just once and avoid
+> the otherwise probably necessary duplication in the module
+> definitions.
+> 
+> This should support your use case as well. Disable the default 
+> separator. Then add any necessary separation as part of a module's
+>  format string.
+Sounds good.
+- -- 
+Alexander
+alexander at plaimi.net
+https://secure.plaimi.net/~alexander
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+
+iF4EAREIAAYFAlMQw3kACgkQRtClrXBQc7U5iQEAnheXwdSfAdQa68HFjnSv4Mks
+QdCOqCxPujibe4oe2D8A/RDswOYrdROic8W0VEAiLgKiqrgQisSTNx2zkaE07fls
+=wsUC
+-----END PGP SIGNATURE-----
+
+From i3 at hunsicker.de  Fri Feb 28 19:40:55 2014
+From: i3 at hunsicker.de (Marco Hunsicker)
+Date: Fri, 28 Feb 2014 19:40:55 +0100
+Subject: [i3] [i3status] Support min_width and align options in module
+	definition
+Message-ID: <5310D837.10508@hunsicker.de>
+
+Howdy,
+
+when using the i3bar output format, I would find it convenient if I 
+could set "min_width" and "align" right in a module definition.
+
+disk "/" {
+     format = "%avail"
+     min_width = 80
+     align = "left"
+}
+
+Would this be something worthwhile to add? Thanks.
+
+Cheers,
+   Marco
+
+
+From ziphilt at gmail.com  Fri Feb 28 21:22:17 2014
+From: ziphilt at gmail.com (Cal Stepanian)
+Date: Fri, 28 Feb 2014 15:22:17 -0500
+Subject: [i3] [i3status] Support min_width and align options in module
+	definition
+In-Reply-To: <5310D837.10508@hunsicker.de>
+References: <5310D837.10508@hunsicker.de>
+Message-ID: <CAM+8gfXgyZR1UO6iwbEmvAygRoPm71ri5RRUagoj77oj8dTH4w@mail.gmail.com>
+
+On 28 February 2014 13:40, Marco Hunsicker <i3 at hunsicker.de> wrote:
+
+> when using the i3bar output format, I would find it convenient if I could
+> set "min_width" and "align" right in a module definition.
+>
+> disk "/" {
+>     format = "%avail"
+>     min_width = 80
+>     align = "left"
+> }
+>
+
+I would also find this useful; without this, some items change in size and
+are distracting when they shift the entire bar.
+
+Cal
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140228/647a826c/attachment.html>
+

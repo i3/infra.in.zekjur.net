@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] binding the same key to revert the command?
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20binding%20the%20same%20key%20to%20revert%20the%20command%3F&In-Reply-To=%3C563F1650.5050009%40airblader.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002254.html">
+   <LINK REL="Next"  HREF="002259.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] binding the same key to revert the command?</H1>
+    <B>Ingo Bürk</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20binding%20the%20same%20key%20to%20revert%20the%20command%3F&In-Reply-To=%3C563F1650.5050009%40airblader.de%3E"
+       TITLE="[i3] binding the same key to revert the command?">admin at airblader.de
+       </A><BR>
+    <I>Sun Nov  8 10:30:56 CET 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002254.html">[i3] binding the same key to revert the command?
+</A></li>
+        <LI>Next message: <A HREF="002259.html">[i3] binding the same key to revert the command?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2255">[ date ]</a>
+              <a href="thread.html#2255">[ thread ]</a>
+              <a href="subject.html#2255">[ subject ]</a>
+              <a href="author.html#2255">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+one possible solution: save the following as /some/path/stopcont.sh and bind
+
+    bindsym $mod+p exec --no-startup-id /some/path/stopcont.sh &lt;processname&gt;
+
+Script:
+===========
+#!/usr/bin/env bash
+PROCESS=${1}
+FILE=&quot;/tmp/${PROCESS}.signal&quot;
+
+if [[ -f &quot;${FILE}&quot; ]]; then
+  rm ${FILE}
+  pkill -SIGCONT ${PROCESS}
+else
+  touch ${FILE}
+  pkill -SIGSTOP ${PROCESS}
+fi
+===========
+
+This will, of course, assume that the process isn't paused by anything
+else as that would make it go out of sync. A better and more robust way
+would be to write the script such that it instead uses the information
+of /proc/&lt;pid&gt;/stat to check whether the process is currently paused. If
+you use a higher-level language such as Python, you can do this nicely
+instead of manually parsing the output. See [1] for some more information.
+
+[1]
+<A HREF="http://stackoverflow.com/questions/6021771/is-there-a-way-to-determine-if-a-linux-pid-is-paused-or-not">http://stackoverflow.com/questions/6021771/is-there-a-way-to-determine-if-a-linux-pid-is-paused-or-not</A>
+
+
+Ingo
+
+On 11/08/2015 04:16 AM, Zenny wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> I am trying to use a keybinding to pause a process temporily,
+</I>&gt;<i>
+</I>&gt;<i> bindsym $mod+p exec pkill -SIGSTOP &lt;processname&gt;
+</I>&gt;<i>
+</I>&gt;<i> But I could not figure out how to make pressing to same keybinding to
+</I>&gt;<i> restart the process?
+</I>&gt;<i>
+</I>&gt;<i> Currenlty I am using,
+</I>&gt;<i>
+</I>&gt;<i> bindsym $mod+c exec pkill -SIGCONT &lt;processname&gt;
+</I>&gt;<i>
+</I>&gt;<i> Instead, I want something like re-pressing $mod+p executes pkill
+</I>&gt;<i> -SIGCONT &lt;processname&gt;.
+</I>&gt;<i>
+</I>&gt;<i> Thanks!
+</I>&gt;<i>
+</I>&gt;<i> /z
+</I>
+</PRE>
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002254.html">[i3] binding the same key to revert the command?
+</A></li>
+	<LI>Next message: <A HREF="002259.html">[i3] binding the same key to revert the command?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2255">[ date ]</a>
+              <a href="thread.html#2255">[ thread ]</a>
+              <a href="subject.html#2255">[ subject ]</a>
+              <a href="author.html#2255">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,1628 @@
+From aagaande at gmail.com  Sun Jun  1 12:19:59 2014
+From: aagaande at gmail.com (Anders Aagaard)
+Date: Sun, 1 Jun 2014 12:19:59 +0200
+Subject: [i3] Google hangouts extension
+In-Reply-To: <x638fqytmc.fsf@midna.zekjur.net>
+References: <CANOdGiy8dDh63QgAVDiDsLVts-5j_9K8dfZ3fEg+e5JvpdVn3A@mail.gmail.com>
+ <x6iootq0e3.fsf@midna.zekjur.net>
+ <CANOdGiyeAL5Gs5nH=xnm=VGMYLsX+SujZpbiJ_bjZ7PV4+Gqug@mail.gmail.com>
+ <x6d2f1owoh.fsf@midna.zekjur.net>
+ <CANOdGiyKTpOCYU858KvhUn=ZvtLXnncamQ_9Z_1wzToqyCfgmw@mail.gmail.com>
+ <CANOdGix1n7JAv4qoOwaiM_4CvkwrMkWEWwXr9bd5K8CD7F4Wiw@mail.gmail.com>
+ <x638fqytmc.fsf@midna.zekjur.net>
+Message-ID: <CANOdGizc3MHF6LoQztU65OLaTXx-LHG5O6zeXaqyT-BOjSC-wg@mail.gmail.com>
+
+Hi
+
+On Sat, May 31, 2014 at 3:18 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+> Anders Aagaard <aagaande at gmail.com> writes:
+>> Starting to implement the client side of this I realize it might be
+>> good to know the workspace of the window in question. That's easy
+>> enough to add.  Also technically we could skip the "changed" field, as
+>> the "focused" field in the container will tell you the same
+>> information. I also wouldn't mind knowing the window class. Any
+>> technical reason that's not already in the Con class?
+> It is -- I think you're not using the "next" branch, but you should. The
+> "master" branch contains the latest release + bugfixes only, whereas
+> development happens in "next".
+
+I actually wrote the patch on master and then rebased (and tested) on
+next afterwards. I didn't notice that WM_CLASS was there in next
+though, brilliant! I also saw the replies on the pr, and that's what I
+get for not checking next ;). One thing it does not have though is an
+event for windows that doesn't get focus. However I'm a bit uncertain
+about how to add that cleanly, since the event is now pushed in a very
+different location.
+
+I could of course add it directly from the "Request to focus con on a
+hidden workspace" check in handlers.c. It feels a bit bad though since
+the other event is sent in a very different place (x.c). Also would an
+event called "focus" that has "focused":False be enough to make sense
+api wise?
+
+Alternately I could add some code to start sending events for
+con_set_urgency (since focus request that fails now sets an urgency),
+but it wouldn't be usable for my use case unless I also add a reason
+for the urgency change. Which I guess could be
+demands_attention/focus_request and wm_hints? Not sure about that last
+one, where it's really coming from ;).
+
+>> On Tue, May 27, 2014 at 7:43 PM, Anders Aagaard <aagaande at gmail.com> wrote:
+>>> Sent a patch to http://cr.i3wm.org/patch/559 now. I unfortunately
+>>> can't get the tests running. Trying to start up a x session with
+>>> Xdummy seems to make the nvidia driver explode... I've done some
+>>> manual testing and I really don't see how this could screw up anything
+>>> else (.. famous last words I know).
+> I have the tests working with nvidia 331.67. Can you be more specific
+> about what breaks on your machine?
+
+It's an issue with glx, I've got an nvidia optimus setup, so I'm not
+terribly surprised. I could probably get it working fine by not
+loading glx, but it was easier to setup a VM for it. (I should point
+out it fails starting the X session, so it's not the test running part
+that's broken).
+
+> --
+> Best regards,
+> Michael
+
+-- 
+Best regards
+Anders
+
+From michael at i3wm.org  Sun Jun  1 13:49:37 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 01 Jun 2014 13:49:37 +0200
+Subject: [i3] Google hangouts extension
+In-Reply-To: <CANOdGizc3MHF6LoQztU65OLaTXx-LHG5O6zeXaqyT-BOjSC-wg@mail.gmail.com>
+References: <CANOdGiy8dDh63QgAVDiDsLVts-5j_9K8dfZ3fEg+e5JvpdVn3A@mail.gmail.com>
+ <x6iootq0e3.fsf@midna.zekjur.net>
+ <CANOdGiyeAL5Gs5nH=xnm=VGMYLsX+SujZpbiJ_bjZ7PV4+Gqug@mail.gmail.com>
+ <x6d2f1owoh.fsf@midna.zekjur.net>
+ <CANOdGiyKTpOCYU858KvhUn=ZvtLXnncamQ_9Z_1wzToqyCfgmw@mail.gmail.com>
+ <CANOdGix1n7JAv4qoOwaiM_4CvkwrMkWEWwXr9bd5K8CD7F4Wiw@mail.gmail.com>
+ <x638fqytmc.fsf@midna.zekjur.net>
+ <CANOdGizc3MHF6LoQztU65OLaTXx-LHG5O6zeXaqyT-BOjSC-wg@mail.gmail.com>
+Message-ID: <x6ha44hmsu.fsf@midna.zekjur.net>
+
+Hi Anders,
+
+Anders Aagaard <aagaande at gmail.com> writes:
+> Alternately I could add some code to start sending events for
+> con_set_urgency (since focus request that fails now sets an urgency),
+> but it wouldn't be usable for my use case unless I also add a reason
+> for the urgency change. Which I guess could be
+> demands_attention/focus_request and wm_hints? Not sure about that last
+> one, where it's really coming from ;).
+I think adding an event for urgency with the reason sounds reasonable.
+
+>> I have the tests working with nvidia 331.67. Can you be more specific
+>> about what breaks on your machine?
+>
+> It's an issue with glx, I've got an nvidia optimus setup, so I'm not
+> terribly surprised. I could probably get it working fine by not
+> loading glx, but it was easier to setup a VM for it. (I should point
+> out it fails starting the X session, so it's not the test running part
+> that's broken).
+It’d be good to fix that. We call Xdummy with -config /dev/null which is
+supposed to not use the system X11 config at all. If that has changed,
+it should be updated to continue running in an isolated-enough
+environment.
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Thu Jun  5 09:49:12 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 05 Jun 2014 09:49:12 +0200
+Subject: [i3] Retina/HiDPI: Querying DPI
+Message-ID: <x6ha3z4wzr.fsf@midna.zekjur.net>
+
+Hi,
+
+the next release of i3 should behave correctly on Retina/HiDPI
+displays. However, I’m not 100% sure how we should query the
+DPI.
+
+Currently, we use the value that you can change using xrandr --dpi.
+
+There is also an XResources property called Xft.dpi, which some programs
+(notably GTK?) seem to use.
+
+See
+e.g. http://askubuntu.com/questions/197828/how-to-find-and-change-the-screen-dpi
+for a bit more details on how to find/change those values.
+
+My question is: does anyone have a strong preference on which of these
+we should use? If so, why?
+
+-- 
+Best regards,
+Michael
+
+From jeff at jibson.com  Thu Jun  5 14:54:58 2014
+From: jeff at jibson.com (Jeff Jibson)
+Date: Thu, 5 Jun 2014 06:54:58 -0600
+Subject: [i3] Retina/HiDPI: Querying DPI
+In-Reply-To: <x6ha3z4wzr.fsf@midna.zekjur.net>
+References: <x6ha3z4wzr.fsf@midna.zekjur.net>
+Message-ID: <CAPAw0Woc00Hdmo_YmbdboxdAGS96TvXy9CE6=GqOnUMfTYXyHQ@mail.gmail.com>
+
+On Thu, Jun 5, 2014 at 1:49 AM, Michael Stapelberg <michael at i3wm.org> wrote:
+
+> My question is: does anyone have a strong preference on which of these
+> we should use? If so, why?
+>
+
+It seems to me that the xrandr --dpi method would be better, especially
+with laptops where the monitor plugged in varies.  I already use xrandr in
+my xinit to determine the resolution of an external monitor.
+I remember doing the dpi calculations years ago, but it made the fonts
+huge.  So, I ended up lying to X setting the dpi to 72x72.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140605/d594e526/attachment.html>
+
+From michael at i3wm.org  Thu Jun  5 23:27:54 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 05 Jun 2014 23:27:54 +0200
+Subject: [i3] Retina/HiDPI: Querying DPI
+In-Reply-To: <CAPAw0Woc00Hdmo_YmbdboxdAGS96TvXy9CE6=GqOnUMfTYXyHQ@mail.gmail.com>
+References: <x6ha3z4wzr.fsf@midna.zekjur.net>
+ <CAPAw0Woc00Hdmo_YmbdboxdAGS96TvXy9CE6=GqOnUMfTYXyHQ@mail.gmail.com>
+Message-ID: <x6a99r3v39.fsf@midna.zekjur.net>
+
+Hi Jeff,
+
+Jeff Jibson <jeff at jibson.com> writes:
+> It seems to me that the xrandr --dpi method would be better, especially
+> with laptops where the monitor plugged in varies.  I already use xrandr in
+> my xinit to determine the resolution of an external monitor.
+> I remember doing the dpi calculations years ago, but it made the fonts
+> huge.  So, I ended up lying to X setting the dpi to 72x72.
+Note that you cannot set the DPI for different monitors independently,
+it is global for your X session. But sure, what you write makes some
+sense — xrandr is scriptable whereas Xft.dpi is static.
+
+Any other opinions?
+
+-- 
+Best regards,
+Michael
+
+From alexander at plaimi.net  Fri Jun  6 10:01:18 2014
+From: alexander at plaimi.net (Alexander Berntsen)
+Date: Fri, 06 Jun 2014 10:01:18 +0200
+Subject: [i3] Retina/HiDPI: Querying DPI
+In-Reply-To: <x6ha3z4wzr.fsf@midna.zekjur.net>
+References: <x6ha3z4wzr.fsf@midna.zekjur.net>
+Message-ID: <5391754E.50108@plaimi.net>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+On 05/06/14 09:49, Michael Stapelberg wrote:
+> Hi,
+> 
+> the next release of i3 should behave correctly on Retina/HiDPI 
+> displays.
+It isn't already? Works fine here. What's wrong? I don't understand
+why i3 should care about PPI.
+
+For what it's worth, I've set both xrandr --dpi & Xft.dpi for my X
+session.
+- -- 
+Alexander
+alexander at plaimi.net
+https://secure.plaimi.net/~alexander
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+
+iF4EAREIAAYFAlORdU4ACgkQRtClrXBQc7V5fwEAo4JLhH13MuXvDg6IMwS1ARtf
+UaznleWMpNEbYp3KJNEBAIFjqz+ez9rUXXEK7m7TjGf4bm//Pgpc0RJkyZa4dxML
+=CMTF
+-----END PGP SIGNATURE-----
+
+From mail at profpatsch.de  Fri Jun  6 12:31:35 2014
+From: mail at profpatsch.de (Profpatsch)
+Date: Fri, 6 Jun 2014 12:31:35 +0200
+Subject: [i3] Retina/HiDPI: Querying DPI
+In-Reply-To: <5391754E.50108@plaimi.net>
+References: <x6ha3z4wzr.fsf@midna.zekjur.net>
+ <5391754E.50108@plaimi.net>
+Message-ID: <20140606103135.GB24298@nyx>
+
+On 14-06-06 10:01am, Alexander Berntsen wrote:
+> -----BEGIN PGP SIGNED MESSAGE-----
+
+On an unrelated note: You can configure PGP so the signature is sent as
+attachment instead of inline. Makes a message way easier to read.
+Enigmail defaults are kind of broken, sadly, so most people don’t even
+know this is possible.
+
+-- 
+Proudly written in Mutt with Vim on Archlinux.
+Q: Why is this email five sentences or less?
+A: http://five.sentenc.es
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 836 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140606/c4fdc069/attachment.sig>
+
+From michael at i3wm.org  Fri Jun  6 13:19:31 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 06 Jun 2014 13:19:31 +0200
+Subject: [i3] Retina/HiDPI: Querying DPI
+In-Reply-To: <5391754E.50108@plaimi.net>
+References: <x6ha3z4wzr.fsf@midna.zekjur.net> <5391754E.50108@plaimi.net>
+Message-ID: <x61tv2z3ng.fsf@midna.zekjur.net>
+
+Hi Alexander,
+
+Alexander Berntsen <alexander at plaimi.net> writes:
+>> the next release of i3 should behave correctly on Retina/HiDPI 
+>> displays.
+> It isn't already? Works fine here. What's wrong? I don't understand
+> why i3 should care about PPI.
+No, it doesn’t work correctly in 4.7.2, the latest stable version:
+All pixel values, such as paddings, borders, etc., are designed for
+96dpi displays and are not scaled up. E.g., for a 2 px window border,
+you need 5 px on a retina display to achieve the same physical width.
+
+I think the effect is very very easy to spot when comparing 4.7.2 with a
+build from the “next” branch. Once you restart into the new version,
+you’ll see how it just feels right again :).
+
+-- 
+Best regards,
+Michael
+
+From alexander at plaimi.net  Fri Jun  6 13:21:05 2014
+From: alexander at plaimi.net (Alexander Berntsen)
+Date: Fri, 06 Jun 2014 13:21:05 +0200
+Subject: [i3] Retina/HiDPI: Querying DPI
+In-Reply-To: <x61tv2z3ng.fsf@midna.zekjur.net>
+References: <x6ha3z4wzr.fsf@midna.zekjur.net> <5391754E.50108@plaimi.net>
+ <x61tv2z3ng.fsf@midna.zekjur.net>
+Message-ID: <5391A421.5040608@plaimi.net>
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+On 06/06/14 13:19, Michael Stapelberg wrote:
+> No, it doesn’t work correctly in 4.7.2, the latest stable version: 
+> All pixel values, such as paddings, borders, etc., are designed
+> for 96dpi displays and are not scaled up. E.g., for a 2 px window
+> border, you need 5 px on a retina display to achieve the same
+> physical width.
+Oh. I use 1px border and have no other decoration from i3, so I did
+not consider that.
+
+Doesn't sound like this will be invasive or annoying, so carry on! :-)
+- -- 
+Alexander
+alexander at plaimi.net
+https://secure.plaimi.net/~alexander
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+Comment: Using GnuPG with Thunderbird - http://www.enigmail.net/
+
+iF4EAREIAAYFAlORpCEACgkQRtClrXBQc7XCXQD/SFT5H4iz3/FGrcYM13BHPNvL
+H+VVHlMuBTL60dFmysgA/jRu6Rq9YgqFQnhF7OYWKWn7xfr1Wru1A6dfgwrCOcrn
+=iMTs
+-----END PGP SIGNATURE-----
+
+From aagaande at gmail.com  Fri Jun  6 19:38:02 2014
+From: aagaande at gmail.com (Anders Aagaard)
+Date: Fri, 6 Jun 2014 19:38:02 +0200
+Subject: [i3] Google hangouts extension
+In-Reply-To: <x6ha44hmsu.fsf@midna.zekjur.net>
+References: <CANOdGiy8dDh63QgAVDiDsLVts-5j_9K8dfZ3fEg+e5JvpdVn3A@mail.gmail.com>
+ <x6iootq0e3.fsf@midna.zekjur.net>
+ <CANOdGiyeAL5Gs5nH=xnm=VGMYLsX+SujZpbiJ_bjZ7PV4+Gqug@mail.gmail.com>
+ <x6d2f1owoh.fsf@midna.zekjur.net>
+ <CANOdGiyKTpOCYU858KvhUn=ZvtLXnncamQ_9Z_1wzToqyCfgmw@mail.gmail.com>
+ <CANOdGix1n7JAv4qoOwaiM_4CvkwrMkWEWwXr9bd5K8CD7F4Wiw@mail.gmail.com>
+ <x638fqytmc.fsf@midna.zekjur.net>
+ <CANOdGizc3MHF6LoQztU65OLaTXx-LHG5O6zeXaqyT-BOjSC-wg@mail.gmail.com>
+ <x6ha44hmsu.fsf@midna.zekjur.net>
+Message-ID: <CANOdGiySm6FQCb3vC9ZbS8qgH-H7=vUeotraRrD=n3yX+LKZkA@mail.gmail.com>
+
+Had another stab at this here : http://cr.i3wm.org/patch/566
+
+Special mentions:
+In src/manage.c sending in NULL when "Defer setting focus after the
+'new' event" is done feels wrong, but I'm frankly not sure if that
+comment matches the con_set_urgency below it. It's resetting a urgency
+flag here if one is "lost"? Maybe sending in WM_HINTS is the right
+thing to do? Or maybe sending WM_HINTS/etc is generally stupid, and it
+should be one reason called "window_event_change" and another one for
+"focus_blocked"?
+
+Disclaimer : I've been a dev for a long time, but I haven't done
+anything in C for ages, so the code might be rubish. If I'm told that
+and you decide to do this in a much cleaner way, I will not have my
+feelings hurt ;)
+
+Gonna have a stab at fixing the Xdummy stuff now.
+
+On Sun, Jun 1, 2014 at 1:49 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+> Hi Anders,
+>
+> Anders Aagaard <aagaande at gmail.com> writes:
+>> Alternately I could add some code to start sending events for
+>> con_set_urgency (since focus request that fails now sets an urgency),
+>> but it wouldn't be usable for my use case unless I also add a reason
+>> for the urgency change. Which I guess could be
+>> demands_attention/focus_request and wm_hints? Not sure about that last
+>> one, where it's really coming from ;).
+> I think adding an event for urgency with the reason sounds reasonable.
+>
+>>> I have the tests working with nvidia 331.67. Can you be more specific
+>>> about what breaks on your machine?
+>>
+>> It's an issue with glx, I've got an nvidia optimus setup, so I'm not
+>> terribly surprised. I could probably get it working fine by not
+>> loading glx, but it was easier to setup a VM for it. (I should point
+>> out it fails starting the X session, so it's not the test running part
+>> that's broken).
+> It'd be good to fix that. We call Xdummy with -config /dev/null which is
+> supposed to not use the system X11 config at all. If that has changed,
+> it should be updated to continue running in an isolated-enough
+> environment.
+>
+> --
+> Best regards,
+> Michael
+
+
+
+-- 
+Mvh
+Anders Aagaard
+
+From tony at dubstepdish.com  Fri Jun  6 21:47:30 2014
+From: tony at dubstepdish.com (Tony Crisci)
+Date: Fri, 06 Jun 2014 15:47:30 -0400
+Subject: [i3] Google hangouts extension
+In-Reply-To: <CANOdGiySm6FQCb3vC9ZbS8qgH-H7=vUeotraRrD=n3yX+LKZkA@mail.gmail.com>
+References: <CANOdGiy8dDh63QgAVDiDsLVts-5j_9K8dfZ3fEg+e5JvpdVn3A@mail.gmail.com>
+ <x6iootq0e3.fsf@midna.zekjur.net>
+ <CANOdGiyeAL5Gs5nH=xnm=VGMYLsX+SujZpbiJ_bjZ7PV4+Gqug@mail.gmail.com>
+ <x6d2f1owoh.fsf@midna.zekjur.net>
+ <CANOdGiyKTpOCYU858KvhUn=ZvtLXnncamQ_9Z_1wzToqyCfgmw@mail.gmail.com>
+ <CANOdGix1n7JAv4qoOwaiM_4CvkwrMkWEWwXr9bd5K8CD7F4Wiw@mail.gmail.com>
+ <x638fqytmc.fsf@midna.zekjur.net>
+ <CANOdGizc3MHF6LoQztU65OLaTXx-LHG5O6zeXaqyT-BOjSC-wg@mail.gmail.com>
+ <x6ha44hmsu.fsf@midna.zekjur.net>
+ <CANOdGiySm6FQCb3vC9ZbS8qgH-H7=vUeotraRrD=n3yX+LKZkA@mail.gmail.com>
+Message-ID: <53921AD2.4090306@dubstepdish.com>
+
+We have been having problems with Xdummy and are anticipating more.
+
+I have plans to replace the Xdummy script with Xephyr. Let me make some 
+changes
+to the testcases that allows you to use the Xephyr backend to see if that
+resolves your issue before you get too deep into this.
+
+On 06/06/2014 01:38 PM, Anders Aagaard wrote:
+> Had another stab at this here : http://cr.i3wm.org/patch/566
+>
+> Special mentions:
+> In src/manage.c sending in NULL when "Defer setting focus after the
+> 'new' event" is done feels wrong, but I'm frankly not sure if that
+> comment matches the con_set_urgency below it. It's resetting a urgency
+> flag here if one is "lost"? Maybe sending in WM_HINTS is the right
+> thing to do? Or maybe sending WM_HINTS/etc is generally stupid, and it
+> should be one reason called "window_event_change" and another one for
+> "focus_blocked"?
+>
+> Disclaimer : I've been a dev for a long time, but I haven't done
+> anything in C for ages, so the code might be rubish. If I'm told that
+> and you decide to do this in a much cleaner way, I will not have my
+> feelings hurt ;)
+>
+> Gonna have a stab at fixing the Xdummy stuff now.
+
+From aagaande at gmail.com  Fri Jun  6 20:01:06 2014
+From: aagaande at gmail.com (Anders Aagaard)
+Date: Fri, 6 Jun 2014 20:01:06 +0200
+Subject: [i3] Google hangouts extension
+In-Reply-To: <CANOdGiySm6FQCb3vC9ZbS8qgH-H7=vUeotraRrD=n3yX+LKZkA@mail.gmail.com>
+References: <CANOdGiy8dDh63QgAVDiDsLVts-5j_9K8dfZ3fEg+e5JvpdVn3A@mail.gmail.com>
+ <x6iootq0e3.fsf@midna.zekjur.net>
+ <CANOdGiyeAL5Gs5nH=xnm=VGMYLsX+SujZpbiJ_bjZ7PV4+Gqug@mail.gmail.com>
+ <x6d2f1owoh.fsf@midna.zekjur.net>
+ <CANOdGiyKTpOCYU858KvhUn=ZvtLXnncamQ_9Z_1wzToqyCfgmw@mail.gmail.com>
+ <CANOdGix1n7JAv4qoOwaiM_4CvkwrMkWEWwXr9bd5K8CD7F4Wiw@mail.gmail.com>
+ <x638fqytmc.fsf@midna.zekjur.net>
+ <CANOdGizc3MHF6LoQztU65OLaTXx-LHG5O6zeXaqyT-BOjSC-wg@mail.gmail.com>
+ <x6ha44hmsu.fsf@midna.zekjur.net>
+ <CANOdGiySm6FQCb3vC9ZbS8qgH-H7=vUeotraRrD=n3yX+LKZkA@mail.gmail.com>
+Message-ID: <CANOdGiymGhoBAANa2ViJfzz=Xjer6GzyQDW1hkREiTybhou8BQ@mail.gmail.com>
+
+The reason why Xdummy fails for me is as follows:
+Initializing built-in extension XFree86-DGA
+Initializing built-in extension XFree86-DRI
+Initializing built-in extension DRI2
+Loading extension GLX
+xf86EnableIOPorts: failed to set IOPL for I/O (No such device)
+(EE)
+Fatal server error:
+(EE) no screens found(EE)
+(EE)
+
+
+My guess was that it was loading the nvidia glx and that failed to
+lookup the nvidia card, but now I'm not too sure. I tried disabling
+GLX and it had no effect. (except skipping the Loading extension line
+in the output). I've attached my xorg log and output.
+
+On Fri, Jun 6, 2014 at 7:38 PM, Anders Aagaard <aagaande at gmail.com> wrote:
+> Had another stab at this here : http://cr.i3wm.org/patch/566
+>
+> Special mentions:
+> In src/manage.c sending in NULL when "Defer setting focus after the
+> 'new' event" is done feels wrong, but I'm frankly not sure if that
+> comment matches the con_set_urgency below it. It's resetting a urgency
+> flag here if one is "lost"? Maybe sending in WM_HINTS is the right
+> thing to do? Or maybe sending WM_HINTS/etc is generally stupid, and it
+> should be one reason called "window_event_change" and another one for
+> "focus_blocked"?
+>
+> Disclaimer : I've been a dev for a long time, but I haven't done
+> anything in C for ages, so the code might be rubish. If I'm told that
+> and you decide to do this in a much cleaner way, I will not have my
+> feelings hurt ;)
+>
+> Gonna have a stab at fixing the Xdummy stuff now.
+>
+> On Sun, Jun 1, 2014 at 1:49 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+>> Hi Anders,
+>>
+>> Anders Aagaard <aagaande at gmail.com> writes:
+>>> Alternately I could add some code to start sending events for
+>>> con_set_urgency (since focus request that fails now sets an urgency),
+>>> but it wouldn't be usable for my use case unless I also add a reason
+>>> for the urgency change. Which I guess could be
+>>> demands_attention/focus_request and wm_hints? Not sure about that last
+>>> one, where it's really coming from ;).
+>> I think adding an event for urgency with the reason sounds reasonable.
+>>
+>>>> I have the tests working with nvidia 331.67. Can you be more specific
+>>>> about what breaks on your machine?
+>>>
+>>> It's an issue with glx, I've got an nvidia optimus setup, so I'm not
+>>> terribly surprised. I could probably get it working fine by not
+>>> loading glx, but it was easier to setup a VM for it. (I should point
+>>> out it fails starting the X session, so it's not the test running part
+>>> that's broken).
+>> It'd be good to fix that. We call Xdummy with -config /dev/null which is
+>> supposed to not use the system X11 config at all. If that has changed,
+>> it should be updated to continue running in an isolated-enough
+>> environment.
+>>
+>> --
+>> Best regards,
+>> Michael
+>
+>
+>
+> --
+> Mvh
+> Anders Aagaard
+
+
+
+-- 
+Mvh
+Anders Aagaard
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: Xdummy.log
+Type: text/x-log
+Size: 2881 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140606/98c45921/attachment-0002.bin>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: Xorg.1.log
+Type: text/x-log
+Size: 30269 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140606/98c45921/attachment-0003.bin>
+
+From michael at i3wm.org  Mon Jun  9 12:14:55 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 09 Jun 2014 12:14:55 +0200
+Subject: [i3] Call for testing for the 4.8 release
+Message-ID: <x6zjhmcrts.fsf@midna.zekjur.net>
+
+Hi,
+
+I want to release i3 v4.8 soon, so here is a call for testing. If you
+haven’t, please use an i3 build from the “next” git branch. For Debian
+and Ubuntu, we have http://i3wm.org/docs/repositories.html with that
+version so that you don’t need to compile it yourself.
+
+In case you notice a grave problem, please report a bug at
+http://bugs.i3wm.org/ as usual.
+
+If nothing shows up, I’ll make a release within the next few days.
+
+(FYI: This also means only urgent bugfix patches will be merged until
+ the release is done.)
+
+-- 
+Best regards,
+Michael
+
+From berenger.morel at neutralite.org  Mon Jun  9 13:00:06 2014
+From: berenger.morel at neutralite.org (berenger.morel at neutralite.org)
+Date: Mon, 09 Jun 2014 13:00:06 +0200
+Subject: [i3] Call for testing for the 4.8 release
+In-Reply-To: <x6zjhmcrts.fsf@midna.zekjur.net>
+References: <x6zjhmcrts.fsf@midna.zekjur.net>
+Message-ID: <bffbf24e3fa57c46567421a23650dadf@neutralite.org>
+
+
+
+Le 09.06.2014 12:14, Michael Stapelberg a écrit :
+> Hi,
+>
+> I want to release i3 v4.8 soon, so here is a call for testing. If you
+> haven’t, please use an i3 build from the “next” git branch. For 
+> Debian
+> and Ubuntu, we have http://i3wm.org/docs/repositories.html with that
+> version so that you don’t need to compile it yourself.
+>
+> In case you notice a grave problem, please report a bug at
+> http://bugs.i3wm.org/ as usual.
+>
+> If nothing shows up, I’ll make a release within the next few days.
+>
+> (FYI: This also means only urgent bugfix patches will be merged until
+>  the release is done.)
+
+Hi.
+
+Just to be sure, is the version 4.7.3-1+g4.7.2-189-g6fe44d81 the 
+version you speak about? Just wanted to be sure, since unlike for Ubuntu 
+there is only one repo.
+Anyway, I'll test it asap, so now let's browse the changelog to try to 
+use the new features :)
+
+PS: thanks for your work.
+
+From michael at i3wm.org  Mon Jun  9 22:13:44 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 09 Jun 2014 22:13:44 +0200
+Subject: [i3] Call for testing for the 4.8 release
+In-Reply-To: <bffbf24e3fa57c46567421a23650dadf@neutralite.org>
+References: <x6zjhmcrts.fsf@midna.zekjur.net>
+ <bffbf24e3fa57c46567421a23650dadf@neutralite.org>
+Message-ID: <x6r42xdeo7.fsf@midna.zekjur.net>
+
+Hi berenger,
+
+berenger.morel at neutralite.org writes:
+> Just to be sure, is the version 4.7.3-1+g4.7.2-189-g6fe44d81 the 
+> version you speak about? Just wanted to be sure, since unlike for Ubuntu 
+> there is only one repo.
+That’s exactly the one, yeah.
+
+-- 
+Best regards,
+Michael
+
+From wael.nasreddine at gmail.com  Tue Jun 10 00:13:22 2014
+From: wael.nasreddine at gmail.com (Wael Nasreddine)
+Date: Mon, 09 Jun 2014 15:13:22 -0700
+Subject: [i3] Call for testing for the 4.8 release
+In-Reply-To: <x6zjhmcrts.fsf@midna.zekjur.net>
+References: <x6zjhmcrts.fsf@midna.zekjur.net>
+Message-ID: <w52cy4x5viil.fsf@gaea.mtv.corp.google.com>
+
+
+I have been using it since last week, no problems so far..
+
+Thanks,
+
+Wael
+
+Michael Stapelberg <michael at i3wm.org> writes:
+
+> Hi,
+>
+> I want to release i3 v4.8 soon, so here is a call for testing. If you
+> haven’t, please use an i3 build from the “next” git branch. For Debian
+> and Ubuntu, we have http://i3wm.org/docs/repositories.html with that
+> version so that you don’t need to compile it yourself.
+>
+> In case you notice a grave problem, please report a bug at
+> http://bugs.i3wm.org/ as usual.
+>
+> If nothing shows up, I’ll make a release within the next few days.
+>
+> (FYI: This also means only urgent bugfix patches will be merged until
+>  the release is done.)
+>
+> -- 
+> Best regards,
+> Michael
+-- 
+Wael Nasreddine | SRE at Google | wael.nasreddine at gmail.com | (650) 735-1773
+
+From mherda at gmail.com  Tue Jun 10 00:19:18 2014
+From: mherda at gmail.com (Marcin Herda)
+Date: Mon, 09 Jun 2014 23:19:18 +0100
+Subject: [i3] Call for testing for the 4.8 release
+In-Reply-To: <w52cy4x5viil.fsf@gaea.mtv.corp.google.com>
+References: <x6zjhmcrts.fsf@midna.zekjur.net>
+ <w52cy4x5viil.fsf@gaea.mtv.corp.google.com>
+Message-ID: <539632E6.7040504@gmail.com>
+
+Hi,
+
+I have been using it for the last month or so without any problems 
+(including saving and restoring layouts http://www.slackword.net/?p=733)
+
+Thank you.
+
+regards
+Marcin
+
+>> Hi,
+>>
+>> I want to release i3 v4.8 soon, so here is a call for testing. If you
+>> haven’t, please use an i3 build from the “next” git branch. For Debian
+>> and Ubuntu, we have http://i3wm.org/docs/repositories.html with that
+>> version so that you don’t need to compile it yourself.
+>>
+>> In case you notice a grave problem, please report a bug at
+>> http://bugs.i3wm.org/ as usual.
+>>
+>> If nothing shows up, I’ll make a release within the next few days.
+>>
+>> (FYI: This also means only urgent bugfix patches will be merged until
+>>   the release is done.)
+>>
+>> -- 
+>> Best regards,
+>> Michael
+
+
+From aagaande at gmail.com  Tue Jun 10 08:58:16 2014
+From: aagaande at gmail.com (Anders Aagaard)
+Date: Tue, 10 Jun 2014 08:58:16 +0200
+Subject: [i3] Call for testing for the 4.8 release
+In-Reply-To: <539632E6.7040504@gmail.com>
+References: <x6zjhmcrts.fsf@midna.zekjur.net>
+ <w52cy4x5viil.fsf@gaea.mtv.corp.google.com>
+ <539632E6.7040504@gmail.com>
+Message-ID: <CANOdGizU4jUmb19D7GuL2E2WG3tEss_hqCJvvq2Mj3p5V8efxA@mail.gmail.com>
+
+I just noticed one issue now, this is from 7482a0f which I've been
+using for about a week. I had focus in one window (and the window is
+active), however when I type it ends up in another window.
+
+Unfortunately I jumped in and out of windows trying to figure out what
+was going on. The problem I saw was the jetbrains/intellij window had
+focus, I typed and it ended up in gnome-terminal. Switching to another
+workspace and back seemed to fix it, and the last few characters typed
+ended up in the correct window.
+
+So the problem is from this log, before switching workspace to 2 and
+then back to 1 again.
+
+https://dl.dropboxusercontent.com/u/18745774/i3-focus-issue.log
+
+On Tue, Jun 10, 2014 at 12:19 AM, Marcin Herda <mherda at gmail.com> wrote:
+> Hi,
+>
+> I have been using it for the last month or so without any problems
+> (including saving and restoring layouts http://www.slackword.net/?p=733)
+>
+> Thank you.
+>
+> regards
+> Marcin
+>
+>
+>>> Hi,
+>>>
+>>> I want to release i3 v4.8 soon, so here is a call for testing. If you
+>>> haven't, please use an i3 build from the "next" git branch. For Debian
+>>> and Ubuntu, we have http://i3wm.org/docs/repositories.html with that
+>>> version so that you don't need to compile it yourself.
+>>>
+>>> In case you notice a grave problem, please report a bug at
+>>> http://bugs.i3wm.org/ as usual.
+>>>
+>>> If nothing shows up, I'll make a release within the next few days.
+>>>
+>>> (FYI: This also means only urgent bugfix patches will be merged until
+>>>   the release is done.)
+>>>
+>>> --
+>>> Best regards,
+>>> Michael
+>
+>
+
+
+
+-- 
+Mvh
+Anders Aagaard
+
+From mariusmuja at gmail.com  Tue Jun 10 19:42:39 2014
+From: mariusmuja at gmail.com (Marius Muja)
+Date: Tue, 10 Jun 2014 10:42:39 -0700
+Subject: [i3] Call for testing for the 4.8 release
+In-Reply-To: <CANOdGizU4jUmb19D7GuL2E2WG3tEss_hqCJvvq2Mj3p5V8efxA@mail.gmail.com>
+References: <x6zjhmcrts.fsf@midna.zekjur.net>
+ <w52cy4x5viil.fsf@gaea.mtv.corp.google.com>
+ <539632E6.7040504@gmail.com>
+ <CANOdGizU4jUmb19D7GuL2E2WG3tEss_hqCJvvq2Mj3p5V8efxA@mail.gmail.com>
+Message-ID: <CAEFYCXPDbNBiEcAwfDpTXmz5RA2xDZUaXFeevsW8PO3o7DLWFA@mail.gmail.com>
+
+I can confirm a focusing issue with intellij. I can reproduce it by doing
+Navigate -> Line and when the editor jumps to some line I cannot type in
+although the window has focus. If I move the focus out and back in the
+cursor appears and I can type.
+
+
+On Mon, Jun 9, 2014 at 11:58 PM, Anders Aagaard <aagaande at gmail.com> wrote:
+
+> I just noticed one issue now, this is from 7482a0f which I've been
+> using for about a week. I had focus in one window (and the window is
+> active), however when I type it ends up in another window.
+>
+> Unfortunately I jumped in and out of windows trying to figure out what
+> was going on. The problem I saw was the jetbrains/intellij window had
+> focus, I typed and it ended up in gnome-terminal. Switching to another
+> workspace and back seemed to fix it, and the last few characters typed
+> ended up in the correct window.
+>
+> So the problem is from this log, before switching workspace to 2 and
+> then back to 1 again.
+>
+> https://dl.dropboxusercontent.com/u/18745774/i3-focus-issue.log
+>
+> On Tue, Jun 10, 2014 at 12:19 AM, Marcin Herda <mherda at gmail.com> wrote:
+> > Hi,
+> >
+> > I have been using it for the last month or so without any problems
+> > (including saving and restoring layouts http://www.slackword.net/?p=733)
+> >
+> > Thank you.
+> >
+> > regards
+> > Marcin
+> >
+> >
+> >>> Hi,
+> >>>
+> >>> I want to release i3 v4.8 soon, so here is a call for testing. If you
+> >>> haven't, please use an i3 build from the "next" git branch. For Debian
+> >>> and Ubuntu, we have http://i3wm.org/docs/repositories.html with that
+> >>> version so that you don't need to compile it yourself.
+> >>>
+> >>> In case you notice a grave problem, please report a bug at
+> >>> http://bugs.i3wm.org/ as usual.
+> >>>
+> >>> If nothing shows up, I'll make a release within the next few days.
+> >>>
+> >>> (FYI: This also means only urgent bugfix patches will be merged until
+> >>>   the release is done.)
+> >>>
+> >>> --
+> >>> Best regards,
+> >>> Michael
+> >
+> >
+>
+>
+>
+> --
+> Mvh
+> Anders Aagaard
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140610/10661a80/attachment.html>
+
+From tony at dubstepdish.com  Wed Jun 11 00:27:40 2014
+From: tony at dubstepdish.com (Tony Crisci)
+Date: Tue, 10 Jun 2014 18:27:40 -0400
+Subject: [i3] Call for testing for the 4.8 release
+In-Reply-To: <CANOdGizU4jUmb19D7GuL2E2WG3tEss_hqCJvvq2Mj3p5V8efxA@mail.gmail.com>
+References: <x6zjhmcrts.fsf@midna.zekjur.net>
+ <w52cy4x5viil.fsf@gaea.mtv.corp.google.com> <539632E6.7040504@gmail.com>
+ <CANOdGizU4jUmb19D7GuL2E2WG3tEss_hqCJvvq2Mj3p5V8efxA@mail.gmail.com>
+Message-ID: <5397865C.6030308@dubstepdish.com>
+
+I can reproduce this easily with `focus_follows_mouse` when switching focus
+with pointer enter, but not at all with keyboard focus.
+
+There is a similar issue on the stable branch, except that focus does not
+change at all on pointer enter, so i3 remains in sync. This suggests the
+underlying cause is with `focus_follows_mouse`.
+
+On 06/10/2014 02:58 AM, Anders Aagaard wrote:
+> I just noticed one issue now, this is from 7482a0f which I've been
+> using for about a week. I had focus in one window (and the window is
+> active), however when I type it ends up in another window.
+>
+> Unfortunately I jumped in and out of windows trying to figure out what
+> was going on. The problem I saw was the jetbrains/intellij window had
+> focus, I typed and it ended up in gnome-terminal. Switching to another
+> workspace and back seemed to fix it, and the last few characters typed
+> ended up in the correct window.
+>
+> So the problem is from this log, before switching workspace to 2 and
+> then back to 1 again.
+>
+> https://dl.dropboxusercontent.com/u/18745774/i3-focus-issue.log
+>
+> On Tue, Jun 10, 2014 at 12:19 AM, Marcin Herda <mherda at gmail.com> wrote:
+>> Hi,
+>>
+>> I have been using it for the last month or so without any problems
+>> (including saving and restoring layouts http://www.slackword.net/?p=733)
+>>
+>> Thank you.
+>>
+>> regards
+>> Marcin
+>>
+>>
+>>>> Hi,
+>>>>
+>>>> I want to release i3 v4.8 soon, so here is a call for testing. If you
+>>>> haven't, please use an i3 build from the "next" git branch. For Debian
+>>>> and Ubuntu, we have http://i3wm.org/docs/repositories.html with that
+>>>> version so that you don't need to compile it yourself.
+>>>>
+>>>> In case you notice a grave problem, please report a bug at
+>>>> http://bugs.i3wm.org/ as usual.
+>>>>
+>>>> If nothing shows up, I'll make a release within the next few days.
+>>>>
+>>>> (FYI: This also means only urgent bugfix patches will be merged until
+>>>>    the release is done.)
+>>>>
+>>>> --
+>>>> Best regards,
+>>>> Michael
+>>
+>
+>
+
+
+From michael at i3wm.org  Wed Jun 11 09:22:39 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 11 Jun 2014 09:22:39 +0200
+Subject: [i3] Call for testing for the 4.8 release
+In-Reply-To: <CAEFYCXPDbNBiEcAwfDpTXmz5RA2xDZUaXFeevsW8PO3o7DLWFA@mail.gmail.com>
+References: <x6zjhmcrts.fsf@midna.zekjur.net>
+ <w52cy4x5viil.fsf@gaea.mtv.corp.google.com> <539632E6.7040504@gmail.com>
+ <CANOdGizU4jUmb19D7GuL2E2WG3tEss_hqCJvvq2Mj3p5V8efxA@mail.gmail.com>
+ <CAEFYCXPDbNBiEcAwfDpTXmz5RA2xDZUaXFeevsW8PO3o7DLWFA@mail.gmail.com>
+Message-ID: <x6fvjbdi68.fsf@midna.zekjur.net>
+
+Hi,
+
+Marius Muja <mariusmuja at gmail.com> writes:
+> I can confirm a focusing issue with intellij. I can reproduce it by doing
+> Navigate -> Line and when the editor jumps to some line I cannot type in
+> although the window has focus. If I move the focus out and back in the
+> cursor appears and I can type.
+We’ve been having issues with java for as long as the project
+lives. These are not new problems and hence not blocking the upcoming
+release.
+
+Thanks to everyone for testing, please update and continue testing so
+that we can release (this weekend probably) :).
+
+-- 
+Best regards,
+Michael
+
+From aagaande at gmail.com  Wed Jun 11 09:29:20 2014
+From: aagaande at gmail.com (Anders Aagaard)
+Date: Wed, 11 Jun 2014 09:29:20 +0200
+Subject: [i3] Call for testing for the 4.8 release
+In-Reply-To: <x6fvjbdi68.fsf@midna.zekjur.net>
+References: <x6zjhmcrts.fsf@midna.zekjur.net>
+ <w52cy4x5viil.fsf@gaea.mtv.corp.google.com>
+ <539632E6.7040504@gmail.com>
+ <CANOdGizU4jUmb19D7GuL2E2WG3tEss_hqCJvvq2Mj3p5V8efxA@mail.gmail.com>
+ <CAEFYCXPDbNBiEcAwfDpTXmz5RA2xDZUaXFeevsW8PO3o7DLWFA@mail.gmail.com>
+ <x6fvjbdi68.fsf@midna.zekjur.net>
+Message-ID: <CANOdGizrLhA_8n=G77niSFa_n6U5rHEWAWnzOUNAw7=h+Ov0qw@mail.gmail.com>
+
+Java focus issues isn't what I originally reported though. Me typing stuff
+and it ending up in a different (non Java) window is definitely a
+regression.
+On Jun 11, 2014 9:22 AM, "Michael Stapelberg" <michael at i3wm.org> wrote:
+
+> Hi,
+>
+> Marius Muja <mariusmuja at gmail.com> writes:
+> > I can confirm a focusing issue with intellij. I can reproduce it by doing
+> > Navigate -> Line and when the editor jumps to some line I cannot type in
+> > although the window has focus. If I move the focus out and back in the
+> > cursor appears and I can type.
+> We've been having issues with java for as long as the project
+> lives. These are not new problems and hence not blocking the upcoming
+> release.
+>
+> Thanks to everyone for testing, please update and continue testing so
+> that we can release (this weekend probably) :).
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140611/460b3bc1/attachment.html>
+
+From michael at i3wm.org  Wed Jun 11 09:48:09 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 11 Jun 2014 09:48:09 +0200
+Subject: [i3] Call for testing for the 4.8 release
+In-Reply-To: <CANOdGizrLhA_8n=G77niSFa_n6U5rHEWAWnzOUNAw7=h+Ov0qw@mail.gmail.com>
+References: <x6zjhmcrts.fsf@midna.zekjur.net>
+ <w52cy4x5viil.fsf@gaea.mtv.corp.google.com> <539632E6.7040504@gmail.com>
+ <CANOdGizU4jUmb19D7GuL2E2WG3tEss_hqCJvvq2Mj3p5V8efxA@mail.gmail.com>
+ <CAEFYCXPDbNBiEcAwfDpTXmz5RA2xDZUaXFeevsW8PO3o7DLWFA@mail.gmail.com>
+ <x6fvjbdi68.fsf@midna.zekjur.net>
+ <CANOdGizrLhA_8n=G77niSFa_n6U5rHEWAWnzOUNAw7=h+Ov0qw@mail.gmail.com>
+Message-ID: <x6a99jdgzq.fsf@midna.zekjur.net>
+
+Hi Anders,
+
+Anders Aagaard <aagaande at gmail.com> writes:
+> Java focus issues isn't what I originally reported though. Me typing stuff
+> and it ending up in a different (non Java) window is definitely a
+> regression.
+You were mentioning IntelliJ as one of the windows, and IntelliJ is
+written in Java. Not sure how this is not java-related.
+
+In any case, try upgrading to the latest commit
+(8ece9950012e0a2d20db9d4d15bc3a3e30b96121 at the time of writing), that
+may fix the issue(s).
+
+-- 
+Best regards,
+Michael
+
+From berenger.morel at neutralite.org  Wed Jun 11 10:30:20 2014
+From: berenger.morel at neutralite.org (berenger.morel at neutralite.org)
+Date: Wed, 11 Jun 2014 10:30:20 +0200
+Subject: [i3] Call for testing for the 4.8 release
+In-Reply-To: <CANOdGizrLhA_8n=G77niSFa_n6U5rHEWAWnzOUNAw7=h+Ov0qw@mail.gmail.com>
+References: <x6zjhmcrts.fsf@midna.zekjur.net>
+ <w52cy4x5viil.fsf@gaea.mtv.corp.google.com> <539632E6.7040504@gmail.com>
+ <CANOdGizU4jUmb19D7GuL2E2WG3tEss_hqCJvvq2Mj3p5V8efxA@mail.gmail.com>
+ <CAEFYCXPDbNBiEcAwfDpTXmz5RA2xDZUaXFeevsW8PO3o7DLWFA@mail.gmail.com>
+ <x6fvjbdi68.fsf@midna.zekjur.net>
+ <CANOdGizrLhA_8n=G77niSFa_n6U5rHEWAWnzOUNAw7=h+Ov0qw@mail.gmail.com>
+Message-ID: <48dd33b5440dc5ea75cbd1131fa8ebf2@neutralite.org>
+
+
+
+Le 11.06.2014 09:29, Anders Aagaard a écrit :
+> Java focus issues isn't what I originally reported though. Me typing
+> stuff and it ending up in a different (non Java) window is definitely
+> a regression.
+
+I agree that this is not a Java problem, but I do not agree that it is 
+a regression. I had the problem few days ago, with the version which can 
+be found in Debian backports ( 4.7.2 ). I did not reported it because I 
+am unable to reproduce it, and does not have internet at home (I'm 
+currently at work).
+
+From lewis at gunsch.ca  Wed Jun 11 17:00:11 2014
+From: lewis at gunsch.ca (Lewis Gunsch)
+Date: Wed, 11 Jun 2014 09:00:11 -0600
+Subject: [i3] Call for testing for the 4.8 release
+In-Reply-To: <48dd33b5440dc5ea75cbd1131fa8ebf2@neutralite.org>
+References: <x6zjhmcrts.fsf@midna.zekjur.net>
+ <w52cy4x5viil.fsf@gaea.mtv.corp.google.com>
+ <539632E6.7040504@gmail.com>
+ <CANOdGizU4jUmb19D7GuL2E2WG3tEss_hqCJvvq2Mj3p5V8efxA@mail.gmail.com>
+ <CAEFYCXPDbNBiEcAwfDpTXmz5RA2xDZUaXFeevsW8PO3o7DLWFA@mail.gmail.com>
+ <x6fvjbdi68.fsf@midna.zekjur.net>
+ <CANOdGizrLhA_8n=G77niSFa_n6U5rHEWAWnzOUNAw7=h+Ov0qw@mail.gmail.com>
+ <48dd33b5440dc5ea75cbd1131fa8ebf2@neutralite.org>
+Message-ID: <CACBHMbGXUtQkFQggRegUYjHN1VWDEpsedzgO=X65nN4OSP589g@mail.gmail.com>
+
+On Wed, Jun 11, 2014 at 2:30 AM, <berenger.morel at neutralite.org> wrote:
+
+>
+>
+> Le 11.06.2014 09:29, Anders Aagaard a écrit :
+>
+>  Java focus issues isn't what I originally reported though. Me typing
+>> stuff and it ending up in a different (non Java) window is definitely
+>> a regression.
+>>
+>
+> I agree that this is not a Java problem, but I do not agree that it is a
+> regression. I had the problem few days ago, with the version which can be
+> found in Debian backports ( 4.7.2 ). I did not reported it because I am
+> unable to reproduce it, and does not have internet at home (I'm currently
+> at work).
+>
+
+I have had this problem on other programs then Intellij. I have regularly
+encountered this issue in the Conkeror web browser. I focus a window, but
+the typing ends up in some other window in the same workspace. Usually,
+this means another Conkeror window since the workspace is devoted to it. No
+amount of refocusing seems to solve it, but I've also never tried to switch
+workspaces. However, I have had this problem for well over 6 months now.
+So, I would agree that it is not a regression.
+
+Cheers,
+~Lewis
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140611/3298179e/attachment.html>
+
+From nashpapa at gmail.com  Wed Jun 11 19:18:47 2014
+From: nashpapa at gmail.com (avinash r)
+Date: Wed, 11 Jun 2014 22:48:47 +0530
+Subject: [i3] Call for testing for the 4.8 release
+In-Reply-To: <CACBHMbGXUtQkFQggRegUYjHN1VWDEpsedzgO=X65nN4OSP589g@mail.gmail.com>
+References: <x6zjhmcrts.fsf@midna.zekjur.net>
+ <w52cy4x5viil.fsf@gaea.mtv.corp.google.com>
+ <539632E6.7040504@gmail.com>
+ <CANOdGizU4jUmb19D7GuL2E2WG3tEss_hqCJvvq2Mj3p5V8efxA@mail.gmail.com>
+ <CAEFYCXPDbNBiEcAwfDpTXmz5RA2xDZUaXFeevsW8PO3o7DLWFA@mail.gmail.com>
+ <x6fvjbdi68.fsf@midna.zekjur.net>
+ <CANOdGizrLhA_8n=G77niSFa_n6U5rHEWAWnzOUNAw7=h+Ov0qw@mail.gmail.com>
+ <48dd33b5440dc5ea75cbd1131fa8ebf2@neutralite.org>
+ <CACBHMbGXUtQkFQggRegUYjHN1VWDEpsedzgO=X65nN4OSP589g@mail.gmail.com>
+Message-ID: <CAHCistdck-wuYUFi_EG4NWUo6NXZaHFTMSOXDnaVTRBD29Rthg@mail.gmail.com>
+
+Can anyone tell me how to repeat this, I usually have windows popping in
+and out every now and then, and use IntelliJ idea for development work. So
+I'd like to look into this too.
+On Jun 11, 2014 8:31 PM, "Lewis Gunsch" <lewis at gunsch.ca> wrote:
+
+> On Wed, Jun 11, 2014 at 2:30 AM, <berenger.morel at neutralite.org> wrote:
+>
+>>
+>>
+>> Le 11.06.2014 09:29, Anders Aagaard a écrit :
+>>
+>>  Java focus issues isn't what I originally reported though. Me typing
+>>> stuff and it ending up in a different (non Java) window is definitely
+>>> a regression.
+>>>
+>>
+>> I agree that this is not a Java problem, but I do not agree that it is a
+>> regression. I had the problem few days ago, with the version which can be
+>> found in Debian backports ( 4.7.2 ). I did not reported it because I am
+>> unable to reproduce it, and does not have internet at home (I'm currently
+>> at work).
+>>
+>
+> I have had this problem on other programs then Intellij. I have regularly
+> encountered this issue in the Conkeror web browser. I focus a window, but
+> the typing ends up in some other window in the same workspace. Usually,
+> this means another Conkeror window since the workspace is devoted to it. No
+> amount of refocusing seems to solve it, but I've also never tried to switch
+> workspaces. However, I have had this problem for well over 6 months now.
+> So, I would agree that it is not a regression.
+>
+> Cheers,
+> ~Lewis
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140611/5bab14b0/attachment.html>
+
+From aagaande at gmail.com  Wed Jun 11 20:09:01 2014
+From: aagaande at gmail.com (Anders Aagaard)
+Date: Wed, 11 Jun 2014 20:09:01 +0200
+Subject: [i3] Call for testing for the 4.8 release
+In-Reply-To: <CACBHMbGXUtQkFQggRegUYjHN1VWDEpsedzgO=X65nN4OSP589g@mail.gmail.com>
+References: <x6zjhmcrts.fsf@midna.zekjur.net>
+ <w52cy4x5viil.fsf@gaea.mtv.corp.google.com>
+ <539632E6.7040504@gmail.com>
+ <CANOdGizU4jUmb19D7GuL2E2WG3tEss_hqCJvvq2Mj3p5V8efxA@mail.gmail.com>
+ <CAEFYCXPDbNBiEcAwfDpTXmz5RA2xDZUaXFeevsW8PO3o7DLWFA@mail.gmail.com>
+ <x6fvjbdi68.fsf@midna.zekjur.net>
+ <CANOdGizrLhA_8n=G77niSFa_n6U5rHEWAWnzOUNAw7=h+Ov0qw@mail.gmail.com>
+ <48dd33b5440dc5ea75cbd1131fa8ebf2@neutralite.org>
+ <CACBHMbGXUtQkFQggRegUYjHN1VWDEpsedzgO=X65nN4OSP589g@mail.gmail.com>
+Message-ID: <CANOdGiy0Y_h59UKFhyThzv0t3Xs1x1hZE326Nz2xeosGqu1Zxw@mail.gmail.com>
+
+Guess it isn't a regression then. A bit surprising for me, I've been
+using i3 for ages and I've never seen the issue before. Now it's
+popped up more than once in the last few days.
+
+On Wed, Jun 11, 2014 at 5:00 PM, Lewis Gunsch <lewis at gunsch.ca> wrote:
+> On Wed, Jun 11, 2014 at 2:30 AM, <berenger.morel at neutralite.org> wrote:
+>>
+>>
+>>
+>> Le 11.06.2014 09:29, Anders Aagaard a écrit :
+>>
+>>> Java focus issues isn't what I originally reported though. Me typing
+>>> stuff and it ending up in a different (non Java) window is definitely
+>>> a regression.
+>>
+>>
+>> I agree that this is not a Java problem, but I do not agree that it is a
+>> regression. I had the problem few days ago, with the version which can be
+>> found in Debian backports ( 4.7.2 ). I did not reported it because I am
+>> unable to reproduce it, and does not have internet at home (I'm currently at
+>> work).
+>
+>
+> I have had this problem on other programs then Intellij. I have regularly
+> encountered this issue in the Conkeror web browser. I focus a window, but
+> the typing ends up in some other window in the same workspace. Usually, this
+> means another Conkeror window since the workspace is devoted to it. No
+> amount of refocusing seems to solve it, but I've also never tried to switch
+> workspaces. However, I have had this problem for well over 6 months now. So,
+> I would agree that it is not a regression.
+>
+> Cheers,
+> ~Lewis
+>
+
+
+
+-- 
+Mvh
+Anders Aagaard
+
+From crestani at informatik.uni-tuebingen.de  Wed Jun 11 21:03:11 2014
+From: crestani at informatik.uni-tuebingen.de (Marcus Crestani)
+Date: Wed, 11 Jun 2014 21:03:11 +0200
+Subject: [i3] Call for testing for the 4.8 release
+In-Reply-To: <x6zjhmcrts.fsf@midna.zekjur.net> (Michael Stapelberg's message
+ of "Mon, 09 Jun 2014 12:14:55 +0200")
+References: <x6zjhmcrts.fsf@midna.zekjur.net>
+Message-ID: <m2egyvs1zk.fsf@informatik.uni-tuebingen.de>
+
+>>>>>"MS" == Michael Stapelberg <michael at i3wm.org> writes:
+MS> I want to release i3 v4.8 soon, so here is a call for testing.
+
+On OS X, I see a ton of "macro redefined" warnings when compiling
+src/log.c.  The redefinitions are caused by include/queue.h that exists
+as a system header /usr/include/sys/queue.h on OS X.
+
+I've attached a patch that moves the __APPLE__ specific include of
+sysctl.h below the include of i3.h.  This way, the compiler considers
+the redefinitions to come from a system header and does not show the
+warnings.  Also, types.h is no longer needed on OS X.
+
+With this patch i3 builds cleanly and works fine for me.
+
+-- 
+Marcus
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Include-sys-sysctl.h-after-i3.h-to-prevent-redefinit.patch
+Type: text/x-patch
+Size: 889 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140611/e48cdf81/attachment.bin>
+
+From michael at i3wm.org  Wed Jun 11 23:27:30 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 11 Jun 2014 23:27:30 +0200
+Subject: [i3] Call for testing for the 4.8 release
+In-Reply-To: <m2egyvs1zk.fsf@informatik.uni-tuebingen.de>
+References: <x6zjhmcrts.fsf@midna.zekjur.net>
+ <m2egyvs1zk.fsf@informatik.uni-tuebingen.de>
+Message-ID: <x6y4x3b0hp.fsf@midna.zekjur.net>
+
+Hi Marcus,
+
+Marcus Crestani <crestani at informatik.uni-tuebingen.de> writes:
+> I've attached a patch that moves the __APPLE__ specific include of
+> sysctl.h below the include of i3.h.  This way, the compiler considers
+> the redefinitions to come from a system header and does not show the
+> warnings.  Also, types.h is no longer needed on OS X.
+Thanks. Next time, can you submit it to http://cr.i3wm.org/ directly
+please?
+
+-- 
+Best regards,
+Michael
+
+From crestani at informatik.uni-tuebingen.de  Thu Jun 12 19:58:08 2014
+From: crestani at informatik.uni-tuebingen.de (Marcus Crestani)
+Date: Thu, 12 Jun 2014 19:58:08 +0200
+Subject: [i3] Call for testing for the 4.8 release
+In-Reply-To: <x6y4x3b0hp.fsf@midna.zekjur.net> (Michael Stapelberg's message
+ of "Wed, 11 Jun 2014 23:27:30 +0200")
+References: <x6zjhmcrts.fsf@midna.zekjur.net>
+ <m2egyvs1zk.fsf@informatik.uni-tuebingen.de>
+ <x6y4x3b0hp.fsf@midna.zekjur.net>
+Message-ID: <m2a99irowf.fsf@informatik.uni-tuebingen.de>
+
+>>>>>"MS" == Michael Stapelberg <michael at i3wm.org> writes:
+MS> Thanks. Next time, can you submit it to http://cr.i3wm.org/ directly
+MS> please?
+
+Sure, sorry for the inconvenience.
+
+-- 
+Marcus
+
+From michael at i3wm.org  Fri Jun 13 22:40:25 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 13 Jun 2014 22:40:25 +0200
+Subject: [i3] Call for testing for the 4.8 release (2)
+Message-ID: <x661k4bl1i.fsf@midna.zekjur.net>
+
+Hi everyone,
+
+the old thread got pretty messy, so I’m starting a new one to make sure
+I reach everyone.
+
+As announced, I want to release i3 v4.8 soon. The current plan is to
+release what we have in the “next” git branch right now in two days,
+i.e. on Sunday, 2014-06-15. I’ve just committed a bunch of bugfixes, so
+please update and test.
+
+For Debian and Ubuntu, we have http://i3wm.org/docs/repositories.html
+with that version so that you don’t need to compile it yourself.
+
+In case you notice a grave problem, please report a bug at
+http://bugs.i3wm.org/ as usual.
+
+-- 
+Best regards,
+Michael
+
+From serge at vanginderachter.be  Fri Jun 13 22:52:52 2014
+From: serge at vanginderachter.be (Serge van Ginderachter)
+Date: Fri, 13 Jun 2014 22:52:52 +0200
+Subject: [i3] Call for testing for the 4.8 release (2)
+In-Reply-To: <x661k4bl1i.fsf@midna.zekjur.net>
+References: <x661k4bl1i.fsf@midna.zekjur.net>
+Message-ID: <CAEhzMJDfXNv_vE+QH-cFhBWLEFh3t_hLT+pQzLcVCUWPfM=Y1w@mail.gmail.com>
+
+On 13 June 2014 22:40, Michael Stapelberg <michael at i3wm.org> wrote:
+
+> For Debian and Ubuntu, we have http://i3wm.org/docs/repositories.html
+>
+
+​Should we use the raring repo for Ubuntu 14.04 aka. trusty, or is there no
+option here?
+
+(http://build.i3wm.org/ubuntu/ doesn't have trusty mentioned)
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140613/275cfe90/attachment.html>
+
+From serge at vanginderachter.be  Fri Jun 13 23:21:44 2014
+From: serge at vanginderachter.be (Serge van Ginderachter)
+Date: Fri, 13 Jun 2014 23:21:44 +0200
+Subject: [i3] Call for testing for the 4.8 release (2)
+In-Reply-To: <CAEhzMJDfXNv_vE+QH-cFhBWLEFh3t_hLT+pQzLcVCUWPfM=Y1w@mail.gmail.com>
+References: <x661k4bl1i.fsf@midna.zekjur.net>
+ <CAEhzMJDfXNv_vE+QH-cFhBWLEFh3t_hLT+pQzLcVCUWPfM=Y1w@mail.gmail.com>
+Message-ID: <CAEhzMJB_d3CxFTFh-2qBvDSLuRqjMtQNkpxHZdEB1sDsudOtuw@mail.gmail.com>
+
+On 13 June 2014 22:52, Serge van Ginderachter <serge at vanginderachter.be>
+wrote:
+
+> ​Should we use the raring repo for Ubuntu 14.04 aka. trusty, or is there
+> no option here?
+>
+> (http://build.i3wm.org/ubuntu/ doesn't have trusty mentioned)
+>
+
+​I got a 'yes' on that on irc. Thanks.​
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140613/1a7b2393/attachment.html>
+
+From baptiste.daroussin at gmail.com  Sat Jun 14 01:18:05 2014
+From: baptiste.daroussin at gmail.com (Baptiste Daroussin)
+Date: Sat, 14 Jun 2014 01:18:05 +0200
+Subject: [i3] Call for testing for the 4.8 release (2)
+In-Reply-To: <CAEhzMJB_d3CxFTFh-2qBvDSLuRqjMtQNkpxHZdEB1sDsudOtuw@mail.gmail.com>
+References: <x661k4bl1i.fsf@midna.zekjur.net>
+ <CAEhzMJDfXNv_vE+QH-cFhBWLEFh3t_hLT+pQzLcVCUWPfM=Y1w@mail.gmail.com>
+ <CAEhzMJB_d3CxFTFh-2qBvDSLuRqjMtQNkpxHZdEB1sDsudOtuw@mail.gmail.com>
+Message-ID: <CAPKC6oLvNg8W7tt8YMvFRnSrmnqZrwsxfcpYA7g01TbCi_JfAw@mail.gmail.com>
+
+Build and run seems ok so far on FreeBSD
+
+2014-06-13 23:21 GMT+02:00 Serge van Ginderachter <serge at vanginderachter.be>:
+>
+> On 13 June 2014 22:52, Serge van Ginderachter <serge at vanginderachter.be>
+> wrote:
+>>
+>> Should we use the raring repo for Ubuntu 14.04 aka. trusty, or is there no
+>> option here?
+>>
+>> (http://build.i3wm.org/ubuntu/ doesn't have trusty mentioned)
+>
+>
+> I got a 'yes' on that on irc. Thanks.
+>
+
+From michael at i3wm.org  Tue Jun 24 09:23:37 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Tue, 24 Jun 2014 09:23:37 +0200
+Subject: [i3] Question about styling i3 scratchpad
+In-Reply-To: <CAPukbqwaY8wRNCqAFfX45x4rhzTfiLU8FOd5929QnrRgPb+A8Q@mail.gmail.com>
+References: <CAPukbqwaY8wRNCqAFfX45x4rhzTfiLU8FOd5929QnrRgPb+A8Q@mail.gmail.com>
+Message-ID: <x661jq7oue.fsf@midna.zekjur.net>
+
+Hi Charles,
+
+Charles Leifer <coleifer at gmail.com> writes:
+> I was wondering if there was any way to apply special styling to the
+> scratchpad window? Special border, special title, whatever.
+Windows that are in the scratchpad are just floating windows. Therefore,
+you can apply the same styling to them as to any other floating window
+in terms of borders and color configuration. There is no way to
+distinguish windows that are in the scratchpad from other windows.
+
+-- 
+Best regards,
+Michael
+
+From timp at timp.com.au  Wed Jun 25 01:26:42 2014
+From: timp at timp.com.au (Timothy Pollard)
+Date: Wed, 25 Jun 2014 09:26:42 +1000
+Subject: [i3] XFCE Notifications Appearing Centered
+Message-ID: <20140625092642.5b5c165b@helez.timp.com.au>
+
+Hi,
+
+I upgraded to 4.8 from 4.7.2 over the weekend and I've found a small problem
+with XFCE Notifications.
+
+If they are configured to start from the top-left or top-right the first one
+opens in the center rather than at the top-left or top-right as expected. If
+additional notifications are opened after the first one they display as normal,
+and if you configure it to open from the bottom-left or bottom-right it works
+as normal as well.
+
+Assuming you've got XFCE 4 installed you can see an example by running
+xfce4-notifyd-config and using the Preview button with a different config
+options.
+
+Note that it did work with 4.7.2, though I had had to override some settings
+for windows of the XFCE4 class, essentially "for_window [class="Xfce4-notifyd"]
+floating enable; border none; focus mode_toggle", but trying each of those
+options individually doesn't help, and as a group they actually cause another
+problem (the "border none" applies to the focused window, not the notification).
+
+Anyone know what might be causing this? Or want more details?
+
+Thanks,
+-- 
+TimP
+[http://hub.timp.com.au]
+[http://blog.timp.com.au]
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 819 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140625/e273cc9a/attachment.sig>
+
+From tony at dubstepdish.com  Wed Jun 25 06:27:51 2014
+From: tony at dubstepdish.com (Tony Crisci)
+Date: Wed, 25 Jun 2014 00:27:51 -0400
+Subject: [i3] XFCE Notifications Appearing Centered
+In-Reply-To: <20140625092642.5b5c165b@helez.timp.com.au>
+References: <20140625092642.5b5c165b@helez.timp.com.au>
+Message-ID: <53AA4FC7.4080309@dubstepdish.com>
+
+Hi,
+
+The problems with xfce4-notifyd were fixed recently in the development 
+version.
+They should work pretty much as expected without extra configuration. 
+The only
+remaining issue is that the notification windows are not sticky.
+
+
+On 06/24/2014 07:26 PM, Timothy Pollard wrote:
+> Hi,
+>
+> I upgraded to 4.8 from 4.7.2 over the weekend and I've found a small problem
+> with XFCE Notifications.
+>
+> If they are configured to start from the top-left or top-right the first one
+> opens in the center rather than at the top-left or top-right as expected. If
+> additional notifications are opened after the first one they display as normal,
+> and if you configure it to open from the bottom-left or bottom-right it works
+> as normal as well.
+>
+> Assuming you've got XFCE 4 installed you can see an example by running
+> xfce4-notifyd-config and using the Preview button with a different config
+> options.
+>
+> Note that it did work with 4.7.2, though I had had to override some settings
+> for windows of the XFCE4 class, essentially "for_window [class="Xfce4-notifyd"]
+> floating enable; border none; focus mode_toggle", but trying each of those
+> options individually doesn't help, and as a group they actually cause another
+> problem (the "border none" applies to the focused window, not the notification).
+>
+> Anyone know what might be causing this? Or want more details?
+>
+> Thanks,
+
+
+From berenger.morel at neutralite.org  Wed Jun 25 10:21:12 2014
+From: berenger.morel at neutralite.org (berenger.morel at neutralite.org)
+Date: Wed, 25 Jun 2014 10:21:12 +0200
+Subject: [i3] bug in layout support
+Message-ID: <267110d7e277f1752e565a7cfeb49b96@neutralite.org>
+
+Hello.
+
+I think I have noticed a regression in development version ( 
+4.8-43-gb91cd34 (2014-06-24, branch "next") ): when it is started, it 
+seems to use a qwerty layout, and I have to reload it. Once reloaded, 
+everything works fine anew.
+
+I have noticed this problem since yesterday, so I guess the regression 
+was introduced around Monday.
+I am using a Debian testing.
+
+From michael at i3wm.org  Wed Jun 25 17:46:17 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 25 Jun 2014 17:46:17 +0200
+Subject: [i3] bug in layout support
+In-Reply-To: <267110d7e277f1752e565a7cfeb49b96@neutralite.org>
+References: <267110d7e277f1752e565a7cfeb49b96@neutralite.org>
+Message-ID: <x6wqc556wm.fsf@midna.zekjur.net>
+
+Hi,
+
+berenger.morel at neutralite.org writes:
+> I think I have noticed a regression in development version ( 
+> 4.8-43-gb91cd34 (2014-06-24, branch "next") ): when it is started, it 
+> seems to use a qwerty layout, and I have to reload it. Once reloaded, 
+> everything works fine anew.
+>
+> I have noticed this problem since yesterday, so I guess the regression 
+> was introduced around Monday.
+> I am using a Debian testing.
+The only valid way to report a bug is to file a bug at
+http://bugs.i3wm.org/, so please do that.
+
+It’d be a huge help if you could use git bisect to track down which
+commit caused this problem.
+
+-- 
+Best regards,
+Michael
+
+From timp at timp.com.au  Wed Jun 25 23:14:37 2014
+From: timp at timp.com.au (Timothy Pollard)
+Date: Thu, 26 Jun 2014 07:14:37 +1000
+Subject: [i3] XFCE Notifications Appearing Centered
+In-Reply-To: <53AA4FC7.4080309@dubstepdish.com>
+References: <20140625092642.5b5c165b@helez.timp.com.au>
+ <53AA4FC7.4080309@dubstepdish.com>
+Message-ID: <20140626071437.19e051fa@helez.timp.com.au>
+
+On Wed, 25 Jun 2014 00:27:51 -0400
+Tony Crisci <tony at dubstepdish.com> wrote:
+> Hi,
+> 
+> The problems with xfce4-notifyd were fixed recently in the development
+> version. They should work pretty much as expected without extra
+> configuration. The only remaining issue is that the notification windows are
+> not sticky.
+> 
+
+OK, cool. I'll give the dev release a test then to verify. The situation has
+certainly improved between 4.7.2 and 4.8 though.
+
+-- 
+TimP
+[http://hub.timp.com.au]
+[http://blog.timp.com.au]
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 819 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140626/635e2d2a/attachment.sig>
+
+From cts at thomasstover.com  Fri Jun 27 19:46:13 2014
+From: cts at thomasstover.com (C. Thomas Stover)
+Date: Fri, 27 Jun 2014 17:46:13 +0000 (UTC)
+Subject: [i3] application tiling vs environment/wm tiling
+Message-ID: <lokal5$ce$1@ger.gmane.org>
+
+This theme came up again today, so I thought it might be worth hearing 
+what others thought about it. I've been with i3wm for about 6 months now, 
+and I am extremely happy about not just i3wm, but the tiling paradigm in 
+general. This was the first such wm for me. Why it took so long to get 
+here, I don't know. I would like to thank the complete implosion into 
+darkness that has taken place in the world of "traditional, non-tiling 
+desktop computing" for helping me to find what was lost to start with.
+
+Anyway, as a developer, I more and more look at i3/tiling wm as a 
+continuation of the "operating system is the ide" paradigm lost to much 
+of the non-*nix world. This same narrative of course applies to many work 
+flows. The observation I'm blabbing about now is that so many 
+applications leverage in-application tiling as a UI paradigm, yet 
+ironically would actually be better of being (or at least supporting) 
+multi-window UIs so as to keep uniform tiling semantics across all 
+running applications. 
+
+I used to say that the most important reason to support multi-window was 
+to support multi-head displays. That is still true, but consistent-tiling 
+is even a bigger one. Plus of course, when you are on a system with a 
+small screen, you would rather cycle through all of an application's 
+internal tiles as full screen windows. This is further irony since a 
+unified strategy for supporting small and large screen environments was 
+one of the core reasons for the aforementioned "great desktop environment 
+meltdown" of the early 2010s. 
+
+So really, good work. It's just so different to be getting happier about 
+something in computing (especially ui related) than more disgusted. Now, 
+I just need to wait another 8-15 years for everyone else to realize the 
+"browser is the epicenter of the universe" model has long since jumped 
+the shark.
+
+
+
+From karkhaz at gmail.com  Sun Jun 29 12:00:34 2014
+From: karkhaz at gmail.com (Kareem)
+Date: Sun, 29 Jun 2014 11:00:34 +0100
+Subject: [i3] application tiling vs environment/wm tiling
+In-Reply-To: <lokal5$ce$1@ger.gmane.org>
+References: <lokal5$ce$1@ger.gmane.org>
+Message-ID: <20140629100034.GA17149@katrina>
+
+On 2014-06-27 1746, C. Thomas Stover wrote:
+> The observation I'm blabbing about now is that so many applications
+> leverage in-application tiling as a UI paradigm, yet ironically
+> would actually be better of being (or at least supporting)
+> multi-window UIs so as to keep uniform tiling semantics across all
+> running applications. 
+
+Amen. I am constantly frustrated by the fact that so many apps try to
+reimplement a window manager---each with their own esoteric key
+bindings. I really shouldn't have to use Ctrl-Tab to switch tabs in
+firefox, Ctrl-W Ctrl-J for windows in Vim, ..., when I have a
+perfectly good WM like i3 that is set up exactly the way I want it.
+
+Sometimes the solution is to change apps (from Firefox to dwb for
+example), but there isn't really an alternative to vim :( (I know
+emacs has a server mode, so you can run several emacs clients in
+different terms; I wish vim had this).
+
+Unfortunately, most people use OSes with a baked-in floating window
+manager that they can't change. For such an OS, the app *needs* its
+own internal WM because the OS WM is ineffective. So while MS Windows
+and Mac OS X have the market share, you can look forward to Mozilla
+targeting its UI to users of those OSes.
+
+-- 
+Kareem
+

@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Containers in i3
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Containers%20in%20i3&In-Reply-To=%3CCACxDzDLp8SyETqGbSG8C1ovCkRLvxEKZ8rC3Vgo7p1%2Bb2yVdoA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001360.html">
+   <LINK REL="Next"  HREF="001362.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Containers in i3</H1>
+    <B>Harry Allenby</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Containers%20in%20i3&In-Reply-To=%3CCACxDzDLp8SyETqGbSG8C1ovCkRLvxEKZ8rC3Vgo7p1%2Bb2yVdoA%40mail.gmail.com%3E"
+       TITLE="[i3] Containers in i3">guitarfish17 at gmail.com
+       </A><BR>
+    <I>Tue Jul 16 03:38:25 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001360.html">[i3] Containers in i3
+</A></li>
+        <LI>Next message: <A HREF="001362.html">[i3] Ratio for split containers ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1361">[ date ]</a>
+              <a href="thread.html#1361">[ thread ]</a>
+              <a href="subject.html#1361">[ subject ]</a>
+              <a href="author.html#1361">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Thanks very much for your detailed answer! I will study it carefully and
+make some experiments and maybe come up with a tree-model I can understand
+better--something I love doing. I like i3 very much because:
+(1) trees are IMO a better starting point than the column models others use;
+(2) I hate having to go through the pre-designed layouts given to you by
+some others (e.g. awesome and xmonad) (in the Microsoft spirit of &quot;We know
+what's best for you&quot;).
+So I'm glad i3 has surprises! (I think the tragedy of doing mathematics is
+that you start with something totally magical, and you put in a lot of
+thought and work to understand it; and if you succeed you destroy its magic
+(but not totally!).)
+
+
+On Mon, Jul 15, 2013 at 12:00 AM, Axel Wagner &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">mail at merovius.de</A>&gt; wrote:
+
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> Excerpts from Harry Allenby's message of 2013-07-15 07:50:39 +0200:
+</I>&gt;<i> &gt; I'm a very literal-minded mathematician
+</I>&gt;<i>
+</I>&gt;<i> Then let me, as a fellow mathematician try to explain at least part of
+</I>&gt;<i> your questions ;)
+</I>&gt;<i>
+</I>&gt;<i> &gt; (3) I just don't grasp the concept of a container in i3. It seems to
+</I>&gt;<i> &gt; me that the basic objects are windows, and that &quot;container&quot; is a
+</I>&gt;<i> &gt; derived, relational notion, namely: two windows may (or may not) be in
+</I>&gt;<i> &gt; the same container. [So, mathematically, I think of a container as an
+</I>&gt;<i> &gt; equivalence class of windows; but I don't know what the equivalence
+</I>&gt;<i> &gt; relation is.]
+</I>&gt;<i>
+</I>&gt;<i> Mathematically it is pretty simple. Containers are nodes in a tree,
+</I>&gt;<i> whose root the X-root-window is. Children of this root level there are
+</I>&gt;<i> individual outputs, children of the outputs are the workspaces, whose
+</I>&gt;<i> children in turn are the container-trees containing the windows you see.
+</I>&gt;<i>
+</I>&gt;<i> A container can either be an inner node containing more containers (I
+</I>&gt;<i> think this is called a &#8222;split-container&#8220; in the documentation), or it
+</I>&gt;<i> can be a leaf, containing a window.
+</I>&gt;<i>
+</I>&gt;<i> The nodes are not all equal, leafs contain windows and near the top of
+</I>&gt;<i> the hierarchy there has to be special treatment (to use the more
+</I>&gt;<i> user-friendly abstractions of outputs and workspaces), but mostly this
+</I>&gt;<i> should be the way to think of it.
+</I>&gt;<i>
+</I>&gt;<i> &gt; (2) If I press mod+v and make some windows, are they all in the same
+</I>&gt;<i> &gt; container? If I now press mod+h and make some more windows, are they
+</I>&gt;<i> &gt; in a different container?
+</I>&gt;<i>
+</I>&gt;<i> Yes and no. If by &#8222;window&#8220; you think of &#8222;a leaf node in the container
+</I>&gt;<i> tree&#8220;, then yes.
+</I>&gt;<i>
+</I>&gt;<i> If you create some windows (for example pressing Mod+Enter to
+</I>&gt;<i> open some terminals), then each one is put in an individual container.
+</I>&gt;<i> These containers are then put in a big container. If you then press
+</I>&gt;<i> mod+h, the currently focused node in the tree (which would be a leaf in
+</I>&gt;<i> most cases, so a container having a window inside it) is replaced by a
+</I>&gt;<i> new container, with the old content as a subtree. If you then open some
+</I>&gt;<i> windows, they are new leafs which are put in that new container.
+</I>&gt;<i>
+</I>&gt;<i> So I think the solution here is to stop thinking about windows as
+</I>&gt;<i> entities in the container-tree, because they're really not. The
+</I>&gt;<i> container-tree is an abstraction used by i3 and leaf-nodes in this tree
+</I>&gt;<i> have a window-property attached to them.
+</I>&gt;<i>
+</I>&gt;<i> &gt; (1) I'm sitting in front of an i3-screen with a focused window. I want
+</I>&gt;<i> &gt; to know (preferably in a semi-algorithmic statement), if I press Mod +
+</I>&gt;<i> &gt; s, exactly which windows will be stacked. In particular, does the
+</I>&gt;<i> &gt; answer depend on the history of the focused window?
+</I>&gt;<i>
+</I>&gt;<i> I'm actually not very clear of this myself. It just magically does
+</I>&gt;<i> exactly what I want. I _think_ the container being stacked is always the
+</I>&gt;<i> parent of the currently focused container.
+</I>&gt;<i>
+</I>&gt;<i> So, if you just open a bunch of terminals on an empty workspace, focus
+</I>&gt;<i> one of them, your layout would be something like (I apologize for my
+</I>&gt;<i> crude ASCII-art):
+</I>&gt;<i>
+</I>&gt;<i>       Workspace
+</I>&gt;<i>     /  |  |  | \
+</I>&gt;<i>    C1 C2 C3 C4 C5
+</I>&gt;<i>    |  |  |  |  |
+</I>&gt;<i>    T1 T2 T3 T4 T5
+</I>&gt;<i>
+</I>&gt;<i> With C1&#8230;C5 being node-containers and T1&#8230;T5 are the five windows attached to
+</I>&gt;<i> these node-containers.
+</I>&gt;<i> Pressing Alt+s would (if you focus for example T1, or rather C1) stack
+</I>&gt;<i> all your terminals.
+</I>&gt;<i>
+</I>&gt;<i> If on the other hand you open some terminals, split one leaf and open
+</I>&gt;<i> some more, your tree will look like this:
+</I>&gt;<i>
+</I>&gt;<i>      Workspace
+</I>&gt;<i>    /   |      \
+</I>&gt;<i>   C1  C2      C3
+</I>&gt;<i>   |    |     /  \
+</I>&gt;<i>   T1  T2   C4   C5
+</I>&gt;<i>             |    |
+</I>&gt;<i>            T4   T5
+</I>&gt;<i>
+</I>&gt;<i> Now if you focus C4 or C5 and press Mod+s, you will get a workspace with
+</I>&gt;<i> two terminals visible (T1/T2) and one stacked container (C3), containing
+</I>&gt;<i> two terminals (T4/T5).
+</I>&gt;<i>
+</I>&gt;<i> If on the other hand you focus C1 ore C2 and press Mod+s, you will get a
+</I>&gt;<i> stacked workspace and can cycle between T1, T2 and (T4+T5).
+</I>&gt;<i>
+</I>&gt;<i> One small warning: I think near the top of the container-tree (at the
+</I>&gt;<i> workspace-level and above) there is some special-casing regarding this,
+</I>&gt;<i> because you cannot sensibly &#8222;stack&#8220; workspaces. So if you try focusing
+</I>&gt;<i> an entire workspace (via focus parent) you just might get unexpected
+</I>&gt;<i> results.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> So, I hope I could make at least some things more clear. Maybe I
+</I>&gt;<i> confused you even more, in that case &#8222;sorry&#8220; ;)
+</I>&gt;<i>
+</I>&gt;<i> Kind regards,
+</I>&gt;<i>
+</I>&gt;<i> Axel
+</I>&gt;<i>
+</I>-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130715/19a5facc/attachment.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130715/19a5facc/attachment.html</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001360.html">[i3] Containers in i3
+</A></li>
+	<LI>Next message: <A HREF="001362.html">[i3] Ratio for split containers ?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1361">[ date ]</a>
+              <a href="thread.html#1361">[ thread ]</a>
+              <a href="subject.html#1361">[ subject ]</a>
+              <a href="author.html#1361">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

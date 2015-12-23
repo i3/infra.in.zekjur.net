@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3bar multi-monitor setup
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3bar%20multi-monitor%20setup&In-Reply-To=%3CCANnVG6kv9zr_qRwYAg0PZRj8eq0uLzmcFsSUASZccu0Bf5NVqQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001952.html">
+   <LINK REL="Next"  HREF="001954.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3bar multi-monitor setup</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3bar%20multi-monitor%20setup&In-Reply-To=%3CCANnVG6kv9zr_qRwYAg0PZRj8eq0uLzmcFsSUASZccu0Bf5NVqQ%40mail.gmail.com%3E"
+       TITLE="[i3] i3bar multi-monitor setup">michael at stapelberg.ch
+       </A><BR>
+    <I>Mon Nov 24 11:52:47 CET 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001952.html">[i3] i3bar multi-monitor setup
+</A></li>
+        <LI>Next message: <A HREF="001954.html">[i3] i3bar multi-monitor setup
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1953">[ date ]</a>
+              <a href="thread.html#1953">[ thread ]</a>
+              <a href="subject.html#1953">[ subject ]</a>
+              <a href="author.html#1953">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sun, Nov 23, 2014 at 7:37 AM, Marco Hunsicker &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3 at hunsicker.de</A>&gt; wrote:
+&gt;<i> Hello Michael,
+</I>&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Remove the fake-outputs option and the i3bar configuration will work.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Thinking about it again, perhaps what you are looking for are the
+</I>&gt;&gt;<i> output names “fake-0”, “fake-1”, etc. Those are what i3bar will see
+</I>&gt;&gt;<i> when you use fake-outputs.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> After altering my i3 config to use the suggested names, it's working :)
+</I>&gt;<i> Thanks very much for your help!
+</I>&gt;<i>
+</I>&gt;<i> May I ask why you are opposed to officially support such configurations? In
+</I>&gt;<i> the FAQ one can find mention of the &quot;fakeoutputs&quot; option. IMHO the use case
+</I>&gt;<i> does not seem entirely esoteric.
+</I>Well, ideally, things should just work out of the box, and you would
+not need that option at all, right? ;)
+
+The problem with fake-outputs is that it (just like Xinerama)
+circumvents RandR support in i3 entirely, meaning i3 will not react to
+disabling outputs (re-assigning workspaces to other outputs) or
+enabling new outputs (such as connecting a video projector). Those are
+significant problems, and I don’t want to support people actively
+breaking important parts of i3.
+
+I realize that one could argue that when people use it, it’s their own
+fault that other features break, but still, it’s not something I want
+to endorse in any way :).
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001952.html">[i3] i3bar multi-monitor setup
+</A></li>
+	<LI>Next message: <A HREF="001954.html">[i3] i3bar multi-monitor setup
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1953">[ date ]</a>
+              <a href="thread.html#1953">[ thread ]</a>
+              <a href="subject.html#1953">[ subject ]</a>
+              <a href="author.html#1953">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

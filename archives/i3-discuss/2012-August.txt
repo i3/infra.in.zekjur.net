@@ -1,0 +1,1853 @@
+From michael at i3wm.org  Wed Aug  1 23:04:47 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 01 Aug 2012 23:04:47 +0200
+Subject: [i3] Get list of workspaces
+In-Reply-To: <CALzASJ=zuz+XeXca6gppQP_sg3TkLvQcn3XpufOXtYFuhU+hZA@mail.gmail.com>
+References: <CALzASJnB8RcX7LUZ7t4i-aOcBkVizhfUPwtvXz8HTA9fSyU-dQ@mail.gmail.com>
+ <20120724122010.19945.65864@midna.zekjur.net>
+ <CALzASJku3aj1-WUoZfjaPEK14HA6NGTcuCTM9zK5LMLg=g9+vw@mail.gmail.com>
+ <20120725134024.26268.96391@midna.zekjur.net>
+ <CALzASJnCWd=iDq+6=TOOqDUpsfF=JcOMs8Dc5RBL=-oVWA=cDA@mail.gmail.com>
+ <20120731173112.17174.70366@midna.zekjur.net>
+ <CALzASJ=zuz+XeXca6gppQP_sg3TkLvQcn3XpufOXtYFuhU+hZA@mail.gmail.com>
+Message-ID: <20120801210447.30365.47608@midna.zekjur.net>
+
+Hi Anders,
+
+Quoting Anders Bo Rasmussen (2012-07-31 21:32:50)
+> Hi Michael. Thanks. That made it work.
+I checked that again, and I think you should not use this hack. Instead,
+use this:
+
+#!/usr/bin/env perl
+# vim:ts=4:sw=4:expandtab
+
+use strict;
+use warnings;
+use Data::Dumper;
+use AnyEvent;
+use AnyEvent::I3;
+use v5.10;
+
+my $i3 = i3();
+
+$i3->connect->recv or die "Error connecting to i3";
+
+$i3->subscribe({
+    workspace => sub {
+        $i3->get_tree->cb(sub {
+            my ($tree) = @_;
+            say "tree: " . Dumper($tree);
+        });
+    }
+})->recv->{success} or die "Error subscribing to events";
+
+AE::cv->recv
+
+(Note the asynchronous callback when calling get_tree)
+
+> > (I have noticed a few strange things while hacking up this example, so there
+> > might be a new release of AnyEvent::I3 soon ;-)).
+> If you update it I think it would be good with the call to EV::loop in
+> the example for subscribe().
+Well, AnyEvent code ideally shouldn?t be tied to any specific
+implementation (EV in this case), so it?s not a good idea to advertise
+code like that.
+
+As a follow-up: The "strange things" were:
+
+1) ->subscribe not automatically establishing a connection to i3. After
+   re-reading the docs I noticed that there is the special _error
+   callback which lets you deal with reconnecting. Therefore, it kinda
+   makes sense to not interfere with connecting to i3 in this method.
+   Instead, we might introduce a "sugar" method (like the others) for
+   events some day.
+
+2) I couldn?t use $i3->get_tree->recv(), but had to use
+   i3->get_tree->recv() (new connection instead of the existing one)
+   when using the EV::loop hack. When not using it, using the existing
+   connection is just fine.
+
+Best regards,
+Michael
+
+From michael at i3wm.org  Thu Aug  2 01:48:38 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 02 Aug 2012 01:48:38 +0200
+Subject: [i3] [PATCH] Improved i3bar hide mode behavior (In my point of
+	view)
+In-Reply-To: <op.wh2hoxy5h7z1jl@sraven>
+References: <CAMJW5=0hC+1YhuPyY8=eQtAKuM0VwzPgiGRDAwJs2aXzF_YcKw@mail.gmail.com>
+ <CAMJW5=2u8xves-DYAJk-xy4aM64eRhfoY5bPufh52OmYbgYomw@mail.gmail.com>
+ <CANVYNa9Kbr_aDYTpN+4Qi6xsJKDFsQ34+3ZdpwK4MAqAOzETZg@mail.gmail.com>
+ <CAMJW5=1n6_DF7A_J4rQ3HfD4Un1Vgn8y3JxqktOQmgNe6PvqQQ@mail.gmail.com>
+ <20120707203157.22466.72213@midna.zekjur.net>
+ <CAMJW5=3JXKVPBT6nGct-01jCWGgo8vnvmrR-ZO9f6_rr37Bb+g@mail.gmail.com>
+ <20120726111223.12156.13597@midna.zekjur.net> <op.wh2hoxy5h7z1jl@sraven>
+Message-ID: <20120801234838.15074.62439@midna.zekjur.net>
+
+Hi darkraven,
+
+Quoting DR (2012-07-26 20:59:11)
+> Corrected patch attached.
+Thanks, this is pushed now.
+
+Best regards,
+Michael
+
+From michael at i3wm.org  Thu Aug  2 17:55:25 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 02 Aug 2012 17:55:25 +0200
+Subject: [i3] Anyone at FrOSCon?
+Message-ID: <20120802155525.15841.99057@midna.zekjur.net>
+
+Hi,
+
+will anyone of you be at FrOSCon? We will have an i3 booth again, and I
+could use some help running it (basically explaining to people what i3
+is, you really don?t need to be a developer). It?s a fun and rewarding
+thing to do, the people there are generally very nice, open-minded and
+interested.
+
+Best regards,
+Michael
+
+From badboy at archlinux.us  Thu Aug  2 18:04:34 2012
+From: badboy at archlinux.us (Jan-Erik Rediger)
+Date: Thu, 2 Aug 2012 18:04:34 +0200
+Subject: [i3] Anyone at FrOSCon?
+In-Reply-To: <20120802155525.15841.99057@midna.zekjur.net>
+References: <20120802155525.15841.99057@midna.zekjur.net>
+Message-ID: <20120802160434.GC1572@brain.eduroam.rwth-aachen.de>
+
+On Thu, Aug 02, 2012 at 05:55:25PM +0200, Michael Stapelberg wrote:
+> Hi,
+> 
+> will anyone of you be at FrOSCon? We will have an i3 booth again, and I
+> could use some help running it (basically explaining to people what i3
+> is, you really don?t need to be a developer). It?s a fun and rewarding
+> thing to do, the people there are generally very nice, open-minded and
+> interested.
+> 
+> Best regards,
+> Michael
+
+I'll be there and happy to help. Still need to figure out where I stay
+at night, but during the day I'm sure I can spend a bit of my time to help and explain.
+
+Jan-Erik
+
+From ashkan82r at gmail.com  Fri Aug  3 09:35:34 2012
+From: ashkan82r at gmail.com (ashkab rahmani)
+Date: Fri, 3 Aug 2012 12:05:34 +0430
+Subject: [i3] help request about keyboard layout
+Message-ID: <CAFBRBcqbvxZ+1hn6R2viBCR5bGeGHeJ4YRdY+xcENkAoTm8VUA@mail.gmail.com>
+
+hello all
+
+I need help about changing keyboard layout in i3.
+I need change keyboard layout (becase my language is persian)
+I found xkdbmap command but not worked for me.
+
+best regards
+Ashkan
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120803/9b02fc88/attachment.html>
+
+From felix.kaiser at fxkr.net  Fri Aug  3 09:50:07 2012
+From: felix.kaiser at fxkr.net (Felix Kaiser)
+Date: Fri, 3 Aug 2012 09:50:07 +0200
+Subject: [i3] help request about keyboard layout
+In-Reply-To: <CAFBRBcqbvxZ+1hn6R2viBCR5bGeGHeJ4YRdY+xcENkAoTm8VUA@mail.gmail.com>
+References: <CAFBRBcqbvxZ+1hn6R2viBCR5bGeGHeJ4YRdY+xcENkAoTm8VUA@mail.gmail.com>
+Message-ID: <CADz-U9KwrnyDG6R0mFNUzhFZAr0wDMm+7CRkDH9TZmW8prkekQ@mail.gmail.com>
+
+On Fri, Aug 3, 2012 at 9:35 AM, ashkab rahmani <ashkan82r at gmail.com> wrote:
+> hello all
+>
+> I need help about changing keyboard layout in i3.
+> I need change keyboard layout (becase my language is persian)
+> I found xkdbmap command but not worked for me.
+>
+> best regards
+> Ashkan
+
+"setxkbmap fa" (or whatever the keyboard layout name is)
+(You can put that in your xinitrc or use "exec" in your i3 config.)
+
+You will have to adapt the bindsym statements in your i3 config though.
+It may be easier to use bindcode instead of bindsym (at least if you
+find yourself switching between keyboard layouts)
+You can use the "xev" tool to find out the key names / key codes.
+
+Greetings
+Felix
+
+From gkeramidas at gmail.com  Fri Aug  3 17:16:38 2012
+From: gkeramidas at gmail.com (Giorgos Keramidas)
+Date: Fri, 3 Aug 2012 17:16:38 +0200
+Subject: [i3] Switching order of two or more floating windows?
+Message-ID: <CAKR2__2bJxD77XW+s-Wk=kZdrO==aCk19EMMXdHA1JaaKKYQ1A@mail.gmail.com>
+
+Does i3 support having two or more overlapping floaters and toggling
+between them with e.g. M-tab or some similar function?
+
+The default config doesn't have an example function that I can (re-)use
+with bindkey, or at least I didn't see one.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120803/75f0bcdf/attachment.html>
+
+From gkeramidas at gmail.com  Fri Aug  3 17:46:35 2012
+From: gkeramidas at gmail.com (Giorgos Keramidas)
+Date: Fri, 3 Aug 2012 17:46:35 +0200
+Subject: [i3] Switching order of two or more floating windows?
+In-Reply-To: <CAKR2__2bJxD77XW+s-Wk=kZdrO==aCk19EMMXdHA1JaaKKYQ1A@mail.gmail.com>
+References: <CAKR2__2bJxD77XW+s-Wk=kZdrO==aCk19EMMXdHA1JaaKKYQ1A@mail.gmail.com>
+Message-ID: <CAKR2__1MRMAEEX2vbT2GYYSawpFWW3M0_v8pXoc=6mcjUmFAjg@mail.gmail.com>
+
+On Fri, Aug 3, 2012 at 5:16 PM, Giorgos Keramidas <gkeramidas at gmail.com>wrote:
+
+> Does i3 support having two or more overlapping floaters and toggling
+> between them with e.g. M-tab or some similar function?
+>
+> The default config doesn't have an example function that I can (re-)use
+> with bindkey, or at least I didn't see one.
+>
+
+Actually now that I tested this, focus works fine, and when I have two
+overlapping windows in floating mode, the focus moves to the window
+'behind' the visible one.
+But the window stacking order doesn't change, so the focused window is now
+'raised'.
+
+Is there any option that enables auto-raise for the focused window when I
+use something like this in my .i3/config file?
+
+bindsym $mod+Tab    focus right
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120803/b1373cb2/attachment.html>
+
+From michael at i3wm.org  Fri Aug  3 19:33:44 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 03 Aug 2012 19:33:44 +0200
+Subject: [i3] Switching order of two or more floating windows?
+In-Reply-To: <CAKR2__1MRMAEEX2vbT2GYYSawpFWW3M0_v8pXoc=6mcjUmFAjg@mail.gmail.com>
+References: <CAKR2__2bJxD77XW+s-Wk=kZdrO==aCk19EMMXdHA1JaaKKYQ1A@mail.gmail.com>
+ <CAKR2__1MRMAEEX2vbT2GYYSawpFWW3M0_v8pXoc=6mcjUmFAjg@mail.gmail.com>
+Message-ID: <20120803173344.4635.55938@midna.zekjur.net>
+
+Hi Giorgos,
+
+Quoting Giorgos Keramidas (2012-08-03 17:46:35)
+> But the window stacking order doesn't change, so the focused window is now
+> 'raised'.
+s/now/not, I assume.
+
+> Is there any option that enables auto-raise for the focused window when I use
+> something like this in my .i3/config file?
+Nope. I would accept patches for a "raise" command, though.
+
+Best regards,
+Michael
+
+From keramida at ceid.upatras.gr  Sun Aug  5 19:43:47 2012
+From: keramida at ceid.upatras.gr (Giorgos Keramidas)
+Date: Sun, 05 Aug 2012 19:43:47 +0200
+Subject: [i3] Switching order of two or more floating windows?
+In-Reply-To: <20120803173344.4635.55938@midna.zekjur.net> (Michael
+ Stapelberg's message of "Fri, 03 Aug 2012 19:33:44 +0200")
+References: <CAKR2__2bJxD77XW+s-Wk=kZdrO==aCk19EMMXdHA1JaaKKYQ1A@mail.gmail.com>
+ <CAKR2__1MRMAEEX2vbT2GYYSawpFWW3M0_v8pXoc=6mcjUmFAjg@mail.gmail.com>
+ <20120803173344.4635.55938@midna.zekjur.net>
+Message-ID: <xeiak3xdnsj0.fsf@kobe.laptop>
+
+On Fri, 03 Aug 2012 19:33:44 +0200, Michael Stapelberg <michael at i3wm.org> wrote:
+> Hi Giorgos,
+>
+> Quoting Giorgos Keramidas (2012-08-03 17:46:35)
+>> But the window stacking order doesn't change, so the focused window is now
+>> 'raised'.
+>
+> s/now/not, I assume.
+
+Yes, that was a typo indeed.
+
+>> Is there any option that enables auto-raise for the focused window
+>> when I use something like this in my .i3/config file?
+>
+> Nope. I would accept patches for a "raise" command, though.
+
+Cool. I'll try to come up with a patch.  I originally thought it may be
+nice to have a 'focus_raise' command that can be bound like 'focus',
+e.g. with the following in ~/.i3/config:
+
+  bindsym $mod+Tab    focus_raise right
+
+But since this doesn't make sense for clients that are fully tiled
+inside a container, I think I'll try first to add a tunable option,
+e.g.:
+
+  raise_on_focus enable
+
+I'll get back when I have something more concrete :-)
+
+
+From i3.thegrue at spamgourmet.com  Mon Aug 13 11:28:30 2012
+From: i3.thegrue at spamgourmet.com (i3.thegrue at spamgourmet.com)
+Date: Mon, 13 Aug 2012 11:28:30 +0200
+Subject: [i3] I would need a strong focus indicator...
+Message-ID: <20120813112830.3625f8f8@pc-cm-gru-virtlinux1>
+
+Hello,
+
+Since using i3 I definetely love it. Great work :)
+I have only one problem with programs that don't clearly show if they
+have focus. I already asked about making the border around the windows
+thicker, but this approach seems not to be good.
+
+Have a look at the attached picture to see my problem: at first
+glance, without thinking: which window has the focus?
+
+Even though I used a very noticeable colour to mark the focus, I type
+in the wrong window very often. rxvt does this right: you can dim
+the colours of the inactive windows and spot the active one
+immediately. But I think, this is not a task for the
+applications. Maybe it's not task of the window manager, neither. But
+"traditional" window managers (and even i3 in tabbed mode) clearly
+show which window has the focus...
+
+Do you have any idea how to clearly show the focus in my example? Is
+it possible to somehow "shadow" windows that don't have the focus?
+
+Thanks,
+--
+Markus Grunwald                                 http://www.the-grue.de
+
+M?nnerchor Markt Kirchseeon               Registered Linux User 101577
+Notenwart und Webmaster                          http://counter.li.org
+http://www.maennerchor-kirchseeon.de           pgp/gpg key ID 15CEDD0A
+
+     Fragen zur Mail? http://www.the-grue.de/mail_und_co/
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 828 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120813/0cf9a5e1/attachment.sig>
+
+From dcoppa at gmail.com  Mon Aug 13 11:43:17 2012
+From: dcoppa at gmail.com (David Coppa)
+Date: Mon, 13 Aug 2012 11:43:17 +0200
+Subject: [i3] I would need a strong focus indicator...
+In-Reply-To: <20120813112830.3625f8f8@pc-cm-gru-virtlinux1>
+References: <20120813112830.3625f8f8@pc-cm-gru-virtlinux1>
+Message-ID: <CABM=MFJb-6hXX8aFYvVvofpKqTb4QjkPcDETsqZ=YcX8i=oFCw@mail.gmail.com>
+
+On Mon, Aug 13, 2012 at 11:28 AM,  <i3.thegrue at spamgourmet.com> wrote:
+> Hello,
+>
+> Since using i3 I definetely love it. Great work :)
+> I have only one problem with programs that don't clearly show if they
+> have focus. I already asked about making the border around the windows
+> thicker, but this approach seems not to be good.
+>
+> Have a look at the attached picture to see my problem: at first
+> glance, without thinking: which window has the focus?
+
+What picture?
+
+From ashkan82r at gmail.com  Mon Aug 13 11:59:30 2012
+From: ashkan82r at gmail.com (Ashkan Rahmani)
+Date: Mon, 13 Aug 2012 14:29:30 +0430
+Subject: [i3] I would need a strong focus indicator...
+In-Reply-To: <CABM=MFJb-6hXX8aFYvVvofpKqTb4QjkPcDETsqZ=YcX8i=oFCw@mail.gmail.com>
+References: <20120813112830.3625f8f8@pc-cm-gru-virtlinux1>
+ <CABM=MFJb-6hXX8aFYvVvofpKqTb4QjkPcDETsqZ=YcX8i=oFCw@mail.gmail.com>
+Message-ID: <CAFBRBcodSy2pFRPRuXRu+wO8p+vcqUrC20AjZE4utd=EAZbJBA@mail.gmail.com>
+
+may set your window mode to normal and set some shiny color it, like red or
+yellow
+and change other colors to dark one
+can help
+???
+Ashkan R
+On Aug 13, 2012 2:14 PM, "David Coppa" <dcoppa at gmail.com> wrote:
+
+> On Mon, Aug 13, 2012 at 11:28 AM,  <i3.thegrue at spamgourmet.com> wrote:
+> > Hello,
+> >
+> > Since using i3 I definetely love it. Great work :)
+> > I have only one problem with programs that don't clearly show if they
+> > have focus. I already asked about making the border around the windows
+> > thicker, but this approach seems not to be good.
+> >
+> > Have a look at the attached picture to see my problem: at first
+> > glance, without thinking: which window has the focus?
+>
+> What picture?
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120813/f03cacc2/attachment.html>
+
+From markus at the-grue.de  Mon Aug 13 14:10:37 2012
+From: markus at the-grue.de (Markus Grunwald)
+Date: Mon, 13 Aug 2012 14:10:37 +0200
+Subject: [i3] I would need a strong focus indicator...
+In-Reply-To: <20120813112830.3625f8f8@pc-cm-gru-virtlinux1>
+References: <20120813112830.3625f8f8@pc-cm-gru-virtlinux1>
+Message-ID: <20120813141037.122028c4@pc-cm-gru-virtlinux1>
+
+
+Hello,
+
+well, of course I forgot the picture :(
+
+Sorry.....
+--
+Markus Grunwald                                 http://www.the-grue.de
+
+M?nnerchor Markt Kirchseeon               Registered Linux User 101577
+Notenwart und Webmaster                          http://counter.li.org
+http://www.maennerchor-kirchseeon.de           pgp/gpg key ID 15CEDD0A
+
+     Fragen zur Mail? http://www.the-grue.de/mail_und_co/
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: where_is_the_focus.png
+Type: image/png
+Size: 65333 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120813/d4c77990/attachment-0001.png>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 828 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120813/d4c77990/attachment-0001.sig>
+
+From john.haltiwanger at gmail.com  Mon Aug 13 20:59:45 2012
+From: john.haltiwanger at gmail.com (John Haltiwanger)
+Date: Mon, 13 Aug 2012 20:59:45 +0200
+Subject: [i3] I would need a strong focus indicator...
+In-Reply-To: <20120813141037.122028c4@pc-cm-gru-virtlinux1>
+References: <20120813112830.3625f8f8@pc-cm-gru-virtlinux1>
+ <20120813141037.122028c4@pc-cm-gru-virtlinux1>
+Message-ID: <CANenyVOPCDUaR6yDJc2t2zH6VsNg6_zpFw_yS__vJQYxmRp5Pw@mail.gmail.com>
+
+i've had similar issues at times and always wondered whether one potential
+way to solve this might be to allow the kind of "gutters" between windows
+such as are found in some other tiling wms. this way the highlighting could
+be set to varying pixels by users, perhaps even on a per-application basis.
+
+strictly speaking, the gutters wouldn't be necessary for a 'more than 1px'
+border, but aesthetically i think they make more sense both together than
+either one of them on their own.
+
+On Mon, Aug 13, 2012 at 2:10 PM, Markus Grunwald <markus at the-grue.de> wrote:
+
+>
+> Hello,
+>
+> well, of course I forgot the picture :(
+>
+> Sorry.....
+> --
+> Markus Grunwald                                 http://www.the-grue.de
+>
+> M?nnerchor Markt Kirchseeon               Registered Linux User 101577
+> Notenwart und Webmaster                          http://counter.li.org
+> http://www.maennerchor-kirchseeon.de           pgp/gpg key ID 15CEDD0A
+>
+>      Fragen zur Mail? http://www.the-grue.de/mail_und_co/
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120813/5e5b4d26/attachment.html>
+
+From gkeramidas at gmail.com  Tue Aug 14 10:23:01 2012
+From: gkeramidas at gmail.com (Giorgos Keramidas)
+Date: Tue, 14 Aug 2012 10:23:01 +0200
+Subject: [i3] I would need a strong focus indicator...
+In-Reply-To: <20120813141037.122028c4@pc-cm-gru-virtlinux1>
+References: <20120813112830.3625f8f8@pc-cm-gru-virtlinux1>
+ <20120813141037.122028c4@pc-cm-gru-virtlinux1>
+Message-ID: <CAKR2__01q=0Jcd57mFZr9Na1Cj-2vfXeXSHtEXa_uMoyXNnLzg@mail.gmail.com>
+
+2012/8/13 Markus Grunwald <markus at the-grue.de>:
+> Hello,
+> well, of course I forgot the picture :(
+
+It looks like a different color would be more visible in this case,
+e.g. a red border for the active client?  I agree that this is a slightly
+hacky way of fixing this. Indeed bright red or similar colors are less
+necessary with dark themes, but with light color themes it's
+often better to have a brighter border color.
+
+From alex at ua2web.com  Tue Aug 14 10:49:30 2012
+From: alex at ua2web.com (Alex V. Koval)
+Date: Tue, 14 Aug 2012 11:49:30 +0300 (EEST)
+Subject: [i3] I would need a strong focus indicator...
+In-Reply-To: <CAKR2__01q=0Jcd57mFZr9Na1Cj-2vfXeXSHtEXa_uMoyXNnLzg@mail.gmail.com>
+References: <20120813112830.3625f8f8@pc-cm-gru-virtlinux1>
+ <20120813141037.122028c4@pc-cm-gru-virtlinux1>
+ <CAKR2__01q=0Jcd57mFZr9Na1Cj-2vfXeXSHtEXa_uMoyXNnLzg@mail.gmail.com>
+Message-ID: <alpine.LNX.2.00.1208141148180.16752@avk-v131.local>
+
+On Tue, 14 Aug 2012, Giorgos Keramidas wrote:
+
+> 2012/8/13 Markus Grunwald <markus at the-grue.de>:
+>> Hello,
+>> well, of course I forgot the picture :(
+>
+> It looks like a different color would be more visible in this case,
+> e.g. a red border for the active client?  I agree that this is a slightly
+> hacky way of fixing this. Indeed bright red or similar colors are less
+> necessary with dark themes, but with light color themes it's
+> often better to have a brighter border color.
+
+Then titles of windows are visible, there are no problem to recognize 
+which window is active. Consider enabling titles and see the difference.
+
+--
+Alex V. Koval
+http://alex.koval.kharkov.ua/
+http://www.halogen-dg.com/
+
+From m94asr at gmail.com  Fri Aug 17 08:44:10 2012
+From: m94asr at gmail.com (Armin Roehrl)
+Date: Fri, 17 Aug 2012 08:44:10 +0200
+Subject: [i3] building i3 wm on os X
+Message-ID: <CAMun=jN6GjfHFh1pc1MMYre1g+HaQERXkd+FRf1sRMiz2gqkCg@mail.gmail.com>
+
+Hi all,
+
+  did anybody succeed building i3 wm on os X?
+
+I'm hunting for instructions.
+
+Thanks,
+  -A
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120817/87796034/attachment.html>
+
+From i3.thegrue at spamgourmet.com  Fri Aug 17 09:14:42 2012
+From: i3.thegrue at spamgourmet.com (i3.thegrue at spamgourmet.com)
+Date: Fri, 17 Aug 2012 09:14:42 +0200
+Subject: [i3] I would need a strong focus indicator... (i3: to exclusive)
+In-Reply-To: <CAFBRBcodSy2pFRPRuXRu+wO8p+vcqUrC20AjZE4utd=EAZbJBA@mail.gmail.com>
+References: <20120813112830.3625f8f8@pc-cm-gru-virtlinux1>
+ <CABM=MFJb-6hXX8aFYvVvofpKqTb4QjkPcDETsqZ=YcX8i=oFCw@mail.gmail.com>
+ <CAFBRBcodSy2pFRPRuXRu+wO8p+vcqUrC20AjZE4utd=EAZbJBA@mail.gmail.com>
+Message-ID: <20120817091442.206797c8@pc-cm-gru-virtlinux1>
+
+Hello,
+
+
+> may set your window mode to normal and set some shiny color it, like
+> red or yellow
+> and change other colors to dark one
+
+
+Yes, this would help getting rid of the focus problem. But
+unfortunately, I would like to have both: 1pixel mode and a good focus
+indication. The "I don't waste any space" function of i3 is one of my
+favourites.
+
+I think this may be possible only by somehow changing the colours of
+the other windows (like rxvt can do it) or by some marching ants. I
+have to admit that I have no idea if/how this can be done in i3 or if
+it is even in the scope of i3.
+
+Perhaps it is possible to write a program that shades other programs
+colours. Sounds a bit like compositing...
+
+
+So for now I'll have to live with it, but thanks for all your answers!
+cu
+--
+Markus Grunwald                                 http://www.the-grue.de
+
+M?nnerchor Markt Kirchseeon               Registered Linux User 101577
+Notenwart und Webmaster                          http://counter.li.org
+http://www.maennerchor-kirchseeon.de           pgp/gpg key ID 15CEDD0A
+
+     Fragen zur Mail? http://www.the-grue.de/mail_und_co/
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 828 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120817/7a62f114/attachment.sig>
+
+From crestani at informatik.uni-tuebingen.de  Fri Aug 17 09:57:56 2012
+From: crestani at informatik.uni-tuebingen.de (Marcus Crestani)
+Date: Fri, 17 Aug 2012 09:57:56 +0200
+Subject: [i3] building i3 wm on os X
+In-Reply-To: <CAMun=jN6GjfHFh1pc1MMYre1g+HaQERXkd+FRf1sRMiz2gqkCg@mail.gmail.com>
+ (Armin Roehrl's message of "Fri, 17 Aug 2012 08:44:10 +0200")
+References: <CAMun=jN6GjfHFh1pc1MMYre1g+HaQERXkd+FRf1sRMiz2gqkCg@mail.gmail.com>
+Message-ID: <m2lihe9chn.fsf@informatik.uni-tuebingen.de>
+
+>>>>>"AR" == Armin Roehrl <m94asr at gmail.com> writes:
+AR>   did anybody succeed building i3 wm on os X?
+
+For the last couple releases, I've added some patches to i3 to have it
+compile on OS X.  A simple `make' should work just fine.  Are you
+running into problems?
+
+-- 
+Marcus
+
+From m94asr at gmail.com  Fri Aug 17 10:00:16 2012
+From: m94asr at gmail.com (Armin Roehrl)
+Date: Fri, 17 Aug 2012 10:00:16 +0200
+Subject: [i3] building i3 wm on os X
+In-Reply-To: <m2lihe9chn.fsf@informatik.uni-tuebingen.de>
+References: <CAMun=jN6GjfHFh1pc1MMYre1g+HaQERXkd+FRf1sRMiz2gqkCg@mail.gmail.com>
+ <m2lihe9chn.fsf@informatik.uni-tuebingen.de>
+Message-ID: <CAMun=jMSZPXxyKW_tr9=Y+bBK=u02pF=D5JN9pW_AXrV6rJ1Ag@mail.gmail.com>
+
+> For the last couple releases, I've added some patches to i3 to have it
+> compile on OS X.  A simple `make' should work just fine.  Are you
+> running into problems?
+>
+ Unfortunately a simply make complains about missing libsn/sn-launcher.h
+
+~/Desktop/i3/i3-4.2>make
+[i3] YACC src/cfgparse.y
+In file included from src/cfgparse.y:12:
+In file included from include/all.h:43:
+include/data.h:14:10: fatal error: 'libsn/sn-launcher.h' file not found
+#include <libsn/sn-launcher.h>
+         ^
+1 error generated.
+make: *** [src/cfgparse.y.o] Error 1
+
+Any help would be greatly appreciated.
+
+Thanks,
+ -A
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120817/d68f6220/attachment.html>
+
+From crestani at informatik.uni-tuebingen.de  Fri Aug 17 10:13:18 2012
+From: crestani at informatik.uni-tuebingen.de (Marcus Crestani)
+Date: Fri, 17 Aug 2012 10:13:18 +0200
+Subject: [i3] building i3 wm on os X
+In-Reply-To: <CAMun=jMSZPXxyKW_tr9=Y+bBK=u02pF=D5JN9pW_AXrV6rJ1Ag@mail.gmail.com>
+ (Armin Roehrl's message of "Fri, 17 Aug 2012 10:00:16 +0200")
+References: <CAMun=jN6GjfHFh1pc1MMYre1g+HaQERXkd+FRf1sRMiz2gqkCg@mail.gmail.com>
+ <m2lihe9chn.fsf@informatik.uni-tuebingen.de>
+ <CAMun=jMSZPXxyKW_tr9=Y+bBK=u02pF=D5JN9pW_AXrV6rJ1Ag@mail.gmail.com>
+Message-ID: <m2fw7m9bs1.fsf@informatik.uni-tuebingen.de>
+
+>>>>>"AR" == Armin Roehrl <m94asr at gmail.com> writes:
+AR>  Unfortunately a simply make complains about missing libsn/sn-launcher.h
+AR> Any help would be greatly appreciated.
+
+You need to install all the libraries i3 depends upon, see the file
+DEPENDS in the source code's top level directory.
+
+-- 
+Marcus
+
+From michael at i3wm.org  Fri Aug 17 11:22:34 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 17 Aug 2012 11:22:34 +0200
+Subject: [i3] I would need a strong focus indicator... (i3: to exclusive)
+In-Reply-To: <20120817091442.206797c8@pc-cm-gru-virtlinux1>
+References: <20120813112830.3625f8f8@pc-cm-gru-virtlinux1>
+ <CABM=MFJb-6hXX8aFYvVvofpKqTb4QjkPcDETsqZ=YcX8i=oFCw@mail.gmail.com>
+ <CAFBRBcodSy2pFRPRuXRu+wO8p+vcqUrC20AjZE4utd=EAZbJBA@mail.gmail.com>
+ <20120817091442.206797c8@pc-cm-gru-virtlinux1>
+Message-ID: <20120817092234.10748.89428@midna.zekjur.net>
+
+Hi,
+
+Quoting  (2012-08-17 09:14:42)
+> I think this may be possible only by somehow changing the colours of
+> the other windows (like rxvt can do it) or by some marching ants. I
+> have to admit that I have no idea if/how this can be done in i3 or if
+> it is even in the scope of i3.
+No, it?s not. This is only possible when the window manager is a
+compositing window manager, which i3 is not.
+
+Best regards,
+Michael
+
+From baspape at gmail.com  Fri Aug 17 13:32:49 2012
+From: baspape at gmail.com (Bas Pape)
+Date: Fri, 17 Aug 2012 13:32:49 +0200
+Subject: [i3] I would need a strong focus indicator... (i3: to exclusive)
+In-Reply-To: <20120817092234.10748.89428@midna.zekjur.net>
+References: <20120813112830.3625f8f8@pc-cm-gru-virtlinux1>
+ <CABM=MFJb-6hXX8aFYvVvofpKqTb4QjkPcDETsqZ=YcX8i=oFCw@mail.gmail.com>
+ <CAFBRBcodSy2pFRPRuXRu+wO8p+vcqUrC20AjZE4utd=EAZbJBA@mail.gmail.com>
+ <20120817091442.206797c8@pc-cm-gru-virtlinux1>
+ <20120817092234.10748.89428@midna.zekjur.net>
+Message-ID: <CAMoU6uaNOzwguDcikO4iVYftUtgB2PVGJ4ysr9ufyes6rvO9LA@mail.gmail.com>
+
+2012/8/17 Michael Stapelberg <michael at i3wm.org>:
+> Hi,
+>
+> Quoting  (2012-08-17 09:14:42)
+>> I think this may be possible only by somehow changing the colours of
+>> the other windows (like rxvt can do it) or by some marching ants. I
+>> have to admit that I have no idea if/how this can be done in i3 or if
+>> it is even in the scope of i3.
+> No, it?s not. This is only possible when the window manager is a
+> compositing window manager, which i3 is not.
+>
+> Best regards,
+> Michael
+
+Actually, not too long ago I looked into this, turned out EWMH defines
+_NET_WM_STATE_FOCUSED [1] and toolkits can use this to implement such
+functionality. The sad thing is only GTK3 actually does this [2], so
+even though it's not much effort to get support for that in i3, I doubt
+it's worth it at this point.
+
+[1] http://standards.freedesktop.org/wm-spec/wm-spec-latest.html#id2578152
+[2] It does this using an extra CSS property (:window-unfocused), so it's
+     theme dependent
+
+Regards,
+Bas
+
+From knopwob at googlemail.com  Sat Aug 18 15:07:34 2012
+From: knopwob at googlemail.com (Sascha Kruse)
+Date: Sat, 18 Aug 2012 15:07:34 +0200
+Subject: [i3] [PATCH] Upward propagating urgency hints
+Message-ID: <20120818130734.GA2365@ravendark.fritz.box>
+
+Hi,
+
+I've written a patch for ticket #719 [1]. At this point this is more or
+less just a prototype to see if this feature is usefull or not. So
+please let me know if this is a sane approach for this and what needs to
+be done to get accepted.
+
+greetings,
+Sascha Kruse
+
+[1] http://bugs.i3wm.org/report/ticket/719
+
+-------------- next part --------------
+>From 47292b73d755b22a3d103fedf67ecf609db05d29 Mon Sep 17 00:00:00 2001
+From: Sascha Kruse <knopwob at googlemail.com>
+Date: Sat, 18 Aug 2012 13:58:22 +0200
+Subject: [PATCH] Make parents of urgent container also urgent
+
+---
+ include/con.h |  6 ++++++
+ src/con.c     | 20 ++++++++++++++++++++
+ src/x.c       | 11 +++++++++++
+ 3 files changed, 37 insertions(+)
+
+diff --git a/include/con.h b/include/con.h
+index b14c477..7f00986 100644
+--- a/include/con.h
++++ b/include/con.h
+@@ -86,6 +86,12 @@ Con *con_inside_floating(Con *con);
+ bool con_inside_focused(Con *con);
+ 
+ /**
++ * Checks if the given container has a urgent child.
++ *
++ */
++bool con_has_urgent_child(Con *con);
++
++/**
+  * Returns the container with the given client window ID or NULL if no such
+  * container exists.
+  *
+diff --git a/src/con.c b/src/con.c
+index c24a379..355b1a3 100644
+--- a/src/con.c
++++ b/src/con.c
+@@ -1132,3 +1132,23 @@ Rect con_minimum_size(Con *con) {
+          con->type, con->layout, con->orientation);
+     assert(false);
+ }
++
++/*
++ * Checks if the given container has a urgent child.
++ *
++ */
++
++bool con_has_urgent_child(Con *con) {
++    Con *child;
++
++    if (con_is_leaf(con))
++        return con->urgent;
++
++    TAILQ_FOREACH(child, &(con->nodes_head), nodes) {
++        if (con_has_urgent_child(child)) {
++            return true;
++        }
++    }
++
++    return false;
++}
+diff --git a/src/x.c b/src/x.c
+index 08eb8fe..590b2f4 100644
+--- a/src/x.c
++++ b/src/x.c
+@@ -325,6 +325,16 @@ void x_draw_decoration(Con *con) {
+     /* 1: build deco_params and compare with cache */
+     struct deco_render_params *p = scalloc(sizeof(struct deco_render_params));
+ 
++    /* set urgent flag if container has urgent children */
++    bool urgency_changed = false;
++    if (!con_is_leaf(con)) {
++        bool has_urgent_child = con_has_urgent_child(con);
++        if (has_urgent_child != con->urgent) {
++            con->urgent = has_urgent_child;
++            urgency_changed = true;
++        }
++    }
++
+     /* find out which colors to use */
+     if (con->urgent)
+         p->color = &config.client.urgent;
+@@ -349,6 +359,7 @@ void x_draw_decoration(Con *con) {
+         (con->window == NULL || !con->window->name_x_changed) &&
+         !parent->pixmap_recreated &&
+         !con->pixmap_recreated &&
++        !urgency_changed &&
+         memcmp(p, con->deco_render_params, sizeof(struct deco_render_params)) == 0) {
+         free(p);
+         goto copy_pixmaps;
+-- 
+1.7.11.5
+
+
+From old4 at o2.pl  Sun Aug 19 12:57:26 2012
+From: old4 at o2.pl (Mateusz Poszwa)
+Date: Sun, 19 Aug 2012 12:57:26 +0200
+Subject: [i3] I would need a strong focus indicator... (i3: to exclusive)
+In-Reply-To: <20120817091442.206797c8@pc-cm-gru-virtlinux1>
+References: <20120813112830.3625f8f8@pc-cm-gru-virtlinux1>
+ <CABM=MFJb-6hXX8aFYvVvofpKqTb4QjkPcDETsqZ=YcX8i=oFCw@mail.gmail.com>
+ <CAFBRBcodSy2pFRPRuXRu+wO8p+vcqUrC20AjZE4utd=EAZbJBA@mail.gmail.com>
+ <20120817091442.206797c8@pc-cm-gru-virtlinux1>
+Message-ID: <20120819125726.3944264b@debelianear>
+
+On Fri, 17 Aug 2012 09:14:42 +0200
+i3.thegrue at spamgourmet.com wrote:
+
+> Hello,
+> 
+> 
+> > may set your window mode to normal and set some shiny color it, like
+> > red or yellow
+> > and change other colors to dark one
+> 
+> 
+> Yes, this would help getting rid of the focus problem. But
+> unfortunately, I would like to have both: 1pixel mode and a good focus
+> indication. The "I don't waste any space" function of i3 is one of my
+> favourites.
+
+How about adding ability to set dotted or dashed borders?
+Once their colours are set to some contrasting pair (black and white?),
+they will be visible around virtually any window
+while still maintaining 1-pixel width.
+
+Best regards
+-- 
+Mateusz Poszwa
+
+From i3.thegrue at spamgourmet.com  Mon Aug 20 08:38:22 2012
+From: i3.thegrue at spamgourmet.com (i3.thegrue at spamgourmet.com)
+Date: Mon, 20 Aug 2012 08:38:22 +0200
+Subject: [i3] I would need a strong focus indicator... exclusive) (i3:
+ to exclusive)
+In-Reply-To: <20120819125726.3944264b@debelianear>
+References: <20120813112830.3625f8f8@pc-cm-gru-virtlinux1>
+ <CABM=MFJb-6hXX8aFYvVvofpKqTb4QjkPcDETsqZ=YcX8i=oFCw@mail.gmail.com>
+ <CAFBRBcodSy2pFRPRuXRu+wO8p+vcqUrC20AjZE4utd=EAZbJBA@mail.gmail.com>
+ <20120817091442.206797c8@pc-cm-gru-virtlinux1>
+ <20120819125726.3944264b@debelianear>
+Message-ID: <20120820083822.517960fc@pc-cm-gru-virtlinux1>
+
+Hello,
+
+> How about adding ability to set dotted or dashed borders?
+
+Yes, that would be "standing ants" instead of marching ants ;)
+I like this idea, it would certainly be more visible than the solid
+line that we have now...
+
+I might try to study the current implementation and send a patch - but
+don't rely on me ;)
+
+--
+Markus Grunwald                                 http://www.the-grue.de
+
+M?nnerchor Markt Kirchseeon               Registered Linux User 101577
+Notenwart und Webmaster                          http://counter.li.org
+http://www.maennerchor-kirchseeon.de           pgp/gpg key ID 15CEDD0A
+
+     Fragen zur Mail? http://www.the-grue.de/mail_und_co/
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 828 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120820/902b7f52/attachment.sig>
+
+From j at mesrobertson.com  Mon Aug 20 11:57:35 2012
+From: j at mesrobertson.com (James Robertson)
+Date: Mon, 20 Aug 2012 19:57:35 +1000
+Subject: [i3] Borders lost on urxvt and gimp floating windows "stuck" when
+ restarting i3
+Message-ID: <CAMALoy-zVBs_c4evH_7ewrFp3+R==ELKSuDShjAwv_qPgpKBqA@mail.gmail.com>
+
+Before I enable i3 debugging and submitting a bug for this I thought
+I'd ask the mailing list.
+
+Whenever I restart i3 (after a config change for example) I lose the
+window borders around urxvt and if I have Gimp open the floating
+windows lose all borders and become "stuck" to the top left corner of
+the desktop, follow me to each desktop, cover other windows and I can
+only kill them by killing the main Gimp window.
+
+Before restart:
+http://ompldr.org/vZjYxYQ/2012-08-20_1345455420_1280x800_scrot.png
+
+After restart:
+http://ompldr.org/vZjYxYg/2012-08-20_1345455428_1280x800_scrot.png
+
+In the last screenshot you may notice the warning "IPC: received EOF
+instead of reply", not sure if that provides any clues.
+
+I used the vanilla i3 configuration to test and I'm using i3 version
+4.2-1 on Debian Unstable 64 bit.
+
+Thanks for any advise.
+
+Regards,
+
+James
+
+From drdarkraven at gmail.com  Mon Aug 20 17:52:16 2012
+From: drdarkraven at gmail.com (DR)
+Date: Mon, 20 Aug 2012 23:52:16 +0800
+Subject: [i3] [RFC]render.c cleanup.
+Message-ID: <CAMJW5=3k65gkmrHndPQkX8+qLJs6ueXr3Aqdx2-cGQuwa0BDqg@mail.gmail.com>
+
+This patch clean up some of the render.c logic, make way for implement
+popup-while-fullscreen behavior.
+
+This patch hasn't been heavily tested. So maybe this patch would change the
+rendering result under some circumstance.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120820/3725c456/attachment.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-make-render_con-logic-more-clearer.patch
+Type: application/octet-stream
+Size: 15519 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120820/3725c456/attachment.obj>
+
+From lists_mk at wujiman.net  Tue Aug 21 14:29:11 2012
+From: lists_mk at wujiman.net (Martin Kraus)
+Date: Tue, 21 Aug 2012 14:29:11 +0200
+Subject: [i3] scratchpad window doesn't open when already opened
+Message-ID: <20120821122910.GB3235@finrod>
+
+hi.
+I've noticed with the scratchpad window that if I open it on a workspace and
+then move to a different workspace I cannot bring it up again. I need to
+return the the original workspace and put it into background to open it on the
+new workspace again. This kind of negates the purpose of the scratchpad.
+Is this a feature, bug or just my missunderstanding?
+
+I'm using debian packages from testing version 4.2-1
+
+thanks for help
+Martin
+
+From sebasti at nullrich.de  Tue Aug 21 23:19:36 2012
+From: sebasti at nullrich.de (sebasti at nullrich.de)
+Date: Tue, 21 Aug 2012 23:19:36 +0200
+Subject: [i3] [PATCH] Fix 'back and forth' in 'workspace number <number>'
+Message-ID: <1345583976-6481-1-git-send-email-sebasti@nullrich.de>
+
+From: Sebastian Ullrich <sebasti at nullrich.de>
+
+As mentioned in #i3, while this patch works for me, I'm not sure
+how the (untouched) maybe_back_and_forth invocation directly
+above could ever return true (ie, a non-existing ws would have
+to be focused?).
+
+---
+ src/commands.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/commands.c b/src/commands.c
+index 1eee027..8db66ee 100644
+--- a/src/commands.c
++++ b/src/commands.c
+@@ -838,23 +838,23 @@ void cmd_workspace_number(I3_CMD, char *which) {
+     if (!workspace) {
+         LOG("There is no workspace with number %ld, creating a new one.\n", parsed_num);
+         ysuccess(true);
+         /* terminate the which string after the endposition of the number */
+         *endptr = '\0';
+         if (maybe_back_and_forth(cmd_output, which))
+             return;
+         workspace_show_by_name(which);
+         cmd_output->needs_tree_render = true;
+         return;
+     }
+-    if (maybe_back_and_forth(cmd_output, which))
++    if (maybe_back_and_forth(cmd_output, workspace->name))
+         return;
+     workspace_show(workspace);
+ 
+     cmd_output->needs_tree_render = true;
+     // XXX: default reply for now, make this a better reply
+     ysuccess(true);
+ }
+ 
+ /*
+  * Implementation of 'workspace back_and_forth'.
+  *
+-- 
+1.7.11.5
+
+
+From baspape at gmail.com  Wed Aug 22 11:43:12 2012
+From: baspape at gmail.com (Bas Pape)
+Date: Wed, 22 Aug 2012 11:43:12 +0200
+Subject: [i3] [PATCH 1/2] Replace exit option with core-dump when crashed
+Message-ID: <1345628593-16072-1-git-send-email-baspape@gmail.com>
+
+---
+ src/sighandler.c | 27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
+
+diff --git a/src/sighandler.c b/src/sighandler.c
+index 3a9307e..d7a756a 100644
+--- a/src/sighandler.c
++++ b/src/sighandler.c
+@@ -16,6 +16,7 @@
+ #include <ev.h>
+ #include <iconv.h>
+ #include <signal.h>
++#include <unistd.h>
+ 
+ #include <xcb/xcb_event.h>
+ 
+@@ -29,12 +30,27 @@ static char *crash_text[] = {
+     "i3 just crashed.",
+     "To debug this problem, either attach gdb now",
+     "or press",
+-    "- 'e' to exit and get a core-dump,",
++    "- 'c' get a core-dump,",
+     "- 'r' to restart i3 in-place or",
+     "- 'f' to forget the current layout and restart"
+ };
+ static int crash_text_longest = 5;
+ 
++/* 
++ * Fork and dump a core to /tmp
++ */
++static void coredump(int signal) {
++    pid_t pid = fork();
++    if (pid != 0) return;
++
++    struct rlimit rlim = { RLIM_INFINITY, RLIM_INFINITY };
++    setrlimit(RLIMIT_CORE, &rlim);
++    chdir("/tmp");
++
++    raise(signal);
++    exit(1);
++}
++
+ /*
+  * Draw the window containing the info text
+  *
+@@ -64,7 +80,7 @@ static int sig_draw_window(xcb_window_t win, int width, int height, int font_hei
+ }
+ 
+ /*
+- * Handles keypresses of 'e' or 'r' to exit or restart i3
++ * Handles keypresses of 'c', 'r' and 'f' to dump a core or restart i3
+  *
+  */
+ static int sig_handle_key_press(void *ignored, xcb_connection_t *conn, xcb_key_press_event_t *event) {
+@@ -77,10 +93,9 @@ static int sig_handle_key_press(void *ignored, xcb_connection_t *conn, xcb_key_p
+ 
+     xcb_keysym_t sym = xcb_key_press_lookup_keysym(keysyms, event, state);
+ 
+-    if (sym == 'e') {
+-        DLOG("User issued exit-command, raising error again.\n");
+-        raise(raised_signal);
+-        exit(1);
++    if (sym == 'c') {
++        DLOG("User issued core-dump command.\n");
++        coredump(raised_signal);
+     }
+ 
+     if (sym == 'r')
+-- 
+1.7.12
+
+
+From baspape at gmail.com  Wed Aug 22 11:43:13 2012
+From: baspape at gmail.com (Bas Pape)
+Date: Wed, 22 Aug 2012 11:43:13 +0200
+Subject: [i3] [PATCH 2/2] Automatically run gdb to get a trace when crashed
+In-Reply-To: <1345628593-16072-1-git-send-email-baspape@gmail.com>
+References: <1345628593-16072-1-git-send-email-baspape@gmail.com>
+Message-ID: <1345628593-16072-2-git-send-email-baspape@gmail.com>
+
+---
+ src/sighandler.c | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
+
+diff --git a/src/sighandler.c b/src/sighandler.c
+index d7a756a..241610b 100644
+--- a/src/sighandler.c
++++ b/src/sighandler.c
+@@ -17,6 +17,10 @@
+ #include <iconv.h>
+ #include <signal.h>
+ #include <unistd.h>
++#include <limits.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <fcntl.h>
+ 
+ #include <xcb/xcb_event.h>
+ 
+@@ -96,6 +100,44 @@ static int sig_handle_key_press(void *ignored, xcb_connection_t *conn, xcb_key_p
+     if (sym == 'c') {
+         DLOG("User issued core-dump command.\n");
+         coredump(raised_signal);
++
++        /* wait for the child to dump its core */
++        sleep(1);
++
++        /* run gdb */
++        char filename[PATH_MAX] = "/tmp/";
++        char pattern[PATH_MAX] = { 0 };
++        int patternfd;
++        int found;
++        if ((patternfd = open("/proc/sys/kernel/core_pattern", O_RDONLY)) >= 0) {
++            if (read(patternfd, pattern, sizeof(pattern)) > 0) {
++                /* strip the trailing newline */
++                memset(pattern + strlen(pattern) - 1, 0, 1);
++                strncat(filename, pattern, PATH_MAX - 5);
++                found = 1;
++            }
++        }
++
++        if (!found)
++            return 0;
++
++        pid_t pid = fork();
++        if (pid == 0) {
++            /* child */
++            char *args[] = {
++                "gdb",
++                start_argv[0],
++                filename,
++                "-batch",
++                "-nx",
++                "-ex", "set logging file backtrace",
++                "-ex", "set logging on",
++                "-ex", "bt full",
++                NULL
++            };
++            execvp("gdb", args);
++            exit(0);
++        }
+     }
+ 
+     if (sym == 'r')
+-- 
+1.7.12
+
+
+From michael at i3wm.org  Wed Aug 22 12:04:52 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 22 Aug 2012 12:04:52 +0200
+Subject: [i3] scratchpad window doesn't open when already opened
+In-Reply-To: <20120821122910.GB3235@finrod>
+References: <20120821122910.GB3235@finrod>
+Message-ID: <20120822100452.26865.77718@midna.zekjur.net>
+
+Hi Martin,
+
+Quoting Martin Kraus (2012-08-21 14:29:11)
+> I've noticed with the scratchpad window that if I open it on a workspace and
+> then move to a different workspace I cannot bring it up again. I need to
+> return the the original workspace and put it into background to open it on the
+> new workspace again. This kind of negates the purpose of the scratchpad.
+> Is this a feature, bug or just my missunderstanding?
+The 'scratchpad show' command will only look at the scratchpad
+pseudo-workspace for windows to show. This explains what you are seeing.
+I don?t think it?s a bug, but the functionality could be enhanced to
+cover your use case. In case you?re interested, please file a feature
+request at http://bugs.i3wm.org/
+
+If you want to avoid this effect, you can use the scratchpad show
+command with criteria, like this:
+
+    bindsym Mod4+c [instance="cmus"] scratchpad show
+
+This will work on any workspace, because the window is found by checking
+its instance, *then* calling scratchpad show on it.
+
+Best regards,
+Michael
+
+From michael at i3wm.org  Wed Aug 22 15:57:51 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 22 Aug 2012 15:57:51 +0200
+Subject: [i3] [PATCH] Upward propagating urgency hints
+In-Reply-To: <20120818130734.GA2365@ravendark.fritz.box>
+References: <20120818130734.GA2365@ravendark.fritz.box>
+Message-ID: <20120822135751.7320.90718@midna.zekjur.net>
+
+Hi Sascha,
+
+Quoting Sascha Kruse (2012-08-18 15:07:34)
+> I've written a patch for ticket #719 [1]. At this point this is more or
+> less just a prototype to see if this feature is usefull or not. So
+> please let me know if this is a sane approach for this and what needs to
+> be done to get accepted.
+Thanks for your patch. Here are a few observations:
+
+1) s/a urgent/an urgent/ ;-)
+
+2) nodes_head only contains tiling children. Since floating children can
+   only be attached to a workspace and your changes don?t have any
+   effect in this situation, this is actually correct. Nevertheless, it
+   makes sense to think about whether to use nodes_head, floating_head
+   or focus_head (which contains both, but in a different order)
+   whenever you are using recursion. Therefore, please add a comment
+   explaining the situation.
+
+3) In src/x.c, you check if con_is_leaf and then call
+   con_has_urgent_child. Since the latter also checks that, it seems
+   superfluous.
+
+4) Thinking about how you do it (setting urgent to true), I think it?s
+   better to do this once (instead of on every draw_decoration call)
+   when the urgency state changes, see src/handlers.c:handle_hints:819.
+
+It?d be worthwhile to have a testcase for this, too (or expand
+t/113-urgent.t). Please have a look at
+http://i3wm.org/docs/testsuite.html
+
+Thanks for working on this.
+
+Best regards,
+Michael
+
+From michael at i3wm.org  Wed Aug 22 16:13:15 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 22 Aug 2012 16:13:15 +0200
+Subject: [i3] Borders lost on urxvt and gimp floating windows "stuck"
+ when restarting i3
+In-Reply-To: <CAMALoy-zVBs_c4evH_7ewrFp3+R==ELKSuDShjAwv_qPgpKBqA@mail.gmail.com>
+References: <CAMALoy-zVBs_c4evH_7ewrFp3+R==ELKSuDShjAwv_qPgpKBqA@mail.gmail.com>
+Message-ID: <20120822141315.7320.5702@midna.zekjur.net>
+
+Hi James,
+
+Quoting James Robertson (2012-08-20 11:57:35)
+> Whenever I restart i3 (after a config change for example) I lose the
+> window borders around urxvt and if I have Gimp open the floating
+The corruption you see there should be fixed after switching workspaces,
+right?
+
+> windows lose all borders and become "stuck" to the top left corner of
+> the desktop, follow me to each desktop, cover other windows and I can
+> only kill them by killing the main Gimp window.
+This means that the windows are not managed by i3 anymore. This sounds
+like a bug, only a full debug level logfile (and a ticket) will be
+helpful to debug this.
+
+Also, please upgrade to latest git 'next' before you file a ticket. See
+http://i3wm.org/docs/repositories.html
+
+Best regards,
+Michael
+
+From bruno.braga at gmail.com  Wed Aug 22 17:02:09 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Thu, 23 Aug 2012 01:02:09 +1000
+Subject: [i3] scratchpad window doesn't open when already opened
+In-Reply-To: <20120822100452.26865.77718@midna.zekjur.net>
+References: <20120821122910.GB3235@finrod>
+ <20120822100452.26865.77718@midna.zekjur.net>
+Message-ID: <CAAuVr72h6LXdozEhEUHnomo=Fvstvc1Us8gTKLC6_Gdf5RdWxQ@mail.gmail.com>
+
+Could you do this with any window? (not specifically an instance)
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Wed, Aug 22, 2012 at 8:04 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Martin,
+>
+> Quoting Martin Kraus (2012-08-21 14:29:11)
+> > I've noticed with the scratchpad window that if I open it on a workspace
+> and
+> > then move to a different workspace I cannot bring it up again. I need to
+> > return the the original workspace and put it into background to open it
+> on the
+> > new workspace again. This kind of negates the purpose of the scratchpad.
+> > Is this a feature, bug or just my missunderstanding?
+> The 'scratchpad show' command will only look at the scratchpad
+> pseudo-workspace for windows to show. This explains what you are seeing.
+> I don?t think it?s a bug, but the functionality could be enhanced to
+> cover your use case. In case you?re interested, please file a feature
+> request at http://bugs.i3wm.org/
+>
+> If you want to avoid this effect, you can use the scratchpad show
+> command with criteria, like this:
+>
+>     bindsym Mod4+c [instance="cmus"] scratchpad show
+>
+> This will work on any workspace, because the window is found by checking
+> its instance, *then* calling scratchpad show on it.
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120823/09a0d3b5/attachment.html>
+
+From michael at i3wm.org  Wed Aug 22 17:18:05 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 22 Aug 2012 17:18:05 +0200
+Subject: [i3] scratchpad window doesn't open when already opened
+In-Reply-To: <CAAuVr72h6LXdozEhEUHnomo=Fvstvc1Us8gTKLC6_Gdf5RdWxQ@mail.gmail.com>
+References: <20120821122910.GB3235@finrod>
+ <20120822100452.26865.77718@midna.zekjur.net>
+ <CAAuVr72h6LXdozEhEUHnomo=Fvstvc1Us8gTKLC6_Gdf5RdWxQ@mail.gmail.com>
+Message-ID: <20120822151805.24408.3493@midna.zekjur.net>
+
+Hi Bruno,
+
+Quoting BRAGA, Bruno (2012-08-22 17:02:09)
+> Could you do this with any window? (not specifically an instance)
+Can you be more specific please? What?s "this"?
+
+Best regards,
+Michael
+
+From michael at i3wm.org  Wed Aug 22 17:45:48 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 22 Aug 2012 17:45:48 +0200
+Subject: [i3] [PATCH 1/2] Replace exit option with core-dump when crashed
+In-Reply-To: <1345628593-16072-1-git-send-email-baspape@gmail.com>
+References: <1345628593-16072-1-git-send-email-baspape@gmail.com>
+Message-ID: <20120822154548.26637.98483@midna.zekjur.net>
+
+Hi Bas,
+
+Thanks for your patch. Comments follow below:
+
+Quoting Bas Pape (2012-08-22 11:43:12)
+> +/* 
+> + * Fork and dump a core to /tmp
+> + */
+> +static void coredump(int signal) {
+> +    pid_t pid = fork();
+> +    if (pid != 0) return;
+Please use one line per statement, that is:
+    if (pid != 0)
+        return;
+
+> +    chdir("/tmp");
+Please honor TMPDIR.
+
+Best regards,
+Michael
+
+From sebasti at nullrich.de  Wed Aug 22 17:49:21 2012
+From: sebasti at nullrich.de (Sebastian Ullrich)
+Date: Wed, 22 Aug 2012 17:49:21 +0200
+Subject: [i3] [PATCH v2 0/2] Next try
+In-Reply-To: <1345583976-6481-1-git-send-email-sebasti@nullrich.de>
+References: <1345583976-6481-1-git-send-email-sebasti@nullrich.de>
+Message-ID: <1345650563-25754-1-git-send-email-sebasti@nullrich.de>
+
+Specified commit message (unnamed ws already work). Also, Michael
+confirmed the first invocation is indeed dead code.
+
+From sebasti at nullrich.de  Wed Aug 22 17:49:22 2012
+From: sebasti at nullrich.de (Sebastian Ullrich)
+Date: Wed, 22 Aug 2012 17:49:22 +0200
+Subject: [i3] [PATCH 1/2] Fix 'back and forth' in 'workspace number' for
+	named ws
+In-Reply-To: <1345650563-25754-1-git-send-email-sebasti@nullrich.de>
+References: <1345583976-6481-1-git-send-email-sebasti@nullrich.de>
+ <1345650563-25754-1-git-send-email-sebasti@nullrich.de>
+Message-ID: <1345650563-25754-2-git-send-email-sebasti@nullrich.de>
+
+---
+ src/commands.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/commands.c b/src/commands.c
+index 8875b8d..85d8cdf 100644
+--- a/src/commands.c
++++ b/src/commands.c
+@@ -846,7 +846,7 @@ void cmd_workspace_number(I3_CMD, char *which) {
+         cmd_output->needs_tree_render = true;
+         return;
+     }
+-    if (maybe_back_and_forth(cmd_output, which))
++    if (maybe_back_and_forth(cmd_output, workspace->name))
+         return;
+     workspace_show(workspace);
+ 
+-- 
+1.7.11.5
+
+
+From sebasti at nullrich.de  Wed Aug 22 17:49:23 2012
+From: sebasti at nullrich.de (Sebastian Ullrich)
+Date: Wed, 22 Aug 2012 17:49:23 +0200
+Subject: [i3] [PATCH 2/2] Remove dead code in cmd_workspace_number
+In-Reply-To: <1345650563-25754-1-git-send-email-sebasti@nullrich.de>
+References: <1345583976-6481-1-git-send-email-sebasti@nullrich.de>
+ <1345650563-25754-1-git-send-email-sebasti@nullrich.de>
+Message-ID: <1345650563-25754-3-git-send-email-sebasti@nullrich.de>
+
+If a ws doesn't exist, maybe_back_and_forth
+will never return true for it.
+---
+ src/commands.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/src/commands.c b/src/commands.c
+index 85d8cdf..00d8b97 100644
+--- a/src/commands.c
++++ b/src/commands.c
+@@ -840,8 +840,6 @@ void cmd_workspace_number(I3_CMD, char *which) {
+         ysuccess(true);
+         /* terminate the which string after the endposition of the number */
+         *endptr = '\0';
+-        if (maybe_back_and_forth(cmd_output, which))
+-            return;
+         workspace_show_by_name(which);
+         cmd_output->needs_tree_render = true;
+         return;
+-- 
+1.7.11.5
+
+
+From michael at i3wm.org  Wed Aug 22 17:51:53 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 22 Aug 2012 17:51:53 +0200
+Subject: [i3] [PATCH 2/2] Automatically run gdb to get a trace when
+	crashed
+In-Reply-To: <1345628593-16072-2-git-send-email-baspape@gmail.com>
+References: <1345628593-16072-1-git-send-email-baspape@gmail.com>
+ <1345628593-16072-2-git-send-email-baspape@gmail.com>
+Message-ID: <20120822155153.26637.67135@midna.zekjur.net>
+
+Hi Bas,
+
+comments below:
+
+Quoting Bas Pape (2012-08-22 11:43:13)
+>      if (sym == 'c') {
+>          DLOG("User issued core-dump command.\n");
+>          coredump(raised_signal);
+> +
+> +        /* wait for the child to dump its core */
+> +        sleep(1);
+OMG /o\ ? please don?t do that. This is very prone to race-conditions.
+We can use waitpid() to wait for the child instead (or maybe a libev
+child handler to make it async).
+
+> +        /* run gdb */
+> +        char filename[PATH_MAX] = "/tmp/";
+Again, please honor TMPDIR.
+
+> +        char pattern[PATH_MAX] = { 0 };
+> +        int patternfd;
+> +        int found;
+> +        if ((patternfd = open("/proc/sys/kernel/core_pattern", O_RDONLY)) >= 0) {
+> +            if (read(patternfd, pattern, sizeof(pattern)) > 0) {
+> +                /* strip the trailing newline */
+> +                memset(pattern + strlen(pattern) - 1, 0, 1);
+> +                strncat(filename, pattern, PATH_MAX - 5);
+Magic numbers are bad, mhkay? Use strlen("/tmp/") instead, the compiler
+will optimize it away at compile-time.
+
+Also, this code won?t work. core_pattern is not a static filename, it?s
+a pattern. I have it set to /tmp/%e.core.%p for example. Figuring out
+the location of the core dump is actually a pretty hard problem and I
+don?t see an obvious solution for it.
+
+I think it?d be better to have gdb attached to the current process.
+
+Thanks for working on this,
+Best regards,
+Michael
+
+From michael at i3wm.org  Wed Aug 22 17:58:59 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 22 Aug 2012 17:58:59 +0200
+Subject: [i3] [PATCH v2 0/2] Next try
+In-Reply-To: <1345650563-25754-1-git-send-email-sebasti@nullrich.de>
+References: <1345583976-6481-1-git-send-email-sebasti@nullrich.de>
+ <1345650563-25754-1-git-send-email-sebasti@nullrich.de>
+Message-ID: <20120822155859.27785.52918@midna.zekjur.net>
+
+Hi Sebastian,
+
+Quoting Sebastian Ullrich (2012-08-22 17:49:21)
+> Specified commit message (unnamed ws already work). Also, Michael
+> confirmed the first invocation is indeed dead code.
+Thanks, merged your patches.
+
+Best regards,
+Michael
+
+From bruno.braga at gmail.com  Thu Aug 23 04:07:32 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Thu, 23 Aug 2012 12:07:32 +1000
+Subject: [i3] scratchpad window doesn't open when already opened
+In-Reply-To: <20120822151805.24408.3493@midna.zekjur.net>
+References: <20120821122910.GB3235@finrod>
+ <20120822100452.26865.77718@midna.zekjur.net>
+ <CAAuVr72h6LXdozEhEUHnomo=Fvstvc1Us8gTKLC6_Gdf5RdWxQ@mail.gmail.com>
+ <20120822151805.24408.3493@midna.zekjur.net>
+Message-ID: <CAAuVr727ezQww8himcPBTCRQSpZWp_uGUQRKVH8+PUfJQwSETQ@mail.gmail.com>
+
+Sorry, Michael,
+
+If I understood correctly, the report is that in case of a general command
+to show the scratchpad does not work, if it is already visible in another
+workspace. Then, if you imply the instance/class of a particular window,
+then it works...
+
+I was wondering if there is a way to make this valid for any scratchpad
+instead... I tried with a catch all regex, and it just brought all windows
+(not only the scratchpad ones) to the current workspace.
+
+ bindsym Mod+minus [instance="^.*$"] scratchpad show
+
+Maybe this should behave only on the scratchpad windows? In any case, if I
+have multiple windows there, they would all come out, which is not what we
+want either...
+
+I think I lost my question here... anyway, the point is that I find myself
+often looking for my scratchpad window because I dont know where it is
+(need to go through all workspaces until I find it), and I thought this
+could be a good place to brainstorm a way to improve that, if possible.
+
+Thanks,
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Thu, Aug 23, 2012 at 1:18 AM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Bruno,
+>
+> Quoting BRAGA, Bruno (2012-08-22 17:02:09)
+> > Could you do this with any window? (not specifically an instance)
+> Can you be more specific please? What?s "this"?
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120823/1e8ea924/attachment.html>
+
+From michael at i3wm.org  Thu Aug 23 11:42:59 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 23 Aug 2012 11:42:59 +0200
+Subject: [i3] scratchpad window doesn't open when already opened
+In-Reply-To: <CAAuVr727ezQww8himcPBTCRQSpZWp_uGUQRKVH8+PUfJQwSETQ@mail.gmail.com>
+References: <20120821122910.GB3235@finrod>
+ <20120822100452.26865.77718@midna.zekjur.net>
+ <CAAuVr72h6LXdozEhEUHnomo=Fvstvc1Us8gTKLC6_Gdf5RdWxQ@mail.gmail.com>
+ <20120822151805.24408.3493@midna.zekjur.net>
+ <CAAuVr727ezQww8himcPBTCRQSpZWp_uGUQRKVH8+PUfJQwSETQ@mail.gmail.com>
+Message-ID: <20120823094259.9278.63426@midna.zekjur.net>
+
+Hi Bruno,
+
+Quoting BRAGA, Bruno (2012-08-23 04:07:32)
+> If I understood correctly, the report is that in case of a general command to
+> show the scratchpad does not work, if it is already visible in another
+> workspace. Then, if you imply the instance/class of a particular window, then
+> it works...
+> 
+> I was wondering if there is a way to make this valid for any scratchpad
+> instead... I tried with a catch all regex, and it just brought all windows (not
+> only the scratchpad ones) to the current workspace.
+I already suggested to enhance the 'workspace show' command in a way
+that makes this possible:
+
+> I don?t think it?s a bug, but the functionality could be enhanced to
+> cover your use case. In case you?re interested, please file a feature
+> request at http://bugs.i3wm.org/
+
+Best regards,
+Michael
+
+From j at mesrobertson.com  Thu Aug 23 14:17:24 2012
+From: j at mesrobertson.com (James Robertson)
+Date: Thu, 23 Aug 2012 22:17:24 +1000
+Subject: [i3] Borders lost on urxvt and gimp floating windows "stuck"
+ when restarting i3
+In-Reply-To: <CAMALoy_m661ek+hDy2-hoEJVWFe9x=DXfQmLv8mYPiitDu4W3g@mail.gmail.com>
+References: <CAMALoy-zVBs_c4evH_7ewrFp3+R==ELKSuDShjAwv_qPgpKBqA@mail.gmail.com>
+ <20120822141315.7320.5702@midna.zekjur.net>
+ <CAMALoy_m661ek+hDy2-hoEJVWFe9x=DXfQmLv8mYPiitDu4W3g@mail.gmail.com>
+Message-ID: <CAMALoy8Sc_f1-iw=UsqdZFNChwKgSO99HXrk_W9bmhtqOoUfwA@mail.gmail.com>
+
+> I have upgraded to the latest version from your Debian repository and
+> have submitted a bug report.  I am having some problems uploading the
+> debug file to the report (stops uploading after a few seconds)?  Until
+> I figure that out I have attached it here.
+
+I have attached the log file and images I linked to earlier on in the
+ticket.  Must be some issue in Chromium on Debian as the upload from
+Chrome on Windows worked fine.
+
+Thanks again.
+
+James
+
+From lists_mk at wujiman.net  Thu Aug 23 19:10:16 2012
+From: lists_mk at wujiman.net (Martin Kraus)
+Date: Thu, 23 Aug 2012 19:10:16 +0200
+Subject: [i3] scratchpad window doesn't open when already opened
+In-Reply-To: <20120822100452.26865.77718@midna.zekjur.net>
+References: <20120821122910.GB3235@finrod>
+ <20120822100452.26865.77718@midna.zekjur.net>
+Message-ID: <20120823171015.GA12537@finrod>
+
+On Wed, Aug 22, 2012 at 12:04:52PM +0200, Michael Stapelberg wrote:
+> If you want to avoid this effect, you can use the scratchpad show
+> command with criteria, like this:
+> 
+>     bindsym Mod4+c [instance="cmus"] scratchpad show
+> 
+> This will work on any workspace, because the window is found by checking
+> its instance, *then* calling scratchpad show on it.
+
+Hi. I've opened a feature request. guess i will move to the git version then:-)
+
+thanks
+Martin
+
+From dupont at gmx.net  Fri Aug 24 14:38:51 2012
+From: dupont at gmx.net (Jean Dupont)
+Date: Fri, 24 Aug 2012 14:38:51 +0200
+Subject: [i3] splitting windows - idea
+Message-ID: <503775DB.6020202@gmx.net>
+
+Hello,
+
+first of all: great wm! Thank you very much for your work.
+
+I discovered is that you can not specify on which side you want to split
+the window. It is always the right (or lower) side.
+
+My idea:
+Leave it that way as default, but if the user also presses another key
+(down, up, k, l, ...) that indicates a direction i3 use this side.
+
+Keys pressed = result:
+$mod+v = new Window under the existing one
+$mod+v+down = the same result
+$mod+v+up = now the window appears above the old one
+Something equal for splitting horizontally.
+
+
+Kind Regards,
+
+Jean
+
+From bruno.braga at gmail.com  Fri Aug 24 17:59:53 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Sat, 25 Aug 2012 01:59:53 +1000
+Subject: [i3] splitting windows - idea
+In-Reply-To: <503775DB.6020202@gmx.net>
+References: <503775DB.6020202@gmx.net>
+Message-ID: <CAAuVr72pAjWta-H5L5n8BkLYEkP61y8xat0ti29woOCQHqh4kw@mail.gmail.com>
+
+Yeah, I achieve that with 2 commands:
+$mod+v then $mod+Shift+up
+
+I believe the $mod+v+up would not work because it would trigger the $mod+v
+before you could reach the up key... unless both h/v requires the extra
+argument in every case... in this way, then better another key that just
+sets the next window to any direction: $mod+n+? (n for next, and ? could be
+up, down, left, right)....
+
+But to be honest, $mod+h/v is still unbeatable (faster/simpler)!
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Fri, Aug 24, 2012 at 10:38 PM, Jean Dupont <dupont at gmx.net> wrote:
+
+> Hello,
+>
+> first of all: great wm! Thank you very much for your work.
+>
+> I discovered is that you can not specify on which side you want to split
+> the window. It is always the right (or lower) side.
+>
+> My idea:
+> Leave it that way as default, but if the user also presses another key
+> (down, up, k, l, ...) that indicates a direction i3 use this side.
+>
+> Keys pressed = result:
+> $mod+v = new Window under the existing one
+> $mod+v+down = the same result
+> $mod+v+up = now the window appears above the old one
+> Something equal for splitting horizontally.
+>
+>
+> Kind Regards,
+>
+> Jean
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120825/c1a67597/attachment.html>
+
+From michael at i3wm.org  Fri Aug 24 23:11:05 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 24 Aug 2012 23:11:05 +0200
+Subject: [i3] splitting windows - idea
+In-Reply-To: <503775DB.6020202@gmx.net>
+References: <503775DB.6020202@gmx.net>
+Message-ID: <20120824211105.12190.36423@midna.zekjur.net>
+
+Hi Jean,
+
+Quoting Jean Dupont (2012-08-24 14:38:51)
+> I discovered is that you can not specify on which side you want to split
+> the window. It is always the right (or lower) side.
+> 
+> My idea:
+> Leave it that way as default, but if the user also presses another key
+> (down, up, k, l, ...) that indicates a direction i3 use this side.
+> 
+> Keys pressed = result:
+> $mod+v = new Window under the existing one
+> $mod+v+down = the same result
+> $mod+v+up = now the window appears above the old one
+> Something equal for splitting horizontally.
+This introduces a lot of new keybindings, configuration changes,
+documentation changes, friction on upgrade for users and I don?t see a
+clear benefit.
+
+The splitting works by creating a new split container and placing the
+current window in it. We always append new windows to the end of the
+node list. This is the cause for your observation that new windows
+appear "below" existing windows. Since from left to right and top to
+bottom is very natural, I don?t see an advantage in introducing an
+additional feature which puts new windows at the top of the node list.
+
+Best regards,
+Michael
+
+From j at mesrobertson.com  Sat Aug 25 07:29:36 2012
+From: j at mesrobertson.com (James Robertson)
+Date: Sat, 25 Aug 2012 15:29:36 +1000
+Subject: [i3] Disable certain i3-nagbar events?
+Message-ID: <CAMALoy9e3qFux3BufHE=wU67=xQT+FNAkSbjAfr12ptxLo_W1g@mail.gmail.com>
+
+This could also be titled "i3-nagbar returns an error with valid
+keybinding that cannot execute due to window at edge of screen", but
+that's a big subject line.
+
+I am using version 4.2-251-gc8cfc77 on Debian Unstable.  The problem
+did not exist in 4.2-1.
+
+I use the key bindings at the end of this email.  If for example, I
+have 2 terminal windows open side by side and try by accident to
+execute Control+Mod4+Left (grow left side of window west) on the left
+had terminal window I receive the i3-nagbar error "The configured
+command for this shortcut could not be run successfully".  This is
+valid error since I cannot increase the left side of terminal window
+left since it's already at the edge of the screen.
+
+So is there a way to disable certain i3-nagbar events that whilst
+valid, I can safely ignore and know that I have made a typo with my
+window resizing command?
+
+# grow left side west
+bindsym Control+Mod4+Left resize grow left 5 px or 5 ppt
+# shrink left side east
+bindsym Control+Mod4+Right resize shrink left 5 px or 5 ppt
+# shrink right side west
+bindsym Mod1+Mod4+Left resize shrink right 5 px or 5 ppt
+# grow right side east
+bindsym Mod1+Mod4+Right resize grow right 5 px or 5 ppt
+# grow bottom side south
+bindsym Control+Mod4+Down resize grow down 5 px or 5 ppt
+# shrink bottom side north
+bindsym Control+Mod4+Up resize shrink down 5 px or 5 ppt
+# shrink top side south
+bindsym Mod1+Mod4+Down resize shrink up 5 px or 5 ppt
+# grow top side north
+bindsym Mod1+Mod4+Up resize grow up 5 px or 5 ppt
+
+From michael at i3wm.org  Sun Aug 26 23:37:04 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 26 Aug 2012 23:37:04 +0200
+Subject: [i3] Disable certain i3-nagbar events?
+In-Reply-To: <CAMALoy9e3qFux3BufHE=wU67=xQT+FNAkSbjAfr12ptxLo_W1g@mail.gmail.com>
+References: <CAMALoy9e3qFux3BufHE=wU67=xQT+FNAkSbjAfr12ptxLo_W1g@mail.gmail.com>
+Message-ID: <20120826213704.31845.97385@midna.zekjur.net>
+
+Hi James,
+
+Quoting James Robertson (2012-08-25 07:29:36)
+> This could also be titled "i3-nagbar returns an error with valid
+> keybinding that cannot execute due to window at edge of screen", but
+> that's a big subject line.
+This is covered in the FAQ:
+
+http://faq.i3wm.org/question/319/after-upgrading-i3-i-see-error-messages-when/
+
+Best regards,
+Michael
+

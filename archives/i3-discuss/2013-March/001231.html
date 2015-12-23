@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3bar POC: workspace button with focused window name
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3bar%20POC%3A%20workspace%20button%20with%20focused%20window%20name&In-Reply-To=%3C1363870839-sup-4251%40merovius.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001230.html">
+   <LINK REL="Next"  HREF="001232.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3bar POC: workspace button with focused window name</H1>
+    <B>Axel Wagner</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3bar%20POC%3A%20workspace%20button%20with%20focused%20window%20name&In-Reply-To=%3C1363870839-sup-4251%40merovius.de%3E"
+       TITLE="[i3] i3bar POC: workspace button with focused window name">mail at merovius.de
+       </A><BR>
+    <I>Thu Mar 21 14:13:41 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001230.html">[i3] i3bar POC: workspace button with focused window name
+</A></li>
+        <LI>Next message: <A HREF="001232.html">[i3] i3bar POC: workspace button with focused window name
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1231">[ date ]</a>
+              <a href="thread.html#1231">[ thread ]</a>
+              <a href="subject.html#1231">[ subject ]</a>
+              <a href="author.html#1231">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+what justus said was also my first reaction. Everything you explained in
+your second mail is pretty much implemented conceptually, with the
+&#8220;caption&#8221; being called name and &#8220;identifier&#8221; being the number.
+The complexity of the needed ipc-script is reduced accordingly, you only
+need something like:
+while true:
+    wait_for_event
+    workspaces = get_workspaces
+    for each workspace:
+        active_con = null
+        for each container:
+            if container.focused:
+                active_con = container
+                break
+        workspace.rename(&quot;%d: %s&quot;, workspace.number, active_con.title)
+
+With one of the libraries existing that encapsulate the
+i3-protocol a working script should not be very much longer than the
+pseudocode above (I'm actually not sure wether the number-syntax works
+in the rename command, if not, that would be a nice thing to implement
+too, imho ;).
+
+I also presume that a change as you originally proposed would not be
+accepted in the mainline i3, for the reasons I mentioned, but I only
+extrapolate from similar proposals in the past.
+
+Kind regards,
+
+Axel
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 198 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130321/648986c8/attachment.sig">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130321/648986c8/attachment.sig</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001230.html">[i3] i3bar POC: workspace button with focused window name
+</A></li>
+	<LI>Next message: <A HREF="001232.html">[i3] i3bar POC: workspace button with focused window name
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1231">[ date ]</a>
+              <a href="thread.html#1231">[ thread ]</a>
+              <a href="subject.html#1231">[ subject ]</a>
+              <a href="author.html#1231">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,133 @@
+From 7890c6c5e157bfcc23867833aecd66bc656627d5 Mon Sep 17 00:00:00 2001
+From: darkraven <drdarkraven@gmail.com>
+Date: Thu, 6 Sep 2012 23:07:11 +0800
+Subject: [PATCH 2/4] handle CT_WORKSPACEs separately.
+
+Specifically handle CT_WORKSPACE. Floating windows is now handle
+there as well.
+
+Add helper function render_con_fullscreen.
+---
+ src/render.c | 87 ++++++++++++++++++++++++------------------------------------
+ 1 file changed, 35 insertions(+), 52 deletions(-)
+
+diff --git a/src/render.c b/src/render.c
+index 16905f4..af86d1e 100644
+--- a/src/render.c
++++ b/src/render.c
+@@ -98,6 +98,26 @@ static void render_l_output(Con *con) {
+     }
+ }
+ 
++/* Check for fullscreen nodes and take the short-cut to render them directly.
++ * Return value indicates if there are fullscreen nodes. */
++bool render_con_fullscreen(Con *con) {
++    Con *fullscreen = NULL;
++    fullscreen = con_get_fullscreen_con(con, (con->type == CT_ROOT ? CF_GLOBAL : CF_OUTPUT));
++    if (fullscreen) {
++        fullscreen->rect = con->rect;
++        if (show_debug_borders){
++            fullscreen->rect.x += 2;
++            fullscreen->rect.y += 2;
++            fullscreen->rect.width -= 2 * 2;
++            fullscreen->rect.height -= 2 * 2;
++        }
++        x_raise_con(fullscreen);
++        render_con(fullscreen, true);
++        return true;
++    }
++    return false;
++}
++
+ /* Render all children of a given con */
+ void render_child(Con *con) {
+     Con *child;
+@@ -350,70 +370,33 @@ void render_con(Con *con, bool render_fullscreen) {
+         DLOG("child will be at %dx%d with size %dx%d\n", inset->x, inset->y, inset->width, inset->height);
+     }
+ 
+-    /* Check for fullscreen nodes */
+-    Con *fullscreen = NULL;
+-    if (con->type != CT_OUTPUT) {
+-        fullscreen = con_get_fullscreen_con(con, (con->type == CT_ROOT ? CF_GLOBAL : CF_OUTPUT));
+-    }
+-    if (fullscreen) {
+-        fullscreen->rect = rect;
+-        x_raise_con(fullscreen);
+-        render_con(fullscreen, true);
++    if (render_con_fullscreen(con))
+         return;
+-    }
+ 
+     if (con->layout == L_OUTPUT) {
+         /* Skip i3-internal outputs */
+         if (con->name[0] == '_' && con->name[1] == '_')
+             return;
+         render_l_output(con);
++    } else if (con->type == CT_WORKSPACE) {
++        /* Check for fullscreen nodes */
++        if (render_con_fullscreen(con))
++            return;
++
++        render_child(con);
++
++        DLOG("Rendering floating windows:\n");
++        Con *child;
++        TAILQ_FOREACH(child, &(con->floating_head), floating_windows) {
++            DLOG("floating child at (%d,%d) with %d x %d\n", child->rect.x, child->rect.y, child->rect.width, child->rect.height);
++            x_raise_con(child);
++            render_con(child, false);
++        }
+     } else if (con->type == CT_ROOT) {
+         Con *output;
+         TAILQ_FOREACH(output, &(con->nodes_head), nodes) {
+             render_con(output, false);
+         }
+-
+-        /* We need to render floating windows after rendering all outputs’
+-         * tiling windows because they need to be on top of *every* output at
+-         * all times. This is important when the user places floating
+-         * windows/containers so that they overlap on another output. */
+-        DLOG("Rendering floating windows:\n");
+-        TAILQ_FOREACH(output, &(con->nodes_head), nodes) {
+-            if (output->name[0] == '_' && output->name[1] == '_')
+-                continue;
+-            /* Get the active workspace of that output */
+-            Con *content = output_get_content(output);
+-            Con *workspace = TAILQ_FIRST(&(content->focus_head));
+-
+-            /* Check for (floating!) fullscreen nodes */
+-            /* XXX: This code duplication is unfortunate. Keep in mind to fix
+-             * this when we clean up the whole render.c */
+-            Con *fullscreen = NULL;
+-            fullscreen = con_get_fullscreen_con(workspace, CF_OUTPUT);
+-            if (fullscreen) {
+-                /* Either the fullscreen window is inside the floating
+-                 * container, then we need to render and raise it now… */
+-                if (con_inside_floating(fullscreen)) {
+-                    fullscreen->rect = output->rect;
+-                    x_raise_con(fullscreen);
+-                    render_con(fullscreen, true);
+-                    continue;
+-                } else {
+-                    /* …or it’s a tiling window, in which case the floating
+-                     * windows should not overlap it, so we skip rendering this
+-                     * output. */
+-                    continue;
+-                }
+-            }
+-
+-            Con *child;
+-            TAILQ_FOREACH(child, &(workspace->floating_head), floating_windows) {
+-                DLOG("floating child at (%d,%d) with %d x %d\n", child->rect.x, child->rect.y, child->rect.width, child->rect.height);
+-                x_raise_con(child);
+-                render_con(child, false);
+-            }
+-        }
+-
+     } else
+         render_child(con);
+ }
+-- 
+1.7.12
+

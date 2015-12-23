@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Call for testing: upcoming i3 4.9 release
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Call%20for%20testing%3A%20upcoming%20i3%204.9%20release&In-Reply-To=%3CCANnVG6n9g3S%2B2LLBvkg-uSOGBo0BKesfge8f%2BsSwL%3DW1jiHi1Q%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001995.html">
+   <LINK REL="Next"  HREF="001997.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Call for testing: upcoming i3 4.9 release</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Call%20for%20testing%3A%20upcoming%20i3%204.9%20release&In-Reply-To=%3CCANnVG6n9g3S%2B2LLBvkg-uSOGBo0BKesfge8f%2BsSwL%3DW1jiHi1Q%40mail.gmail.com%3E"
+       TITLE="[i3] Call for testing: upcoming i3 4.9 release">michael at stapelberg.ch
+       </A><BR>
+    <I>Tue Feb 24 21:54:55 CET 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001995.html">[i3] Call for testing: upcoming i3 4.9 release
+</A></li>
+        <LI>Next message: <A HREF="001997.html">[i3] Call for testing: upcoming i3 4.9 release
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1996">[ date ]</a>
+              <a href="thread.html#1996">[ thread ]</a>
+              <a href="subject.html#1996">[ subject ]</a>
+              <a href="author.html#1996">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>See <A HREF="https://github.com/i3/i3/blob/next/DEPENDS">https://github.com/i3/i3/blob/next/DEPENDS</A> — I think your version
+of libxkbcommon is too old.
+
+On Tue, Feb 24, 2015 at 9:51 PM, Marcin Herda &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">mherda at gmail.com</A>&gt; wrote:
+&gt;<i> Hi Michael and all,
+</I>&gt;<i>
+</I>&gt;<i> I have just tried to test i3-next on my Slackware system. The error I get
+</I>&gt;<i> is:
+</I>&gt;<i>
+</I>&gt;<i> cc -DI3_VERSION=\&quot;'4.8-168-gd5ec59e (2015-02-22, branch \&quot;next\&quot;)'\&quot;
+</I>&gt;<i> -DMAJOR_VERSION=4 -DMINOR_VERSION=8 -DPATCH_VERSION=0 -DSYSCONFDIR=\&quot;/etc\&quot;
+</I>&gt;<i> -DI3__FILE__=__FILE__ -DPCRE_HAS_UCP=1 -DPANGO_SUPPORT=1 -D_GNU_SOURCE
+</I>&gt;<i> -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include
+</I>&gt;<i> -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng14
+</I>&gt;<i> -I/usr/include/libdrm   -pthread -I/usr/include/pango-1.0
+</I>&gt;<i> -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include
+</I>&gt;<i> -I/usr/include/pixman-1 -I/usr/include/freetype2 -I/usr/include/libpng14
+</I>&gt;<i> -I/usr/include/libdrm   -I/usr/include/yajl
+</I>&gt;<i> -I/usr/include/startup-notification-1.0   -std=c99 -Wall -Wunused-value
+</I>&gt;<i> -Iinclude -O2 -fPIC  -c -o src/bindings.o ../i3/src/bindings.c
+</I>&gt;<i> ../i3/src/bindings.c: In function ‘translate_keysyms’:
+</I>&gt;<i> ../i3/src/bindings.c:269:53: error: ‘XKB_KEYSYM_NO_FLAGS’ undeclared (first
+</I>&gt;<i> use in this function)
+</I>&gt;<i>          keysym = xkb_keysym_from_name(bind-&gt;symbol, XKB_KEYSYM_NO_FLAGS);
+</I>&gt;<i>                                                      ^
+</I>&gt;<i> ../i3/src/bindings.c:269:53: note: each undeclared identifier is reported
+</I>&gt;<i> only once for each function it appears in
+</I>&gt;<i> make: *** [src/bindings.o] Error 1
+</I>&gt;<i>
+</I>&gt;<i> Do I need to recompile any of the dependencies or is there a new one to be
+</I>&gt;<i> added?
+</I>&gt;<i>
+</I>&gt;<i> Thank you very much.
+</I>&gt;<i>
+</I>&gt;<i> regards
+</I>&gt;<i> Marcin
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On 24/02/15 19:24, Michael Stapelberg wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> No particular functionality, and thanks for the report.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Tue, Feb 24, 2015 at 6:12 PM, Chris Atkinson &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">cwa at pipeline.com</A>&gt; wrote:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Hi Michael,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Builds and runs in Arch 64 current to commit d5ec59e (&quot;Merge pull
+</I>&gt;&gt;&gt;<i> request #1486 from acrisci/feature/docs-xvfb-tests&quot;) using the
+</I>&gt;&gt;&gt;<i> stock i3-git PKGBUILD from the AUR.[1]
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Is there any particular functionality you would like tested or
+</I>&gt;&gt;&gt;<i> additional information regarding my setup you would find useful?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Regards,
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> [1] Note that the Arch PKGBUILD requires xcb-util-cursor-git and thus
+</I>&gt;&gt;&gt;<i> xcb-util-cursor is the git version current to commit f03cc27 (&quot;darwin:
+</I>&gt;&gt;&gt;<i> Use OSByteOrder.h rather than CF&quot;).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>
+
+
+-- 
+Best regards,
+Michael
+</PRE>
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001995.html">[i3] Call for testing: upcoming i3 4.9 release
+</A></li>
+	<LI>Next message: <A HREF="001997.html">[i3] Call for testing: upcoming i3 4.9 release
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1996">[ date ]</a>
+              <a href="thread.html#1996">[ thread ]</a>
+              <a href="subject.html#1996">[ subject ]</a>
+              <a href="author.html#1996">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,35 @@
+From 1c3ab583072f4a9166d30087b4ff60b2a70442fd Mon Sep 17 00:00:00 2001
+From: David Nolden <nolden@informatik.rwth-aachen.de>
+Date: Wed, 6 Feb 2013 15:21:26 +0100
+Subject: [PATCH] Wrap output when using "move container to output"
+
+---
+ src/commands.c | 12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
+
+diff --git a/src/commands.c b/src/commands.c
+index 2ca8387..d4e7a01 100644
+--- a/src/commands.c
++++ b/src/commands.c
+@@ -1050,17 +1050,7 @@ void cmd_move_con_to_output(I3_CMD, char *name) {
+ 
+     assert(current_output != NULL);
+ 
+-    // TODO: clean this up with commands.spec as soon as we switched away from the lex/yacc command parser
+-    if (strcasecmp(name, "up") == 0)
+-        output = get_output_next(D_UP, current_output, CLOSEST_OUTPUT);
+-    else if (strcasecmp(name, "down") == 0)
+-        output = get_output_next(D_DOWN, current_output, CLOSEST_OUTPUT);
+-    else if (strcasecmp(name, "left") == 0)
+-        output = get_output_next(D_LEFT, current_output, CLOSEST_OUTPUT);
+-    else if (strcasecmp(name, "right") == 0)
+-        output = get_output_next(D_RIGHT, current_output, CLOSEST_OUTPUT);
+-    else
+-        output = get_output_by_name(name);
++    output = get_output_from_string(current_output, name);
+ 
+     if (!output) {
+         LOG("No such output found.\n");
+-- 
+1.8.0
+

@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] Use ev_break() rather than exit() in i3bar.
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Use%20ev_break%28%29%20rather%20than%20exit%28%29%20in%20i3bar.&In-Reply-To=%3C1332775066-sup-2829%40stapelberg.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000541.html">
+   <LINK REL="Next"  HREF="000524.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] Use ev_break() rather than exit() in i3bar.</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Use%20ev_break%28%29%20rather%20than%20exit%28%29%20in%20i3bar.&In-Reply-To=%3C1332775066-sup-2829%40stapelberg.de%3E"
+       TITLE="[i3] [PATCH] Use ev_break() rather than exit() in i3bar.">michael at i3wm.org
+       </A><BR>
+    <I>Mon Mar 26 17:36:51 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000541.html">[i3] [PATCH] Use ev_break() rather than exit() in i3bar.
+</A></li>
+        <LI>Next message: <A HREF="000524.html">[i3] How to place applications opened in ~/.i3/config
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#587">[ date ]</a>
+              <a href="thread.html#587">[ thread ]</a>
+              <a href="subject.html#587">[ subject ]</a>
+              <a href="author.html#587">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi darkraven,
+
+Excerpts from DR's message of 2012-03-03 13:29:52 +0100:
+&gt;<i> If i3bar is running in hide mode, when i3wm exit, i3bar will exit
+</I>&gt;<i> without killing its child process, leaving a couple of processes in
+</I>&gt;<i> 'T' mode (i.e. Stopped).
+</I>Good catch, thanks.
+
+&gt;<i> I'm not very sure I've done things right. I might change some exit()s
+</I>&gt;<i> called before ev_loop() into ev_break(), or leave some exit()s
+</I>&gt;<i> unconverted. Someone please review this patch.
+</I>Here are a few comments about your patch:
+
+1) You changed a few variables without any obvious reason. Please don&#8217;t do
+   that, always keep patches minimal.
+
+2) Instead of using ev_break(main_loop, EVBREAK_ALL), the ev manpage suggests
+   ev_break(EV_A_ EVBREAK_ALL); within a handler.
+
+3) Why do you even bother to communicate an exit status? i3bar is a
+   forever-running process. When it exits, it failed by definition. The exit
+   code can always be EXIT_FAILURE.
+
+4) You don&#8217;t need to free memory before exiting, the OS will clean it up when
+   the process exits.
+
+But, most importantly, taking a step back from all this: When you call ev_break
+and return from one function, the code of another function might still be
+executed (I think this is what Fernando was trying to say). Thus, ev_break +
+return is actually not equivalent to exit().
+
+Therefore, I just pushed commit <A HREF="http://c.i3wm.org/d519659,">http://c.i3wm.org/d519659,</A> which works for me
+to fix this problem.
+
+Best regards,
+Michael
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000541.html">[i3] [PATCH] Use ev_break() rather than exit() in i3bar.
+</A></li>
+	<LI>Next message: <A HREF="000524.html">[i3] How to place applications opened in ~/.i3/config
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#587">[ date ]</a>
+              <a href="thread.html#587">[ thread ]</a>
+              <a href="subject.html#587">[ subject ]</a>
+              <a href="author.html#587">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,74 @@
+<tt>
+Missed&nbsp;the&nbsp;reply-all&nbsp;button&nbsp;:)&lt;br&gt;&lt;br&gt;&lt;div&nbsp;class=&quot;gmail_quote&quot;&gt;On&nbsp;Tue,&nbsp;Nov&nbsp;20,&nbsp;2012&nbsp;at&nbsp;4:39&nbsp;AM,&nbsp;Kevin&nbsp;Murphy&nbsp;&lt;span&nbsp;dir=&quot;ltr&quot;&gt;&lt;&lt;a&nbsp;href=&quot;mailto:kemurphy.cmu@gmail.com&quot;&nbsp;target=&quot;_blank&quot;&gt;kemurphy.cmu@gmail.com&lt;/a&gt;&gt;&lt;/span&gt;&nbsp;wrote:&lt;br&gt;<br>
+&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;Sure&nbsp;thing.&nbsp; I&#39;ll&nbsp;also&nbsp;rebase&nbsp;it&nbsp;without&nbsp;the&nbsp;window&nbsp;title&nbsp;patch&nbsp;below&nbsp;it,&nbsp;for&nbsp;the&nbsp;time&nbsp;being.&nbsp;:)&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;<br>
+Thanks,&lt;/div&gt;&lt;div&gt;Kevin&lt;div&gt;&lt;div&nbsp;class=&quot;h5&quot;&gt;&lt;br&gt;&lt;br&gt;&lt;div&nbsp;class=&quot;gmail_quote&quot;&gt;On&nbsp;Tue,&nbsp;Nov&nbsp;20,&nbsp;2012&nbsp;at&nbsp;3:30&nbsp;AM,&nbsp;Michael&nbsp;Stapelberg&nbsp;&lt;span&nbsp;dir=&quot;ltr&quot;&gt;&lt;&lt;a&nbsp;href=&quot;mailto:michael@i3wm.org&quot;&nbsp;target=&quot;_blank&quot;&gt;michael@i3wm.org&lt;/a&gt;&gt;&lt;/span&gt;&nbsp;wrote:&lt;br&gt;<br>
+<br>
+&lt;blockquote&nbsp;class=&quot;gmail_quote&quot;&nbsp;style=&quot;margin:0&nbsp;0&nbsp;0&nbsp;.8ex;border-left:1px&nbsp;#ccc&nbsp;solid;padding-left:1ex&quot;&gt;Hi&nbsp;Kevin,&lt;br&gt;<br>
+&lt;div&gt;&lt;br&gt;<br>
+Kevin&nbsp;Murphy&nbsp;&lt;&lt;a&nbsp;href=&quot;mailto:kemurphy.cmu@gmail.com&quot;&nbsp;target=&quot;_blank&quot;&gt;kemurphy.cmu@gmail.com&lt;/a&gt;&gt;&nbsp;writes:&lt;br&gt;<br>
+&gt;&nbsp;This&nbsp;patch&nbsp;fixes&nbsp;vertical&nbsp;text&nbsp;alignment&nbsp;between&nbsp;the&nbsp;workspace&nbsp;labels,&lt;br&gt;<br>
+&gt;&nbsp;window&nbsp;title,&nbsp;and&nbsp;status&nbsp;line,&nbsp;and&nbsp;horizontal&nbsp;spacing&nbsp;between&nbsp;the&nbsp;window&lt;br&gt;<br>
+&gt;&nbsp;title&nbsp;and&nbsp;status&nbsp;line&nbsp;in&nbsp;i3bar.&lt;br&gt;<br>
+&lt;/div&gt;Can&nbsp;you&nbsp;amend&nbsp;that&nbsp;in&nbsp;your&nbsp;patch&nbsp;and&nbsp;re-send&nbsp;it&nbsp;please?&lt;br&gt;<br>
+&lt;br&gt;<br>
+@fernandotcl:&nbsp;Can&nbsp;you&nbsp;have&nbsp;a&nbsp;look&nbsp;at&nbsp;the&nbsp;following&nbsp;changes&nbsp;please?&lt;br&gt;<br>
+&lt;div&gt;&lt;div&gt;&lt;br&gt;<br>
+&gt;&nbsp;On&nbsp;Sun,&nbsp;Nov&nbsp;18,&nbsp;2012&nbsp;at&nbsp;5:56&nbsp;AM,&nbsp;Kevin&nbsp;Murphy&nbsp;&lt;&lt;a&nbsp;href=&quot;mailto:kemurphy.cmu@gmail.com&quot;&nbsp;target=&quot;_blank&quot;&gt;kemurphy.cmu@gmail.com&lt;/a&gt;&gt;wrote:&lt;br&gt;<br>
+&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;From:&nbsp;Kevin&nbsp;Murphy&nbsp;&lt;&lt;a&nbsp;href=&quot;mailto:kemurphy@andrew.cmu.edu&quot;&nbsp;target=&quot;_blank&quot;&gt;kemurphy@andrew.cmu.edu&lt;/a&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;---&lt;br&gt;<br>
+&gt;&gt;&nbsp; i3bar/src/xcb.c&nbsp;|&nbsp;6&nbsp;+++---&lt;br&gt;<br>
+&gt;&gt;&nbsp; 1&nbsp;file&nbsp;changed,&nbsp;3&nbsp;insertions(+),&nbsp;3&nbsp;deletions(-)&lt;br&gt;<br>
+&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;diff&nbsp;--git&nbsp;a/i3bar/src/xcb.c&nbsp;b/i3bar/src/xcb.c&lt;br&gt;<br>
+&gt;&gt;&nbsp;index&nbsp;c20ff37..983d5ad&nbsp;100644&lt;br&gt;<br>
+&gt;&gt;&nbsp;---&nbsp;a/i3bar/src/xcb.c&lt;br&gt;<br>
+&gt;&gt;&nbsp;+++&nbsp;b/i3bar/src/xcb.c&lt;br&gt;<br>
+&gt;&gt;&nbsp;@@&nbsp;-130,7&nbsp;+130,7&nbsp;@@&nbsp;void&nbsp;refresh_statusline(void)&nbsp;{&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; block-&gt;width&nbsp;=&nbsp;predict_text_width(block-&gt;full_text);&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; /*&nbsp;If&nbsp;this&nbsp;is&nbsp;not&nbsp;the&nbsp;last&nbsp;block,&nbsp;add&nbsp;some&nbsp;pixels&nbsp;for&nbsp;a&lt;br&gt;<br>
+&gt;&gt;&nbsp;separator.&nbsp;*/&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if&nbsp;(TAILQ_NEXT(block,&nbsp;blocks)&nbsp;!=&nbsp;NULL)&lt;br&gt;<br>
+&gt;&gt;&nbsp;-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; block-&gt;width&nbsp;+=&nbsp;9;&lt;br&gt;<br>
+&gt;&gt;&nbsp;+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; block-&gt;width&nbsp;+=&nbsp;10;&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; statusline_width&nbsp;+=&nbsp;block-&gt;width;&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; }&lt;br&gt;<br>
+&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;@@&nbsp;-141,7&nbsp;+141,7&nbsp;@@&nbsp;void&nbsp;refresh_statusline(void)&nbsp;{&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; realloc_sl_buffer();&lt;br&gt;<br>
+&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; /*&nbsp;Clear&nbsp;the&nbsp;statusline&nbsp;pixmap.&nbsp;*/&lt;br&gt;<br>
+&gt;&gt;&nbsp;-&nbsp; &nbsp; xcb_rectangle_t&nbsp;rect&nbsp;=&nbsp;{&nbsp;0,&nbsp;0,&nbsp;root_screen-&gt;width_in_pixels,&lt;br&gt;<br>
+&gt;&gt;&nbsp;font.height&nbsp;};&lt;br&gt;<br>
+&gt;&gt;&nbsp;+&nbsp; &nbsp; xcb_rectangle_t&nbsp;rect&nbsp;=&nbsp;{&nbsp;0,&nbsp;0,&nbsp;root_screen-&gt;width_in_pixels,&lt;br&gt;<br>
+&gt;&gt;&nbsp;font.height&nbsp;+&nbsp;4&nbsp;};&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; xcb_poly_fill_rectangle(xcb_connection,&nbsp;statusline_pm,&lt;br&gt;<br>
+&gt;&gt;&nbsp;statusline_clear,&nbsp;1,&nbsp;&amp;rect);&lt;br&gt;<br>
+&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; /*&nbsp;Draw&nbsp;the&nbsp;text&nbsp;of&nbsp;each&nbsp;block.&nbsp;*/&lt;br&gt;<br>
+&gt;&gt;&nbsp;@@&nbsp;-1576,7&nbsp;+1576,7&nbsp;@@&nbsp;void&nbsp;draw_bars(bool&nbsp;unhide)&nbsp;{&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; outputs_walk-&gt;buffer,&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; outputs_walk-&gt;bargc,&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; MAX(0,&nbsp;(int16_t)(statusline_width&nbsp;-&lt;br&gt;<br>
+&gt;&gt;&nbsp;outputs_walk-&gt;rect.w&nbsp;+&nbsp;4)),&nbsp;0,&lt;br&gt;<br>
+&gt;&gt;&nbsp;-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; MAX(0,&nbsp;(int16_t)(outputs_walk-&gt;rect.w&nbsp;-&lt;br&gt;<br>
+&gt;&gt;&nbsp;statusline_width&nbsp;-&nbsp;traypx&nbsp;-&nbsp;4)),&nbsp;3,&lt;br&gt;<br>
+&gt;&gt;&nbsp;+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; MAX(0,&nbsp;(int16_t)(outputs_walk-&gt;rect.w&nbsp;-&lt;br&gt;<br>
+&gt;&gt;&nbsp;statusline_width&nbsp;-&nbsp;traypx&nbsp;-&nbsp;4)),&nbsp;2,&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; MIN(outputs_walk-&gt;rect.w&nbsp;-&nbsp;traypx&nbsp;-&nbsp;4,&lt;br&gt;<br>
+&gt;&gt;&nbsp;statusline_width),&nbsp;font.height);&lt;br&gt;<br>
+&gt;&gt;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }&lt;br&gt;<br>
+&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&nbsp;--&lt;br&gt;<br>
+&gt;&gt;&nbsp;1.8.0&lt;br&gt;<br>
+&gt;&gt;&lt;br&gt;<br>
+&gt;&gt;&lt;br&gt;<br>
+&lt;br&gt;<br>
+&lt;/div&gt;&lt;/div&gt;&lt;span&gt;&lt;font&nbsp;color=&quot;#888888&quot;&gt;--&lt;br&gt;<br>
+Best&nbsp;regards,&lt;br&gt;<br>
+Michael&lt;br&gt;<br>
+&lt;/font&gt;&lt;/span&gt;&lt;/blockquote&gt;&lt;/div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;<br>
+&lt;/blockquote&gt;&lt;/div&gt;&lt;br&gt;<br>
+
+</tt>

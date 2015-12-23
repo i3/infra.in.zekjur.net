@@ -1,0 +1,108 @@
+diff --git a/docs/userguide b/docs/userguide
+index e75f1ca..69eaa29 100644
+--- a/docs/userguide
++++ b/docs/userguide
+@@ -896,7 +896,7 @@ you can turn off the functionality entirely.
+ 
+ *Syntax*:
+ -------------------------
+-tray_output <none|output>
++tray_output <none|primary|output>
+ -------------------------
+ 
+ *Example*:
+@@ -904,10 +904,18 @@ tray_output <none|output>
+ # disable system tray
+ tray_output none
+ 
++# show tray icons on the primary monitor
++tray_output primary
++
+ # show tray icons on the big monitor
+ tray_output HDMI2
+ -------------------------
+ 
++Note that you might not have a primary output configured yet. To do so, run:
++-------------------------
++xrandr --output <output> --primary
++-------------------------
++
+ === Font
+ 
+ Specifies the font (again, X core font, not Xft, just like in i3) to be used in
+diff --git a/i3bar/include/outputs.h b/i3bar/include/outputs.h
+index 6501c31..f9ddd54 100644
+--- a/i3bar/include/outputs.h
++++ b/i3bar/include/outputs.h
+@@ -40,6 +40,7 @@ i3_output* get_output_by_name(char* name);
+ struct i3_output {
+     char*          name;          /* Name of the output */
+     bool           active;        /* If the output is active */
++    bool           primary;       /* If it is the primary output */
+     int            ws;            /* The number of the currently visible ws */
+     rect           rect;          /* The rect (relative to the root-win) */
+ 
+diff --git a/i3bar/src/outputs.c b/i3bar/src/outputs.c
+index 9dc5cab..83a4c24 100644
+--- a/i3bar/src/outputs.c
++++ b/i3bar/src/outputs.c
+@@ -45,15 +45,19 @@ static int outputs_null_cb(void *params_) {
+ static int outputs_boolean_cb(void *params_, int val) {
+     struct outputs_json_params *params = (struct outputs_json_params*) params_;
+ 
+-    if (strcmp(params->cur_key, "active")) {
+-        return 0;
++    if (!strcmp(params->cur_key, "active")) {
++        params->outputs_walk->active = val;
++        FREE(params->cur_key);
++        return 1;
+     }
+ 
+-    params->outputs_walk->active = val;
+-
+-    FREE(params->cur_key);
++    if (!strcmp(params->cur_key, "primary")) {
++        params->outputs_walk->primary = val;
++        FREE(params->cur_key);
++        return 1;
++    }
+ 
+-    return 1;
++    return 0;
+ }
+ 
+ /*
+diff --git a/i3bar/src/xcb.c b/i3bar/src/xcb.c
+index afcfaa3..b4df8cd 100644
+--- a/i3bar/src/xcb.c
++++ b/i3bar/src/xcb.c
+@@ -453,9 +453,12 @@ static void handle_client_message(xcb_client_message_event_t* event) {
+             SLIST_FOREACH(walk, outputs, slist) {
+                 if (!walk->active)
+                     continue;
+-                if (config.tray_output &&
+-                    strcasecmp(walk->name, config.tray_output) != 0)
+-                    continue;
++                if (config.tray_output) {
++                    if ((strcasecmp(walk->name, config.tray_output) != 0) &&
++                        (!walk->primary || strcasecmp("primary", config.tray_output) != 0))
++                        continue;
++                }
++
+                 DLOG("using output %s\n", walk->name);
+                 output = walk;
+             }
+diff --git a/src/ipc.c b/src/ipc.c
+index fe1464e..60533da 100644
+--- a/src/ipc.c
++++ b/src/ipc.c
+@@ -408,6 +408,9 @@ IPC_HANDLER(get_outputs) {
+         ystr("active");
+         y(bool, output->active);
+ 
++        ystr("primary");
++        y(bool, output->primary);
++
+         ystr("rect");
+         y(map_open);
+         ystr("x");

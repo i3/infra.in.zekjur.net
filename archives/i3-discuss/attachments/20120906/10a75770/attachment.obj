@@ -1,0 +1,117 @@
+From 6438b1fee6eb776edcbad9f28dba2a2df5a7ac52 Mon Sep 17 00:00:00 2001
+From: darkraven <drdarkraven@gmail.com>
+Date: Thu, 6 Sep 2012 23:15:57 +0800
+Subject: [PATCH 4/4] remove fullscreen rendering short-cut used in
+ render_l_output().
+
+This made it possible to handle popups while fullscreen.
+---
+ src/render.c | 81 +++++++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 42 insertions(+), 39 deletions(-)
+
+diff --git a/src/render.c b/src/render.c
+index b11bf2d..8b38e69 100644
+--- a/src/render.c
++++ b/src/render.c
+@@ -46,56 +46,59 @@ static void render_l_output(Con *con) {
+ 
+     assert(content != NULL);
+ 
+-    /* We need to find out if there is a fullscreen con on the current workspace
+-     * and take the short-cut to render it directly (the user does not want to
++        assert(content != NULL);
++
++    /* We need to find out if there is a fullscreen con on the current workspace,
++     * in which case we wouldn't render dockareas (the user does not want to
+      * see the dockareas in that case) */
+     Con *ws = con_get_fullscreen_con(content, CF_OUTPUT);
+     Con *fullscreen = con_get_fullscreen_con(ws, CF_OUTPUT);
+-    if (fullscreen) {
+-        fullscreen->rect = con->rect;
+-        x_raise_con(fullscreen);
+-        render_con(fullscreen, true);
+-        return;
+-    }
+-
+-    /* First pass: determine the height of all CT_DOCKAREAs (the sum of their
+-     * children) and figure out how many pixels we have left for the rest */
+-    TAILQ_FOREACH(child, &(con->nodes_head), nodes) {
+-        if (child->type != CT_DOCKAREA)
+-            continue;
+-
+-        child->rect.height = 0;
+-        TAILQ_FOREACH(dockchild, &(child->nodes_head), nodes)
+-            child->rect.height += dockchild->geometry.height;
+-
+-        height -= child->rect.height;
+-    }
+-
+-    /* Second pass: Set the widths/heights */
+-    TAILQ_FOREACH(child, &(con->nodes_head), nodes) {
+-        if (child->type == CT_CON) {
++    if (!fullscreen){
++        /* Determine the height of all CT_DOCKAREAs (the sum of their children)
++         * and render them. Also we figure out how many pixels we have left for
++         * the rest along the way */
++        TAILQ_FOREACH(child, &(con->nodes_head), nodes) {
++            if (child->type != CT_DOCKAREA)
++                continue;
+             child->rect.x = x;
+             child->rect.y = y;
+             child->rect.width = con->rect.width;
+-            child->rect.height = height;
+-        }
++            child->rect.height = 0;
+ 
+-        child->rect.x = x;
+-        child->rect.y = y;
+-        child->rect.width = con->rect.width;
++            child->deco_rect.x = 0;
++            child->deco_rect.y = 0;
++            child->deco_rect.width = 0;
++            child->deco_rect.height = 0;
+ 
+-        child->deco_rect.x = 0;
+-        child->deco_rect.y = 0;
+-        child->deco_rect.width = 0;
+-        child->deco_rect.height = 0;
++            TAILQ_FOREACH(dockchild, &(child->nodes_head), nodes)
++                child->rect.height += dockchild->geometry.height;
+ 
+-        y += child->rect.height;
++            height -= child->rect.height;
++            y += child->rect.height;
+ 
+-        DLOG("child at (%d, %d) with (%d x %d)\n",
+-                child->rect.x, child->rect.y, child->rect.width, child->rect.height);
+-        x_raise_con(child);
+-        render_con(child, false);
++            DLOG("child at (%d, %d) with (%d x %d)\n",
++                    child->rect.x, child->rect.y, child->rect.width, child->rect.height);
++            x_raise_con(child);
++            render_con(child, false);
++        }
+     }
++
++    /* Now we are done with the dockareas, the only things left is guaranteed to
++     * be a CT_CON (see above asserts), so we render its fullscreen child
++     * (which is the active workspace) directly */
++    ws->rect.x = x;
++    ws->rect.y = y;
++    ws->rect.width = con->rect.width;
++    ws->rect.height = height;
++
++    ws->deco_rect.x = 0;
++    ws->deco_rect.y = 0;
++    ws->deco_rect.width = 0;
++    ws->deco_rect.height = 0;
++
++    x_raise_con(content);
++    x_raise_con(ws);
++    render_con(ws, false);
+ }
+ 
+ /* Check for fullscreen nodes and take the short-cut to render them directly.
+-- 
+1.7.12
+

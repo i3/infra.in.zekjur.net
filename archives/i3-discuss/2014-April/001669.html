@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] IPC window close event
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20IPC%20window%20close%20event&In-Reply-To=%3C53481231.6050509%40dubstepdish.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001668.html">
+   <LINK REL="Next"  HREF="001676.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] IPC window close event</H1>
+    <B>Tony</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20IPC%20window%20close%20event&In-Reply-To=%3C53481231.6050509%40dubstepdish.com%3E"
+       TITLE="[i3] IPC window close event">tony at dubstepdish.com
+       </A><BR>
+    <I>Fri Apr 11 18:02:57 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001668.html">[i3] IPC window close event
+</A></li>
+        <LI>Next message: <A HREF="001676.html">[i3] IPC window close event
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1669">[ date ]</a>
+              <a href="thread.html#1669">[ thread ]</a>
+              <a href="subject.html#1669">[ subject ]</a>
+              <a href="author.html#1669">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Marco,
+
+I think it might be easier than you think. The 'focus' property is a list of
+container ids derived directly from the container struct in the core 
+code. This
+list is important for focus movement and structural changes to the tree 
+such as
+when a container is moved or closed.
+
+For our purposes, the interesting properties of this list should be 1) The
+length of the list is the number of containers on the workspace 
+(corollary: an
+empty list indicates the workspace is empty) 2) otherwise if the 
+workspace is
+focused, the id of the first container in the list represents the focused
+container.
+
+So this is very expressive, but a bit cryptic and not very well documented
+outside of the testcases. It also plays to the primary strength of the
+workspace reply object which is that no recursive tree-parsing is 
+required so
+it can be used with simple tools (in the ipc library, it is a simple two
+function calls from the root to have the complete container object).
+
+Would this implementation fit your use case?
+
+
+On 04/10/2014 06:57 PM, Marco Hunsicker wrote:
+&gt;<i> Hello Tony,
+</I>&gt;<i>
+</I>&gt;&gt;<i> I think sending the focus stack is a good idea because it could be 
+</I>&gt;&gt;<i> used to
+</I>&gt;&gt;<i> determine what window is focused (or focused-inactive) on the workspace.
+</I>&gt;<i>
+</I>&gt;<i> My plan was to simply include the window ids of all opened X11 windows 
+</I>&gt;<i> with WORKSPACE replies (ignoring all other nodes!):
+</I>&gt;<i>
+</I>&gt;<i> &quot;windows&quot;:[id1, id2, ...]
+</I>&gt;<i>
+</I>&gt;<i> This would make it (relatively) easy to determine whether a workspace 
+</I>&gt;<i> is empty or not and be somewhat consistent with the TREE reply where 
+</I>&gt;<i> each node provides a &quot;window&quot; field with the window id.
+</I>&gt;<i>
+</I>&gt;<i> If the reply should indicate the focused window as well, we would 
+</I>&gt;<i> either have to add another field. Or extend the array to not only 
+</I>&gt;<i> include the window ids, but the focus state as well.
+</I>&gt;<i>
+</I>&gt;<i> &quot;windows&quot;:[
+</I>&gt;<i>     {&quot;window&quot;: id1, &quot;focused&quot;: true},
+</I>&gt;<i>     {&quot;window&quot;: id2, &quot;focused&quot;: false},
+</I>&gt;<i>     ...
+</I>&gt;<i> ]
+</I>&gt;<i>
+</I>&gt;<i> API-wise it could make sense to use the dump_node() function and 
+</I>&gt;<i> include the whole set of window properties. This would require 
+</I>&gt;<i> additional code to deal with the protocol extension, though (i3bar is 
+</I>&gt;<i> currently very strict when parsing the WORKSPACE reply).
+</I>&gt;<i>
+</I>&gt;<i> Any thoughts?
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> I
+</I>&gt;&gt;<i> would like to see some tests that confirm that an empty array does 
+</I>&gt;&gt;<i> indeed
+</I>&gt;&gt;<i> indicate an empty workspace as well.
+</I>&gt;<i>
+</I>&gt;<i> I've already written several tests to ensure the implementation works 
+</I>&gt;<i> as desired.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;&gt;<i> Also, I would like this &quot;workspace&quot; member to be part of every window 
+</I>&gt;&gt;<i> event
+</I>&gt;&gt;<i> and the new property of the &quot;workspace reply&quot; object to be included in
+</I>&gt;&gt;<i> GET_WORKSPACE replies as well to maintain some consistency in the api.
+</I>&gt;<i>
+</I>&gt;<i> As discussed. That's trivial because there is a central function that 
+</I>&gt;<i> is used to create all window events.
+</I>&gt;<i>
+</I>&gt;<i> Cheers,
+</I>&gt;<i>   Marco
+</I>
+</PRE>
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001668.html">[i3] IPC window close event
+</A></li>
+	<LI>Next message: <A HREF="001676.html">[i3] IPC window close event
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1669">[ date ]</a>
+              <a href="thread.html#1669">[ thread ]</a>
+              <a href="subject.html#1669">[ subject ]</a>
+              <a href="author.html#1669">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

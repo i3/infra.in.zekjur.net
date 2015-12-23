@@ -1,0 +1,1519 @@
+From jaseg at physik.tu-berlin.de  Wed Feb  6 12:00:27 2013
+From: jaseg at physik.tu-berlin.de (=?ISO-8859-1?Q?Sebastian_G=F6tte?=)
+Date: Wed, 06 Feb 2013 12:00:27 +0100
+Subject: [i3] i3lock background image rendering improvements
+Message-ID: <511237CB.1000109@physik.tu-berlin.de>
+
+Hi,
+I modified i3lock so it can zoom a background image to fit or fill the
+screen and to center unscaled background images in order to make it more
+useful with multi-monitor setups.
+The code can be found at https://github.com/jaseg/i3lock
+(git url: git://github.com/jaseg/i3lock.git )
+The commit is
+https://github.com/jaseg/i3lock/commit/a3a711ae26b25cd3799a33beeb0a0b28a3920363
+Best regards,
+jaseg
+
+From zwabel at googlemail.com  Wed Feb  6 15:27:46 2013
+From: zwabel at googlemail.com (David Nolden)
+Date: Wed, 6 Feb 2013 15:27:46 +0100
+Subject: [i3] Patch: Wrap output when using "move container to output right",
+ consistently with "move workspace to output right"
+Message-ID: <CAKB2cX1sEiarX-eiLP=fu0pKveqNURUHbCrpw4x69Bw0p7v1+Q@mail.gmail.com>
+
+It wasn't possible to "toggle" a container between outputs using "move
+container to output right", while it worked with "move workspace to
+output right". This fixes that by using the same function to determine
+the target output.
+
+Greetings, David
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Wrap-output-when-using-move-container-to-output.patch
+Type: application/octet-stream
+Size: 1318 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130206/aaa57bad/attachment.obj>
+
+From michael at i3wm.org  Wed Feb  6 16:04:20 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 06 Feb 2013 16:04:20 +0100
+Subject: [i3] Patch: Wrap output when using "move container to output
+	right", consistently with "move workspace to output right"
+In-Reply-To: <CAKB2cX1sEiarX-eiLP=fu0pKveqNURUHbCrpw4x69Bw0p7v1+Q@mail.gmail.com>
+References: <CAKB2cX1sEiarX-eiLP=fu0pKveqNURUHbCrpw4x69Bw0p7v1+Q@mail.gmail.com>
+Message-ID: <x6fw19jxfv.fsf@midna.zekjur.net>
+
+Hi David,
+
+David Nolden <zwabel at googlemail.com> writes:
+> It wasn't possible to "toggle" a container between outputs using "move
+> container to output right", while it worked with "move workspace to
+> output right". This fixes that by using the same function to determine
+> the target output.
+Thanks for your patch.
+
+This issue has already been adressed with commit
+http://code.stapelberg.de/git/i3/commit/?h=next&id=f13d8ed06f7f363d8c17c86526c573f9c1f1d81e
+
+Please always work on the ?next? branch (as the hacking-howto tells
+you). To submit patches for review, use http://cr.i3wm.org/
+
+-- 
+Best regards,
+Michael
+
+From zwabel at googlemail.com  Thu Feb  7 14:12:29 2013
+From: zwabel at googlemail.com (David Nolden)
+Date: Thu, 7 Feb 2013 14:12:29 +0100
+Subject: [i3] Workspace Session Management through XSMP
+Message-ID: <CAKB2cX2vH_8Mo68H1kO+oXOeXJi7gr1gTLrU4xMUAbDfK-r4fA@mail.gmail.com>
+
+It would be very nice if it was possible to "archive" complete
+workspaces (or containers) through XSMP, so that they could be
+restored at a later point in the same state they were before (see
+http://www.x.org/releases/X11R7.6/doc/libSM/xsmp.html).
+
+Now the questions are:
+1. Are there any plans to implement this?
+2. Is this desirable, or would it be considered bloat?
+
+Greetings, David
+
+From michael at i3wm.org  Thu Feb  7 15:41:57 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 07 Feb 2013 15:41:57 +0100
+Subject: [i3] Workspace Session Management through XSMP
+In-Reply-To: <CAKB2cX2vH_8Mo68H1kO+oXOeXJi7gr1gTLrU4xMUAbDfK-r4fA@mail.gmail.com>
+References: <CAKB2cX2vH_8Mo68H1kO+oXOeXJi7gr1gTLrU4xMUAbDfK-r4fA@mail.gmail.com>
+Message-ID: <x6txpoi3t6.fsf@midna.zekjur.net>
+
+Hi David,
+
+David Nolden <zwabel at googlemail.com> writes:
+> Now the questions are:
+> 1. Are there any plans to implement this?
+Yes. Not using XSMP, though, which is long obsolete. I will provide more
+information on this as soon as it makes sense :-).
+
+-- 
+Best regards,
+Michael
+
+From zwabel at googlemail.com  Thu Feb  7 20:48:39 2013
+From: zwabel at googlemail.com (David Nolden)
+Date: Thu, 7 Feb 2013 20:48:39 +0100
+Subject: [i3] Workspace Session Management through XSMP
+In-Reply-To: <x6txpoi3t6.fsf@midna.zekjur.net>
+References: <CAKB2cX2vH_8Mo68H1kO+oXOeXJi7gr1gTLrU4xMUAbDfK-r4fA@mail.gmail.com>
+ <x6txpoi3t6.fsf@midna.zekjur.net>
+Message-ID: <CAKB2cX1Wa4nR9j8-dckGB=qVDXVq=W__RfaSL25qUr8=Tr1Kaw@mail.gmail.com>
+
+2013/2/7 Michael Stapelberg <michael at i3wm.org>:
+> Hi David,
+>
+> David Nolden <zwabel at googlemail.com> writes:
+>> Now the questions are:
+>> 1. Are there any plans to implement this?
+> Yes. Not using XSMP, though, which is long obsolete. I will provide more
+> information on this as soon as it makes sense :-).
+
+Ok good to know, then I won't try hacking something together using XSMP. ;-)
+
+However I haven't read anything about a stable and common alternative
+yet. By the way, the KDE people are facing very similar problems with
+the "Activities" concept (see for example
+http://yuenhoe.com/blog/2012/08/associating-firefox-profiles-with-kde-activities/
+and http://chani.wordpress.com/2011/08/18/desktop-summit-2011/), so it
+might be interesting taking a look at their problems/solutions. Each
+activity would correspond to an i3 workspace.
+
+Greetings, David
+
+From mhcerri at gmail.com  Fri Feb  8 11:58:39 2013
+From: mhcerri at gmail.com (Marcelo Cerri)
+Date: Fri, 8 Feb 2013 08:58:39 -0200
+Subject: [i3] [i3status] [PATCH 3/3] Support multiple times with
+	different timezones.
+In-Reply-To: <CA+bNT69z3dU2xbOo9UPF6FqYC-mrbA9aYGTmNO8NhZuA7MGmyA@mail.gmail.com>
+References: <CA+bNT6_wWV4T0=d5+_2607nt-BFPgSm1jwDWDz410Hkw_q6q5Q@mail.gmail.com>
+ <x6libhpn81.fsf@midna.zekjur.net>
+ <CACg2Y9ttsK1GrWLP-W5WYTgoWkC1YwDBUXX_rO80SQmnAjQKdQ@mail.gmail.com>
+ <x6fw1ppjl1.fsf@midna.zekjur.net>
+ <CA+bNT6_+n2WbhL2YUjFgOv1jH5Xxyd=rydwuJ5OypYC58t8xkQ@mail.gmail.com>
+ <x6ham1oawm.fsf@midna.zekjur.net>
+ <CA+bNT69z3dU2xbOo9UPF6FqYC-mrbA9aYGTmNO8NhZuA7MGmyA@mail.gmail.com>
+Message-ID: <CACg2Y9utUmHx3cGuyP1Cop-yn14e2KEyNA18j+NCXzvWmq743A@mail.gmail.com>
+
+Hi Emil,
+
+Any news on that?
+
+Regards,
+Marcelo
+
+
+On Mon, Jan 28, 2013 at 9:40 AM, Emil Mikulic <emikulic at gmail.com> wrote:
+
+> On Mon, Jan 28, 2013 at 9:32 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+>
+>> Hi Emil,
+>>
+>> Emil Mikulic <emikulic at gmail.com> writes:
+>> > A simple wrapper script won't preserve the formatting magic, and will be
+>> > even less efficient than the tz_set() juggling.
+>> It does; we have examples for how to properly wrap i3status in its
+>> contrib/ folder.
+>>
+>
+> I stand corrected.
+>
+> (last time I played this game, I wrote a *cough* much simpler one) :)
+>
+>
+>>
+>> > If you change your mind, let me know and I can rework the patch to use a
+>> > different module name or whatever will make it less offensive. :)
+>> Given that a few other people haven spoken up stating they need the
+>> feature, too, I?m willing to give a new patch a chance. I suggest
+>> ?tztime? as module name. Please make it as efficient as the old ?time?
+>> module currently is. Once you are done, submit it to http://cr.i3wm.org/
+>>
+>
+> How about this: http://cr.i3wm.org/patch/27
+>
+> I added some debugging printfs() (not included in the patch) and verified
+> that it doesn't call tzset() unnecessarily. (I'm hoping this is what you
+> meant by efficient)
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130208/43c6562e/attachment.html>
+
+From emikulic at gmail.com  Fri Feb  8 14:24:03 2013
+From: emikulic at gmail.com (Emil Mikulic)
+Date: Sat, 9 Feb 2013 00:24:03 +1100
+Subject: [i3] [i3status] [PATCH 3/3] Support multiple times with
+	different timezones.
+In-Reply-To: <CACg2Y9utUmHx3cGuyP1Cop-yn14e2KEyNA18j+NCXzvWmq743A@mail.gmail.com>
+References: <CA+bNT6_wWV4T0=d5+_2607nt-BFPgSm1jwDWDz410Hkw_q6q5Q@mail.gmail.com>
+ <x6libhpn81.fsf@midna.zekjur.net>
+ <CACg2Y9ttsK1GrWLP-W5WYTgoWkC1YwDBUXX_rO80SQmnAjQKdQ@mail.gmail.com>
+ <x6fw1ppjl1.fsf@midna.zekjur.net>
+ <CA+bNT6_+n2WbhL2YUjFgOv1jH5Xxyd=rydwuJ5OypYC58t8xkQ@mail.gmail.com>
+ <x6ham1oawm.fsf@midna.zekjur.net>
+ <CA+bNT69z3dU2xbOo9UPF6FqYC-mrbA9aYGTmNO8NhZuA7MGmyA@mail.gmail.com>
+ <CACg2Y9utUmHx3cGuyP1Cop-yn14e2KEyNA18j+NCXzvWmq743A@mail.gmail.com>
+Message-ID: <CA+bNT6_dQ4fK=-K8Z6k=r6P=C-3TWduSJgj41_Hni9w8iwr-kA@mail.gmail.com>
+
+On Fri, Feb 8, 2013 at 9:58 PM, Marcelo Cerri <mhcerri at gmail.com> wrote:
+
+> Hi Emil,
+>
+> Any news on that?
+>
+
+Sorry, I've been very time-poor lately.  I'll try to roll a new patch
+tomorrow.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130209/a751f82c/attachment.html>
+
+From michael at i3wm.org  Fri Feb  8 15:33:36 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 08 Feb 2013 15:33:36 +0100
+Subject: [i3] i3lock background image rendering improvements
+In-Reply-To: <511237CB.1000109@physik.tu-berlin.de>
+References: <511237CB.1000109@physik.tu-berlin.de>
+Message-ID: <x6zjzeho3j.fsf@midna.zekjur.net>
+
+Hi Sebastian,
+
+Sebastian G?tte <jaseg at physik.tu-berlin.de> writes:
+> I modified i3lock so it can zoom a background image to fit or fill the
+> screen and to center unscaled background images in order to make it more
+> useful with multi-monitor setups.
+Thanks for letting us know about your work on this.
+
+Unfortunately, any kind of image manipulation features are something
+that I don?t want to have in i3lock. It feels like opening a whole can
+of worms and duplicating functionality that is better achieved with
+external programs.
+
+I know that picture placement is not perfect in pathetic multi-monitor
+cases. That?s something I?m willing to live with :-).
+
+-- 
+Best regards,
+Michael
+
+From jaseg at physik.tu-berlin.de  Fri Feb  8 16:53:49 2013
+From: jaseg at physik.tu-berlin.de (=?UTF-8?B?U2ViYXN0aWFuIEfDtnR0ZQ==?=)
+Date: Fri, 08 Feb 2013 16:53:49 +0100
+Subject: [i3] i3lock background image rendering improvements
+In-Reply-To: <51151F24.4050800@physik.tu-berlin.de>
+References: <51151F24.4050800@physik.tu-berlin.de>
+Message-ID: <51151F8D.2080700@physik.tu-berlin.de>
+
+On 02/08/2013 03:33 PM, Michael Stapelberg wrote:
+> Hi Sebastian,
+> 
+> Sebastian G?tte <jaseg at physik.tu-berlin.de> writes:
+>> I modified i3lock so it can zoom a background image to fit or fill the
+>> screen and to center unscaled background images in order to make it more
+>> useful with multi-monitor setups.
+> Thanks for letting us know about your work on this.
+> 
+> Unfortunately, any kind of image manipulation features are something
+> that I don?t want to have in i3lock. It feels like opening a whole can
+> of worms and duplicating functionality that is better achieved with
+> external programs.
+Unfortunately, external programs are only useful when there are only
+displays of a single known resolution connected to the machine. In case
+of a laptop with an external monitor, it is not possible to pre-scale
+the image because both displays have different resolutions.
+> I know that picture placement is not perfect in pathetic multi-monitor
+> cases. That?s something I?m willing to live with :-).
+I think even in single-monitor setups it is more sensible to center the
+image than to draw it on the top left corner of the screen. This is done
+in just two additional lines of code:
+> int x = ((w / 2) - (cairo_image_surface_get_width(bgimg) / 2));
+> int y = ((h / 2) - (cairo_image_surface_get_height(bgimg) / 2));
+
+The whole zoom/fit stuff is done in 8 lines of code because it is a very
+simple affine transformation already supported nicely by cairo. It is
+not instagram ;) . The diffstat of the entire patch is:
+>  Makefile           |   1 +
+>  i3lock.c           |  20 ++++++---
+>  unlock_indicator.c | 126 +++++++++++++++++++++++++++++++++++++++++------------
+>  unlock_indicator.h |   8 ++++
+>  4 files changed, 122 insertions(+), 33 deletions(-)
+
+Best regards,
+Sebastian
+
+From lgunsch at gmail.com  Fri Feb  8 19:07:03 2013
+From: lgunsch at gmail.com (Lewis Gunsch)
+Date: Fri, 8 Feb 2013 11:07:03 -0700
+Subject: [i3] i3lock background image rendering improvements
+In-Reply-To: <x6zjzeho3j.fsf@midna.zekjur.net>
+References: <511237CB.1000109@physik.tu-berlin.de>
+ <x6zjzeho3j.fsf@midna.zekjur.net>
+Message-ID: <CACBHMbFOm6jVxT4EHXUcbjuaNi9hqJTjmbq_o-5SfNE=3jOtTQ@mail.gmail.com>
+
+On Fri, Feb 8, 2013 at 7:33 AM, Michael Stapelberg <michael at i3wm.org> wrote:
+> Sebastian G?tte <jaseg at physik.tu-berlin.de> writes:
+> > I modified i3lock so it can zoom a background image to fit or fill the
+> > screen and to center unscaled background images in order to make it more
+> > useful with multi-monitor setups.
+>
+> Thanks for letting us know about your work on this.
+>
+> Unfortunately, any kind of image manipulation features are something
+> that I don?t want to have in i3lock. It feels like opening a whole can
+> of worms and duplicating functionality that is better achieved with
+> external programs.
+>
+> I know that picture placement is not perfect in pathetic multi-monitor
+> cases. That?s something I?m willing to live with :-).
+
+I think that it would be nice for my laptop and external monitor to
+have the same background image even though they have different
+resolutions. I know this feature is a little more fancy and perhaps
+not required, but I think it would be a good improvement. I'm not
+entirely sure how an external program would work in this case so I
+can't comment on that.
+
+Cheers,
+~Lewis
+
+From rachus at web.de  Sat Feb  9 20:37:30 2013
+From: rachus at web.de (Sebastian Rachuj)
+Date: Sat, 9 Feb 2013 20:37:30 +0100 (CET)
+Subject: [i3] [PATCH] Do not move focus if a container is moved [#809]
+Message-ID: <trinity-0a6f723e-f198-40b5-92ae-aab6112cb2a1-1360438650216@3capp-webde-bs49>
+
+Hello,
+
+Since it got annoying to me, I tried to fix issue 809 (http://bugs.i3wm.org/report/ticket/809). I'm not completely sure if I made everything right, but it worked as expected when I tested it.
+
+Best Regards
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Bugfix-Do-not-move-the-focus-if-a-container-is-moved.patch
+Type: text/x-patch
+Size: 2196 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130209/1383ed82/attachment.bin>
+
+From michael at i3wm.org  Sun Feb 10 15:04:01 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 10 Feb 2013 15:04:01 +0100
+Subject: [i3] [PATCH] Do not move focus if a container is moved [#809]
+In-Reply-To: <trinity-0a6f723e-f198-40b5-92ae-aab6112cb2a1-1360438650216@3capp-webde-bs49>
+References: <trinity-0a6f723e-f198-40b5-92ae-aab6112cb2a1-1360438650216@3capp-webde-bs49>
+Message-ID: <x6d2w8gt9q.fsf@midna.zekjur.net>
+
+Hi Sebastian,
+
+Sebastian Rachuj <rachus at web.de> writes:
+> Since it got annoying to me, I tried to fix issue 809
+> (http://bugs.i3wm.org/report/ticket/809). I'm not completely sure if I
+> made everything right, but it worked as expected when I tested it.
+Please submit this patch to http://cr.i3wm.org/, thanks.
+
+-- 
+Best regards,
+Michael
+
+From emikulic at gmail.com  Sun Feb 10 16:55:29 2013
+From: emikulic at gmail.com (Emil Mikulic)
+Date: Mon, 11 Feb 2013 02:55:29 +1100
+Subject: [i3] [i3status] [PATCH 3/3] Support multiple times with
+	different timezones.
+In-Reply-To: <CA+bNT6_dQ4fK=-K8Z6k=r6P=C-3TWduSJgj41_Hni9w8iwr-kA@mail.gmail.com>
+References: <CA+bNT6_wWV4T0=d5+_2607nt-BFPgSm1jwDWDz410Hkw_q6q5Q@mail.gmail.com>
+ <x6libhpn81.fsf@midna.zekjur.net>
+ <CACg2Y9ttsK1GrWLP-W5WYTgoWkC1YwDBUXX_rO80SQmnAjQKdQ@mail.gmail.com>
+ <x6fw1ppjl1.fsf@midna.zekjur.net>
+ <CA+bNT6_+n2WbhL2YUjFgOv1jH5Xxyd=rydwuJ5OypYC58t8xkQ@mail.gmail.com>
+ <x6ham1oawm.fsf@midna.zekjur.net>
+ <CA+bNT69z3dU2xbOo9UPF6FqYC-mrbA9aYGTmNO8NhZuA7MGmyA@mail.gmail.com>
+ <CACg2Y9utUmHx3cGuyP1Cop-yn14e2KEyNA18j+NCXzvWmq743A@mail.gmail.com>
+ <CA+bNT6_dQ4fK=-K8Z6k=r6P=C-3TWduSJgj41_Hni9w8iwr-kA@mail.gmail.com>
+Message-ID: <CA+bNT685r2Kgo_KoGiFTtrTyQU=CEzEFcKbAqB_wr7tCgrrVjQ@mail.gmail.com>
+
+http://cr.i3wm.org/patch/41
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130211/b7837b6c/attachment.html>
+
+From michael at i3wm.org  Mon Feb 11 12:27:18 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 11 Feb 2013 12:27:18 +0100
+Subject: [i3] i3lock background image rendering improvements
+In-Reply-To: <51151F8D.2080700@physik.tu-berlin.de>
+References: <51151F24.4050800@physik.tu-berlin.de>
+ <51151F8D.2080700@physik.tu-berlin.de>
+Message-ID: <x6y5evf5ux.fsf@midna.zekjur.net>
+
+Hi Sebastian,
+
+Sebastian G?tte <jaseg at physik.tu-berlin.de> writes:
+> I think even in single-monitor setups it is more sensible to center the
+> image than to draw it on the top left corner of the screen. This is done
+> in just two additional lines of code:
+>> int x = ((w / 2) - (cairo_image_surface_get_width(bgimg) / 2));
+>> int y = ((h / 2) - (cairo_image_surface_get_height(bgimg) / 2));
+I don?t mind that centering. I mind the rest of the patch :). Feel free
+to resubmit a patch which only adds centering. Note that -t conflicts
+with that, so centering should not be used in that case.
+
+-- 
+Best regards,
+Michael
+
+From steven.mulvay at slingshot.co.nz  Sat Feb 16 11:26:44 2013
+From: steven.mulvay at slingshot.co.nz (Steven Mulvay)
+Date: Sat, 16 Feb 2013 23:26:44 +1300
+Subject: [i3] mod+Shift
+Message-ID: <20130216232644.63520fc9@prometheus>
+
+Hi all,
+Is there a way to define a key as the equivalent of mod+Shift? I am physically disabled and I find
+key combinations with more than one modifier difficult.
+
+Cheers,
+Steven
+
+From lukas at fridolin.com  Sat Feb 16 12:01:01 2013
+From: lukas at fridolin.com (Lukas Senger)
+Date: Sat, 16 Feb 2013 12:01:01 +0100
+Subject: [i3] mod+Shift
+In-Reply-To: <20130216232644.63520fc9@prometheus>
+References: <20130216232644.63520fc9@prometheus>
+Message-ID: <511F66ED.10209@fridolin.com>
+
+Hi Steven,
+
+On 02/16/2013 11:26 AM, Steven Mulvay wrote:
+> Hi all,
+> Is there a way to define a key as the equivalent of mod+Shift? I am
+physically disabled and I find
+> key combinations with more than one modifier difficult.
+
+you could define a second modifier key and replace bindings like this
+mod1+shift+x with mod2+x.
+
+Also hi to the mailing list, I've never used one, I hope I'm doing this
+right.
+
+Bye
+Lukas
+
+From keitho at strucktower.com  Fri Feb 22 17:21:47 2013
+From: keitho at strucktower.com (keitho at strucktower.com)
+Date: Fri, 22 Feb 2013 08:21:47 -0800
+Subject: [i3] i3bar not showing on additional user's desktop
+Message-ID: <7f47c6c24f1406fbfaed52bf1334be47.squirrel@webmail.strucktower.com>
+
+I've been using i3 for about a year on my personal laptop (single user).
+Recently I decided to use it on my new home computer (two users). Simple
+setup with only one display.
+
+The i3bar does not display on the second user's (Mary's) desktop. It does
+display on mine as expected. We use the same ~/.i3/config, which is the
+default with only one line added at the end to load a browser on startup.
+AFAIK, all the i3 commands work on both desktops.
+
+I'm using Debian, 3.2.0-4-amd6. I am using xdm with a few scripts to
+login, not sure if that complicates things, since it should be the same
+for both of us.
+
+We do have different privileges.
+
+Here is /etc/i3status.conf:
+
+keith at ada:/etc$ ls -ahl i3status.conf
+-rwxrwxrwx 1 root root 1.3K Feb 20 14:08 i3status.conf
+
+and
+
+keith at ada:/etc$ ls -ahl /usr/bin/i3bar
+-rwxr-xr-x 1 root root 60K Jan  1 12:37 /usr/bin/i3bar
+
+Both of our paths include /usr/bin
+
+A permissions issue? Not sure where else to look.
+
+Thanks if you can help,
+Keith Ostertag
+
+BTW- I couldn't connect to the irc.
+
+
+
+
+
+From keitho at strucktower.com  Sat Feb 23 05:16:07 2013
+From: keitho at strucktower.com (keitho at strucktower.com)
+Date: Fri, 22 Feb 2013 20:16:07 -0800
+Subject: [i3] i3bar not showing on additional user's desktop
+Message-ID: <54dce002423433317578608d566eeabd.squirrel@webmail.strucktower.com>
+
+Sorry, I've been busy with other priorities...
+
+It finally occurred to me to check the log...
+
+It appears that there is some type of problem with ALSA with Mary's
+account- my i3status.conf uses this paragraph:
+
+volume master {
+		format = "sound: %volume"
+		device = "default"
+		mixer = "Master"
+		mixer_idx = 0
+}
+
+Which works in my account, but in her account I get errors related to
+ALSA. Here is a snippet:
+
+i3status: trying to auto-detect output_format setting
+i3status: auto-detected "i3bar"
+i3status: ALSA: Cannot attach mixer to device: No such file or directory
+i3status: ALSA: Cannot attach mixer to device: No such file or directory
+Received SIGPIPE, exiting
+02/22/2013 09:16:16 AM - ERROR: X11 Error received! sequence 0x28a,
+error_code = 4
+02/22/2013 09:16:16 AM - ERROR: X11 Error received! sequence 0x28b,
+error_code = 13
+
+I haven't had time to look into it yet, just thought I'd give this further
+info. Feeling like I shouldn't have made my original post...since this has
+nothing to do with a problem with i3 itself. I apologize.
+
+Keith Ostertag
+
+***********************************
+Original Post:
+
+I've been using i3 for about a year on my personal laptop (single user).
+Recently I decided to use it on my new home computer (two users). Simple
+setup with only one display.
+
+The i3bar does not display on the second user's (Mary's) desktop. It does
+display on mine as expected. We use the same ~/.i3/config, which is the
+default with only one line added at the end to load a browser on startup.
+AFAIK, all the i3 commands work on both desktops.
+
+I'm using Debian, 3.2.0-4-amd6. I am using xdm with a few scripts to
+login, not sure if that complicates things, since it should be the same
+for both of us.
+
+We do have different privileges.
+
+Here is /etc/i3status.conf:
+
+keith at ada:/etc$ ls -ahl i3status.conf
+-rwxrwxrwx 1 root root 1.3K Feb 20 14:08 i3status.conf
+
+and
+
+keith at ada:/etc$ ls -ahl /usr/bin/i3bar
+-rwxr-xr-x 1 root root 60K Jan  1 12:37 /usr/bin/i3bar
+
+Both of our paths include /usr/bin
+
+A permissions issue? Not sure where else to look.
+
+
+From chris at chrisdown.name  Sat Feb 23 06:55:58 2013
+From: chris at chrisdown.name (Chris Down)
+Date: Sat, 23 Feb 2013 13:55:58 +0800
+Subject: [i3] i3bar not showing on additional user's desktop
+In-Reply-To: <54dce002423433317578608d566eeabd.squirrel@webmail.strucktower.com>
+References: <54dce002423433317578608d566eeabd.squirrel@webmail.strucktower.com>
+Message-ID: <CAL4mb5b0By4V2F5fDgcjb4VHz1GA-Y4BnxUc+YSSY+gn1BXsxQ@mail.gmail.com>
+
+Is Mary part of the "audio" group? On some operating environments that is
+required to gain access to the mixer.
+
+Chris
+
+On 23 February 2013 12:16, <keitho at strucktower.com> wrote:
+
+> Sorry, I've been busy with other priorities...
+>
+> It finally occurred to me to check the log...
+>
+> It appears that there is some type of problem with ALSA with Mary's
+> account- my i3status.conf uses this paragraph:
+>
+> volume master {
+>                 format = "sound: %volume"
+>                 device = "default"
+>                 mixer = "Master"
+>                 mixer_idx = 0
+> }
+>
+> Which works in my account, but in her account I get errors related to
+> ALSA. Here is a snippet:
+>
+> i3status: trying to auto-detect output_format setting
+> i3status: auto-detected "i3bar"
+> i3status: ALSA: Cannot attach mixer to device: No such file or directory
+> i3status: ALSA: Cannot attach mixer to device: No such file or directory
+> Received SIGPIPE, exiting
+> 02/22/2013 09:16:16 AM - ERROR: X11 Error received! sequence 0x28a,
+> error_code = 4
+> 02/22/2013 09:16:16 AM - ERROR: X11 Error received! sequence 0x28b,
+> error_code = 13
+>
+> I haven't had time to look into it yet, just thought I'd give this further
+> info. Feeling like I shouldn't have made my original post...since this has
+> nothing to do with a problem with i3 itself. I apologize.
+>
+> Keith Ostertag
+>
+> ***********************************
+> Original Post:
+>
+> I've been using i3 for about a year on my personal laptop (single user).
+> Recently I decided to use it on my new home computer (two users). Simple
+> setup with only one display.
+>
+> The i3bar does not display on the second user's (Mary's) desktop. It does
+> display on mine as expected. We use the same ~/.i3/config, which is the
+> default with only one line added at the end to load a browser on startup.
+> AFAIK, all the i3 commands work on both desktops.
+>
+> I'm using Debian, 3.2.0-4-amd6. I am using xdm with a few scripts to
+> login, not sure if that complicates things, since it should be the same
+> for both of us.
+>
+> We do have different privileges.
+>
+> Here is /etc/i3status.conf:
+>
+> keith at ada:/etc$ ls -ahl i3status.conf
+> -rwxrwxrwx 1 root root 1.3K Feb 20 14:08 i3status.conf
+>
+> and
+>
+> keith at ada:/etc$ ls -ahl /usr/bin/i3bar
+> -rwxr-xr-x 1 root root 60K Jan  1 12:37 /usr/bin/i3bar
+>
+> Both of our paths include /usr/bin
+>
+> A permissions issue? Not sure where else to look.
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130223/e85b9c12/attachment.html>
+
+From keitho at strucktower.com  Sun Feb 24 14:35:18 2013
+From: keitho at strucktower.com (keitho at strucktower.com)
+Date: Sun, 24 Feb 2013 05:35:18 -0800
+Subject: [i3] i3bar not showing on additional user's desktop
+In-Reply-To: <CAL4mb5b0By4V2F5fDgcjb4VHz1GA-Y4BnxUc+YSSY+gn1BXsxQ@mail.gmail.com>
+References: <54dce002423433317578608d566eeabd.squirrel@webmail.strucktower.com>
+ <CAL4mb5b0By4V2F5fDgcjb4VHz1GA-Y4BnxUc+YSSY+gn1BXsxQ@mail.gmail.com>
+Message-ID: <f0da65b5493d44d888e73b1ede7e987d.squirrel@webmail.strucktower.com>
+
+Hi Chris, thanks for responding.
+
+Yes, that was the problem, now fixed.
+
+Never having configured Debian for multiple users, I wasn't aware of that
+till now. The i3 log, in my case .xsessions-error, revealed the source of
+the problem.
+
+Keith
+
+
+> Is Mary part of the "audio" group? On some operating environments that is
+> required to gain access to the mixer.
+>
+> Chris
+>
+> On 23 February 2013 12:16, <keitho at strucktower.com> wrote:
+>
+
+>>
+>> It finally occurred to me to check the log...
+
+
+
+From dustyjerome at gmail.com  Mon Feb 25 23:22:31 2013
+From: dustyjerome at gmail.com (Dustin Jerome)
+Date: Mon, 25 Feb 2013 16:22:31 -0600
+Subject: [i3] Building the latest i3 on RHEL 6
+Message-ID: <CAHyBj=_khrz7+N_ioAnbiq2bDin9xrnkgzW0PxzEJaRohR21og@mail.gmail.com>
+
+Hey folks,
+
+I'm trying to build the latest i3 on RHEL 6.
+
+I use i3 at home (arch), but at work we use RHEL 6 and the "latest" version
+availble in the EPEL repo's is 4.01, built back in 2011.
+
+I did some searching on these archives and only found a handful of RHEL
+mentions, this one being the most pertinent (describes my issue):
+
+http://infra.in.zekjur.net/pipermail/i3-discuss/2012-Septemyum remove
+package but leave dependent packagesyum remove package but leave
+depe(especially considering my i3 config file from my home PC's is designed
+around 4.4's capabilities).ndent
+packagesber/000935.html<http://infra.in.zekjur.net/pipermail/i3-discuss/2012-September/000935.html>
+
+Now I'd rather follow Michael's advice and not start removing functionality
+from i3, as if that's the case I may as well just use 4.01 and avoid the
+headache altogether.
+
+The version of cairo that comes packaged with RHEL 6 is 1.8 and is not
+built with xcb support, which is shown when I call make in the i3 git repo:
+
+$ make
+[libi3] CC libi3/font.c
+libi3/font.c:16:29: error: cairo/cairo-xcb.h: No such file or directory
+libi3/font.c: In function ?load_pango_font?:
+libi3/font.c:57: warning: implicit declaration of function
+?cairo_xcb_surface_create?
+libi3/font.c:57: warning: initialization makes pointer from integer without
+a cast
+libi3/font.c: In function ?draw_text_pango?:
+libi3/font.c:86: warning: initialization makes pointer from integer without
+a cast
+libi3/font.c: In function ?predict_text_width_pango?:
+libi3/font.c:114: warning: initialization makes pointer from integer
+without a cast
+make: *** [libi3/font.o] Error 1
+
+I attempted to upgrade cairo, but there are a ton of packages dependent on
+it. I didn't want to attempt to remove or upgrade cairo without first
+getting some assistance.
+
+Going by this guide:
+http://wiki.centos.org/HowTos/RebuildSRPM
+I know how to re-build cairo with xcb support, and I also am able to do it
+building by source with the flags:
+./configure --enable-xcb
+
+I guess my question is: how do I upgrade cairo with xcb support on RHEL 6
+without breaking things?
+
+Thank you!
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130225/e7ebc0d1/attachment.html>
+
+From dustyjerome at gmail.com  Tue Feb 26 22:47:42 2013
+From: dustyjerome at gmail.com (Dustin Jerome)
+Date: Tue, 26 Feb 2013 15:47:42 -0600
+Subject: [i3] Building the latest i3 on RHEL 6
+In-Reply-To: <CAHyBj=_khrz7+N_ioAnbiq2bDin9xrnkgzW0PxzEJaRohR21og@mail.gmail.com>
+References: <CAHyBj=_khrz7+N_ioAnbiq2bDin9xrnkgzW0PxzEJaRohR21og@mail.gmail.com>
+Message-ID: <CAHyBj=9F-YgZ9GE-8Nhvr8StDgZkqetvm6SRkExPqz3f4P_jfA@mail.gmail.com>
+
+Update:
+
+A nice gentleman named Emil recommend I leave the current cairo version
+1.8.8 installed and build from source a new version of cairo with xcb
+support, which I have done. I installed it to /opt/cairo-with-xcb. He then
+recommended that I statically link the cairo-with-xcb library in my
+libi3/font.c file, which I did by changing the include statement from:
+
+#include <cairo/cairo-xcb.h>
+
+to
+
+#include "/opt/cairo-with-xcb/include/cairo/cairo-xcb.h"
+
+and that took care of the problem from earlier (that is, libi3 compiled
+just fine).
+
+A new problem has cropped up:
+
+$ make
+
+[libi3] CC libi3/fake_configure_notify.c
+
+[libi3] CC libi3/font.c
+
+[libi3] CC libi3/get_colorpixel.c
+
+[libi3] CC libi3/get_mod_mask.c
+
+[libi3] CC libi3/get_visualtype.c
+
+[libi3] CC libi3/ipc_connect.c
+
+[libi3] CC libi3/ipc_recv_message.c
+
+[libi3] CC libi3/ipc_send_message.c
+
+[libi3] CC libi3/is_debug_build.c
+
+[libi3] CC libi3/root_atom_contents.c
+
+[libi3] CC libi3/safewrappers.c
+
+[libi3] CC libi3/string.c
+
+[libi3] CC libi3/strndup.c
+
+[libi3] CC libi3/ucs2_conversion.c
+
+[libi3] AR libi3.a
+
+[i3] YACC src/cfgparse.y
+
+[i3] CC src/cfgparse.tab.c
+
+[i3] LEX src/cfgparse.l
+
+[i3] CC src/cfgparse.yy.c
+
+[i3] CC src/assignments.c
+
+[i3] CC src/click.c
+
+[i3] CC src/commands.c
+
+[i3] Generating command parser
+
+[i3] CC src/commands_parser.c
+
+[i3] CC src/con.c
+
+../i3/src/con.c: In function ?con_toggle_fullscreen?:
+
+../i3/src/con.c:615: error: ?ATOM? undeclared (first use in this function)
+
+../i3/src/con.c:615: error: (Each undeclared identifier is reported only
+once
+../i3/src/con.c:615: error: for each function it appears in.)
+
+make: *** [src/con.o] Error 1
+
+
+The line in question is line 615 in con.c:
+
+    xcb_change_property(conn, XCB_PROP_MODE_REPLACE, con->window->id,
+
+                        A__NET_WM_STATE, XCB_ATOM_ATOM, 32, num, values);
+
+
+(and that is the only instance of the word "ATOM" in this file)
+
+As a test I attempted to change XCB_ATOM_ATOM to XCB_ATOM and that actually
+allowed me to successfully compile the con.c file (I'm assuming it found a
+more generic type that would probably fall on it's face during compile or
+run time), but Murphy's law prevails and a new set of errors:
+
+$ make
+[i3] CC src/ewmh.c
+
+../i3/src/ewmh.c: In function ?ewmh_update_current_desktop?:
+
+../i3/src/ewmh.c:32: error: ?CARDINAL? undeclared (first use in this
+function)
+../i3/src/ewmh.c:32: error: (Each undeclared identifier is reported only
+once
+../i3/src/ewmh.c:32: error: for each function it appears in.)
+
+../i3/src/ewmh.c: In function ?ewmh_update_active_window?:
+
+../i3/src/ewmh.c:49: error: ?WINDOW? undeclared (first use in this
+function)
+../i3/src/ewmh.c: In function ?ewmh_update_workarea?:
+
+../i3/src/ewmh.c:109: error: ?CARDINAL? undeclared (first use in this
+function)
+../i3/src/ewmh.c: In function ?ewmh_update_client_list_stacking?:
+
+../i3/src/ewmh.c:126: error: ?WINDOW? undeclared (first use in this
+function)
+../i3/src/ewmh.c: In function ?ewmh_setup_hints?:
+
+../i3/src/ewmh.c:160: error: ?WINDOW? undeclared (first use in this
+function)
+../i3/src/ewmh.c:167: error: ?ATOM? undeclared (first use in this function)
+
+
+(at this point I have changed XCB_ATOM back to XCB_ATOM_ATOM in con.c; I
+can only assume I am missing some dependency).
+
+The offending lines were XCB_ATOM_CARDINAL, XCB_ATOM_WINDOW, etc. etc.
+
+I see these defined in an enum in xproto.h, which is included in "all.h"
+which is included in con.c and ewmh.c - so I'm at a loss as to why these
+errors are coming up.
+
+Any ideas?
+
+-Dustin
+
+On Mon, Feb 25, 2013 at 4:22 PM, Dustin Jerome <dustyjerome at gmail.com>wrote:
+
+> Hey folks,
+>
+> I'm trying to build the latest i3 on RHEL 6.
+>
+> I use i3 at home (arch), but at work we use RHEL 6 and the "latest"
+> version availble in the EPEL repo's is 4.01, built back in 2011.
+>
+> I did some searching on these archives and only found a handful of RHEL
+> mentions, this one being the most pertinent (describes my issue):
+>
+> http://infra.in.zekjur.net/pipermail/i3-discuss/2012-Septemyum remove
+> package but leave dependent packagesyum remove package but leave
+> depe(especially considering my i3 config file from my home PC's is designed
+> around 4.4's capabilities).ndent packagesber/000935.html<http://infra.in.zekjur.net/pipermail/i3-discuss/2012-September/000935.html>
+>
+> Now I'd rather follow Michael's advice and not start removing
+> functionality from i3, as if that's the case I may as well just use 4.01
+> and avoid the headache altogether.
+>
+> The version of cairo that comes packaged with RHEL 6 is 1.8 and is not
+> built with xcb support, which is shown when I call make in the i3 git repo:
+>
+> $ make
+> [libi3] CC libi3/font.c
+> libi3/font.c:16:29: error: cairo/cairo-xcb.h: No such file or directory
+> libi3/font.c: In function ?load_pango_font?:
+> libi3/font.c:57: warning: implicit declaration of function
+> ?cairo_xcb_surface_create?
+> libi3/font.c:57: warning: initialization makes pointer from integer
+> without a cast
+> libi3/font.c: In function ?draw_text_pango?:
+> libi3/font.c:86: warning: initialization makes pointer from integer
+> without a cast
+> libi3/font.c: In function ?predict_text_width_pango?:
+> libi3/font.c:114: warning: initialization makes pointer from integer
+> without a cast
+> make: *** [libi3/font.o] Error 1
+>
+> I attempted to upgrade cairo, but there are a ton of packages dependent on
+> it. I didn't want to attempt to remove or upgrade cairo without first
+> getting some assistance.
+>
+> Going by this guide:
+> http://wiki.centos.org/HowTos/RebuildSRPM
+> I know how to re-build cairo with xcb support, and I also am able to do it
+> building by source with the flags:
+> ./configure --enable-xcb
+>
+> I guess my question is: how do I upgrade cairo with xcb support on RHEL 6
+> without breaking things?
+>
+> Thank you!
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130226/fbcb2960/attachment.html>
+
+From michael at i3wm.org  Wed Feb 27 15:39:50 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 27 Feb 2013 15:39:50 +0100
+Subject: [i3] Building the latest i3 on RHEL 6
+In-Reply-To: <CAHyBj=9F-YgZ9GE-8Nhvr8StDgZkqetvm6SRkExPqz3f4P_jfA@mail.gmail.com>
+References: <CAHyBj=_khrz7+N_ioAnbiq2bDin9xrnkgzW0PxzEJaRohR21og@mail.gmail.com>
+ <CAHyBj=9F-YgZ9GE-8Nhvr8StDgZkqetvm6SRkExPqz3f4P_jfA@mail.gmail.com>
+Message-ID: <x6wqttes7d.fsf@midna.zekjur.net>
+
+Hi Dustin,
+
+Dustin Jerome <dustyjerome at gmail.com> writes:
+> [i3] CC src/con.c
+>
+> ../i3/src/con.c: In function ?con_toggle_fullscreen?:
+> ../i3/src/con.c:615: error: ?ATOM? undeclared (first use in this function)
+> ../i3/src/con.c:615: error: (Each undeclared identifier is reported only
+> once
+> ../i3/src/con.c:615: error: for each function it appears in.)
+>
+> make: *** [src/con.o] Error 1
+This implies that include/xcb_compat.h is used, which will be enabled
+when i3 doesn?t find the pkg-config file for ?xcb-util?. So, it seems
+like you are missing the development headers for xcb-util.
+
+> As a test I attempted to change XCB_ATOM_ATOM to XCB_ATOM and that actually
+> allowed me to successfully compile the con.c file (I'm assuming it
+Beware! This is wrong. XCB_ATOM is a constant which identifies the X11
+opcode, not the X11 atom value. It is either XCB_ATOM_ATOM (in recent
+xcb) or ATOM (in older versions of xcb).
+
+-- 
+Best regards,
+Michael
+
+From dustyjerome at gmail.com  Wed Feb 27 16:31:37 2013
+From: dustyjerome at gmail.com (Dustin Jerome)
+Date: Wed, 27 Feb 2013 09:31:37 -0600
+Subject: [i3] Building the latest i3 on RHEL 6
+In-Reply-To: <x6wqttes7d.fsf@midna.zekjur.net>
+References: <CAHyBj=_khrz7+N_ioAnbiq2bDin9xrnkgzW0PxzEJaRohR21og@mail.gmail.com>
+ <CAHyBj=9F-YgZ9GE-8Nhvr8StDgZkqetvm6SRkExPqz3f4P_jfA@mail.gmail.com>
+ <x6wqttes7d.fsf@midna.zekjur.net>
+Message-ID: <CAHyBj=9oKHSikgPCwr8t2c7jDLUwiq=o+rmBTF+spWmQnBTW8g@mail.gmail.com>
+
+Michael,
+
+You would be correct. I thought I had built xcb-util but seem to have
+gotten sidetracked and it never happened. It is giving me the following
+error when trying to build xcb-util:
+
+$ ./autogen.sh
+autoreconf: Entering directory `.'
+autoreconf: configure.ac: not using Gettext
+autoreconf: running: aclocal -I m4
+autoreconf: configure.ac: tracing
+autoreconf: configure.ac: not using Libtool
+autoreconf: running: /usr/bin/autoconf
+autoreconf: configure.ac: not using Autoheader
+autoreconf: running: automake --add-missing --copy --no-force
+src/Makefile.am:1: Libtool library used but `LIBTOOL' is undefined
+src/Makefile.am:1:   The usual way to define `LIBTOOL' is to add
+`AC_PROG_LIBTOOL'
+src/Makefile.am:1:   to `configure.ac' and run `aclocal' and `autoconf'
+again.
+src/Makefile.am:1:   If `AC_PROG_LIBTOOL' is in `configure.ac', make sure
+src/Makefile.am:1:   its definition is in aclocal's search path.
+src/Makefile.am:13: `xcbinclude_HEADERS' is used but `xcbincludedir' is
+undefined
+Makefile.am:5: `pkgconfig_DATA' is used but `pkgconfigdir' is undefined
+autoreconf: automake failed with exit status: 1
+
+Having never used pkg-config before I'm not quite sure what it wants.
+
+I found this: https://bugs.freedesktop.org/show_bug.cgi?id=39019 and
+followed the directions in the last comment, but still am getting the same
+error.
+
+Any assistance is appreciated.
+
+
+On Wed, Feb 27, 2013 at 8:39 AM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Dustin,
+>
+> Dustin Jerome <dustyjerome at gmail.com> writes:
+> > [i3] CC src/con.c
+> >
+> > ../i3/src/con.c: In function ?con_toggle_fullscreen?:
+> > ../i3/src/con.c:615: error: ?ATOM? undeclared (first use in this
+> function)
+> > ../i3/src/con.c:615: error: (Each undeclared identifier is reported only
+> > once
+> > ../i3/src/con.c:615: error: for each function it appears in.)
+> >
+> > make: *** [src/con.o] Error 1
+> This implies that include/xcb_compat.h is used, which will be enabled
+> when i3 doesn?t find the pkg-config file for ?xcb-util?. So, it seems
+> like you are missing the development headers for xcb-util.
+>
+> > As a test I attempted to change XCB_ATOM_ATOM to XCB_ATOM and that
+> actually
+> > allowed me to successfully compile the con.c file (I'm assuming it
+> Beware! This is wrong. XCB_ATOM is a constant which identifies the X11
+> opcode, not the X11 atom value. It is either XCB_ATOM_ATOM (in recent
+> xcb) or ATOM (in older versions of xcb).
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130227/6c98eed4/attachment.html>
+
+From michael at i3wm.org  Wed Feb 27 18:07:22 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 27 Feb 2013 18:07:22 +0100
+Subject: [i3] Building the latest i3 on RHEL 6
+In-Reply-To: <CAHyBj=9oKHSikgPCwr8t2c7jDLUwiq=o+rmBTF+spWmQnBTW8g@mail.gmail.com>
+References: <CAHyBj=_khrz7+N_ioAnbiq2bDin9xrnkgzW0PxzEJaRohR21og@mail.gmail.com>
+ <CAHyBj=9F-YgZ9GE-8Nhvr8StDgZkqetvm6SRkExPqz3f4P_jfA@mail.gmail.com>
+ <x6wqttes7d.fsf@midna.zekjur.net>
+ <CAHyBj=9oKHSikgPCwr8t2c7jDLUwiq=o+rmBTF+spWmQnBTW8g@mail.gmail.com>
+Message-ID: <x6txoxeldh.fsf@midna.zekjur.net>
+
+Hi Dustin,
+
+Dustin Jerome <dustyjerome at gmail.com> writes:
+> $ ./autogen.sh
+> autoreconf: Entering directory `.'
+> autoreconf: configure.ac: not using Gettext
+> autoreconf: running: aclocal -I m4
+> autoreconf: configure.ac: tracing
+> autoreconf: configure.ac: not using Libtool
+> autoreconf: running: /usr/bin/autoconf
+> autoreconf: configure.ac: not using Autoheader
+> autoreconf: running: automake --add-missing --copy --no-force
+> src/Makefile.am:1: Libtool library used but `LIBTOOL' is undefined
+> src/Makefile.am:1:   The usual way to define `LIBTOOL' is to add
+> `AC_PROG_LIBTOOL'
+> src/Makefile.am:1:   to `configure.ac' and run `aclocal' and `autoconf'
+> again.
+> src/Makefile.am:1:   If `AC_PROG_LIBTOOL' is in `configure.ac', make sure
+> src/Makefile.am:1:   its definition is in aclocal's search path.
+> src/Makefile.am:13: `xcbinclude_HEADERS' is used but `xcbincludedir' is
+> undefined
+> Makefile.am:5: `pkgconfig_DATA' is used but `pkgconfigdir' is undefined
+> autoreconf: automake failed with exit status: 1
+Run ?git submodule update --init?
+
+-- 
+Best regards,
+Michael
+
+From dustyjerome at gmail.com  Wed Feb 27 22:06:05 2013
+From: dustyjerome at gmail.com (Dustin Jerome)
+Date: Wed, 27 Feb 2013 15:06:05 -0600
+Subject: [i3] Fwd:  Building the latest i3 on RHEL 6
+In-Reply-To: <CAHyBj=-4=isutTG5bF9nUxB1T9=VN2BKWiD922oLjNvOetGQQg@mail.gmail.com>
+References: <CAHyBj=_khrz7+N_ioAnbiq2bDin9xrnkgzW0PxzEJaRohR21og@mail.gmail.com>
+ <CAHyBj=9F-YgZ9GE-8Nhvr8StDgZkqetvm6SRkExPqz3f4P_jfA@mail.gmail.com>
+ <x6wqttes7d.fsf@midna.zekjur.net>
+ <CAHyBj=9oKHSikgPCwr8t2c7jDLUwiq=o+rmBTF+spWmQnBTW8g@mail.gmail.com>
+ <x6txoxeldh.fsf@midna.zekjur.net>
+ <CAHyBj=-4=isutTG5bF9nUxB1T9=VN2BKWiD922oLjNvOetGQQg@mail.gmail.com>
+Message-ID: <CAHyBj=_n+2um1kFmRTQs92kux7ZBFrEKU6mEJ9t8K=es0ZG8Gg@mail.gmail.com>
+
+Apologies, accidentally sent this to only Michael. Re-sending to list.
+
+---------- Forwarded message ----------
+From: Dustin Jerome <dustyjerome at gmail.com>
+Date: Wed, Feb 27, 2013 at 2:49 PM
+Subject: Re: [i3] Building the latest i3 on RHEL 6
+To: Michael Stapelberg <michael at i3wm.org>
+
+
+Michael,
+
+You, sir, are a genius.
+
+I ran "git submodule update --init" and was able to compile and install
+xcb-util.
+
+For those of you who may find this thread and are in a similar situation to
+me, after installing xcb-util I started getting these errors:
+
+$ make
+[i3] CC src/con.c
+[i3] CC src/config.c
+[i3] CC src/config_directives.c
+[i3] Generating config parser
+[i3] CC src/config_parser.c
+[i3] CC src/debug.c
+[i3] CC src/display_version.c
+[i3] CC src/ewmh.c
+[i3] CC src/fake_outputs.c
+[i3] CC src/floating.c
+[i3] CC src/handlers.c
+../i3/src/handlers.c: In function ?handle_normal_hints?:
+../i3/src/handlers.c:721: warning: implicit declaration of function
+?xcb_icccm_get_wm_size_hints_from_reply?
+../i3/src/handlers.c:723: warning: implicit declaration of function
+?xcb_icccm_get_wm_normal_hints_reply?
+../i3/src/handlers.c:723: warning: implicit declaration of function
+?xcb_icccm_get_wm_normal_hints_unchecked?
+../i3/src/handlers.c:725: error: ?XCB_ICCCM_SIZE_HINT_P_MIN_SIZE?
+undeclared (first use in this function)
+../i3/src/handlers.c:725: error: (Each undeclared identifier is reported
+only once
+../i3/src/handlers.c:725: error: for each function it appears in.)
+../i3/src/handlers.c:731: error: ?XCB_ICCCM_SIZE_HINT_P_RESIZE_INC?
+undeclared (first use in this function)
+../i3/src/handlers.c:752: error: ?XCB_ICCCM_SIZE_HINT_BASE_SIZE? undeclared
+(first use in this function)
+../i3/src/handlers.c:771: error: ?XCB_ICCCM_SIZE_HINT_P_ASPECT? undeclared
+(first use in this function)
+../i3/src/handlers.c: In function ?handle_hints?:
+../i3/src/handlers.c:827: error: ?xcb_icccm_wm_hints_t? undeclared (first
+use in this function)
+../i3/src/handlers.c:827: error: expected ?;? before ?hints?
+../i3/src/handlers.c:830: warning: implicit declaration of function
+?xcb_icccm_get_wm_hints?
+../i3/src/handlers.c:830: error: incompatible type for argument 2 of
+?xcb_get_property_reply?
+/usr/local/include/xcb/xproto.h:7980: note: expected
+?xcb_get_property_cookie_t? but argument is of type ?int?
+../i3/src/handlers.c:833: warning: implicit declaration of function
+?xcb_icccm_get_wm_hints_from_reply?
+../i3/src/handlers.c:833: error: ?hints? undeclared (first use in this
+function)
+../i3/src/handlers.c:844: warning: implicit declaration of function
+?xcb_icccm_wm_hints_get_urgency?
+make: *** [src/handlers.o] Error 1
+
+which turned out to be xcb-icccm issues which I got around by installing
+xcb-util-wm. xcb-icccm apparently is split between xcb-util and xcb-util-wm
+(seems odd to me).
+
+And for my latest error (sorry to keep bugging you!):
+
+$ make
+[libi3] CC libi3/fake_configure_notify.c
+[libi3] CC libi3/font.c
+[libi3] CC libi3/get_colorpixel.c
+[libi3] CC libi3/get_mod_mask.c
+[libi3] CC libi3/get_visualtype.c
+[libi3] CC libi3/ipc_connect.c
+[libi3] CC libi3/ipc_recv_message.c
+[libi3] CC libi3/ipc_send_message.c
+[libi3] CC libi3/is_debug_build.c
+[libi3] CC libi3/root_atom_contents.c
+[libi3] CC libi3/safewrappers.c
+[libi3] CC libi3/string.c
+[libi3] CC libi3/strndup.c
+[libi3] CC libi3/ucs2_conversion.c
+[libi3] AR libi3.a
+[i3] YACC src/cfgparse.y
+[i3] CC src/cfgparse.tab.c
+[i3] LEX src/cfgparse.l
+[i3] CC src/cfgparse.yy.c
+[i3] CC src/assignments.c
+[i3] CC src/click.c
+[i3] CC src/commands.c
+[i3] Generating command parser
+[i3] CC src/commands_parser.c
+[i3] CC src/con.c
+[i3] CC src/config.c
+[i3] CC src/config_directives.c
+[i3] Generating config parser
+[i3] CC src/config_parser.c
+[i3] CC src/debug.c
+[i3] CC src/display_version.c
+[i3] CC src/ewmh.c
+[i3] CC src/fake_outputs.c
+[i3] CC src/floating.c
+[i3] CC src/handlers.c
+[i3] CC src/ipc.c
+[i3] CC src/key_press.c
+[i3] CC src/load_layout.c
+[i3] CC src/log.c
+[i3] CC src/main.c
+[i3] CC src/manage.c
+[i3] CC src/match.c
+[i3] CC src/move.c
+[i3] CC src/output.c
+[i3] CC src/randr.c
+[i3] CC src/regex.c
+[i3] CC src/render.c
+[i3] CC src/resize.c
+[i3] CC src/scratchpad.c
+[i3] CC src/sd-daemon.c
+[i3] CC src/sighandler.c
+[i3] CC src/startup.c
+[i3] CC src/tree.c
+[i3] CC src/util.c
+[i3] CC src/window.c
+[i3] CC src/workspace.c
+[i3] CC src/x.c
+[i3] CC src/xcb.c
+[i3] CC src/xcursor.c
+[i3] CC src/xinerama.c
+[i3] Link i3
+/user/djerome/pkg/i3/libi3.a(font.o): In function `load_pango_font':
+/user/djerome/pkg/i3/libi3/font.c:57: undefined reference to
+`cairo_xcb_surface_create'
+/user/djerome/pkg/i3/libi3.a(font.o): In function `draw_text_pango':
+/user/djerome/pkg/i3/libi3/font.c:85: undefined reference to
+`cairo_xcb_surface_create'
+/user/djerome/pkg/i3/libi3.a(font.o): In function
+`predict_text_width_pango':
+/user/djerome/pkg/i3/libi3/font.c:114: undefined reference to
+`cairo_xcb_surface_create'
+collect2: ld returned 1 exit status
+make: *** [i3] Error 1
+
+I then went to lunch, and when I got back I decided to "make clean;make
+distclean;make" and this error went away. When I tried "sudo make install"
+it came back...!!!:
+
+$ sudo make install
+[sudo] password for djerome:
+[i3] Install
+[i3-config-wizard] YACC i3-config-wizard/cfgparse.y
+[i3-config-wizard] CC i3-config-wizard/cfgparse.tab.c
+[i3-config-wizard] LEX i3-config-wizard/cfgparse.l
+[i3-config-wizard] CC i3-config-wizard/cfgparse.yy.c
+[i3-config-wizard] Link i3-config-wizard
+/user/djerome/pkg/i3/libi3.a(font.o): In function `load_pango_font':
+/user/djerome/pkg/i3/libi3/font.c:57: undefined reference to
+`cairo_xcb_surface_create'
+/user/djerome/pkg/i3/libi3.a(font.o): In function `draw_text_pango':
+/user/djerome/pkg/i3/libi3/font.c:85: undefined reference to
+`cairo_xcb_surface_create'
+/user/djerome/pkg/i3/libi3.a(font.o): In function
+`predict_text_width_pango':
+/user/djerome/pkg/i3/libi3/font.c:114: undefined reference to
+`cairo_xcb_surface_create'
+collect2: ld returned 1 exit status
+make: *** [i3-config-wizard/i3-config-wizard] Error 1
+
+I am currently attempting to rebuild pango in /opt/pango, but it
+continuously tells me that while it finds cairo, it reports that there are
+no backends that can be used (even though everything else seems to see
+cairo-xcb just fine):
+
+$ ./autogen.sh --prefix=/opt/pango
+.
+.
+.
+checking for CoreText availability... no
+checking for CAIRO... yes
+checking which cairo font backends could be used... none
+configure: Disabling cairo support
+configure: error: *** Could not enable any backends.
+*** Must have at least one backend to build Pango.
+
+$ echo $PKG_CONFIG_PATH
+/opt/cairo-with-xcb/lib/pkgconfig/:/opt/pixman/lib/pkgconfig/:/opt/xcb-proto/lib/pkgconfig/:/opt/libxcb/lib/pkgconfig/
+$ pkg-config --modversion cairo
+1.12.15
+
+I've also tried setting CAIRO_LIBS:
+
+$ echo $CAIRO_LIBS
+/opt/cairo-with-xcb/lib
+
+to no avail.
+
+Any ideas? :(
+
+
+On Wed, Feb 27, 2013 at 11:07 AM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Dustin,
+>
+> Dustin Jerome <dustyjerome at gmail.com> writes:
+> > $ ./autogen.sh
+> > autoreconf: Entering directory `.'
+> > autoreconf: configure.ac: not using Gettext
+> > autoreconf: running: aclocal -I m4
+> > autoreconf: configure.ac: tracing
+> > autoreconf: configure.ac: not using Libtool
+> > autoreconf: running: /usr/bin/autoconf
+> > autoreconf: configure.ac: not using Autoheader
+> > autoreconf: running: automake --add-missing --copy --no-force
+> > src/Makefile.am:1: Libtool library used but `LIBTOOL' is undefined
+> > src/Makefile.am:1:   The usual way to define `LIBTOOL' is to add
+> > `AC_PROG_LIBTOOL'
+> > src/Makefile.am:1:   to `configure.ac' and run `aclocal' and `autoconf'
+> > again.
+> > src/Makefile.am:1:   If `AC_PROG_LIBTOOL' is in `configure.ac', make
+> sure
+> > src/Makefile.am:1:   its definition is in aclocal's search path.
+> > src/Makefile.am:13: `xcbinclude_HEADERS' is used but `xcbincludedir' is
+> > undefined
+> > Makefile.am:5: `pkgconfig_DATA' is used but `pkgconfigdir' is undefined
+> > autoreconf: automake failed with exit status: 1
+> Run ?git submodule update --init?
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130227/624b7bc9/attachment-0001.html>
+
+From michael at i3wm.org  Wed Feb 27 23:15:35 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 27 Feb 2013 23:15:35 +0100
+Subject: [i3] Fwd:  Building the latest i3 on RHEL 6
+In-Reply-To: <CAHyBj=_n+2um1kFmRTQs92kux7ZBFrEKU6mEJ9t8K=es0ZG8Gg@mail.gmail.com>
+References: <CAHyBj=_khrz7+N_ioAnbiq2bDin9xrnkgzW0PxzEJaRohR21og@mail.gmail.com>
+ <CAHyBj=9F-YgZ9GE-8Nhvr8StDgZkqetvm6SRkExPqz3f4P_jfA@mail.gmail.com>
+ <x6wqttes7d.fsf@midna.zekjur.net>
+ <CAHyBj=9oKHSikgPCwr8t2c7jDLUwiq=o+rmBTF+spWmQnBTW8g@mail.gmail.com>
+ <x6txoxeldh.fsf@midna.zekjur.net>
+ <CAHyBj=-4=isutTG5bF9nUxB1T9=VN2BKWiD922oLjNvOetGQQg@mail.gmail.com>
+ <CAHyBj=_n+2um1kFmRTQs92kux7ZBFrEKU6mEJ9t8K=es0ZG8Gg@mail.gmail.com>
+Message-ID: <x6lia9e73s.fsf@midna.zekjur.net>
+
+Hi Dustin,
+
+Dustin Jerome <dustyjerome at gmail.com> writes:
+> I then went to lunch, and when I got back I decided to "make clean;make
+> distclean;make" and this error went away. When I tried "sudo make install"
+> it came back...!!!:
+You could just install to a different location, then copy the files,
+thus avoiding the sudo call. Also, check the environment variables
+with/without sudo, that might be the problem.
+
+-- 
+Best regards,
+Michael
+
+From dustyjerome at gmail.com  Thu Feb 28 00:44:52 2013
+From: dustyjerome at gmail.com (Dustin Jerome)
+Date: Wed, 27 Feb 2013 17:44:52 -0600
+Subject: [i3] Fwd: Building the latest i3 on RHEL 6
+In-Reply-To: <x6lia9e73s.fsf@midna.zekjur.net>
+References: <CAHyBj=_khrz7+N_ioAnbiq2bDin9xrnkgzW0PxzEJaRohR21og@mail.gmail.com>
+ <CAHyBj=9F-YgZ9GE-8Nhvr8StDgZkqetvm6SRkExPqz3f4P_jfA@mail.gmail.com>
+ <x6wqttes7d.fsf@midna.zekjur.net>
+ <CAHyBj=9oKHSikgPCwr8t2c7jDLUwiq=o+rmBTF+spWmQnBTW8g@mail.gmail.com>
+ <x6txoxeldh.fsf@midna.zekjur.net>
+ <CAHyBj=-4=isutTG5bF9nUxB1T9=VN2BKWiD922oLjNvOetGQQg@mail.gmail.com>
+ <CAHyBj=_n+2um1kFmRTQs92kux7ZBFrEKU6mEJ9t8K=es0ZG8Gg@mail.gmail.com>
+ <x6lia9e73s.fsf@midna.zekjur.net>
+Message-ID: <CAHyBj=_zVdVq7xiG61Xu4=g0=P5K3HRM7nyccDzTGTTz0bN+GA@mail.gmail.com>
+
+Michael/all,
+
+This seemed to work fine. Wish I had thought of it earlier.
+
+I was able to make and install i3 to a directory in my home folder. I then
+copied all the installed i3 files/folders/etc into their respective folders
+on / (e.g. /bin /usr etc.)
+
+What about the other libraries I installed? E.g. xcb, cairo, so on. Can I
+safely move those files into their respective folders on / ? Is there an
+environment variable I can set to tell the system about an additional
+library directory?
+
+Thank you!
+
+
+On Wed, Feb 27, 2013 at 4:15 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Dustin,
+>
+> Dustin Jerome <dustyjerome at gmail.com> writes:
+> > I then went to lunch, and when I got back I decided to "make clean;make
+> > distclean;make" and this error went away. When I tried "sudo make
+> install"
+> > it came back...!!!:
+> You could just install to a different location, then copy the files,
+> thus avoiding the sudo call. Also, check the environment variables
+> with/without sudo, that might be the problem.
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130227/4ba7fdd6/attachment.html>
+
+From michael at i3wm.org  Thu Feb 28 08:10:39 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 28 Feb 2013 08:10:39 +0100
+Subject: [i3] Fwd: Building the latest i3 on RHEL 6
+In-Reply-To: <CAHyBj=_zVdVq7xiG61Xu4=g0=P5K3HRM7nyccDzTGTTz0bN+GA@mail.gmail.com>
+References: <CAHyBj=_khrz7+N_ioAnbiq2bDin9xrnkgzW0PxzEJaRohR21og@mail.gmail.com>
+ <CAHyBj=9F-YgZ9GE-8Nhvr8StDgZkqetvm6SRkExPqz3f4P_jfA@mail.gmail.com>
+ <x6wqttes7d.fsf@midna.zekjur.net>
+ <CAHyBj=9oKHSikgPCwr8t2c7jDLUwiq=o+rmBTF+spWmQnBTW8g@mail.gmail.com>
+ <x6txoxeldh.fsf@midna.zekjur.net>
+ <CAHyBj=-4=isutTG5bF9nUxB1T9=VN2BKWiD922oLjNvOetGQQg@mail.gmail.com>
+ <CAHyBj=_n+2um1kFmRTQs92kux7ZBFrEKU6mEJ9t8K=es0ZG8Gg@mail.gmail.com>
+ <x6lia9e73s.fsf@midna.zekjur.net>
+ <CAHyBj=_zVdVq7xiG61Xu4=g0=P5K3HRM7nyccDzTGTTz0bN+GA@mail.gmail.com>
+Message-ID: <x6a9qoewwg.fsf@midna.zekjur.net>
+
+Hi Dustin,
+
+Dustin Jerome <dustyjerome at gmail.com> writes:
+> What about the other libraries I installed? E.g. xcb, cairo, so on. Can I
+> safely move those files into their respective folders on / ? Is there an
+> environment variable I can set to tell the system about an additional
+> library directory?
+LD_LIBRARY_PATH
+
+-- 
+Best regards,
+Michael
+
+From dustyjerome at gmail.com  Thu Feb 28 15:27:08 2013
+From: dustyjerome at gmail.com (Dustin Jerome)
+Date: Thu, 28 Feb 2013 08:27:08 -0600
+Subject: [i3] Fwd: Building the latest i3 on RHEL 6
+In-Reply-To: <x6a9qoewwg.fsf@midna.zekjur.net>
+References: <CAHyBj=_khrz7+N_ioAnbiq2bDin9xrnkgzW0PxzEJaRohR21og@mail.gmail.com>
+ <CAHyBj=9F-YgZ9GE-8Nhvr8StDgZkqetvm6SRkExPqz3f4P_jfA@mail.gmail.com>
+ <x6wqttes7d.fsf@midna.zekjur.net>
+ <CAHyBj=9oKHSikgPCwr8t2c7jDLUwiq=o+rmBTF+spWmQnBTW8g@mail.gmail.com>
+ <x6txoxeldh.fsf@midna.zekjur.net>
+ <CAHyBj=-4=isutTG5bF9nUxB1T9=VN2BKWiD922oLjNvOetGQQg@mail.gmail.com>
+ <CAHyBj=_n+2um1kFmRTQs92kux7ZBFrEKU6mEJ9t8K=es0ZG8Gg@mail.gmail.com>
+ <x6lia9e73s.fsf@midna.zekjur.net>
+ <CAHyBj=_zVdVq7xiG61Xu4=g0=P5K3HRM7nyccDzTGTTz0bN+GA@mail.gmail.com>
+ <x6a9qoewwg.fsf@midna.zekjur.net>
+Message-ID: <CAHyBj=9yOHikCGLuknkF-TM9+RXjQP2MGfkNGwTcjPDRRgvhgw@mail.gmail.com>
+
+Michael,
+
+Setting that variable I was able to get i3 to run successfully.
+
+A huge thank you to Michael and Emil for their efforts in assisting me!
+
+-Dustin
+
+
+On Thu, Feb 28, 2013 at 1:10 AM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Dustin,
+>
+> Dustin Jerome <dustyjerome at gmail.com> writes:
+> > What about the other libraries I installed? E.g. xcb, cairo, so on. Can I
+> > safely move those files into their respective folders on / ? Is there an
+> > environment variable I can set to tell the system about an additional
+> > library directory?
+> LD_LIBRARY_PATH
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130228/f9cdbef1/attachment.html>
+

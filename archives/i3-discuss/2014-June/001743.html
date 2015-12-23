@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Google hangouts extension
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Google%20hangouts%20extension&In-Reply-To=%3CCANOdGiySm6FQCb3vC9ZbS8qgH-H7%3DvUeotraRrD%3Dn3yX%2BLKZkA%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001735.html">
+   <LINK REL="Next"  HREF="001745.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Google hangouts extension</H1>
+    <B>Anders Aagaard</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Google%20hangouts%20extension&In-Reply-To=%3CCANOdGiySm6FQCb3vC9ZbS8qgH-H7%3DvUeotraRrD%3Dn3yX%2BLKZkA%40mail.gmail.com%3E"
+       TITLE="[i3] Google hangouts extension">aagaande at gmail.com
+       </A><BR>
+    <I>Fri Jun  6 19:38:02 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001735.html">[i3] Google hangouts extension
+</A></li>
+        <LI>Next message: <A HREF="001745.html">[i3] Google hangouts extension
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1743">[ date ]</a>
+              <a href="thread.html#1743">[ thread ]</a>
+              <a href="subject.html#1743">[ subject ]</a>
+              <a href="author.html#1743">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Had another stab at this here : <A HREF="http://cr.i3wm.org/patch/566">http://cr.i3wm.org/patch/566</A>
+
+Special mentions:
+In src/manage.c sending in NULL when &quot;Defer setting focus after the
+'new' event&quot; is done feels wrong, but I'm frankly not sure if that
+comment matches the con_set_urgency below it. It's resetting a urgency
+flag here if one is &quot;lost&quot;? Maybe sending in WM_HINTS is the right
+thing to do? Or maybe sending WM_HINTS/etc is generally stupid, and it
+should be one reason called &quot;window_event_change&quot; and another one for
+&quot;focus_blocked&quot;?
+
+Disclaimer : I've been a dev for a long time, but I haven't done
+anything in C for ages, so the code might be rubish. If I'm told that
+and you decide to do this in a much cleaner way, I will not have my
+feelings hurt ;)
+
+Gonna have a stab at fixing the Xdummy stuff now.
+
+On Sun, Jun 1, 2014 at 1:49 PM, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt; wrote:
+&gt;<i> Hi Anders,
+</I>&gt;<i>
+</I>&gt;<i> Anders Aagaard &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">aagaande at gmail.com</A>&gt; writes:
+</I>&gt;&gt;<i> Alternately I could add some code to start sending events for
+</I>&gt;&gt;<i> con_set_urgency (since focus request that fails now sets an urgency),
+</I>&gt;&gt;<i> but it wouldn't be usable for my use case unless I also add a reason
+</I>&gt;&gt;<i> for the urgency change. Which I guess could be
+</I>&gt;&gt;<i> demands_attention/focus_request and wm_hints? Not sure about that last
+</I>&gt;&gt;<i> one, where it's really coming from ;).
+</I>&gt;<i> I think adding an event for urgency with the reason sounds reasonable.
+</I>&gt;<i>
+</I>&gt;&gt;&gt;<i> I have the tests working with nvidia 331.67. Can you be more specific
+</I>&gt;&gt;&gt;<i> about what breaks on your machine?
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> It's an issue with glx, I've got an nvidia optimus setup, so I'm not
+</I>&gt;&gt;<i> terribly surprised. I could probably get it working fine by not
+</I>&gt;&gt;<i> loading glx, but it was easier to setup a VM for it. (I should point
+</I>&gt;&gt;<i> out it fails starting the X session, so it's not the test running part
+</I>&gt;&gt;<i> that's broken).
+</I>&gt;<i> It'd be good to fix that. We call Xdummy with -config /dev/null which is
+</I>&gt;<i> supposed to not use the system X11 config at all. If that has changed,
+</I>&gt;<i> it should be updated to continue running in an isolated-enough
+</I>&gt;<i> environment.
+</I>&gt;<i>
+</I>&gt;<i> --
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Michael
+</I>
+
+
+-- 
+Mvh
+Anders Aagaard
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001735.html">[i3] Google hangouts extension
+</A></li>
+	<LI>Next message: <A HREF="001745.html">[i3] Google hangouts extension
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1743">[ date ]</a>
+              <a href="thread.html#1743">[ thread ]</a>
+              <a href="subject.html#1743">[ subject ]</a>
+              <a href="author.html#1743">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

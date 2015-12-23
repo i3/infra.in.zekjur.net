@@ -1,0 +1,564 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH 3/5] Show title of focused window in i3bar
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%3D%3Futf-8%3Fq%3F%3D5BPATCH_3/5%3D5D_Show_title_of_focused_window_in_i3%3F%3D%0A%09%3D%3Futf-8%3Fq%3Fbar%3F%3D&In-Reply-To=%3C1353236215-32206-4-git-send-email-kemurphy.cmu%40gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001055.html">
+   <LINK REL="Next"  HREF="001049.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH 3/5] Show title of focused window in i3bar</H1>
+    <B>Kevin Murphy</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%3D%3Futf-8%3Fq%3F%3D5BPATCH_3/5%3D5D_Show_title_of_focused_window_in_i3%3F%3D%0A%09%3D%3Futf-8%3Fq%3Fbar%3F%3D&In-Reply-To=%3C1353236215-32206-4-git-send-email-kemurphy.cmu%40gmail.com%3E"
+       TITLE="[i3] [PATCH 3/5] Show title of focused window in i3bar">kemurphy.cmu at gmail.com
+       </A><BR>
+    <I>Sun Nov 18 11:56:53 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001055.html">[i3] [PATCH 2/5] Added &quot;focus&quot; IPC message/event.
+</A></li>
+        <LI>Next message: <A HREF="001049.html">[i3] [PATCH 3/5] Show title of focused window in i3bar
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1040">[ date ]</a>
+              <a href="thread.html#1040">[ thread ]</a>
+              <a href="subject.html#1040">[ subject ]</a>
+              <a href="author.html#1040">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>From: Kevin Murphy &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">kemurphy at andrew.cmu.edu</A>&gt;
+
+---
+ i3bar/include/common.h |   3 +
+ i3bar/include/focus.h  |  23 +++++++
+ i3bar/include/xcb.h    |   6 ++
+ i3bar/src/focus.c      | 111 ++++++++++++++++++++++++++++++++++
+ i3bar/src/ipc.c        |  27 ++++++++-
+ i3bar/src/main.c       |   1 +
+ i3bar/src/xcb.c        | 158 +++++++++++++++++++++++++++++++++++++++++++------
+ 7 files changed, 307 insertions(+), 22 deletions(-)
+ create mode 100644 i3bar/include/focus.h
+ create mode 100644 i3bar/src/focus.c
+
+diff --git a/i3bar/include/common.h b/i3bar/include/common.h
+index 870e6db..01bfdfa 100644
+--- a/i3bar/include/common.h
++++ b/i3bar/include/common.h
+@@ -45,7 +45,10 @@ struct status_block {
+ 
+ TAILQ_HEAD(statusline_head, status_block) statusline_head;
+ 
++i3String *focused_title_text;
++
+ #include &quot;child.h&quot;
++#include &quot;focus.h&quot;
+ #include &quot;ipc.h&quot;
+ #include &quot;outputs.h&quot;
+ #include &quot;util.h&quot;
+diff --git a/i3bar/include/focus.h b/i3bar/include/focus.h
+new file mode 100644
+index 0000000..29e4429
+--- /dev/null
++++ b/i3bar/include/focus.h
+@@ -0,0 +1,23 @@
++/*
++ * vim:ts=4:sw=4:expandtab
++ *
++ * i3bar - an xcb-based status- and ws-bar for i3
++ * &#169; 2010-2011 Axel Wagner and contributors (see also: LICENSE)
++ *
++ * focus.c: Maintaining the workspace-lists
++ *
++ */
++#ifndef FOCUS_H_
++#define FOCUS_H_
++
++#include &lt;xcb/xproto.h&gt;
++
++#include &quot;common.h&quot;
++
++/*
++ * Start parsing the received json-string
++ *
++ */
++void parse_focus_json(char *json);
++
++#endif
+diff --git a/i3bar/include/xcb.h b/i3bar/include/xcb.h
+index 75019c8..db1f0bc 100644
+--- a/i3bar/include/xcb.h
++++ b/i3bar/include/xcb.h
+@@ -101,6 +101,12 @@ void destroy_window(i3_output *output);
+ void realloc_sl_buffer(void);
+ 
+ /*
++ * Reallocate the focused-title-buffer
++ *
++ */
++void realloc_ft_buffer();
++
++/*
+  * Reconfigure all bars and create new for newly activated outputs
+  *
+  */
+diff --git a/i3bar/src/focus.c b/i3bar/src/focus.c
+new file mode 100644
+index 0000000..8bea250
+--- /dev/null
++++ b/i3bar/src/focus.c
+@@ -0,0 +1,111 @@
++/*
++ * vim:ts=4:sw=4:expandtab
++ *
++ * i3bar - an xcb-based status- and ws-bar for i3
++ * &#169; 2010-2011 Axel Wagner and contributors (see also: LICENSE)
++ *
++ * focus.c: Maintaining the workspace-lists
++ *
++ */
++#include &lt;string.h&gt;
++#include &lt;stdlib.h&gt;
++#include &lt;stdio.h&gt;
++#include &lt;errno.h&gt;
++#include &lt;yajl/yajl_parse.h&gt;
++#include &lt;yajl/yajl_version.h&gt;
++
++#include &quot;common.h&quot;
++
++/*
++ * Parse a string (name, output)
++ *
++ */
++#if YAJL_MAJOR &gt;= 2
++static int focus_string_cb(void *params_, const unsigned char *val, size_t len) {
++#else
++static int focus_string_cb(void *params_, const unsigned char *val, unsigned int len) {
++#endif
++    char *cur_key = *(char**)params_;
++
++    if (!strcmp(cur_key, &quot;title&quot;)) {
++        focused_title_text = i3string_from_utf8_with_length((const char*)val, len);
++
++        FREE(cur_key);
++        return 1;
++    }
++
++    FREE(cur_key);
++    return 0;
++}
++
++/*
++ * Parse a key.
++ *
++ */
++#if YAJL_MAJOR &gt;= 2
++static int focus_map_key_cb(void *params_, const unsigned char *keyVal, size_t keyLen) {
++#else
++static int focus_map_key_cb(void *params_, const unsigned char *keyVal, unsigned int keyLen) {
++#endif
++    char **cur_key_p = (char**)params_;
++
++    char *cur_key = smalloc(sizeof(unsigned char) * (keyLen + 1));
++    strncpy(cur_key, (const char*) keyVal, keyLen);
++    cur_key[keyLen] = '\0';
++
++    *cur_key_p = cur_key;
++
++    return 1;
++}
++
++/* A datastructure to pass all these callbacks to yajl */
++yajl_callbacks focus_callbacks = {
++    NULL,
++    NULL,
++    NULL,
++    NULL,
++    NULL,
++    &amp;focus_string_cb,
++    NULL,
++    &amp;focus_map_key_cb,
++    NULL,
++    NULL,
++    NULL
++};
++
++/*
++ * Start parsing the received json-string
++ *
++ */
++void parse_focus_json(char *json) {
++    /* FIXME: Fasciliate stream-processing, i.e. allow starting to interpret
++     * JSON in chunks */
++    yajl_handle handle;
++    yajl_status state;
++    char *cur_key = NULL;
++#if YAJL_MAJOR &lt; 2
++    yajl_parser_config parse_conf = { 0, 0 };
++
++    handle = yajl_alloc(&amp;focus_callbacks, &amp;parse_conf, NULL, (void*) &amp;cur_key);
++#else
++    handle = yajl_alloc(&amp;focus_callbacks, NULL, (void*) &amp;cur_key);
++#endif
++
++    state = yajl_parse(handle, (const unsigned char*) json, strlen(json));
++
++    /* FIXME: Propper errorhandling for JSON-parsing */
++    switch (state) {
++        case yajl_status_ok:
++            break;
++        case yajl_status_client_canceled:
++#if YAJL_MAJOR &lt; 2
++        case yajl_status_insufficient_data:
++#endif
++        case yajl_status_error:
++            ELOG(&quot;Could not parse focus-reply!\n&quot;);
++            exit(EXIT_FAILURE);
++            break;
++    }
++
++    yajl_free(handle);
++}
+diff --git a/i3bar/src/ipc.c b/i3bar/src/ipc.c
+index 2170e50..c9e909e 100644
+--- a/i3bar/src/ipc.c
++++ b/i3bar/src/ipc.c
+@@ -75,6 +75,16 @@ void got_output_reply(char *reply) {
+ }
+ 
+ /*
++ * Called, when we get a reply with workspaces-data
++ *
++ */
++void got_focus_reply(char *reply) {
++    DLOG(&quot;Got Focus-Data!\n&quot;);
++    parse_focus_json(reply);
++    draw_bars(false);
++}
++
++/*
+  * Called when we get the configuration for our bar instance
+  *
+  */
+@@ -115,6 +125,8 @@ handler_t reply_handlers[] = {
+     NULL,
+     NULL,
+     &amp;got_bar_config,
++    NULL,
++    &amp;got_focus_reply,
+ };
+ 
+ /*
+@@ -148,12 +160,21 @@ void got_mode_event(char *event) {
+     draw_bars(false);
+ }
+ 
++/*
++ * Called, when a focus-event arrives (i.e. the focused window changed)
++ *
++ */
++void got_focus_event(char *event) {
++    DLOG(&quot;Got Focus Event!\n&quot;);
++    i3_send_msg(I3_IPC_MESSAGE_TYPE_GET_FOCUS, NULL);
++}
+ 
+ /* Data-structure to easily call the reply-handlers later */
+ handler_t event_handlers[] = {
+     &amp;got_workspace_event,
+     &amp;got_output_event,
+-    &amp;got_mode_event
++    &amp;got_mode_event,
++    &amp;got_focus_event,
+ };
+ 
+ /*
+@@ -309,8 +330,8 @@ void destroy_connection(void) {
+  */
+ void subscribe_events(void) {
+     if (config.disable_ws) {
+-        i3_send_msg(I3_IPC_MESSAGE_TYPE_SUBSCRIBE, &quot;[ \&quot;output\&quot;, \&quot;mode\&quot; ]&quot;);
++        i3_send_msg(I3_IPC_MESSAGE_TYPE_SUBSCRIBE, &quot;[ \&quot;output\&quot;, \&quot;mode\&quot;, \&quot;focus\&quot; ]&quot;);
+     } else {
+-        i3_send_msg(I3_IPC_MESSAGE_TYPE_SUBSCRIBE, &quot;[ \&quot;workspace\&quot;, \&quot;output\&quot;, \&quot;mode\&quot; ]&quot;);
++        i3_send_msg(I3_IPC_MESSAGE_TYPE_SUBSCRIBE, &quot;[ \&quot;workspace\&quot;, \&quot;output\&quot;, \&quot;mode\&quot;, \&quot;focus\&quot; ]&quot;);
+     }
+ }
+diff --git a/i3bar/src/main.c b/i3bar/src/main.c
+index ea60564..b4ae08e 100644
+--- a/i3bar/src/main.c
++++ b/i3bar/src/main.c
+@@ -149,6 +149,7 @@ int main(int argc, char **argv) {
+     if (init_connection(socket_path)) {
+         /* Request the bar configuration. When it arrives, we fill the config array. */
+         i3_send_msg(I3_IPC_MESSAGE_TYPE_GET_BAR_CONFIG, config.bar_id);
++        i3_send_msg(I3_IPC_MESSAGE_TYPE_GET_FOCUS, NULL);
+     }
+ 
+     /* We listen to SIGTERM/QUIT/INT and try to exit cleanly, by stopping the main-loop.
+diff --git a/i3bar/src/xcb.c b/i3bar/src/xcb.c
+index 5ae8023..c20ff37 100644
+--- a/i3bar/src/xcb.c
++++ b/i3bar/src/xcb.c
+@@ -68,6 +68,11 @@ xcb_gcontext_t   statusline_clear;
+ xcb_pixmap_t     statusline_pm;
+ uint32_t         statusline_width;
+ 
++xcb_gcontext_t   focused_title_ctx;
++xcb_gcontext_t   focused_title_clear;
++xcb_pixmap_t     focused_title_pm;
++uint32_t         focused_title_width;
++
+ /* Event-Watchers, to interact with the user */
+ ev_prepare *xcb_prep;
+ ev_check   *xcb_chk;
+@@ -152,15 +157,48 @@ void refresh_statusline(void) {
+ 
+         if (TAILQ_NEXT(block, blocks) != NULL) {
+             /* This is not the last block, draw a separator. */
+-            set_font_colors(statusline_ctx, get_colorpixel(&quot;#666666&quot;), colors.bar_bg);
+-            xcb_poly_line(xcb_connection, XCB_COORD_MODE_ORIGIN, statusline_pm,
+-                          statusline_ctx, 2,
+-                          (xcb_point_t[]){ { x - 5, 2 }, { x - 5, font.height - 2 } });
++            uint32_t mask = XCB_GC_FOREGROUND | XCB_GC_BACKGROUND;
++            uint32_t vals[] = { get_colorpixel(&quot;#222222&quot;), colors.bar_bg };
++            xcb_change_gc(xcb_connection,
++                          statusline_ctx,
++                          mask,
++                          vals);
++            xcb_poly_fill_rectangle(xcb_connection, statusline_pm,
++                                    statusline_ctx, 1,
++                                    (xcb_rectangle_t[]){ { x - 6, 0, 2, font.height + 4 } });
+         }
+     }
+ }
+ 
+ /*
++ * Redraws the focused title to the buffer
++ *
++ */
++void refresh_focused_title() {
++    uint32_t old_focused_title_width = focused_title_width;
++    focused_title_width = 0;
++    
++    if (focused_title_text)
++        focused_title_width = predict_text_width(focused_title_text);
++
++    /* If the title is bigger than our screen we need to make sure that
++     * the pixmap provides enough space, so re-allocate if the width grew */
++    if (focused_title_width &gt; root_screen-&gt;width_in_pixels &amp;&amp;
++        focused_title_width &gt; old_focused_title_width)
++        realloc_ft_buffer();
++
++    /* Clear the title pixmap. */
++    xcb_rectangle_t rect = { 0, 0, root_screen-&gt;width_in_pixels, font.height + 4 };
++    xcb_poly_fill_rectangle(xcb_connection, focused_title_pm, focused_title_clear, 1, &amp;rect);
++
++    /* Draw the text. */
++    if (focused_title_text) {
++        set_font_colors(focused_title_ctx, colors.bar_fg, colors.bar_bg);
++        draw_text(focused_title_text, focused_title_pm, focused_title_ctx, 0, 0, focused_title_width);
++    }
++}
++
++/*
+  * Hides all bars (unmaps them)
+  *
+  */
+@@ -843,6 +881,29 @@ char *init_xcb_early() {
+     uint32_t mask = XCB_GC_FOREGROUND;
+     uint32_t vals[] = { colors.bar_bg, colors.bar_bg };
+ 
++    focused_title_clear = xcb_generate_id(xcb_connection);
++    xcb_void_cookie_t ft_clear_ctx_cookie = xcb_create_gc_checked(xcb_connection,
++                                                               focused_title_clear,
++                                                               xcb_root,
++                                                               mask,
++                                                               vals);
++
++    focused_title_ctx = xcb_generate_id(xcb_connection);
++    xcb_void_cookie_t ft_ctx_cookie = xcb_create_gc_checked(xcb_connection,
++                                                            focused_title_ctx,
++                                                            xcb_root,
++                                                            0,
++                                                            NULL);
++
++    focused_title_pm = xcb_generate_id(xcb_connection);
++    xcb_void_cookie_t ft_pm_cookie = xcb_create_pixmap_checked(xcb_connection,
++                                                               root_screen-&gt;root_depth,
++                                                               focused_title_pm,
++                                                               xcb_root,
++                                                               root_screen-&gt;width_in_pixels,
++                                                               root_screen-&gt;height_in_pixels);
++
++
+     statusline_clear = xcb_generate_id(xcb_connection);
+     xcb_void_cookie_t clear_ctx_cookie = xcb_create_gc_checked(xcb_connection,
+                                                                statusline_clear,
+@@ -902,8 +963,10 @@ char *init_xcb_early() {
+         }
+     }
+ 
+-
+-    if (xcb_request_failed(sl_pm_cookie, &quot;Could not allocate statusline-buffer&quot;) ||
++    if (xcb_request_failed(ft_pm_cookie, &quot;Could not allocate focused-title-buffer&quot;) ||
++        xcb_request_failed(ft_clear_ctx_cookie, &quot;Could not allocate focused-title-buffer-clearcontext&quot;) ||
++        xcb_request_failed(ft_ctx_cookie, &quot;Could not allocate focused-title-buffer-context&quot;) ||
++        xcb_request_failed(sl_pm_cookie, &quot;Could not allocate statusline-buffer&quot;) ||
+         xcb_request_failed(clear_ctx_cookie, &quot;Could not allocate statusline-buffer-clearcontext&quot;) ||
+         xcb_request_failed(sl_ctx_cookie, &quot;Could not allocate statusline-buffer-context&quot;)) {
+         exit(EXIT_FAILURE);
+@@ -1197,6 +1260,50 @@ void realloc_sl_buffer(void) {
+ }
+ 
+ /*
++ * Reallocate the focused-title-buffer
++ *
++ */
++void realloc_ft_buffer() {
++    DLOG(&quot;Re-allocating focused-title-buffer, focused_title_width = %d, root_screen-&gt;width_in_pixels = %d\n&quot;,
++         focused_title_width, root_screen-&gt;width_in_pixels);
++    xcb_free_pixmap(xcb_connection, focused_title_pm);
++    focused_title_pm = xcb_generate_id(xcb_connection);
++    xcb_void_cookie_t ft_pm_cookie = xcb_create_pixmap_checked(xcb_connection,
++                                                               root_screen-&gt;root_depth,
++                                                               focused_title_pm,
++                                                               xcb_root,
++                                                               MAX(root_screen-&gt;width_in_pixels, focused_title_width),
++                                                               root_screen-&gt;height_in_pixels);
++
++    uint32_t mask = XCB_GC_FOREGROUND;
++    uint32_t vals[2] = { colors.bar_bg, colors.bar_bg };
++    xcb_free_gc(xcb_connection, focused_title_clear);
++    focused_title_clear = xcb_generate_id(xcb_connection);
++    xcb_void_cookie_t ft_clear_ctx_cookie = xcb_create_gc_checked(xcb_connection,
++                                                                 focused_title_clear,
++                                                                 xcb_root,
++                                                                 mask,
++                                                                 vals);
++
++    mask |= XCB_GC_BACKGROUND;
++    vals[0] = colors.bar_fg;
++    focused_title_ctx = xcb_generate_id(xcb_connection);
++    xcb_free_gc(xcb_connection, focused_title_ctx);
++    xcb_void_cookie_t ft_ctx_cookie = xcb_create_gc_checked(xcb_connection,
++                                                            focused_title_ctx,
++                                                            xcb_root,
++                                                            mask,
++                                                            vals);
++
++    if (xcb_request_failed(ft_pm_cookie, &quot;Could not allocate focused-title-buffer&quot;) ||
++        xcb_request_failed(ft_clear_ctx_cookie, &quot;Could not allocate focused-title-buffer-clearcontext&quot;) ||
++        xcb_request_failed(ft_ctx_cookie, &quot;Could not allocate focused-title-buffer-context&quot;)) {
++        exit(EXIT_FAILURE);
++    }
++
++}
++
++/*
+  * Reconfigure all bars and create new bars for recently activated outputs
+  *
+  */
+@@ -1414,6 +1521,7 @@ void draw_bars(bool unhide) {
+     int i = 0;
+ 
+     refresh_statusline();
++    refresh_focused_title();
+ 
+     static char *last_urgent_ws = NULL;
+     bool walks_away = true;
+@@ -1441,25 +1549,28 @@ void draw_bars(bool unhide) {
+                                 1,
+                                 &amp;rect);
+ 
++        /* Calculate the width of the tray area */
++        int traypx = 0;
++        trayclient *trayclient;
++        TAILQ_FOREACH(trayclient, outputs_walk-&gt;trayclients, tailq) {
++            if (!trayclient-&gt;mapped)
++                continue;
++            /* We assume the tray icons are quadratic (we use the font
++             * *height* as *width* of the icons) because we configured them
++             * like this. */
++            traypx += font.height + 2;
++        }
++
++        /* Add 2px of padding if there are any tray icons */
++        if (traypx &gt; 0)
++            traypx += 2;
++
+         if (!TAILQ_EMPTY(&amp;statusline_head)) {
+             DLOG(&quot;Printing statusline!\n&quot;);
+ 
+             /* Luckily we already prepared a seperate pixmap containing the rendered
+              * statusline, we just have to copy the relevant parts to the relevant
+              * position */
+-            trayclient *trayclient;
+-            int traypx = 0;
+-            TAILQ_FOREACH(trayclient, outputs_walk-&gt;trayclients, tailq) {
+-                if (!trayclient-&gt;mapped)
+-                    continue;
+-                /* We assume the tray icons are quadratic (we use the font
+-                 * *height* as *width* of the icons) because we configured them
+-                 * like this. */
+-                traypx += font.height + 2;
+-            }
+-            /* Add 2px of padding if there are any tray icons */
+-            if (traypx &gt; 0)
+-                traypx += 2;
+             xcb_copy_area(xcb_connection,
+                           statusline_pm,
+                           outputs_walk-&gt;buffer,
+@@ -1567,6 +1678,15 @@ void draw_bars(bool unhide) {
+             draw_text(binding.name, outputs_walk-&gt;buffer, outputs_walk-&gt;bargc, i + 5, 2, binding.width);
+         }
+ 
++        int16_t focused_title_constrained_width = outputs_walk-&gt;rect.w - traypx - 4 - statusline_width - (2 * 4);
++        xcb_copy_area(xcb_connection,
++                      focused_title_pm,
++                      outputs_walk-&gt;buffer,
++                      outputs_walk-&gt;bargc,
++                      MAX(0, (int16_t)(focused_title_width - focused_title_constrained_width)), 0,
++                      i + 4, 2,
++                      MIN(focused_title_constrained_width, focused_title_width), font.height);
++
+         i = 0;
+     }
+ 
+-- 
+1.8.0
+
+</PRE>
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001055.html">[i3] [PATCH 2/5] Added &quot;focus&quot; IPC message/event.
+</A></li>
+	<LI>Next message: <A HREF="001049.html">[i3] [PATCH 3/5] Show title of focused window in i3bar
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1040">[ date ]</a>
+              <a href="thread.html#1040">[ thread ]</a>
+              <a href="subject.html#1040">[ subject ]</a>
+              <a href="author.html#1040">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

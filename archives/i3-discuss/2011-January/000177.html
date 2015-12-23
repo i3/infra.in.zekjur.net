@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Nested key bindings?
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Nested%20key%20bindings%3F&In-Reply-To=%3C912AF00192B7E9489DA0B24692F65B3B2FD53A2C%40XCH108CNC.rim.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000176.html">
+   <LINK REL="Next"  HREF="000178.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Nested key bindings?</H1>
+    <B>Derek Wyatt</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Nested%20key%20bindings%3F&In-Reply-To=%3C912AF00192B7E9489DA0B24692F65B3B2FD53A2C%40XCH108CNC.rim.net%3E"
+       TITLE="[i3] Nested key bindings?">dwyatt at rim.com
+       </A><BR>
+    <I>Tue Jan 25 18:52:05 CET 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000176.html">[i3] Nested key bindings?
+</A></li>
+        <LI>Next message: <A HREF="000178.html">[i3] Nested key bindings?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#177">[ date ]</a>
+              <a href="thread.html#177">[ thread ]</a>
+              <a href="subject.html#177">[ subject ]</a>
+              <a href="author.html#177">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Ok, thx.  So if I'm reading this right, I'd do the following:
+
+	bindsym Control+k myscript
+
+Where 'myscript' looks something like:
+
+	val=$(xgsk -r -t 500)
+	case $val in
+		k)
+			i3-msg k
+			;;
+	fi
+	return 0
+	
+Or is there a better way to go?
+
+The 'mode' binding is causing me problems... I can't seem to get the mode back to default.  If I can make this work, I'll be a happy dood.
+
+Thx,
+Derek
+
+-----Original Message-----
+From: <A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss-bounces at i3.zekjur.net</A> [mailto:<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3-discuss-bounces at i3.zekjur.net</A>] On Behalf Of Michael Stapelberg
+Sent: Tuesday, January 25, 2011 12:37 PM
+To: i3-discuss
+Subject: Re: [i3] Nested key bindings?
+
+Hi ari,
+
+Excerpts from ari edelkind's message of 2011-01-25 18:23:32 +0100:
+&gt;<i> It's a more generic option, and requires that, if you want to execute
+</I>&gt;<i> window manager actions, you communicate back with your window manager
+</I>&gt;<i> using IPC or EWMH (see `wmctrl`).  i3 doesn't currently support either
+</I>&gt;<i> of these _very well_, and the latter is barely supported at all.  But
+</I>&gt;<i> maybe it'll work for you.
+</I>The best way to communicate back with i3 is to use its IPC interface, which
+should cover all your needs with regard to keybindings. See i3-msg(1) for a
+readily-available tool to use the IPC interface.
+
+Best regards,
+Michael
+
+---------------------------------------------------------------------
+This transmission (including any attachments) may contain confidential information, privileged material (including material protected by the solicitor-client or other applicable privileges), or constitute non-public information. Any use of this information by anyone other than the intended recipient is prohibited. If you have received this transmission in error, please immediately reply to the sender and delete this information from your system. Use, dissemination, distribution, or reproduction of this transmission by unintended recipients is not authorized and may be unlawful.
+</PRE>
+
+
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000176.html">[i3] Nested key bindings?
+</A></li>
+	<LI>Next message: <A HREF="000178.html">[i3] Nested key bindings?
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#177">[ date ]</a>
+              <a href="thread.html#177">[ thread ]</a>
+              <a href="subject.html#177">[ subject ]</a>
+              <a href="author.html#177">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

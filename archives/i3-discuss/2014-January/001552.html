@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] Fix install target of i3-with-shmlog.desktop
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Fix%20install%20target%20of%20i3-with-shmlog.desktop&In-Reply-To=%3C20140122130620.GA584%40cvs.openbsd.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001554.html">
+   <LINK REL="Next"  HREF="001564.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] Fix install target of i3-with-shmlog.desktop</H1>
+    <B>David Coppa</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Fix%20install%20target%20of%20i3-with-shmlog.desktop&In-Reply-To=%3C20140122130620.GA584%40cvs.openbsd.org%3E"
+       TITLE="[i3] [PATCH] Fix install target of i3-with-shmlog.desktop">dcoppa at openbsd.org
+       </A><BR>
+    <I>Wed Jan 22 14:06:20 CET 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001554.html">[i3] Color mode of i3status using as i3bar
+</A></li>
+        <LI>Next message: <A HREF="001564.html">[i3] [PATCH] Fix install target of i3-with-shmlog.desktop
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1552">[ date ]</a>
+              <a href="thread.html#1552">[ thread ]</a>
+              <a href="subject.html#1552">[ subject ]</a>
+              <a href="author.html#1552">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi!
+
+Installation of i3-with-shmlog.desktop overwrites i3.desktop.
+Diff attached.
+
+Ciao,
+David
+
+diff --git a/src/i3.mk b/src/i3.mk
+index 1d6bc3f..c09610b 100644
+--- a/src/i3.mk
++++ b/src/i3.mk
+@@ -83,7 +83,7 @@ install-i3: i3
+ 	test -e $(DESTDIR)$(SYSCONFDIR)/i3/config || $(INSTALL) -m 0644 i3.config $(DESTDIR)$(SYSCONFDIR)/i3/config
+ 	test -e $(DESTDIR)$(SYSCONFDIR)/i3/config.keycodes || $(INSTALL) -m 0644 i3.config.keycodes $(DESTDIR)$(SYSCONFDIR)/i3/config.keycodes
+ 	$(INSTALL) -m 0644 i3.xsession.desktop $(DESTDIR)$(PREFIX)/share/xsessions/i3.desktop
+-	$(INSTALL) -m 0644 i3-with-shmlog.xsession.desktop $(DESTDIR)$(PREFIX)/share/xsessions/i3.desktop
++	$(INSTALL) -m 0644 i3-with-shmlog.xsession.desktop $(DESTDIR)$(PREFIX)/share/xsessions/i3-with-shmlog.desktop
+ 	$(INSTALL) -m 0644 i3.applications.desktop $(DESTDIR)$(PREFIX)/share/applications/i3.desktop
+ 	$(INSTALL) -m 0644 include/i3/ipc.h $(DESTDIR)$(PREFIX)/include/i3/
+ 
+-- 
+1.8.5.2
+-------------- next part --------------
+&gt;<i>From 970026099f33edf21eb930112f015fc0d7558fee Mon Sep 17 00:00:00 2001
+</I>From: David Coppa &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">dcoppa at gmail.com</A>&gt;
+Date: Wed, 22 Jan 2014 13:52:35 +0100
+Subject: [PATCH] Fix install target of i3-with-shmlog.desktop
+
+---
+ src/i3.mk | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/i3.mk b/src/i3.mk
+index 1d6bc3f..c09610b 100644
+--- a/src/i3.mk
++++ b/src/i3.mk
+@@ -83,7 +83,7 @@ install-i3: i3
+ 	test -e $(DESTDIR)$(SYSCONFDIR)/i3/config || $(INSTALL) -m 0644 i3.config $(DESTDIR)$(SYSCONFDIR)/i3/config
+ 	test -e $(DESTDIR)$(SYSCONFDIR)/i3/config.keycodes || $(INSTALL) -m 0644 i3.config.keycodes $(DESTDIR)$(SYSCONFDIR)/i3/config.keycodes
+ 	$(INSTALL) -m 0644 i3.xsession.desktop $(DESTDIR)$(PREFIX)/share/xsessions/i3.desktop
+-	$(INSTALL) -m 0644 i3-with-shmlog.xsession.desktop $(DESTDIR)$(PREFIX)/share/xsessions/i3.desktop
++	$(INSTALL) -m 0644 i3-with-shmlog.xsession.desktop $(DESTDIR)$(PREFIX)/share/xsessions/i3-with-shmlog.desktop
+ 	$(INSTALL) -m 0644 i3.applications.desktop $(DESTDIR)$(PREFIX)/share/applications/i3.desktop
+ 	$(INSTALL) -m 0644 include/i3/ipc.h $(DESTDIR)$(PREFIX)/include/i3/
+ 
+-- 
+1.8.5.2
+
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001554.html">[i3] Color mode of i3status using as i3bar
+</A></li>
+	<LI>Next message: <A HREF="001564.html">[i3] [PATCH] Fix install target of i3-with-shmlog.desktop
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1552">[ date ]</a>
+              <a href="thread.html#1552">[ thread ]</a>
+              <a href="subject.html#1552">[ subject ]</a>
+              <a href="author.html#1552">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

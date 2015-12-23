@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] problems getting a status bar on both displays with dual	monitors
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20problems%20getting%20a%20status%20bar%20on%20both%20displays%20with%20dual%0A%09monitors&In-Reply-To=%3CAANLkTi%3DnHn%3DJffe8zypWryy03iAu%3D-PJCMAfhi5BKFNP%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   
+   <LINK REL="Next"  HREF="000154.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] problems getting a status bar on both displays with dual	monitors</H1>
+    <B>Jeff Jibson</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20problems%20getting%20a%20status%20bar%20on%20both%20displays%20with%20dual%0A%09monitors&In-Reply-To=%3CAANLkTi%3DnHn%3DJffe8zypWryy03iAu%3D-PJCMAfhi5BKFNP%40mail.gmail.com%3E"
+       TITLE="[i3] problems getting a status bar on both displays with dual	monitors">jeff at jibson.com
+       </A><BR>
+    <I>Fri Oct  1 17:13:38 CEST 2010</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="000154.html">[i3] problems getting a status bar on both displays with dual	monitors
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#152">[ date ]</a>
+              <a href="thread.html#152">[ thread ]</a>
+              <a href="subject.html#152">[ subject ]</a>
+              <a href="author.html#152">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I am trying to get a status bar on both displays.  I want to them
+docked if possible.  Any suggestions?
+
+
+When I tried:
+
+    exec conky -c ~/.i3/status-dzen2.conkyrc | i3-wsbar -c &quot;dzen2
+-dock -ta r -xs 1&quot; --output-on LVDS1
+    exec conky -c ~/.i3/status-dzen2.conkyrc | i3-wsbar -c &quot;dzen2
+-dock -ta r -xs 2&quot; --output-on VGA1
+or
+    exec conky -c ~/.i3/status-dzen2.conkyrc | dzen2 -dock -ta r -xs 1
+    exec conky -c ~/.i3/status-dzen2.conkyrc | dzen2 -dock -ta r -xs 2
+
+It displays the status bars for VGA1 correctly on the bottom.  It
+displays the dzen2 bar for LVDS1 on VGA1 at what looks like 768
+pixels.
+
+
+I tried:
+
+    exec conky -c ~/.i3/status-dzen2.conkyrc | i3-wsbar -c &quot;dzen2
+-dock -ta r -xs 1&quot;
+    exec conky -c ~/.i3/status-dzen2.conkyrc | i3-wsbar -c &quot;dzen2
+-dock -ta r -xs 2&quot;
+
+This gets 2 status bars on the bottom and 2 status bars 768 pixels
+down from the top.
+
+
+I tried:
+
+    exec conky -c ~/.i3/status-dzen2.conkyrc | i3-wsbar -c &quot;dzen2
+-dock -ta r&quot; --output-on LVDS1
+    exec conky -c ~/.i3/status-dzen2.conkyrc | i3-wsbar -c &quot;dzen2
+-dock -ta r&quot; --output-on VGA1
+or
+    exec conky -c ~/.i3/status-dzen2.conkyrc | dzen2 -dock -ta r
+    exec conky -c ~/.i3/status-dzen2.conkyrc | dzen2 -dock -ta r
+
+This puts both status bars on the bottom of VGA1.
+
+
+
+My laptop has the built in display (LVDS1) and above it an external
+monitor (VGA1) with an Intel GMA 4500MHD GPU :
+
+Screen 0: minimum 320 x 200, current 1680 x 1818, maximum 8192 x 8192
+VGA1 connected 1680x1050+0+0 (normal left inverted right x axis y
+axis) 408mm x 306mm
+   1680x1050      60.0*+
+...
+LVDS1 connected 1366x768+0+1050 (normal left inverted right x axis y
+axis) 256mm x 144mm
+   1366x768       60.0*+
+...
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="000154.html">[i3] problems getting a status bar on both displays with dual	monitors
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#152">[ date ]</a>
+              <a href="thread.html#152">[ thread ]</a>
+              <a href="subject.html#152">[ subject ]</a>
+              <a href="author.html#152">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

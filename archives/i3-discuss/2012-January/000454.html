@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] problem with tray applications on screen change
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20problem%20with%20tray%20applications%20on%20screen%20change&In-Reply-To=%3Calpine.LNX.2.00.1201310423020.30235%40avk-v131-2%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000456.html">
+   <LINK REL="Next"  HREF="000455.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] problem with tray applications on screen change</H1>
+    <B>Alex V. Koval</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20problem%20with%20tray%20applications%20on%20screen%20change&In-Reply-To=%3Calpine.LNX.2.00.1201310423020.30235%40avk-v131-2%3E"
+       TITLE="[i3] problem with tray applications on screen change">alex at ua2web.com
+       </A><BR>
+    <I>Tue Jan 31 03:25:23 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000456.html">[i3] Why i3 leaves garbage in /tmp ?
+</A></li>
+        <LI>Next message: <A HREF="000455.html">[i3] problem with tray applications on screen change
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#454">[ date ]</a>
+              <a href="thread.html#454">[ thread ]</a>
+              <a href="subject.html#454">[ subject ]</a>
+              <a href="author.html#454">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>
+Hi,
+
+I experience certain problem with tray apps and screen change.
+
+When either:
+   a) add/remove primary screen
+
+OR
+
+  b) going into sleep mode
+
+Some of tray icons disappear. Some applications (which were
+not active on screen) would die.
+
+Exactly the behavior depends on application:
+
+   1) pidgin if was not active on screen would completely
+      disappear
+
+   2) skype most probably would stay on
+
+   3) parcellite will disappear and exit
+
+
+Part of log file does not reveal anything to me, but very
+probably its about &quot;X11 Error received&quot;?:
+
+----- via dmenu I replace current screen with bigger one -------
+01/30/2012 07:56:36 PM - executing: dmenu_run -fn 
+'-xos4-*-bold-*-*-*-16-*-*-*-*-*-iso10646-1' -nb '#222222' -sf '#00ff00' -sb 
+'#050505' -nf &quot;#ffffff&quot;
+single command completely parsed, dropping state...
+done, json output = (null)
+01/30/2012 07:56:36 PM - Not a managed window, ignoring UnmapNotify event
+01/30/2012 07:56:43 PM - Checking window 0x00c00007 (class i3bar)
+01/30/2012 07:56:43 PM - dock status does not match
+01/30/2012 07:56:43 PM - Checking window 0x00c00007 (class i3bar)
+01/30/2012 07:56:43 PM - dock status matches
+01/30/2012 07:56:43 PM - Not a managed window, ignoring UnmapNotify event
+01/30/2012 07:56:43 PM - ERROR: X11 Error received! sequence 0x924, error_code 
+= 4
+01/30/2012 07:56:43 PM - ERROR: X11 Error received! sequence 0x925, error_code 
+= 13
+01/30/2012 07:56:43 PM - Not a managed window, ignoring UnmapNotify event
+01/30/2012 07:56:43 PM - ERROR: X11 Error received! sequence 0x927, error_code 
+= 4
+01/30/2012 07:56:43 PM - ERROR: X11 Error received! sequence 0x928, error_code 
+= 13
+01/30/2012 07:56:43 PM - Not a managed window, ignoring UnmapNotify event
+01/30/2012 07:56:43 PM - ERROR: X11 Error received! sequence 0x92a, error_code 
+= 4
+01/30/2012 07:56:43 PM - ERROR: X11 Error received! sequence 0x92b, error_code 
+= 13
+01/30/2012 07:56:43 PM - Not a managed window, ignoring UnmapNotify event
+01/30/2012 07:56:43 PM - ERROR: X11 Error received! sequence 0x92d, error_code 
+= 4
+01/30/2012 07:56:43 PM - ERROR: X11 Error received! sequence 0x92e, error_code 
+= 13
+01/30/2012 07:56:43 PM - workspace visible? fs = 0x20a5bf0, ws = 0x20a5bf0
+01/30/2012 07:56:43 PM - workspace visible? fs = 0x20a5bf0, ws = 0x20a5bf0
+01/30/2012 07:56:43 PM - workspace visible? fs = 0x20a5bf0, ws = 0x20a5bf0
+01/30/2012 07:56:43 PM - workspace visible? fs = 0x20a5bf0, ws = 0x20a5bf0
+01/30/2012 07:56:43 PM - WM_CLASS changed to i3bar (instance), i3bar (class)
+01/30/2012 07:56:43 PM - WM_NAME changed to &quot;i3bar for output HDMI1&quot;
+01/30/2012 07:56:43 PM - Using legacy window title. Note that in order to get 
+Unicode window titles in i3, the application has to set _NET_WM_NAME (UTF-8)
+01/30/2012 07:56:43 PM - This window is of type dock
+01/30/2012 07:56:43 PM - Checking window 0x00c00011 (class i3bar)
+01/30/2012 07:56:43 PM - dock status does not match
+01/30/2012 07:56:43 PM - Checking window 0x00c00011 (class i3bar)
+01/30/2012 07:56:43 PM - dock status matches
+01/30/2012 07:56:43 PM - Not a managed window, ignoring UnmapNotify event
+01/30/2012 07:56:43 PM - expose event for unknown window, ignoring
+01/30/2012 07:56:43 PM - Not a managed window, ignoring UnmapNotify event
+01/30/2012 07:56:43 PM - Not a managed window, ignoring UnmapNotify event
+01/30/2012 07:56:43 PM - ERROR: X11 Error received! sequence 0xa5e, error_code 
+= 3
+01/30/2012 07:56:43 PM - Not a managed window, ignoring UnmapNotify event
+01/30/2012 07:56:43 PM - Not a managed window, ignoring UnmapNotify event
+Has notifications support True
+Loading...
+Connecting to daemon...
+Connected.
+displaytray True
+Done loading.
+----------------- end of loading ----------------------------------
+
+I've made command to restart tray applications after screen change:
+
+------------------------------------ ~/bin/my-tray-start ---------
+#!/bin/bash
+
+for p in `cat ~/.tray-progs`
+do
+      if test -z &quot;`ps axf|grep $p|grep -v grep`&quot;
+ 	 then
+ 	 echo Starting $p ...
+ 	 $p &amp;
+ 	 else
+ 	 echo Skipping already started program: $p ...
+     fi
+done
+
+------------------------------------------------------------------
+
+My tray progs (~/.tray-progs):
+skype pidgin wicd-client dropbox parcellite
+
+So:
+   1) Skype stays on
+   2) pidgin stays on only on screen, tray icon disappears
+   3) wicd-client disappears, and even if it was on screen during
+      screen change it would exit
+   4) dropbox exits as well.
+
+What should/can I do to help fixing this problem? My C knowelerge
+is limited, but I can run gdb and look at some variables/trace, if this
+is required.
+
+Best Regards,
+    Alex Koval
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000456.html">[i3] Why i3 leaves garbage in /tmp ?
+</A></li>
+	<LI>Next message: <A HREF="000455.html">[i3] problem with tray applications on screen change
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#454">[ date ]</a>
+              <a href="thread.html#454">[ thread ]</a>
+              <a href="subject.html#454">[ subject ]</a>
+              <a href="author.html#454">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

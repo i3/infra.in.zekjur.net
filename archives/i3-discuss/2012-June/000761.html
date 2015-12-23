@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Tray Icons Disappearing on i3bar
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Tray%20Icons%20Disappearing%20on%20i3bar&In-Reply-To=%3C20120629092641.16084.67985%40midna.zekjur.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000757.html">
+   <LINK REL="Next"  HREF="000746.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Tray Icons Disappearing on i3bar</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Tray%20Icons%20Disappearing%20on%20i3bar&In-Reply-To=%3C20120629092641.16084.67985%40midna.zekjur.net%3E"
+       TITLE="[i3] Tray Icons Disappearing on i3bar">michael at i3wm.org
+       </A><BR>
+    <I>Fri Jun 29 11:26:41 CEST 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000757.html">[i3] Tray Icons Disappearing on i3bar
+</A></li>
+        <LI>Next message: <A HREF="000746.html">[i3] [PATCH] Userguide: Clarified need for config change for dynamic naming of workspaces
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#761">[ date ]</a>
+              <a href="thread.html#761">[ thread ]</a>
+              <a href="subject.html#761">[ subject ]</a>
+              <a href="author.html#761">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Fernando,
+
+Quoting Fernando Lemos (2012-06-29 03:37:13)
+&gt;<i> When i3 is restarted, so is i3bar. Looks like when i3bar quits, its
+</I>&gt;<i> window is destroyed and the embedded windows receive a BadWindow error
+</I>&gt;<i> [1]. Seems to be a design issue in XEmbed itself:
+</I>They shouldn&#8217;t, though. Have a look at the code. When i3bar receives an
+EOF (or does it not receive an EOF in that case? maybe we should make it
+restart-aware) it first properly kills all embedded tray icons.
+
+&gt;<i> What happens here, I guess, is that some clients may try to create the
+</I>&gt;<i> tray icon again, while others may not. Or maybe they do, but i3bar
+</I>&gt;<i> wasn't up by the time they retry (I'm guessing here, I really didn't
+</I>&gt;<i> read XEmbed).
+</I>In case they don&#8217;t retry, they are violating the spec. Also, the
+embedder can be down for an arbitrary amount of time. The tray
+application is supposed to deal with that. And at least nm-applet does
+(so do all GTK-based ones probably). Note however that when the embedder
+does not properly kill the tray clients, they may not retry at all. So
+this is probably what&#8217;s happening here (as you described above).
+
+&gt;<i> XEmbed also says that &quot;the protocol ends&quot; when the embedded window is
+</I>&gt;<i> reparented to the root window [2]. So I don't know much about X, but
+</I>&gt;<i> maybe reparenting the embedded windows to the root window before
+</I>&gt;<i> terminating would be a solution? I'm not sure how the clients are
+</I>&gt;<i> supposed to react, though.
+</I>As I said, we should be doing that :).
+
+&gt;<i> What puzzles me is that you guys say it also happens when returning
+</I>&gt;<i> from suspend... I have no idea why that is, I always thought suspend
+</I>&gt;<i> was (mostly) transparent to applications?
+</I>Yes, it definitely should be transparent to applications. My guess is
+that for some reason, a monitor reconfiguration event is sent and i3
+restarts i3bar because of that. However, that&#8217;s a different code path
+than the i3 restart, so it&#8217;s quite a mystery to me currently.
+
+Best regards,
+Michael
+</PRE>
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000757.html">[i3] Tray Icons Disappearing on i3bar
+</A></li>
+	<LI>Next message: <A HREF="000746.html">[i3] [PATCH] Userguide: Clarified need for config change for dynamic naming of workspaces
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#761">[ date ]</a>
+              <a href="thread.html#761">[ thread ]</a>
+              <a href="subject.html#761">[ subject ]</a>
+              <a href="author.html#761">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

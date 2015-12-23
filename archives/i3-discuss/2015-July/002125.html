@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Reloading i3wm and saving layout
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Reloading%20i3wm%20and%20saving%20layout&In-Reply-To=%3CCANnVG6kL3uVcp2UnHkFvW7yLHW-9RZGySxUkT8ANZDeWQSeP5Q%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002124.html">
+   <LINK REL="Next"  HREF="002127.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Reloading i3wm and saving layout</H1>
+    <B>Michael Stapelberg</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Reloading%20i3wm%20and%20saving%20layout&In-Reply-To=%3CCANnVG6kL3uVcp2UnHkFvW7yLHW-9RZGySxUkT8ANZDeWQSeP5Q%40mail.gmail.com%3E"
+       TITLE="[i3] Reloading i3wm and saving layout">michael at i3wm.org
+       </A><BR>
+    <I>Sat Jul  4 20:01:10 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002124.html">[i3] Reloading i3wm and saving layout
+</A></li>
+        <LI>Next message: <A HREF="002127.html">[i3] Reloading i3wm and saving layout
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2125">[ date ]</a>
+              <a href="thread.html#2125">[ thread ]</a>
+              <a href="subject.html#2125">[ subject ]</a>
+              <a href="author.html#2125">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>To me, this sounds like a bug, but I’m not yet sure where precisely it is
+:<i>).
+</I>
+Eric, can you please file an issue at <A HREF="https://github.com/i3/i3?">https://github.com/i3/i3?</A> When you
+file it, please include the version of i3 as well as a logfile (as the
+instructions ask you to). In addition, can you please include the output of
+“ls -lR /run” and “mount”?
+
+Thanks.
+
+On Sat, Jul 4, 2015 at 6:59 PM, Karol Langner &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">karol.langner at gmail.com</A>&gt;
+wrote:
+
+&gt;<i> Just wanted to mention that I remember having the same thing on Debian
+</I>&gt;<i> wheezy, although I did not look at the logs and it went away when I moved
+</I>&gt;<i> to Ubuntu 12/14. I also did revamp my config at the same, so it could have
+</I>&gt;<i> been related to that.
+</I>&gt;<i>
+</I>&gt;<i> On Sat, Jul 4, 2015 at 8:28 AM, Eric Duncan &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">eduncan911 at gmail.com</A>&gt; wrote:
+</I>&gt;<i>
+</I>&gt;&gt;<i> i3 version 4.10.2 (2015-04-16, branch &quot;4.10.2&quot;)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Though it doesn't matter - been like this ever since I started using i3wm
+</I>&gt;&gt;<i> on Debian (6, 7, and Testing), Ubuntu (14.04, 14.10, 15.04) and Arch for
+</I>&gt;&gt;<i> over a year.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Maybe I am missing a configuration parameter...
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> On Sat, Jul 4, 2015 at 6:19 AM, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt;
+</I>&gt;&gt;<i> wrote:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> Which version of i3 are you using?
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> On Sat, Jul 4, 2015 at 6:34 AM, Eric Duncan &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">eduncan911 at gmail.com</A>&gt;
+</I>&gt;&gt;&gt;<i> wrote:
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> So, been using i3wm for a bit over a year across multiple distros
+</I>&gt;&gt;&gt;&gt;<i> (Debian6, 7 and Testing; Ubuntu 14.04, 14.10 and 15.04; now Arch).
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> When pressing MOD+R to reload i3wm, it's always annoyed me that it
+</I>&gt;&gt;&gt;&gt;<i> doesn't keep my terminal layouts (usually stacks them on the screen I am
+</I>&gt;&gt;&gt;&gt;<i> on).
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Today while monitoring journalctl, I noticed some interesting logs:
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: 07/04/2015
+</I>&gt;&gt;&gt;&gt;<i> 12:27:30 AM - ERROR: mkdir(/run/user/1000/i3) failed: File exists
+</I>&gt;&gt;&gt;&gt;<i> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: [libi3]
+</I>&gt;&gt;&gt;&gt;<i> libi3/font.c Using Pango font Segoe UI, size 10
+</I>&gt;&gt;&gt;&gt;<i> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: [libi3]
+</I>&gt;&gt;&gt;&gt;<i> libi3/font.c X11 root window dictates 96.252632 DPI
+</I>&gt;&gt;&gt;&gt;<i> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: Exiting due to
+</I>&gt;&gt;&gt;&gt;<i> signal.
+</I>&gt;&gt;&gt;&gt;<i> Jul 04 00:27:30 river /usr/lib/gdm/gdm-x-session[1200]: 07/04/2015
+</I>&gt;&gt;&gt;&gt;<i> 12:27:30 AM - ERROR: Could not create &quot;/run/user/1000/i3&quot; for storing the
+</I>&gt;&gt;&gt;&gt;<i> restart layout, layout will be lost.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> It says that this file exists:
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> /run/user/1000/i3
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> And indeed this directory does.
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i> Could this be the bane of my annoyances?
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;&gt;<i> --
+</I>&gt;&gt;&gt;<i> Best regards,
+</I>&gt;&gt;&gt;<i> Michael
+</I>&gt;&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;<i>
+</I>
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150704/7e9d9fdd/attachment-0001.html">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150704/7e9d9fdd/attachment-0001.html</A>&gt;
+</PRE>
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002124.html">[i3] Reloading i3wm and saving layout
+</A></li>
+	<LI>Next message: <A HREF="002127.html">[i3] Reloading i3wm and saving layout
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2125">[ date ]</a>
+              <a href="thread.html#2125">[ thread ]</a>
+              <a href="subject.html#2125">[ subject ]</a>
+              <a href="author.html#2125">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

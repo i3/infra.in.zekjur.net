@@ -1,0 +1,254 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] Customizable click actions on i3bar
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Customizable%20click%20actions%20on%20i3bar&In-Reply-To=%3C20121224142916.GA18131%40phenom%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001117.html">
+   <LINK REL="Next"  HREF="001119.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] Customizable click actions on i3bar</H1>
+    <B>Francisco J. Vazquez</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Customizable%20click%20actions%20on%20i3bar&In-Reply-To=%3C20121224142916.GA18131%40phenom%3E"
+       TITLE="[i3] [PATCH] Customizable click actions on i3bar">fjvazquezaraujo at gmail.com
+       </A><BR>
+    <I>Mon Dec 24 15:29:16 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001117.html">[i3] [PATCH] Customizable click actions on i3bar
+</A></li>
+        <LI>Next message: <A HREF="001119.html">[i3] i3 maintainer for FreeBSD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1118">[ date ]</a>
+              <a href="thread.html#1118">[ thread ]</a>
+              <a href="subject.html#1118">[ subject ]</a>
+              <a href="author.html#1118">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>And this is the i3status part. I just added the command option to some
+of the modules (run_watch, wireless, time, mixer) as examples. Adding it
+to the rest is trivial.
+
+Fran
+
+
+diff -ruN i3status-2.6/i3status.c i3status-2.6.mine/i3status.c
+--- i3status-2.6/i3status.c	2012-10-03 13:44:44.000000000 +0200
++++ i3status-2.6.mine/i3status.c	2012-12-23 22:02:38.617000931 +0100
+@@ -190,12 +190,14 @@
+         cfg_opt_t run_watch_opts[] = {
+                 CFG_STR(&quot;pidfile&quot;, NULL, CFGF_NONE),
+                 CFG_STR(&quot;format&quot;, &quot;%title: %status&quot;, CFGF_NONE),
++                CFG_STR(&quot;command&quot;, &quot;urxvt&quot;, CFGF_NONE),
+                 CFG_END()
+         };
+ 
+         cfg_opt_t wireless_opts[] = {
+                 CFG_STR(&quot;format_up&quot;, &quot;W: (%quality at %essid, %bitrate) %ip&quot;, CFGF_NONE),
+                 CFG_STR(&quot;format_down&quot;, &quot;W: down&quot;, CFGF_NONE),
++                CFG_STR(&quot;command&quot;, &quot;wpa_gui&quot;, CFGF_NONE),
+                 CFG_END()
+         };
+ 
+@@ -222,6 +224,7 @@
+ 
+         cfg_opt_t time_opts[] = {
+                 CFG_STR(&quot;format&quot;, &quot;%d.%m.%Y %H:%M:%S&quot;, CFGF_NONE),
++                CFG_STR(&quot;command&quot;, &quot;urxvt -hold -e cal -y&quot;, CFGF_NONE),
+                 CFG_END()
+         };
+ 
+@@ -256,6 +274,7 @@
+                 CFG_STR(&quot;device&quot;, &quot;default&quot;, CFGF_NONE),
+                 CFG_STR(&quot;mixer&quot;, &quot;Master&quot;, CFGF_NONE),
+                 CFG_INT(&quot;mixer_idx&quot;, 0, CFGF_NONE),
++                CFG_STR(&quot;command&quot;, &quot;urxvt -e alsamixer&quot;, CFGF_NONE),
+                 CFG_END()
+         };
+ 
+@@ -403,7 +424,7 @@
+ 
+                         CASE_SEC_TITLE(&quot;wireless&quot;) {
+                                 SEC_OPEN_MAP(&quot;wireless&quot;);
+-                                print_wireless_info(json_gen, buffer, title, cfg_getstr(sec, &quot;format_up&quot;), cfg_getstr(sec, &quot;format_down&quot;));
++                                print_wireless_info(json_gen, buffer, title, cfg_getstr(sec, &quot;format_up&quot;), cfg_getstr(sec, &quot;format_down&quot;), cfg_getstr(sec, &quot;command&quot;));
+                                 SEC_CLOSE_MAP;
+                         }
+ 
+@@ -421,7 +442,7 @@
+ 
+                         CASE_SEC_TITLE(&quot;run_watch&quot;) {
+                                 SEC_OPEN_MAP(&quot;run_watch&quot;);
+-                                print_run_watch(json_gen, buffer, title, cfg_getstr(sec, &quot;pidfile&quot;), cfg_getstr(sec, &quot;format&quot;));
++                                print_run_watch(json_gen, buffer, title, cfg_getstr(sec, &quot;pidfile&quot;), cfg_getstr(sec, &quot;format&quot;), cfg_getstr(sec, &quot;command&quot;));
+                                 SEC_CLOSE_MAP;
+                         }
+ 
+@@ -439,7 +460,7 @@
+ 
+                         CASE_SEC(&quot;time&quot;) {
+                                 SEC_OPEN_MAP(&quot;time&quot;);
+-                                print_time(json_gen, buffer, cfg_getstr(sec, &quot;format&quot;), current_tm);
++                                print_time(json_gen, buffer, cfg_getstr(sec, &quot;format&quot;), current_tm, cfg_getstr(sec, &quot;command&quot;));
+                                 SEC_CLOSE_MAP;
+                         }
+ 
+@@ -454,7 +475,8 @@
+                                 print_volume(json_gen, buffer, cfg_getstr(sec, &quot;format&quot;),
+                                              cfg_getstr(sec, &quot;device&quot;),
+                                              cfg_getstr(sec, &quot;mixer&quot;),
+-                                             cfg_getint(sec, &quot;mixer_idx&quot;));
++                                             cfg_getint(sec, &quot;mixer_idx&quot;),
++                                             cfg_getstr(sec, &quot;command&quot;));
+                                 SEC_CLOSE_MAP;
+                         }
+ 
+diff -ruN i3status-2.6/include/i3status.h i3status-2.6.mine/include/i3status.h
+--- i3status-2.6/include/i3status.h	2012-10-03 13:44:44.000000000 +0200
++++ i3status-2.6.mine/include/i3status.h	2012-12-23 20:52:48.728038937 +0100
+@@ -119,6 +119,14 @@
+ 		} \
+ 	} while (0)
+ 
++#define COMMAND(command) \
++	do { \
++		if (output_format == O_I3BAR) { \
++			yajl_gen_string(json_gen, (const unsigned char *)&quot;command&quot;, strlen(&quot;command&quot;)); \
++			yajl_gen_string(json_gen, (const unsigned char *)command, strlen(command)); \
++		} \
++	} while (0)
++
+ 
+ typedef enum { CS_DISCHARGING, CS_CHARGING, CS_FULL } charging_status_t;
+ 
+@@ -138,16 +146,16 @@
+ void print_ipv6_info(yajl_gen json_gen, char *buffer, const char *format_up, const char *format_down);
+ void print_disk_info(yajl_gen json_gen, char *buffer, const char *path, const char *format);
+ void print_battery_info(yajl_gen json_gen, char *buffer, int number, const char *path, const char *format, int low_threshold, char *threshold_type, bool last_full_capacity);
+-void print_time(yajl_gen json_gen, char *buffer, const char *format, struct tm *current_tm);
++void print_time(yajl_gen json_gen, char *buffer, const char *format, struct tm *current_tm, const char *command);
+ void print_ddate(yajl_gen json_gen, char *buffer, const char *format, struct tm *current_tm);
+ const char *get_ip_addr();
+-void print_wireless_info(yajl_gen json_gen, char *buffer, const char *interface, const char *format_up, const char *format_down);
+-void print_run_watch(yajl_gen json_gen, char *buffer, const char *title, const char *pidfile, const char *format);
++void print_wireless_info(yajl_gen json_gen, char *buffer, const char *interface, const char *format_up, const char *format_down, const char *command);
++void print_run_watch(yajl_gen json_gen, char *buffer, const char *title, const char *pidfile, const char *format, const char *command);
+ void print_cpu_temperature_info(yajl_gen json_gen, char *buffer, int zone, const char *path, const char *format);
+ void print_cpu_usage(yajl_gen json_gen, char *buffer, const char *format);
+ void print_eth_info(yajl_gen json_gen, char *buffer, const char *interface, const char *format_up, const char *format_down);
+ void print_load(yajl_gen json_gen, char *buffer, const char *format);
+-void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *device, const char *mixer, int mixer_idx);
++void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *device, const char *mixer, int mixer_idx, const char *command);
+ bool process_runs(const char *path);
+ 
+ /* socket file descriptor for general purposes */
+diff -ruN i3status-2.6/src/print_run_watch.c i3status-2.6.mine/src/print_run_watch.c
+--- i3status-2.6/src/print_run_watch.c	2012-10-03 13:44:44.000000000 +0200
++++ i3status-2.6.mine/src/print_run_watch.c	2012-12-23 20:52:48.730038842 +0100
+@@ -4,7 +4,7 @@
+ #include &lt;yajl/yajl_version.h&gt;
+ #include &quot;i3status.h&quot;
+ 
+-void print_run_watch(yajl_gen json_gen, char *buffer, const char *title, const char *pidfile, const char *format) {
++void print_run_watch(yajl_gen json_gen, char *buffer, const char *title, const char *pidfile, const char *format, const char *command) {
+ 	bool running = process_runs(pidfile);
+ 	const char *walk;
+ 	char *outwalk = buffer;
+@@ -29,5 +29,6 @@
+         }
+ 
+ 	END_COLOR;
++	COMMAND(command);
+ 	OUTPUT_FULL_TEXT(buffer);
+ }
+diff -ruN i3status-2.6/src/print_time.c i3status-2.6.mine/src/print_time.c
+--- i3status-2.6/src/print_time.c	2012-10-03 13:44:44.000000000 +0200
++++ i3status-2.6.mine/src/print_time.c	2012-12-23 20:52:48.731038797 +0100
+@@ -7,12 +7,13 @@
+ 
+ #include &quot;i3status.h&quot;
+ 
+-void print_time(yajl_gen json_gen, char *buffer, const char *format, struct tm *current_tm) {
++void print_time(yajl_gen json_gen, char *buffer, const char *format, struct tm *current_tm, const char *command) {
+         char *outwalk = buffer;
+         if (current_tm == NULL)
+                 return;
+         /* Get date &amp; time */
+         outwalk += strftime(outwalk, 4095, format, current_tm);
+         *outwalk = '\0';
++        COMMAND(command);
+         OUTPUT_FULL_TEXT(buffer);
+ }
+diff -ruN i3status-2.6/src/print_volume.c i3status-2.6.mine/src/print_volume.c
+--- i3status-2.6/src/print_volume.c	2012-10-03 13:44:44.000000000 +0200
++++ i3status-2.6.mine/src/print_volume.c	2012-12-23 20:52:48.731038797 +0100
+@@ -49,7 +49,7 @@
+ }
+ #endif
+ 
+-void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *device, const char *mixer, int mixer_idx) {
++void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *device, const char *mixer, int mixer_idx, const char *command) {
+         char *outwalk = buffer;
+ 
+         /* Printing volume only works with ALSA at the moment */
+@@ -200,6 +200,7 @@
+ #endif
+ 
+         *outwalk = '\0';
++        COMMAND(command);
+         OUTPUT_FULL_TEXT(buffer);
+ 
+         if (!pbval)
+diff -ruN i3status-2.6/src/print_wireless_info.c i3status-2.6.mine/src/print_wireless_info.c
+--- i3status-2.6/src/print_wireless_info.c	2012-10-03 13:44:44.000000000 +0200
++++ i3status-2.6.mine/src/print_wireless_info.c	2012-12-23 20:52:48.732038752 +0100
+@@ -223,7 +223,7 @@
+ 	return 0;
+ }
+ 
+-void print_wireless_info(yajl_gen json_gen, char *buffer, const char *interface, const char *format_up, const char *format_down) {
++void print_wireless_info(yajl_gen json_gen, char *buffer, const char *interface, const char *format_up, const char *format_down, const char *command) {
+         const char *walk;
+         char *outwalk = buffer;
+         wireless_info_t info;
+@@ -309,5 +309,6 @@
+         }
+ 
+         END_COLOR;
++        COMMAND(command);
+         OUTPUT_FULL_TEXT(buffer);
+ }
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001117.html">[i3] [PATCH] Customizable click actions on i3bar
+</A></li>
+	<LI>Next message: <A HREF="001119.html">[i3] i3 maintainer for FreeBSD
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1118">[ date ]</a>
+              <a href="thread.html#1118">[ thread ]</a>
+              <a href="subject.html#1118">[ subject ]</a>
+              <a href="author.html#1118">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

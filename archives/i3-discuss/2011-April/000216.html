@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] egde snapping for floating windows
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20egde%20snapping%20for%20floating%20windows&In-Reply-To=%3CBANLkTikfgOR3t1MzgNQzsh1RUSgDM5Cp-A%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000215.html">
+   <LINK REL="Next"  HREF="000217.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] egde snapping for floating windows</H1>
+    <B>Jan Krcmar</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20egde%20snapping%20for%20floating%20windows&In-Reply-To=%3CBANLkTikfgOR3t1MzgNQzsh1RUSgDM5Cp-A%40mail.gmail.com%3E"
+       TITLE="[i3] egde snapping for floating windows">honza801 at gmail.com
+       </A><BR>
+    <I>Tue Apr 26 18:37:22 CEST 2011</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000215.html">[i3] egde snapping for floating windows
+</A></li>
+        <LI>Next message: <A HREF="000217.html">[i3] [PATCH] fix code to work with yajl 2.0.0
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#216">[ date ]</a>
+              <a href="thread.html#216">[ thread ]</a>
+              <a href="subject.html#216">[ subject ]</a>
+              <a href="author.html#216">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>hi,
+
+i didn't know Xephyr... :)
+
+so, here is the patch for the tree branch
+<A HREF="http://home.zcu.cz/~honza801/i3-floating-tree.diff">http://home.zcu.cz/~honza801/i3-floating-tree.diff</A>
+
+cheers
+fous
+
+
+2011/4/22 Fernando Lemos &lt;<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">fernandotcl at gmail.com</A>&gt;:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Fri, Apr 22, 2011 at 10:28 AM, Jan Krcmar &lt;<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">honza801 at gmail.com</A>&gt; wrote:
+</I>&gt;&gt;<i> the problem was in the Xnest, running it on vt works good, but...
+</I>&gt;<i>
+</I>&gt;<i> Thanks for the info. I can reproduce that one, xcb_get_file_descriptor
+</I>&gt;<i> is returning -1 in Xnest. The docs for xcb_get_file_descriptor say:
+</I>&gt;<i>
+</I>&gt;<i> &quot;Accessor for the file descriptor that was passed to the
+</I>&gt;<i> xcb_connect_to_fd call that returned c. &quot;
+</I>&gt;<i>
+</I>&gt;<i> The way I see it, we it doesn't guarantee we'll get a descriptor
+</I>&gt;<i> unless we used xcb_connect_to_fd instead of xcb_connect, but it seems
+</I>&gt;<i> natural that xcb_connect would call xcb_connect_to_fd. I wouldn't be
+</I>&gt;<i> surprised if this was just a bug in XCB or Xnest. Xnest is kinda dead
+</I>&gt;<i> these days, isn't it? I think Xephyr is the new &quot;de facto&quot; X within X,
+</I>&gt;<i> and i3-tree does work in Xephyr.
+</I>&gt;<i>
+</I>&gt;&gt;<i> the second problem is in the randr extension.
+</I>&gt;&gt;<i> in src/randr.c: void randr_init function breaks the file descriptor of
+</I>&gt;&gt;<i> the xcb via xcb_randr_select_input function
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> i think that all the xrandr functions shouldn't be called if the
+</I>&gt;&gt;<i> xrandr extension is missing. anyway the debug log says &quot;Checking for
+</I>&gt;&gt;<i> XRandR...&quot; but it does not check anythink, it just calls the randr
+</I>&gt;&gt;<i> functions.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> so, here is my patched rand_init function, it is definetly NOT a good
+</I>&gt;&gt;<i> workaround, but it works. ;)
+</I>&gt;<i>
+</I>&gt;<i> It looks correct to me, I don't see why we would want to be notified
+</I>&gt;<i> about RandR events if we don't support them. But then again I don't
+</I>&gt;<i> know anything about RandR.
+</I>&gt;<i>
+</I>&gt;<i> Regards,
+</I>&gt;<i>
+</I></PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000215.html">[i3] egde snapping for floating windows
+</A></li>
+	<LI>Next message: <A HREF="000217.html">[i3] [PATCH] fix code to work with yajl 2.0.0
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#216">[ date ]</a>
+              <a href="thread.html#216">[ thread ]</a>
+              <a href="subject.html#216">[ subject ]</a>
+              <a href="author.html#216">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

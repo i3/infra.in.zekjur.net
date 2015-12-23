@@ -1,0 +1,429 @@
+From ciprian.craciun at gmail.com  Thu Mar  4 07:25:38 2010
+From: ciprian.craciun at gmail.com (Ciprian Dorin, Craciun)
+Date: Thu, 4 Mar 2010 08:25:38 +0200
+Subject: [i3] i3 next branch
+Message-ID: <8e04b5821003032225s67c86eddh9fc5c0a9eff57cb1@mail.gmail.com>
+
+    Hello all!
+
+    Today I've looked upon the i3 next branch and I see that it has
+advanced very much than the master branch. Now my understanding is
+that the master branch is somehow stable and thus usable by
+non-i3-developers (the releases are cropped from this), and the next
+branch is for development purposes.
+
+    So my questions are:
+    * what is your policy about the master branch? when do you advance
+it? (I see a lot of bug fixes in the next branch that could be helpful
+in the master);
+    * is the next branch stable usable enough to be used in real-life?
+(if so I would use it and thus maybe provide bug-reports;)
+
+    Thanks,
+    Ciprian.
+
+
+From michael+i3 at stapelberg.de  Thu Mar  4 10:57:37 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Thu, 04 Mar 2010 10:57:37 +0100
+Subject: [i3] i3 next branch
+In-Reply-To: <8e04b5821003032225s67c86eddh9fc5c0a9eff57cb1@mail.gmail.com>
+References: <8e04b5821003032225s67c86eddh9fc5c0a9eff57cb1@mail.gmail.com>
+Message-ID: <1267696506-sup-5936@midna.zekjur.net>
+
+Hi Ciprian,
+
+Excerpts from Ciprian Dorin, Craciun's message of Do M?r 04 07:25:38 +0100 2010:
+>     * what is your policy about the master branch? when do you advance
+> it? (I see a lot of bug fixes in the next branch that could be helpful
+> in the master);
+The master branch contains the last release plus any bugfixes which are
+appropriate to backport. If a commit is not strictly a bugfix (but rather
+an improvement in usability) or if it is a bugfix for a bug which only
+exists in "next", it does not get backported.
+
+>     * is the next branch stable usable enough to be used in real-life?
+> (if so I would use it and thus maybe provide bug-reports;)
+I use the next branch all the time and as long as you do not have any
+really critical work to do (like your company goes bankrupt if this window
+is closed in the wrong moment), I would recommend you to use it and report
+any bugs you see.
+
+Best regards,
+Michael
+
+
+From ciprian.craciun at gmail.com  Thu Mar  4 18:53:26 2010
+From: ciprian.craciun at gmail.com (Ciprian Dorin, Craciun)
+Date: Thu, 4 Mar 2010 19:53:26 +0200
+Subject: [i3] i3 next branch
+In-Reply-To: <1267696506-sup-5936@midna.zekjur.net>
+References: <8e04b5821003032225s67c86eddh9fc5c0a9eff57cb1@mail.gmail.com>
+	<1267696506-sup-5936@midna.zekjur.net>
+Message-ID: <8e04b5821003040953r3d7074aer81b13e695348cc0a@mail.gmail.com>
+
+On Thu, Mar 4, 2010 at 11:57 AM, Michael Stapelberg
+<michael+i3 at stapelberg.de> wrote:
+> Hi Ciprian,
+>
+> Excerpts from Ciprian Dorin, Craciun's message of Do M?r 04 07:25:38 +0100 2010:
+>> ? ? * what is your policy about the master branch? when do you advance
+>> it? (I see a lot of bug fixes in the next branch that could be helpful
+>> in the master);
+> The master branch contains the last release plus any bugfixes which are
+> appropriate to backport. If a commit is not strictly a bugfix (but rather
+> an improvement in usability) or if it is a bugfix for a bug which only
+> exists in "next", it does not get backported.
+>
+>> ? ? * is the next branch stable usable enough to be used in real-life?
+>> (if so I would use it and thus maybe provide bug-reports;)
+> I use the next branch all the time and as long as you do not have any
+> really critical work to do (like your company goes bankrupt if this window
+> is closed in the wrong moment), I would recommend you to use it and report
+> any bugs you see.
+>
+> Best regards,
+> Michael
+
+
+    Aha. Thanks! I'll build and install the next branch, and if there
+are problems I'll write!
+
+    Keep up the good work!
+    Ciprian.
+
+
+From dcoppa at gmail.com  Wed Mar 10 11:55:39 2010
+From: dcoppa at gmail.com (David Coppa)
+Date: Wed, 10 Mar 2010 11:55:39 +0100
+Subject: [i3] Problem with dock windows and libxcb-icccm
+Message-ID: <20100310105539.GA20698@cl0311500093650>
+
+
+Hi all,
+
+There's a problem with dock windows under i3.
+
+These type of windows have xcb_get_property_value_length(reply) = 0,
+while all other windows have 72.
+
+This causes a floating-point exception in the
+xcb_get_wm_size_hints_from_reply function, making i3 crash.
+
+This is reproducible by launching:
+
+$ while true ; do date && sleep 1 ; done | dzen2 -dock -ta r
+
+This command always makes i3 crash under OpenBSD 4.7 (OpenBSD -current),
+which is my test system, but I had occasional crashes under linux too
+(up-to-date Arch Linux).
+
+I suggest this patch:
+
+
+diff --git a/icccm/icccm.c b/icccm/icccm.c
+index 0206e4b..b86f4e1 100644
+--- a/icccm/icccm.c
++++ b/icccm/icccm.c
+@@ -441,7 +441,7 @@ xcb_get_wm_size_hints_from_reply(xcb_size_hints_t *hints, xcb_get_property_reply
+ {
+   uint32_t flags;
+ 
+-  if(!reply)
++  if(!reply || xcb_get_property_value_length(reply) == 0)
+     return 0;
+ 
+   int length = xcb_get_property_value_length(reply) / (reply->format / 8);
+
+
+I'd like to have some feedback on this...
+Please have also a look at the following gdb backtrace:
+
+GNU gdb 6.3
+Copyright 2004 Free Software Foundation, Inc.
+GDB is free software, covered by the GNU General Public License, and you are
+welcome to change it and/or distribute copies of it under certain conditions.
+Type "show copying" to see the conditions.
+There is absolutely no warranty for GDB.  Type "show warranty" for details.
+This GDB was configured as "i386-unknown-openbsd4.7"...
+Core was generated by `i3'.
+Program terminated with signal 8, Arithmetic exception.
+
+...
+
+#0  0x0f5635a4 in xcb_get_wm_size_hints_from_reply (hints=0xcfbc8070, 
+    reply=0x8593fc20) at /usr/xenocara/dist/xcb-util/icccm/icccm.c:442
+442	  length = xcb_get_property_value_length(reply) / (reply->format / 8);
+(gdb) bt
+#0  0x0f5635a4 in xcb_get_wm_size_hints_from_reply (hints=0xcfbc8070, 
+    reply=0x8593fc20) at /usr/xenocara/dist/xcb-util/icccm/icccm.c:442
+#1  0x1c00e236 in handle_normal_hints (data=0x0, conn=0x7c847000, 
+    state=0 '\0', window=8388613, name=40, reply=0x8593fc20)
+    at src/handlers.c:844
+#2  0x0fb0dbe4 in call_handler (c=0x7c847000, state=0 '\0', window=8388613, 
+    atom=40, h=0x8593f188)
+    at /usr/xenocara/dist/xcb-util/property/property.c:63
+#3  0x0fb0dc6a in xcb_property_changed (prophs=0xcfbc8374, state=0 '\0', 
+    window=8388613, atom=40)
+    at /usr/xenocara/dist/xcb-util/property/property.c:79
+#4  0x1c012d25 in manage_window (prophs=0xcfbc8374, conn=0x7c847000, 
+    window=8388613, cookie={sequence = 261}, needs_to_be_mapped=false)
+    at src/manage.c:108
+#5  0x1c00ca5d in handle_map_request (prophs=0xcfbc8374, conn=0x7c847000, 
+    event=0x854616c0) at src/handlers.c:290
+#6  0x0c228129 in xcb_event_handle (evenths=0x3c010f40, event=0x854616c0)
+    at /usr/xenocara/dist/xcb-util/event/event.c:77
+#7  0x1c011299 in xcb_check_cb (loop=0x874ebc00, w=0x8593fd20, revents=32768)
+    at src/mainx.c:111
+#8  0x02ee95f4 in ev_invoke_pending () from /usr/local/lib/libev.so.0.0
+#9  0x02ee9b89 in ev_loop () from /usr/local/lib/libev.so.0.0
+#10 0x1c01293d in main (argc=1, argv=0xcfbc8430, env=0xcfbc8438)
+    at src/mainx.c:479
+
+
+Regards,
+David Coppa
+
+
+
+From jamey at minilop.net  Wed Mar 10 12:33:19 2010
+From: jamey at minilop.net (Jamey Sharp)
+Date: Wed, 10 Mar 2010 03:33:19 -0800
+Subject: [i3] [Xcb] Problem with dock windows and libxcb-icccm
+In-Reply-To: <20100310105539.GA20698@cl0311500093650>
+References: <20100310105539.GA20698@cl0311500093650>
+Message-ID: <e2ed954f1003100333w6d5badbft7435128e7f8d498@mail.gmail.com>
+
+On Wed, Mar 10, 2010 at 2:55 AM, David Coppa <dcoppa at gmail.com> wrote:
+> These type of windows have xcb_get_property_value_length(reply) = 0,
+> while all other windows have 72.
+
+Presumably, because the property isn't present on those windows, which
+would mean the type is None and the format, bytes-after, and length
+are all zero.
+
+> This causes a floating-point exception in the
+> xcb_get_wm_size_hints_from_reply function, making i3 crash.
+>
+> #0 ?0x0f5635a4 in xcb_get_wm_size_hints_from_reply (hints=0xcfbc8070,
+> ? ?reply=0x8593fc20) at /usr/xenocara/dist/xcb-util/icccm/icccm.c:442
+> 442 ? ? ? length = xcb_get_property_value_length(reply) / (reply->format / 8);
+
+Surely it isn't the length being 0, but rather the format, that causes
+this error.
+
+Since the immediately following if-condition tests that the type and
+format are sane, I'd suggest splitting off the length >= 15 portion of
+the test into its own if-statement and moving the length computation
+in between the two tests.
+
+Michael's right that there's been a similar fix before, but I think
+Debian bug 531310 is unrelated. Commit
+d5b5d682465bd3196105df86d6df9fcde9518e6c looks like it addressed a
+similar issue though, in a different function. This code apparently
+needs an audit for more bugs like these.
+
+Jamey
+
+
+From dcoppa at gmail.com  Wed Mar 10 12:49:25 2010
+From: dcoppa at gmail.com (David Coppa)
+Date: Wed, 10 Mar 2010 12:49:25 +0100
+Subject: [i3] [Xcb] Problem with dock windows and libxcb-icccm
+In-Reply-To: <1268219206-sup-193@midna.zekjur.net>
+References: <20100310105539.GA20698@cl0311500093650>
+	<1268219206-sup-193@midna.zekjur.net>
+Message-ID: <20100310114925.GA20909@cl0311500093650>
+
+On Wed, 10 Mar 2010, Michael Stapelberg wrote:
+
+> Hi David,
+> Are you using the latest versions of xcb and xcb-util? Please double-check.
+> We?ve had a similar bug before:
+> http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=531310
+
+Hi Michael,
+thanks for your reply.
+
+On OpenBSD we have libxcb 1.4 and xcb-util 0.3.6, but latter is patched 
+to fix the problems highligthed here:
+
+http://cgit.freedesktop.org/xcb/util/commit/?id=d5b5d682465bd3196105df86d6df9fcde9518e6c
+
+http://archive.netbsd.se/view_attachment.php?id=12115870.183264
+
+This is the commit:
+
+http://www.openbsd.org/cgi-bin/cvsweb/xenocara/dist/xcb-util/icccm/icccm.c.diff?r1=1.4;r2=1.5
+
+
+Can this new bug be due to stricter checks in OpenBSD's libc?
+
+cheers,
+david
+
+
+
+From dcoppa at gmail.com  Wed Mar 10 13:23:53 2010
+From: dcoppa at gmail.com (David Coppa)
+Date: Wed, 10 Mar 2010 13:23:53 +0100
+Subject: [i3] [Xcb] Problem with dock windows and libxcb-icccm
+In-Reply-To: <e2ed954f1003100333w6d5badbft7435128e7f8d498@mail.gmail.com>
+References: <20100310105539.GA20698@cl0311500093650>
+	<e2ed954f1003100333w6d5badbft7435128e7f8d498@mail.gmail.com>
+Message-ID: <20100310122353.GA21006@cl0311500093650>
+
+On Wed, 10 Mar 2010, Jamey Sharp wrote:
+
+> > This causes a floating-point exception in the
+> > xcb_get_wm_size_hints_from_reply function, making i3 crash.
+> >
+> > #0 ?0x0f5635a4 in xcb_get_wm_size_hints_from_reply (hints=0xcfbc8070,
+> > ? ?reply=0x8593fc20) at /usr/xenocara/dist/xcb-util/icccm/icccm.c:442
+> > 442 ? ? ? length = xcb_get_property_value_length(reply) / (reply->format / 8);
+> 
+> Surely it isn't the length being 0, but rather the format, that causes
+> this error.
+
+Yes! I was wrong... reply->format is also zero:
+
+03/10/2010 01:06:46 PM - src/handlers.c:handle_windowclass_change:710 - WM_CLASS changed to dzen2 (instance), dzen (class)
+03/10/2010 01:06:46 PM - src/handlers.c:handle_windowname_change_legacy:649 - WM_NAME changed to "dzen title"
+03/10/2010 01:06:46 PM - src/handlers.c:handle_windowname_change_legacy:660 - Using legacy window title. Note that in order to get Unicode window titles in i3, the application has to set _NET_WM_NAME which is in UTF-8 encoding.
+03/10/2010 01:06:46 PM - src/handlers.c:handle_normal_hints:840 - Window: frame 0x0040000a, child 0x00a00005
+DEBUG1: xcb_get_property_value_length(reply) = 0
+DEBUG2: reply->format = 0
+
+So it's a division by zero error obviously raising a SIGFPE.
+
+
+ciao,
+david
+
+
+From arnaud at andesi.org  Wed Mar 10 17:56:20 2010
+From: arnaud at andesi.org (Arnaud Fontaine)
+Date: Wed, 10 Mar 2010 17:56:20 +0100
+Subject: [i3] [Xcb] Problem with dock windows and libxcb-icccm
+In-Reply-To: <e2ed954f1003100333w6d5badbft7435128e7f8d498@mail.gmail.com>
+	(Jamey Sharp's message of "Wed, 10 Mar 2010 03:33:19 -0800")
+References: <20100310105539.GA20698@cl0311500093650>
+	<e2ed954f1003100333w6d5badbft7435128e7f8d498@mail.gmail.com>
+Message-ID: <sa5tyso5d57.fsf@Orfeo.duckcorp.org>
+
+Hi,
+
+I  had  a  quick  look  at  the  code  and  found  a  similar  issue  in
+xcb_get_text_property_reply(), despite being  less important, it is also
+clearly   a   bug   because    if   the   property   is   not   present,
+xcb_get_text_property_reply() would happily returns 1.
+
+The patch is available there (indeed Xlib performs the same check...):
+http://www.mini-dweeb.org/~arnau/coding/patches/0001-The-reply-type-could-be-XCB_NONE-if-the-property-is-.patch
+
+I  will commit it  to the  xcb/util Git  repository if  nobody complains
+about it ;).
+
+Cheers,
+Arnaud
+
+
+From scott.benjamin at gmail.com  Sat Mar 27 09:33:29 2010
+From: scott.benjamin at gmail.com (Scott Benjamin)
+Date: Sat, 27 Mar 2010 01:33:29 -0700
+Subject: [i3] I3 - next build on RHEL 5.4 seg fault.
+Message-ID: <g2vbaf45701003270133z9657d659m24bdf0cfae8f269c@mail.gmail.com>
+
+Hi,
+
+So my work machine needed to be reinstalled as RHEL 5.4, from Fedora 12.
+
+ I've downloaded and compiled xcb and also the 'next' branch of i3.   When I
+start i3 at login, it seg faults.
+
+I'm not very familiar with the code, so I'm sending the info into the
+mailing list in hopes that someone can better help.
+
+Here's the backtrace:
+
+#0  0x0805d4a8 in reparent_window (conn=0x97c3bd8, child=2097190,
+visual=124, root=158,
+    depth=24 '\030', x=3, y=17, width=1429, height=836, border_width=0) at
+src/manage.c:189
+#1  0x0805d078 in manage_window (prophs=0xbfed8088, conn=0x97c3bd8,
+window=2097190, cookie=
+      {sequence = 223}, needs_to_be_mapped=true) at src/manage.c:125
+#2  0x0805ce33 in manage_existing_windows (conn=0x97c3bd8,
+prophs=0xbfed8088, root=158)
+    at src/manage.c:60
+#3  0x0805c9ef in main (argc=1, argv=0xbfed81e4, env=0xbfed81ec) at
+src/mainx.c:561
+
+Please let me know if there is anything else I should gather or try. I would
+love to be able to use my blessed i3 on my workstation.
+
+
+Regards,
+
+Scott
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20100327/677f4c03/attachment.html>
+
+From michael+i3 at stapelberg.de  Sat Mar 27 13:17:29 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 27 Mar 2010 13:17:29 +0100
+Subject: [i3] I3 - next build on RHEL 5.4 seg fault.
+In-Reply-To: <g2vbaf45701003270133z9657d659m24bdf0cfae8f269c@mail.gmail.com>
+References: <g2vbaf45701003270133z9657d659m24bdf0cfae8f269c@mail.gmail.com>
+Message-ID: <1269692149-sup-5310@midna.zekjur.net>
+
+Hi Scott,
+
+Excerpts from Scott Benjamin's message of 2010-03-27 09:33:29 +0100:
+> Please let me know if there is anything else I should gather or try. I would
+> love to be able to use my blessed i3 on my workstation.
+Can you please post the full logfile when starting with maximum debug level
+(flags are -V -d all)? Also, please use 'backtrace full' instead of 'backtrace'
+when posting backtraces. My guess is that CUR_CELL is NULL for some reason.
+Maybe an error when initializing your screens, so the logfile is even more
+interesting.
+
+Best regards,
+Michael
+
+
+From michael+i3 at stapelberg.de  Sat Mar 27 18:42:13 2010
+From: michael+i3 at stapelberg.de (Michael Stapelberg)
+Date: Sat, 27 Mar 2010 18:42:13 +0100
+Subject: [i3] =?utf-8?q?Upcoming_release_of_3=2E=CE=B5=3A_please_help_test?=
+	=?utf-8?q?ing!?=
+Message-ID: <1269711408-sup-2097@midna.zekjur.net>
+
+Hi,
+
+I plan to release i3 3.? on tuesday or wednesday unless some important
+major bug comes up. To ensure that there you will not run in such a bug
+when 3.? is released, you can check out the git "next" branch and test it,
+here comes how:
+
+  git clone git://code.stapelberg.de/i3 -b next
+  cd i3 && make -j4 && sudo make install
+
+(note that you might need libyajl and libxcb-randr as new dependencies)
+(also make sure to read docs/multi-monitor if you are using the nVidia
+binary driver)
+
+To verify that you are running the latest version, check your logfile
+and see something like 3.d-246-ga6d22f0 (2010-03-27), meaning that you
+are 246 commits after the release of 3.?.
+
+Any testing is much appreciated!
+
+Best regards,
+Michael
+
+PS: If you run into problems or have questions, the IRC channel is the
+best place to discuss it.
+
+

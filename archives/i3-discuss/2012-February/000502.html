@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Improved%20i3bar%20hide%20mode%20behavior%20%28In%20my%20point%20of%0A%09view%29&In-Reply-To=%3CCANVYNa9Kbr_aDYTpN%2B4Qi6xsJKDFsQ34%2B3ZdpwK4MAqAOzETZg%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000497.html">
+   <LINK REL="Next"  HREF="000498.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)</H1>
+    <B>Fernando Lemos</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Improved%20i3bar%20hide%20mode%20behavior%20%28In%20my%20point%20of%0A%09view%29&In-Reply-To=%3CCANVYNa9Kbr_aDYTpN%2B4Qi6xsJKDFsQ34%2B3ZdpwK4MAqAOzETZg%40mail.gmail.com%3E"
+       TITLE="[i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)">fernandotcl at i3wm.org
+       </A><BR>
+    <I>Fri Feb 24 01:13:04 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000497.html">[i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)
+</A></li>
+        <LI>Next message: <A HREF="000498.html">[i3] [RFC] [PATCH] i3status: memory-stats
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#502">[ date ]</a>
+              <a href="thread.html#502">[ thread ]</a>
+              <a href="subject.html#502">[ subject ]</a>
+              <a href="author.html#502">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On Wed, Feb 22, 2012 at 7:15 AM, DR &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">drdarkraven at gmail.com</A>&gt; wrote:
+&gt;<i> On Wed, Feb 22, 2012 at 2:21 PM, DR &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">drdarkraven at gmail.com</A>&gt; wrote:
+</I>&gt;&gt;<i> When a workspace marked 'urgent', i3bar unhide itself. if I want to
+</I>&gt;&gt;<i> hide it again, I must press the modifier.
+</I>&gt;&gt;<i> This sometimes annoys me.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> In this patch I change the above behavior to this: If a urgent
+</I>&gt;&gt;<i> workspace occurs, i3bar will unhide itself; and when you navigates
+</I>&gt;&gt;<i> away from the last urgent workspace and there is no more urgent
+</I>&gt;&gt;<i> workspace, i3bar will hide itself again.
+</I>
+This sounds interesting, but have you discussed it with Michael first?
+I'd recommend always pinging Michael first to see if what you intend
+to do is in line with the project goals and things like that. Unless,
+of course, you don't care about getting your patches merged.
+
+Anyways, some comments below.
+
+&gt;<i> Oops... I messed it up.
+</I>&gt;<i> Here is the patch fix build, and improve the behavior a little bit more:
+</I>&gt;<i> When the urgent workspace is currently focused, i3bar will hide as
+</I>&gt;<i> soon as the urgent mark has gone.
+</I>
+Please merge both patches in a single one to make it easier to review
+(unless they do separate things, of course).
+
+I noticed you used &quot;if (&quot; and &quot;if(&quot;, please stick with &quot;if (&quot; as
+that's what the rest of xcb.c uses.
+
+You declare and read bar_hidden, but you never seem to write to it. Am
+I missing something? Also, I'd rather have the code that calls
+hide/unhide_bar simply not call those functions rather than do the
+checking inside the functions, but that's subjective, I guess.
+
+The indentation level on the call to hide_bars() in the last chunk of
+the second patch is wrong. Are you sure you don't want that enclosed
+by brackets, as part of the &quot;else&quot; branch?
+
+You're doing all the logic in the drawing code. Perhaps it would be
+better to detect that stuff directly in the ipc.c, when you receive
+the workspace info from i3, after the call to parse_workspaces_json.
+
+Regards,
+</PRE>
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000497.html">[i3] [PATCH] Improved i3bar hide mode behavior (In my point of	view)
+</A></li>
+	<LI>Next message: <A HREF="000498.html">[i3] [RFC] [PATCH] i3status: memory-stats
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#502">[ date ]</a>
+              <a href="thread.html#502">[ thread ]</a>
+              <a href="subject.html#502">[ subject ]</a>
+              <a href="author.html#502">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

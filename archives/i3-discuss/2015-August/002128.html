@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] IPC scripting with Ruby
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20IPC%20scripting%20with%20Ruby&In-Reply-To=%3C20150803141412.GA11383%40red_water.cs.ucl.ac.uk%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+   <LINK REL="Next"  HREF="002129.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] IPC scripting with Ruby</H1>
+    <B>Kareem</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20IPC%20scripting%20with%20Ruby&In-Reply-To=%3C20150803141412.GA11383%40red_water.cs.ucl.ac.uk%3E"
+       TITLE="[i3] IPC scripting with Ruby">karkhaz at gmail.com
+       </A><BR>
+    <I>Mon Aug  3 16:14:12 CEST 2015</I>
+    <P><UL>
+        
+        <LI>Next message: <A HREF="002129.html">[i3] IPC scripting with Ruby
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2128">[ date ]</a>
+              <a href="thread.html#2128">[ thread ]</a>
+              <a href="subject.html#2128">[ subject ]</a>
+              <a href="author.html#2128">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi all,
+
+Vitalii Elenhaupt pointed me to this i3 IPC library for ruby:
+
+<A HREF="https://github.com/veelenga/i3ipc-ruby">https://github.com/veelenga/i3ipc-ruby</A>
+
+which is a fork of the i3-ipc library mentioned on the i3 website.
+
+I would like to recommend that veelenga/i3ipc-ruby be added to the i3
+website, and badboy/i3-ipc be removed or at least marked as
+unmaintained. veelenga/i3ipc-ruby is more featureful than badboy's
+one, including the ability to subscribe to events.
+
+Kareem
+
+On 2015-06-02 1514, Tony Crisci wrote:
+&gt;<i> This is a known bug with i3. Any command that does not include a
+</I>&gt;<i> `restart` should work correctly. Try to use `reload` whenever you
+</I>&gt;<i> can.  If `reload` does not do something you think it should do that
+</I>&gt;<i> `restart` does, make an issue on github.
+</I>&gt;<i> 
+</I>&gt;<i> <A HREF="https://github.com/i3/i3/issues/1581">https://github.com/i3/i3/issues/1581</A>
+</I>&gt;<i> 
+</I>&gt;<i> On 06/02/2015 05:20 PM, Kareem Khazem wrote:
+</I>&gt;<i> &gt; Hi all, wondering if somebody could tell me what's wrong with my
+</I>&gt;<i> &gt; script that's trying to talk with i3's IPC.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Whenever I try to read a reply from the socket, I apparently just
+</I>&gt;<i> &gt; get an empty string.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I've already read the warning about using a library and not
+</I>&gt;<i> &gt; implementing my own, thanks, but the Ruby library is unmaintained
+</I>&gt;<i> &gt; and doesn't include recent IPC features.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; I'm doing this:
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; ___________________ 8&gt;&lt; snip &gt;&lt;8
+</I>&gt;<i> &gt; _____________________________________ #!/usr/bin/env ruby require
+</I>&gt;<i> &gt; 'socket' socket  = Socket.unix(`i3 --get-socketpath`.strip)
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; payload = &quot;restart&quot; type    = 0 length  = payload.length
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; bytes = socket.write(&quot;i3-ipc#{[length,
+</I>&gt;<i> &gt; type].pack(&quot;LL&quot;)}#{payload}&quot;)
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; response = socket.read.unpack(&quot;L&quot;)
+</I>&gt;<i> &gt; ______________________________________________________________________
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; `bytes' gets the number of bytes written, as expected, and i3 does
+</I>&gt;<i> &gt; indeed restart, so the message was successful. But `response'
+</I>&gt;<i> &gt; seems to be nil. If I just ask for socket.read, I just get the
+</I>&gt;<i> &gt; empty string.
+</I>&gt;<i> &gt; 
+</I>&gt;<i> &gt; Can anyone help? thanks!
+</I></PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	
+	<LI>Next message: <A HREF="002129.html">[i3] IPC scripting with Ruby
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2128">[ date ]</a>
+              <a href="thread.html#2128">[ thread ]</a>
+              <a href="subject.html#2128">[ subject ]</a>
+              <a href="author.html#2128">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

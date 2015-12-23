@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] The SysV-IPC -- cannot create socket
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20The%20SysV-IPC%20--%20cannot%20create%20socket&In-Reply-To=%3C20100204204141.75C1F2803F%40smtp.hushmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000012.html">
+   <LINK REL="Next"  HREF="000006.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] The SysV-IPC -- cannot create socket</H1>
+    <B>Sasha</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20The%20SysV-IPC%20--%20cannot%20create%20socket&In-Reply-To=%3C20100204204141.75C1F2803F%40smtp.hushmail.com%3E"
+       TITLE="[i3] The SysV-IPC -- cannot create socket">crawlingwithsnakes at hush.com
+       </A><BR>
+    <I>Thu Feb  4 21:41:41 CET 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000012.html">[i3] tabbed layout as default?
+</A></li>
+        <LI>Next message: <A HREF="000006.html">[i3] The SysV-IPC -- cannot create socket
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5">[ date ]</a>
+              <a href="thread.html#5">[ thread ]</a>
+              <a href="subject.html#5">[ subject ]</a>
+              <a href="author.html#5">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+- -----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+I am finding it not possible to create/use the IPC socket.
+
+- - ------------------------------------
+<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">root at reactor</A>: file $(which i3)
+/usr/bin/i3: symbolic link to `/usr/bin/i3-GIT'
+<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">root at reactor</A>: file $(which i3-GIT)
+/usr/bin/i3-GIT: ELF 64-bit LSB executable, x86-64, version 1
+(SYSV), dynamically linked (uses shared libs), not stripped
+- - ------------------------------------
+
+IPC is enabled in my kernel (2.6.32.5 x86_64) as follows:
+
+- - -------------------
+<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">root at reactor</A>: cat /usr/src/source/*5/.config | grep IPC
+CONFIG_SYSVIPC=y
+CONFIG_SYSVIPC_SYSCTL=y
+CONFIG_IPC_NS=y
+# CONFIG_MWINCHIPC6 is not set
+CONFIG_SYSVIPC_COMPAT=y
+CONFIG_XFRM_IPCOMP=y
+CONFIG_INET_IPCOMP=y
+# CONFIG_TIPC is not set
+# CONFIG_SND_CMIPCI is not set
+- - -------------------
+
+..but I see in my i3.logfile the following:
+
+02/04/2010 05:42:12 AM - src/mainx.c:main:466 - Could not create
+the IPC socket, IPC disabled
+
+My reading about IPC tells me that on IA64, IPC is either different
+than x86 or not available, but to my understanding, x86_64 != IA64
+so I should be OK; I'm curious about this.
+
+I would like to use i3-msg and/or i3-input from within my config
+file, to tell i3 some things upon startup.
+
+NOTE: I have switched to using the GIT release . So far so good; a
+few glitches, but I haven't nailed them down clearly enough to
+provide a useful report yet.
+
+Sasha
+- -----BEGIN PGP SIGNATURE-----
+Note: This signature can be verified at
+<A HREF="https://www.hushtools.com/verify">https://www.hushtools.com/verify</A>
+Charset: iso-8859-1
+Version: Hush 3.0
+
+wpwEAQMCAAYFAktrMWcACgkQNSYFEb1mCzJgiQP/eLqyjJzXsAjd+5n8QifKksMqPnXW
+RT5lDDTSaKj4Rj5aO1ETPjshS5MN0jC5+Nha/16tY3DsB7x6iuph1GaIC0NARLo+QkVe
+B1+TCJ4GQU1PJtaE9x6v7mxWEdgih0MGHRK8QScBtlR9GZOZV+HW8c9uMJcqxhAMjang
+kzs3J5s=
+=jDat
+- -----END PGP SIGNATURE-----
+-----BEGIN PGP SIGNATURE-----
+Note: This signature can be verified at <A HREF="https://www.hushtools.com/verify">https://www.hushtools.com/verify</A>
+Charset: iso-8859-1
+Version: Hush 3.0
+
+wpwEAQMCAAYFAktrM6sACgkQNSYFEb1mCzKTKQQAqR0MjDmu5auWHfld2vD1/9LVMhHw
+pH7S0x2oRXfKdsMGKIu8euZE0WdjlVrxELJubr6ZpOsLgfU3rJaksftdHaWoz8woE0i2
+v/h62AXsq5aB+4DXADqPi5ncHNh+fQRGuUO88vOATXrC/r3OetzPlTm871uh4Jvoey3L
+X/zY1+Y=
+=7Gdc
+-----END PGP SIGNATURE-----
+
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000012.html">[i3] tabbed layout as default?
+</A></li>
+	<LI>Next message: <A HREF="000006.html">[i3] The SysV-IPC -- cannot create socket
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#5">[ date ]</a>
+              <a href="thread.html#5">[ thread ]</a>
+              <a href="subject.html#5">[ subject ]</a>
+              <a href="author.html#5">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

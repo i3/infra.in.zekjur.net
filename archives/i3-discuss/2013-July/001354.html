@@ -1,0 +1,183 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] key bindings not working
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20key%20bindings%20not%20working&In-Reply-To=%3C87bo67i3dn.fsf%40yun.yagibdah.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001351.html">
+   <LINK REL="Next"  HREF="001357.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] key bindings not working</H1>
+    <B>lee</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20key%20bindings%20not%20working&In-Reply-To=%3C87bo67i3dn.fsf%40yun.yagibdah.de%3E"
+       TITLE="[i3] key bindings not working">lee at yun.yagibdah.de
+       </A><BR>
+    <I>Sat Jul 13 04:45:56 CEST 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001351.html">[i3] key bindings not working
+</A></li>
+        <LI>Next message: <A HREF="001357.html">[i3] key bindings not working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1354">[ date ]</a>
+              <a href="thread.html#1354">[ thread ]</a>
+              <a href="subject.html#1354">[ subject ]</a>
+              <a href="author.html#1354">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Mateusz Poszwa &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">old4 at o2.pl</A>&gt; writes:
+
+&gt;<i> On Fri, 12 Jul 2013 01:08:03 +0200
+</I>&gt;<i> lee &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">lee at yun.yagibdah.de</A>&gt; wrote:
+</I>&gt;&gt;<i> My understanding was that you need to use the actual key symbol (as used
+</I>&gt;&gt;<i> in xmodmap) that is being produced.  For example, when you have
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> bindsym $mod+Shift+J move left
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> a capital 'J' is being produced.  When you have the some binding without
+</I>&gt;&gt;<i> Shift, like
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> bindsym $mod+j move left
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> it's a small 'j' because Shift isn't pressed.
+</I>&gt;<i>
+</I>&gt;<i> &#8222;
+</I>&gt;<i> bindsym $mod+Shift+j move left
+</I>&gt;<i> &#8221;
+</I>&gt;<i> would work too. Maybe the names are case insensitive?
+</I>
+Maybe they are, though the documentation indicates that you need to use
+the key symbols that are being produced.
+
+&gt;&gt;<i> This shows throughout the default configuration file.  The documentation
+</I>&gt;&gt;<i> says:
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> ,---- [ <A HREF="http://i3wm.org/docs/userguide.html#keybindings">http://i3wm.org/docs/userguide.html#keybindings</A>]
+</I>&gt;&gt;<i> |
+</I>&gt;&gt;<i> | A keysym (key symbol) is a description for a specific symbol, like &quot;a&quot;
+</I>&gt;&gt;<i> | or &quot;b&quot;, but also more strange ones like &quot;underscore&quot; instead of
+</I>&gt;&gt;<i> | &quot;_&quot;. These are the ones you use in Xmodmap to remap your keys. To get
+</I>&gt;&gt;<i> | the current mapping of your keys, use xmodmap -pke. To interactively
+</I>&gt;&gt;<i> | enter a key and see what keysym it is configured to, use xev.
+</I>&gt;&gt;<i> |
+</I>&gt;&gt;<i> `----
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> I have been using xev to verify that pressing 'AltGr+&lt;Minus Key&gt;' and
+</I>&gt;&gt;<i> 'AltGr+Shift+&lt;Minus Key&gt;' do yield 'periodcentered' and 'abovedot',
+</I>&gt;&gt;<i> respectively.  (Those are now intercepted by i3.)
+</I>&gt;<i>
+</I>&gt;<i> I don't think so, but I may be wrong.
+</I>
+Those symbols aren't typed anymore when I press the keys, so yes,
+really, i3 must be intercepting them.
+
+&gt;<i> If it was as you say, you could write
+</I>&gt;<i> &#8222;
+</I>&gt;<i> bindsym abovedot workspace prev
+</I>&gt;<i> &#8221;
+</I>&gt;<i> instead of
+</I>&gt;<i> &#8222;
+</I>&gt;<i> bindsym $mod+Shift+minus workspace prev
+</I>&gt;<i> &#8221;
+</I>&gt;<i> To be honest, I haven't checked if the former works.
+</I>&gt;<i> You can do it as an exercise and let me know if you succeed. ;-)
+</I>&gt;<i> I'd be surprised, but I don't say it's impossible.
+</I>
+That's an interesting idea indeed :)  I tried it and it doesn't work.
+
+&gt;&gt;<i> Actually, 'Shift+&lt;Minus Key&gt;' produces an underscore.  How come that
+</I>&gt;&gt;<i> 'AltGr+Shift+minus' even works?  Shouldn't that rather be
+</I>&gt;&gt;<i> 'AltGr+Shift+underscore'?[1]
+</I>&gt;<i>
+</I>&gt;<i> I think i3 maps keysyms (&#8222;plain&#8221; keysyms &#8212; without modifiers)
+</I>&gt;<i> to keycodes and applies modifiers itself.
+</I>
+Going by the documentation, the key codes seem to be irrelevant unless
+you use 'bindcode' instead of 'bindsym'.  I guess if I changed my
+xmodmap so that '-' (minus) is on the key that's labeled 'J', I'd have
+to press AltGr+j instead of AltGr+&lt;minus&gt;.
+
+This is pretty confusing ...
+
+&gt;&gt;<i> &gt; As a side note, I don't think using AltGr as a modifier is a good idea&#8230;
+</I>&gt;&gt;<i> 
+</I>&gt;&gt;<i> How come you think so?  It works great and allows for some easy
+</I>&gt;&gt;<i> one-handed i3-operations.  Since I have modified my xmodmap so that I
+</I>&gt;&gt;<i> can type braces and brackets without pressing AltGr, there are only four
+</I>&gt;&gt;<i> keys that come to mind for which I need AltGr: '@', '|', '&#223;' and '\'.
+</I>&gt;&gt;<i> That leaves me pretty much all of the other 98 keys to bind i3 stuff to
+</I>&gt;&gt;<i> :)  Do you know of any application which would be aware that there's such
+</I>&gt;&gt;<i> a thing as an AltGr key?
+</I>&gt;<i>
+</I>&gt;<i> How about '&#246;'? ;-P
+</I>
+What about it?
+
+&gt;<i> You are right. It seems good in you case. I use the Colemak keyboard
+</I>&gt;<i> layout, which uses AltGr heavily for diacritics input, and there's
+</I>&gt;<i> quite many of them in Polish.
+</I>
+Ah I only write English and German, so I'm not missing any letters with
+the keyboard as is.  The only thing is that there are some like '/', '~'
+and brackets that are at very inconvenient locations with a default
+German layout, so I changed that.
+
+&gt;<i> As for AltGr-aware applications, probably some old games may use that
+</I>&gt;<i> key.
+</I>
+Hm, none that does comes to mind ...
+
+&gt;&gt;<i> (I'm using a Model M keyboard that doesn't have the obsolete keys newer
+</I>&gt;&gt;<i> ones have, so there aren't any keys around Space, Alt, AltGr and Ctrl
+</I>&gt;&gt;<i> that would get persistently in the way.)
+</I>&gt;<i>
+</I>&gt;<i> I have plenty of &#8222;obsolete&#8221; keys on my TypeMatrix 2020,
+</I>&gt;<i> such as Super (captioned &#8222;Start&#8221;), which I use for i3's bindings,
+</I>&gt;<i> or Caps Lock, which I have bound a minus to. ;-)
+</I>
+That looks like an interesting keyboard :)  I wish I could have one with
+122 keys, but it seems that there are hardware issues preventing that.
+
+
+-- 
+&quot;Object-oriented programming languages aren't completely convinced that
+you should be allowed to do anything with functions.&quot;
+<A HREF="http://www.joelonsoftware.com/items/2006/08/01.html">http://www.joelonsoftware.com/items/2006/08/01.html</A>
+</PRE>
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001351.html">[i3] key bindings not working
+</A></li>
+	<LI>Next message: <A HREF="001357.html">[i3] key bindings not working
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1354">[ date ]</a>
+              <a href="thread.html#1354">[ thread ]</a>
+              <a href="subject.html#1354">[ subject ]</a>
+              <a href="author.html#1354">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] building on RHEL 6.0
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20building%20on%20RHEL%206.0&In-Reply-To=%3CAANLkTinJP4bjagPxRVOkeVBRgw4SQ3J%3DmvkQ6oF9HX0o%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000140.html">
+   <LINK REL="Next"  HREF="000142.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] building on RHEL 6.0</H1>
+    <B>Jeff Jibson</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20building%20on%20RHEL%206.0&In-Reply-To=%3CAANLkTinJP4bjagPxRVOkeVBRgw4SQ3J%3DmvkQ6oF9HX0o%40mail.gmail.com%3E"
+       TITLE="[i3] building on RHEL 6.0">jeff at jibson.com
+       </A><BR>
+    <I>Tue Aug 31 16:34:47 CEST 2010</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000140.html">[i3] Shutdown computer
+</A></li>
+        <LI>Next message: <A HREF="000142.html">[i3] building on RHEL 6.0
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#141">[ date ]</a>
+              <a href="thread.html#141">[ thread ]</a>
+              <a href="subject.html#141">[ subject ]</a>
+              <a href="author.html#141">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>When trying to make i3-3.e-bf1 on RHEL 6.0 beta 2, I get:
+
+[<A HREF="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">root at phoenix</A> i3-3.e-bf1]# make clean install
+Makefile:16: Generating loglevels.h
+awk: cmd. line:1: fatal: cannot open file `loglevels.tmp' for reading
+(No such file or directory)
+YACC src/cfgparse.y
+src/cfgparse.y: In function &#8216;parse_file&#8217;:
+src/cfgparse.y:113: error: expected expression before &#8216;)&#8217; token
+src/cfgparse.y: In function &#8216;yyparse&#8217;:
+src/cfgparse.y:366: error: expected expression before &#8216;)&#8217; token
+src/cfgparse.y:374: error: expected expression before &#8216;)&#8217; token
+src/cfgparse.y:396: error: expected expression before &#8216;)&#8217; token
+src/cfgparse.y:415: error: expected expression before &#8216;)&#8217; token
+src/cfgparse.y:427: error: expected expression before &#8216;)&#8217; token
+src/cfgparse.y:439: error: expected expression before &#8216;)&#8217; token
+src/cfgparse.y:447: error: expected expression before &#8216;)&#8217; token
+src/cfgparse.y:457: error: expected expression before &#8216;)&#8217; token
+src/cfgparse.y:471: error: expected expression before &#8216;)&#8217; token
+src/cfgparse.y:473: error: expected expression before &#8216;)&#8217; token
+make: *** [src/cfgparse.y.o] Error 1
+
+Any suggestions?
+
+
+The packages I had to install dmenu and i3 were:
+libX11-devel-1.3-2.el6.x86_64.rpm
+libXau-devel-1.0.5-1.el6.x86_64.rpm
+libXdmcp-devel-1.0.3-1.el6.x86_64.rpm
+libxcb-devel-1.5-1.el6.x86_64.rpm
+xorg-x11-proto-devel-7.4-35.el6.noarch.rpm
+libXinerama-devel-1.1-1.el6.x86_64.rpm
+libXext-devel-1.1-2.el6.x86_64.rpm
+xcb-util-devel-0.3.6-1.el6.x86_64.rpm
+
+</PRE>
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000140.html">[i3] Shutdown computer
+</A></li>
+	<LI>Next message: <A HREF="000142.html">[i3] building on RHEL 6.0
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#141">[ date ]</a>
+              <a href="thread.html#141">[ thread ]</a>
+              <a href="subject.html#141">[ subject ]</a>
+              <a href="author.html#141">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="https://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

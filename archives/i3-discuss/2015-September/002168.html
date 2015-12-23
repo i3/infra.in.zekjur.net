@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] default kbd layout per window
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20default%20kbd%20layout%20per%20window&In-Reply-To=%3C20150902002621.2f3e7aa5%40Blickensderfer%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002167.html">
+   <LINK REL="Next"  HREF="002169.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] default kbd layout per window</H1>
+    <B>Mateusz Poszwa</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20default%20kbd%20layout%20per%20window&In-Reply-To=%3C20150902002621.2f3e7aa5%40Blickensderfer%3E"
+       TITLE="[i3] default kbd layout per window">old4 at o2.pl
+       </A><BR>
+    <I>Wed Sep  2 00:26:21 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002167.html">[i3] default kbd layout per window
+</A></li>
+        <LI>Next message: <A HREF="002169.html">[i3] Keep windows focused on workspace move
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2168">[ date ]</a>
+              <a href="thread.html#2168">[ thread ]</a>
+              <a href="subject.html#2168">[ subject ]</a>
+              <a href="author.html#2168">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Je 2015-09-01 21:27:20
+Nokan Emiro &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">uzleepito at gmail.com</A>&gt; skribis:
+
+(…)
+&gt;<i> but this one (that sleeps 0.5 sec before simulating the keypresses) did:
+</I>&gt;<i> 
+</I>&gt;<i> xte 'usleep 500000' 'keydown Shift_L' 'keydown Caps_Lock' 'keyup Caps_Lock'
+</I>&gt;<i> 'keyup Shift_L'
+</I>&gt;<i> 
+</I>&gt;<i> So, this seems to be some stupied timing issue.  I'm sorry about
+</I>&gt;<i> bothering...
+</I>
+If it’s just a timing issue, you may want to add a delay, like this:
+
+for_window [window_role=&quot;terminal&quot;] exec --no-startup-id sleep 1 &amp;&amp; dbus-send --dest=ru.gentoo.KbddService /ru/gentoo/KbddService ru.gentoo.kbdd.set_layout uint32:1
+
+-- 
+Mateusz Poszwa
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002167.html">[i3] default kbd layout per window
+</A></li>
+	<LI>Next message: <A HREF="002169.html">[i3] Keep windows focused on workspace move
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2168">[ date ]</a>
+              <a href="thread.html#2168">[ thread ]</a>
+              <a href="subject.html#2168">[ subject ]</a>
+              <a href="author.html#2168">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

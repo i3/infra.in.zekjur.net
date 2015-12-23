@@ -1,0 +1,1945 @@
+From onaips at gmail.com  Sun Apr  1 16:08:05 2012
+From: onaips at gmail.com (=?ISO-8859-1?Q?Jos=E9_Luis_Pereira?=)
+Date: Sun, 1 Apr 2012 15:08:05 +0100
+Subject: [i3] tray_output for primary display
+In-Reply-To: <1332779502-sup-5813@stapelberg.de>
+References: <CAOPjWVM_cyN8Z_wfe1iMmGUJh+1QKbs1F5i0wCu12EppFO8yOg@mail.gmail.com>
+ <CAOPjWVORB_vCCwiFS-MuAvn6rDFuna6_q1tiws5fjen94H1C0g@mail.gmail.com>
+ <CAOPjWVMpViTfp-NRTCHtapc5oAgUPR46e9gDuJRs8LcGbjdsjg@mail.gmail.com>
+ <1332090353-sup-19@stapelberg.de>
+ <CAOPjWVObDRxNr7stZLabjCOBGKyNEg_OCf_pUJ5a_tPe8RR9OQ@mail.gmail.com>
+ <CANVYNa9TTWBrrF1c6DaKenrp7ANi-XVZ=4Es0i45OkHXbAkb4A@mail.gmail.com>
+ <CAOPjWVP2N7zro9pXKLNiD_fEX3smEgt2g8Z0KJ+zh7rW21Gm3Q@mail.gmail.com>
+ <1332779502-sup-5813@stapelberg.de>
+Message-ID: <CAOPjWVOB6=X6BieOx3cxWL6ZJJrBmK4MQAfM6a=yXmfaCRpNSQ@mail.gmail.com>
+
+I apologize for the delay. I think it is good this time, i'm kinda of noob
+on git patch things..
+
+Best
+------
+Jos? Pereira
+
+
+On Mon, Mar 26, 2012 at 5:33 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Jos?,
+>
+> Excerpts from Jos? Luis Pereira's message of 2012-03-21 10:22:53 +0100:
+> > Here you have, packed a doc, removed whitespace and changed if order.
+> I just tested your patch and it works fine for me. Two little things are
+> missing before I can merge this:
+>
+> 1) The patch against docs/userguide doesn?t apply cleanly anymore. Can you
+>   rebase this?
+>
+> 2) You only supplied a patch. Can you use git format-patch instead please
+> so
+>   that we have proper author information?
+>
+> Thanks!
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120401/d480bd5f/attachment.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-i3bar-Added-option-to-select-primary-display-on-tray.patch
+Type: application/octet-stream
+Size: 3921 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120401/d480bd5f/attachment.obj>
+
+From sergiosdj at gmail.com  Mon Apr  2 03:17:12 2012
+From: sergiosdj at gmail.com (Sergio Durigan Junior)
+Date: Sun, 01 Apr 2012 22:17:12 -0300
+Subject: [i3] xfce4-notifyd position
+Message-ID: <m3bonbortz.fsf@gmail.com>
+
+Hello guys,
+
+First of all, thanks for this great window manager.  I have been using
+it for almost 1 week now, and so far it has been really great!
+
+Well, my question has actually been already asked on IRC, but I didn't
+have much time to continue the conversation there.  I am using
+xfce4-notifyd as my notification daemon, and I've been struggling with
+it to get it working properly.  But whenever a notification comes up,
+the notification window is displayed in the center of the screen.  I
+have always used/configured xfce4-notifyd to make it appear in the top
+right, but somehow it's not working with i3.
+
+Some guy (I think it was Fernando) told me that xfce4-notifyd is buggy
+regarding to windows' hints, and advised me to use notify-osd instead.
+I would happily do that, but I'm on Fedora and (a) I don't have a
+package for that and (b) when I tried to compile, I discovered that I
+would have to compile another packages for dependencies (because Fedora
+also doesn't provide the necessary versions of those).  Anyway, my
+question is: is there any way to make xfce4-notifyd work properly and
+display notifications wherever I tell it to?
+
+Thank you!
+
+-- 
+Sergio
+
+From michael at i3wm.org  Thu Apr  5 13:31:47 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 05 Apr 2012 13:31:47 +0200
+Subject: [i3] xfce4-notifyd position
+In-Reply-To: <m3bonbortz.fsf@gmail.com>
+References: <m3bonbortz.fsf@gmail.com>
+Message-ID: <1333625442-sup-4231@stapelberg.de>
+
+Hi Sergio,
+
+Excerpts from Sergio Durigan Junior's message of 2012-04-02 03:17:12 +0200:
+> the notification window is displayed in the center of the screen.  I
+> have always used/configured xfce4-notifyd to make it appear in the top
+> right, but somehow it's not working with i3.
+See http://i3wm.org/docs/debugging.html for how to create a logfile. Provide
+the logfile (compressed, and please don?t attach it directly, but upload it
+somewhere) and we can tell what?s happening.
+
+Best regards,
+Michael
+
+From michael at i3wm.org  Thu Apr  5 13:36:00 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 05 Apr 2012 13:36:00 +0200
+Subject: [i3] interaction with lowlevel programs like synergy
+In-Reply-To: <CAD9tV_H8rqMzr5Y7_5eXwAO6VmoJkV5-vFMQTaC9h_xC2UkiYA@mail.gmail.com>
+References: <CAD9tV_H8rqMzr5Y7_5eXwAO6VmoJkV5-vFMQTaC9h_xC2UkiYA@mail.gmail.com>
+Message-ID: <1333625634-sup-4659@stapelberg.de>
+
+Hi Daniel,
+
+Excerpts from Daniel Steen's message of 2012-03-29 21:49:48 +0200:
+> I've been a user of i3 for a few years now, and I absolutely love it!   I
+> found i3 after ion2 went out of development, and after trying all the other
+> tiling window managers out there i3 was far and away the best.   Great
+> work!
+Thanks.
+
+> One thing I have noticed is that i3 has some quirks with how it handles
+> other low level programs that take keyboard input.    Specifically synergy (
+> http://synergy2.sourceforge.net).  My goal is to be able to have three
+> screens across two machines, where I run mail and calendaring on one
+> machine (mac), and everything else on the other (linux).   I want to be
+> able to use the same modifier key to switch from one machine to the next as
+> I do to switch windows in i3.   However, i3 doesn't seem to pass the
+> modifier on to synergy - even if the particular key combination is not
+> mapped by i3.   So, as example,  if I user "super" as my i3 modifier key,
+If you did not map that key to i3, X11 won?t even send i3 an event. i3 is not
+involved at all, then.
+
+> Is this inherant to the way things work, or is this adjustable?
+Not sure. Have you tried to reproduce this problem in other window managers,
+say twm or awesome? If it *only* happens in i3, feel free to file a ticket with
+detailed steps on how to reproduce and a full debug level logfile (see
+http://i3wm.org/docs/debugging.html).
+
+Best regards,
+Michael
+
+From michael at i3wm.org  Thu Apr  5 14:45:08 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 05 Apr 2012 14:45:08 +0200
+Subject: [i3] tray_output for primary display
+In-Reply-To: <CAOPjWVOB6=X6BieOx3cxWL6ZJJrBmK4MQAfM6a=yXmfaCRpNSQ@mail.gmail.com>
+References: <CAOPjWVM_cyN8Z_wfe1iMmGUJh+1QKbs1F5i0wCu12EppFO8yOg@mail.gmail.com>
+ <CAOPjWVORB_vCCwiFS-MuAvn6rDFuna6_q1tiws5fjen94H1C0g@mail.gmail.com>
+ <CAOPjWVMpViTfp-NRTCHtapc5oAgUPR46e9gDuJRs8LcGbjdsjg@mail.gmail.com>
+ <1332090353-sup-19@stapelberg.de>
+ <CAOPjWVObDRxNr7stZLabjCOBGKyNEg_OCf_pUJ5a_tPe8RR9OQ@mail.gmail.com>
+ <CANVYNa9TTWBrrF1c6DaKenrp7ANi-XVZ=4Es0i45OkHXbAkb4A@mail.gmail.com>
+ <CAOPjWVP2N7zro9pXKLNiD_fEX3smEgt2g8Z0KJ+zh7rW21Gm3Q@mail.gmail.com>
+ <1332779502-sup-5813@stapelberg.de>
+ <CAOPjWVOB6=X6BieOx3cxWL6ZJJrBmK4MQAfM6a=yXmfaCRpNSQ@mail.gmail.com>
+Message-ID: <1333629681-sup-7597@stapelberg.de>
+
+Hi Jos?,
+
+Excerpts from Jos? Luis Pereira's message of 2012-04-01 16:08:05 +0200:
+> I apologize for the delay. I think it is good this time, i'm kinda of noob
+> on git patch things..
+I?m sorry, I should have mentioned that patches should be done against the
+'next' branch in our git repository. You did yours against the master branch :).
+
+No big deal, though, I?ve merged this into the next branch and your changes are
+now online.
+
+Thanks for your contribution!
+
+Best regards,
+Michael
+
+From onaips at gmail.com  Thu Apr  5 17:44:57 2012
+From: onaips at gmail.com (=?ISO-8859-1?Q?Jos=E9_Luis_Pereira?=)
+Date: Thu, 5 Apr 2012 16:44:57 +0100
+Subject: [i3] tray_output for primary display
+In-Reply-To: <1333629681-sup-7597@stapelberg.de>
+References: <CAOPjWVM_cyN8Z_wfe1iMmGUJh+1QKbs1F5i0wCu12EppFO8yOg@mail.gmail.com>
+ <CAOPjWVORB_vCCwiFS-MuAvn6rDFuna6_q1tiws5fjen94H1C0g@mail.gmail.com>
+ <CAOPjWVMpViTfp-NRTCHtapc5oAgUPR46e9gDuJRs8LcGbjdsjg@mail.gmail.com>
+ <1332090353-sup-19@stapelberg.de>
+ <CAOPjWVObDRxNr7stZLabjCOBGKyNEg_OCf_pUJ5a_tPe8RR9OQ@mail.gmail.com>
+ <CANVYNa9TTWBrrF1c6DaKenrp7ANi-XVZ=4Es0i45OkHXbAkb4A@mail.gmail.com>
+ <CAOPjWVP2N7zro9pXKLNiD_fEX3smEgt2g8Z0KJ+zh7rW21Gm3Q@mail.gmail.com>
+ <1332779502-sup-5813@stapelberg.de>
+ <CAOPjWVOB6=X6BieOx3cxWL6ZJJrBmK4MQAfM6a=yXmfaCRpNSQ@mail.gmail.com>
+ <1333629681-sup-7597@stapelberg.de>
+Message-ID: <CAOPjWVO7ptYdRipi6X3LgbScS=9Yqi=fUO6+1DjPpKM3kFqgNg@mail.gmail.com>
+
+Thanks, looking forward to add some more :P
+
+Btw, i have the following question, is there a way to be passively notified
+of changes on a determined workspace?
+For instance, i'm running a console in workspace 3 and it issues a system
+bell, i could see the workspace in i3bar with a different color stating
+that a window changed...
+Not sure if i make my point...
+
+Best
+
+------
+Jos? Pereira
+
+
+On Thu, Apr 5, 2012 at 1:45 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+
+> Hi Jos?,
+>
+> Excerpts from Jos? Luis Pereira's message of 2012-04-01 16:08:05 +0200:
+> > I apologize for the delay. I think it is good this time, i'm kinda of
+> noob
+> > on git patch things..
+> I?m sorry, I should have mentioned that patches should be done against the
+> 'next' branch in our git repository. You did yours against the master
+> branch :).
+>
+> No big deal, though, I?ve merged this into the next branch and your
+> changes are
+> now online.
+>
+> Thanks for your contribution!
+>
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120405/55cc90a0/attachment.html>
+
+From michael at i3wm.org  Thu Apr  5 17:56:01 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 05 Apr 2012 17:56:01 +0200
+Subject: [i3] tray_output for primary display
+In-Reply-To: <CAOPjWVO7ptYdRipi6X3LgbScS=9Yqi=fUO6+1DjPpKM3kFqgNg@mail.gmail.com>
+References: <CAOPjWVM_cyN8Z_wfe1iMmGUJh+1QKbs1F5i0wCu12EppFO8yOg@mail.gmail.com>
+ <CAOPjWVORB_vCCwiFS-MuAvn6rDFuna6_q1tiws5fjen94H1C0g@mail.gmail.com>
+ <CAOPjWVMpViTfp-NRTCHtapc5oAgUPR46e9gDuJRs8LcGbjdsjg@mail.gmail.com>
+ <1332090353-sup-19@stapelberg.de>
+ <CAOPjWVObDRxNr7stZLabjCOBGKyNEg_OCf_pUJ5a_tPe8RR9OQ@mail.gmail.com>
+ <CANVYNa9TTWBrrF1c6DaKenrp7ANi-XVZ=4Es0i45OkHXbAkb4A@mail.gmail.com>
+ <CAOPjWVP2N7zro9pXKLNiD_fEX3smEgt2g8Z0KJ+zh7rW21Gm3Q@mail.gmail.com>
+ <1332779502-sup-5813@stapelberg.de>
+ <CAOPjWVOB6=X6BieOx3cxWL6ZJJrBmK4MQAfM6a=yXmfaCRpNSQ@mail.gmail.com>
+ <1333629681-sup-7597@stapelberg.de>
+ <CAOPjWVO7ptYdRipi6X3LgbScS=9Yqi=fUO6+1DjPpKM3kFqgNg@mail.gmail.com>
+Message-ID: <1333641330-sup-411@stapelberg.de>
+
+Hi Jos?,
+
+Excerpts from Jos? Luis Pereira's message of 2012-04-05 17:44:57 +0200:
+> Btw, i have the following question, is there a way to be passively notified
+> of changes on a determined workspace?
+> For instance, i'm running a console in workspace 3 and it issues a system
+> bell, i could see the workspace in i3bar with a different color stating
+> that a window changed...
+> Not sure if i make my point...
+You could do the same as i3bar does: subscribe to the workspace event.
+See http://i3wm.org/docs/ipc.html
+
+Best regards,
+Michael
+
+From bruno.braga at gmail.com  Wed Apr 11 16:53:11 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Thu, 12 Apr 2012 00:53:11 +1000
+Subject: [i3] Unicode in Window Title
+Message-ID: <CAAuVr72gJpmzCrw0HsQW=9yqeJYDAKLYjwfxrOsBwHR15bEVxA@mail.gmail.com>
+
+I have set the window title to use the:
+
+# font for window titles. ISO 10646 = Unicode
+font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+
+but still the title can not display (for example Japanese chars):
+
+[image: Inline image 1]
+
+Do you guys know what could I be missing?
+
+Thanks,
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120412/44f85afe/attachment-0001.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: screenshot_20120412_003.jpeg
+Type: image/jpeg
+Size: 24783 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120412/44f85afe/attachment-0001.jpeg>
+
+From michael at i3wm.org  Wed Apr 11 16:55:44 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 11 Apr 2012 16:55:44 +0200
+Subject: [i3] Unicode in Window Title
+In-Reply-To: <CAAuVr72gJpmzCrw0HsQW=9yqeJYDAKLYjwfxrOsBwHR15bEVxA@mail.gmail.com>
+References: <CAAuVr72gJpmzCrw0HsQW=9yqeJYDAKLYjwfxrOsBwHR15bEVxA@mail.gmail.com>
+Message-ID: <1334156117-sup-4499@stapelberg.de>
+
+Hi Bruno,
+
+Excerpts from BRAGA, Bruno's message of 2012-04-11 16:53:11 +0200:
+> # font for window titles. ISO 10646 = Unicode
+> font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+> Do you guys know what could I be missing?
+Probably the font does not include these Japanese glyphs?
+
+Best regards,
+Michael
+
+From zeroxia at gmail.com  Thu Apr 12 13:31:29 2012
+From: zeroxia at gmail.com (zeroxia)
+Date: Thu, 12 Apr 2012 19:31:29 +0800
+Subject: [i3] i3 4.1: urxvt loses focus after "gitk" ceases on Debian squeeze
+Message-ID: <CAB+hAsXk1GGq+dwoc+OebRtjU_sAgsuWTAHdyXA_AhxtQ9rqzg@mail.gmail.com>
+
+Hi all,
+
+I'm using Debian squeeze (6.0.4), which is the stable version of
+Debian. The i3 package from the official package repository is very
+old (3.e) and it will not be updated until next Debian major release.
+
+So I cloned the i3 source, and tried to build it. Some of the
+dependent package names listed in the DEPENDS file does not exist in
+the stable repository, after some trial and error attempts to grab
+dependent packages, I built the package "i3-wm_4.1.2-2_i386.deb" from
+the master branch and installed it.
+
+Everything works except that gitk and urxvt do not cooperate well.
+When I'm in the urxvt shell, and fire up gitk, then I close gitk (by
+pressing Ctrl-W), the starting shell window has no focus and won't
+respond to input. And even after I clicked the urxvt window with
+mouse, the keyboard strokes still won't be captured by the terminal,
+but the mouse can select text, by the way.
+
+The only way to make the terminal aware of keyboard input is switching
+to another window or another workspace and then switch back.
+
+I also built the latest urxvt from Debian sid source
+(rxvt-unicode_9.15-1_i386.deb), the gitk version is 1.7.2.5-3 (shown
+from dpkg -l gitk).
+
+This problem has been annoying me for a long time since I started to
+use the latest i3-wm other than the antique one from the stable
+repository. And some other programs used to have the same issue but
+most of them seemed to be gone (and I don't remember them now anyway)
+and now the only case I can confront is "urxvt" and "gitk".
+
+I use both "mrxvt" and "urxvt" (for either multi-tab support or
+unicode support...), and "mrxvt" does not have such problem with
+"gitk". Actually any program I used to launch from mrxvt terminal did
+not cause this problem.
+
+-- 
+Regards,
+Xia Zuoling
+http://zeroxia.org/blog/
+
+QQ: 153570344
+MSN: zerox at live.com
+The world is beautiful for you.
+
+From michael at i3wm.org  Thu Apr 12 17:35:21 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 12 Apr 2012 17:35:21 +0200
+Subject: [i3] i3 4.1: urxvt loses focus after "gitk" ceases on Debian
+	squeeze
+In-Reply-To: <CAB+hAsXk1GGq+dwoc+OebRtjU_sAgsuWTAHdyXA_AhxtQ9rqzg@mail.gmail.com>
+References: <CAB+hAsXk1GGq+dwoc+OebRtjU_sAgsuWTAHdyXA_AhxtQ9rqzg@mail.gmail.com>
+Message-ID: <1334244824-sup-7752@stapelberg.de>
+
+Hi,
+
+Excerpts from zeroxia's message of 2012-04-12 13:31:29 +0200:
+> Everything works except that gitk and urxvt do not cooperate well.
+> When I'm in the urxvt shell, and fire up gitk, then I close gitk (by
+> pressing Ctrl-W), the starting shell window has no focus and won't
+It has focus here and works just fine. I?m using rxvt-unicode-256color 9.15-1
+and gitk 1:1.7.9-1.
+
+> I also built the latest urxvt from Debian sid source
+> (rxvt-unicode_9.15-1_i386.deb), the gitk version is 1.7.2.5-3 (shown
+> from dpkg -l gitk).
+Maybe you could try upgrading your gitk and/or tcl/tk?
+
+Best regards,
+Michael
+
+From zeroxia at gmail.com  Fri Apr 13 05:29:34 2012
+From: zeroxia at gmail.com (zeroxia)
+Date: Fri, 13 Apr 2012 11:29:34 +0800
+Subject: [i3] i3 4.1: urxvt loses focus after "gitk" ceases on Debian
+	squeeze
+In-Reply-To: <1334244824-sup-7752@stapelberg.de>
+References: <CAB+hAsXk1GGq+dwoc+OebRtjU_sAgsuWTAHdyXA_AhxtQ9rqzg@mail.gmail.com>
+ <1334244824-sup-7752@stapelberg.de>
+Message-ID: <CAB+hAsVpFQ2Ub6mfHF3OC94=0kh2WFoBthX-31LgtT9WyRK_LQ@mail.gmail.com>
+
+Hi,
+
+I updated "gitk" from 1.7.2.5 to 1.7.9 from the "backport repository"
+for Debian stable release. And after a search I see the latest
+"tcl/tk" version is 8.6, but that is in the "experimental" release,
+and my stable repository only has tk8.4 and tk8.5 ("gitk" package
+depends on "tk8.4", so "tk8.4" is automatically installed, and won't
+accept "tk8.5"), so I installed tk8.5, and updated "wish" to point to
+"/usr/bin/wish8.5". But the problem persists.
+
+This seems to be the tcl/tk problem. As I run "wish" in the urxvt
+terminal, I can get a blank GUI window, and after closing the window,
+URXVT got no focus, exactly the symptom occurred when I use gitk.
+
+The actual "tk8.5" version is 8.5.8, which is a little older than that
+of testing or sid release 8.5.11, so I also build the 8.5.11 sources
+and upgrade tcl8.5 & tk8.5, but still no avail.
+
+By the way, I found that there is a "wish8.3" at /usr/local/bin, which
+probably was installed by source navigator, running this to get a
+blank GUI window and then close it will not cause URXVT freezed. But
+the "gitk" script cannot run with this executable...
+
+Is there any other way I can try out?
+
+Regards,
+Xia.
+
+On Thu, Apr 12, 2012 at 11:35 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+> Hi,
+>
+> Excerpts from zeroxia's message of 2012-04-12 13:31:29 +0200:
+>> Everything works except that gitk and urxvt do not cooperate well.
+>> When I'm in the urxvt shell, and fire up gitk, then I close gitk (by
+>> pressing Ctrl-W), the starting shell window has no focus and won't
+> It has focus here and works just fine. I?m using rxvt-unicode-256color 9.15-1
+> and gitk 1:1.7.9-1.
+>
+>> I also built the latest urxvt from Debian sid source
+>> (rxvt-unicode_9.15-1_i386.deb), the gitk version is 1.7.2.5-3 (shown
+>> from dpkg -l gitk).
+> Maybe you could try upgrading your gitk and/or tcl/tk?
+>
+> Best regards,
+> Michael
+
+From j at mesrobertson.com  Fri Apr 13 12:43:17 2012
+From: j at mesrobertson.com (James Robertson)
+Date: Fri, 13 Apr 2012 20:43:17 +1000
+Subject: [i3] Starting apps on designated workspace only on i3 startup
+Message-ID: <CAMALoy-s6sh1CJ=aJpkTGmEyjUttCNc8C_-uGZsvgsYdkp0-vQ@mail.gmail.com>
+
+I understand how to make applications open on a certain desktop but
+would rather have them open on a specific desktop when starting i3 and
+then leave me with the option of opening the application on whichever
+desktop I choose after that.
+
+I took a stab at it and I tried these but no joy...
+
+exec urxvt assign 2
+exec assign [class="URxvt"] 2
+
+Also, thankyou for creating this Window Manager, it's magnificent!
+I'm becoming very addicted to it :)
+
+Regards,
+
+James
+
+From michael at i3wm.org  Fri Apr 13 12:48:10 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 13 Apr 2012 12:48:10 +0200
+Subject: [i3] Starting apps on designated workspace only on i3 startup
+In-Reply-To: <CAMALoy-s6sh1CJ=aJpkTGmEyjUttCNc8C_-uGZsvgsYdkp0-vQ@mail.gmail.com>
+References: <CAMALoy-s6sh1CJ=aJpkTGmEyjUttCNc8C_-uGZsvgsYdkp0-vQ@mail.gmail.com>
+Message-ID: <1334313966-sup-8281@stapelberg.de>
+
+Hi James,
+
+Excerpts from James Robertson's message of 2012-04-13 12:43:17 +0200:
+> I understand how to make applications open on a certain desktop but
+> would rather have them open on a specific desktop when starting i3 and
+> then leave me with the option of opening the application on whichever
+> desktop I choose after that.
+Your application needs to support startup-notifications for that and you need
+to use i3 >= v4.1. Just switch to a specific workspace and launch your app
+there. "exec i3-msg workspace 2; urxvt" should work. Make sure you have
+urxvt >= v9.14 with enabled startup-notifications.
+
+Best regards,
+Michael
+
+From j at mesrobertson.com  Sat Apr 14 10:56:35 2012
+From: j at mesrobertson.com (James Robertson)
+Date: Sat, 14 Apr 2012 18:56:35 +1000
+Subject: [i3] Starting apps on designated workspace only on i3 startup
+In-Reply-To: <1334313966-sup-8281@stapelberg.de>
+References: <CAMALoy-s6sh1CJ=aJpkTGmEyjUttCNc8C_-uGZsvgsYdkp0-vQ@mail.gmail.com>
+ <1334313966-sup-8281@stapelberg.de>
+Message-ID: <CAMALoy9XOi+CPpShaCzfpg=8LSrRMbygtyEp6y48FHSCXk1tBQ@mail.gmail.com>
+
+> Your application needs to support startup-notifications for that and you need
+> to use i3 >= v4.1. Just switch to a specific workspace and launch your app
+> there. "exec i3-msg workspace 2; urxvt" should work. Make sure you have
+> urxvt >= v9.14 with enabled startup-notifications.
+
+Thanks!  That certainly works to launch them on startup but I am still
+having a bit of problem with the desktops they launch on.
+
+I am using i3 version 4.1.2 (2012-01-27) and urxvt 9.15, I am running
+Debian Sid and according the the source package for urxvt
+startup-notifications are enabled.  startup-notifications for
+Iceweasel (Firefox) 10.0.0.3 are enabled according to it's .desktop
+entry.
+
+In my config I have added...
+
+i3-msg workspace WEB ; iceweasel
+i3-msg workspace TERM ; urxvt
+
+But when I launch i3 urxvt opens on the same desktop as Iceweasel and
+just now when I re-tested it Iceweasel opened on the TERM desktop and
+urxvt on the WEB desktop.  This is obviously due to the speed of
+launch and they simply end up on the wrong desktop.  As a test I added
+these commands to a bash script
+
+> cat .bin/i3startup.sh
+#!/bin/bash
+
+i3-msg workspace WEB ; iceweasel
+i3-msg workspace TERM ; urxvt
+
+> grep i3startup.sh .config/i3/config
+exec i3startup.sh
+
+Iceweasel launches and if I close Iceweasel then urxvt will open.  I
+can add an "&" at the end of the Iceweasel line but it has the same
+affect as being on the i3 config.
+
+Am I just doing something wrong or perhaps mistaken about the
+startup-notification being enabled on these apps?
+
+From michael at i3wm.org  Sat Apr 14 11:06:07 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 14 Apr 2012 11:06:07 +0200
+Subject: [i3] Starting apps on designated workspace only on i3 startup
+In-Reply-To: <CAMALoy9XOi+CPpShaCzfpg=8LSrRMbygtyEp6y48FHSCXk1tBQ@mail.gmail.com>
+References: <CAMALoy-s6sh1CJ=aJpkTGmEyjUttCNc8C_-uGZsvgsYdkp0-vQ@mail.gmail.com>
+ <1334313966-sup-8281@stapelberg.de>
+ <CAMALoy9XOi+CPpShaCzfpg=8LSrRMbygtyEp6y48FHSCXk1tBQ@mail.gmail.com>
+Message-ID: <1334394311-sup-4584@stapelberg.de>
+
+Hi James,
+
+Excerpts from James Robertson's message of 2012-04-14 10:56:35 +0200:
+> i3-msg workspace WEB ; iceweasel
+> i3-msg workspace TERM ; urxvt
+I?m sorry for instructing you wrong. The application needs to be launched by i3
+so that it can match the workspace to the startup notification id. Therefore,
+use:
+
+i3-msg workspace WEB; i3-msg exec iceweasel
+i3-msg workspace TERM; i3-msg exec urxvt
+
+Best regards,
+Michael
+
+From j at mesrobertson.com  Sat Apr 14 12:21:32 2012
+From: j at mesrobertson.com (James Robertson)
+Date: Sat, 14 Apr 2012 20:21:32 +1000
+Subject: [i3] Starting apps on designated workspace only on i3 startup
+In-Reply-To: <1334394311-sup-4584@stapelberg.de>
+References: <CAMALoy-s6sh1CJ=aJpkTGmEyjUttCNc8C_-uGZsvgsYdkp0-vQ@mail.gmail.com>
+ <1334313966-sup-8281@stapelberg.de>
+ <CAMALoy9XOi+CPpShaCzfpg=8LSrRMbygtyEp6y48FHSCXk1tBQ@mail.gmail.com>
+ <1334394311-sup-4584@stapelberg.de>
+Message-ID: <CAMALoy8eW642r-Kp=TxQKuXrwuqt2PmmFGCYM-TNk+YY6hfZKA@mail.gmail.com>
+
+> use:
+>
+> i3-msg workspace WEB; i3-msg exec iceweasel
+> i3-msg workspace TERM; i3-msg exec urxvt
+
+I added these to my i3 config and some extra's for good measure such
+as gimp and further urxvt's but they still end up loading on the wrong
+desktops.
+
+I also tested with just urxvt configured to load on each desktop...
+they all opened on the same desktop.
+
+Is a spinning/hourglass mouse cursor evidence of the notify event?  I
+get this when using dmenu_run but not if I execute the program from
+urxvt or xterm.
+
+Is there a way to check if an application uses startupnotify correctly?
+
+Thanks for the help.
+
+From michael at i3wm.org  Sat Apr 14 12:24:11 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 14 Apr 2012 12:24:11 +0200
+Subject: [i3] Starting apps on designated workspace only on i3 startup
+In-Reply-To: <CAMALoy8eW642r-Kp=TxQKuXrwuqt2PmmFGCYM-TNk+YY6hfZKA@mail.gmail.com>
+References: <CAMALoy-s6sh1CJ=aJpkTGmEyjUttCNc8C_-uGZsvgsYdkp0-vQ@mail.gmail.com>
+ <1334313966-sup-8281@stapelberg.de>
+ <CAMALoy9XOi+CPpShaCzfpg=8LSrRMbygtyEp6y48FHSCXk1tBQ@mail.gmail.com>
+ <1334394311-sup-4584@stapelberg.de>
+ <CAMALoy8eW642r-Kp=TxQKuXrwuqt2PmmFGCYM-TNk+YY6hfZKA@mail.gmail.com>
+Message-ID: <1334399004-sup-921@stapelberg.de>
+
+Hi James,
+
+Excerpts from James Robertson's message of 2012-04-14 12:21:32 +0200:
+> I added these to my i3 config and some extra's for good measure such
+> as gimp and further urxvt's but they still end up loading on the wrong
+> desktops.
+I tested it with:
+
+    i3-msg workspace 6 ; i3-msg exec urxvt ; i3-msg workspace 2
+
+Which leads to urxvt starting on workspace 6 while I am seeing workspace 2.
+Does that work for you?
+
+Best regards,
+Michael
+
+From j at mesrobertson.com  Sat Apr 14 12:46:50 2012
+From: j at mesrobertson.com (James Robertson)
+Date: Sat, 14 Apr 2012 20:46:50 +1000
+Subject: [i3] Starting apps on designated workspace only on i3 startup
+In-Reply-To: <1334399004-sup-921@stapelberg.de>
+References: <CAMALoy-s6sh1CJ=aJpkTGmEyjUttCNc8C_-uGZsvgsYdkp0-vQ@mail.gmail.com>
+ <1334313966-sup-8281@stapelberg.de>
+ <CAMALoy9XOi+CPpShaCzfpg=8LSrRMbygtyEp6y48FHSCXk1tBQ@mail.gmail.com>
+ <1334394311-sup-4584@stapelberg.de>
+ <CAMALoy8eW642r-Kp=TxQKuXrwuqt2PmmFGCYM-TNk+YY6hfZKA@mail.gmail.com>
+ <1334399004-sup-921@stapelberg.de>
+Message-ID: <CAMALoy-8kp=6SomofLJiwVj1zx-Qgh=WxnC-X7BrqQoFMVn7nQ@mail.gmail.com>
+
+> I tested it with:
+>
+> ? ?i3-msg workspace 6 ; i3-msg exec urxvt ; i3-msg workspace 2
+>
+> Which leads to urxvt starting on workspace 6 while I am seeing workspace 2.
+> Does that work for you?
+
+Yes that works.  I did a reboot as well to ensure urxvt was loading
+it's slowest.
+
+From pkordy at gmail.com  Sat Apr 14 12:59:16 2012
+From: pkordy at gmail.com (Piotr Kordy)
+Date: Sat, 14 Apr 2012 12:59:16 +0200
+Subject: [i3] Starting apps on designated workspace only on i3 startup
+In-Reply-To: <CAMALoy-8kp=6SomofLJiwVj1zx-Qgh=WxnC-X7BrqQoFMVn7nQ@mail.gmail.com>
+References: <CAMALoy-s6sh1CJ=aJpkTGmEyjUttCNc8C_-uGZsvgsYdkp0-vQ@mail.gmail.com>
+ <1334313966-sup-8281@stapelberg.de>
+ <CAMALoy9XOi+CPpShaCzfpg=8LSrRMbygtyEp6y48FHSCXk1tBQ@mail.gmail.com>
+ <1334394311-sup-4584@stapelberg.de>
+ <CAMALoy8eW642r-Kp=TxQKuXrwuqt2PmmFGCYM-TNk+YY6hfZKA@mail.gmail.com>
+ <1334399004-sup-921@stapelberg.de>
+ <CAMALoy-8kp=6SomofLJiwVj1zx-Qgh=WxnC-X7BrqQoFMVn7nQ@mail.gmail.com>
+Message-ID: <CAPNvPCM7wibReLjzjekS9NTDRPfbb4rvQtd24z-nDF9iaTu8-A@mail.gmail.com>
+
+For me it works for urxvt but not for Iceweasel (ver 10.0.3) i. e. after
+i3-msg workspace 6 ; i3-msg exec iceweasel ; i3-msg workspace 2
+iceweasel appears on workspace 2.
+
+Sorry for jumping in the middle of topic but I would be really interested
+to find out how to force Iceweasel to behave.
+
+Cheers,
+Piotr
+
+On 14 April 2012 12:46, James Robertson <j at mesrobertson.com> wrote:
+
+> > I tested it with:
+> >
+> >    i3-msg workspace 6 ; i3-msg exec urxvt ; i3-msg workspace 2
+> >
+> > Which leads to urxvt starting on workspace 6 while I am seeing workspace
+> 2.
+> > Does that work for you?
+>
+> Yes that works.  I did a reboot as well to ensure urxvt was loading
+> it's slowest.
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120414/7a83d220/attachment.html>
+
+From j at mesrobertson.com  Sat Apr 14 13:17:05 2012
+From: j at mesrobertson.com (James Robertson)
+Date: Sat, 14 Apr 2012 21:17:05 +1000
+Subject: [i3] Starting apps on designated workspace only on i3 startup
+In-Reply-To: <CAPNvPCM7wibReLjzjekS9NTDRPfbb4rvQtd24z-nDF9iaTu8-A@mail.gmail.com>
+References: <CAMALoy-s6sh1CJ=aJpkTGmEyjUttCNc8C_-uGZsvgsYdkp0-vQ@mail.gmail.com>
+ <1334313966-sup-8281@stapelberg.de>
+ <CAMALoy9XOi+CPpShaCzfpg=8LSrRMbygtyEp6y48FHSCXk1tBQ@mail.gmail.com>
+ <1334394311-sup-4584@stapelberg.de>
+ <CAMALoy8eW642r-Kp=TxQKuXrwuqt2PmmFGCYM-TNk+YY6hfZKA@mail.gmail.com>
+ <1334399004-sup-921@stapelberg.de>
+ <CAMALoy-8kp=6SomofLJiwVj1zx-Qgh=WxnC-X7BrqQoFMVn7nQ@mail.gmail.com>
+ <CAPNvPCM7wibReLjzjekS9NTDRPfbb4rvQtd24z-nDF9iaTu8-A@mail.gmail.com>
+Message-ID: <CAMALoy90jSByV0W4J-Rieby5XPgAATKARWrvQagXY8rg94nzpQ@mail.gmail.com>
+
+> For me it works for urxvt but not for Iceweasel (ver 10.0.3) i. e. after
+> i3-msg workspace 6 ; i3-msg exec iceweasel ; i3-msg workspace 2
+> iceweasel appears on workspace 2.
+>
+> Sorry for jumping in the middle of topic but I would be really interested
+> to find out how to force Iceweasel to behave.
+
+What if you try and get urxvt to load on different desktops?
+
+I presume using that exec line Michael asked me to run is how you
+identify if the app uses startupnotify properly?
+
+I had the same behaviour as you for Iceweasel so tried gimp which
+seems to use startupnotify properly and this works as expected,
+however Gimp would only finish loading once I moved to the desktop it
+was on.  This might be to do with the exec line though and will wait
+and see what Michael has to say.
+
+From michael at i3wm.org  Sat Apr 14 13:21:33 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 14 Apr 2012 13:21:33 +0200
+Subject: [i3] Starting apps on designated workspace only on i3 startup
+In-Reply-To: <CAMALoy90jSByV0W4J-Rieby5XPgAATKARWrvQagXY8rg94nzpQ@mail.gmail.com>
+References: <CAMALoy-s6sh1CJ=aJpkTGmEyjUttCNc8C_-uGZsvgsYdkp0-vQ@mail.gmail.com>
+ <1334313966-sup-8281@stapelberg.de>
+ <CAMALoy9XOi+CPpShaCzfpg=8LSrRMbygtyEp6y48FHSCXk1tBQ@mail.gmail.com>
+ <1334394311-sup-4584@stapelberg.de>
+ <CAMALoy8eW642r-Kp=TxQKuXrwuqt2PmmFGCYM-TNk+YY6hfZKA@mail.gmail.com>
+ <1334399004-sup-921@stapelberg.de>
+ <CAMALoy-8kp=6SomofLJiwVj1zx-Qgh=WxnC-X7BrqQoFMVn7nQ@mail.gmail.com>
+ <CAPNvPCM7wibReLjzjekS9NTDRPfbb4rvQtd24z-nDF9iaTu8-A@mail.gmail.com>
+ <CAMALoy90jSByV0W4J-Rieby5XPgAATKARWrvQagXY8rg94nzpQ@mail.gmail.com>
+Message-ID: <1334402411-sup-5076@stapelberg.de>
+
+Hi James,
+
+Excerpts from James Robertson's message of 2012-04-14 13:17:05 +0200:
+> I had the same behaviour as you for Iceweasel so tried gimp which
+> seems to use startupnotify properly and this works as expected,
+> however Gimp would only finish loading once I moved to the desktop it
+> was on.  This might be to do with the exec line though and will wait
+> and see what Michael has to say.
+The problem with gimp is that it waits until its splash screen is actually
+showing (getting mapped on the screen) before it continues loading?
+
+You should report this as a problem at gimp if you need this functionality :).
+
+Best regards,
+Michael
+
+From j at mesrobertson.com  Sat Apr 14 15:04:19 2012
+From: j at mesrobertson.com (James Robertson)
+Date: Sat, 14 Apr 2012 23:04:19 +1000
+Subject: [i3] Starting apps on designated workspace only on i3 startup
+In-Reply-To: <1334402411-sup-5076@stapelberg.de>
+References: <CAMALoy-s6sh1CJ=aJpkTGmEyjUttCNc8C_-uGZsvgsYdkp0-vQ@mail.gmail.com>
+ <1334313966-sup-8281@stapelberg.de>
+ <CAMALoy9XOi+CPpShaCzfpg=8LSrRMbygtyEp6y48FHSCXk1tBQ@mail.gmail.com>
+ <1334394311-sup-4584@stapelberg.de>
+ <CAMALoy8eW642r-Kp=TxQKuXrwuqt2PmmFGCYM-TNk+YY6hfZKA@mail.gmail.com>
+ <1334399004-sup-921@stapelberg.de>
+ <CAMALoy-8kp=6SomofLJiwVj1zx-Qgh=WxnC-X7BrqQoFMVn7nQ@mail.gmail.com>
+ <CAPNvPCM7wibReLjzjekS9NTDRPfbb4rvQtd24z-nDF9iaTu8-A@mail.gmail.com>
+ <CAMALoy90jSByV0W4J-Rieby5XPgAATKARWrvQagXY8rg94nzpQ@mail.gmail.com>
+ <1334402411-sup-5076@stapelberg.de>
+Message-ID: <CAMALoy-zeTMO9POMdb7eq8n-RVO0s5ytr4BXjK0fMYOGTt6z0A@mail.gmail.com>
+
+> The problem with gimp is that it waits until its splash screen is actually
+> showing (getting mapped on the screen) before it continues loading?
+>
+> You should report this as a problem at gimp if you need this functionality :).
+
+Thanks for your help Michael,
+
+Using the commands after each other instead of on seperate lines
+works!  For example the following opens urxvt on the correct desktops.
+
+exec i3-msg workspace TERM ; i3-msg exec urxvt ; i3-msg workspace EDIT
+; i3-msg exec urxvt ; i3-msg workspace MISC ; i3-msg exec urxvt
+
+Iceweasel on Debian Sid is obviously not using startupnotify, I'll
+take that up with Debian in a bug report but as long as I keep
+Iceweasel as the last program to start I can work around it.
+
+I am not planning on starting Gimp on i3 startup and it's not a show
+stopper anyway.
+
+Thanks again!
+
+From j at mesrobertson.com  Sat Apr 21 01:41:14 2012
+From: j at mesrobertson.com (James Robertson)
+Date: Sat, 21 Apr 2012 09:41:14 +1000
+Subject: [i3] client.background transparency or method to remove/hide these
+	areas
+Message-ID: <CAMALoy8gD+CnT4YT-LztzjcBdy+g+J1G3jUXzhhtMy1sx8zsuw@mail.gmail.com>
+
+I am theming i3 and like slightly transparent backgrounds in my urxvt
+terminals and usually have a wallpaper set.
+
+I read the documentation about client.background as I noticed that
+urxvt had these areas in my terminals.  These areas grow and shrink by
+varying levels when moving/resizing windows which made things look a
+little ugly.
+
+I also noticed a similar issue in Gimp.  I am not sure if this is the
+same thing.
+
+Is there any way to resolve this?
+
+Here a some links to screenshots to clarify (I have made
+client.background = white)
+
+http://ompldr.org/vZGdhNQ
+http://ompldr.org/vZGdhNg
+
+From michael at i3wm.org  Sat Apr 21 23:51:51 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 21 Apr 2012 23:51:51 +0200
+Subject: [i3] client.background transparency or method to remove/hide
+	these areas
+In-Reply-To: <CAMALoy8gD+CnT4YT-LztzjcBdy+g+J1G3jUXzhhtMy1sx8zsuw@mail.gmail.com>
+References: <CAMALoy8gD+CnT4YT-LztzjcBdy+g+J1G3jUXzhhtMy1sx8zsuw@mail.gmail.com>
+Message-ID: <20120421215151.27780.87372@midna.zekjur.net>
+
+Hi James,
+
+Quoting James Robertson (2012-04-21 01:41:14)
+> I also noticed a similar issue in Gimp.  I am not sure if this is the
+> same thing.
+It is. However, in the case of Gimp, the problem is slightly different since
+you are dealing with a floating window. In the future, i3 should actually pay
+attention to the hints which are set on the window and resize it only in
+correct multiples so that you don?t see the problem. In tiling mode the problem
+remains, of course.
+
+> Is there any way to resolve this?
+Setting the client.background color to some color which comes as close to your
+background as possible is the best thing you can do. See also this ticket,
+which deals with this problem but in a slightly special context (borderless
+windows):
+http://bugs.i3wm.org/query/ticket/540
+
+Best regards,
+Michael
+
+From j at mesrobertson.com  Sun Apr 22 02:49:54 2012
+From: j at mesrobertson.com (James Robertson)
+Date: Sun, 22 Apr 2012 10:49:54 +1000
+Subject: [i3] client.background transparency or method to remove/hide
+ these areas
+In-Reply-To: <20120421215151.27780.87372@midna.zekjur.net>
+References: <CAMALoy8gD+CnT4YT-LztzjcBdy+g+J1G3jUXzhhtMy1sx8zsuw@mail.gmail.com>
+ <20120421215151.27780.87372@midna.zekjur.net>
+Message-ID: <CAMALoy-moFEszOry8pVQ0QzfQxnxbPbzyAoX05uW6A5YKF0CxA@mail.gmail.com>
+
+> Setting the client.background color to some color which comes as close to your
+> background as possible is the best thing you can do.
+
+Thanks Michael,
+
+I am far to happy with i3 to let this annoy me.  I will just use
+non-transparent black terminals with a black background and forget
+about wallpapers.  Probably just need need to kick some of those
+floating window manager habits :)
+
+From j at mesrobertson.com  Wed Apr 25 06:44:46 2012
+From: j at mesrobertson.com (James Robertson)
+Date: Wed, 25 Apr 2012 14:44:46 +1000
+Subject: [i3] Predefined Layouts
+Message-ID: <CAMALoy9=BzxHJkXC-JsBLV+H8OHB=co29Wzi5Nn===gTY+jeAg@mail.gmail.com>
+
+I did a bit of a search through the archives and found this thread:
+http://infra.in.zekjur.net/archives/i3-discuss/2012-January/000443.html
+
+It was mentioned that predefined layouts and sessions are planned for
+i3 but I was wondering if there is a way to get this functionality
+working.
+
+I have a fairly simple desire to start some terminals in a specific
+layout but I am having problems getting the layout working.
+
+I want a terminal open on the left of screen in horizontal and 2
+terminals open on the right hand side in a vertical split.
+
+Here is what I want to achieve represented in ascii (If it comes out
+wrong in your email then below it is a link to an image).
+
+???????????????????????????
+?            ?            ?
+?            ?            ?
+?            ?            ?
+?            ??????????????
+?            ?            ?
+?            ?            ?
+?            ?            ?
+???????????????????????????
+
+http://ompldr.org/vZGk3Zw
+
+I have tried various options but none work as desired.  for example...
+
+#!/bin/bash
+
+i3-msg split h
+i3-msg exec urxvt
+i3-msg split v
+i3-msg exec urxvt
+i3-msg exec urxvt
+
+But only end it with 3 terminals horizontal.  I have tried changing
+this with various options and focus. I also ran these on the command
+line separated by ";".
+
+Is this because i3-msg is running these commands against the currently
+focused window instead of the newly created ones?
+
+Is this possible yet or would I be better waiting until i3 includes
+support and try to script it with xdotool?
+
+Thanks
+
+From michael at i3wm.org  Wed Apr 25 08:38:22 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 25 Apr 2012 08:38:22 +0200
+Subject: [i3] Predefined Layouts
+In-Reply-To: <CAMALoy9=BzxHJkXC-JsBLV+H8OHB=co29Wzi5Nn===gTY+jeAg@mail.gmail.com>
+References: <CAMALoy9=BzxHJkXC-JsBLV+H8OHB=co29Wzi5Nn===gTY+jeAg@mail.gmail.com>
+Message-ID: <20120425063822.19529.35834@midna.zekjur.net>
+
+Hi James,
+
+Quoting James Robertson (2012-04-25 06:44:46)
+> Here is what I want to achieve represented in ascii (If it comes out
+> wrong in your email then below it is a link to an image).
+> 
+> ???????????????????????????
+> ?            ?            ?
+> ?            ?            ?
+> ?            ?            ?
+> ?            ??????????????
+> ?            ?            ?
+> ?            ?            ?
+> ?            ?            ?
+> ???????????????????????????
+> 
+> http://ompldr.org/vZGk3Zw
+> 
+> I have tried various options but none work as desired.  for example...
+> 
+> #!/bin/bash
+> 
+> i3-msg split h
+> i3-msg exec urxvt
+> i3-msg split v
+> i3-msg exec urxvt
+> i3-msg exec urxvt
+> 
+> But only end it with 3 terminals horizontal.  I have tried changing
+> this with various options and focus. I also ran these on the command
+> line separated by ";".
+Use:
+i3-msg split h
+i3-msg exec urxvt
+i3-msg exec urxvt
+i3-msg split v
+i3-msg exec urxvt
+
+Best regards,
+Michael
+
+From j at mesrobertson.com  Wed Apr 25 09:17:53 2012
+From: j at mesrobertson.com (James Robertson)
+Date: Wed, 25 Apr 2012 17:17:53 +1000
+Subject: [i3] Predefined Layouts
+In-Reply-To: <20120425063822.19529.35834@midna.zekjur.net>
+References: <CAMALoy9=BzxHJkXC-JsBLV+H8OHB=co29Wzi5Nn===gTY+jeAg@mail.gmail.com>
+ <20120425063822.19529.35834@midna.zekjur.net>
+Message-ID: <CAMALoy-Bu=mmSMDbAPETC8ysEryttGZiucib+UZ6uc1ZBnehiQ@mail.gmail.com>
+
+> Use:
+> i3-msg split h
+> i3-msg exec urxvt
+> i3-msg exec urxvt
+> i3-msg split v
+> i3-msg exec urxvt
+
+That doesn't work and it simply opens 3 terminals vertically for me.
+I had a hunch that it was executing faster than urxvt could load and
+so added some sleeps as follows:
+
+i3-msg split h
+i3-msg exec urxvt
+sleep 1
+i3-msg exec urxvt
+sleep 1
+i3-msg split v
+i3-msg exec urxvt
+
+This works exactly as intended and the terminals are loaded in the
+right positions, albeit slowly...
+
+The following is logged when I run the command with the sleeps:
+
+Apr 25 17:09:46 sidbox x-session: should execute /tmp/foo.sh, no_startup_id = 0
+Apr 25 17:09:46 sidbox x-session: single command completely parsed,
+dropping state...
+Apr 25 17:09:46 sidbox x-session: done, json output = (null)
+Apr 25 17:09:46 sidbox x-session: splitting in direction h
+Apr 25 17:09:46 sidbox x-session: single command completely parsed,
+dropping state...
+Apr 25 17:09:46 sidbox x-session: done, json output = (null)
+Apr 25 17:09:46 sidbox x-session: {"success":true}
+Apr 25 17:09:46 sidbox x-session: anything else: *u*
+Apr 25 17:09:46 sidbox x-session: should execute urxvt, no_startup_id = 0
+Apr 25 17:09:46 sidbox x-session: single command completely parsed,
+dropping state...
+Apr 25 17:09:46 sidbox x-session: done, json output = (null)
+Apr 25 17:09:46 sidbox x-session: {"success":true}
+Apr 25 17:09:47 sidbox x-session: anything else: *u*
+Apr 25 17:09:47 sidbox x-session: should execute urxvt, no_startup_id = 0
+Apr 25 17:09:47 sidbox x-session: single command completely parsed,
+dropping state...
+Apr 25 17:09:47 sidbox x-session: done, json output = (null)
+Apr 25 17:09:47 sidbox x-session: {"success":true}
+Apr 25 17:09:48 sidbox x-session: splitting in direction v
+Apr 25 17:09:48 sidbox x-session: single command completely parsed,
+dropping state...
+Apr 25 17:09:48 sidbox x-session: done, json output = (null)
+Apr 25 17:09:48 sidbox x-session: {"success":true}
+Apr 25 17:09:48 sidbox x-session: anything else: *u*
+Apr 25 17:09:48 sidbox x-session: should execute urxvt, no_startup_id = 0
+Apr 25 17:09:48 sidbox x-session: single command completely parsed,
+dropping state...
+Apr 25 17:09:48 sidbox x-session: done, json output = (null)
+Apr 25 17:09:48 sidbox x-session: {"success":true}
+Apr 25 17:09:49 sidbox x-session: single command completely parsed,
+dropping state...
+Apr 25 17:09:49 sidbox x-session: done, json output = (null)
+
+Without the sleeps...
+
+Apr 25 17:11:49 sidbox x-session: should execute /tmp/foo.sh, no_startup_id = 0
+Apr 25 17:11:49 sidbox x-session: single command completely parsed,
+dropping state...
+Apr 25 17:11:49 sidbox x-session: done, json output = (null)
+Apr 25 17:11:49 sidbox x-session: splitting in direction h
+Apr 25 17:11:49 sidbox x-session: single command completely parsed,
+dropping state...
+Apr 25 17:11:49 sidbox x-session: done, json output = (null)
+Apr 25 17:11:49 sidbox x-session: {"success":true}
+Apr 25 17:11:49 sidbox x-session: anything else: *u*
+Apr 25 17:11:49 sidbox x-session: should execute urxvt, no_startup_id = 0
+Apr 25 17:11:49 sidbox x-session: single command completely parsed,
+dropping state...
+Apr 25 17:11:49 sidbox x-session: done, json output = (null)
+Apr 25 17:11:49 sidbox x-session: {"success":true}
+Apr 25 17:11:49 sidbox x-session: anything else: *u*
+Apr 25 17:11:49 sidbox x-session: should execute urxvt, no_startup_id = 0
+Apr 25 17:11:49 sidbox x-session: single command completely parsed,
+dropping state...
+Apr 25 17:11:49 sidbox x-session: done, json output = (null)
+Apr 25 17:11:49 sidbox x-session: {"success":true}
+Apr 25 17:11:49 sidbox x-session: splitting in direction v
+Apr 25 17:11:49 sidbox x-session: single command completely parsed,
+dropping state...
+Apr 25 17:11:49 sidbox x-session: done, json output = (null)
+Apr 25 17:11:49 sidbox x-session: {"success":true}
+Apr 25 17:11:49 sidbox x-session: anything else: *u*
+Apr 25 17:11:49 sidbox x-session: should execute urxvt, no_startup_id = 0
+Apr 25 17:11:49 sidbox x-session: single command completely parsed,
+dropping state...
+Apr 25 17:11:49 sidbox x-session: done, json output = (null)
+Apr 25 17:11:49 sidbox x-session: {"success":true}
+
+I cannot make out any difference except the execution delay between
+them.  Is there anything I can do to troubleshoot this?
+
+Thanks
+
+From joepvandelft at xs4all.nl  Wed Apr 25 10:09:20 2012
+From: joepvandelft at xs4all.nl (Joep van Delft)
+Date: Wed, 25 Apr 2012 10:09:20 +0200
+Subject: [i3] Predefined Layouts
+In-Reply-To: <CAMALoy-Bu=mmSMDbAPETC8ysEryttGZiucib+UZ6uc1ZBnehiQ@mail.gmail.com>
+References: <CAMALoy9=BzxHJkXC-JsBLV+H8OHB=co29Wzi5Nn===gTY+jeAg@mail.gmail.com>
+ <20120425063822.19529.35834@midna.zekjur.net>
+ <CAMALoy-Bu=mmSMDbAPETC8ysEryttGZiucib+UZ6uc1ZBnehiQ@mail.gmail.com>
+Message-ID: <20120425100920.5fdaf5c9@xs4all.nl>
+
+You can also separate the commands with a &&: 
+
+i3-msg split h  && \
+i3-msg exec urxvt && \
+i3-msg exec urxvt  && \
+i3-msg split v  && \
+i3-msg exec urxvt
+
+
+joep
+
+
+On Wed, 25 Apr 2012 17:17:53 +1000
+James Robertson <j at mesrobertson.com> wrote:
+
+> > Use:
+> > i3-msg split h
+> > i3-msg exec urxvt
+> > i3-msg exec urxvt
+> > i3-msg split v
+> > i3-msg exec urxvt
+> 
+> That doesn't work and it simply opens 3 terminals vertically for me.
+> I had a hunch that it was executing faster than urxvt could load and
+> so added some sleeps as follows:
+> 
+> i3-msg split h
+> i3-msg exec urxvt
+> sleep 1
+> i3-msg exec urxvt
+> sleep 1
+> i3-msg split v
+> i3-msg exec urxvt
+> 
+> This works exactly as intended and the terminals are loaded in the
+> right positions, albeit slowly...
+> 
+> The following is logged when I run the command with the sleeps:
+> 
+> Apr 25 17:09:46 sidbox x-session: should execute /tmp/foo.sh,
+> no_startup_id = 0 Apr 25 17:09:46 sidbox x-session: single command
+> completely parsed, dropping state...
+> Apr 25 17:09:46 sidbox x-session: done, json output = (null)
+> Apr 25 17:09:46 sidbox x-session: splitting in direction h
+> Apr 25 17:09:46 sidbox x-session: single command completely parsed,
+> dropping state...
+> Apr 25 17:09:46 sidbox x-session: done, json output = (null)
+> Apr 25 17:09:46 sidbox x-session: {"success":true}
+> Apr 25 17:09:46 sidbox x-session: anything else: *u*
+> Apr 25 17:09:46 sidbox x-session: should execute urxvt,
+> no_startup_id = 0 Apr 25 17:09:46 sidbox x-session: single command
+> completely parsed, dropping state...
+> Apr 25 17:09:46 sidbox x-session: done, json output = (null)
+> Apr 25 17:09:46 sidbox x-session: {"success":true}
+> Apr 25 17:09:47 sidbox x-session: anything else: *u*
+> Apr 25 17:09:47 sidbox x-session: should execute urxvt,
+> no_startup_id = 0 Apr 25 17:09:47 sidbox x-session: single command
+> completely parsed, dropping state...
+> Apr 25 17:09:47 sidbox x-session: done, json output = (null)
+> Apr 25 17:09:47 sidbox x-session: {"success":true}
+> Apr 25 17:09:48 sidbox x-session: splitting in direction v
+> Apr 25 17:09:48 sidbox x-session: single command completely parsed,
+> dropping state...
+> Apr 25 17:09:48 sidbox x-session: done, json output = (null)
+> Apr 25 17:09:48 sidbox x-session: {"success":true}
+> Apr 25 17:09:48 sidbox x-session: anything else: *u*
+> Apr 25 17:09:48 sidbox x-session: should execute urxvt,
+> no_startup_id = 0 Apr 25 17:09:48 sidbox x-session: single command
+> completely parsed, dropping state...
+> Apr 25 17:09:48 sidbox x-session: done, json output = (null)
+> Apr 25 17:09:48 sidbox x-session: {"success":true}
+> Apr 25 17:09:49 sidbox x-session: single command completely parsed,
+> dropping state...
+> Apr 25 17:09:49 sidbox x-session: done, json output = (null)
+> 
+> Without the sleeps...
+> 
+> Apr 25 17:11:49 sidbox x-session: should execute /tmp/foo.sh,
+> no_startup_id = 0 Apr 25 17:11:49 sidbox x-session: single command
+> completely parsed, dropping state...
+> Apr 25 17:11:49 sidbox x-session: done, json output = (null)
+> Apr 25 17:11:49 sidbox x-session: splitting in direction h
+> Apr 25 17:11:49 sidbox x-session: single command completely parsed,
+> dropping state...
+> Apr 25 17:11:49 sidbox x-session: done, json output = (null)
+> Apr 25 17:11:49 sidbox x-session: {"success":true}
+> Apr 25 17:11:49 sidbox x-session: anything else: *u*
+> Apr 25 17:11:49 sidbox x-session: should execute urxvt,
+> no_startup_id = 0 Apr 25 17:11:49 sidbox x-session: single command
+> completely parsed, dropping state...
+> Apr 25 17:11:49 sidbox x-session: done, json output = (null)
+> Apr 25 17:11:49 sidbox x-session: {"success":true}
+> Apr 25 17:11:49 sidbox x-session: anything else: *u*
+> Apr 25 17:11:49 sidbox x-session: should execute urxvt,
+> no_startup_id = 0 Apr 25 17:11:49 sidbox x-session: single command
+> completely parsed, dropping state...
+> Apr 25 17:11:49 sidbox x-session: done, json output = (null)
+> Apr 25 17:11:49 sidbox x-session: {"success":true}
+> Apr 25 17:11:49 sidbox x-session: splitting in direction v
+> Apr 25 17:11:49 sidbox x-session: single command completely parsed,
+> dropping state...
+> Apr 25 17:11:49 sidbox x-session: done, json output = (null)
+> Apr 25 17:11:49 sidbox x-session: {"success":true}
+> Apr 25 17:11:49 sidbox x-session: anything else: *u*
+> Apr 25 17:11:49 sidbox x-session: should execute urxvt,
+> no_startup_id = 0 Apr 25 17:11:49 sidbox x-session: single command
+> completely parsed, dropping state...
+> Apr 25 17:11:49 sidbox x-session: done, json output = (null)
+> Apr 25 17:11:49 sidbox x-session: {"success":true}
+> 
+> I cannot make out any difference except the execution delay between
+> them.  Is there anything I can do to troubleshoot this?
+> 
+> Thanks
+
+
+From j at mesrobertson.com  Wed Apr 25 10:26:23 2012
+From: j at mesrobertson.com (James Robertson)
+Date: Wed, 25 Apr 2012 18:26:23 +1000
+Subject: [i3] Predefined Layouts
+In-Reply-To: <20120425100920.5fdaf5c9@xs4all.nl>
+References: <CAMALoy9=BzxHJkXC-JsBLV+H8OHB=co29Wzi5Nn===gTY+jeAg@mail.gmail.com>
+ <20120425063822.19529.35834@midna.zekjur.net>
+ <CAMALoy-Bu=mmSMDbAPETC8ysEryttGZiucib+UZ6uc1ZBnehiQ@mail.gmail.com>
+ <20120425100920.5fdaf5c9@xs4all.nl>
+Message-ID: <CAMALoy8W7cAYd5TLpeY_5vJm1+LaiV5B=BEb0fs-QYJf5FKm2Q@mail.gmail.com>
+
+On 25 April 2012 18:09, Joep van Delft <joepvandelft at xs4all.nl> wrote:
+> You can also separate the commands with a &&:
+>
+> i3-msg split h ?&& \
+> i3-msg exec urxvt && \
+> i3-msg exec urxvt ?&& \
+> i3-msg split v ?&& \
+> i3-msg exec urxvt
+
+Thanks, I just altered the script to test this but does not work for
+me either.  I have to have the sleeps.
+
+I also tried using "& wait" at the end of each line but no dice.
+
+I was able to reduce the sleep time to 0.1 and still have it work as
+expected but haven't tried from a cold boot yet.
+
+From mhcerri at gmail.com  Wed Apr 25 13:51:51 2012
+From: mhcerri at gmail.com (Marcelo Cerri)
+Date: Wed, 25 Apr 2012 08:51:51 -0300
+Subject: [i3] Predefined Layouts
+In-Reply-To: <CAMALoy8W7cAYd5TLpeY_5vJm1+LaiV5B=BEb0fs-QYJf5FKm2Q@mail.gmail.com>
+References: <CAMALoy9=BzxHJkXC-JsBLV+H8OHB=co29Wzi5Nn===gTY+jeAg@mail.gmail.com>
+ <20120425063822.19529.35834@midna.zekjur.net>
+ <CAMALoy-Bu=mmSMDbAPETC8ysEryttGZiucib+UZ6uc1ZBnehiQ@mail.gmail.com>
+ <20120425100920.5fdaf5c9@xs4all.nl>
+ <CAMALoy8W7cAYd5TLpeY_5vJm1+LaiV5B=BEb0fs-QYJf5FKm2Q@mail.gmail.com>
+Message-ID: <CACg2Y9tu6f7PdZWanYW0G_+y5gpy3mFw-rsDXj3vrYBT4civug@mail.gmail.com>
+
+Hi James,
+
+Have you tried something similar to this approach?
+
+https://github.com/fhaun/config-misc/blob/master/i3-stuff/auto-start-for-i3-simple
+
+Regards,
+Marcelo
+
+On Wed, Apr 25, 2012 at 5:26 AM, James Robertson <j at mesrobertson.com> wrote:
+> On 25 April 2012 18:09, Joep van Delft <joepvandelft at xs4all.nl> wrote:
+>> You can also separate the commands with a &&:
+>>
+>> i3-msg split h ?&& \
+>> i3-msg exec urxvt && \
+>> i3-msg exec urxvt ?&& \
+>> i3-msg split v ?&& \
+>> i3-msg exec urxvt
+>
+> Thanks, I just altered the script to test this but does not work for
+> me either. ?I have to have the sleeps.
+>
+> I also tried using "& wait" at the end of each line but no dice.
+>
+> I was able to reduce the sleep time to 0.1 and still have it work as
+> expected but haven't tried from a cold boot yet.
+
+From ew.ng7125 at nassur.net  Wed Apr 25 14:23:53 2012
+From: ew.ng7125 at nassur.net (e.waelde)
+Date: Wed, 25 Apr 2012 14:23:53 +0200
+Subject: [i3] Predefined Layouts
+In-Reply-To: <CAMALoy-Bu=mmSMDbAPETC8ysEryttGZiucib+UZ6uc1ZBnehiQ@mail.gmail.com>
+References: <CAMALoy9=BzxHJkXC-JsBLV+H8OHB=co29Wzi5Nn===gTY+jeAg@mail.gmail.com>
+ <20120425063822.19529.35834@midna.zekjur.net>
+ <CAMALoy-Bu=mmSMDbAPETC8ysEryttGZiucib+UZ6uc1ZBnehiQ@mail.gmail.com>
+Message-ID: <4F97ECD9.7000100@nassur.net>
+
+Hello,
+
+On 04/25/2012 09:17 AM, James Robertson wrote:
+>> Use:
+>> >  i3-msg split h
+>> >  i3-msg exec urxvt
+>> >  i3-msg exec urxvt
+>> >  i3-msg split v
+>> >  i3-msg exec urxvt
+> That doesn't work and it simply opens 3 terminals vertically for me.
+> I had a hunch that it was executing faster than urxvt could load and
+> so added some sleeps as follows:
+> 
+> i3-msg split h
+> i3-msg exec urxvt
+> sleep 1
+> i3-msg exec urxvt
+> sleep 1
+> i3-msg split v
+> i3-msg exec urxvt
+
+
+Just for the records: I tried something similar a few
+days ago and ended up using sleeps between calls to
+urxvt as well.
+
+Cheers,
+Erich
+
+system amd64, Debian GNU/Linux unstable,
+i3 --version
+i3 version 4.1.2 (2012-01-27, branch "release-4.1.2") ? 2009-2011 Michael Stapelberg and contributors
+
+
+From fh at fhaun.de  Wed Apr 25 17:37:22 2012
+From: fh at fhaun.de (Frank Haun)
+Date: Wed, 25 Apr 2012 17:37:22 +0200
+Subject: [i3] Predefined Layouts
+In-Reply-To: <CACg2Y9tu6f7PdZWanYW0G_+y5gpy3mFw-rsDXj3vrYBT4civug@mail.gmail.com>
+ (Marcelo Cerri's message of "Wed, 25 Apr 2012 08:51:51 -0300")
+References: <CAMALoy9=BzxHJkXC-JsBLV+H8OHB=co29Wzi5Nn===gTY+jeAg@mail.gmail.com>
+ <20120425063822.19529.35834@midna.zekjur.net>
+ <CAMALoy-Bu=mmSMDbAPETC8ysEryttGZiucib+UZ6uc1ZBnehiQ@mail.gmail.com>
+ <20120425100920.5fdaf5c9@xs4all.nl>
+ <CAMALoy8W7cAYd5TLpeY_5vJm1+LaiV5B=BEb0fs-QYJf5FKm2Q@mail.gmail.com>
+ <CACg2Y9tu6f7PdZWanYW0G_+y5gpy3mFw-rsDXj3vrYBT4civug@mail.gmail.com>
+Message-ID: <87bomf2571.fsf@m7000.fhaun.de>
+
+Marcelo Cerri <mhcerri at gmail.com> writes:
+
+#v+
+i3-msg split h ?&& \
+i3-msg exec urxvt && \
+i3-msg exec urxvt ?&& \
+i3-msg split v ?&& \
+i3-msg exec urxvt
+#v-
+
+> Have you tried something similar to this approach?
+>
+> https://github.com/fhaun/config-misc/blob/master/i3-stuff/auto-start-for-i3-simple
+
+Ah yeah, from me. ;-) Unfortunately this doesn't work if the programs
+have all the same class name. For several Terminals I prefer tmux
+sessions.
+
+Frank
+
+From mhcerri at gmail.com  Wed Apr 25 18:21:06 2012
+From: mhcerri at gmail.com (Marcelo Cerri)
+Date: Wed, 25 Apr 2012 13:21:06 -0300
+Subject: [i3] Predefined Layouts
+In-Reply-To: <87bomf2571.fsf@m7000.fhaun.de>
+References: <CAMALoy9=BzxHJkXC-JsBLV+H8OHB=co29Wzi5Nn===gTY+jeAg@mail.gmail.com>
+ <20120425063822.19529.35834@midna.zekjur.net>
+ <CAMALoy-Bu=mmSMDbAPETC8ysEryttGZiucib+UZ6uc1ZBnehiQ@mail.gmail.com>
+ <20120425100920.5fdaf5c9@xs4all.nl>
+ <CAMALoy8W7cAYd5TLpeY_5vJm1+LaiV5B=BEb0fs-QYJf5FKm2Q@mail.gmail.com>
+ <CACg2Y9tu6f7PdZWanYW0G_+y5gpy3mFw-rsDXj3vrYBT4civug@mail.gmail.com>
+ <87bomf2571.fsf@m7000.fhaun.de>
+Message-ID: <CACg2Y9sUs1HGQPt-9yGpGAbi-w_cpRtRmkbATrWVzmCYQ8b-sw@mail.gmail.com>
+
+Hi Frank,
+
+Using "--pid" instead of "--classname" for xdotool may solve the
+problem for terminals:
+
+#! /bin/sh
+
+# Wait for program
+wait_for () {
+    echo wait
+    n=0
+    while true
+    do
+    if $1; then
+        break
+    else
+        # 10 seconds timeout
+        if [ $n -eq 100 ]; then
+        xmessage "Error on: $1"
+        break
+        else
+        n=`expr $n + 1`
+        sleep .1
+        fi
+    fi
+    done
+    sleep 1
+}
+
+urxvt &
+wait_for "xdotool search --onlyvisible --pid $!"
+i3-msg split h
+urxvt &
+wait_for "xdotool search --onlyvisible --pid $!"
+i3-msg split v
+urxvt &
+
+
+On Wed, Apr 25, 2012 at 12:37 PM, Frank Haun <fh at fhaun.de> wrote:
+> Marcelo Cerri <mhcerri at gmail.com> writes:
+>
+> #v+
+> i3-msg split h ?&& \
+> i3-msg exec urxvt && \
+> i3-msg exec urxvt ?&& \
+> i3-msg split v ?&& \
+> i3-msg exec urxvt
+> #v-
+>
+>> Have you tried something similar to this approach?
+>>
+>> https://github.com/fhaun/config-misc/blob/master/i3-stuff/auto-start-for-i3-simple
+>
+> Ah yeah, from me. ;-) Unfortunately this doesn't work if the programs
+> have all the same class name. For several Terminals I prefer tmux
+> sessions.
+>
+> Frank
+
+From fh at fhaun.de  Wed Apr 25 18:54:19 2012
+From: fh at fhaun.de (Frank Haun)
+Date: Wed, 25 Apr 2012 18:54:19 +0200
+Subject: [i3] Predefined Layouts
+In-Reply-To: <CACg2Y9sUs1HGQPt-9yGpGAbi-w_cpRtRmkbATrWVzmCYQ8b-sw@mail.gmail.com>
+ (Marcelo Cerri's message of "Wed, 25 Apr 2012 13:21:06 -0300")
+References: <CAMALoy9=BzxHJkXC-JsBLV+H8OHB=co29Wzi5Nn===gTY+jeAg@mail.gmail.com>
+ <20120425063822.19529.35834@midna.zekjur.net>
+ <CAMALoy-Bu=mmSMDbAPETC8ysEryttGZiucib+UZ6uc1ZBnehiQ@mail.gmail.com>
+ <20120425100920.5fdaf5c9@xs4all.nl>
+ <CAMALoy8W7cAYd5TLpeY_5vJm1+LaiV5B=BEb0fs-QYJf5FKm2Q@mail.gmail.com>
+ <CACg2Y9tu6f7PdZWanYW0G_+y5gpy3mFw-rsDXj3vrYBT4civug@mail.gmail.com>
+ <87bomf2571.fsf@m7000.fhaun.de>
+ <CACg2Y9sUs1HGQPt-9yGpGAbi-w_cpRtRmkbATrWVzmCYQ8b-sw@mail.gmail.com>
+Message-ID: <87zk9zzr9g.fsf@m7000.fhaun.de>
+
+Marcelo Cerri <mhcerri at gmail.com> writes:
+
+> Using "--pid" instead of "--classname" for xdotool may solve the
+> problem for terminals:
+>
+> #! /bin/sh
+>
+> # Wait for program
+> wait_for () {
+>     echo wait
+>     n=0
+>     while true
+>     do
+>     if $1; then
+>         break
+>     else
+>         # 10 seconds timeout
+>         if [ $n -eq 100 ]; then
+>         xmessage "Error on: $1"
+>         break
+>         else
+>         n=`expr $n + 1`
+>         sleep .1
+>         fi
+>     fi
+>     done
+>     sleep 1
+> }
+>
+> urxvt &
+> wait_for "xdotool search --onlyvisible --pid $!"
+> i3-msg split h
+> urxvt &
+> wait_for "xdotool search --onlyvisible --pid $!"
+> i3-msg split v
+> urxvt &
+
+Hehe, that sounds very good. I must improve my shell knowledge.
+
+http://steve-parker.org/sh/quickref.shtml
+$! PID of last background command
+
+Yep, something I was looking for. I'll test it and then I update my
+example.
+
+Thanks a lot,
+  Frank
+
+From dbolgheroni at devio.us  Thu Apr 26 16:52:01 2012
+From: dbolgheroni at devio.us (Daniel Bolgheroni)
+Date: Thu, 26 Apr 2012 11:52:01 -0300
+Subject: [i3] vi and ADM-3A terminal
+Message-ID: <20120426145200.GA32491@positivo.my.domain>
+
+Hi i3-discuss@,
+
+I didn't find a way to search in the archives, so I'll ask.
+
+Are there any reasons to shift "right" the classic vi 'hjkl' directions
+commands to 'hjk;'? 
+
+There is a historic reason for using 'hjkl':
+
+http://www.catonmat.net/blog/why-vim-uses-hjkl-as-arrow-keys/
+http://news.ycombinator.com/item?id=3684763
+
+Besides this, there is a practical reason too. On a lot of non-US layout
+keyboards, ';' doesn't come at the right side of 'k', where 'hjkl' is
+almost universal. This makes a pain use i3 with the default conf.
+
+Cheers,
+
+From mail at merovius.de  Thu Apr 26 17:48:11 2012
+From: mail at merovius.de (Axel Wagner)
+Date: Thu, 26 Apr 2012 17:48:11 +0200
+Subject: [i3] vi and ADM-3A terminal
+In-Reply-To: <20120426145200.GA32491@positivo.my.domain>
+References: <20120426145200.GA32491@positivo.my.domain>
+Message-ID: <1335454936-sup-2976@merovius.de>
+
+Hi Daniel,
+
+Excerpts from Daniel Bolgheroni's message of 2012-04-26 16:52:01 +0200:
+> Are there any reasons to shift "right" the classic vi 'hjkl' directions
+> commands to 'hjk;'? 
+
+Yes, hjk; is on the homerow, that is, you don't have to take your hands of
+your keyboard, while typing, to navigate your windows.
+
+> There is a historic reason for using 'hjkl':
+> 
+> http://www.catonmat.net/blog/why-vim-uses-hjkl-as-arrow-keys/
+> http://news.ycombinator.com/item?id=3684763
+
+I personally don't care that much about ?historical reasons?, the whole
+qwertz-layout-thing is due to ?historical reasons? and it sucks ;)
+
+> Besides this, there is a practical reason too. On a lot of non-US layout
+> keyboards, ';' doesn't come at the right side of 'k', where 'hjkl' is
+> almost universal. This makes a pain use i3 with the default conf.
+
+In the default, i3 should run the configuration-manager at startup. The
+default-config uses keycodes and it should use your current keyboard, to
+transform that into keysymbols. Therefore the layout you use shouldn't
+matter in the default-case. If you switch layouts often, use the
+default-default-config (in /etc/i3/config in debian, or in ./i3.config in
+the source), it uses keycodes and will therefore automatically adapt to
+your needs ;)
+
+The main developer (and the biggest userbase at least in the beginnings
+of i3) uses a non-US-layout by the way ;)
+
+Kind regards,
+
+Axel
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 198 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120426/4a9de81a/attachment.sig>
+
+From ltsmooth42 at gmail.com  Thu Apr 26 20:21:42 2012
+From: ltsmooth42 at gmail.com (Lukas Sabota)
+Date: Thu, 26 Apr 2012 14:21:42 -0400
+Subject: [i3] Multiple Xscreens without Xinerama/XrandR
+Message-ID: <CACjNC+qtGMdzMqubkuArAd8UQebYy_KCGc=8Pq17V-6LRg+gsQ@mail.gmail.com>
+
+Hello,
+
+I'm currently trying to configure i3wm to work properly with my multiple
+monitor set up.  Yes, I am running a nVidia card and yes I have read "
+http://i3wm.org/docs/multi-monitor.html".  I can enable xinerama in X11,
+use --force-xinerama with i3 to get xinerama working.
+
+However, I would much rather have separate X screens with Xinerama
+disabled, each running their own i3 instance.  In an attempt to try this, I
+configured i3 to spawn on each of my DISPLAYs (:0.0 :0.1 :0.2) in my
+".xinitrc" file.  This sucessfully spawned i3 instances on each of my X
+screens -- however I am experiencing input problems.  Keyboard shortcuts
+only seem to work on a single i3 instance.  The other two i3 instances that
+are spawned are unusable since one i3 instance catches all of the keyboard
+events.
+
+You may be wondering why someone would want Xinerama disabled -- well there
+are very few games that support Xinerama and even if they do support
+xinerama they will not display correctly with exotic monitor/resolution
+configurations.
+
+I use awesome in a similar way -- I spawn awesome on all three x screens
+and whichever screen the cursor is on will receive keyboard input.  I'm not
+sure if this is something programmed within awesome or something within X,
+but would something like this be a possibility for i3?
+
+Regards,
+Lukas Sabota
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120426/1e832d24/attachment.html>
+
+From dbolgheroni at devio.us  Thu Apr 26 21:55:01 2012
+From: dbolgheroni at devio.us (Daniel Bolgheroni)
+Date: Thu, 26 Apr 2012 16:55:01 -0300
+Subject: [i3] vi and ADM-3A terminal
+In-Reply-To: <1335454936-sup-2976@merovius.de>
+References: <20120426145200.GA32491@positivo.my.domain>
+ <1335454936-sup-2976@merovius.de>
+Message-ID: <20120426195501.GB32491@positivo.my.domain>
+
+On Thu, Apr 26, 2012 at 05:48:11PM +0200, Axel Wagner wrote:
+> Hi Daniel,
+> 
+> Yes, hjk; is on the homerow, that is, you don't have to take your hands of
+> your keyboard, while typing, to navigate your windows.
+
+Yes, I know the concept. But, unfortunately and at least in my case, ';'
+is not on the homerow.
+
+I don't mind having to adjust .i3/config. What I don't understand is why
+is shifted. Is it to make room for Mod+h (horizontal) and make it
+coherent?
+
+Sorry, but to me, it doesn't make sense to use 'jkl;' in i3 and jump to
+all vi-based apps and use 'hjkl'. Of course, I can configure all
+programs to use 'jkl;' too (ksh in vi-mode, vimperator, xxxterm, mutt,
+vim itself, muttator, etc.), but this is even more non-sense.
+
+> I personally don't care that much about ?historical reasons?, the whole
+> qwertz-layout-thing is due to ?historical reasons? and it sucks ;)
+
+Yes but it's what we have available. I never saw a non-QWERTY layout
+with my own eyes.
+
+Thank you.
+
+From michael at i3wm.org  Thu Apr 26 22:09:17 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 26 Apr 2012 22:09:17 +0200
+Subject: [i3] vi and ADM-3A terminal
+In-Reply-To: <20120426195501.GB32491@positivo.my.domain>
+References: <20120426145200.GA32491@positivo.my.domain>
+ <1335454936-sup-2976@merovius.de>
+ <20120426195501.GB32491@positivo.my.domain>
+Message-ID: <20120426200916.20984.6536@midna.zekjur.net>
+
+Hi Daniel,
+
+Quoting Daniel Bolgheroni (2012-04-26 21:55:01)
+> Yes, I know the concept. But, unfortunately and at least in my case, ';'
+> is not on the homerow.
+Axel already mentioned that you should be presented with i3-config-wizard on
+your first start of i3, which will generate an i3 config based on keyboard
+codes instead of keyboard symbols. So, in that config file, whichever key is on
+your homerow ends up being the "focus right" key.
+
+> I don't mind having to adjust .i3/config. What I don't understand is why
+> is shifted. Is it to make room for Mod+h (horizontal) and make it
+> coherent?
+It is shifted because your fingers are supposed to rest in that position.
+
+> Sorry, but to me, it doesn't make sense to use 'jkl;' in i3 and jump to
+> all vi-based apps and use 'hjkl'. Of course, I can configure all
+> programs to use 'jkl;' too (ksh in vi-mode, vimperator, xxxterm, mutt,
+> vim itself, muttator, etc.), but this is even more non-sense.
+You could use the arrow keys in these applications. The arrow keys are
+comfortable reachable in decent keyboard layouts such as neo-layout.org.
+
+> Yes but it's what we have available. I never saw a non-QWERTY layout
+> with my own eyes.
+How would you *see* what layout people are using? I don?t care what?s printed
+on my keys ;-).
+
+Best regards,
+Michael
+
+From michael at i3wm.org  Thu Apr 26 22:29:27 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 26 Apr 2012 22:29:27 +0200
+Subject: [i3] Multiple Xscreens without Xinerama/XrandR
+In-Reply-To: <CACjNC+qtGMdzMqubkuArAd8UQebYy_KCGc=8Pq17V-6LRg+gsQ@mail.gmail.com>
+References: <CACjNC+qtGMdzMqubkuArAd8UQebYy_KCGc=8Pq17V-6LRg+gsQ@mail.gmail.com>
+Message-ID: <20120426202927.21213.52645@midna.zekjur.net>
+
+Hi Lukas,
+
+Quoting Lukas Sabota (2012-04-26 20:21:42)
+> However, I would much rather have?separate?X screens with Xinerama disabled,
+> each running their own i3 instance.? In an attempt to try this, I configured i3
+> to spawn on each of my DISPLAYs (:0.0 :0.1 :0.2) in my ".xinitrc" file. ?This
+> sucessfully spawned i3 instances on each of my X screens -- however I am
+> experiencing input problems. ?Keyboard shortcuts only seem to work on a single
+> i3 instance. ?The other two i3 instances that are spawned are unusable since
+> one i3 instance catches all of the keyboard events.
+Are you using the latest version of i3? If not, upgrade. If that doesn?t help,
+please come to IRC so that we can debug the problem more interactively. Mailing
+lists are tedious.
+
+Best regards,
+Michael
+
+From ltsmooth42 at gmail.com  Thu Apr 26 22:35:13 2012
+From: ltsmooth42 at gmail.com (Lukas Sabota)
+Date: Thu, 26 Apr 2012 16:35:13 -0400
+Subject: [i3] Multiple Xscreens without Xinerama/XrandR
+In-Reply-To: <20120426202927.21213.52645@midna.zekjur.net>
+References: <CACjNC+qtGMdzMqubkuArAd8UQebYy_KCGc=8Pq17V-6LRg+gsQ@mail.gmail.com>
+ <20120426202927.21213.52645@midna.zekjur.net>
+Message-ID: <CACjNC+oKNdOgaYTCwdK4f3uiAyn5QB5wiZvWVw9v=rihiS0nZQ@mail.gmail.com>
+
+>
+>
+> Quoting Lukas Sabota (2012-04-26 20:21:42)
+> > However, I would much rather have separate X screens with Xinerama
+> disabled,
+> > each running their own i3 instance.  In an attempt to try this, I
+> configured i3
+> > to spawn on each of my DISPLAYs (:0.0 :0.1 :0.2) in my ".xinitrc" file.
+>  This
+> > sucessfully spawned i3 instances on each of my X screens -- however I am
+> > experiencing input problems.  Keyboard shortcuts only seem to work on a
+> single
+> > i3 instance.  The other two i3 instances that are spawned are unusable
+> since
+> > one i3 instance catches all of the keyboard events.
+> Are you using the latest version of i3? If not, upgrade. If that doesn?t
+> help,
+> please come to IRC so that we can debug the problem more interactively.
+> Mailing
+> lists are tedious.
+>
+> Hello Michael,
+
+I am using i3-wm 4.2-1 along with xorg 1.12.1 on Arch Linux.  I'm idling in
+the channel atm (prg318) .  Hopefully between the two of us and others in
+IRC we can diagnose the issue!
+
+See you in IRC!
+
+Cheers!
+Lukas
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120426/ddb9e8e5/attachment.html>
+
+From dbolgheroni at devio.us  Thu Apr 26 23:54:59 2012
+From: dbolgheroni at devio.us (Daniel Bolgheroni)
+Date: Thu, 26 Apr 2012 18:54:59 -0300
+Subject: [i3] vi and ADM-3A terminal
+In-Reply-To: <20120426200916.20984.6536@midna.zekjur.net>
+References: <20120426145200.GA32491@positivo.my.domain>
+ <1335454936-sup-2976@merovius.de>
+ <20120426195501.GB32491@positivo.my.domain>
+ <20120426200916.20984.6536@midna.zekjur.net>
+Message-ID: <20120426215320.GA2577@positivo.my.domain>
+
+On Thu, Apr 26, 2012 at 10:09:17PM +0200, Michael Stapelberg wrote:
+> Hi Daniel,
+>
+> Axel already mentioned that you should be presented with i3-config-wizard on
+> your first start of i3, which will generate an i3 config based on keyboard
+> codes instead of keyboard symbols. So, in that config file, whichever key is on
+> your homerow ends up being the "focus right" key.
+
+I think it depends on packaging. On OpenBSD package, I didn't see this,
+but I don't care. Really. 
+
+> You could use the arrow keys in these applications. The arrow keys are
+> comfortable reachable in decent keyboard layouts such as neo-layout.org.
+
+I stripped off my arrow keys with a screwdriver. [1]
+
+> How would you *see* what layout people are using? I don?t care what?s printed
+> on my keys ;-).
+
+Me too. Actually, I only remap Tab to be my Esc, and Caps Lock to be my
+Control, just like ADM-3A terminal. It's very handy to have Esc closer
+to homerow. 
+
+Cheers,
+
+[1] Just kidding. But I don't use them.
+
+From j at mesrobertson.com  Fri Apr 27 05:15:32 2012
+From: j at mesrobertson.com (James Robertson)
+Date: Fri, 27 Apr 2012 13:15:32 +1000
+Subject: [i3] Predefined Layouts
+In-Reply-To: <87zk9zzr9g.fsf@m7000.fhaun.de>
+References: <CAMALoy9=BzxHJkXC-JsBLV+H8OHB=co29Wzi5Nn===gTY+jeAg@mail.gmail.com>
+ <20120425063822.19529.35834@midna.zekjur.net>
+ <CAMALoy-Bu=mmSMDbAPETC8ysEryttGZiucib+UZ6uc1ZBnehiQ@mail.gmail.com>
+ <20120425100920.5fdaf5c9@xs4all.nl>
+ <CAMALoy8W7cAYd5TLpeY_5vJm1+LaiV5B=BEb0fs-QYJf5FKm2Q@mail.gmail.com>
+ <CACg2Y9tu6f7PdZWanYW0G_+y5gpy3mFw-rsDXj3vrYBT4civug@mail.gmail.com>
+ <87bomf2571.fsf@m7000.fhaun.de>
+ <CACg2Y9sUs1HGQPt-9yGpGAbi-w_cpRtRmkbATrWVzmCYQ8b-sw@mail.gmail.com>
+ <87zk9zzr9g.fsf@m7000.fhaun.de>
+Message-ID: <CAMALoy84+f7i3fOWGWetxaOK5GkcVVLn6f2tNLBgRbe6agW3Hw@mail.gmail.com>
+
+Thanks for all the suggestions made about this, appreciate you taking
+the time to assist.
+
+I will look at the scripts and xdotool stuff mentioned and try those out.
+
+James
+
+From j.ziberna at gmail.com  Fri Apr 27 15:42:17 2012
+From: j.ziberna at gmail.com (=?UTF-8?Q?Jure_=C5=BDiberna?=)
+Date: Fri, 27 Apr 2012 15:42:17 +0200
+Subject: [i3] IPC interface - reply format change for command message type
+Message-ID: <CAC_712oyZQtwk2mxm0WfKM_ODwJvbva+czUBF8ftAHx7nu5o2A@mail.gmail.com>
+
+I've noticed that the reply format for command messages has changed in
+4.2-1. It now returns a list with a dictionary as its only element instead
+of just a dictionary and empty list for non-existent commands instead of a
+dictionary with error message under 'error' key. I've tested this with
+i3-msg and also with sockets in Python (i3-py).
+
+Was this intentional or is it going to change back to how it was before? (I
+can't find the commit where this was changed.) In my opinion the previous
+reply format was more valuable.
+
+Jure
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120427/aff4b672/attachment.html>
+
+From michael at i3wm.org  Fri Apr 27 16:10:18 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 27 Apr 2012 16:10:18 +0200
+Subject: [i3] IPC interface - reply format change for command message
+	type
+In-Reply-To: <CAC_712oyZQtwk2mxm0WfKM_ODwJvbva+czUBF8ftAHx7nu5o2A@mail.gmail.com>
+References: <CAC_712oyZQtwk2mxm0WfKM_ODwJvbva+czUBF8ftAHx7nu5o2A@mail.gmail.com>
+Message-ID: <20120427141018.27223.4214@midna.zekjur.net>
+
+Hey Jure,
+
+Quoting Jure ?iberna (2012-04-27 15:42:17)
+> I've noticed that the reply format for command messages has changed in 4.2-1.
+> It now returns a list with a dictionary as its only element instead of just a
+> dictionary and empty list for non-existent commands instead of a dictionary
+> with error message under 'error' key. I've tested this with i3-msg and also
+> with sockets in Python (i3-py).
+For non-existent commands, we should communicate an error. This was an
+oversight and will be corrected. Please open a ticket for that.
+
+> Was this intentional or is it going to change back to how it was before? (I
+> can't find the commit where this was changed.) In my opinion the previous reply
+> format was more valuable.
+The new command reply format is intentional and will not change back. Please
+note that before 4.2, commands officially had no reply (the documentation was
+changed in commit 1f0c0cdd). The reply change was done in commit e114b3dba. The
+reason for an array of return values is that you can chain commands like "focus
+left; focus down". You are actually running two commands and therefore deserve
+to get two return values. To keep things simple, we don?t just return one JSON
+object if you run a single command and an JSON array if you run multiple.
+Instead, we just always return an JSON array with >= 1 entries.
+
+Best regards,
+Michael
+
+From ltsmooth42 at gmail.com  Fri Apr 27 19:20:45 2012
+From: ltsmooth42 at gmail.com (Lukas Sabota)
+Date: Fri, 27 Apr 2012 13:20:45 -0400
+Subject: [i3] Multiple Xscreens without Xinerama/XrandR
+In-Reply-To: <CACjNC+oKNdOgaYTCwdK4f3uiAyn5QB5wiZvWVw9v=rihiS0nZQ@mail.gmail.com>
+References: <CACjNC+qtGMdzMqubkuArAd8UQebYy_KCGc=8Pq17V-6LRg+gsQ@mail.gmail.com>
+ <20120426202927.21213.52645@midna.zekjur.net>
+ <CACjNC+oKNdOgaYTCwdK4f3uiAyn5QB5wiZvWVw9v=rihiS0nZQ@mail.gmail.com>
+Message-ID: <CACjNC+rxnZWwSyoNWRenhY4ZujXgJMT9EDOY7YFegmKcO+ka0A@mail.gmail.com>
+
+On Thu, Apr 26, 2012 at 4:35 PM, Lukas Sabota <ltsmooth42 at gmail.com> wrote:
+
+>
+>> Quoting Lukas Sabota (2012-04-26 20:21:42)
+>> > However, I would much rather have separate X screens with Xinerama
+>> disabled,
+>> > each running their own i3 instance.  In an attempt to try this, I
+>> configured i3
+>> > to spawn on each of my DISPLAYs (:0.0 :0.1 :0.2) in my ".xinitrc" file.
+>>  This
+>> > sucessfully spawned i3 instances on each of my X screens -- however I am
+>> > experiencing input problems.  Keyboard shortcuts only seem to work on a
+>> single
+>> > i3 instance.  The other two i3 instances that are spawned are unusable
+>> since
+>> > one i3 instance catches all of the keyboard events.
+>> Are you using the latest version of i3? If not, upgrade. If that doesn?t
+>> help,
+>> please come to IRC so that we can debug the problem more interactively.
+>> Mailing
+>> lists are tedious.
+>>
+>> Hello Michael,
+>
+> I am using i3-wm 4.2-1 along with xorg 1.12.1 on Arch Linux.  I'm idling
+> in the channel atm (prg318) .  Hopefully between the two of us and others
+> in IRC we can diagnose the issue!
+>
+
+Hello,
+
+Michael was nice enough to help me diagnose this issue in IRC and find a
+suitable workaround for the issue.  Just to clarify the issue:
+
+After starting i3 on three separate x screens (no xinerama), all keyboard
+commands (mod+enter etc) will only trigger events on ONE of the 3 xscreens
+regardless of where the cursor was.
+
+A suitable workaround is to use the "swarp" utility.  After moving the
+cursor to another xscreen/i3 session using "swarp", the screen can be used
+perusual (the screen where the cursor is located will handle the keyboard
+events).  For example, after running "startx" my keyboard focus will only
+direct to screen :0.0.  After running the following command, keyboard input
+will be accept on :0.1 when the cursor is located on that screen:
+
+  DISPLAY=:0.1 swarp 50 50
+
+I plan to work some "swarp" commands into my xinitrc so that after
+"startx", input is handled properly.  I hope this may be found useful for
+someone in the future with a similar configuration as mine.
+
+Thanks again Michael for taking the time to assist me in diagnosing this
+issue!
+
+Best Regards,
+Lukas Sabota
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120427/20bf4c4c/attachment.html>
+

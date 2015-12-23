@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] bugfix: don't use con_is_internal
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20bugfix%3A%20don%27t%20use%20con_is_internal&In-Reply-To=%3C1352719151-7668-1-git-send-email-simon%40iodev.org%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001029.html">
+   <LINK REL="Next"  HREF="001031.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] bugfix: don't use con_is_internal</H1>
+    <B>Simon Elsbrock</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20bugfix%3A%20don%27t%20use%20con_is_internal&In-Reply-To=%3C1352719151-7668-1-git-send-email-simon%40iodev.org%3E"
+       TITLE="[i3] [PATCH] bugfix: don't use con_is_internal">simon at iodev.org
+       </A><BR>
+    <I>Mon Nov 12 12:19:11 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001029.html">[i3] Problem with 81393c93c2810e098966fe4089f3c8ea09f9cbe6 (&quot;bugfix: fix workspace back_and_forth after displaying a scratchpad window&quot;)
+</A></li>
+        <LI>Next message: <A HREF="001031.html">[i3] [PATCH] bugfix: don't use con_is_internal
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1030">[ date ]</a>
+              <a href="thread.html#1030">[ thread ]</a>
+              <a href="subject.html#1030">[ subject ]</a>
+              <a href="author.html#1030">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>---
+ src/workspace.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/workspace.c b/src/workspace.c
+index 1e70718..298088e 100644
+--- a/src/workspace.c
++++ b/src/workspace.c
+@@ -343,7 +343,7 @@ static void _workspace_show(Con *workspace) {
+      * the corresponding workspace is cleaned up.
+      * NOTE: Internal cons such as __i3_scratch (when a scratchpad window is
+      * focused) are skipped, see bug #868. */
+-    if (current &amp;&amp; !con_is_internal(current)) {
++    if (current &amp;&amp; current-&gt;name[0] == '_' &amp;&amp; current-&gt;name[1] == '_') {
+         FREE(previous_workspace_name);
+         if (current) {
+             previous_workspace_name = sstrdup(current-&gt;name);
+-- 
+1.7.10.4
+
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001029.html">[i3] Problem with 81393c93c2810e098966fe4089f3c8ea09f9cbe6 (&quot;bugfix: fix workspace back_and_forth after displaying a scratchpad window&quot;)
+</A></li>
+	<LI>Next message: <A HREF="001031.html">[i3] [PATCH] bugfix: don't use con_is_internal
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1030">[ date ]</a>
+              <a href="thread.html#1030">[ thread ]</a>
+              <a href="subject.html#1030">[ subject ]</a>
+              <a href="author.html#1030">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

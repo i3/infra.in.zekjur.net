@@ -1,0 +1,39 @@
+>From 77afb9a2f23f44474fd1ae3705ba337efc845533 Mon Sep 17 00:00:00 2001
+From: Joep van Delft <mekanik@xs4all.nl>
+Date: Thu, 20 Dec 2012 19:17:18 +0100
+Subject: [PATCH 2/2] Fix horizontal border in Tabbed and Stacking.
+
+---
+ src/x.c | 12 ++----------
+ 1 file changed, 2 insertions(+), 10 deletions(-)
+
+diff --git a/src/x.c b/src/x.c
+index 3429a05..096e6a2 100644
+--- a/src/x.c
++++ b/src/x.c
+@@ -468,20 +468,12 @@ void x_draw_decoration(Con *con) {
+     /* 5: draw two unconnected horizontal lines in border color */
+     xcb_change_gc(conn, parent->pm_gc, XCB_GC_FOREGROUND, (uint32_t[]){ p->color->border });
+     Rect *dr = &(con->deco_rect);
+-    int deco_diff_l = 2;
+-    int deco_diff_r = 2;
+-    if (parent->layout == L_TABBED) {
+-        if (TAILQ_PREV(con, nodes_head, nodes) != NULL)
+-            deco_diff_l = 0;
+-        if (TAILQ_NEXT(con, nodes) != NULL)
+-            deco_diff_r = 0;
+-    }
+     xcb_segment_t segments[] = {
+         { dr->x,                 dr->y,
+           dr->x + dr->width - 1, dr->y },
+ 
+-        { dr->x + deco_diff_l,                 dr->y + dr->height - 1,
+-          dr->x - deco_diff_r + dr->width - 1, dr->y + dr->height - 1 }
++        { dr->x,                 dr->y + dr->height - 1,
++          dr->x + dr->width - 1, dr->y + dr->height - 1 }
+     };
+     xcb_poly_segment(conn, parent->pixmap, parent->pm_gc, 2, segments);
+ 
+-- 
+1.8.0.2
+

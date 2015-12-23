@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] [PATCH] Transparency support
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Transparency%20support&In-Reply-To=%3CCAMJW5%3D3-OT5Lf0Ef5t2mRa-6p_6NB80CKfjS39QQ03p2DcWP8Q%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="000431.html">
+   <LINK REL="Next"  HREF="000434.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] [PATCH] Transparency support</H1>
+    <B>DR</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20%5BPATCH%5D%20Transparency%20support&In-Reply-To=%3CCAMJW5%3D3-OT5Lf0Ef5t2mRa-6p_6NB80CKfjS39QQ03p2DcWP8Q%40mail.gmail.com%3E"
+       TITLE="[i3] [PATCH] Transparency support">drdarkraven at gmail.com
+       </A><BR>
+    <I>Sat Jan 28 13:48:12 CET 2012</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="000431.html">[i3] [PATCH] Transparency support
+</A></li>
+        <LI>Next message: <A HREF="000434.html">[i3] [PATCH] Transparency support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#433">[ date ]</a>
+              <a href="thread.html#433">[ thread ]</a>
+              <a href="subject.html#433">[ subject ]</a>
+              <a href="author.html#433">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Sat, Jan 28, 2012 at 5:50 PM, Michael Stapelberg
+&lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael+i3 at stapelberg.de</A>&gt; wrote:
+&gt;<i> Hi Raven,
+</I>&gt;<i>
+</I>&gt;<i> Thanks for your patch and sorry for replying so late. Here are my comments:
+</I>&gt;<i>
+</I>&gt;<i> 1) You did not use git format-patch to generate the patch. This is bad because
+</I>&gt;<i> &#160; then your name is missing from the git log. Please use git format-patch.
+</I>&gt;<i>
+</I>&gt;<i> 2) Your patch has been line-wrapped/mangled by your mail client so that I
+</I>&gt;<i> &#160; cannot apply it.
+</I>
+Sorry for that. I'll re-send the patch.
+
+&gt;<i>
+</I>&gt;<i> 3) You did not state what this patch actually fixes and how I can reproduce
+</I>&gt;<i> &#160; that. I just looked at ticket <A HREF="http://bugs.i3wm.org/220">http://bugs.i3wm.org/220</A> again and tried the
+</I>&gt;<i> &#160; following:
+</I>&gt;<i>
+</I>&gt;<i> in ~/.Xresources:
+</I>&gt;<i> URxvt.background: [85]black
+</I>&gt;<i> URxvt.foreground: lightgrey
+</I>&gt;<i> URxvt.depth: 32
+</I>&gt;<i>
+</I>&gt;<i> Then start xcompmgr -n, use transset-df and click on an urxvt terminal. It
+</I>&gt;<i> became transparent (without your patch).
+</I>&gt;<i>
+</I>&gt;<i> Could you please elaborate on that and re-send your patch?
+</I>
+Bug #220 is exactly what this patch fix.
+
+The expected result is that urxvt would be transparent without
+transset-df (and this is how urxvt in most other wm works).
+
+With wm like wmii, you only need to put:
+
+URxvt.depth:		32
+Urxvt.background:      rgba:0000/0000/0000/7777
+
+In your .Xresources, and start xcompmgr, urxvt would be transparent.
+
+&gt;<i>
+</I>&gt;<i> Best regards,
+</I>&gt;<i> Michael
+</I>-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-add-transparency-support.patch
+Type: text/x-patch
+Size: 7570 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120128/50e08cde/attachment.bin">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20120128/50e08cde/attachment.bin</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="000431.html">[i3] [PATCH] Transparency support
+</A></li>
+	<LI>Next message: <A HREF="000434.html">[i3] [PATCH] Transparency support
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#433">[ date ]</a>
+              <a href="thread.html#433">[ thread ]</a>
+              <a href="subject.html#433">[ subject ]</a>
+              <a href="author.html#433">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

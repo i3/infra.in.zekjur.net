@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Feature request: ion3-style &quot;float split&quot;
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Feature%20request%3A%20ion3-style%20%22float%20split%22&In-Reply-To=%3C20131229120124.GA6631%40senco%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001514.html">
+   <LINK REL="Next"  HREF="001516.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Feature request: ion3-style &quot;float split&quot;</H1>
+    <B>Eero Kari</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Feature%20request%3A%20ion3-style%20%22float%20split%22&In-Reply-To=%3C20131229120124.GA6631%40senco%3E"
+       TITLE="[i3] Feature request: ion3-style &quot;float split&quot;">ekari at iki.fi
+       </A><BR>
+    <I>Sun Dec 29 13:01:24 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001514.html">[i3] Feature request: ion3-style &quot;float split&quot;
+</A></li>
+        <LI>Next message: <A HREF="001516.html">[i3] Feature request: ion3-style &quot;float split&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1515">[ date ]</a>
+              <a href="thread.html#1515">[ thread ]</a>
+              <a href="subject.html#1515">[ subject ]</a>
+              <a href="author.html#1515">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi Sylvain,
+
+On Sat, Dec 28, 2013 at 06:52:07PM -0500, Sylvain Benner wrote:
+&gt;<i> Hi Eero,
+</I>&gt;<i> 
+</I>&gt;<i> Why not use an horizontal layout and switch to full screen as needed ?
+</I>&gt;<i> 
+</I>Because that usually causes the browser to rerender it's content. It may not
+seem like a big deal, but when you're writing code with million things in your
+head at once, and your split-second what-was-that-functions-third-keyword
+-glance turns into where-the-hell-is-that-function and again
+what-was-i-even-doing.
+
+Here's an interactive demo of the phenomenon; point your browser to
+<A HREF="http://docs.python.org/3/library/zipfile.html#zipfile.ZipFile.extract">http://docs.python.org/3/library/zipfile.html#zipfile.ZipFile.extract</A> , start
+resizing your browser back and forth and see how the lines fly to who knows
+where :)
+
+Another point in keeping your browser to a certain width instead of fullscreen,
+is that text is easier to read if the page is narrower.
+
+As my 1440x900 screen is too narrow to keep a browser and a terminal
+side-by-side, and too wide to keep them both at fullscreen, the natural thing to
+do here would be to make them overlap a bit so that they both feel just the
+right size :)
+
+&gt;<i> Your use case feels weird to me, i3 is a windows tiling manager.
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> 
+</I>&gt;<i> Le samedi 28 d&#233;cembre 2013, Eero Kari a &#233;crit :
+</I>&gt;<i> 
+</I>&gt;<i> &gt; Hi,
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; the upcoming i3 layout restore feature almost completes my wishlist. The
+</I>&gt;<i> &gt; only
+</I>&gt;<i> &gt; thing lacking is the &quot;float split&quot; that ion3 had. I fired up notion just
+</I>&gt;<i> &gt; to make
+</I>&gt;<i> &gt; this 2-frame gif-animation showing the feature in action:
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; <A HREF="https://dl.dropboxusercontent.com/u/20179139/ion3-float-split.gif">https://dl.dropboxusercontent.com/u/20179139/ion3-float-split.gif</A>
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; With the float split you could make two[1] containers overlap each other.
+</I>&gt;<i> &gt; The
+</I>&gt;<i> &gt; amount of overlap was controlled similarly as you would resize a window.
+</I>&gt;<i> &gt; And the
+</I>&gt;<i> &gt; layout stayed that way until changed it again.
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; I used to have firefox with docs on one side, and vim on the other. It
+</I>&gt;<i> &gt; worked
+</I>&gt;<i> &gt; wonders for my productivity and I miss it sorely. With that implemented i3
+</I>&gt;<i> &gt; would
+</I>&gt;<i> &gt; be complete :)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; So, I accept the feature either as built-in, or as a working script[2].
+</I>&gt;<i> &gt; Either
+</I>&gt;<i> &gt; way is fine ;)
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; Thanks for the great wm!
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;  - Eero
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt; [1] or maybe even more, but I only ever used two.
+</I>&gt;<i> &gt; [2] note that the containers overlap; a scripter couldn't get away with
+</I>&gt;<i> &gt; just
+</I>&gt;<i> &gt; resizing two side-by-size containers since it would trigger a redraw on the
+</I>&gt;<i> &gt; clients and that would mess things up. A possible solution could be using
+</I>&gt;<i> &gt; two
+</I>&gt;<i> &gt; floaters and switching back and forth between them...
+</I>&gt;<i> &gt;
+</I>&gt;<i> &gt;
+</I>&gt;<i> 
+</I>&gt;<i> -- 
+</I>&gt;<i> -syl20bnr-
+</I></PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001514.html">[i3] Feature request: ion3-style &quot;float split&quot;
+</A></li>
+	<LI>Next message: <A HREF="001516.html">[i3] Feature request: ion3-style &quot;float split&quot;
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1515">[ date ]</a>
+              <a href="thread.html#1515">[ thread ]</a>
+              <a href="subject.html#1515">[ subject ]</a>
+              <a href="author.html#1515">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

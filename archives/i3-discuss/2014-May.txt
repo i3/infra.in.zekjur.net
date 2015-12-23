@@ -1,0 +1,1310 @@
+From karkhaz at gmail.com  Sat May  3 19:04:42 2014
+From: karkhaz at gmail.com (Kareem)
+Date: Sat, 3 May 2014 18:04:42 +0100
+Subject: [i3] Title bar on bottom of window
+Message-ID: <20140503170442.GB23863@katrina>
+
+Hi there,
+
+I am wondering (as a feature request) about an option to have the
+title bar of a window at the bottom of the window, instead of as the
+top.
+
+If this isn't suitable for being included in i3, I was wondering about
+patching it for my own copy. I have looked in the x_draw_decoration
+function in src/x.c, but I'm not sure how to proceed. In particular,
+I'm not sure how to get the correct dimensions to draw the bar when
+initialising the xcb_rectangle_t---currently it looks like this:
+  xcb_rectangle_t drect = { con->deco_rect.x, con->deco_rect.y,
+    con->deco_rect.width, con->deco_rect.height };
+  cb_poly_fill_rectangle(conn, parent->pixmap, parent->pm_gc, 1, &drect);
+
+In case you're wondering why I want to do such a strange thing...I
+like to set the title of my xterm to contain ephemeral information,
+such as hostname, git status, and various other things. I dislike long
+and complicated prompts, so I put this information in the title
+instead. But, the title is at the top of the screen, whereas the
+prompt of my xterm is at the bottom. I'd like to have the title bar
+just underneath my prompt, i.e. at the bottom of the window.
+
+cheers
+
+-- 
+Kareem
+
+From lexi.baier at gmail.com  Sun May  4 11:45:33 2014
+From: lexi.baier at gmail.com (Alexander Baier)
+Date: Sun, 04 May 2014 11:45:33 +0200
+Subject: [i3] "Hamburger-menu" in Firefox 29 is not displayed
+Message-ID: <87oazdlvwi.fsf@gmail.com>
+
+Hello,
+
+I recently upgraded my Firefox to version 29 and noticed that clicking
+on the icon in the top-right corner does not show me the menu it is
+supposed to.  Upon clicking I can see something flickering _very_
+shortly in the place where the menu should appear.
+
+Is this something that happens to other people too? Or is this something
+related to my configuration only? As this is quite a normal i3 setup I figured
+this might be a bug.
+
+i3 version 4.7.2 (2014-01-23, branch "tags/4.7.2")
+
+If you need more information, please don't hesitate to ask.
+
+Regards,
+--
+Alexander Baier
+
+
+From johannes.lippmann at googlemail.com  Sun May  4 12:10:37 2014
+From: johannes.lippmann at googlemail.com (=?utf-8?Q?J=C3=B8hannes?=)
+Date: Sun, 4 May 2014 12:10:37 +0200
+Subject: [i3] "Hamburger-menu" in Firefox 29 is not displayed
+In-Reply-To: <87oazdlvwi.fsf@gmail.com>
+References: <87oazdlvwi.fsf@gmail.com>
+Message-ID: <49EE34E7-10BD-4ECF-82F2-4786569F5BC9@googlemail.com>
+
+The Hamburger-menu works fine for me. 
+
+> Am 04.05.2014 um 11:45 schrieb Alexander Baier <lexi.baier at gmail.com>:
+> 
+> Hello,
+> 
+> I recently upgraded my Firefox to version 29 and noticed that clicking
+> on the icon in the top-right corner does not show me the menu it is
+> supposed to.  Upon clicking I can see something flickering _very_
+> shortly in the place where the menu should appear.
+> 
+> Is this something that happens to other people too? Or is this something
+> related to my configuration only? As this is quite a normal i3 setup I figured
+> this might be a bug.
+> 
+> i3 version 4.7.2 (2014-01-23, branch "tags/4.7.2")
+> 
+> If you need more information, please don't hesitate to ask.
+> 
+> Regards,
+> --
+> Alexander Baier
+> 
+
+From lexi.baier at gmail.com  Sun May  4 12:53:34 2014
+From: lexi.baier at gmail.com (Alexander Baier)
+Date: Sun, 04 May 2014 12:53:34 +0200
+Subject: [i3] "Hamburger-menu" in Firefox 29 is not displayed
+References: <87oazdlvwi.fsf@gmail.com>
+ <49EE34E7-10BD-4ECF-82F2-4786569F5BC9@googlemail.com>
+Message-ID: <87bnvderwx.fsf@gmail.com>
+
+On 2014-05-04 12:10 Jøhannes wrote:
+> The Hamburger-menu works fine for me. 
+
+There seems to be something wrong with the theme I am using. Switching
+to the default theme fixes the problem. I don't know anything about
+firefox theming, but maybe this issue on the theme's github repo might
+be related:
+
+https://github.com/gnome-integration-team/firefox-gnome/issues/249
+
+Regards,
+-- 
+Alexander Baier
+
+
+From mattator at gmail.com  Sun May  4 14:53:19 2014
+From: mattator at gmail.com (Teto)
+Date: Sun, 4 May 2014 14:53:19 +0200
+Subject: [i3] Title bar on bottom of window
+In-Reply-To: <20140503170442.GB23863@katrina>
+References: <20140503170442.GB23863@katrina>
+Message-ID: <CADHp1Nx0wf8REfVXPMhsFO7BqwU197y2LnFLu5NusMttBss2cA@mail.gmail.com>
+
+I wonder if this wouldn't be more straightforward to launch your
+terminals with a properly configured tmux/screen ? I don't use those 2
+softwares but I think they allow to do something along the lines you
+want.
+
+2014-05-03 19:04 GMT+02:00 Kareem <karkhaz at gmail.com>:
+> Hi there,
+>
+> I am wondering (as a feature request) about an option to have the
+> title bar of a window at the bottom of the window, instead of as the
+> top.
+>
+> If this isn't suitable for being included in i3, I was wondering about
+> patching it for my own copy. I have looked in the x_draw_decoration
+> function in src/x.c, but I'm not sure how to proceed. In particular,
+> I'm not sure how to get the correct dimensions to draw the bar when
+> initialising the xcb_rectangle_t---currently it looks like this:
+>   xcb_rectangle_t drect = { con->deco_rect.x, con->deco_rect.y,
+>     con->deco_rect.width, con->deco_rect.height };
+>   cb_poly_fill_rectangle(conn, parent->pixmap, parent->pm_gc, 1, &drect);
+>
+> In case you're wondering why I want to do such a strange thing...I
+> like to set the title of my xterm to contain ephemeral information,
+> such as hostname, git status, and various other things. I dislike long
+> and complicated prompts, so I put this information in the title
+> instead. But, the title is at the top of the screen, whereas the
+> prompt of my xterm is at the bottom. I'd like to have the title bar
+> just underneath my prompt, i.e. at the bottom of the window.
+>
+> cheers
+>
+> --
+> Kareem
+
+From karkhaz at gmail.com  Sun May  4 20:27:11 2014
+From: karkhaz at gmail.com (Kareem)
+Date: Sun, 4 May 2014 19:27:11 +0100
+Subject: [i3] Title bar on bottom of window
+In-Reply-To: <CADHp1Nx0wf8REfVXPMhsFO7BqwU197y2LnFLu5NusMttBss2cA@mail.gmail.com>
+References: <20140503170442.GB23863@katrina>
+ <CADHp1Nx0wf8REfVXPMhsFO7BqwU197y2LnFLu5NusMttBss2cA@mail.gmail.com>
+Message-ID: <20140504182711.GA10774@katrina>
+
+> I wonder if this wouldn't be more straightforward to launch your
+> terminals with a properly configured tmux/screen ? I don't use those 2
+> softwares but I think they allow to do something along the lines you
+> want.
+
+Thanks for this idea. I spent about half a day messing around with
+tmux, and I am able to get a status line at the bottom of my terminal.
+However I am not going to continue using it, for the following
+reasons:
+
+- It makes terminal drawing slow. This is especially bad for e.g.
+  navigating though a LaTeX document in vim with syntax highlighting.
+- I like the fact that the active window's top bar can be a different
+  colour to other windows in i3 :) of course with tmux, all the status
+  bars must remain the same color.
+
+I would rather have a top bar natively in i3, than a bottom bar with
+tmux. But thanks! I learned many things while playing with tmux :)
+
+-- 
+Kareem
+
+From johnsocs at gmail.com  Mon May  5 19:46:07 2014
+From: johnsocs at gmail.com (Christopher Johnson)
+Date: Mon, 5 May 2014 13:46:07 -0400
+Subject: [i3] Content Assistant
+Message-ID: <CABTqaieBFMBjBsASg7nLXFy9EX6ey1Q2xJs615-0G7ZGuC=qTw@mail.gmail.com>
+
+Hi -
+
+I recently switch to i3 from the standard Ubuntu 14.04  environment and I'm
+really liking the tile environment.
+
+While using i3 I noticed that the eclipse content assistant is not
+functioning very well, for example it is unable to auto complete classe
+name when i push ctrl+space.  For example under the standard desktop
+environment it would complete things like 'ArrayList' when I type 'Array
+Ctrl+space' but under i3 nothing happens, the content assistant wont be
+pop-up.
+
+Oddly enough it the content assistant works fine when searching for methods
+on already defined objects.
+
+Has anyone also found this and does anyone have a solution ??
+
+Thanks in advance.
+
+...Chris
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140505/bed283de/attachment.html>
+
+From hjem at unseen.is  Mon May  5 20:06:06 2014
+From: hjem at unseen.is (cornerman)
+Date: Mon, 05 May 2014 20:06:06 +0200
+Subject: [i3] Content Assistant
+In-Reply-To: <CABTqaieBFMBjBsASg7nLXFy9EX6ey1Q2xJs615-0G7ZGuC=qTw@mail.gmail.com>
+References: <CABTqaieBFMBjBsASg7nLXFy9EX6ey1Q2xJs615-0G7ZGuC=qTw@mail.gmail.com>
+Message-ID: <5367D30E.6060003@unseen.is>
+
+Hi,
+
+just checked and I cannot confirm that behaviour. I have eclipse version
+3.8.1 and i3 version 4.7.2 running and the autocompletion works as expected.
+
+best
+
+On 05/05/2014 07:46 PM, Christopher Johnson wrote:
+> Hi -
+> 
+> I recently switch to i3 from the standard Ubuntu 14.04  environment and I'm
+> really liking the tile environment.
+> 
+> While using i3 I noticed that the eclipse content assistant is not
+> functioning very well, for example it is unable to auto complete classe
+> name when i push ctrl+space.  For example under the standard desktop
+> environment it would complete things like 'ArrayList' when I type 'Array
+> Ctrl+space' but under i3 nothing happens, the content assistant wont be
+> pop-up.
+> 
+> Oddly enough it the content assistant works fine when searching for methods
+> on already defined objects.
+> 
+> Has anyone also found this and does anyone have a solution ??
+> 
+> Thanks in advance.
+> 
+> ...Chris
+> 
+
+From lists at necoro.eu  Mon May  5 22:37:18 2014
+From: lists at necoro.eu (lists at necoro.eu)
+Date: Mon, 05 May 2014 22:37:18 +0200
+Subject: [i3] Content Assistant
+In-Reply-To: <CABTqaieBFMBjBsASg7nLXFy9EX6ey1Q2xJs615-0G7ZGuC=qTw@mail.gmail.com>
+References: <CABTqaieBFMBjBsASg7nLXFy9EX6ey1Q2xJs615-0G7ZGuC=qTw@mail.gmail.com>
+Message-ID: <5367F67E.8010002@necoro.eu>
+
+
+> While using i3 I noticed that the eclipse content assistant is not
+> functioning very well, for example it is unable to auto complete classe
+> name when i push ctrl+space.  For example under the standard desktop
+> environment it would complete things like 'ArrayList' when I type 'Array
+> Ctrl+space' but under i3 nothing happens, the content assistant wont be
+> pop-up.
+
+Could you just double-check you don't have Ctrl+Space bound to something
+in i3?
+
+- René
+
+From michael at i3wm.org  Mon May  5 23:51:04 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 05 May 2014 23:51:04 +0200
+Subject: [i3] Content Assistant
+In-Reply-To: <5367F67E.8010002@necoro.eu>
+References: <CABTqaieBFMBjBsASg7nLXFy9EX6ey1Q2xJs615-0G7ZGuC=qTw@mail.gmail.com>
+ <5367F67E.8010002@necoro.eu>
+Message-ID: <x638gn28tz.fsf@midna.zekjur.net>
+
+Hi,
+
+lists at necoro.eu writes:
+>> While using i3 I noticed that the eclipse content assistant is not
+>> functioning very well, for example it is unable to auto complete classe
+>> name when i push ctrl+space.  For example under the standard desktop
+>> environment it would complete things like 'ArrayList' when I type 'Array
+>> Ctrl+space' but under i3 nothing happens, the content assistant wont be
+>> pop-up.
+>
+> Could you just double-check you don't have Ctrl+Space bound to something
+> in i3?
+Note that dunst comes with Ctrl+Space as default keybinding.
+
+What’s always worth a shot is trying to reproduce problems with a fresh
+user account to rule out local setup issues.
+
+-- 
+Best regards,
+Michael
+
+From johnsocs at gmail.com  Tue May  6 02:02:33 2014
+From: johnsocs at gmail.com (Christopher Johnson)
+Date: Mon, 5 May 2014 20:02:33 -0400
+Subject: [i3] Content Assistant
+In-Reply-To: <5367F67E.8010002@necoro.eu>
+References: <CABTqaieBFMBjBsASg7nLXFy9EX6ey1Q2xJs615-0G7ZGuC=qTw@mail.gmail.com>
+ <5367F67E.8010002@necoro.eu>
+Message-ID: <CABTqaieAAA6QSLaamqFtC=wg-w+LkgN50pxjZ_OfQQYSZDjRrA@mail.gmail.com>
+
+Rene -  I'm a bit new to i3.. how do I go about checking the keybindings in
+it ?
+
+Thanks.
+
+Chris Johnson // johnsocs at gmail.com // +1.315.335.1992
+
+
+On Mon, May 5, 2014 at 4:37 PM, <lists at necoro.eu> wrote:
+
+>
+> > While using i3 I noticed that the eclipse content assistant is not
+> > functioning very well, for example it is unable to auto complete classe
+> > name when i push ctrl+space.  For example under the standard desktop
+> > environment it would complete things like 'ArrayList' when I type 'Array
+> > Ctrl+space' but under i3 nothing happens, the content assistant wont be
+> > pop-up.
+>
+> Could you just double-check you don't have Ctrl+Space bound to something
+> in i3?
+>
+> - René
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140505/f9899722/attachment.html>
+
+From johnsocs at gmail.com  Tue May  6 02:06:53 2014
+From: johnsocs at gmail.com (Christopher Johnson)
+Date: Mon, 5 May 2014 20:06:53 -0400
+Subject: [i3] Content Assistant
+In-Reply-To: <5367F67E.8010002@necoro.eu>
+References: <CABTqaieBFMBjBsASg7nLXFy9EX6ey1Q2xJs615-0G7ZGuC=qTw@mail.gmail.com>
+ <5367F67E.8010002@necoro.eu>
+Message-ID: <CABTqaidN=7KiPUnUxorDb2jLEoUeV=npmLQboJLOu5BgeNu1TQ@mail.gmail.com>
+
+Rene -
+
+I just looked at my ~/.i3/config .. nothing jumped out at me....
+
+
+On Mon, May 5, 2014 at 4:37 PM, <lists at necoro.eu> wrote:
+
+>
+> > While using i3 I noticed that the eclipse content assistant is not
+> > functioning very well, for example it is unable to auto complete classe
+> > name when i push ctrl+space.  For example under the standard desktop
+> > environment it would complete things like 'ArrayList' when I type 'Array
+> > Ctrl+space' but under i3 nothing happens, the content assistant wont be
+> > pop-up.
+>
+> Could you just double-check you don't have Ctrl+Space bound to something
+> in i3?
+>
+> - René
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140505/7dc72440/attachment.html>
+
+From okraits at arcor.de  Sat May 17 02:09:39 2014
+From: okraits at arcor.de (Oliver Kraitschy)
+Date: Sat, 17 May 2014 02:09:39 +0200
+Subject: [i3] New features in j4-make-config
+Message-ID: <5376A8C3.4030600@arcor.de>
+
+Dear i3 community,
+
+there's a new feature in j4-make-config available. It enables you to 
+easily switch between themes for i3. But now it also enables you to 
+easily put together a complete i3 config from several different 
+configuration parts, depending on the environment you are currently 
+working in.
+
+So you can do things like:
+
+- have different layouts and font sizes for different screen sizes
+- have one i3bar section for your laptop and two i3bar sections for your 
+dual monitor setup at home
+- have different keybindings depending on the keyboard you are using
+- and much more - any i3 configuration option can be used!
+
+Go check it out at: https://github.com/okraits/j4-make-config
+
+Please feel free to send me feedback and contributions
+regarding bugreports, feature requests, improvements,
+themes, etc. via mail at okraits at arcor.de. You can also
+contact me on irc.twice-irc.de in #i3 and #j4tools.
+
+I'm looking forward to your feedback.
+
+Greetings,
+
+Oliver
+
+
+From michael at i3wm.org  Sat May 17 18:57:49 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 17 May 2014 18:57:49 +0200
+Subject: [i3] i3-save-tree
+In-Reply-To: <53778A1C.7020709@slackword.net>
+References: <53778A1C.7020709@slackword.net>
+Message-ID: <x67g5ks5pu.fsf@midna.zekjur.net>
+
+[+cc i3-discuss]
+
+Hi Marcin,
+
+Marcin Herda <mherda at slackword.net> writes:
+
+> Hello Michael,
+>
+> I'm playing with the new saving/restoring workspace layouts in i3wm 4.8.
+>
+> I have and then edited the layout .json file. Afterwards I successfully 
+> loaded it into i3, which created a number of place holders (as expected).
+>
+> Then if I try to fill a container with an appropriate application, it 
+> works fine. The application lands in the right place, eg:
+>
+> xterm -name foo
+> xterm -name bar
+>
+> If, however, I add the command to xterm to run a program, eg
+>
+> xterm -name foo -e "mc"
+>
+> It 'opens' outside of the saved layout creating an additional container.
+>
+> Did I miss something? Is it a wrong approach to the new feature?
+Your general approach seems correct.
+
+The placeholder containers tell you which criteria they look for, and if
+the new window does not match these criteria, it will not be swallowed
+by the placeholder container.
+
+In case manual introspection (i.e. comparing the xprop output for the
+affected window with the placeholder contents) is not enough, I suggest
+you check the logfile to see what i3 does:
+http://i3wm.org/docs/debugging.html
+
+If you still cannot figure it out, feel free to follow up, but with a
+maximum debug level logfile please (compress it first before you send
+it).
+
+Thanks.
+
+-- 
+Best regards,
+Michael
+
+From mherda at gmail.com  Sat May 17 23:54:05 2014
+From: mherda at gmail.com (Marcin Herda)
+Date: Sat, 17 May 2014 22:54:05 +0100
+Subject: [i3] i3-save-tree
+In-Reply-To: <x67g5ks5pu.fsf@midna.zekjur.net>
+References: <53778A1C.7020709@slackword.net> <x67g5ks5pu.fsf@midna.zekjur.net>
+Message-ID: <5377DA7D.6030902@gmail.com>
+
+On 17/05/14 17:57, Michael Stapelberg wrote:
+> [+cc i3-discuss]
+>
+> Hi Marcin,
+>
+> Marcin Herda<mherda at slackword.net>  writes:
+>
+>> Hello Michael,
+>>
+>> I'm playing with the new saving/restoring workspace layouts in i3wm 4.8.
+>>
+>> I have and then edited the layout .json file. Afterwards I successfully
+>> loaded it into i3, which created a number of place holders (as expected).
+>>
+>> Then if I try to fill a container with an appropriate application, it
+>> works fine. The application lands in the right place, eg:
+>>
+>> xterm -name foo
+>> xterm -name bar
+>>
+>> If, however, I add the command to xterm to run a program, eg
+>>
+>> xterm -name foo -e "mc"
+>>
+>> It 'opens' outside of the saved layout creating an additional container.
+>>
+>> Did I miss something? Is it a wrong approach to the new feature?
+> Your general approach seems correct.
+>
+> The placeholder containers tell you which criteria they look for, and if
+> the new window does not match these criteria, it will not be swallowed
+> by the placeholder container.
+>
+> In case manual introspection (i.e. comparing the xprop output for the
+> affected window with the placeholder contents) is not enough, I suggest
+> you check the logfile to see what i3 does:
+> http://i3wm.org/docs/debugging.html
+>
+> If you still cannot figure it out, feel free to follow up, but with a
+> maximum debug level logfile please (compress it first before you send
+> it).
+>
+> Thanks.
+>
+Thank you, Michael.
+
+I found the reason for it not working properly. I didn't specify a 
+correct 'title' variable in the json file:
+
+  "swallows": [
+                {
+                 "class": "^XTerm$",
+                 "instance": "^bottomleft$",
+                 "title": "^mc$"
+                }
+
+Previously, both the 'instance' and 'title' variable were assigned the 
+value 'bottomleft'.
+
+For the benefit of other people reading it: the above container will 
+swallow an instance of xterm running mc.
+
+xterm -name bottomleft -e 'mc'
+
+
+On a separate note, is it possible to run an i3-msg command from a 
+script (as opposed to via dmenu) or bind it to a key?
+It does not seem to be working for me:
+
+bindsym XF86Favorites exec /usr/bin/i3-msg 'workspace 1; append_layout 
+/home/sycamorex/ws_1-generic.json'
+
+It does not append the layout.
+
+I also have a script containing just one line:
+
+i3-msg 'workspace 1; append_layout /home/sycamorex/.i3/ws_1-generic.json'
+
+When I run it from a terminal, the only thing that happens is the output:
+
+[{"success":true}]
+
+Thank you for your help.
+
+regards
+Marcin
+
+From public at enkore.de  Sun May 18 00:18:27 2014
+From: public at enkore.de (mabe)
+Date: Sun, 18 May 2014 00:18:27 +0200
+Subject: [i3] i3-save-tree
+In-Reply-To: <5377DA7D.6030902@gmail.com>
+References: <53778A1C.7020709@slackword.net> <x67g5ks5pu.fsf@midna.zekjur.net>
+ <5377DA7D.6030902@gmail.com>
+Message-ID: <5377E033.6080906@enkore.de>
+
+That's all you gonna get from i3-msg. It means your request succeeded,
+so it should have worked.
+
+On 05/17/2014 11:54 PM, Marcin Herda wrote:
+> 
+> i3-msg 'workspace 1; append_layout /home/sycamorex/.i3/ws_1-generic.json'
+> 
+> When I run it from a terminal, the only thing that happens is the output:
+> 
+> [{"success":true}]
+> 
+> Thank you for your help.
+> 
+> regards
+> Marcin
+
+
+From mherda at gmail.com  Sun May 18 00:21:22 2014
+From: mherda at gmail.com (Marcin Herda)
+Date: Sat, 17 May 2014 23:21:22 +0100
+Subject: [i3] i3-save-tree
+In-Reply-To: <5377E033.6080906@enkore.de>
+References: <53778A1C.7020709@slackword.net> <x67g5ks5pu.fsf@midna.zekjur.net>
+ <5377DA7D.6030902@gmail.com> <5377E033.6080906@enkore.de>
+Message-ID: <5377E0E2.5080604@gmail.com>
+
+Thanks. It's one of that cases where I don't know how but it's fixed 
+now. I don't know why it didn't load. I must have had some typo somewhere.
+
+On 17/05/14 23:18, [mabe] wrote:
+> That's all you gonna get from i3-msg. It means your request succeeded,
+> so it should have worked.
+>
+> On 05/17/2014 11:54 PM, Marcin Herda wrote:
+>> i3-msg 'workspace 1; append_layout /home/sycamorex/.i3/ws_1-generic.json'
+>>
+>> When I run it from a terminal, the only thing that happens is the output:
+>>
+>> [{"success":true}]
+>>
+>> Thank you for your help.
+>>
+>> regards
+>> Marcin
+
+
+From aaron.small.99a at gmail.com  Sun May 18 03:05:30 2014
+From: aaron.small.99a at gmail.com (aaron.small.99a at gmail.com)
+Date: Sat, 17 May 2014 21:05:30 -0400
+Subject: [i3] i3-save-tree
+In-Reply-To: <5377DA7D.6030902@gmail.com>
+References: <53778A1C.7020709@slackword.net> <x67g5ks5pu.fsf@midna.zekjur.net>
+ <5377DA7D.6030902@gmail.com>
+Message-ID: <20140518010530.6832284.56991.73@gmail.com>
+
+
+
+  Original Message  
+From: Marcin Herda
+Sent: Saturday, May 1ew 5:54 PM
+To: i3-discuss at i3.zekjur.net
+Reply To: Discussions/Questions about the i3 window manager
+Subject: Re: [i3] i3-save-tree
+
+On 17/05/14 17:57, Michael Stapelberg wrote:
+> [+cc i3-discuss]
+>
+> Hi Marcin,
+>
+> Marcin Herda<mherda at slackword.net> writes:
+>
+>> Hello Michael,
+>>
+>> I'm playing with the new saving/restoring workspace layouts in i3wm 4.8.
+>>
+>> I have and then edited the layout .json file. Afterwards I successfully
+>> loaded it into i3, which created a number of place holders (as expected).
+>>
+>> Then if I try to fill a container with an appropriate application, it
+>> works fine. The application lands in the right place, eg:
+>>
+>> xterm -name foo
+>> xterm -name bar
+>>
+>> If, however, I add the command to xterm to run a program, eg
+>>
+>> xterm -name foo -e "mc"
+>>
+>> It 'opens' outside of the saved layout creating an additional container.
+>>
+>> Did I miss something? Is it a wrong approach to the new feature?
+> Your general approach seems correct.
+>
+> The placeholder containers tell you which criteria they look for, and if
+> the new window does not match these criteria, it will not be swallowed
+> by the placeholder container.
+>
+> In case manual introspection (i.e. comparing the xprop output for the
+> affected window with the placeholder contents) is not enough, I suggest
+> you check the logfile to see what i3 does:
+> http://i3wm.org/docs/debugging.html
+>
+> If you still cannot figure it out, feel free to follow up, but with a
+> maximum debug level logfile please (compress it first before you send
+> it).
+>
+> Thanks.
+>
+Thank you, Michael.
+
+I found the reason for it not working properly. I didn't specify a 
+correct 'title' variable in the json file:
+
+"swallows": [
+{
+"class": "^XTerm$",
+"instance": "^bottomleft$",
+"title": "^mc$"
+}
+
+Previously, both the 'instance' and 'title' variable were assigned the 
+value 'bottomleft'.
+
+For the benefit of other people reading it: the above container will 
+swallow an instance of xterm running mc.
+
+xterm -name bottomleft -e 'mc'
+
+
+On a separate note, is it possible to run an i3-msg command from a 
+script (as opposed to via dmenu) or bind it to a key?
+It does not seem to be working for me:
+
+bindsym XF86Favorites exec /usr/bin/i3-msg 'workspace 1; append_layout 
+/home/sycamorex/ws_1-generic.json'
+
+It does not append the layout.
+
+I also have a script containing just one line:
+
+i3-msg 'workspace 1; append_layout /home/sycamorex/.i3/ws_1-generic.json'
+
+When I run it from a terminal, the only thing that happens is the output:
+
+[{"success":true}]
+
+Thank you for your help.
+
+regards
+Marcin
+
+From crestani at informatik.uni-tuebingen.de  Sun May 18 10:15:26 2014
+From: crestani at informatik.uni-tuebingen.de (Marcus Crestani)
+Date: Sun, 18 May 2014 10:15:26 +0200
+Subject: [i3] segfaults with libxcb-1.10
+Message-ID: <m2bnuvsdsx.fsf@informatik.uni-tuebingen.de>
+
+I am using i3 on OS X 10.9.3 as the window manager under XQuartz.
+
+Newest XQuartz 2.7.6 updated (amongst many other parts) libxcb to
+version 1.10 (previous versions came with libxcb-1.9.1).  With
+libxcb-1.10, i3 (latest release, master, and next) segfaults during
+startup in libxcb:
+
+Thread 0 Crashed:: Dispatch queue: com.apple.main-thread
+0   ???                           	0x0000000100000000 0 + 4294967296
+1   libxcb.1.dylib                	0x0000000110152f24 get_socket_back + 139
+2   libxcb.1.dylib                	0x00000001101534ae xcb_send_request + 935
+3   libxcb.1.dylib                	0x0000000110159784 xcb_intern_atom + 197
+4   libstartup-notification-1.0.dylib	0x000000010fd3d37e sn_xcb_display_new + 78
+5   i3                            	0x000000010f6d4e30 main + 4000
+6   libdyld.dylib                 	0x00007fff906185fd start + 1
+
+Has anybody else seen this problem with libxcb-1.10 on OS X or other
+platforms?  Is this most likely caused by XQuartz, libxcb, libsn, or i3?
+
+Thanks,
+
+-- 
+Marcus
+
+From keks at cookiesoft.de  Tue May 20 09:51:45 2014
+From: keks at cookiesoft.de (Marcel Hellwig)
+Date: Tue, 20 May 2014 09:51:45 +0200
+Subject: [i3] Weather forecast for i3
+Message-ID: <537B0991.5000606@cookiesoft.de>
+
+Hello everyone,
+
+I currently use Conky for some system information and it works (wow,
+didn't expect it).
+But I'd like to have a weather forecast, too, but I don't think, that I
+can use the apps from KDE/Gnome, can I?
+So what's the best solution, *without* using conky.
+
+Greetings,
+Marcel
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 884 bytes
+Desc: OpenPGP digital signature
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140520/3df80c28/attachment.sig>
+
+From public at enkore.de  Tue May 20 10:06:10 2014
+From: public at enkore.de (Marian Beermann)
+Date: Tue, 20 May 2014 10:06:10 +0200
+Subject: [i3] Weather forecast for i3
+In-Reply-To: <537B0991.5000606@cookiesoft.de>
+References: <537B0991.5000606@cookiesoft.de>
+Message-ID: <537B0CF2.5080603@enkore.de>
+
+There are a handful replacements for i3status like i3pystatus or
+py3status. I don't know about py3status ; i3pystatus has a weather
+module built in.
+
+On 05/20/2014 09:51 AM, Marcel Hellwig wrote:
+> Hello everyone,
+> 
+> I currently use Conky for some system information and it works (wow,
+> didn't expect it).
+> But I'd like to have a weather forecast, too, but I don't think, that I
+> can use the apps from KDE/Gnome, can I?
+> So what's the best solution, *without* using conky.
+> 
+> Greetings,
+> Marcel
+> 
+
+
+From chandan.pitta at gmail.com  Fri May 23 16:39:22 2014
+From: chandan.pitta at gmail.com (chandan)
+Date: Fri, 23 May 2014 14:39:22 +0000 (UTC)
+Subject: [i3] Content Assistant
+References: <CABTqaieBFMBjBsASg7nLXFy9EX6ey1Q2xJs615-0G7ZGuC=qTw@mail.gmail.com>
+ <5367F67E.8010002@necoro.eu> <x638gn28tz.fsf@midna.zekjur.net>
+Message-ID: <loom.20140523T163535-862@post.gmane.org>
+
+
+Michael Stapelberg <michael <at> i3wm.org> writes:
+
+> 
+> Hi,
+> 
+> lists <at> necoro.eu writes:
+> >> While using i3 I noticed that the eclipse content assistant is not
+> >> functioning very well, for example it is unable to auto complete classe
+> >> name when i push ctrl+space.  For example under the standard desktop
+> >> environment it would complete things like 'ArrayList' when I type 'Array
+> >> Ctrl+space' but under i3 nothing happens, the content assistant wont be
+> >> pop-up.
+> >
+> > Could you just double-check you don't have Ctrl+Space bound to something
+> > in i3?
+> Note that dunst comes with Ctrl+Space as default keybinding.
+> 
+> What’s always worth a shot is trying to reproduce problems with a fresh
+> user account to rule out local setup issues.
+> 
+
+I am facing the same issue. Eclipse is not auto completing when I press 
+ctrl+space in i3. I am using eclipse 4.3 and i3 4.7.2 on Ubuntu 14.04. Just 
+to make sure my .i3/config is not binding any keys, I completely deleted the 
+file and created an empty config file. Yet I am unable to get the eclipse 
+code completion to work with ctrl+space. Any other ideas?
+
+
+
+From okraits at arcor.de  Sat May 24 08:13:30 2014
+From: okraits at arcor.de (Oliver Kraitschy)
+Date: Sat, 24 May 2014 08:13:30 +0200
+Subject: [i3] Content Assistant
+Message-ID: <sjsuxhvqr3f0nln0hlapw1dt.1400912010273@email.android.com>
+
+Hi,
+
+Are you using dunst? It has the same default keybinding.
+
+Greetings,
+
+Oliver
+
+-------- Ursprüngliche Nachricht --------
+Von: chandan <chandan.pitta at gmail.com> 
+Datum:23.05.2014  16:39  (GMT+01:00) 
+An: i3-discuss at i3.zekjur.net 
+Betreff: Re: [i3] Content Assistant 
+
+
+Michael Stapelberg <michael <at> i3wm.org> writes:
+
+> 
+> Hi,
+> 
+> lists <at> necoro.eu writes:
+> >> While using i3 I noticed that the eclipse content assistant is not
+> >> functioning very well, for example it is unable to auto complete classe
+> >> name when i push ctrl+space.  For example under the standard desktop
+> >> environment it would complete things like 'ArrayList' when I type 'Array
+> >> Ctrl+space' but under i3 nothing happens, the content assistant wont be
+> >> pop-up.
+> >
+> > Could you just double-check you don't have Ctrl+Space bound to something
+> > in i3?
+> Note that dunst comes with Ctrl+Space as default keybinding.
+> 
+> What’s always worth a shot is trying to reproduce problems with a fresh
+> user account to rule out local setup issues.
+> 
+
+I am facing the same issue. Eclipse is not auto completing when I press 
+ctrl+space in i3. I am using eclipse 4.3 and i3 4.7.2 on Ubuntu 14.04. Just 
+to make sure my .i3/config is not binding any keys, I completely deleted the 
+file and created an empty config file. Yet I am unable to get the eclipse 
+code completion to work with ctrl+space. Any other ideas?
+
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140524/015bf987/attachment.html>
+
+From aagaande at gmail.com  Sat May 24 12:03:44 2014
+From: aagaande at gmail.com (Anders Aagaard)
+Date: Sat, 24 May 2014 12:03:44 +0200
+Subject: [i3] Google hangouts extension
+Message-ID: <CANOdGiy8dDh63QgAVDiDsLVts-5j_9K8dfZ3fEg+e5JvpdVn3A@mail.gmail.com>
+
+Hi
+
+I absolutely love i3, I've been switching window managers fairly
+regularly for.. 10+ years, but i3 I'm really enjoying.
+
+My only annoyance is with the google chrome hangouts extension and my laptop.
+
+Question 1:
+I regularly use multiple different screens (with different
+resolutions), I'd love to use for_window to lock the hangouts window
+to the lower right corner of my screen, but I can't really do this by
+px, as the resolutions will constantly change. Can I specify move
+position up 20px, left 20px, with the lower right corner as gravity
+somehow?
+
+Question 2:
+Often when clicking on the extension (or a person in the chat) I'll
+have a window open with that content on another workspace. In those
+cases chrome will request that window gets focus, but since it's on
+another workspace I won't see that. Is there any option to either
+switch me to the workspace/move the window to the current workspace
+when a window requests focus? (.. and I do realize this option could
+be absolutely horrid if some random window has bad behavior and
+requests focus constantly.. :/ )
+
+Best regards
+Anders
+
+From michael at i3wm.org  Sun May 25 18:38:28 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 25 May 2014 18:38:28 +0200
+Subject: [i3] Google hangouts extension
+In-Reply-To: <CANOdGiy8dDh63QgAVDiDsLVts-5j_9K8dfZ3fEg+e5JvpdVn3A@mail.gmail.com>
+References: <CANOdGiy8dDh63QgAVDiDsLVts-5j_9K8dfZ3fEg+e5JvpdVn3A@mail.gmail.com>
+Message-ID: <x6iootq0e3.fsf@midna.zekjur.net>
+
+Hi Anders,
+
+Anders Aagaard <aagaande at gmail.com> writes:
+> Question 1:
+> I regularly use multiple different screens (with different
+> resolutions), I'd love to use for_window to lock the hangouts window
+> to the lower right corner of my screen, but I can't really do this by
+> px, as the resolutions will constantly change. Can I specify move
+> position up 20px, left 20px, with the lower right corner as gravity
+> somehow?
+Nope. You’ll need a custom script for that using the IPC interface, see
+http://build.i3wm.org/docs/ipc.html
+
+> Question 2:
+> Often when clicking on the extension (or a person in the chat) I'll
+> have a window open with that content on another workspace. In those
+> cases chrome will request that window gets focus, but since it's on
+> another workspace I won't see that. Is there any option to either
+> switch me to the workspace/move the window to the current workspace
+> when a window requests focus? (.. and I do realize this option could
+> be absolutely horrid if some random window has bad behavior and
+> requests focus constantly.. :/ )
+We intentionally disallow these kinds of focus requests for exactly the
+reason you cite in your last sentence. src/handlers.c:728 is the place
+in the code if you want to patch it yourself and see what happens in
+your setup.
+
+-- 
+Best regards,
+Michael
+
+From aagaande at gmail.com  Sun May 25 20:58:11 2014
+From: aagaande at gmail.com (Anders Aagaard)
+Date: Sun, 25 May 2014 20:58:11 +0200
+Subject: [i3] Google hangouts extension
+In-Reply-To: <x6iootq0e3.fsf@midna.zekjur.net>
+References: <CANOdGiy8dDh63QgAVDiDsLVts-5j_9K8dfZ3fEg+e5JvpdVn3A@mail.gmail.com>
+ <x6iootq0e3.fsf@midna.zekjur.net>
+Message-ID: <CANOdGiyeAL5Gs5nH=xnm=VGMYLsX+SujZpbiJ_bjZ7PV4+Gqug@mail.gmail.com>
+
+Very nice, I've looked over the documentation several times without
+noticing there was a ipc interface.
+
+I'l definitely check out that out. Do you think it would be worth it
+to add a IPC event for a denied focus request? I can have a go at
+making a pull request for it if you'd be interested, but it might be a
+bit of a corner case..
+
+On Sun, May 25, 2014 at 6:38 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+> Hi Anders,
+>
+> Anders Aagaard <aagaande at gmail.com> writes:
+>> Question 1:
+>> I regularly use multiple different screens (with different
+>> resolutions), I'd love to use for_window to lock the hangouts window
+>> to the lower right corner of my screen, but I can't really do this by
+>> px, as the resolutions will constantly change. Can I specify move
+>> position up 20px, left 20px, with the lower right corner as gravity
+>> somehow?
+> Nope. You'll need a custom script for that using the IPC interface, see
+> http://build.i3wm.org/docs/ipc.html
+>
+>> Question 2:
+>> Often when clicking on the extension (or a person in the chat) I'll
+>> have a window open with that content on another workspace. In those
+>> cases chrome will request that window gets focus, but since it's on
+>> another workspace I won't see that. Is there any option to either
+>> switch me to the workspace/move the window to the current workspace
+>> when a window requests focus? (.. and I do realize this option could
+>> be absolutely horrid if some random window has bad behavior and
+>> requests focus constantly.. :/ )
+> We intentionally disallow these kinds of focus requests for exactly the
+> reason you cite in your last sentence. src/handlers.c:728 is the place
+> in the code if you want to patch it yourself and see what happens in
+> your setup.
+>
+> --
+> Best regards,
+> Michael
+
+
+
+-- 
+Weeks of coding can save you hours of planning.
+- http://www.codebox.no
+- http://code.google.com/p/aagaande/
+
+From michael at i3wm.org  Mon May 26 08:56:14 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 26 May 2014 08:56:14 +0200
+Subject: [i3] Google hangouts extension
+In-Reply-To: <CANOdGiyeAL5Gs5nH=xnm=VGMYLsX+SujZpbiJ_bjZ7PV4+Gqug@mail.gmail.com>
+References: <CANOdGiy8dDh63QgAVDiDsLVts-5j_9K8dfZ3fEg+e5JvpdVn3A@mail.gmail.com>
+ <x6iootq0e3.fsf@midna.zekjur.net>
+ <CANOdGiyeAL5Gs5nH=xnm=VGMYLsX+SujZpbiJ_bjZ7PV4+Gqug@mail.gmail.com>
+Message-ID: <x6d2f1owoh.fsf@midna.zekjur.net>
+
+Hi Anders,
+
+Anders Aagaard <aagaande at gmail.com> writes:
+> I'l definitely check out that out. Do you think it would be worth it
+> to add a IPC event for a denied focus request? I can have a go at
+> making a pull request for it if you'd be interested, but it might be a
+> bit of a corner case..
+That sounds reasonable. That way, a third-party script can make the
+decision (based on arbitrarily complex rules) on what to focus. Submit
+patches at http://cr.i3wm.org/ :).
+
+-- 
+Best regards,
+Michael
+
+From crestani at informatik.uni-tuebingen.de  Mon May 26 11:56:58 2014
+From: crestani at informatik.uni-tuebingen.de (Marcus Crestani)
+Date: Mon, 26 May 2014 11:56:58 +0200
+Subject: [i3] segfaults with libxcb-1.10
+In-Reply-To: <m2bnuvsdsx.fsf@informatik.uni-tuebingen.de> (Marcus Crestani's
+ message of "Sun, 18 May 2014 10:15:26 +0200")
+References: <m2bnuvsdsx.fsf@informatik.uni-tuebingen.de>
+Message-ID: <m2a9a450d1.fsf@informatik.uni-tuebingen.de>
+
+>>>>>"MC" == Marcus Crestani <crestani at informatik.uni-tuebingen.de> writes:
+MC> Thread 0 Crashed:: Dispatch queue: com.apple.main-thread
+MC> 0   ???                           	0x0000000100000000 0 + 4294967296
+MC> 1   libxcb.1.dylib                	0x0000000110152f24 get_socket_back + 139
+MC> 2   libxcb.1.dylib                	0x00000001101534ae xcb_send_request + 935
+MC> 3   libxcb.1.dylib                	0x0000000110159784 xcb_intern_atom + 197
+MC> 4   libstartup-notification-1.0.dylib	0x000000010fd3d37e sn_xcb_display_new + 78
+MC> 5   i3                            	0x000000010f6d4e30 main + 4000
+MC> 6   libdyld.dylib                 	0x00007fff906185fd start + 1
+MC> Has anybody else seen this problem with libxcb-1.10 on OS X or other
+MC> platforms?  Is this most likely caused by XQuartz, libxcb, libsn, or i3?
+
+Since nobody seems to have run into this problem, I started digging
+deeper.  The problem was caused by my setup, I realized that I was
+linking against libsn that itself was linking against a rather old
+libxcb-1.6.  Rebuilding libsn and linking it against libxcb-1.10 fixed
+the problem.  Sorry for the noise.
+
+-- 
+Marcus
+
+From aagaande at gmail.com  Tue May 27 19:43:28 2014
+From: aagaande at gmail.com (Anders Aagaard)
+Date: Tue, 27 May 2014 19:43:28 +0200
+Subject: [i3] Google hangouts extension
+In-Reply-To: <x6d2f1owoh.fsf@midna.zekjur.net>
+References: <CANOdGiy8dDh63QgAVDiDsLVts-5j_9K8dfZ3fEg+e5JvpdVn3A@mail.gmail.com>
+ <x6iootq0e3.fsf@midna.zekjur.net>
+ <CANOdGiyeAL5Gs5nH=xnm=VGMYLsX+SujZpbiJ_bjZ7PV4+Gqug@mail.gmail.com>
+ <x6d2f1owoh.fsf@midna.zekjur.net>
+Message-ID: <CANOdGiyKTpOCYU858KvhUn=ZvtLXnncamQ_9Z_1wzToqyCfgmw@mail.gmail.com>
+
+Sent a patch to http://cr.i3wm.org/patch/559 now. I unfortunately
+can't get the tests running. Trying to start up a x session with
+Xdummy seems to make the nvidia driver explode... I've done some
+manual testing and I really don't see how this could screw up anything
+else (.. famous last words I know).
+
+It's been a good 5 years since I've written any C or perl, so any
+comments are welcome :)
+
+I can do testing in a VM if needed, but I won't have time for that
+tonight. If I make some slightly larger pull requests I will set that
+up though.
+
+On Mon, May 26, 2014 at 8:56 AM, Michael Stapelberg <michael at i3wm.org> wrote:
+> Hi Anders,
+>
+> Anders Aagaard <aagaande at gmail.com> writes:
+>> I'l definitely check out that out. Do you think it would be worth it
+>> to add a IPC event for a denied focus request? I can have a go at
+>> making a pull request for it if you'd be interested, but it might be a
+>> bit of a corner case..
+> That sounds reasonable. That way, a third-party script can make the
+> decision (based on arbitrarily complex rules) on what to focus. Submit
+> patches at http://cr.i3wm.org/ :).
+>
+> --
+> Best regards,
+> Michael
+
+
+
+-- 
+Weeks of coding can save you hours of planning.
+- http://www.codebox.no
+- http://code.google.com/p/aagaande/
+
+From aagaande at gmail.com  Tue May 27 20:25:42 2014
+From: aagaande at gmail.com (Anders Aagaard)
+Date: Tue, 27 May 2014 20:25:42 +0200
+Subject: [i3] Google hangouts extension
+In-Reply-To: <CANOdGiyKTpOCYU858KvhUn=ZvtLXnncamQ_9Z_1wzToqyCfgmw@mail.gmail.com>
+References: <CANOdGiy8dDh63QgAVDiDsLVts-5j_9K8dfZ3fEg+e5JvpdVn3A@mail.gmail.com>
+ <x6iootq0e3.fsf@midna.zekjur.net>
+ <CANOdGiyeAL5Gs5nH=xnm=VGMYLsX+SujZpbiJ_bjZ7PV4+Gqug@mail.gmail.com>
+ <x6d2f1owoh.fsf@midna.zekjur.net>
+ <CANOdGiyKTpOCYU858KvhUn=ZvtLXnncamQ_9Z_1wzToqyCfgmw@mail.gmail.com>
+Message-ID: <CANOdGix1n7JAv4qoOwaiM_4CvkwrMkWEWwXr9bd5K8CD7F4Wiw@mail.gmail.com>
+
+Starting to implement the client side of this I realize it might be
+good to know the workspace of the window in question. That's easy
+enough to add.  Also technically we could skip the "changed" field, as
+the "focused" field in the container will tell you the same
+information. I also wouldn't mind knowing the window class. Any
+technical reason that's not already in the Con class?
+
+On Tue, May 27, 2014 at 7:43 PM, Anders Aagaard <aagaande at gmail.com> wrote:
+> Sent a patch to http://cr.i3wm.org/patch/559 now. I unfortunately
+> can't get the tests running. Trying to start up a x session with
+> Xdummy seems to make the nvidia driver explode... I've done some
+> manual testing and I really don't see how this could screw up anything
+> else (.. famous last words I know).
+>
+> It's been a good 5 years since I've written any C or perl, so any
+> comments are welcome :)
+>
+> I can do testing in a VM if needed, but I won't have time for that
+> tonight. If I make some slightly larger pull requests I will set that
+> up though.
+>
+> On Mon, May 26, 2014 at 8:56 AM, Michael Stapelberg <michael at i3wm.org> wrote:
+>> Hi Anders,
+>>
+>> Anders Aagaard <aagaande at gmail.com> writes:
+>>> I'l definitely check out that out. Do you think it would be worth it
+>>> to add a IPC event for a denied focus request? I can have a go at
+>>> making a pull request for it if you'd be interested, but it might be a
+>>> bit of a corner case..
+>> That sounds reasonable. That way, a third-party script can make the
+>> decision (based on arbitrarily complex rules) on what to focus. Submit
+>> patches at http://cr.i3wm.org/ :).
+>>
+>> --
+>> Best regards,
+>> Michael
+>
+>
+>
+> --
+> Weeks of coding can save you hours of planning.
+> - http://www.codebox.no
+> - http://code.google.com/p/aagaande/
+
+
+
+-- 
+Weeks of coding can save you hours of planning.
+- http://www.codebox.no
+- http://code.google.com/p/aagaande/
+
+From michael at i3wm.org  Sat May 31 15:18:03 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 31 May 2014 15:18:03 +0200
+Subject: [i3] Google hangouts extension
+In-Reply-To: <CANOdGix1n7JAv4qoOwaiM_4CvkwrMkWEWwXr9bd5K8CD7F4Wiw@mail.gmail.com>
+References: <CANOdGiy8dDh63QgAVDiDsLVts-5j_9K8dfZ3fEg+e5JvpdVn3A@mail.gmail.com>
+ <x6iootq0e3.fsf@midna.zekjur.net>
+ <CANOdGiyeAL5Gs5nH=xnm=VGMYLsX+SujZpbiJ_bjZ7PV4+Gqug@mail.gmail.com>
+ <x6d2f1owoh.fsf@midna.zekjur.net>
+ <CANOdGiyKTpOCYU858KvhUn=ZvtLXnncamQ_9Z_1wzToqyCfgmw@mail.gmail.com>
+ <CANOdGix1n7JAv4qoOwaiM_4CvkwrMkWEWwXr9bd5K8CD7F4Wiw@mail.gmail.com>
+Message-ID: <x638fqytmc.fsf@midna.zekjur.net>
+
+Hi Anders,
+
+Anders Aagaard <aagaande at gmail.com> writes:
+> Starting to implement the client side of this I realize it might be
+> good to know the workspace of the window in question. That's easy
+> enough to add.  Also technically we could skip the "changed" field, as
+> the "focused" field in the container will tell you the same
+> information. I also wouldn't mind knowing the window class. Any
+> technical reason that's not already in the Con class?
+It is — I think you’re not using the “next” branch, but you should. The
+“master” branch contains the latest release + bugfixes only, whereas
+development happens in “next”.
+
+> On Tue, May 27, 2014 at 7:43 PM, Anders Aagaard <aagaande at gmail.com> wrote:
+>> Sent a patch to http://cr.i3wm.org/patch/559 now. I unfortunately
+>> can't get the tests running. Trying to start up a x session with
+>> Xdummy seems to make the nvidia driver explode... I've done some
+>> manual testing and I really don't see how this could screw up anything
+>> else (.. famous last words I know).
+I have the tests working with nvidia 331.67. Can you be more specific
+about what breaks on your machine?
+
+-- 
+Best regards,
+Michael
+
+From johannes.lippmann at googlemail.com  Sat May 31 15:20:21 2014
+From: johannes.lippmann at googlemail.com (Johannes Lippmann)
+Date: Sat, 31 May 2014 13:22:21 +0002
+Subject: [i3] Google hangouts extension
+In-Reply-To: <x638fqytmc.fsf@midna.zekjur.net>
+References: <CANOdGiy8dDh63QgAVDiDsLVts-5j_9K8dfZ3fEg+e5JvpdVn3A@mail.gmail.com>
+ <x6iootq0e3.fsf@midna.zekjur.net>
+ <CANOdGiyeAL5Gs5nH=xnm=VGMYLsX+SujZpbiJ_bjZ7PV4+Gqug@mail.gmail.com>
+ <x6d2f1owoh.fsf@midna.zekjur.net>
+ <CANOdGiyKTpOCYU858KvhUn=ZvtLXnncamQ_9Z_1wzToqyCfgmw@mail.gmail.com>
+ <CANOdGix1n7JAv4qoOwaiM_4CvkwrMkWEWwXr9bd5K8CD7F4Wiw@mail.gmail.com>
+ <x638fqytmc.fsf@midna.zekjur.net>
+Message-ID: <1401542421.5090.2@smtp.gmail.com>
+
+How can I unsubscribe from this mailinglist?
+
+On Sat, May 31, 2014 at 3:18 PM, Michael Stapelberg <michael at i3wm.org> 
+wrote:
+> Hi Anders,
+> 
+> Anders Aagaard <aagaande at gmail.com> writes:
+>>  Starting to implement the client side of this I realize it might be
+>>  good to know the workspace of the window in question. That's easy
+>>  enough to add.  Also technically we could skip the "changed" field, 
+>> as
+>>  the "focused" field in the container will tell you the same
+>>  information. I also wouldn't mind knowing the window class. Any
+>>  technical reason that's not already in the Con class?
+> It is — I think you’re not using the “next” branch, but you 
+> should. The
+> “master” branch contains the latest release + bugfixes only, 
+> whereas
+> development happens in “next”.
+> 
+>>  On Tue, May 27, 2014 at 7:43 PM, Anders Aagaard 
+>> <aagaande at gmail.com> wrote:
+>>>  Sent a patch to http://cr.i3wm.org/patch/559 now. I unfortunately
+>>>  can't get the tests running. Trying to start up a x session with
+>>>  Xdummy seems to make the nvidia driver explode... I've done some
+>>>  manual testing and I really don't see how this could screw up 
+>>> anything
+>>>  else (.. famous last words I know).
+> I have the tests working with nvidia 331.67. Can you be more specific
+> about what breaks on your machine?
+> 
+> -- 
+> Best regards,
+> Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20140531/049932c2/attachment.html>
+
+From michael at i3wm.org  Sat May 31 16:36:26 2014
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 31 May 2014 16:36:26 +0200
+Subject: [i3] Google hangouts extension
+In-Reply-To: <1401542421.5090.2@smtp.gmail.com>
+References: <CANOdGiy8dDh63QgAVDiDsLVts-5j_9K8dfZ3fEg+e5JvpdVn3A@mail.gmail.com>
+ <x6iootq0e3.fsf@midna.zekjur.net>
+ <CANOdGiyeAL5Gs5nH=xnm=VGMYLsX+SujZpbiJ_bjZ7PV4+Gqug@mail.gmail.com>
+ <x6d2f1owoh.fsf@midna.zekjur.net>
+ <CANOdGiyKTpOCYU858KvhUn=ZvtLXnncamQ_9Z_1wzToqyCfgmw@mail.gmail.com>
+ <CANOdGix1n7JAv4qoOwaiM_4CvkwrMkWEWwXr9bd5K8CD7F4Wiw@mail.gmail.com>
+ <x638fqytmc.fsf@midna.zekjur.net> <1401542421.5090.2@smtp.gmail.com>
+Message-ID: <x6ioomuiad.fsf@midna.zekjur.net>
+
+Hi Johannes,
+
+Johannes Lippmann <johannes.lippmann at googlemail.com> writes:
+> How can I unsubscribe from this mailinglist?
+Click on “show original” to see the headers of any email to this
+list. There, you’ll see:
+
+List-Unsubscribe:
+<http://infra.in.zekjur.net/cgi-bin/mailman/options/i3-discuss>,                                                                                                    
+ <mailto:i3-discuss-request at i3.zekjur.net?subject=unsubscribe>                                                                                                                        
+So, either send an email to the address listed there or follow the URL
+and unsubscribe via the webinterface.
+
+-- 
+Best regards,
+Michael
+

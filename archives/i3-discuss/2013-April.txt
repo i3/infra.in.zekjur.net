@@ -1,0 +1,2248 @@
+From bruno.braga at gmail.com  Fri Apr  5 08:18:58 2013
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Fri, 5 Apr 2013 16:18:58 +1000
+Subject: [i3] i3lock hooks
+Message-ID: <CAAuVr71jo9HZvcF8kZwfOD5Ezt2JmUC-RCXhc6pbS=9tE1A+Cw@mail.gmail.com>
+
+Hi,
+
+Does anyone know how can I hook a script with i3lock (or similar)?
+
+What I want is to change stuff like my status on IM, Skype, IRC, and when I
+unlock it, change it back for me.
+
+I basically have a bindsym to Ctrl+Alt+L for i3lock, and could easily wrap
+into a script to do a pre-process hook to do stuff then call i3lock... but
+once i3lock finishes (I type in the correct password), I can not reach that
+event to run a post-process script, can I?
+
+Any ideas on how I could achieve this?
+
+Thanks,
+
+--
+*Bruno Braga*
+www.brunobraga.net
+bruno.braga at gmail.com
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130405/66a9ca1d/attachment.html>
+
+From baspape at gmail.com  Fri Apr  5 08:33:58 2013
+From: baspape at gmail.com (Bas Pape)
+Date: Fri, 5 Apr 2013 08:33:58 +0200
+Subject: [i3] i3lock hooks
+In-Reply-To: <CAAuVr71jo9HZvcF8kZwfOD5Ezt2JmUC-RCXhc6pbS=9tE1A+Cw@mail.gmail.com>
+References: <CAAuVr71jo9HZvcF8kZwfOD5Ezt2JmUC-RCXhc6pbS=9tE1A+Cw@mail.gmail.com>
+Message-ID: <CAMoU6uYmFn2qJFs7JyMij2HMgi7kO_xQQu05hP+msdDZ+G+ZrQ@mail.gmail.com>
+
+2013/4/5 BRAGA, Bruno <bruno.braga at gmail.com>:
+> I basically have a bindsym to Ctrl+Alt+L for i3lock, and could easily wrap
+> into a script to do a pre-process hook to do stuff then call i3lock... but
+> once i3lock finishes (I type in the correct password), I can not reach that
+> event to run a post-process script, can I?
+
+You can either run i3lock in the foreground (would disable the
+possiblity to suspend etc. after locking); or save i3lock's pid (after
+forking) and use waitpid to wait for it to exit.
+
+--
+Tucos
+
+From esr at thyrsus.com  Sun Apr  7 14:12:57 2013
+From: esr at thyrsus.com (Eric S. Raymond)
+Date: Sun,  7 Apr 2013 08:12:57 -0400 (EDT)
+Subject: [i3] Natural sizing of windows
+Message-ID: <20130407121257.C46DA42F75@snark.thyrsus.com>
+
+I am new to i3 and to tiling window managers in general.  I'm using i3 now,
+after having experimented briefly with awesome and xmonad, because the UI
+seems a little better thought out and documented here.
+
+There is one thing I miss from conventional window managers, though,
+and I am wondering if it could be integrated into i3's model.  The
+practical problem is that I normally want both my terminal emulators
+and my Emacs windows to have a fixed 80-column width (unless I
+explicitly resize them), in order for the text displays to look
+natural.
+
+The more general problem is that i3's rules for sizing windows take no
+account of the application's preferred or default size.  This also
+affects (for example) Pithos, which in a floating-layout window
+manager creates a smallish window but under i3 gets sized so it has
+acres of pointless whitespace.
+
+I propose a "natural sizing" option that would, at window-layout
+time, query an application for its preferred size and try to meet
+that preference as closely as possible. I suggest the following rules:
+
+(1) When splitting a container vertically to create a naturally-sized
+application window, the new window's width is set to that size
+(provided it is less than the parent width).  The new window's 
+height is the parent height.
+
+(2) When splitting a container horizontally to create a naturally-sized
+application window, the new window's height is set to that size
+(provided it is less than the parent height).  The new window's 
+width is the parent width.
+
+(3) When the user explicitly resizes a window, it is no longer treated
+as naturally sized.
+
+(4) When a container is resized, naturally-sized subwindows are *not*
+resized - only the "flex-sized" others shrink or expand. This rule may
+lock the container's horizontal or vertical or both sizes depending on
+the subwindow layout.
+
+(5) Because the first window created in a workspace isn't made with 
+a container split, it is always flex-sized.
+
+I would like to be able to tell i3 to size all terminal emulators 
+and Emacs windows naturally. Then my normal startup sequence would look
+like this:
+
+1. $mod-Enter to create a flex-sized terminal emulator filling the screen.
+
+2. $mod-Enter to create a natural-sized terminal emulator
+
+3. Change focus to the flex-sized window
+
+4. $mod-d emacs to create a naturally-sized Emacs
+
+My normal practice when suggesting a feature like this would be to
+ship a patch implementing it, and I apologize for not doing so. But it
+seems like a simple enough idea to be implemented very quickly by
+someone who (unlike me) already knows the window manager internals.
+-- 
+		<a href="http://www.catb.org/~esr/">Eric S. Raymond</a>
+
+When all government ...in little as in great things... shall be drawn to
+Washington as the center of all power; it will render powerless the checks
+provided of one government on another, and will become as venal and oppressive
+as the government from which we separated."	-- Thomas Jefferson, 1821
+
+From michael at i3wm.org  Sun Apr  7 14:48:29 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 07 Apr 2013 14:48:29 +0200
+Subject: [i3] Natural sizing of windows
+In-Reply-To: <20130407121257.C46DA42F75@snark.thyrsus.com>
+References: <20130407121257.C46DA42F75@snark.thyrsus.com>
+Message-ID: <87sj32jyle.fsf@x200.zekjur.net>
+
+Hi Eric,
+
+"Eric S. Raymond" <esr at thyrsus.com> writes:
+> There is one thing I miss from conventional window managers, though,
+> and I am wondering if it could be integrated into i3's model.  The
+> practical problem is that I normally want both my terminal emulators
+> and my Emacs windows to have a fixed 80-column width (unless I
+> explicitly resize them), in order for the text displays to look
+> natural.
+In practice it boils down to this (for me):
+
+The number of columns (with ?natural? looking windows inside) you can
+have on a specific monitor depends on that monitor?s width. E.g., with
+my 1280 px notebook screen, I can have two terminal emulators or emacs
+windows next to each other. On a bigger screen, I could fit three or
+four columns.
+
+Therefore, I usually work with ?workspace_layout? stacked and create a
+fixed number of columns: Mod+Enter, Mod+u (focus parent),
+Mod+Enter. This entirely eliminates the need for your suggested feature.
+
+> My normal practice when suggesting a feature like this would be to
+> ship a patch implementing it, and I apologize for not doing so. But it
+> seems like a simple enough idea to be implemented very quickly by
+> someone who (unlike me) already knows the window manager internals.
+I think you are _very_ wrong. Implementing a feature such as this one is
+quite a difficult task with many subtleties. Additionally, I think it
+doesn?t really fit well into the concept of i3 and makes the whole thing
+even harder to understand.
+
+If you come up with a patch though, I?d give it a look to see how it
+feels before judging.
+
+-- 
+Best regards,
+Michael
+
+From esr at thyrsus.com  Sun Apr  7 15:18:46 2013
+From: esr at thyrsus.com (Eric S. Raymond)
+Date: Sun, 7 Apr 2013 09:18:46 -0400
+Subject: [i3] Natural sizing of windows
+In-Reply-To: <87sj32jyle.fsf@x200.zekjur.net>
+References: <20130407121257.C46DA42F75@snark.thyrsus.com>
+ <87sj32jyle.fsf@x200.zekjur.net>
+Message-ID: <20130407131846.GA2610@thyrsus.com>
+
+Michael Stapelberg <michael at i3wm.org>:
+> The number of columns (with ?natural? looking windows inside) you can
+> have on a specific monitor depends on that monitor?s width. E.g., with
+> my 1280 px notebook screen, I can have two terminal emulators or emacs
+> windows next to each other. On a bigger screen, I could fit three or
+> four columns.
+> 
+> Therefore, I usually work with ?workspace_layout? stacked and create a
+> fixed number of columns: Mod+Enter, Mod+u (focus parent),
+> Mod+Enter. This entirely eliminates the need for your suggested feature.
+
+Perhaps it does, but I don't get it yet. If I did this, would I have to
+manually resize the columns I wanted to be 80 characters wide?
+
+> If you come up with a patch though, I?d give it a look to see how it
+> feels before judging.
+
+Noted.  Not likely to happen soon; I have too much else on my plate.
+-- 
+		<a href="http://www.catb.org/~esr/">Eric S. Raymond</a>
+
+From michael at i3wm.org  Sun Apr  7 15:44:22 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 07 Apr 2013 15:44:22 +0200
+Subject: [i3] Natural sizing of windows
+In-Reply-To: <20130407131846.GA2610@thyrsus.com>
+References: <20130407121257.C46DA42F75@snark.thyrsus.com>
+ <87sj32jyle.fsf@x200.zekjur.net> <20130407131846.GA2610@thyrsus.com>
+Message-ID: <87ppy6jw09.fsf@x200.zekjur.net>
+
+Hi Eric,
+
+"Eric S. Raymond" <esr at thyrsus.com> writes:
+>> Therefore, I usually work with ?workspace_layout? stacked and create a
+>> fixed number of columns: Mod+Enter, Mod+u (focus parent),
+>> Mod+Enter. This entirely eliminates the need for your suggested feature.
+>
+> Perhaps it does, but I don't get it yet. If I did this, would I have to
+> manually resize the columns I wanted to be 80 characters wide?
+I attached two screenshots to illustrate what I mean. The columns in
+i3-col-2.png are not precisely 80 characters wide, but they _contain_ 80
+characters. If I?d open one more, they wouldn?t be able to contain 80
+chars anymore (i3-col-3.png).
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: i3-col-2.png
+Type: image/png
+Size: 62184 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130407/a6fb3d70/attachment-0002.png>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: i3-col-3.png
+Type: image/png
+Size: 73812 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130407/a6fb3d70/attachment-0003.png>
+
+From esr at thyrsus.com  Sun Apr  7 17:06:45 2013
+From: esr at thyrsus.com (Eric S. Raymond)
+Date: Sun, 7 Apr 2013 11:06:45 -0400
+Subject: [i3] Natural sizing of windows
+In-Reply-To: <87ppy6jw09.fsf@x200.zekjur.net>
+References: <20130407121257.C46DA42F75@snark.thyrsus.com>
+ <87sj32jyle.fsf@x200.zekjur.net>
+ <20130407131846.GA2610@thyrsus.com>
+ <87ppy6jw09.fsf@x200.zekjur.net>
+Message-ID: <20130407150645.GA6471@thyrsus.com>
+
+Michael Stapelberg <michael at i3wm.org>:
+> > Perhaps it does, but I don't get it yet. If I did this, would I have to
+> > manually resize the columns I wanted to be 80 characters wide?
+> I attached two screenshots to illustrate what I mean. The columns in
+> i3-col-2.png are not precisely 80 characters wide, but they _contain_ 80
+> characters. If I?d open one more, they wouldn?t be able to contain 80
+> chars anymore (i3-col-3.png).
+
+I see.  Yes, I was able to get a similar effect by duplicating the
+keystrokes you described.
+
+But I don't consider that this makes a natural-sizing feature
+unnecessary.  It's merely a coincidence that a three-column split
+happens to be close to 80 columns on my monitor (and 94 columns isn't
+that close, actually).  It wouldn't be on a different sized monitor, so I
+can't use the same exec in my config file to get naturally-sized
+terminal emulators on both devices.
+
+This is of course not an i3-specific limitation, but common to
+almost all tiling wms.  I might try to fix it here.
+-- 
+		<a href="http://www.catb.org/~esr/">Eric S. Raymond</a>
+
+From joepvandelft at xs4all.nl  Sun Apr  7 17:54:47 2013
+From: joepvandelft at xs4all.nl (Joep van Delft)
+Date: Sun, 7 Apr 2013 17:54:47 +0200
+Subject: [i3] Natural sizing of windows
+In-Reply-To: <20130407150645.GA6471@thyrsus.com>
+References: <20130407121257.C46DA42F75@snark.thyrsus.com>
+ <87sj32jyle.fsf@x200.zekjur.net>
+ <20130407131846.GA2610@thyrsus.com>
+ <87ppy6jw09.fsf@x200.zekjur.net>
+ <20130407150645.GA6471@thyrsus.com>
+Message-ID: <20130407175447.35b18954@xs4all.nl>
+
+On Sun, 7 Apr 2013 11:06:45 -0400
+"Eric S. Raymond" <esr at thyrsus.com> wrote:
+
+> This is of course not an i3-specific limitation, but common to
+> almost all tiling wms.  I might try to fix it here.
+
+Hi Eric, 
+
+
+Small correction: 'This is (...) common to MANUAL tiling wms'. 
+
+Maybe you should have a look at some Dynamic tiling wms over at
+https://wiki.archlinux.org/index.php/Comparison_of_Tiling_Window_Managers
+and see how your needs get fitted best. 
+
+Kind regards, 
+
+
+	Joep
+
+
+From bruno.braga at gmail.com  Mon Apr  8 04:00:46 2013
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Mon, 8 Apr 2013 12:00:46 +1000
+Subject: [i3] i3lock hooks
+In-Reply-To: <CAMoU6uYmFn2qJFs7JyMij2HMgi7kO_xQQu05hP+msdDZ+G+ZrQ@mail.gmail.com>
+References: <CAAuVr71jo9HZvcF8kZwfOD5Ezt2JmUC-RCXhc6pbS=9tE1A+Cw@mail.gmail.com>
+ <CAMoU6uYmFn2qJFs7JyMij2HMgi7kO_xQQu05hP+msdDZ+G+ZrQ@mail.gmail.com>
+Message-ID: <CAAuVr72VRB6+_NJ6nHj5f6ndKmChGAqw61wUTdzzO8-tdY1fcw@mail.gmail.com>
+
+Hi,
+
+Thanks for the reply.
+
+Would you have a wrapper example for that?
+
+If I understood right, the idea would be to wrap i3 with another
+application, running:
+- execute pre-lock commands
+- fork i3lock
+- get pid
+- waitpid until it is finished
+- execute post-lock commands
+
+is that it? Looks good to me!
+
+
+--
+*Bruno Braga*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Fri, Apr 5, 2013 at 4:33 PM, Bas Pape <baspape at gmail.com> wrote:
+
+> 2013/4/5 BRAGA, Bruno <bruno.braga at gmail.com>:
+> > I basically have a bindsym to Ctrl+Alt+L for i3lock, and could easily
+> wrap
+> > into a script to do a pre-process hook to do stuff then call i3lock...
+> but
+> > once i3lock finishes (I type in the correct password), I can not reach
+> that
+> > event to run a post-process script, can I?
+>
+> You can either run i3lock in the foreground (would disable the
+> possiblity to suspend etc. after locking); or save i3lock's pid (after
+> forking) and use waitpid to wait for it to exit.
+>
+> --
+> Tucos
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130408/a7ddc3a7/attachment.html>
+
+From baspape at gmail.com  Mon Apr  8 07:15:12 2013
+From: baspape at gmail.com (Bas Pape)
+Date: Mon, 8 Apr 2013 07:15:12 +0200
+Subject: [i3] i3lock hooks
+In-Reply-To: <CAAuVr72VRB6+_NJ6nHj5f6ndKmChGAqw61wUTdzzO8-tdY1fcw@mail.gmail.com>
+References: <CAAuVr71jo9HZvcF8kZwfOD5Ezt2JmUC-RCXhc6pbS=9tE1A+Cw@mail.gmail.com>
+ <CAMoU6uYmFn2qJFs7JyMij2HMgi7kO_xQQu05hP+msdDZ+G+ZrQ@mail.gmail.com>
+ <CAAuVr72VRB6+_NJ6nHj5f6ndKmChGAqw61wUTdzzO8-tdY1fcw@mail.gmail.com>
+Message-ID: <CAMoU6ubWu8UU56fxejXVg5He5nja=tqgGOS5F=JT1t5714uyrg@mail.gmail.com>
+
+2013/4/8 BRAGA, Bruno <bruno.braga at gmail.com>:
+> Would you have a wrapper example for that?
+If you so desire I could write one later today.
+
+> If I understood right, the idea would be to wrap i3 with another
+> application, running:
+> - execute pre-lock commands
+> - fork i3lock
+> - get pid
+> - waitpid until it is finished
+> - execute post-lock commands
+>
+> is that it? Looks good to me!
+Yep, that's it. Just now i noticed/realized that there is no waitpid
+binary/shell command and waitpid only works for children; so you
+probably would be better of backgrounding i3lock in the shell
+(combined with i3lock's -n), rather than letting i3lock fork; then you
+can just `wait %1`
+
+--
+Tucos
+
+From brian.grossman+i3-discuss at gmail.com  Mon Apr  8 07:35:25 2013
+From: brian.grossman+i3-discuss at gmail.com (Brian Grossman)
+Date: Sun, 7 Apr 2013 23:35:25 -0600
+Subject: [i3] i3lock hooks
+In-Reply-To: <CAMoU6ubWu8UU56fxejXVg5He5nja=tqgGOS5F=JT1t5714uyrg@mail.gmail.com>
+References: <CAAuVr71jo9HZvcF8kZwfOD5Ezt2JmUC-RCXhc6pbS=9tE1A+Cw@mail.gmail.com>
+ <CAMoU6uYmFn2qJFs7JyMij2HMgi7kO_xQQu05hP+msdDZ+G+ZrQ@mail.gmail.com>
+ <CAAuVr72VRB6+_NJ6nHj5f6ndKmChGAqw61wUTdzzO8-tdY1fcw@mail.gmail.com>
+ <CAMoU6ubWu8UU56fxejXVg5He5nja=tqgGOS5F=JT1t5714uyrg@mail.gmail.com>
+Message-ID: <CAPUwkJ+JJtr3m=uSUOx9t8Gb9pzJeVajWuj3+=9wr9oKjH2BLQ@mail.gmail.com>
+
+Sidestepping the question a little, how about something like this in
+~/.i3/config:
+
+bindsym $mod+Return exec i3lock -n ; exec ~/bin/bruno-returns
+
+
+Brian
+
+
+On Sun, Apr 7, 2013 at 11:15 PM, Bas Pape <baspape at gmail.com> wrote:
+
+> 2013/4/8 BRAGA, Bruno <bruno.braga at gmail.com>:
+> > Would you have a wrapper example for that?
+> If you so desire I could write one later today.
+>
+> > If I understood right, the idea would be to wrap i3 with another
+> > application, running:
+> > - execute pre-lock commands
+> > - fork i3lock
+> > - get pid
+> > - waitpid until it is finished
+> > - execute post-lock commands
+> >
+> > is that it? Looks good to me!
+> Yep, that's it. Just now i noticed/realized that there is no waitpid
+> binary/shell command and waitpid only works for children; so you
+> probably would be better of backgrounding i3lock in the shell
+> (combined with i3lock's -n), rather than letting i3lock fork; then you
+> can just `wait %1`
+>
+> --
+> Tucos
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130407/3d369b98/attachment.html>
+
+From baspape at gmail.com  Mon Apr  8 08:33:54 2013
+From: baspape at gmail.com (Bas Pape)
+Date: Mon, 8 Apr 2013 08:33:54 +0200
+Subject: [i3] i3lock hooks
+In-Reply-To: <CAPUwkJ+JJtr3m=uSUOx9t8Gb9pzJeVajWuj3+=9wr9oKjH2BLQ@mail.gmail.com>
+References: <CAAuVr71jo9HZvcF8kZwfOD5Ezt2JmUC-RCXhc6pbS=9tE1A+Cw@mail.gmail.com>
+ <CAMoU6uYmFn2qJFs7JyMij2HMgi7kO_xQQu05hP+msdDZ+G+ZrQ@mail.gmail.com>
+ <CAAuVr72VRB6+_NJ6nHj5f6ndKmChGAqw61wUTdzzO8-tdY1fcw@mail.gmail.com>
+ <CAMoU6ubWu8UU56fxejXVg5He5nja=tqgGOS5F=JT1t5714uyrg@mail.gmail.com>
+ <CAPUwkJ+JJtr3m=uSUOx9t8Gb9pzJeVajWuj3+=9wr9oKjH2BLQ@mail.gmail.com>
+Message-ID: <CAMoU6uYYS5_wbM-FHJXb_07ukiowBmRXfou6hYUDPLsW_A6gEA@mail.gmail.com>
+
+2013/4/8 Brian Grossman <brian.grossman+i3-discuss at gmail.com>:
+> Sidestepping the question a little, how about something like this in
+> ~/.i3/config:
+>
+> bindsym $mod+Return exec i3lock -n ; exec ~/bin/bruno-returns
+As per my first mail, that would work fine indeed, assuming one does
+not need to run anything along with i3lock (such as suspend).
+
+--
+Tucos
+
+From michael at i3wm.org  Mon Apr  8 08:34:49 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 08 Apr 2013 08:34:49 +0200
+Subject: [i3] i3lock hooks
+In-Reply-To: <CAPUwkJ+JJtr3m=uSUOx9t8Gb9pzJeVajWuj3+=9wr9oKjH2BLQ@mail.gmail.com>
+References: <CAAuVr71jo9HZvcF8kZwfOD5Ezt2JmUC-RCXhc6pbS=9tE1A+Cw@mail.gmail.com>
+ <CAMoU6uYmFn2qJFs7JyMij2HMgi7kO_xQQu05hP+msdDZ+G+ZrQ@mail.gmail.com>
+ <CAAuVr72VRB6+_NJ6nHj5f6ndKmChGAqw61wUTdzzO8-tdY1fcw@mail.gmail.com>
+ <CAMoU6ubWu8UU56fxejXVg5He5nja=tqgGOS5F=JT1t5714uyrg@mail.gmail.com>
+ <CAPUwkJ+JJtr3m=uSUOx9t8Gb9pzJeVajWuj3+=9wr9oKjH2BLQ@mail.gmail.com>
+Message-ID: <87r4ilo7hy.fsf@x200.zekjur.net>
+
+Hi Brian,
+
+Brian Grossman <brian.grossman+i3-discuss at gmail.com> writes:
+> Sidestepping the question a little, how about something like this in
+> ~/.i3/config:
+>
+> bindsym $mod+Return exec i3lock -n ; exec ~/bin/bruno-returns
+Beware, this does not do what you probably think:
+
+The semicolon separates i3 commands, so you tell i3 to start i3lock -n
+and to start ~/bin/bruno-returns immediately afterwards.
+
+Instead, use:
+
+bindsym $mod+x exec --no-startup-id "i3lock -n && ~/bin/bruno-returns"
+
+(--no-startup-id because i3lock doesn?t support startup notifications ?
+ it starts up fast enough ;-))
+
+-- 
+Best regards,
+Michael
+
+From layus.on at gmail.com  Mon Apr  8 11:00:21 2013
+From: layus.on at gmail.com (Layus)
+Date: Mon, 08 Apr 2013 11:00:21 +0200
+Subject: [i3] i3lock hooks
+In-Reply-To: <CAPUwkJ+JJtr3m=uSUOx9t8Gb9pzJeVajWuj3+=9wr9oKjH2BLQ@mail.gmail.com>
+References: <CAAuVr71jo9HZvcF8kZwfOD5Ezt2JmUC-RCXhc6pbS=9tE1A+Cw@mail.gmail.com>
+ <CAMoU6uYmFn2qJFs7JyMij2HMgi7kO_xQQu05hP+msdDZ+G+ZrQ@mail.gmail.com>
+ <CAAuVr72VRB6+_NJ6nHj5f6ndKmChGAqw61wUTdzzO8-tdY1fcw@mail.gmail.com>
+ <CAMoU6ubWu8UU56fxejXVg5He5nja=tqgGOS5F=JT1t5714uyrg@mail.gmail.com>
+ <CAPUwkJ+JJtr3m=uSUOx9t8Gb9pzJeVajWuj3+=9wr9oKjH2BLQ@mail.gmail.com>
+Message-ID: <51628725.8040308@gmail.com>
+
+Otherwise using systemd seems a good option.
+
+My current setup is :
+
+$ cat .i3/config
+[...]
+bindsym Shift+Pause  exec systemctl hibernate
+[...]
+
+$ cat /etc/systemd/system/lock.service
+[Unit]
+Description=i3lock
+Before=sleep.target
+
+[Service]
+User=layus
+Type=forking
+Environment=DISPLAY=:0
+ExecStart=/usr/bin/i3lock -t -i /etc/i3lock/wall.png
+
+[Install]
+WantedBy=sleep.target
+
+It should be adaptable to run other user scripts after/before i3lock.
+
+-- 
+Guillaume.
+
+Le 08/04/13 07:35, Brian Grossman a ?crit :
+> Sidestepping the question a little, how about something like this in 
+> ~/.i3/config:
+>
+>     bindsym $mod+Return exec i3lock -n ; exec ~/bin/bruno-returns
+>
+>
+> Brian
+>
+>
+> On Sun, Apr 7, 2013 at 11:15 PM, Bas Pape <baspape at gmail.com 
+> <mailto:baspape at gmail.com>> wrote:
+>
+>     2013/4/8 BRAGA, Bruno <bruno.braga at gmail.com
+>     <mailto:bruno.braga at gmail.com>>:
+>     > Would you have a wrapper example for that?
+>     If you so desire I could write one later today.
+>
+>     > If I understood right, the idea would be to wrap i3 with another
+>     > application, running:
+>     > - execute pre-lock commands
+>     > - fork i3lock
+>     > - get pid
+>     > - waitpid until it is finished
+>     > - execute post-lock commands
+>     >
+>     > is that it? Looks good to me!
+>     Yep, that's it. Just now i noticed/realized that there is no waitpid
+>     binary/shell command and waitpid only works for children; so you
+>     probably would be better of backgrounding i3lock in the shell
+>     (combined with i3lock's -n), rather than letting i3lock fork; then you
+>     can just `wait %1`
+>
+>     --
+>     Tucos
+>
+>
+
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130408/d37c67ca/attachment-0001.html>
+
+From anntoin at gmail.com  Mon Apr  8 15:50:27 2013
+From: anntoin at gmail.com (Anntoin Wilkinson)
+Date: Mon, 08 Apr 2013 14:50:27 +0100
+Subject: [i3] Natural sizing of windows
+In-Reply-To: <20130407175447.35b18954@xs4all.nl>
+References: <20130407121257.C46DA42F75@snark.thyrsus.com>
+ <20130407150645.GA6471@thyrsus.com> <20130407175447.35b18954@xs4all.nl>
+Message-ID: <3568818.APjEjoH1ZC@abulafia>
+
+"Eric S. Raymond" <esr at thyrsus.com> writes:
+> The more general problem is that i3's rules for sizing windows take no
+> account of the application's preferred or default size.
+
+For XMonad you can use this module to get this behaviour:
+
+http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Layout-LayoutHints.html
+
+-- 
+Anntoin
+
+www.anntoin.com
+
+From brian.grossman+i3-discuss at gmail.com  Mon Apr  8 17:26:10 2013
+From: brian.grossman+i3-discuss at gmail.com (Brian Grossman)
+Date: Mon, 8 Apr 2013 09:26:10 -0600
+Subject: [i3] i3lock hooks
+In-Reply-To: <87r4ilo7hy.fsf@x200.zekjur.net>
+References: <CAAuVr71jo9HZvcF8kZwfOD5Ezt2JmUC-RCXhc6pbS=9tE1A+Cw@mail.gmail.com>
+ <CAMoU6uYmFn2qJFs7JyMij2HMgi7kO_xQQu05hP+msdDZ+G+ZrQ@mail.gmail.com>
+ <CAAuVr72VRB6+_NJ6nHj5f6ndKmChGAqw61wUTdzzO8-tdY1fcw@mail.gmail.com>
+ <CAMoU6ubWu8UU56fxejXVg5He5nja=tqgGOS5F=JT1t5714uyrg@mail.gmail.com>
+ <CAPUwkJ+JJtr3m=uSUOx9t8Gb9pzJeVajWuj3+=9wr9oKjH2BLQ@mail.gmail.com>
+ <87r4ilo7hy.fsf@x200.zekjur.net>
+Message-ID: <CAPUwkJJ0rdO224Rq_7h1_HjiQ07ZUqd0C5t3U8q3aZux=VmZzA@mail.gmail.com>
+
+Yikes, thanks!
+
+It turns out I had the && in several execs, but hadn't really locked that
+in to memory.  I think I missed the --no-startup-id thing because when I
+run i3lock I also do a "xset dpms force off".
+
+Is the parallel exec thing in the docs anywhere?  It makes sense now that
+you point it out, but I don't see it mentioned.
+
+Also, under what circumstances is the quoting required?  Am I just lucky
+that the && chains I have now seem to work without quotes?
+
+Brian
+
+
+On Mon, Apr 8, 2013 at 12:34 AM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Brian,
+>
+> Brian Grossman <brian.grossman+i3-discuss at gmail.com> writes:
+> > Sidestepping the question a little, how about something like this in
+> > ~/.i3/config:
+> >
+> > bindsym $mod+Return exec i3lock -n ; exec ~/bin/bruno-returns
+> Beware, this does not do what you probably think:
+>
+> The semicolon separates i3 commands, so you tell i3 to start i3lock -n
+> and to start ~/bin/bruno-returns immediately afterwards.
+>
+> Instead, use:
+>
+> bindsym $mod+x exec --no-startup-id "i3lock -n && ~/bin/bruno-returns"
+>
+> (--no-startup-id because i3lock doesn?t support startup notifications ?
+>  it starts up fast enough ;-))
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130408/359dc793/attachment.html>
+
+From michael at i3wm.org  Mon Apr  8 17:45:49 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 08 Apr 2013 17:45:49 +0200
+Subject: [i3] i3lock hooks
+In-Reply-To: <CAPUwkJJ0rdO224Rq_7h1_HjiQ07ZUqd0C5t3U8q3aZux=VmZzA@mail.gmail.com>
+References: <CAAuVr71jo9HZvcF8kZwfOD5Ezt2JmUC-RCXhc6pbS=9tE1A+Cw@mail.gmail.com>
+ <CAMoU6uYmFn2qJFs7JyMij2HMgi7kO_xQQu05hP+msdDZ+G+ZrQ@mail.gmail.com>
+ <CAAuVr72VRB6+_NJ6nHj5f6ndKmChGAqw61wUTdzzO8-tdY1fcw@mail.gmail.com>
+ <CAMoU6ubWu8UU56fxejXVg5He5nja=tqgGOS5F=JT1t5714uyrg@mail.gmail.com>
+ <CAPUwkJ+JJtr3m=uSUOx9t8Gb9pzJeVajWuj3+=9wr9oKjH2BLQ@mail.gmail.com>
+ <87r4ilo7hy.fsf@x200.zekjur.net>
+ <CAPUwkJJ0rdO224Rq_7h1_HjiQ07ZUqd0C5t3U8q3aZux=VmZzA@mail.gmail.com>
+Message-ID: <87zjx9yqj6.fsf@stapelberg.de>
+
+Hi Brian,
+
+Brian Grossman <brian.grossman+i3-discuss at gmail.com> writes:
+> Is the parallel exec thing in the docs anywhere?  It makes sense now that
+> you point it out, but I don't see it mentioned.
+Yes, it is explained when commands are introduced:
+http://i3wm.org/docs/userguide.html#_list_of_commands
+
+Note that this is not specific to the exec command.
+
+> Also, under what circumstances is the quoting required?  Am I just lucky
+> that the && chains I have now seem to work without quotes?
+Whenever you have a ; or , in your command.
+
+-- 
+Best regards,
+Michael
+
+From bruno.braga at gmail.com  Wed Apr 10 01:04:10 2013
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Wed, 10 Apr 2013 09:04:10 +1000
+Subject: [i3] i3lock hooks
+In-Reply-To: <87zjx9yqj6.fsf@stapelberg.de>
+References: <CAAuVr71jo9HZvcF8kZwfOD5Ezt2JmUC-RCXhc6pbS=9tE1A+Cw@mail.gmail.com>
+ <CAMoU6uYmFn2qJFs7JyMij2HMgi7kO_xQQu05hP+msdDZ+G+ZrQ@mail.gmail.com>
+ <CAAuVr72VRB6+_NJ6nHj5f6ndKmChGAqw61wUTdzzO8-tdY1fcw@mail.gmail.com>
+ <CAMoU6ubWu8UU56fxejXVg5He5nja=tqgGOS5F=JT1t5714uyrg@mail.gmail.com>
+ <CAPUwkJ+JJtr3m=uSUOx9t8Gb9pzJeVajWuj3+=9wr9oKjH2BLQ@mail.gmail.com>
+ <87r4ilo7hy.fsf@x200.zekjur.net>
+ <CAPUwkJJ0rdO224Rq_7h1_HjiQ07ZUqd0C5t3U8q3aZux=VmZzA@mail.gmail.com>
+ <87zjx9yqj6.fsf@stapelberg.de>
+Message-ID: <CAAuVr72gF7OZQ7N8KgrKNw40eRb=rq6Xjk7g6_TMdM1D3reXOg@mail.gmail.com>
+
+Thanks guys... the && worked just fine!
+
+That's what I am using:
+
+bindsym Control+mod1+l exec ~/.i3/i3lock-prehook.sh && i3lock -c 000000 &&
+~/.i3/i3lock-posthook.sh
+
+
+--
+*Bruno Braga*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Tue, Apr 9, 2013 at 1:45 AM, Michael Stapelberg <michael at i3wm.org> wrote:
+
+> Hi Brian,
+>
+> Brian Grossman <brian.grossman+i3-discuss at gmail.com> writes:
+> > Is the parallel exec thing in the docs anywhere?  It makes sense now that
+> > you point it out, but I don't see it mentioned.
+> Yes, it is explained when commands are introduced:
+> http://i3wm.org/docs/userguide.html#_list_of_commands
+>
+> Note that this is not specific to the exec command.
+>
+> > Also, under what circumstances is the quoting required?  Am I just lucky
+> > that the && chains I have now seem to work without quotes?
+> Whenever you have a ; or , in your command.
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130410/625524e4/attachment.html>
+
+From bruno.braga at gmail.com  Fri Apr 12 01:52:12 2013
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Fri, 12 Apr 2013 09:52:12 +1000
+Subject: [i3] i3lock hooks
+In-Reply-To: <CAAuVr72gF7OZQ7N8KgrKNw40eRb=rq6Xjk7g6_TMdM1D3reXOg@mail.gmail.com>
+References: <CAAuVr71jo9HZvcF8kZwfOD5Ezt2JmUC-RCXhc6pbS=9tE1A+Cw@mail.gmail.com>
+ <CAMoU6uYmFn2qJFs7JyMij2HMgi7kO_xQQu05hP+msdDZ+G+ZrQ@mail.gmail.com>
+ <CAAuVr72VRB6+_NJ6nHj5f6ndKmChGAqw61wUTdzzO8-tdY1fcw@mail.gmail.com>
+ <CAMoU6ubWu8UU56fxejXVg5He5nja=tqgGOS5F=JT1t5714uyrg@mail.gmail.com>
+ <CAPUwkJ+JJtr3m=uSUOx9t8Gb9pzJeVajWuj3+=9wr9oKjH2BLQ@mail.gmail.com>
+ <87r4ilo7hy.fsf@x200.zekjur.net>
+ <CAPUwkJJ0rdO224Rq_7h1_HjiQ07ZUqd0C5t3U8q3aZux=VmZzA@mail.gmail.com>
+ <87zjx9yqj6.fsf@stapelberg.de>
+ <CAAuVr72gF7OZQ7N8KgrKNw40eRb=rq6Xjk7g6_TMdM1D3reXOg@mail.gmail.com>
+Message-ID: <CAAuVr70BiURmQVF2aC41HPdzrY8umxNpyy2jv8rg=tB05E2s5A@mail.gmail.com>
+
+Michael,
+
+I noticed that the commands executed with && do not always work...
+triggering the lock and unlocking it right away always work, but every time
+I leave the machine locked for longer time (hour or more), the posthook
+script is never called.
+Sorry it is hard to reproduce/troubleshoot.
+
+For example:
+
+bindsym Control+mod1+l exec ~/.i3/i3lock-prehook.sh && i3lock -c 000000 &&
+~/.i3/i3lock-posthook.sh
+
+the i3lock-prehook.sh script is:
+
+#!/bin/bash
+logger -t "prehook" 'Executed.'
+
+the i3lock-posthook.sh script is:
+
+#!/bin/bash
+logger -t "posthook" 'Executed.'
+
+----------------
+
+Dont know if this is even worth pursuing.... I solved the problem by
+wrapping it all into a single script:
+
+bindsym Control+mod1+l exec ~/.i3/i3lock.sh
+
+the i3lock.sh script is:
+
+#!/bin/bash
+logger -t "prehook" 'Executed.'
+i3lock  -c 000000
+logger -t "posthook" 'Executed.'
+
+(which will obivously work even if something goes wrong with i3lock).
+
+--
+*Bruno Braga*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Wed, Apr 10, 2013 at 9:04 AM, BRAGA, Bruno <bruno.braga at gmail.com> wrote:
+
+> Thanks guys... the && worked just fine!
+>
+> That's what I am using:
+>
+> bindsym Control+mod1+l exec ~/.i3/i3lock-prehook.sh && i3lock -c 000000 &&
+> ~/.i3/i3lock-posthook.sh
+>
+>
+> --
+> *Bruno Braga*
+> www.brunobraga.net
+> bruno.braga at gmail.com
+>
+>
+> On Tue, Apr 9, 2013 at 1:45 AM, Michael Stapelberg <michael at i3wm.org>wrote:
+>
+>> Hi Brian,
+>>
+>> Brian Grossman <brian.grossman+i3-discuss at gmail.com> writes:
+>> > Is the parallel exec thing in the docs anywhere?  It makes sense now
+>> that
+>> > you point it out, but I don't see it mentioned.
+>> Yes, it is explained when commands are introduced:
+>> http://i3wm.org/docs/userguide.html#_list_of_commands
+>>
+>> Note that this is not specific to the exec command.
+>>
+>> > Also, under what circumstances is the quoting required?  Am I just lucky
+>> > that the && chains I have now seem to work without quotes?
+>> Whenever you have a ; or , in your command.
+>>
+>> --
+>> Best regards,
+>> Michael
+>>
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130412/9ccbdb34/attachment.html>
+
+From gkeramidas at gmail.com  Sat Apr 13 07:22:17 2013
+From: gkeramidas at gmail.com (Giorgos Keramidas)
+Date: Sat, 13 Apr 2013 07:22:17 +0200
+Subject: [i3] i3lock hooks
+In-Reply-To: <CAAuVr70BiURmQVF2aC41HPdzrY8umxNpyy2jv8rg=tB05E2s5A@mail.gmail.com>
+References: <CAAuVr71jo9HZvcF8kZwfOD5Ezt2JmUC-RCXhc6pbS=9tE1A+Cw@mail.gmail.com>
+ <CAMoU6uYmFn2qJFs7JyMij2HMgi7kO_xQQu05hP+msdDZ+G+ZrQ@mail.gmail.com>
+ <CAAuVr72VRB6+_NJ6nHj5f6ndKmChGAqw61wUTdzzO8-tdY1fcw@mail.gmail.com>
+ <CAMoU6ubWu8UU56fxejXVg5He5nja=tqgGOS5F=JT1t5714uyrg@mail.gmail.com>
+ <CAPUwkJ+JJtr3m=uSUOx9t8Gb9pzJeVajWuj3+=9wr9oKjH2BLQ@mail.gmail.com>
+ <87r4ilo7hy.fsf@x200.zekjur.net>
+ <CAPUwkJJ0rdO224Rq_7h1_HjiQ07ZUqd0C5t3U8q3aZux=VmZzA@mail.gmail.com>
+ <87zjx9yqj6.fsf@stapelberg.de>
+ <CAAuVr72gF7OZQ7N8KgrKNw40eRb=rq6Xjk7g6_TMdM1D3reXOg@mail.gmail.com>
+ <CAAuVr70BiURmQVF2aC41HPdzrY8umxNpyy2jv8rg=tB05E2s5A@mail.gmail.com>
+Message-ID: <20130413052215.GA8103@saturn>
+
+On 2013-04-12 09:52, "BRAGA, Bruno" <bruno.braga at gmail.com> wrote:
+> Michael,
+>
+> I noticed that the commands executed with && do not always work...
+> triggering the lock and unlocking it right away always work, but every time
+> I leave the machine locked for longer time (hour or more), the posthook
+> script is never called.
+> Sorry it is hard to reproduce/troubleshoot.
+>
+> For example:
+>
+> bindsym Control+mod1+l exec ~/.i3/i3lock-prehook.sh && i3lock -c 000000 && ~/.i3/i3lock-posthook.sh
+>
+> the i3lock-prehook.sh script is:
+>
+> #!/bin/bash
+> logger -t "prehook" 'Executed.'
+>
+> the i3lock-posthook.sh script is:
+>
+> #!/bin/bash
+> logger -t "posthook" 'Executed.'
+>
+> ----------------
+>
+> Dont know if this is even worth pursuing.... I solved the problem by
+> wrapping it all into a single script:
+>
+> bindsym Control+mod1+l exec ~/.i3/i3lock.sh
+>
+> the i3lock.sh script is:
+>
+> #!/bin/bash
+> logger -t "prehook" 'Executed.'
+> i3lock  -c 000000
+> logger -t "posthook" 'Executed.'
+>
+> (which will obivously work even if something goes wrong with i3lock).
+
+Hi Bruno,
+
+I think this may be a bug in i3lock.  The main i3 code calls the command
+you have configured in your startup file with the execl() equivalent of:
+
+    # From startup_application() in src/startup.c:134
+    $SHELL -c "~/.i3/i3lock-prehook.sh && i3lock -c 000000 && ~/.i3/i3lock-posthook.sh"
+
+So if 'i3lock -c 000000' is running, but the next part of the command
+never runs, it means that the shell got an exit code != 0 from i3lock.
+
+Since i3lock is not failing to start, but it has been running for a
+while, the only reason I can think of that would cause a non-zero exit
+code is that main() in i3lock.s never calls 'return 0' when it's done.
+
+The last parts of i3lock's main() function are:
+
+    int main(int argc, char *argv[]) {
+        ...
+        /* Invoke the event callback once to catch all the events which were
+         * received up until now. ev will only pick up new events (when the
+        X11
+         * file descriptor becomes readable). */
+        ev_invoke(main_loop, xcb_check, 0);
+        ev_loop(main_loop, 0);
+    }
+
+After ev_loop() is done, there is no return statement, so if ev_loop
+happens to return, main() is free to return a random value, e.g. the
+contents of a register or some random value from the stack.
+
+This may explain why "it sometimes works".
+
+Can you try adding this return statement to i3lock's main() function,
+and then rebuild i3lock from source?
+
+    int main(int argc, char *argv[]) {
+        ...
+        /* Invoke the event callback once to catch all the events which were
+         * received up until now. ev will only pick up new events (when the
+        X11
+         * file descriptor becomes readable). */
+        ev_invoke(main_loop, xcb_check, 0);
+        ev_loop(main_loop, 0);
++       return EXIT_SUCCESS;
+    }
+
+
+From michael at i3wm.org  Sat Apr 13 10:14:45 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 13 Apr 2013 10:14:45 +0200
+Subject: [i3] i3lock hooks
+In-Reply-To: <20130413052215.GA8103@saturn>
+References: <CAAuVr71jo9HZvcF8kZwfOD5Ezt2JmUC-RCXhc6pbS=9tE1A+Cw@mail.gmail.com>
+ <CAMoU6uYmFn2qJFs7JyMij2HMgi7kO_xQQu05hP+msdDZ+G+ZrQ@mail.gmail.com>
+ <CAAuVr72VRB6+_NJ6nHj5f6ndKmChGAqw61wUTdzzO8-tdY1fcw@mail.gmail.com>
+ <CAMoU6ubWu8UU56fxejXVg5He5nja=tqgGOS5F=JT1t5714uyrg@mail.gmail.com>
+ <CAPUwkJ+JJtr3m=uSUOx9t8Gb9pzJeVajWuj3+=9wr9oKjH2BLQ@mail.gmail.com>
+ <87r4ilo7hy.fsf@x200.zekjur.net>
+ <CAPUwkJJ0rdO224Rq_7h1_HjiQ07ZUqd0C5t3U8q3aZux=VmZzA@mail.gmail.com>
+ <87zjx9yqj6.fsf@stapelberg.de>
+ <CAAuVr72gF7OZQ7N8KgrKNw40eRb=rq6Xjk7g6_TMdM1D3reXOg@mail.gmail.com>
+ <CAAuVr70BiURmQVF2aC41HPdzrY8umxNpyy2jv8rg=tB05E2s5A@mail.gmail.com>
+ <20130413052215.GA8103@saturn>
+Message-ID: <87eheeyhhm.fsf@stapelberg.de>
+
+Hi Giorgos,
+
+Giorgos Keramidas <gkeramidas at gmail.com> writes:
+> After ev_loop() is done, there is no return statement, so if ev_loop
+> happens to return, main() is free to return a random value, e.g. the
+> contents of a register or some random value from the stack.
+ev_loop never returns.
+
+i3lock exits with code 0 from here:
+
+    if (pam_authenticate(pam_handle, 0) == PAM_SUCCESS) {
+        DEBUG("successfully authenticated\n");
+        clear_password_memory();
+        exit(0);
+    }
+
+
+-- 
+Best regards,
+Michael
+
+From haptix at web.de  Sat Apr 13 13:28:22 2013
+From: haptix at web.de (justus jonas)
+Date: Sat, 13 Apr 2013 13:28:22 +0200
+Subject: [i3] i3bar: toggle mode
+Message-ID: <51694156.7090105@web.de>
+
+Hi all,
+
+currently I am working on a patch for fixing feature request #651 and 
+#833. This would introduce a mode "toggle" for i3bar, which toggles 
+between showing and hiding the i3bar whenever the i3bar modifier is 
+pressed.
+
+This is easily done when targeting a setup with only one i3bar process. 
+But when using two bar blocks in the config, two i3bar processes are 
+started, each one only has knowledge about the output (and its children 
+workspaces) where they are drawn on. So if one of the bars is unhidden 
+because of an urgency hint, I have no way to synchronize the 
+hidden/unhidden state between the two processes. So, when only one of 
+the bars is unhidden, I would like to react to this in both i3bar 
+processes, so I can switch to hiding the bars when pressing the modifier 
+next time. Otherwise the two processes will have different states when 
+toggling, or I would toggle to unhiding the i3bar even though one or 
+both of the bars may already be unhidden.
+
+Can anyone of you give me a hint on how to synchronize the state of the 
+two bars or how to tackle this problem in another way?
+
+Thanks in advance and best regards
+jj
+
+From michael at i3wm.org  Sat Apr 13 15:59:14 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 13 Apr 2013 15:59:14 +0200
+Subject: [i3] i3bar: toggle mode
+In-Reply-To: <51694156.7090105@web.de>
+References: <51694156.7090105@web.de>
+Message-ID: <878v4my1jh.fsf@stapelberg.de>
+
+Hi justus,
+
+(I like that nickname :-))
+
+justus jonas <haptix at web.de> writes:
+> currently I am working on a patch for fixing feature request #651 and 
+> #833. This would introduce a mode "toggle" for i3bar, which toggles 
+> between showing and hiding the i3bar whenever the i3bar modifier is 
+> pressed.
+You rock! Thanks for all the patches and ongoing work.
+
+> Can anyone of you give me a hint on how to synchronize the state of the 
+> two bars or how to tackle this problem in another way?
+Here?s an idea:
+
+1) In the bar config, introduce a ?hidden? state.
+2) Introduce a new i3 command named ?bar toggle? (bonus points for also
+   implementing ?bar show? and ?bar hide?, they are trivial), that
+   optionally accepts a parameter, which is the bar id.
+3) Users configure e.g. ?bindsym $mod+x bar toggle? in their i3 config,
+   i3 sends the config update with ?hidden? as state to all bar
+   instances (or only the specified one).
+
+The advantages are:
+? i3 already provides keybinding configuration, so it should probably go
+  into i3 anyways
+? people can use the IPC interface to do all kinds of specific setup
+  outside of i3, by using the bar toggle/show/hide command, optionally
+  with instances.
+
+-- 
+Best regards,
+Michael
+
+From mail at merovius.de  Sat Apr 13 16:29:11 2013
+From: mail at merovius.de (Axel Wagner)
+Date: Sat, 13 Apr 2013 16:29:11 +0200
+Subject: [i3] i3bar: toggle mode
+In-Reply-To: <878v4my1jh.fsf@stapelberg.de>
+References: <51694156.7090105@web.de> <878v4my1jh.fsf@stapelberg.de>
+Message-ID: <1365862174-sup-1801@merovius.de>
+
+Hi all,
+
+basically I like Michael's way, just a few additional questions/thoughts:
+
+How does the manual toggling play together with the autohiding and the
+urgency-hint? Because I (obviously) like the way it's done now, in
+general, but also would want to take advantage of an explizit hiding or
+showing (for example hiding it despite urgency-hints during
+presentations, or watch some output of i3bar for a while).
+There are a couple of reasonings one could take, which would suggest
+different behaviours, I for my reason would like the following, if it is
+not too complicated: When mode is hide, do the old autohiding thing, if
+sent a ?hide?-command, make it hidden (i.e. ignore urgency-hints and
+hide-modificator), if sent a ?show?-command, make it show (i.e. treat
+the hide-modificator as always pressed).
+
+Excerpts from Michael Stapelberg's message of 2013-04-13 15:59:14 +0200:
+> 2) Introduce a new i3 command named ?bar toggle? (bonus points for also
+>    implementing ?bar show? and ?bar hide?, they are trivial), that
+>    optionally accepts a parameter, which is the bar id.
+
+For this, imho, there should also (but possibly later in a seperate
+patch) be a way to identify the bar in the config. As far as I know, the
+identifier currently is a random string generated by i3, but if there
+are key-bindings in the i3-config to controll the bars, this is not
+sufficient, because it is only know at runtime (is it?).
+
+> 3) Users configure e.g. ?bindsym $mod+x bar toggle? in their i3 config,
+>    i3 sends the config update with ?hidden? as state to all bar
+>    instances (or only the specified one).
+> 
+> The advantages are:
+> ? i3 already provides keybinding configuration, so it should probably go
+>   into i3 anyways
+
+Again, in the long-run, this could also mean simplifying i3bar by
+ripping out all this key-handling-code and have i3 handle that - it
+would only be the continuation of that logic. That would mean that (to
+make the current behaviour possible) we need to be able to make bindings
+on key-press and key-releases.
+
+
+Well, all that just as general thoughts ;) The latter two have no
+immediate significance to this feature, but the first should be decided.
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 198 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130413/33808f65/attachment.sig>
+
+From gkeramidas at gmail.com  Sat Apr 13 17:24:31 2013
+From: gkeramidas at gmail.com (Giorgos Keramidas)
+Date: Sat, 13 Apr 2013 17:24:31 +0200
+Subject: [i3] i3lock hooks
+In-Reply-To: <87eheeyhhm.fsf@stapelberg.de>
+References: <CAAuVr72VRB6+_NJ6nHj5f6ndKmChGAqw61wUTdzzO8-tdY1fcw@mail.gmail.com>
+ <CAMoU6ubWu8UU56fxejXVg5He5nja=tqgGOS5F=JT1t5714uyrg@mail.gmail.com>
+ <CAPUwkJ+JJtr3m=uSUOx9t8Gb9pzJeVajWuj3+=9wr9oKjH2BLQ@mail.gmail.com>
+ <87r4ilo7hy.fsf@x200.zekjur.net>
+ <CAPUwkJJ0rdO224Rq_7h1_HjiQ07ZUqd0C5t3U8q3aZux=VmZzA@mail.gmail.com>
+ <87zjx9yqj6.fsf@stapelberg.de>
+ <CAAuVr72gF7OZQ7N8KgrKNw40eRb=rq6Xjk7g6_TMdM1D3reXOg@mail.gmail.com>
+ <CAAuVr70BiURmQVF2aC41HPdzrY8umxNpyy2jv8rg=tB05E2s5A@mail.gmail.com>
+ <20130413052215.GA8103@saturn> <87eheeyhhm.fsf@stapelberg.de>
+Message-ID: <20130413152429.GA12359@saturn>
+
+On 2013-04-13 10:14, Michael Stapelberg <michael at i3wm.org> wrote:
+>Giorgos Keramidas <gkeramidas at gmail.com> writes:
+>> After ev_loop() is done, there is no return statement, so if ev_loop
+>> happens to return, main() is free to return a random value, e.g. the
+>> contents of a register or some random value from the stack.
+>
+> ev_loop never returns.
+>
+> i3lock exits with code 0 from here:
+>
+>     if (pam_authenticate(pam_handle, 0) == PAM_SUCCESS) {
+>         DEBUG("successfully authenticated\n");
+>         clear_password_memory();
+>         exit(0);
+>     }
+
+Yeah, I noticed that ev_loop is not supposed to return a little after
+sending that email.  I guess the only way to find out what's going on
+would be to run i3lock under strace and log that to a file.
+
+If ev_loop never returns, I don't see anything in i3lock.c that would
+cause it to return with a non-zero exit code.  It must be something
+external to the program itself, e.g. a signal that's killing it.
+
+
+From haptix at web.de  Sat Apr 13 18:24:00 2013
+From: haptix at web.de (justus jonas)
+Date: Sat, 13 Apr 2013 18:24:00 +0200
+Subject: [i3] i3bar: toggle mode
+In-Reply-To: <1365862174-sup-1801@merovius.de>
+References: <51694156.7090105@web.de> <878v4my1jh.fsf@stapelberg.de>
+ <1365862174-sup-1801@merovius.de>
+Message-ID: <516986A0.1090500@web.de>
+
+Hi,
+
+thanks for the respond, Michael and Axel. I also like the proposed idea 
+of letting i3 handle the i3bar toggling.
+
+Initially, I thought of a separate toggle mode for i3bar, which would 
+behave just the same as the hide mode when it comes to unhiding because 
+of an urgency hint or an activated mode. But it would differ in a sense 
+that pressing the i3bar modifier would toggle between showing and 
+hiding, instead of showing on key-press and hiding on key-release. But 
+what you two said makes sense to me.
+
+As far as I understand Axel's suggestion, we would also need another 
+command for returning to the original hide mode, as the show command 
+would unhide the bar by all means, and the hide command would hide the 
+bar by all means.
+
+The situation for me looks like this:
+When in dock mode, every bar command is ignored and everything is 
+handled like it is now. If in hide mode:
+-bar show: always show i3bar, as if the mod was always pressed.
+-bar hide: hide the bar and return to normal hide mode, the modifier and 
+urgency hints unhide the bar.
+-bar forcehide: always hide i3bar, until another bar command tells it to 
+do so.
+-bar toggle: this could either cycle through the above mentioned three 
+variants or it could toggle between "bar show"/"bar hide" or between 
+"bar show"/"bar forcehide". For my usecases, I would prefer the second 
+option.
+
+What do you think?
+
+Best
+jj
+
+Am 13.04.2013 16:29, schrieb Axel Wagner:
+> Hi all,
+>
+> basically I like Michael's way, just a few additional questions/thoughts:
+>
+> How does the manual toggling play together with the autohiding and the
+> urgency-hint? Because I (obviously) like the way it's done now, in
+> general, but also would want to take advantage of an explizit hiding or
+> showing (for example hiding it despite urgency-hints during
+> presentations, or watch some output of i3bar for a while).
+> There are a couple of reasonings one could take, which would suggest
+> different behaviours, I for my reason would like the following, if it is
+> not too complicated: When mode is hide, do the old autohiding thing, if
+> sent a ?hide?-command, make it hidden (i.e. ignore urgency-hints and
+> hide-modificator), if sent a ?show?-command, make it show (i.e. treat
+> the hide-modificator as always pressed).
+>
+> Excerpts from Michael Stapelberg's message of 2013-04-13 15:59:14 +0200:
+>> 2) Introduce a new i3 command named ?bar toggle? (bonus points for also
+>>     implementing ?bar show? and ?bar hide?, they are trivial), that
+>>     optionally accepts a parameter, which is the bar id.
+>
+> For this, imho, there should also (but possibly later in a seperate
+> patch) be a way to identify the bar in the config. As far as I know, the
+> identifier currently is a random string generated by i3, but if there
+> are key-bindings in the i3-config to controll the bars, this is not
+> sufficient, because it is only know at runtime (is it?).
+>
+>> 3) Users configure e.g. ?bindsym $mod+x bar toggle? in their i3 config,
+>>     i3 sends the config update with ?hidden? as state to all bar
+>>     instances (or only the specified one).
+>>
+>> The advantages are:
+>> ? i3 already provides keybinding configuration, so it should probably go
+>>    into i3 anyways
+>
+> Again, in the long-run, this could also mean simplifying i3bar by
+> ripping out all this key-handling-code and have i3 handle that - it
+> would only be the continuation of that logic. That would mean that (to
+> make the current behaviour possible) we need to be able to make bindings
+> on key-press and key-releases.
+>
+>
+> Well, all that just as general thoughts ;) The latter two have no
+> immediate significance to this feature, but the first should be decided.
+>
+
+From mail at merovius.de  Sat Apr 13 19:38:57 2013
+From: mail at merovius.de (Axel Wagner)
+Date: Sat, 13 Apr 2013 19:38:57 +0200
+Subject: [i3] i3bar: toggle mode
+In-Reply-To: <516986A0.1090500@web.de>
+References: <51694156.7090105@web.de> <878v4my1jh.fsf@stapelberg.de>
+ <1365862174-sup-1801@merovius.de> <516986A0.1090500@web.de>
+Message-ID: <1365873589-sup-8069@merovius.de>
+
+Excerpts from justus jonas's message of 2013-04-13 18:24:00 +0200:
+> What do you think?
+
+It makes everything I personally want from it possible, so a big thumbs
+up from me for implementing this feature I always wanted but always was
+to lazy to build ;)
+
+When I started writing this mail, it came to me, that we can really do
+without the force_unhide-mode, which would reduce the
+configuration-complexity. If someone (like me) still want the feature,
+the simplest thing is to advice them to send i3bar a SIGSTOP when hidden
+to force_hide and a SIGCONT to return to normal operation.
+Though that may have unintended side-effects (not sure, how well the
+process-management works with it, for example) it is probably best to
+fix those anyhow.
+
+Hope this helps,
+
+Axel
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 198 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130413/8fcfe9cc/attachment.sig>
+
+From michael at i3wm.org  Sat Apr 13 20:19:00 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 13 Apr 2013 20:19:00 +0200
+Subject: [i3] i3bar: toggle mode
+In-Reply-To: <1365873589-sup-8069@merovius.de>
+References: <51694156.7090105@web.de> <878v4my1jh.fsf@stapelberg.de>
+ <1365862174-sup-1801@merovius.de> <516986A0.1090500@web.de>
+ <1365873589-sup-8069@merovius.de>
+Message-ID: <87zjx2way3.fsf@stapelberg.de>
+
+Hi Axel,
+
+Axel Wagner <mail at merovius.de> writes:
+> the simplest thing is to advice them to send i3bar a SIGSTOP when hidden
+> to force_hide and a SIGCONT to return to normal operation.
+> Though that may have unintended side-effects (not sure, how well the
+> process-management works with it, for example) it is probably best to
+> fix those anyhow.
+Sending i3bar a SIGSTOP is a really bad idea. i3bar really needs to get
+the i3 messages from the IPC socket, otherwise i3 locks up.
+
+I am not sure if we can solve this in a good way without having either
+buffer management in i3 (to store undeliverable messages) or making IPC
+unreliable (dropping messages). I am open for alternatives, but in the
+current state, IPC clients must read their messages in a timely matter.
+
+-- 
+Best regards,
+Michael
+
+From haptix at web.de  Sat Apr 13 21:17:33 2013
+From: haptix at web.de (justus jonas)
+Date: Sat, 13 Apr 2013 21:17:33 +0200
+Subject: [i3] i3bar: toggle mode
+In-Reply-To: <878v4my1jh.fsf@stapelberg.de>
+References: <51694156.7090105@web.de> <878v4my1jh.fsf@stapelberg.de>
+Message-ID: <5169AF4D.606@web.de>
+
+Hi Michael,
+
+thanks again for your answer :)
+
+As far as I understand, we would then have a state in the barconfig, 
+which could be either "show" or "hidden" (and maybe "forcehide"). We 
+would then switch between the values for toggling. Is there already some 
+existing code for sending config updates to i3bar, where you could point 
+me to?
+
+Best
+jj
+
+Am 13.04.2013 15:59, schrieb Michael Stapelberg:
+> Hi justus,
+>
+> (I like that nickname :-))
+>
+> justus jonas <haptix at web.de> writes:
+>> currently I am working on a patch for fixing feature request #651 and
+>> #833. This would introduce a mode "toggle" for i3bar, which toggles
+>> between showing and hiding the i3bar whenever the i3bar modifier is
+>> pressed.
+> You rock! Thanks for all the patches and ongoing work.
+>
+>> Can anyone of you give me a hint on how to synchronize the state of the
+>> two bars or how to tackle this problem in another way?
+> Here?s an idea:
+>
+> 1) In the bar config, introduce a ?hidden? state.
+> 2) Introduce a new i3 command named ?bar toggle? (bonus points for also
+>     implementing ?bar show? and ?bar hide?, they are trivial), that
+>     optionally accepts a parameter, which is the bar id.
+> 3) Users configure e.g. ?bindsym $mod+x bar toggle? in their i3 config,
+>     i3 sends the config update with ?hidden? as state to all bar
+>     instances (or only the specified one).
+>
+> The advantages are:
+> ? i3 already provides keybinding configuration, so it should probably go
+>    into i3 anyways
+> ? people can use the IPC interface to do all kinds of specific setup
+>    outside of i3, by using the bar toggle/show/hide command, optionally
+>    with instances.
+>
+
+From michael at i3wm.org  Sat Apr 13 21:30:39 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 13 Apr 2013 21:30:39 +0200
+Subject: [i3] i3bar: toggle mode
+In-Reply-To: <5169AF4D.606@web.de>
+References: <51694156.7090105@web.de> <878v4my1jh.fsf@stapelberg.de>
+ <5169AF4D.606@web.de>
+Message-ID: <87wqs6w7mo.fsf@stapelberg.de>
+
+Hi justus,
+
+justus jonas <haptix at web.de> writes:
+> As far as I understand, we would then have a state in the barconfig, 
+Correct.
+
+> would then switch between the values for toggling. Is there already some 
+> existing code for sending config updates to i3bar, where you could point 
+> me to?
+There is no code which does that already. I am under the impression that
+just sending i3bar an event (without i3bar having requested it) should
+do the right thing. Try it and see :-).
+
+-- 
+Best regards,
+Michael
+
+From bruno.braga at gmail.com  Mon Apr 15 06:14:56 2013
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Mon, 15 Apr 2013 14:14:56 +1000
+Subject: [i3] i3lock hooks
+In-Reply-To: <20130413152429.GA12359@saturn>
+References: <CAAuVr72VRB6+_NJ6nHj5f6ndKmChGAqw61wUTdzzO8-tdY1fcw@mail.gmail.com>
+ <CAMoU6ubWu8UU56fxejXVg5He5nja=tqgGOS5F=JT1t5714uyrg@mail.gmail.com>
+ <CAPUwkJ+JJtr3m=uSUOx9t8Gb9pzJeVajWuj3+=9wr9oKjH2BLQ@mail.gmail.com>
+ <87r4ilo7hy.fsf@x200.zekjur.net>
+ <CAPUwkJJ0rdO224Rq_7h1_HjiQ07ZUqd0C5t3U8q3aZux=VmZzA@mail.gmail.com>
+ <87zjx9yqj6.fsf@stapelberg.de>
+ <CAAuVr72gF7OZQ7N8KgrKNw40eRb=rq6Xjk7g6_TMdM1D3reXOg@mail.gmail.com>
+ <CAAuVr70BiURmQVF2aC41HPdzrY8umxNpyy2jv8rg=tB05E2s5A@mail.gmail.com>
+ <20130413052215.GA8103@saturn> <87eheeyhhm.fsf@stapelberg.de>
+ <20130413152429.GA12359@saturn>
+Message-ID: <CAAuVr738PvGRFnDrM2D25mhU-6cr37Y3Wk+wWfJeTb1FTRn3HQ@mail.gmail.com>
+
+I will try to run this with strace and see how it goes... Let you know the
+results (if I can read them, lol)...
+
+Cheers,
+
+
+--
+*Bruno Braga*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Sun, Apr 14, 2013 at 1:24 AM, Giorgos Keramidas <gkeramidas at gmail.com>wrote:
+
+> On 2013-04-13 10:14, Michael Stapelberg <michael at i3wm.org> wrote:
+> >Giorgos Keramidas <gkeramidas at gmail.com> writes:
+> >> After ev_loop() is done, there is no return statement, so if ev_loop
+> >> happens to return, main() is free to return a random value, e.g. the
+> >> contents of a register or some random value from the stack.
+> >
+> > ev_loop never returns.
+> >
+> > i3lock exits with code 0 from here:
+> >
+> >     if (pam_authenticate(pam_handle, 0) == PAM_SUCCESS) {
+> >         DEBUG("successfully authenticated\n");
+> >         clear_password_memory();
+> >         exit(0);
+> >     }
+>
+> Yeah, I noticed that ev_loop is not supposed to return a little after
+> sending that email.  I guess the only way to find out what's going on
+> would be to run i3lock under strace and log that to a file.
+>
+> If ev_loop never returns, I don't see anything in i3lock.c that would
+> cause it to return with a non-zero exit code.  It must be something
+> external to the program itself, e.g. a signal that's killing it.
+>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130415/5ecdc26a/attachment.html>
+
+From bruno.braga at gmail.com  Mon Apr 15 06:21:08 2013
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Mon, 15 Apr 2013 14:21:08 +1000
+Subject: [i3] i3lock hooks
+In-Reply-To: <CAAuVr738PvGRFnDrM2D25mhU-6cr37Y3Wk+wWfJeTb1FTRn3HQ@mail.gmail.com>
+References: <CAAuVr72VRB6+_NJ6nHj5f6ndKmChGAqw61wUTdzzO8-tdY1fcw@mail.gmail.com>
+ <CAMoU6ubWu8UU56fxejXVg5He5nja=tqgGOS5F=JT1t5714uyrg@mail.gmail.com>
+ <CAPUwkJ+JJtr3m=uSUOx9t8Gb9pzJeVajWuj3+=9wr9oKjH2BLQ@mail.gmail.com>
+ <87r4ilo7hy.fsf@x200.zekjur.net>
+ <CAPUwkJJ0rdO224Rq_7h1_HjiQ07ZUqd0C5t3U8q3aZux=VmZzA@mail.gmail.com>
+ <87zjx9yqj6.fsf@stapelberg.de>
+ <CAAuVr72gF7OZQ7N8KgrKNw40eRb=rq6Xjk7g6_TMdM1D3reXOg@mail.gmail.com>
+ <CAAuVr70BiURmQVF2aC41HPdzrY8umxNpyy2jv8rg=tB05E2s5A@mail.gmail.com>
+ <20130413052215.GA8103@saturn> <87eheeyhhm.fsf@stapelberg.de>
+ <20130413152429.GA12359@saturn>
+ <CAAuVr738PvGRFnDrM2D25mhU-6cr37Y3Wk+wWfJeTb1FTRn3HQ@mail.gmail.com>
+Message-ID: <CAAuVr71h-fTMdqgaA8j2C-6_pmtA1ShE==yn-8jpaR2hJASYeg@mail.gmail.com>
+
+Sorry for asking, but running this:
+
+$ strace -ttt i3lock
+
+simply locks the screen and does not accept events from keyboard (so I
+can't get out)...
+What would be the best way to debug this?
+
+Thanks,
+
+
+--
+*Bruno Braga*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Mon, Apr 15, 2013 at 2:14 PM, BRAGA, Bruno <bruno.braga at gmail.com> wrote:
+
+> I will try to run this with strace and see how it goes... Let you know the
+> results (if I can read them, lol)...
+>
+> Cheers,
+>
+>
+> --
+> *Bruno Braga*
+> www.brunobraga.net
+> bruno.braga at gmail.com
+>
+>
+> On Sun, Apr 14, 2013 at 1:24 AM, Giorgos Keramidas <gkeramidas at gmail.com>wrote:
+>
+>> On 2013-04-13 10:14, Michael Stapelberg <michael at i3wm.org> wrote:
+>> >Giorgos Keramidas <gkeramidas at gmail.com> writes:
+>> >> After ev_loop() is done, there is no return statement, so if ev_loop
+>> >> happens to return, main() is free to return a random value, e.g. the
+>> >> contents of a register or some random value from the stack.
+>> >
+>> > ev_loop never returns.
+>> >
+>> > i3lock exits with code 0 from here:
+>> >
+>> >     if (pam_authenticate(pam_handle, 0) == PAM_SUCCESS) {
+>> >         DEBUG("successfully authenticated\n");
+>> >         clear_password_memory();
+>> >         exit(0);
+>> >     }
+>>
+>> Yeah, I noticed that ev_loop is not supposed to return a little after
+>> sending that email.  I guess the only way to find out what's going on
+>> would be to run i3lock under strace and log that to a file.
+>>
+>> If ev_loop never returns, I don't see anything in i3lock.c that would
+>> cause it to return with a non-zero exit code.  It must be something
+>> external to the program itself, e.g. a signal that's killing it.
+>>
+>>
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130415/72bd369a/attachment.html>
+
+From michael at i3wm.org  Mon Apr 15 14:48:52 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 15 Apr 2013 14:48:52 +0200
+Subject: [i3] i3lock hooks
+In-Reply-To: <CAAuVr71h-fTMdqgaA8j2C-6_pmtA1ShE==yn-8jpaR2hJASYeg@mail.gmail.com>
+References: <CAAuVr72VRB6+_NJ6nHj5f6ndKmChGAqw61wUTdzzO8-tdY1fcw@mail.gmail.com>
+ <CAMoU6ubWu8UU56fxejXVg5He5nja=tqgGOS5F=JT1t5714uyrg@mail.gmail.com>
+ <CAPUwkJ+JJtr3m=uSUOx9t8Gb9pzJeVajWuj3+=9wr9oKjH2BLQ@mail.gmail.com>
+ <87r4ilo7hy.fsf@x200.zekjur.net>
+ <CAPUwkJJ0rdO224Rq_7h1_HjiQ07ZUqd0C5t3U8q3aZux=VmZzA@mail.gmail.com>
+ <87zjx9yqj6.fsf@stapelberg.de>
+ <CAAuVr72gF7OZQ7N8KgrKNw40eRb=rq6Xjk7g6_TMdM1D3reXOg@mail.gmail.com>
+ <CAAuVr70BiURmQVF2aC41HPdzrY8umxNpyy2jv8rg=tB05E2s5A@mail.gmail.com>
+ <20130413052215.GA8103@saturn> <87eheeyhhm.fsf@stapelberg.de>
+ <20130413152429.GA12359@saturn>
+ <CAAuVr738PvGRFnDrM2D25mhU-6cr37Y3Wk+wWfJeTb1FTRn3HQ@mail.gmail.com>
+ <CAAuVr71h-fTMdqgaA8j2C-6_pmtA1ShE==yn-8jpaR2hJASYeg@mail.gmail.com>
+Message-ID: <877gk4vu17.fsf@stapelberg.de>
+
+Hi Bruno,
+
+"BRAGA, Bruno" <bruno.braga at gmail.com> writes:
+> $ strace -ttt i3lock
+Works fine for me.
+
+Anyway, what we are interested in is not i3lock itself, but the shell
+process that starts it. The easiest way to get that is to strace i3:
+
+strace -p $(pidof i3) -s 2048 -f -o /tmp/strace.log
+
+Then press the key to lock your screen.
+
+-- 
+Best regards,
+Michael
+
+From haptix at web.de  Tue Apr 16 13:17:30 2013
+From: haptix at web.de (justus jonas)
+Date: Tue, 16 Apr 2013 13:17:30 +0200
+Subject: [i3] i3bar: toggle mode
+In-Reply-To: <87wqs6w7mo.fsf@stapelberg.de>
+References: <51694156.7090105@web.de> <878v4my1jh.fsf@stapelberg.de>
+ <5169AF4D.606@web.de> <87wqs6w7mo.fsf@stapelberg.de>
+Message-ID: <516D334A.6020102@web.de>
+
+Hi Michael,
+
+regarding the first version of my uploaded patch for showing/hiding 
+i3bar through i3, I was thinking about further steps and came to the 
+conclusion that it might be desirable to fully control hiding and 
+showing of i3bar through i3. This was already mentioned by Axel Wagner 
+in a previous post:
+
+"Again, in the long-run, this could also mean simplifying i3bar by
+ripping out all this key-handling-code and have i3 handle that - it
+would only be the continuation of that logic. That would mean that (to
+make the current behaviour possible) we need to be able to make bindings
+on key-press and key-releases."
+
+This makes sense to me. Further, I think we could actually also remove 
+the logic for unhiding because of urgency hints or a newly activated 
+mode from i3bar. Then either i3 could handle unhiding by initiating a 
+state update or we could even leave this to ipc scripts, which react to 
+the corresponding events. In case we would want to this, the "forcehide" 
+option should actually become a mode, and we should reduce the state to 
+only have the options "hide" and "show". So, the mode "forcehide" in 
+i3bar would just ignore state updates when it comes to unhiding or 
+showing the bar. Additionally, if i3 fully controls the state of the 
+i3bar instances, the state in the barconfig always really reflects the 
+actual state of the bar (currently i3 does not know about an internal 
+unhiding initiated by i3bar itself).
+
+For this to work, we would need the following:
+(1) Like Axel said, we would need the possibility to react to keypress 
+and keyrelease separately and would need to overload a key, so I could 
+use windows-key as bar modifier and still use keybinding like windows+h.
+(2) With the new event for sending barconfig updates, it would be easy 
+to add a possibility to switch modes on the fly (also demanded in 
+feature request #651). This would then make it possible, to switch to 
+the new "forcehide" mode.
+
+So the current hide-behaviour of i3bar using the barmodifier could be 
+configured like this:
+bindsym $mod bar show
+bindsym --release $mod bar hide
+
+The only difference here would be that the bar modifier would need to be 
+specifically defined within a binding-mode. To me, this even sounds like 
+the more consistent approach.
+
+What do you think?
+
+Best regards and thanks to you (and all contributors) for this wonderful wm
+jj
+
+Am 13.04.2013 21:30, schrieb Michael Stapelberg:
+> Hi justus,
+>
+> justus jonas <haptix at web.de> writes:
+>> As far as I understand, we would then have a state in the barconfig,
+> Correct.
+>
+>> would then switch between the values for toggling. Is there already some
+>> existing code for sending config updates to i3bar, where you could point
+>> me to?
+> There is no code which does that already. I am under the impression that
+> just sending i3bar an event (without i3bar having requested it) should
+> do the right thing. Try it and see :-).
+>
+
+From michael at i3wm.org  Wed Apr 17 20:32:24 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 17 Apr 2013 20:32:24 +0200
+Subject: [i3] i3bar: toggle mode
+In-Reply-To: <516D334A.6020102@web.de>
+References: <51694156.7090105@web.de> <878v4my1jh.fsf@stapelberg.de>
+ <5169AF4D.606@web.de> <87wqs6w7mo.fsf@stapelberg.de>
+ <516D334A.6020102@web.de>
+Message-ID: <87li8hf1on.fsf@x200.zekjur.net>
+
+Hi justus,
+
+justus jonas <haptix at web.de> writes:
+> For this to work, we would need the following:
+> (1) Like Axel said, we would need the possibility to react to keypress 
+> and keyrelease separately and would need to overload a key, so I could 
+> use windows-key as bar modifier and still use keybinding like
+> windows+h.
+See http://bugs.i3wm.org/query/ticket/386 for binding just a modifier
+(combination). It could be as simple as changing the config file parser,
+but I haven?t tested that.
+
+> (2) With the new event for sending barconfig updates, it would be easy 
+> to add a possibility to switch modes on the fly (also demanded in 
+> feature request #651). This would then make it possible, to switch to 
+> the new "forcehide" mode.
+I think #651 is well handled with your current patch already. Am I
+missing something?
+
+> So the current hide-behaviour of i3bar using the barmodifier could be 
+> configured like this:
+> bindsym $mod bar show
+> bindsym --release $mod bar hide
+You do realize that bindsym --release does exist, right? It even works,
+but I?m not sure if this specific case is handled.
+
+-- 
+Best regards,
+Michael
+
+From haptix at web.de  Wed Apr 17 22:06:34 2013
+From: haptix at web.de (justus jonas)
+Date: Wed, 17 Apr 2013 22:06:34 +0200
+Subject: [i3] i3bar: toggle mode
+In-Reply-To: <87li8hf1on.fsf@x200.zekjur.net>
+References: <51694156.7090105@web.de> <878v4my1jh.fsf@stapelberg.de>
+ <5169AF4D.606@web.de> <87wqs6w7mo.fsf@stapelberg.de>
+ <516D334A.6020102@web.de> <87li8hf1on.fsf@x200.zekjur.net>
+Message-ID: <516F00CA.3010704@web.de>
+
+Hi,
+
+Am 17.04.2013 20:32, schrieb Michael Stapelberg:
+> Hi justus,
+>
+> justus jonas <haptix at web.de> writes:
+>> For this to work, we would need the following:
+>> (1) Like Axel said, we would need the possibility to react to keypress
+>> and keyrelease separately and would need to overload a key, so I could
+>> use windows-key as bar modifier and still use keybinding like
+>> windows+h.
+> See http://bugs.i3wm.org/query/ticket/386 for binding just a modifier
+> (combination). It could be as simple as changing the config file parser,
+> but I haven?t tested that.
+
+sounds doable. I could look into that.
+
+>
+>> (2) With the new event for sending barconfig updates, it would be easy
+>> to add a possibility to switch modes on the fly (also demanded in
+>> feature request #651). This would then make it possible, to switch to
+>> the new "forcehide" mode.
+> I think #651 is well handled with your current patch already. Am I
+> missing something?
+>
+
+as I understand the request, this is different from showing the bar 
+overlaying the visible window on the bottom of the ws (just like holding 
+down the modifier while in hide mode). It says that it should be 
+possible to switch between dock and hide mode.
+
+>> So the current hide-behaviour of i3bar using the barmodifier could be
+>> configured like this:
+>> bindsym $mod bar show
+>> bindsym --release $mod bar hide
+> You do realize that bindsym --release does exist, right? It even works,
+> but I?m not sure if this specific case is handled.
+>
+
+ok, thanks for the hint, I overlooked that it already existed.
+
+Best
+jj
+
+
+From haptix at web.de  Wed Apr 17 22:17:59 2013
+From: haptix at web.de (justus jonas)
+Date: Wed, 17 Apr 2013 22:17:59 +0200
+Subject: [i3] i3bar: toggle mode
+In-Reply-To: <516F00CA.3010704@web.de>
+References: <51694156.7090105@web.de> <878v4my1jh.fsf@stapelberg.de>
+ <5169AF4D.606@web.de> <87wqs6w7mo.fsf@stapelberg.de>
+ <516D334A.6020102@web.de> <87li8hf1on.fsf@x200.zekjur.net>
+ <516F00CA.3010704@web.de>
+Message-ID: <516F0377.9060606@web.de>
+
+Just tried out the --release parameter, it works for pressing the key 
+for a short period of time. But when pressing the bound keys for a 
+longer time (like 2 seconds), the keypress and keyrelease commands are 
+executed multiple times in a row for as long as I press the keys. Is 
+this intended?
+
+I had this configured:
+     bindsym  $mod+u bar show
+     bindsym --release $mod+u bar hide
+
+
+Am 17.04.2013 22:06, schrieb justus jonas:
+> Hi,
+>
+> Am 17.04.2013 20:32, schrieb Michael Stapelberg:
+>> Hi justus,
+>>
+>> justus jonas <haptix at web.de> writes:
+>>> For this to work, we would need the following:
+>>> (1) Like Axel said, we would need the possibility to react to keypress
+>>> and keyrelease separately and would need to overload a key, so I could
+>>> use windows-key as bar modifier and still use keybinding like
+>>> windows+h.
+>> See http://bugs.i3wm.org/query/ticket/386 for binding just a modifier
+>> (combination). It could be as simple as changing the config file parser,
+>> but I haven?t tested that.
+>
+> sounds doable. I could look into that.
+>
+>>
+>>> (2) With the new event for sending barconfig updates, it would be easy
+>>> to add a possibility to switch modes on the fly (also demanded in
+>>> feature request #651). This would then make it possible, to switch to
+>>> the new "forcehide" mode.
+>> I think #651 is well handled with your current patch already. Am I
+>> missing something?
+>>
+>
+> as I understand the request, this is different from showing the bar
+> overlaying the visible window on the bottom of the ws (just like holding
+> down the modifier while in hide mode). It says that it should be
+> possible to switch between dock and hide mode.
+>
+>>> So the current hide-behaviour of i3bar using the barmodifier could be
+>>> configured like this:
+>>> bindsym $mod bar show
+>>> bindsym --release $mod bar hide
+>> You do realize that bindsym --release does exist, right? It even works,
+>> but I?m not sure if this specific case is handled.
+>>
+>
+> ok, thanks for the hint, I overlooked that it already existed.
+>
+> Best
+> jj
+>
+
+From michael at i3wm.org  Wed Apr 17 22:43:22 2013
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 17 Apr 2013 22:43:22 +0200
+Subject: [i3] i3bar: toggle mode
+In-Reply-To: <516F0377.9060606@web.de>
+References: <51694156.7090105@web.de> <878v4my1jh.fsf@stapelberg.de>
+ <5169AF4D.606@web.de> <87wqs6w7mo.fsf@stapelberg.de>
+ <516D334A.6020102@web.de> <87li8hf1on.fsf@x200.zekjur.net>
+ <516F00CA.3010704@web.de> <516F0377.9060606@web.de>
+Message-ID: <87ip3kga6t.fsf@x200.zekjur.net>
+
+Hi justus,
+
+justus jonas <haptix at web.de> writes:
+> Just tried out the --release parameter, it works for pressing the key 
+> for a short period of time. But when pressing the bound keys for a 
+> longer time (like 2 seconds), the keypress and keyrelease commands are 
+> executed multiple times in a row for as long as I press the keys. Is 
+> this intended?
+Of course not. But check with xev(1) whether the key is triggered
+multiple times.
+
+>>>> (2) With the new event for sending barconfig updates, it would be easy
+>>>> to add a possibility to switch modes on the fly (also demanded in
+>>>> feature request #651). This would then make it possible, to switch to
+>>>> the new "forcehide" mode.
+>>> I think #651 is well handled with your current patch already. Am I
+>>> missing something?
+>>>
+>>
+>> as I understand the request, this is different from showing the bar
+>> overlaying the visible window on the bottom of the ws (just like holding
+>> down the modifier while in hide mode). It says that it should be
+>> possible to switch between dock and hide mode.
+Fair enough.
+
+-- 
+Best regards,
+Michael
+
+From haptix at web.de  Wed Apr 17 22:53:52 2013
+From: haptix at web.de (justus jonas)
+Date: Wed, 17 Apr 2013 22:53:52 +0200
+Subject: [i3] i3bar: toggle mode
+In-Reply-To: <87ip3kga6t.fsf@x200.zekjur.net>
+References: <51694156.7090105@web.de> <878v4my1jh.fsf@stapelberg.de>
+ <5169AF4D.606@web.de> <87wqs6w7mo.fsf@stapelberg.de>
+ <516D334A.6020102@web.de> <87li8hf1on.fsf@x200.zekjur.net>
+ <516F00CA.3010704@web.de> <516F0377.9060606@web.de>
+ <87ip3kga6t.fsf@x200.zekjur.net>
+Message-ID: <516F0BE0.7020300@web.de>
+
+Hi Michael,
+
+Am 17.04.2013 22:43, schrieb Michael Stapelberg:
+> Hi justus,
+>
+> justus jonas <haptix at web.de> writes:
+>> Just tried out the --release parameter, it works for pressing the key
+>> for a short period of time. But when pressing the bound keys for a
+>> longer time (like 2 seconds), the keypress and keyrelease commands are
+>> executed multiple times in a row for as long as I press the keys. Is
+>> this intended?
+> Of course not. But check with xev(1) whether the key is triggered
+> multiple times.
+>
+
+It is triggered multiple times. Keeping on pressing any key for some 
+time does toggle between sending the keyrelease and keypress event for 
+as long as the key is pressed. But it would actually be nice if it would 
+be possible that the command was executed only once per keydown/up.
+
+>>>>> (2) With the new event for sending barconfig updates, it would be easy
+>>>>> to add a possibility to switch modes on the fly (also demanded in
+>>>>> feature request #651). This would then make it possible, to switch to
+>>>>> the new "forcehide" mode.
+>>>> I think #651 is well handled with your current patch already. Am I
+>>>> missing something?
+>>>>
+>>>
+>>> as I understand the request, this is different from showing the bar
+>>> overlaying the visible window on the bottom of the ws (just like holding
+>>> down the modifier while in hide mode). It says that it should be
+>>> possible to switch between dock and hide mode.
+> Fair enough.
+>
+
+Best
+Johannes
+
+From baspape at gmail.com  Wed Apr 17 22:59:59 2013
+From: baspape at gmail.com (Bas Pape)
+Date: Wed, 17 Apr 2013 22:59:59 +0200
+Subject: [i3] i3bar: toggle mode
+In-Reply-To: <87ip3kga6t.fsf@x200.zekjur.net>
+References: <51694156.7090105@web.de> <878v4my1jh.fsf@stapelberg.de>
+ <5169AF4D.606@web.de> <87wqs6w7mo.fsf@stapelberg.de>
+ <516D334A.6020102@web.de> <87li8hf1on.fsf@x200.zekjur.net>
+ <516F00CA.3010704@web.de> <516F0377.9060606@web.de>
+ <87ip3kga6t.fsf@x200.zekjur.net>
+Message-ID: <CAMoU6uZUaLQUZ0WvAkiEFETRZJqV3SqYj2y6Dt=wN+GDuOE-pg@mail.gmail.com>
+
+2013/4/17 Michael Stapelberg <michael at i3wm.org>:
+> Hi justus,
+>
+> justus jonas <haptix at web.de> writes:
+>> Just tried out the --release parameter, it works for pressing the key
+>> for a short period of time. But when pressing the bound keys for a
+>> longer time (like 2 seconds), the keypress and keyrelease commands are
+>> executed multiple times in a row for as long as I press the keys. Is
+>> this intended?
+> Of course not. But check with xev(1) whether the key is triggered
+> multiple times.
+Regular key-repeat applies, so with the given example config, you'd
+get a ton of u with the flag for $mod set. Modifiers on their own
+don't repeat (except for Multi_Key, apparently). I'd say this is
+expected/acceptable behaviour; assuming keybinds for just modifiers
+just work, this would not affect the "current hide-behaviour of i3bar
+using the barmodifier" part either.
+
+--
+Tucos
+
+From haptix at web.de  Wed Apr 17 23:10:01 2013
+From: haptix at web.de (justus jonas)
+Date: Wed, 17 Apr 2013 23:10:01 +0200
+Subject: [i3] i3bar: toggle mode
+In-Reply-To: <CAMoU6uZUaLQUZ0WvAkiEFETRZJqV3SqYj2y6Dt=wN+GDuOE-pg@mail.gmail.com>
+References: <51694156.7090105@web.de> <878v4my1jh.fsf@stapelberg.de>
+ <5169AF4D.606@web.de> <87wqs6w7mo.fsf@stapelberg.de>
+ <516D334A.6020102@web.de> <87li8hf1on.fsf@x200.zekjur.net>
+ <516F00CA.3010704@web.de> <516F0377.9060606@web.de>
+ <87ip3kga6t.fsf@x200.zekjur.net>
+ <CAMoU6uZUaLQUZ0WvAkiEFETRZJqV3SqYj2y6Dt=wN+GDuOE-pg@mail.gmail.com>
+Message-ID: <516F0FA9.8040202@web.de>
+
+Hi Tucos,
+
+thanks for clearing that up. Sounds indeed acceptable then; so never 
+mind what I said.
+
+Am 17.04.2013 22:59, schrieb Bas Pape:
+> 2013/4/17 Michael Stapelberg <michael at i3wm.org>:
+>> Hi justus,
+>>
+>> justus jonas <haptix at web.de> writes:
+>>> Just tried out the --release parameter, it works for pressing the key
+>>> for a short period of time. But when pressing the bound keys for a
+>>> longer time (like 2 seconds), the keypress and keyrelease commands are
+>>> executed multiple times in a row for as long as I press the keys. Is
+>>> this intended?
+>> Of course not. But check with xev(1) whether the key is triggered
+>> multiple times.
+> Regular key-repeat applies, so with the given example config, you'd
+> get a ton of u with the flag for $mod set. Modifiers on their own
+> don't repeat (except for Multi_Key, apparently). I'd say this is
+> expected/acceptable behaviour; assuming keybinds for just modifiers
+> just work, this would not affect the "current hide-behaviour of i3bar
+> using the barmodifier" part either.
+>
+> --
+> Tucos
+>
+
+From bruno.braga at gmail.com  Tue Apr 23 01:10:19 2013
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Tue, 23 Apr 2013 09:10:19 +1000
+Subject: [i3] i3lock hooks
+In-Reply-To: <877gk4vu17.fsf@stapelberg.de>
+References: <CAAuVr72VRB6+_NJ6nHj5f6ndKmChGAqw61wUTdzzO8-tdY1fcw@mail.gmail.com>
+ <CAMoU6ubWu8UU56fxejXVg5He5nja=tqgGOS5F=JT1t5714uyrg@mail.gmail.com>
+ <CAPUwkJ+JJtr3m=uSUOx9t8Gb9pzJeVajWuj3+=9wr9oKjH2BLQ@mail.gmail.com>
+ <87r4ilo7hy.fsf@x200.zekjur.net>
+ <CAPUwkJJ0rdO224Rq_7h1_HjiQ07ZUqd0C5t3U8q3aZux=VmZzA@mail.gmail.com>
+ <87zjx9yqj6.fsf@stapelberg.de>
+ <CAAuVr72gF7OZQ7N8KgrKNw40eRb=rq6Xjk7g6_TMdM1D3reXOg@mail.gmail.com>
+ <CAAuVr70BiURmQVF2aC41HPdzrY8umxNpyy2jv8rg=tB05E2s5A@mail.gmail.com>
+ <20130413052215.GA8103@saturn> <87eheeyhhm.fsf@stapelberg.de>
+ <20130413152429.GA12359@saturn>
+ <CAAuVr738PvGRFnDrM2D25mhU-6cr37Y3Wk+wWfJeTb1FTRn3HQ@mail.gmail.com>
+ <CAAuVr71h-fTMdqgaA8j2C-6_pmtA1ShE==yn-8jpaR2hJASYeg@mail.gmail.com>
+ <877gk4vu17.fsf@stapelberg.de>
+Message-ID: <CAAuVr700QzFbN+Jkj_vfOie_5EzzKJrjQ9XJfqLmGraka0Z8Uw@mail.gmail.com>
+
+Sorry guys,
+
+After some time looking straces and stuff, I finally figure out that I
+missed the --nofork option to start with... doh!
+
+Running it as Michael described worked fine, with no problems.
+
+Sorry for the trouble.
+
+Thanks,
+
+
+
+--
+*Bruno Braga*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+On Mon, Apr 15, 2013 at 10:48 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Bruno,
+>
+> "BRAGA, Bruno" <bruno.braga at gmail.com> writes:
+> > $ strace -ttt i3lock
+> Works fine for me.
+>
+> Anyway, what we are interested in is not i3lock itself, but the shell
+> process that starts it. The easiest way to get that is to strace i3:
+>
+> strace -p $(pidof i3) -s 2048 -f -o /tmp/strace.log
+>
+> Then press the key to lock your screen.
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130423/9ba34775/attachment.html>
+
+From okiddle at yahoo.co.uk  Tue Apr 23 19:52:39 2013
+From: okiddle at yahoo.co.uk (Oliver Kiddle)
+Date: Tue, 23 Apr 2013 19:52:39 +0200
+Subject: [i3] Natural sizing of windows
+In-Reply-To: <20130407121257.C46DA42F75@snark.thyrsus.com>
+References: <20130407121257.C46DA42F75@snark.thyrsus.com>
+Message-ID: <29111.1366739559@thecus.kiddle.eu>
+
+On 7 Apr, esr at thyrsus.com wrote:
+> practical problem is that I normally want both my terminal emulators
+> and my Emacs windows to have a fixed 80-column width (unless I
+> explicitly resize them), in order for the text displays to look
+> natural.
+
+Since using i3, I've mostly got used to having terminals (and text
+editors) that are slightly more than 80 columns. (and for a media player
+I find the scratchpad works well though I'm not familiar with pithos).
+
+On a wide screen monitor I often split the screen with a terminal
+on the left and browser on the right. In this case, I usually end up
+resizing things so the terminal is thinner. To simplify this, it'd be
+good if I could bind a key for certain fixed widths: something like:
+  mode "resize" {
+    bindsym 8 resize set width 80 chars
+If making characters as a unit work for things like xterm is not
+possible then I don't mind hard coding the pixels for my default font.
+It might also be useful to allow say 'set width natural'. If I really
+want a window in it's natural size, I'm more likely to just make it into
+a floating window temporarily but with naturally sized tiled windows,
+I'd want the width and height controlled separately (which Eric's
+suggestion doesn't seem to do). Getting a window back to half or third
+of the screen would be more useful.
+
+I've also just noticed that using the keys to grow a floating window
+doesn't seem to be working.
+
+Oliver
+
+From acgtyrant at gmail.com  Fri Apr 26 13:58:13 2013
+From: acgtyrant at gmail.com (tyrant acg)
+Date: Fri, 26 Apr 2013 19:58:13 +0800
+Subject: [i3] There are two bars in my desktop in the same time!
+Message-ID: <CAFUKwMkvgLtLBXgWMF5=jxTEGAjf6rjt0LUi29cdhXcb2Hx6jQ@mail.gmail.com>
+
+This is my desktop. [image: Inline image 1]
+
+You can find there are two bars in my desktop in the same time, and I had
+set the bar's position to top in the config file. How to get the rid of the
+bottom bar? May it be a bug?
+
+And this is the config of i3:
+  A
+ config<https://docs.google.com/file/d/0B5gnmpGI9NoBMS1kNVNJUjhHX3c/edit?usp=drive_web>
+
+I'm Chinese, so forgive my poor English please. Thank you!
+
+-- 
+Best wishes,
+acgtyrant
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130426/068f2301/attachment.html>
+
+From acgtyrant at gmail.com  Fri Apr 26 14:18:48 2013
+From: acgtyrant at gmail.com (tyrant acg)
+Date: Fri, 26 Apr 2013 20:18:48 +0800
+Subject: [i3] There are two bars in my desktop in the same time!
+In-Reply-To: <CAFUKwMkvgLtLBXgWMF5=jxTEGAjf6rjt0LUi29cdhXcb2Hx6jQ@mail.gmail.com>
+References: <CAFUKwMkvgLtLBXgWMF5=jxTEGAjf6rjt0LUi29cdhXcb2Hx6jQ@mail.gmail.com>
+Message-ID: <CAFUKwMnYFXOx3rJeoiQCQ_Hp8yN6J-X_VyfSyB3=aFs_6wzzUw@mail.gmail.com>
+
+By the way, the top bar is affected by my config about i3, but the bottom
+bar isn't, it is initial.
+
+
+On Fri, Apr 26, 2013 at 7:58 PM, tyrant acg <acgtyrant at gmail.com> wrote:
+
+> This is my desktop. [image: Inline image 1]
+>
+> You can find there are two bars in my desktop in the same time, and I had
+> set the bar's position to top in the config file. How to get the rid of the
+> bottom bar? May it be a bug?
+> And this is the config of i3:
+>   A
+>  config<https://docs.google.com/file/d/0B5gnmpGI9NoBMS1kNVNJUjhHX3c/edit?usp=drive_web>
+> I'm Chinese, so forgive my poor English please. Thank you!
+>
+> --
+> Best wishes,
+> acgtyrant
+>
+
+
+
+-- 
+Best wishes,
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130426/3b54bc9c/attachment.html>
+
+From acgtyrant at gmail.com  Fri Apr 26 14:31:06 2013
+From: acgtyrant at gmail.com (tyrant acg)
+Date: Fri, 26 Apr 2013 20:31:06 +0800
+Subject: [i3] There are two bars in my desktop in the same time!
+In-Reply-To: <CAFUKwMnYFXOx3rJeoiQCQ_Hp8yN6J-X_VyfSyB3=aFs_6wzzUw@mail.gmail.com>
+References: <CAFUKwMkvgLtLBXgWMF5=jxTEGAjf6rjt0LUi29cdhXcb2Hx6jQ@mail.gmail.com>
+ <CAFUKwMnYFXOx3rJeoiQCQ_Hp8yN6J-X_VyfSyB3=aFs_6wzzUw@mail.gmail.com>
+Message-ID: <CAFUKwMmtwvPwMqT8TpuUKhE38kHKHH6jqU3f26PJccniL8-Xmw@mail.gmail.com>
+
+OMG, I found there are two bar sections in my config actually. So
+everything goes well after I removed the unnecessary bar section. How fool
+I am! [image: big_smile]
+
+
+On Fri, Apr 26, 2013 at 8:18 PM, tyrant acg <acgtyrant at gmail.com> wrote:
+
+> By the way, the top bar is affected by my config about i3, but the bottom
+> bar isn't, it is initial.
+>
+>
+> On Fri, Apr 26, 2013 at 7:58 PM, tyrant acg <acgtyrant at gmail.com> wrote:
+>
+>> This is my desktop. [image: Inline image 1]
+>>
+>> You can find there are two bars in my desktop in the same time, and I had
+>> set the bar's position to top in the config file. How to get the rid of the
+>> bottom bar? May it be a bug?
+>> And this is the config of i3:
+>>   A
+>>  config<https://docs.google.com/file/d/0B5gnmpGI9NoBMS1kNVNJUjhHX3c/edit?usp=drive_web>
+>> I'm Chinese, so forgive my poor English please. Thank you!
+>>
+>> --
+>> Best wishes,
+>> acgtyrant
+>>
+>
+>
+>
+> --
+> Best wishes,
+>
+
+
+
+-- 
+Best wishes,
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130426/db4dedf1/attachment.html>
+
+From haptix at web.de  Mon Apr 29 14:56:34 2013
+From: haptix at web.de (justus jonas)
+Date: Mon, 29 Apr 2013 14:56:34 +0200
+Subject: [i3] i3bar: toggle mode
+In-Reply-To: <87li8hf1on.fsf@x200.zekjur.net>
+References: <51694156.7090105@web.de> <878v4my1jh.fsf@stapelberg.de>
+ <5169AF4D.606@web.de> <87wqs6w7mo.fsf@stapelberg.de>
+ <516D334A.6020102@web.de> <87li8hf1on.fsf@x200.zekjur.net>
+Message-ID: <517E6E02.4050303@web.de>
+
+Hi Michael,
+
+we previously discussed a patch for controlling the hidden state of 
+i3bar through an i3 command. With this working, we could also define the 
+bar_modifier as a bindsym command. I did not have time to work on a full 
+patch for binding just modifier keys so far, but tried out some stuff. 
+Thereby, I discovered the following problem with this approach:
+
+When pressing a defined keybinding, the click events of the mouse are 
+not send to the focused window until the keybinding is released. This 
+causes a problem when trying to show i3bar by pressing a key and hiding 
+it again by releasing the key. So, trying to click, e.g., on a tray icon 
+would not work, as the click event is send to i3bar just after the 
+keybinding was released. Any suggestions on how to solve this?
+
+Best
+jj
+
+Am 17.04.2013 20:32, schrieb Michael Stapelberg:
+> Hi justus,
+>
+> justus jonas <haptix at web.de> writes:
+>> For this to work, we would need the following:
+>> (1) Like Axel said, we would need the possibility to react to keypress
+>> and keyrelease separately and would need to overload a key, so I could
+>> use windows-key as bar modifier and still use keybinding like
+>> windows+h.
+> See http://bugs.i3wm.org/query/ticket/386 for binding just a modifier
+> (combination). It could be as simple as changing the config file parser,
+> but I haven?t tested that.
+>
+>> (2) With the new event for sending barconfig updates, it would be easy
+>> to add a possibility to switch modes on the fly (also demanded in
+>> feature request #651). This would then make it possible, to switch to
+>> the new "forcehide" mode.
+> I think #651 is well handled with your current patch already. Am I
+> missing something?
+>
+>> So the current hide-behaviour of i3bar using the barmodifier could be
+>> configured like this:
+>> bindsym $mod bar show
+>> bindsym --release $mod bar hide
+> You do realize that bindsym --release does exist, right? It even works,
+> but I?m not sure if this specific case is handled.
+>
+

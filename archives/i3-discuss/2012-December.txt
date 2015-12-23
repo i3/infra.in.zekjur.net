@@ -1,0 +1,2587 @@
+From bebl at mageta.org  Mon Dec  3 00:04:27 2012
+From: bebl at mageta.org (Benjamin Block)
+Date: Mon, 03 Dec 2012 00:04:27 +0100
+Subject: [i3] Hotkey to resize a terminal?
+Message-ID: <50BBDE7B.60200@mageta.org>
+
+Hi,
+
+is it possible to define a hotkey to "painlessly" resize a terminal to a
+specific size - so it can for example display 80 chars on one line?
+
+For example, I often open up a terminal besides my browser to do some
+calculations (bc, units, ... ) or run a quick script, but I don't want
+it to actually use half of the screen because there is no reason to. I
+want it to be 80 (character-)columns wide.
+But currently, to do this, I first have to figure out how wide it needs
+to be (print 80 chars) and then manually resize it. Thats a huge pain
+for such a common task - of course, common (only) for me ;) - and I
+would like to just hit a hotkey to do this action (resize it to be 80
+chars wide).
+
+best regards,
+- Benjamin
+
+From michael at i3wm.org  Mon Dec  3 21:05:14 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 03 Dec 2012 21:05:14 +0100
+Subject: [i3] Hotkey to resize a terminal?
+In-Reply-To: <50BBDE7B.60200@mageta.org>
+References: <50BBDE7B.60200@mageta.org>
+Message-ID: <x68v9ex5ol.fsf@midna.zekjur.net>
+
+Hi Benjamin,
+
+Benjamin Block <bebl at mageta.org> writes:
+> is it possible to define a hotkey to "painlessly" resize a terminal to a
+> specific size - so it can for example display 80 chars on one line?
+The problem is that "80 characters" depends on the font and possibly the
+terminal emulator you are using. There is no way for the terminal
+emulator to tell i3 that it wants to be 80 characters wide. Any
+X11 ConfigureRequests will be ignored by i3 ? that?s necessary for a
+tiling window manager :-).
+
+Now, if you are into programming, the problem is not unsolvable. Here is
+how I would approach it:
+
+1) Figure out whether your terminal emulator provides the information
+   how wide 80 characters are in pixels. Alternatively, if you are fine
+   with hard-coding this, figure it out yourself once.
+
+2) Implement a script which uses i3?s IPC interface
+   (http://i3wm.org/docs/ipc.html) in order to figure out the current
+   size percentage and actual size of the currently focused terminal
+   window. You can get these information by requesting the layout tree.
+
+3) Send an IPC request to resize the window accordingly so that it has
+   enough space. This is also where your definition of "painlessly"
+   comes into the picture :-).
+
+Have fun! If you have any questions left, feel free to ask.
+
+-- 
+Best regards,
+Michael
+
+From gkeramidas at gmail.com  Wed Dec  5 20:37:36 2012
+From: gkeramidas at gmail.com (Giorgos Keramidas)
+Date: Wed, 5 Dec 2012 20:37:36 +0100 (CET)
+Subject: [i3] Ubuntu 12.10, i3status and new libxkbcommon >= 0.2.0 dependency
+Message-ID: <alpine.DEB.2.02.1212052031530.14960@saturn>
+
+Building i3status from git sources used to work up to commit
+e1d86a327945111b99148650dc536c9ad8598cc1 in Ubuntu 12.10, but
+after this commit I get link-time errors like this:
+
+% i3lock.o: In function `load_keymap':
+% i3lock.c:(.text+0x253): undefined reference to `xkb_keymap_unref'
+% i3lock.c:(.text+0x275): undefined reference to `xkb_keymap_new_from_file'
+% i3lock.o: In function `handle_key_press':
+% i3lock.c:(.text+0x650): undefined reference to `xkb_state_key_get_one_sym'
+% collect2: ??????: ? ld ????????? ????????? ?????? 1
+
+I managed to track this down to libxkbcommon-dev being too old in
+Ubuntu 12.10.  The version available in the repositories I am
+using for 12.10 (quantal) do not include libxkbcommon-dev >= 0.2.0.
+At least not yet...
+
+Yet this commit includes the following change in README:
+
+% $ git show e1d86a3
+% commit e1d86a327945111b99148650dc536c9ad8598cc1
+% Author: Michael Stapelberg <michael at stapelberg.de>
+% Date:   Fri Oct 26 20:24:55 2012 +0200
+%
+%     use libxkbcommon for input handling
+%
+%     Thanks to Ran Benita and Daniel Stone (the libxkbcommon authors) for
+%     answering my questions and reviewing this code.
+%
+%     With this commit, input handling should be more correct with using less
+%     code (in i3lock, that is).
+% ...
+% diff --git a/README b/README
+% index 99e0af5..2e648a7 100644
+% --- a/README
+% +++ b/README
+% @@ -27,6 +27,9 @@ Requirements
+%  - libxcb-xinerama
+%  - libev
+%  - libx11-dev
+% +- libx11-xcb-dev
+% +- libxkbfile-dev
+% +- libxkbcommon >= 0.2.0
+%
+%  Running i3lock
+%  -------------
+
+Since Ubuntu 12.10 is supposed to be a fairly 'modern' Linux
+distribution but it still lacks this version of libxkbcommon,
+what's the recommended way of building i3status on it?
+
+--
+Giorgos Keramidas; gkeramidas at gmail.com
+
+From michael at i3wm.org  Wed Dec  5 22:08:02 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 05 Dec 2012 22:08:02 +0100
+Subject: [i3] Ubuntu 12.10,
+	i3status and new libxkbcommon >= 0.2.0 dependency
+In-Reply-To: <alpine.DEB.2.02.1212052031530.14960@saturn>
+References: <alpine.DEB.2.02.1212052031530.14960@saturn>
+Message-ID: <x6obi8tdfx.fsf@midna.zekjur.net>
+
+Hi Giorgos,
+
+Giorgos Keramidas <gkeramidas at gmail.com> writes:
+> Since Ubuntu 12.10 is supposed to be a fairly 'modern' Linux
+> distribution but it still lacks this version of libxkbcommon,
+> what's the recommended way of building i3status on it?
+Install libxkbcommon by hand.
+
+Also, I have filed http://bugs.debian.org/691699, it?s just waiting for
+the maintainer to work on it. Starting from there, it?s only a matter of
+months until it lands in Ubuntu and a few months more until it lands in
+an actual Ubuntu release (not kidding).
+
+You could try installing
+http://t.zekjur.net/libxkbcommon0_0.2.0-1_amd64.deb and
+http://t.zekjur.net/libxkbcommon-dev_0.2.0-1_amd64.deb
+though they are for Debian, so they might not work on Ubuntu.
+
+-- 
+Best regards,
+Michael
+
+From dcoppa at gmail.com  Thu Dec  6 12:35:56 2012
+From: dcoppa at gmail.com (David Coppa)
+Date: Thu, 6 Dec 2012 12:35:56 +0100
+Subject: [i3] [PATCH] OpenBSD has getline() now
+Message-ID: <CABM=MF+HLHrZoJBS58i8PRr-v=b0_5Odytn51htObnn_xoko_w@mail.gmail.com>
+
+Hi all,
+
+Since 5.2 (released Nov 1, 2012), OpenBSD has a getline() function.
+
+Michael, can you commit the attached patch?
+
+Thanks,
+David
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: i3-openbsd_getline.diff
+Type: application/octet-stream
+Size: 838 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121206/bbb8042c/attachment.obj>
+
+From gkeramidas at gmail.com  Thu Dec  6 16:08:31 2012
+From: gkeramidas at gmail.com (Giorgos Keramidas)
+Date: Thu, 6 Dec 2012 16:08:31 +0100
+Subject: [i3] Ubuntu 12.10,
+	i3status and new libxkbcommon >= 0.2.0 dependency
+In-Reply-To: <x6obi8tdfx.fsf@midna.zekjur.net>
+References: <alpine.DEB.2.02.1212052031530.14960@saturn>
+ <x6obi8tdfx.fsf@midna.zekjur.net>
+Message-ID: <CAKR2__20gKkKaoEigeUqvqsAhA0pLroC0bQLGh6z11ZLV7OvKg@mail.gmail.com>
+
+Thanks Michael.
+
+I'll try installing libxkbcommon from source, and see how that works.
+
+On Wed, Dec 5, 2012 at 10:08 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Giorgos,
+>
+> Giorgos Keramidas <gkeramidas at gmail.com> writes:
+> > Since Ubuntu 12.10 is supposed to be a fairly 'modern' Linux
+> > distribution but it still lacks this version of libxkbcommon,
+> > what's the recommended way of building i3status on it?
+> Install libxkbcommon by hand.
+>
+> Also, I have filed http://bugs.debian.org/691699, it?s just waiting for
+> the maintainer to work on it. Starting from there, it?s only a matter of
+> months until it lands in Ubuntu and a few months more until it lands in
+> an actual Ubuntu release (not kidding).
+>
+> You could try installing
+> http://t.zekjur.net/libxkbcommon0_0.2.0-1_amd64.deb and
+> http://t.zekjur.net/libxkbcommon-dev_0.2.0-1_amd64.deb
+> though they are for Debian, so they might not work on Ubuntu.
+>
+> --
+> Best regards,
+> Michael
+>
+
+
+
+-- 
+Giorgos Keramidas; gkeramidas at gmail.com
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121206/8508e2a1/attachment.html>
+
+From gkeramidas at gmail.com  Thu Dec  6 20:03:48 2012
+From: gkeramidas at gmail.com (Giorgos Keramidas)
+Date: Thu, 6 Dec 2012 20:03:48 +0100
+Subject: [i3] Ubuntu 12.10,
+	i3status and new libxkbcommon >= 0.2.0 dependency
+In-Reply-To: <CAKR2__20gKkKaoEigeUqvqsAhA0pLroC0bQLGh6z11ZLV7OvKg@mail.gmail.com>
+References: <alpine.DEB.2.02.1212052031530.14960@saturn>
+ <x6obi8tdfx.fsf@midna.zekjur.net>
+ <CAKR2__20gKkKaoEigeUqvqsAhA0pLroC0bQLGh6z11ZLV7OvKg@mail.gmail.com>
+Message-ID: <CAKR2__1UyWgPHtG71mc1z8=e4FaX9dLk7gnj0FUhJj=5WmVefg@mail.gmail.com>
+
+On Thu, Dec 6, 2012 at 4:08 PM, Giorgos Keramidas <gkeramidas at gmail.com> wrote:
+>On Wed, Dec 5, 2012 at 10:08 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+>>Giorgos Keramidas <gkeramidas at gmail.com> writes:
+>>> Since Ubuntu 12.10 is supposed to be a fairly 'modern' Linux
+>>> distribution but it still lacks this version of libxkbcommon,
+>>> what's the recommended way of building i3status on it?
+>>
+>> Install libxkbcommon by hand.
+>>
+>> Also, I have filed http://bugs.debian.org/691699, it?s just waiting for
+>> the maintainer to work on it. Starting from there, it?s only a matter of
+>> months until it lands in Ubuntu and a few months more until it lands in
+>> an actual Ubuntu release (not kidding).
+>
+> Thanks Michael.
+> I'll try installing libxkbcommon from source, and see how that works.
+
+Done. A first attempt to install i3lock and i3status manually worked.
+I configured libxkbcommon with:
+
+    ./configure --prefix=/usr --sysconfdir=/etc
+
+FWIW, this *does* overwrite libxkbcommon files from the distribution's
+package, so it may break in the future. I'll check out the deb files next.
+
+Cheers,
+Giorgos
+
+From michael at i3wm.org  Fri Dec  7 23:28:49 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 07 Dec 2012 23:28:49 +0100
+Subject: [i3] [PATCH] OpenBSD has getline() now
+In-Reply-To: <CABM=MF+HLHrZoJBS58i8PRr-v=b0_5Odytn51htObnn_xoko_w@mail.gmail.com>
+References: <CABM=MF+HLHrZoJBS58i8PRr-v=b0_5Odytn51htObnn_xoko_w@mail.gmail.com>
+Message-ID: <x6obi5sdi6.fsf@midna.zekjur.net>
+
+Hi David,
+
+David Coppa <dcoppa at gmail.com> writes:
+> Since 5.2 (released Nov 1, 2012), OpenBSD has a getline() function.
+> Michael, can you commit the attached patch?
+Isn?t that a bit early?
+
+At least in the linux world, people oftentimes build new software
+versions on old distribution versions. Doesn?t that happen in OpenBSD
+and might frustrate people?
+
+Ultimately, it?s your call, so just tell me whether I should go ahead
+and merge it or not.
+
+-- 
+Best regards,
+Michael
+
+From dcoppa at gmail.com  Sat Dec  8 16:58:55 2012
+From: dcoppa at gmail.com (David Coppa)
+Date: Sat, 8 Dec 2012 16:58:55 +0100
+Subject: [i3] [PATCH] OpenBSD has getline() now
+In-Reply-To: <x6obi5sdi6.fsf@midna.zekjur.net>
+References: <CABM=MF+HLHrZoJBS58i8PRr-v=b0_5Odytn51htObnn_xoko_w@mail.gmail.com>
+ <x6obi5sdi6.fsf@midna.zekjur.net>
+Message-ID: <CABM=MFLNROwzW-FYwYs1KzVEPboA+jEfJT-_QZnQDo6wNOx6gA@mail.gmail.com>
+
+On Fri, Dec 7, 2012 at 11:28 PM, Michael Stapelberg <michael at i3wm.org> wrote:
+> Hi David,
+>
+> David Coppa <dcoppa at gmail.com> writes:
+>> Since 5.2 (released Nov 1, 2012), OpenBSD has a getline() function.
+>> Michael, can you commit the attached patch?
+> Isn?t that a bit early?
+>
+> At least in the linux world, people oftentimes build new software
+> versions on old distribution versions. Doesn?t that happen in OpenBSD
+> and might frustrate people?
+
+Our ecosystem is organized in a different way: ports/packages are
+shipped together with a given release and users are supposed /
+encouraged to use those packages.
+
+For 5.2 my i3 port already has this patch:
+
+http://www.openbsd.org/cgi-bin/cvsweb/~checkout~/ports/x11/i3/patches/patch-i3-config-wizard_main_c?rev=1.5;content-type=text%2Fplain;only_with_tag=OPENBSD_5_2
+
+> Ultimately, it?s your call, so just tell me whether I should go ahead
+> and merge it or not.
+
+Yes, please: removing a "local" patch is always a good thing ;)
+> --
+> Best regards,
+> Michael
+
+Thanks,
+David
+
+From michael at i3wm.org  Sat Dec  8 17:53:19 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 08 Dec 2012 17:53:19 +0100
+Subject: [i3] [PATCH] OpenBSD has getline() now
+In-Reply-To: <CABM=MFLNROwzW-FYwYs1KzVEPboA+jEfJT-_QZnQDo6wNOx6gA@mail.gmail.com>
+References: <CABM=MF+HLHrZoJBS58i8PRr-v=b0_5Odytn51htObnn_xoko_w@mail.gmail.com>
+ <x6obi5sdi6.fsf@midna.zekjur.net>
+ <CABM=MFLNROwzW-FYwYs1KzVEPboA+jEfJT-_QZnQDo6wNOx6gA@mail.gmail.com>
+Message-ID: <x6boe4scxs.fsf@midna.zekjur.net>
+
+Hi David,
+
+David Coppa <dcoppa at gmail.com> writes:
+> Our ecosystem is organized in a different way: ports/packages are
+> shipped together with a given release and users are supposed /
+> encouraged to use those packages.
+Alright, your patch is merged now. Thanks.
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Sun Dec  9 17:10:38 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 09 Dec 2012 17:10:38 +0100
+Subject: [i3] RFC: i3-dmenu-desktop
+Message-ID: <x638zfrytd.fsf@midna.zekjur.net>
+
+Hi,
+
+I have written a script which extracts the ?Name? key from .desktop
+files, asks you to make a choice by starting dmenu, then runs the chosen
+application via i3.
+
+You can read more about it in its documentation at
+http://code.stapelberg.de/git/i3/tree/contrib/i3-dmenu-desktop?h=next#n375
+
+>From the commit message:
+
+See "pod2man --utf8 contrib/i3-dmenu-desktop | man /dev/stdin" for
+documentation. Use a line like this in your i3 config file:
+    bindsym Mod1+p exec --no-startup-id ~/i3/contrib/i3-dmenu-desktop
+
+I would love to hear your comments about this.
+Do you find it useful or not, and why?
+
+I am toying with shipping this with i3 (as in: installing it on the
+system so that it ends up in packages) and making it the default instead
+of just using dmenu_run. Thoughts?
+
+-- 
+Best regards,
+Michael
+
+From sardemff7+i3 at sardemff7.net  Sun Dec  9 18:25:25 2012
+From: sardemff7+i3 at sardemff7.net (Quentin Glidic)
+Date: Sun, 09 Dec 2012 18:25:25 +0100
+Subject: [i3] RFC: i3-dmenu-desktop
+In-Reply-To: <x638zfrytd.fsf@midna.zekjur.net>
+References: <x638zfrytd.fsf@midna.zekjur.net>
+Message-ID: <50C4C985.3010007@sardemff7.net>
+
+On 09/12/2012 17:10, Michael Stapelberg wrote:
+> Hi,
+> 
+> I have written a script which extracts the ?Name? key from .desktop 
+> files, asks you to make a choice by starting dmenu, then runs the 
+> chosen application via i3.
+
+Too bad I didn?t work earlier on j4menu since it was the main use case
+for it. And I?m sad that you?re using ?dmenu? everywhere while j4menu is
+on its way. :'(
+
+
+> You can read more about it in its documentation at 
+> http://code.stapelberg.de/git/i3/tree/contrib/i3-dmenu-desktop?h=next#n375
+
+You lack OnlyShowIn and NotShowIn support, at first sight. It might be
+worth to support them if we start having so much i3 XDG support. :-)
+
+
+> From the commit message:
+> 
+> See "pod2man --utf8 contrib/i3-dmenu-desktop | man /dev/stdin" for 
+> documentation. Use a line like this in your i3 config file: bindsym 
+> Mod1+p exec --no-startup-id ~/i3/contrib/i3-dmenu-desktop
+> 
+> I would love to hear your comments about this. Do you find it useful 
+> or not, and why?
+
+Useful, sure, maybe a bit too limited for now (you can currently match
+the name only, and some names does not match the exec name: ?GNOME
+Disks? vs ?palimpsest?).
+For the startup-notification support, would it be easy to tell i3 a
+specific desktop on which you want to start the app, using e.g. "exec
+--on 1:web"? I know you can already use "workspace 1:web;exec;worspace
+back_and_forth", but an alias might be enough (if it always works as
+expected).
+
+
+> I am toying with shipping this with i3 (as in: installing it on the 
+> system so that it ends up in packages) and making it the default 
+> instead of just using dmenu_run. Thoughts?
+
+You would need to add a dep on dmenu then, or display some sort of
+warning (nagbar?) to inform the user that it needs dmenu, at runtime.
+And many users may find it? disappointing to change to default exec
+behavior. Some i3-config-wizard setting maybe?
+
+
+As a side note, I plan to push some j4menu useful code in January.
+I will probably hack a j4menu-specific equivalent, as j4menu would
+behave differently as dmenu.
+This j4menu specific util will use Name, GenericName, Comment, Exec,
+Keywords and maybe others to match the entry, and a tree menu based on
+Categories.
+In the hope that I?ll save you the maintenance time for this tool!
+
+
+Cheers,
+
+-- 
+
+Quentin ?Sardem FF7? Glidic
+
+From michael at i3wm.org  Sun Dec  9 18:45:32 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 09 Dec 2012 18:45:32 +0100
+Subject: [i3] RFC: i3-dmenu-desktop
+In-Reply-To: <50C4C985.3010007@sardemff7.net>
+References: <x638zfrytd.fsf@midna.zekjur.net> <50C4C985.3010007@sardemff7.net>
+Message-ID: <x6r4mzqfur.fsf@midna.zekjur.net>
+
+Hi Quentin,
+
+Quentin Glidic <sardemff7+i3 at sardemff7.net> writes:
+> Too bad I didn?t work earlier on j4menu since it was the main use case
+> for it. And I?m sad that you?re using ?dmenu? everywhere while j4menu is
+> on its way. :'(
+As long as j4menu is not released _and in distributions_, I?m not gonna
+depend on it within i3. That is, it will take many months until we are
+there, even if you released a great version right now. The more
+important new dependency that I need to force upon users is a recent
+version of libxkbcommon.
+
+> You lack OnlyShowIn and NotShowIn support, at first sight. It might be
+> worth to support them if we start having so much i3 XDG support. :-)
+Yes, I just display all entries for simplicity.
+
+> Useful, sure, maybe a bit too limited for now (you can currently match
+> the name only, and some names does not match the exec name: ?GNOME
+> Disks? vs ?palimpsest?).
+True. I thought about adding a flag which allows switching between (or
+using both) the ?Name? and actual command. Does somebody else have an
+opinion on that?
+
+> For the startup-notification support, would it be easy to tell i3 a
+> specific desktop on which you want to start the app, using e.g. "exec
+> --on 1:web"? I know you can already use "workspace 1:web;exec;worspace
+> back_and_forth", but an alias might be enough (if it always works as
+> expected).
+Theoretically, that should be possible.
+
+> You would need to add a dep on dmenu then, or display some sort of
+> warning (nagbar?) to inform the user that it needs dmenu, at runtime.
+No, nothing changes in that regard. We currently ship with dmenu_run in
+our default config, and we have a Recommends: suckless-tools in
+Debian (which might translate into a dependency in other distributions).
+
+> And many users may find it? disappointing to change to default exec
+> behavior. Some i3-config-wizard setting maybe?
+No, i3-config-wizard?s purpose is not configuring i3 for you. It
+translates the keycodes to keysyms, and that?s it?.
+
+Can you elaborate on why users may find it disappointing?
+
+> As a side note, I plan to push some j4menu useful code in January.
+> I will probably hack a j4menu-specific equivalent, as j4menu would
+> behave differently as dmenu.
+> This j4menu specific util will use Name, GenericName, Comment, Exec,
+> Keywords and maybe others to match the entry, and a tree menu based on
+> Categories.
+> In the hope that I?ll save you the maintenance time for this tool!
+Looking forward to it. More choice is always good. I expect this to
+fully support UTF-8 so that we might switch to it instead of a
+dmenu-based solution.
+
+? Yes, i3-config-wizard also allows modifier choice. I am not entirely
+  decided on whether this was a good idea or not, but we need to keep
+  "Alt" as the default modifier for people whose keyboards don?t have a
+  windows key. At the same time, we really want to use the windows key
+  to not clash with other keybindings. That?s the justification for
+  having this choice in i3-c-w.
+
+-- 
+Best regards,
+Michael
+
+From lobl.pavel at gmail.com  Sun Dec  9 22:05:21 2012
+From: lobl.pavel at gmail.com (Pavel =?iso-8859-1?Q?L=F6bl?=)
+Date: Sun, 9 Dec 2012 22:05:21 +0100
+Subject: [i3] RFC: i3-dmenu-desktop
+In-Reply-To: <x638zfrytd.fsf@midna.zekjur.net>
+References: <x638zfrytd.fsf@midna.zekjur.net>
+Message-ID: <20121209210521.GA2509@lenka>
+
+On Sun, Dec 09, 2012 at 05:10:38PM +0100, Michael Stapelberg wrote:
+> I would love to hear your comments about this.
+> Do you find it useful or not, and why?
+The idea seems good to me. I'm just not sure if using names as dmenu
+entries fits in to i3. If the name is used for an icon it probably
+does not matter how complicated the name is since users just click on it.
+But for me it's easier to type just gimp instead of GNU Image Manipulation
+Program.
+
+Sure. I could type just GNU since there are not much names starting with
+GNU. But typing GNU if I want to run gimp is not what I want to do.
+I like it more to refer to the application by the command than some fancy name.
+
+And I don't know how much desktop files people have on their machines. Maybe
+there could be some performance issues if the files get parsed each time?
+Personally I have just a few of them so I can't really tell.
+
+Pavel
+
+From brian.grossman+i3-discuss at gmail.com  Sun Dec  9 22:51:31 2012
+From: brian.grossman+i3-discuss at gmail.com (Brian Grossman)
+Date: Sun, 9 Dec 2012 14:51:31 -0700
+Subject: [i3] RFC: i3-dmenu-desktop
+In-Reply-To: <20121209210521.GA2509@lenka>
+References: <x638zfrytd.fsf@midna.zekjur.net> <20121209210521.GA2509@lenka>
+Message-ID: <CAPUwkJLTUsvhryi=ZXwXHm7aVLpPs0Vv4Ha8dvjshSgfVPvNgA@mail.gmail.com>
+
+To provide similar functionality for myself, I wrote short scripts and
+named them starting with an equal sign.  For example, to start my mail
+program I hit $mod+d, then =m, then press enter to accept the "=mail"
+choice.
+
+That of course doesn't use the .desktop files, but addresses a similar
+issue.
+
+Maybe give yourself a separate namespace for .desktop stuff?
+
+Brian
+
+
+
+On Sun, Dec 9, 2012 at 2:05 PM, Pavel L?bl <lobl.pavel at gmail.com> wrote:
+
+> On Sun, Dec 09, 2012 at 05:10:38PM +0100, Michael Stapelberg wrote:
+> > I would love to hear your comments about this.
+> > Do you find it useful or not, and why?
+> The idea seems good to me. I'm just not sure if using names as dmenu
+> entries fits in to i3. If the name is used for an icon it probably
+> does not matter how complicated the name is since users just click on it.
+> But for me it's easier to type just gimp instead of GNU Image Manipulation
+> Program.
+>
+> Sure. I could type just GNU since there are not much names starting with
+> GNU. But typing GNU if I want to run gimp is not what I want to do.
+> I like it more to refer to the application by the command than some fancy
+> name.
+>
+> And I don't know how much desktop files people have on their machines.
+> Maybe
+> there could be some performance issues if the files get parsed each time?
+> Personally I have just a few of them so I can't really tell.
+>
+> Pavel
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121209/a19ce88a/attachment.html>
+
+From michael at i3wm.org  Sun Dec  9 23:55:09 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sun, 09 Dec 2012 23:55:09 +0100
+Subject: [i3] RFC: i3-dmenu-desktop
+In-Reply-To: <20121209210521.GA2509@lenka>
+References: <x638zfrytd.fsf@midna.zekjur.net> <20121209210521.GA2509@lenka>
+Message-ID: <x6lid6rg36.fsf@midna.zekjur.net>
+
+Hi Pavel,
+
+Pavel L?bl <lobl.pavel at gmail.com> writes:
+> The idea seems good to me. I'm just not sure if using names as dmenu
+> entries fits in to i3. If the name is used for an icon it probably
+> does not matter how complicated the name is since users just click on it.
+> But for me it's easier to type just gimp instead of GNU Image Manipulation
+> Program.
+See my reply to Quentin:
+
+I thought about adding a flag which allows switching between (or
+using both) the ?Name? and actual command. Does somebody else have an
+opinion on that?
+
+> And I don't know how much desktop files people have on their machines. Maybe
+> there could be some performance issues if the files get parsed each time?
+> Personally I have just a few of them so I can't really tell.
+They are shipped with the applications. Given that an application is not
+accessible to ?normal users? without a .desktop file, I think most
+applications have them. I couldn?t find any graphical app on my system
+which was lacking one. Also, I think that upstream will happily merge
+such patches. Really a non-issue IMO.
+
+-- 
+Best regards,
+Michael
+
+From bruno.braga at gmail.com  Sun Dec  9 23:59:58 2012
+From: bruno.braga at gmail.com (BRAGA, Bruno)
+Date: Mon, 10 Dec 2012 08:59:58 +1000
+Subject: [i3] RFC: i3-dmenu-desktop
+In-Reply-To: <x638zfrytd.fsf@midna.zekjur.net>
+References: <x638zfrytd.fsf@midna.zekjur.net>
+Message-ID: <CAAuVr72MHHveoP00M7ZGUDPmkeowODh=kpE_SR72G7-3yt7DgQ@mail.gmail.com>
+
+Great stuff Michael... I am using synapse for similar purpose (remembering
+that "remote desktop" is called "vino" is sometimes painful)... I think
+this suits i3 very well.
+
+
+--
+*Braga, Bruno*
+www.brunobraga.net
+bruno.braga at gmail.com
+
+
+
+On Mon, Dec 10, 2012 at 2:10 AM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi,
+>
+> I have written a script which extracts the ?Name? key from .desktop
+> files, asks you to make a choice by starting dmenu, then runs the chosen
+> application via i3.
+>
+> You can read more about it in its documentation at
+> http://code.stapelberg.de/git/i3/tree/contrib/i3-dmenu-desktop?h=next#n375
+>
+> From the commit message:
+>
+> See "pod2man --utf8 contrib/i3-dmenu-desktop | man /dev/stdin" for
+> documentation. Use a line like this in your i3 config file:
+>     bindsym Mod1+p exec --no-startup-id ~/i3/contrib/i3-dmenu-desktop
+>
+> I would love to hear your comments about this.
+> Do you find it useful or not, and why?
+>
+> I am toying with shipping this with i3 (as in: installing it on the
+> system so that it ends up in packages) and making it the default instead
+> of just using dmenu_run. Thoughts?
+>
+> --
+> Best regards,
+> Michael
+>
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121210/232a5a89/attachment.html>
+
+From ml at hhecht.e4ward.com  Mon Dec 10 05:50:20 2012
+From: ml at hhecht.e4ward.com (ml at hhecht.e4ward.com)
+Date: Sun, 9 Dec 2012 21:50:20 -0700 (MST)
+Subject: [i3] RFC: i3-dmenu-desktop
+Message-ID: <alpine.LNX.2.00.1212092135550.2707@juffo-wup.dyndns.org>
+
+Pabel L?bl wrote:
+
+> Sure. I could type just GNU since there are not much names starting with 
+> GNU. But typing GNU if I want to run gimp is not what I want to do. I 
+> like it more to refer to the application by the command than some fancy 
+> name.
+
+This issue has become a lot worse recently, with many desktop files 
+shipping with very long program names, especially as developers stop 
+gnaming things knicely and xshortly.
+
+> And I don't know how much desktop files people have on their machines. 
+> Maybe there could be some performance issues if the files get parsed 
+> each time? Personally I have just a few of them so I can't really tell.
+
+This is a really big problem on SuSE, and probably on other distributions, 
+and has been for a long time.  Since KDE3, KDE has a caching service 
+(KSycoca) to handle desktop files, and it takes a long time to build.
+
+There are 5157 .desktop files on the machine I am using now, though I 
+think "only" about 924 are relevant.  How long does it take to parse 924 
+files on a slow computer?  Probably not that long, but too long for a 
+basic user interface element.
+
+Also, although Pavel didn't mention it, there can be a lot of graphical 
+applications that don't have .desktop files, at least in SuSE.  I will 
+have to think of a clever way of counting these, but I guess the number 
+in the base repositories is several hundred.  Maybe this is a packaging 
+bug in SuSE, but it isn't going to be fixed soon.
+
+This is not to be discouraging, of course; it is a very nice idea, I am 
+just unsure about how to handle the issues above.
+
+-- 
+HH
+
+From michael at i3wm.org  Mon Dec 10 08:31:09 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 10 Dec 2012 08:31:09 +0100
+Subject: [i3] RFC: i3-dmenu-desktop
+In-Reply-To: <alpine.LNX.2.00.1212092135550.2707@juffo-wup.dyndns.org>
+References: <alpine.LNX.2.00.1212092135550.2707@juffo-wup.dyndns.org>
+Message-ID: <x6ip8aqs76.fsf@midna.zekjur.net>
+
+Hi,
+
+ml at hhecht.e4ward.com writes:
+> This issue has become a lot worse recently, with many desktop files 
+> shipping with very long program names, especially as developers stop 
+> gnaming things knicely and xshortly.
+I don?t really mind them using nice descriptive names, but as was
+previously pointed out, some clearly should chose a better one, such as
+GIMP. I have _never_ heard anyone in real life refer to GIMP as the ?GNU
+Image Manipulation Program?. Given that their GenericName is ?Image
+Editor? anyways, they could just rename to GIMP.
+
+> There are 5157 .desktop files on the machine I am using now, though I 
+> think "only" about 924 are relevant.  How long does it take to parse 924 
+> files on a slow computer?  Probably not that long, but too long for a 
+> basic user interface element.
+I have 130 .desktop files within the relevant locations. Are your 5157
+.desktop files in the 'applications' subfolder? If yes, how did you get
+to 924 ?relevant? and what does that mean?
+
+I also don?t have numbers on how long it takes to parse them. On my
+computer, launching i3-dmenu-desktop feels almost instant (so I guess
+? 200 ms), but that?s a rather fast computer.
+
+There?s all kinds of clever tricks one can do to make this faster, but
+I want to wait with that until I got more feedback.
+
+> Also, although Pavel didn't mention it, there can be a lot of graphical 
+> applications that don't have .desktop files, at least in SuSE.  I will 
+> have to think of a clever way of counting these, but I guess the number 
+> in the base repositories is several hundred.  Maybe this is a packaging 
+> bug in SuSE, but it isn't going to be fixed soon.
+You could try searching for all packages which have a dependency on
+libX11 or Gtk/Qt. If they don?t have a .desktop file, how do users of
+GNOME or KDE find/use these applications?
+
+-- 
+Best regards,
+Michael
+
+From okiddle at yahoo.co.uk  Mon Dec 10 11:50:47 2012
+From: okiddle at yahoo.co.uk (Oliver Kiddle)
+Date: Mon, 10 Dec 2012 11:50:47 +0100
+Subject: [i3] RFC: i3-dmenu-desktop
+In-Reply-To: <x638zfrytd.fsf@midna.zekjur.net>
+References: <x638zfrytd.fsf@midna.zekjur.net>
+Message-ID: <30507.1355136647@thecus.kiddle.eu>
+
+Michael Stapelberg wrote:
+> I have written a script which extracts the ?Name? key from .desktop
+> files, asks you to make a choice by starting dmenu, then runs the chosen
+> application via i3.
+
+I do the same from a somewhat more rudimentary zsh script. I just have
+one line of sed to stuff names and commands in an associative array.
+
+In practice, it has only rarely proved useful when the name from a
+desktop file is more memorable than the command. It doesn't really work
+for browsing the desktop menus because there's no structure.
+
+The way I use dmenu is to only have one key bound to it and then I stuff
+everything possible into the single menu. So anything with @ in it runs
+a new terminal with ssh (or su) for the specified user and machine.
+All commands in my path are prefixed with =. I can start/stop
+schroot/virtual machines. I can rename my current workspace. What this
+basically means is that I wouldn't use i3-dmenu-desktop because it only
+does the desktop entries.
+
+In terms of including it in the i3 distribution, I would consider
+putting it in a directory named contrib. It really depends whether you'd
+prefer packagers to install it in /usr/bin and add a dependency on dmenu
+or put it under /usr/share/doc (or similar) and expect users to copy and
+tweak it.
+
+> You can read more about it in its documentation at
+> http://code.stapelberg.de/git/i3/tree/contrib/i3-dmenu-desktop?h=next#n375
+
+Testing your script on my system, it failed with the following error:
+  Use of uninitialized value in split at ./i3-dmenu-desktop line 247.
+After adding a little trace, this seems to be for a .desktop file that
+contains a web link. There are Type=Link and URL= entries but no Exec=
+
+Oliver
+
+From michael at i3wm.org  Mon Dec 10 22:47:18 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 10 Dec 2012 22:47:18 +0100
+Subject: [i3] RFC: i3-dmenu-desktop
+In-Reply-To: <30507.1355136647@thecus.kiddle.eu>
+References: <x638zfrytd.fsf@midna.zekjur.net>
+ <30507.1355136647@thecus.kiddle.eu>
+Message-ID: <x6fw3dr34p.fsf@midna.zekjur.net>
+
+Hi Oliver,
+
+Oliver Kiddle <okiddle at yahoo.co.uk> writes:
+> In practice, it has only rarely proved useful when the name from a
+> desktop file is more memorable than the command. It doesn't really work
+> for browsing the desktop menus because there's no structure.
+True, there is no structure.
+
+> In terms of including it in the i3 distribution, I would consider
+> putting it in a directory named contrib. It really depends whether you'd
+> prefer packagers to install it in /usr/bin and add a dependency on dmenu
+> or put it under /usr/share/doc (or similar) and expect users to copy and
+> tweak it.
+It currently lives in contrib, but I intend to install it along with the
+other binaries and add a hint about it in the default config. Depending
+on how that goes, we might make it the default in v4.5 or not.
+
+> Testing your script on my system, it failed with the following error:
+>   Use of uninitialized value in split at ./i3-dmenu-desktop line 247.
+> After adding a little trace, this seems to be for a .desktop file that
+> contains a web link. There are Type=Link and URL= entries but no Exec=
+Can you send me the .desktop file in private please?
+
+-- 
+Best regards,
+Michael
+
+From jeff at jibson.com  Wed Dec 12 08:02:15 2012
+From: jeff at jibson.com (Jeff Jibson)
+Date: Wed, 12 Dec 2012 00:02:15 -0700
+Subject: [i3] RFC: i3-dmenu-desktop
+In-Reply-To: <x6ip8aqs76.fsf@midna.zekjur.net>
+References: <alpine.LNX.2.00.1212092135550.2707@juffo-wup.dyndns.org>
+ <x6ip8aqs76.fsf@midna.zekjur.net>
+Message-ID: <CAPAw0Wp2Sf4Vvep6s4_-UzwXDfWD31HV2xbHJwPUVAF3CnhNkA@mail.gmail.com>
+
+>> There are 5157 .desktop files on the machine I am using now, though I
+>> think "only" about 924 are relevant.  How long does it take to parse 924
+>> files on a slow computer?  Probably not that long, but too long for a
+>> basic user interface element.
+> I have 130 .desktop files within the relevant locations. Are your 5157
+> .desktop files in the 'applications' subfolder? If yes, how did you get
+> to 924 ?relevant? and what does that mean?
+
+This number sounded insane to me.  So, I checked mine... 19.  Many of
+these are dependencies of things I use.  I use dmenu more for scripts
+that manipulate i3 than real programs.
+
+From joepvandelft at xs4all.nl  Fri Dec 14 01:05:19 2012
+From: joepvandelft at xs4all.nl (Joep van Delft)
+Date: Fri, 14 Dec 2012 01:05:19 +0100
+Subject: [i3] RFC: i3-dmenu-desktop
+In-Reply-To: <x638zfrytd.fsf@midna.zekjur.net>
+References: <x638zfrytd.fsf@midna.zekjur.net>
+Message-ID: <20121214010519.7721ccfd@xs4all.nl>
+
+Hi there, 
+
+Just replaced my hotkey to dmenu_run to i3-dmenu-desktop, as it for
+sure is more useful. In my experience, starting the "["-command from
+dmenu_run retains bad karma at least until the next reboot. 
+
+Maybe it would better to not name it after our beloved window
+manager, as, imho, it sucks less than dmenu_run. Why not try
+and get it distributed from over there? 
+
+Cheers, 
+
+
+    joepd
+
+
+
+On Sun, 09 Dec 2012 17:10:38 +0100
+Michael Stapelberg <michael at i3wm.org> wrote:
+
+> Hi,
+> 
+> I have written a script which extracts the ?Name? key from .desktop
+> files, asks you to make a choice by starting dmenu, then runs the
+> chosen application via i3.
+> 
+> You can read more about it in its documentation at
+> http://code.stapelberg.de/git/i3/tree/contrib/i3-dmenu-desktop?h=next#n375
+> 
+> From the commit message:
+> 
+> See "pod2man --utf8 contrib/i3-dmenu-desktop | man /dev/stdin" for
+> documentation. Use a line like this in your i3 config file:
+>     bindsym Mod1+p exec --no-startup-id
+> ~/i3/contrib/i3-dmenu-desktop
+> 
+> I would love to hear your comments about this.
+> Do you find it useful or not, and why?
+> 
+> I am toying with shipping this with i3 (as in: installing it on the
+> system so that it ends up in packages) and making it the default
+> instead of just using dmenu_run. Thoughts?
+> 
+
+
+From mail at merovius.de  Fri Dec 14 01:45:13 2012
+From: mail at merovius.de (Axel Wagner)
+Date: Fri, 14 Dec 2012 01:45:13 +0100
+Subject: [i3] [PATCH] i3-dump-log: Correct comment to reflect truth
+Message-ID: <1355444876-sup-5398@merovius.de>
+
+I just stumbled upon this comment in i3-dump-log. I assume, this is what
+was intended, as we obviously have to read.
+
+Also, a few lines later, the comment again refers to O_RDWR, though
+there it should actually be PROT_WRITE.
+
+Regards,
+
+Axel
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-i3-dump-log-Correct-comment-to-reflect-truth.patch
+Type: application/octet-stream
+Size: 1393 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121214/ac5186c4/attachment.obj>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: signature.asc
+Type: application/pgp-signature
+Size: 198 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121214/ac5186c4/attachment.sig>
+
+From michael at i3wm.org  Fri Dec 14 21:34:09 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 14 Dec 2012 21:34:09 +0100
+Subject: [i3] RFC: i3-dmenu-desktop
+In-Reply-To: <20121214010519.7721ccfd@xs4all.nl>
+References: <x638zfrytd.fsf@midna.zekjur.net>
+ <20121214010519.7721ccfd@xs4all.nl>
+Message-ID: <x6zk1g5q66.fsf@midna.zekjur.net>
+
+Hi Joep,
+
+Joep van Delft <joepvandelft at xs4all.nl> writes:
+> Maybe it would better to not name it after our beloved window
+> manager, as, imho, it sucks less than dmenu_run. Why not try
+> and get it distributed from over there? 
+In fact, the script is i3-specific. It starts applications via i3 to
+correctly use startup notifications. Also, I am not convinced that the
+suckless project will officially distribute Perl scripts :-).
+
+-- 
+Best regards,
+Michael
+
+From joepvandelft at xs4all.nl  Sat Dec 15 01:35:08 2012
+From: joepvandelft at xs4all.nl (Joep van Delft)
+Date: Sat, 15 Dec 2012 01:35:08 +0100
+Subject: [i3] Fw:  RFC: i3-dmenu-desktop
+Message-ID: <20121215013508.408312fe@xs4all.nl>
+
+
+
+Begin forwarded message:
+
+Date: Sat, 15 Dec 2012 01:32:29 +0100
+From: Joep van Delft <joepvandelft at xs4all.nl>
+Wrongly assumed that clicking 'Reply' would go to the list. 
+
+Cheers, 
+
+
+    joepd
+
+
+To: Michael Stapelberg <michael at i3wm.org>
+Subject: Re: [i3] RFC: i3-dmenu-desktop
+
+
+Hallo Michael, 
+
+On Fri, 14 Dec 2012 21:34:09 +0100
+Michael Stapelberg <michael at i3wm.org> wrote:
+> In fact, the script is i3-specific. It starts applications via i3 to
+> correctly use startup notifications. 
+
+Fair enough. Ship it, make it default, enforce it, enlighten the
+masses :)
+
+Suggestion for key-combo: Use $mod+p (for program). As it provides
+access to Programs, in stead of dmenu_run. (I bound it to
+$mod+Shift+P, the complete and fancy version of $mod+p, which
+provides access to often used programs, for example pavucontrol on
+the machine that is wired to amplifiers)
+
+This probably is a question more suited for the FAQ, but how do you
+(plural) keep appearances and settings consistent with multiple
+and separate dmenu-commands? 
+
+Cheers, 
+
+
+	Joep
+
+
+From tailinchu at gmail.com  Mon Dec 17 09:55:36 2012
+From: tailinchu at gmail.com (Tai-Lin Chu)
+Date: Mon, 17 Dec 2012 08:55:36 +0000
+Subject: [i3] [PATCH] close container with mouse
+In-Reply-To: <CABf5LwC89pWsOd-Ed4tvs2fHsxu1i9y8FpOsAveSerq5cmtrEg@mail.gmail.com>
+References: <CABf5LwC89pWsOd-Ed4tvs2fHsxu1i9y8FpOsAveSerq5cmtrEg@mail.gmail.com>
+Message-ID: <CABf5LwD=Du60iDAD_uT0m2B+gRvSftQJkVUTBohRcOhxQAZjzw@mail.gmail.com>
+
+On Mon, Dec 17, 2012 at 8:50 AM, Tai-Lin Chu <tailinchu at gmail.com> wrote:
+> hi,
+> I think this is really helpful for someone from openbox.
+> please take a look and test it.
+> thanks.
+>
+> --tai
+
+From tailinchu at gmail.com  Mon Dec 17 09:57:55 2012
+From: tailinchu at gmail.com (Tai-Lin Chu)
+Date: Mon, 17 Dec 2012 08:57:55 +0000
+Subject: [i3] [PATCH] close container with mouse
+In-Reply-To: <CABf5LwD=Du60iDAD_uT0m2B+gRvSftQJkVUTBohRcOhxQAZjzw@mail.gmail.com>
+References: <CABf5LwC89pWsOd-Ed4tvs2fHsxu1i9y8FpOsAveSerq5cmtrEg@mail.gmail.com>
+ <CABf5LwD=Du60iDAD_uT0m2B+gRvSftQJkVUTBohRcOhxQAZjzw@mail.gmail.com>
+Message-ID: <CABf5LwDDF5yB+6ZS+41947CHhLZJNCAVtt5A=v2PCHJ+rP2u4w@mail.gmail.com>
+
+diff --git a/src/click.c b/src/click.c
+index c48132e..2efa668 100644
+--- a/src/click.c
++++ b/src/click.c
+@@ -203,6 +203,12 @@ static int route_click(Con *con,
+xcb_button_press_event_t *event, const bool mod
+     const bool proportional = (event->state & BIND_SHIFT);
+     const bool in_stacked = (con->parent->layout == L_STACKED ||
+con->parent->layout == L_TABBED);
+
++    /* close this con if user right-clicked on the decoration  */
++    if (dest == CLICK_DECORATION && event->detail ==
+XCB_BUTTON_INDEX_3 && !mod_pressed) {
++        tree_close(con, KILL_WINDOW, false, false);
++        goto done;
++    }
++
+     /* 1: see if the user scrolled on the decoration of a stacked/tabbed con */
+     if (in_stacked &&
+         dest == CLICK_DECORATION &&
+
+From michael at i3wm.org  Mon Dec 17 10:23:45 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Mon, 17 Dec 2012 10:23:45 +0100
+Subject: [i3] [PATCH] close container with mouse
+In-Reply-To: <CABf5LwD=Du60iDAD_uT0m2B+gRvSftQJkVUTBohRcOhxQAZjzw@mail.gmail.com>
+References: <CABf5LwC89pWsOd-Ed4tvs2fHsxu1i9y8FpOsAveSerq5cmtrEg@mail.gmail.com>
+ <CABf5LwD=Du60iDAD_uT0m2B+gRvSftQJkVUTBohRcOhxQAZjzw@mail.gmail.com>
+Message-ID: <x6y5gxav6m.fsf@midna.zekjur.net>
+
+Hi Tai-Lin,
+
+Tai-Lin Chu <tailinchu at gmail.com> writes:
+>> I think this is really helpful for someone from openbox.
+>> please take a look and test it.
+Thanks for your patch, but this is not going to get merged.
+
+Mouse actions like this are far too easy to trigger by
+accident. Instead, they should be configurable, see
+http://bugs.i3wm.org/558
+
+-- 
+Best regards,
+Michael
+
+From gereon.kremer at rwth-aachen.de  Wed Dec 19 11:40:51 2012
+From: gereon.kremer at rwth-aachen.de (Gereon Kremer)
+Date: Wed, 19 Dec 2012 11:40:51 +0100
+Subject: [i3] Fw:  RFC: i3-dmenu-desktop
+In-Reply-To: <20121215013508.408312fe@xs4all.nl>
+References: <20121215013508.408312fe@xs4all.nl>
+Message-ID: <50D199B3.9080503@rwth-aachen.de>
+
+Hi,
+
+I'd suggest not to use $mod+p as default. At least ubuntu uses Mod4+P to
+switch displays, as some notebooks use Mod4+P for their Fn+X display
+switcher.
+
+About i3-dmenu-desktop: I was a bit sceptical about the performance, but
+it seems to work pretty well. Maybe you want to remove all the
+warnings[1] in a future release.
+
+Cheers,
+Gereon
+
+[1] Use of uninitialized value $key in string eq at
+/usr/bin/i3-dmenu-desktop line 159.
+
+On 12/15/2012 01:35 AM, Joep van Delft wrote:
+> 
+> 
+> Begin forwarded message:
+> 
+> Date: Sat, 15 Dec 2012 01:32:29 +0100
+> From: Joep van Delft <joepvandelft at xs4all.nl>
+> Wrongly assumed that clicking 'Reply' would go to the list. 
+> 
+> Cheers, 
+> 
+> 
+>     joepd
+> 
+> 
+> To: Michael Stapelberg <michael at i3wm.org>
+> Subject: Re: [i3] RFC: i3-dmenu-desktop
+> 
+> 
+> Hallo Michael, 
+> 
+> On Fri, 14 Dec 2012 21:34:09 +0100
+> Michael Stapelberg <michael at i3wm.org> wrote:
+>> In fact, the script is i3-specific. It starts applications via i3 to
+>> correctly use startup notifications. 
+> 
+> Fair enough. Ship it, make it default, enforce it, enlighten the
+> masses :)
+> 
+> Suggestion for key-combo: Use $mod+p (for program). As it provides
+> access to Programs, in stead of dmenu_run. (I bound it to
+> $mod+Shift+P, the complete and fancy version of $mod+p, which
+> provides access to often used programs, for example pavucontrol on
+> the machine that is wired to amplifiers)
+> 
+> This probably is a question more suited for the FAQ, but how do you
+> (plural) keep appearances and settings consistent with multiple
+> and separate dmenu-commands? 
+> 
+> Cheers, 
+> 
+> 
+> 	Joep
+> 
+
+From michael at i3wm.org  Wed Dec 19 12:23:38 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 19 Dec 2012 12:23:38 +0100
+Subject: [i3] Fw:  RFC: i3-dmenu-desktop
+In-Reply-To: <50D199B3.9080503@rwth-aachen.de>
+References: <20121215013508.408312fe@xs4all.nl>
+ <50D199B3.9080503@rwth-aachen.de>
+Message-ID: <x68v8ub805.fsf@midna.zekjur.net>
+
+Hi Gereon,
+
+Gereon Kremer <gereon.kremer at rwth-aachen.de> writes:
+> I'd suggest not to use $mod+p as default. At least ubuntu uses Mod4+P to
+> switch displays, as some notebooks use Mod4+P for their Fn+X display
+> switcher.
+Where would that keybinding come from when you are starting i3 without
+a desktop environment?
+
+> About i3-dmenu-desktop: I was a bit sceptical about the performance, but
+> it seems to work pretty well. Maybe you want to remove all the
+> warnings[1] in a future release.
+Those are most likely because one or more of your .desktop files are
+broken. Please apply http://sprunge.us/ZdjX and see which files cause
+the warning, so we can see whether it?s a bug in i3-dmenu-desktop or in
+your files.
+
+-- 
+Best regards,
+Michael
+
+From gereon.kremer at rwth-aachen.de  Wed Dec 19 12:40:26 2012
+From: gereon.kremer at rwth-aachen.de (Gereon Kremer)
+Date: Wed, 19 Dec 2012 12:40:26 +0100
+Subject: [i3] Fw:  RFC: i3-dmenu-desktop
+In-Reply-To: <x68v8ub805.fsf@midna.zekjur.net>
+References: <20121215013508.408312fe@xs4all.nl>
+ <50D199B3.9080503@rwth-aachen.de> <x68v8ub805.fsf@midna.zekjur.net>
+Message-ID: <50D1A7AA.3050207@rwth-aachen.de>
+
+Hi Michael,
+
+Most of the people I know that use i3 have the gnome-settings-daemon
+still running. It's a convenient mix of "tiling wm" and "stuff just
+works"...
+Besides, you will *always* have this problem if you want to use the Fn+X
+switcher on a relatively new (read: Windows 7 compatible) platform. This
+whole problem emerged because newer kernel versions tell the BIOS they
+are Win7 compatible...
+
+Hence, all users that want to use the Fn+X display switcher key can not
+use Mod4+P. (Afaik)
+
+I applied the patch and used &> out to get the output. All warnings
+appear before the first "parsing XY".
+
+Gereon
+
+On 12/19/2012 12:23 PM, Michael Stapelberg wrote:
+> Hi Gereon,
+> 
+> Gereon Kremer <gereon.kremer at rwth-aachen.de> writes:
+>> I'd suggest not to use $mod+p as default. At least ubuntu uses Mod4+P to
+>> switch displays, as some notebooks use Mod4+P for their Fn+X display
+>> switcher.
+> Where would that keybinding come from when you are starting i3 without
+> a desktop environment?
+> 
+>> About i3-dmenu-desktop: I was a bit sceptical about the performance, but
+>> it seems to work pretty well. Maybe you want to remove all the
+>> warnings[1] in a future release.
+> Those are most likely because one or more of your .desktop files are
+> broken. Please apply http://sprunge.us/ZdjX and see which files cause
+> the warning, so we can see whether it?s a bug in i3-dmenu-desktop or in
+> your files.
+> 
+
+From gereon.kremer at rwth-aachen.de  Wed Dec 19 12:43:24 2012
+From: gereon.kremer at rwth-aachen.de (Gereon Kremer)
+Date: Wed, 19 Dec 2012 12:43:24 +0100
+Subject: [i3] Fw:  RFC: i3-dmenu-desktop
+In-Reply-To: <x68v8ub805.fsf@midna.zekjur.net>
+References: <20121215013508.408312fe@xs4all.nl>
+ <50D199B3.9080503@rwth-aachen.de> <x68v8ub805.fsf@midna.zekjur.net>
+Message-ID: <50D1A85C.2040201@rwth-aachen.de>
+
+Hi Michael,
+
+I bit more research revealed, that the mathematica8.desktop file had all
+lines prefixed with three spaces. Maybe also consider leading
+whitespaces in the parser? :-)
+
+Gereon
+
+On 12/19/2012 12:23 PM, Michael Stapelberg wrote:
+> Hi Gereon,
+> 
+> Gereon Kremer <gereon.kremer at rwth-aachen.de> writes:
+>> I'd suggest not to use $mod+p as default. At least ubuntu uses Mod4+P to
+>> switch displays, as some notebooks use Mod4+P for their Fn+X display
+>> switcher.
+> Where would that keybinding come from when you are starting i3 without
+> a desktop environment?
+> 
+>> About i3-dmenu-desktop: I was a bit sceptical about the performance, but
+>> it seems to work pretty well. Maybe you want to remove all the
+>> warnings[1] in a future release.
+> Those are most likely because one or more of your .desktop files are
+> broken. Please apply http://sprunge.us/ZdjX and see which files cause
+> the warning, so we can see whether it?s a bug in i3-dmenu-desktop or in
+> your files.
+> 
+
+From michael at i3wm.org  Wed Dec 19 13:10:39 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Wed, 19 Dec 2012 13:10:39 +0100
+Subject: [i3] Fw:  RFC: i3-dmenu-desktop
+In-Reply-To: <50D1A85C.2040201@rwth-aachen.de>
+References: <20121215013508.408312fe@xs4all.nl>
+ <50D199B3.9080503@rwth-aachen.de> <x68v8ub805.fsf@midna.zekjur.net>
+ <50D1A85C.2040201@rwth-aachen.de>
+Message-ID: <x638z2b5ts.fsf@midna.zekjur.net>
+
+Hi Gereon,
+
+Gereon Kremer <gereon.kremer at rwth-aachen.de> writes:
+> I bit more research revealed, that the mathematica8.desktop file had all
+> lines prefixed with three spaces. Maybe also consider leading
+> whitespaces in the parser? :-)
+The spec doesn?t explicitly allow or forbid spaces in the begining of
+lines. However, desktop-file-validate? complains.
+
+I suggest fixing the broken files instead of adding kludges to
+i3-dmenu-desktop.
+
+If necessary, file a bug with your distribution or Mathematica,
+depending on where the file came from. Some RPM packaging has a fix for
+this:
+http://stuckinadoloop.wordpress.com/2012/05/02/updated-mathematica-rpm-spec-file/
+
+? http://freedesktop.org/wiki/Software/desktop-file-utils
+
+-- 
+Best regards,
+Michael
+
+From joepvandelft at xs4all.nl  Thu Dec 20 16:42:54 2012
+From: joepvandelft at xs4all.nl (Joep van Delft)
+Date: Thu, 20 Dec 2012 16:42:54 +0100
+Subject: [i3] [PATCH] Draw borders around title bars better
+Message-ID: <20121220164254.0bdf0a67@xs4all.nl>
+
+Hi there, 
+
+
+attached the patch that attempts to resolve #894. I removed a
+condition in an if-statement, I did not notice that it destroys
+anything (but did not run the tests). 
+
+Cheers, 
+
+
+	Joep
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0004-Draw-borders-around-tabbed-titlebars-better.patch
+Type: text/x-patch
+Size: 2843 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121220/3314b9e9/attachment.bin>
+
+From marcos at anue.biz  Thu Dec 20 15:53:15 2012
+From: marcos at anue.biz (Marcos Moyano)
+Date: Thu, 20 Dec 2012 11:53:15 -0300
+Subject: [i3] Can't run the testsuite
+Message-ID: <CANxNxiAdnNjL2_FKtQYKcQ=U4VAZ8WVJ6c7eohRZ_NpUUh69JQ@mail.gmail.com>
+
+Clean clone from git:
+
+[marcos ~/documentos/_dev]$ mkdir _clean
+[marcos ~/documentos/_dev]$ cd _clean/
+[marcos ~/documentos/_dev/_clean]$ git clone git://code.i3wm.org/i3
+Cloning into 'i3'...
+remote: Counting objects: 20642, done.
+remote: Compressing objects: 100% (4733/4733), done.
+remote: Total 20642 (delta 15558), reused 20642 (delta 15558)
+Receiving objects: 100% (20642/20642), 5.04 MiB | 365 KiB/s, done.
+Resolving deltas: 100% (15558/15558), done.
+[marcos ~/documentos/_dev/_clean]$ cd i3/testcases/
+[marcos ../_dev/_clean/i3/testcases]$ sudo cpanm .
+[sudo] password for marcos:
+--> Working on .
+Configuring /home/marcos/documentos/_dev/_clean/i3/testcases ... OK
+Building and testing i3-testsuite- ... OK
+Successfully installed i3-testsuite-
+1 distribution installed
+[marcos ../_dev/_clean/i3/testcases]$ ./complete-run.pl
+../i3 executable not found at ./complete-run.pl line 81.
+[marcos ../_dev/_clean/i3/testcases]$
+
+
+Am I missing something? Thx in advance.
+
+-- 
+Marcos Moyano
+Co-Founder of Anue
+Skype: marcosmoyano
+http://www.anue.biz/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121220/d5c3e4c6/attachment.html>
+
+From marcos at anue.biz  Thu Dec 20 15:59:15 2012
+From: marcos at anue.biz (Marcos Moyano)
+Date: Thu, 20 Dec 2012 11:59:15 -0300
+Subject: [i3] Can't run the testsuite
+In-Reply-To: <CANxNxiAdnNjL2_FKtQYKcQ=U4VAZ8WVJ6c7eohRZ_NpUUh69JQ@mail.gmail.com>
+References: <CANxNxiAdnNjL2_FKtQYKcQ=U4VAZ8WVJ6c7eohRZ_NpUUh69JQ@mail.gmail.com>
+Message-ID: <CANxNxiCssZAWk8Red8tAud-N532y9eWh7MpUoBHdAXjW6D25Mw@mail.gmail.com>
+
+Got it. Sorry for the previous email.
+
+
+On Thu, Dec 20, 2012 at 11:53 AM, Marcos Moyano <marcos at anue.biz> wrote:
+
+> Clean clone from git:
+>
+> [marcos ~/documentos/_dev]$ mkdir _clean
+> [marcos ~/documentos/_dev]$ cd _clean/
+> [marcos ~/documentos/_dev/_clean]$ git clone git://code.i3wm.org/i3
+> Cloning into 'i3'...
+> remote: Counting objects: 20642, done.
+> remote: Compressing objects: 100% (4733/4733), done.
+> remote: Total 20642 (delta 15558), reused 20642 (delta 15558)
+> Receiving objects: 100% (20642/20642), 5.04 MiB | 365 KiB/s, done.
+> Resolving deltas: 100% (15558/15558), done.
+> [marcos ~/documentos/_dev/_clean]$ cd i3/testcases/
+> [marcos ../_dev/_clean/i3/testcases]$ sudo cpanm .
+> [sudo] password for marcos:
+> --> Working on .
+> Configuring /home/marcos/documentos/_dev/_clean/i3/testcases ... OK
+> Building and testing i3-testsuite- ... OK
+> Successfully installed i3-testsuite-
+> 1 distribution installed
+> [marcos ../_dev/_clean/i3/testcases]$ ./complete-run.pl
+> ../i3 executable not found at ./complete-run.pl line 81.
+> [marcos ../_dev/_clean/i3/testcases]$
+>
+>
+> Am I missing something? Thx in advance.
+>
+> --
+> Marcos Moyano
+> Co-Founder of Anue
+> Skype: marcosmoyano
+> http://www.anue.biz/
+>
+
+
+
+-- 
+Marcos Moyano
+Co-Founder of Anue
+Skype: marcosmoyano
+http://www.anue.biz/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121220/da101d77/attachment.html>
+
+From tailinchu at gmail.com  Thu Dec 20 16:08:09 2012
+From: tailinchu at gmail.com (Tai-Lin Chu)
+Date: Thu, 20 Dec 2012 15:08:09 +0000
+Subject: [i3] i3-discuss Digest, Vol 32, Issue 15
+In-Reply-To: <mailman.3.1356001203.24503.i3-discuss@i3.zekjur.net>
+References: <mailman.3.1356001203.24503.i3-discuss@i3.zekjur.net>
+Message-ID: <CABf5LwBvfXN3n6NFC7=hunFugortzcwES7AEHK9tq-rvuWMKtg@mail.gmail.com>
+
+one big problem about i3-dmenu-desktop is the duplicate entry. this is
+very annoying.
+for example,
+fire -> Firefox firefox
+
+i think the proper behavior is that:
+ if desktop file's exec= command == current binary name
+    remove current binary name from the list
+
+On Thu, Dec 20, 2012 at 11:00 AM,  <i3-discuss-request at i3.zekjur.net> wrote:
+> Send i3-discuss mailing list submissions to
+>         i3-discuss at i3.zekjur.net
+>
+> To subscribe or unsubscribe via the World Wide Web, visit
+>         http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss
+> or, via email, send a message with subject or body 'help' to
+>         i3-discuss-request at i3.zekjur.net
+>
+> You can reach the person managing the list at
+>         i3-discuss-owner at i3.zekjur.net
+>
+> When replying, please edit your Subject line so it is more specific
+> than "Re: Contents of i3-discuss digest..."
+>
+>
+> Today's Topics:
+>
+>    1. Re: Fw:  RFC: i3-dmenu-desktop (Michael Stapelberg)
+>    2. Re: Fw:  RFC: i3-dmenu-desktop (Gereon Kremer)
+>    3. Re: Fw:  RFC: i3-dmenu-desktop (Gereon Kremer)
+>    4. Re: Fw:  RFC: i3-dmenu-desktop (Michael Stapelberg)
+>
+>
+> ----------------------------------------------------------------------
+>
+> Message: 1
+> Date: Wed, 19 Dec 2012 12:23:38 +0100
+> From: Michael Stapelberg <michael at i3wm.org>
+> To: Gereon Kremer <gereon.kremer at rwth-aachen.de>,
+>         "Discussions\/Questions about the i3 window manager"
+>         <i3-discuss at i3.zekjur.net>
+> Subject: Re: [i3] Fw:  RFC: i3-dmenu-desktop
+> Message-ID: <x68v8ub805.fsf at midna.zekjur.net>
+> Content-Type: text/plain; charset=utf-8
+>
+> Hi Gereon,
+>
+> Gereon Kremer <gereon.kremer at rwth-aachen.de> writes:
+>> I'd suggest not to use $mod+p as default. At least ubuntu uses Mod4+P to
+>> switch displays, as some notebooks use Mod4+P for their Fn+X display
+>> switcher.
+> Where would that keybinding come from when you are starting i3 without
+> a desktop environment?
+>
+>> About i3-dmenu-desktop: I was a bit sceptical about the performance, but
+>> it seems to work pretty well. Maybe you want to remove all the
+>> warnings[1] in a future release.
+> Those are most likely because one or more of your .desktop files are
+> broken. Please apply http://sprunge.us/ZdjX and see which files cause
+> the warning, so we can see whether it?s a bug in i3-dmenu-desktop or in
+> your files.
+>
+> --
+> Best regards,
+> Michael
+>
+>
+> ------------------------------
+>
+> Message: 2
+> Date: Wed, 19 Dec 2012 12:40:26 +0100
+> From: Gereon Kremer <gereon.kremer at rwth-aachen.de>
+> To: Michael Stapelberg <michael at i3wm.org>
+> Cc: Discussions/Questions about the i3 window manager
+>         <i3-discuss at i3.zekjur.net>
+> Subject: Re: [i3] Fw:  RFC: i3-dmenu-desktop
+> Message-ID: <50D1A7AA.3050207 at rwth-aachen.de>
+> Content-Type: text/plain; charset=UTF-8
+>
+> Hi Michael,
+>
+> Most of the people I know that use i3 have the gnome-settings-daemon
+> still running. It's a convenient mix of "tiling wm" and "stuff just
+> works"...
+> Besides, you will *always* have this problem if you want to use the Fn+X
+> switcher on a relatively new (read: Windows 7 compatible) platform. This
+> whole problem emerged because newer kernel versions tell the BIOS they
+> are Win7 compatible...
+>
+> Hence, all users that want to use the Fn+X display switcher key can not
+> use Mod4+P. (Afaik)
+>
+> I applied the patch and used &> out to get the output. All warnings
+> appear before the first "parsing XY".
+>
+> Gereon
+>
+> On 12/19/2012 12:23 PM, Michael Stapelberg wrote:
+>> Hi Gereon,
+>>
+>> Gereon Kremer <gereon.kremer at rwth-aachen.de> writes:
+>>> I'd suggest not to use $mod+p as default. At least ubuntu uses Mod4+P to
+>>> switch displays, as some notebooks use Mod4+P for their Fn+X display
+>>> switcher.
+>> Where would that keybinding come from when you are starting i3 without
+>> a desktop environment?
+>>
+>>> About i3-dmenu-desktop: I was a bit sceptical about the performance, but
+>>> it seems to work pretty well. Maybe you want to remove all the
+>>> warnings[1] in a future release.
+>> Those are most likely because one or more of your .desktop files are
+>> broken. Please apply http://sprunge.us/ZdjX and see which files cause
+>> the warning, so we can see whether it?s a bug in i3-dmenu-desktop or in
+>> your files.
+>>
+>
+>
+> ------------------------------
+>
+> Message: 3
+> Date: Wed, 19 Dec 2012 12:43:24 +0100
+> From: Gereon Kremer <gereon.kremer at rwth-aachen.de>
+> To: Michael Stapelberg <michael at i3wm.org>
+> Cc: Discussions/Questions about the i3 window manager
+>         <i3-discuss at i3.zekjur.net>
+> Subject: Re: [i3] Fw:  RFC: i3-dmenu-desktop
+> Message-ID: <50D1A85C.2040201 at rwth-aachen.de>
+> Content-Type: text/plain; charset=UTF-8
+>
+> Hi Michael,
+>
+> I bit more research revealed, that the mathematica8.desktop file had all
+> lines prefixed with three spaces. Maybe also consider leading
+> whitespaces in the parser? :-)
+>
+> Gereon
+>
+> On 12/19/2012 12:23 PM, Michael Stapelberg wrote:
+>> Hi Gereon,
+>>
+>> Gereon Kremer <gereon.kremer at rwth-aachen.de> writes:
+>>> I'd suggest not to use $mod+p as default. At least ubuntu uses Mod4+P to
+>>> switch displays, as some notebooks use Mod4+P for their Fn+X display
+>>> switcher.
+>> Where would that keybinding come from when you are starting i3 without
+>> a desktop environment?
+>>
+>>> About i3-dmenu-desktop: I was a bit sceptical about the performance, but
+>>> it seems to work pretty well. Maybe you want to remove all the
+>>> warnings[1] in a future release.
+>> Those are most likely because one or more of your .desktop files are
+>> broken. Please apply http://sprunge.us/ZdjX and see which files cause
+>> the warning, so we can see whether it?s a bug in i3-dmenu-desktop or in
+>> your files.
+>>
+>
+>
+> ------------------------------
+>
+> Message: 4
+> Date: Wed, 19 Dec 2012 13:10:39 +0100
+> From: Michael Stapelberg <michael at i3wm.org>
+> To: Gereon Kremer <gereon.kremer at rwth-aachen.de>
+> Cc: Discussions/Questions about the i3 window manager
+>         <i3-discuss at i3.zekjur.net>
+> Subject: Re: [i3] Fw:  RFC: i3-dmenu-desktop
+> Message-ID: <x638z2b5ts.fsf at midna.zekjur.net>
+> Content-Type: text/plain; charset=utf-8
+>
+> Hi Gereon,
+>
+> Gereon Kremer <gereon.kremer at rwth-aachen.de> writes:
+>> I bit more research revealed, that the mathematica8.desktop file had all
+>> lines prefixed with three spaces. Maybe also consider leading
+>> whitespaces in the parser? :-)
+> The spec doesn?t explicitly allow or forbid spaces in the begining of
+> lines. However, desktop-file-validate? complains.
+>
+> I suggest fixing the broken files instead of adding kludges to
+> i3-dmenu-desktop.
+>
+> If necessary, file a bug with your distribution or Mathematica,
+> depending on where the file came from. Some RPM packaging has a fix for
+> this:
+> http://stuckinadoloop.wordpress.com/2012/05/02/updated-mathematica-rpm-spec-file/
+>
+> ? http://freedesktop.org/wiki/Software/desktop-file-utils
+>
+> --
+> Best regards,
+> Michael
+>
+>
+> ------------------------------
+>
+> Subject: Digest Footer
+>
+> _______________________________________________
+> i3-discuss mailing list
+> i3-discuss at i3.zekjur.net
+> http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss
+>
+>
+> ------------------------------
+>
+> End of i3-discuss Digest, Vol 32, Issue 15
+> ******************************************
+
+From joepvandelft at xs4all.nl  Thu Dec 20 18:36:31 2012
+From: joepvandelft at xs4all.nl (Joep van Delft)
+Date: Thu, 20 Dec 2012 18:36:31 +0100
+Subject: [i3] [PATCH] Draw borders around title bars better
+In-Reply-To: <20121220164254.0bdf0a67@xs4all.nl>
+References: <20121220164254.0bdf0a67@xs4all.nl>
+Message-ID: <20121220183631.1a690398@xs4all.nl>
+
+Forget about the previous patch, this one is better. 
+
+Cheers, 
+
+
+	Joep
+
+
+On Thu, 20 Dec 2012 16:42:54 +0100
+Joep van Delft <joepvandelft at xs4all.nl> wrote:
+
+> Hi there, 
+> 
+> 
+> attached the patch that attempts to resolve #894. I removed a
+> condition in an if-statement, I did not notice that it destroys
+> anything (but did not run the tests). 
+> 
+> Cheers, 
+> 
+> 
+> 	Joep
+> 
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0001-Improve-tab-separators-fixes-894.patch
+Type: text/x-patch
+Size: 2581 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121220/02503f4c/attachment-0001.bin>
+
+From joepvandelft at xs4all.nl  Thu Dec 20 19:22:11 2012
+From: joepvandelft at xs4all.nl (Joep van Delft)
+Date: Thu, 20 Dec 2012 19:22:11 +0100
+Subject: [i3] [PATCH] Draw borders around title bars better
+In-Reply-To: <20121220183631.1a690398@xs4all.nl>
+References: <20121220164254.0bdf0a67@xs4all.nl>
+ <20121220183631.1a690398@xs4all.nl>
+Message-ID: <20121220192211.4f605013@xs4all.nl>
+
+And an additional one that removes the gaps in the lower border of
+Tabbed and Stacking on the left and right. Apparently, #814 has been
+fixed elsewhere as well. 
+
+Cheers, 
+
+	Joep
+
+
+On Thu, 20 Dec 2012 18:36:31 +0100
+Joep van Delft <joepvandelft at xs4all.nl> wrote:
+
+> Forget about the previous patch, this one is better. 
+> 
+> Cheers, 
+> 
+> 
+> 	Joep
+> 
+> 
+> On Thu, 20 Dec 2012 16:42:54 +0100
+> Joep van Delft <joepvandelft at xs4all.nl> wrote:
+> 
+> > Hi there, 
+> > 
+> > 
+> > attached the patch that attempts to resolve #894. I removed a
+> > condition in an if-statement, I did not notice that it destroys
+> > anything (but did not run the tests). 
+> > 
+> > Cheers, 
+> > 
+> > 
+> > 	Joep
+> > 
+> 
+
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0002-Fix-horizontal-border-in-Tabbed-and-Stacking.patch
+Type: text/x-patch
+Size: 1382 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121220/0f0b0726/attachment.bin>
+
+From michael at i3wm.org  Thu Dec 20 23:52:01 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 20 Dec 2012 23:52:01 +0100
+Subject: [i3] Can't run the testsuite
+In-Reply-To: <CANxNxiCssZAWk8Red8tAud-N532y9eWh7MpUoBHdAXjW6D25Mw@mail.gmail.com>
+References: <CANxNxiAdnNjL2_FKtQYKcQ=U4VAZ8WVJ6c7eohRZ_NpUUh69JQ@mail.gmail.com>
+ <CANxNxiCssZAWk8Red8tAud-N532y9eWh7MpUoBHdAXjW6D25Mw@mail.gmail.com>
+Message-ID: <x6txrgbalq.fsf@midna.zekjur.net>
+
+Hi Marcos,
+
+Marcos Moyano <marcos at anue.biz> writes:
+>> [marcos ../_dev/_clean/i3/testcases]$ ./complete-run.pl
+>> ../i3 executable not found at ./complete-run.pl line 81.
+>> [marcos ../_dev/_clean/i3/testcases]$
+Improved the error message to say that you need to run ?make?:
+
+http://c.i3wm.org/3ca8299
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Fri Dec 21 00:05:36 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Fri, 21 Dec 2012 00:05:36 +0100
+Subject: [i3] i3-discuss Digest, Vol 32, Issue 15
+In-Reply-To: <CABf5LwBvfXN3n6NFC7=hunFugortzcwES7AEHK9tq-rvuWMKtg@mail.gmail.com>
+References: <mailman.3.1356001203.24503.i3-discuss@i3.zekjur.net>
+ <CABf5LwBvfXN3n6NFC7=hunFugortzcwES7AEHK9tq-rvuWMKtg@mail.gmail.com>
+Message-ID: <x6licsb9z3.fsf@midna.zekjur.net>
+
+Hi Tai-Lin,
+
+Tai-Lin Chu <tailinchu at gmail.com> writes:
+> one big problem about i3-dmenu-desktop is the duplicate entry. this is
+> very annoying.
+> for example,
+> fire -> Firefox firefox
+>
+> i think the proper behavior is that:
+>  if desktop file's exec= command == current binary name
+>     remove current binary name from the list
+I hardly think this is a big problem, but it is changed in git
+nevertheless. Thanks for your suggestion.
+
+-- 
+Best regards,
+Michael
+
+From marcos at anue.biz  Fri Dec 21 15:15:04 2012
+From: marcos at anue.biz (Marcos Moyano)
+Date: Fri, 21 Dec 2012 11:15:04 -0300
+Subject: [i3] Can't run the testsuite
+In-Reply-To: <x6txrgbalq.fsf@midna.zekjur.net>
+References: <CANxNxiAdnNjL2_FKtQYKcQ=U4VAZ8WVJ6c7eohRZ_NpUUh69JQ@mail.gmail.com>
+ <CANxNxiCssZAWk8Red8tAud-N532y9eWh7MpUoBHdAXjW6D25Mw@mail.gmail.com>
+ <x6txrgbalq.fsf@midna.zekjur.net>
+Message-ID: <CANxNxiCWo7z9X+FzoS-pUdHyEdd4NEjE_tQMVrJK2uC1=O4Dvw@mail.gmail.com>
+
+Great :-)
+
+
+On Thu, Dec 20, 2012 at 7:52 PM, Michael Stapelberg <michael at i3wm.org>wrote:
+
+> Hi Marcos,
+>
+> Marcos Moyano <marcos at anue.biz> writes:
+> >> [marcos ../_dev/_clean/i3/testcases]$ ./complete-run.pl
+> >> ../i3 executable not found at ./complete-run.pl line 81.
+> >> [marcos ../_dev/_clean/i3/testcases]$
+> Improved the error message to say that you need to run ?make?:
+>
+> http://c.i3wm.org/3ca8299
+>
+> --
+> Best regards,
+> Michael
+>
+
+
+
+-- 
+Marcos Moyano
+Co-Founder of Anue
+Skype: marcosmoyano
+http://www.anue.biz/
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121221/aac61b4b/attachment.html>
+
+From szymon.olewniczak at rid.pl  Fri Dec 21 19:24:49 2012
+From: szymon.olewniczak at rid.pl (Szymon Olewniczak)
+Date: Fri, 21 Dec 2012 19:24:49 +0100
+Subject: [i3] i3 and xdotools
+Message-ID: <20121221182449.GA1297@spark.lan>
+
+Hi, 
+I asked this question on the irc but noone can help me. So I
+decided to ask this on the mailing list and add more details. Xdotool is
+very useful software that allows you to automatize common tasks running
+on the X windows. It's home page is: http://www.semicomplete.com/projects/xdotool/
+My problem begins when I want to use "xdotool -search" which is one of
+the most important xdotool feature. When I run any xdotool command
+with search:
+
+    xdotool search " - Vimperator" windowactivate
+
+I getting the following error msg:
+
+    XGetWindowProperty[_NET_WM_DESKTOP] failed (code=1)
+
+It's probably the xdotool issue according
+to(https://groups.google.com/forum/?fromgroups=#!topic/xdotool-users/UjChQlByTno) but since I don't know
+how x is implemented I'm not sure if this issue can be easy overcome. 
+
+If you know how to use xdotool with i3 or you know why it cannot be used
+with i3, please let me know.
+
+From joepvandelft at xs4all.nl  Fri Dec 21 20:25:51 2012
+From: joepvandelft at xs4all.nl (Joep van Delft)
+Date: Fri, 21 Dec 2012 20:25:51 +0100
+Subject: [i3] i3 and xdotools
+In-Reply-To: <20121221182449.GA1297@spark.lan>
+References: <20121221182449.GA1297@spark.lan>
+Message-ID: <20121221202551.7d98e3ce@xs4all.nl>
+
+Hi Szymon, 
+
+not sure why xdotools would not work, but there are i3-specific
+solutions to your use case. Have a look at
+http://faq.i3wm.org/question/228/how-do-i-find-an-app-buried-in-some-workspace-by/
+
+Cheers, 
+
+
+	Joep
+
+
+
+On Fri, 21 Dec 2012 19:24:49 +0100
+Szymon Olewniczak <szymon.olewniczak at rid.pl> wrote:
+
+> Hi, 
+> I asked this question on the irc but noone can help me. So I
+> decided to ask this on the mailing list and add more details.
+> Xdotool is very useful software that allows you to automatize
+> common tasks running on the X windows. It's home page is:
+> http://www.semicomplete.com/projects/xdotool/ My problem begins
+> when I want to use "xdotool -search" which is one of the most
+> important xdotool feature. When I run any xdotool command with
+> search:
+> 
+>     xdotool search " - Vimperator" windowactivate
+> 
+> I getting the following error msg:
+> 
+>     XGetWindowProperty[_NET_WM_DESKTOP] failed (code=1)
+> 
+> It's probably the xdotool issue according
+> to(https://groups.google.com/forum/?fromgroups=#!topic/xdotool-users/UjChQlByTno)
+> but since I don't know how x is implemented I'm not sure if this
+> issue can be easy overcome. 
+> 
+> If you know how to use xdotool with i3 or you know why it cannot be
+> used with i3, please let me know.
+
+
+From old4 at o2.pl  Fri Dec 21 19:33:32 2012
+From: old4 at o2.pl (Mateusz Poszwa)
+Date: Fri, 21 Dec 2012 19:33:32 +0100
+Subject: [i3] i3 and xdotools
+In-Reply-To: <20121221182449.GA1297@spark.lan>
+References: <20121221182449.GA1297@spark.lan>
+Message-ID: <20121221193332.7fda6379@debelianear>
+
+On Fri, 21 Dec 2012 19:24:49 +0100
+Szymon Olewniczak <szymon.olewniczak at rid.pl> wrote:
+
+> Hi, 
+> I asked this question on the irc but noone can help me. So I
+> decided to ask this on the mailing list and add more details. Xdotool is
+> very useful software that allows you to automatize common tasks running
+> on the X windows. It's home page is: http://www.semicomplete.com/projects/xdotool/
+> My problem begins when I want to use "xdotool -search" which is one of
+> the most important xdotool feature. When I run any xdotool command
+> with search:
+> 
+>     xdotool search " - Vimperator" windowactivate
+??8<??
+
+It's an ugly workaround, but maybe you could use
+	i3-msg '[title=" - Vimperator"]focus'
+instead?
+
+-- 
+Mateusz Poszwa
+
+From michael at i3wm.org  Sat Dec 22 16:17:23 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 22 Dec 2012 16:17:23 +0100
+Subject: [i3] [PATCH] Draw borders around title bars better
+In-Reply-To: <20121220183631.1a690398@xs4all.nl>
+References: <20121220164254.0bdf0a67@xs4all.nl>
+ <20121220183631.1a690398@xs4all.nl>
+Message-ID: <x6a9t6m7zw.fsf@midna.zekjur.net>
+
+Hi Joep,
+
+Joep van Delft <joepvandelft at xs4all.nl> writes:
+> Forget about the previous patch, this one is better. 
+I have merged this patch with a few changes:
+
+? I removed the trailing whitespace and newlines you inserted.
+? I squashed the separate xcb_poly_line call into the other one.
+? I updated the comment accordingly.
+? I put "fixes #894" in a separate line in the commit description (the
+  trac hook wants that).
+
+-- 
+Best regards,
+Michael
+
+From michael at i3wm.org  Sat Dec 22 16:18:05 2012
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Sat, 22 Dec 2012 16:18:05 +0100
+Subject: [i3] [PATCH] Draw borders around title bars better
+In-Reply-To: <20121220192211.4f605013@xs4all.nl>
+References: <20121220164254.0bdf0a67@xs4all.nl>
+ <20121220183631.1a690398@xs4all.nl> <20121220192211.4f605013@xs4all.nl>
+Message-ID: <x67goam7yq.fsf@midna.zekjur.net>
+
+Hi Joep,
+
+Joep van Delft <joepvandelft at xs4all.nl> writes:
+> And an additional one that removes the gaps in the lower border of
+> Tabbed and Stacking on the left and right. Apparently, #814 has been
+> fixed elsewhere as well. 
+Not sure why you think this code should be changed. IMO, it works just
+fine and there are no gaps.
+
+-- 
+Best regards,
+Michael
+
+From gereon.kremer at rwth-aachen.de  Sat Dec 22 19:13:26 2012
+From: gereon.kremer at rwth-aachen.de (Gereon Kremer)
+Date: Sat, 22 Dec 2012 19:13:26 +0100
+Subject: [i3] i3status: Color for muted volume
+Message-ID: <50D5F846.8040807@rwth-aachen.de>
+
+Hi,
+
+in the current version i3status, the volume is red (i.e. has color_bad)
+if muted. While I think it is useful to use different colors for "muted"
+and "volume X", I don't unterstand why we use "bad" here instead of
+"degraded.
+
+Is there any particular reason for this?
+If not: I have attached a patch :-)
+
+Cheers,
+Gereon
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: 0002-changing-volume-color-from-bad-to-degraded-if-muted.patch
+Type: text/x-patch
+Size: 830 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121222/9a59ae69/attachment.bin>
+
+From fjvazquezaraujo at gmail.com  Mon Dec 24 15:16:58 2012
+From: fjvazquezaraujo at gmail.com (=?UTF-8?Q?Francisco_J=2E_V=C3=A1zquez?=)
+Date: Mon, 24 Dec 2012 15:16:58 +0100
+Subject: [i3] [PATCH] Customizable click actions on i3bar
+Message-ID: <CAH2Exs5uGNH++SzB4pPYwexBk8bbXW9QrDzzB40MyFa55oNDjA@mail.gmail.com>
+
+I made this patch that allows i3status to pass a "command" option for
+each module, to be executed on mouse click. This is the i3 part.
+
+Fran
+
+diff -ruN i3-4.4/i3bar/include/common.h i3-4.4.mine/i3bar/include/common.h
+--- i3-4.4/i3bar/include/common.h    2012-12-12 00:08:17.000000000 +0100
++++ i3-4.4.mine/i3bar/include/common.h    2012-12-24 13:30:11.508648736 +0100
+@@ -39,6 +39,7 @@
+     i3String *full_text;
+
+     char *color;
++    char *command;
+     uint32_t min_width;
+     blockalign_t align;
+
+diff -ruN i3-4.4/i3bar/src/child.c i3-4.4.mine/i3bar/src/child.c
+--- i3-4.4/i3bar/src/child.c    2012-12-12 00:08:17.000000000 +0100
++++ i3-4.4.mine/i3bar/src/child.c    2012-12-24 13:30:11.517648295 +0100
+@@ -129,6 +129,9 @@
+     if (strcasecmp(ctx->last_map_key, "full_text") == 0) {
+         ctx->block.full_text = i3string_from_utf8_with_length((const
+char *)val, len);
+     }
++    if (strcasecmp(ctx->last_map_key, "command") == 0) {
++        sasprintf(&(ctx->block.command), "%.*s", len, val);
++    }
+     if (strcasecmp(ctx->last_map_key, "color") == 0) {
+         sasprintf(&(ctx->block.color), "%.*s", len, val);
+     }
+@@ -176,6 +179,7 @@
+     TAILQ_FOREACH(current, &statusline_head, blocks) {
+         DLOG("full_text = %s\n", i3string_as_utf8(current->full_text));
+         DLOG("color = %s\n", current->color);
++        if (current->command != NULL) DLOG("command = %s\n", current->command);
+     }
+     DLOG("end of dump\n");
+     return 1;
+diff -ruN i3-4.4/i3bar/src/xcb.c i3-4.4.mine/i3bar/src/xcb.c
+--- i3-4.4/i3bar/src/xcb.c    2012-12-12 00:08:17.000000000 +0100
++++ i3-4.4.mine/i3bar/src/xcb.c    2012-12-24 14:00:13.387152314 +0100
+@@ -271,6 +271,17 @@
+ #undef PARSE_COLOR
+ }
+
++static void start_application(const char *command) {
++    DLOG("executing: %s\n", command);
++    if (fork() == 0) {
++        static const char *shell = NULL;
++        if (shell == NULL)
++            if ((shell = getenv("SHELL")) == NULL)
++                shell = "/bin/sh";
++        execl(shell, shell, "-c", command, (void*)NULL);
++    }
++}
++
+ /*
+  * Handle a button-press-event (i.e. a mouse click on one of our bars).
+  * We determine, whether the click occured on a ws-button or if the scroll-
+@@ -312,8 +323,10 @@
+
+     switch (event->detail) {
+         case 1:
++        {
+             /* Left Mousbutton. We determine, which button was clicked
+              * and set cur_ws accordingly */
++            int xorig = x;
+             TAILQ_FOREACH(cur_ws, walk->workspaces, tailq) {
+                 DLOG("x = %d\n", x);
+                 if (x >= 0 && x < cur_ws->name_width + 10) {
+@@ -322,9 +335,31 @@
+                 x -= cur_ws->name_width + 11;
+             }
+             if (cur_ws == NULL) {
++                trayclient *trayclient;
++                int traypx = 0;
++                TAILQ_FOREACH(trayclient, walk->trayclients, tailq) {
++                    if (!trayclient->mapped)
++                        continue;
++                    traypx += font.height + 2;
++                }
++                if (traypx > 0)
++                    traypx += 2;
++                x = xorig;
++                struct status_block *block, *clicked_block = NULL;
++                int xinit = walk->rect.w - statusline_width - traypx - 4;
++                TAILQ_FOREACH(block, &statusline_head, blocks) {
++                    if (x > xinit && x < xinit + block->width) {
++                        clicked_block = block;
++                        break;
++                    }
++                    xinit += block->width;
++                }
++                if (clicked_block != NULL && clicked_block->command != NULL)
++                    start_application(clicked_block->command);
+                 return;
+             }
+             break;
++        }
+         case 4:
+             /* Mouse wheel up. We select the previous ws, if any.
+              * If there is no more workspace, don?t even send the workspace
+
+From fjvazquezaraujo at gmail.com  Mon Dec 24 15:26:38 2012
+From: fjvazquezaraujo at gmail.com (Francisco J. Vazquez)
+Date: Mon, 24 Dec 2012 15:26:38 +0100
+Subject: [i3] [PATCH] Customizable click actions on i3bar
+In-Reply-To: <CAH2Exs5uGNH++SzB4pPYwexBk8bbXW9QrDzzB40MyFa55oNDjA@mail.gmail.com>
+References: <CAH2Exs5uGNH++SzB4pPYwexBk8bbXW9QrDzzB40MyFa55oNDjA@mail.gmail.com>
+Message-ID: <20121224142638.GA18108@phenom>
+
+Sorry, my mail client messed the patch. This is from mutt.
+
+Fran
+
+
+diff -ruN i3-4.4/i3bar/include/common.h i3-4.4.mine/i3bar/include/common.h
+--- i3-4.4/i3bar/include/common.h	2012-12-12 00:08:17.000000000 +0100
++++ i3-4.4.mine/i3bar/include/common.h	2012-12-24 13:30:11.508648736 +0100
+@@ -39,6 +39,7 @@
+     i3String *full_text;
+ 
+     char *color;
++    char *command;
+     uint32_t min_width;
+     blockalign_t align;
+ 
+diff -ruN i3-4.4/i3bar/src/child.c i3-4.4.mine/i3bar/src/child.c
+--- i3-4.4/i3bar/src/child.c	2012-12-12 00:08:17.000000000 +0100
++++ i3-4.4.mine/i3bar/src/child.c	2012-12-24 13:30:11.517648295 +0100
+@@ -129,6 +129,9 @@
+     if (strcasecmp(ctx->last_map_key, "full_text") == 0) {
+         ctx->block.full_text = i3string_from_utf8_with_length((const char *)val, len);
+     }
++    if (strcasecmp(ctx->last_map_key, "command") == 0) {
++        sasprintf(&(ctx->block.command), "%.*s", len, val);
++    }
+     if (strcasecmp(ctx->last_map_key, "color") == 0) {
+         sasprintf(&(ctx->block.color), "%.*s", len, val);
+     }
+@@ -176,6 +179,7 @@
+     TAILQ_FOREACH(current, &statusline_head, blocks) {
+         DLOG("full_text = %s\n", i3string_as_utf8(current->full_text));
+         DLOG("color = %s\n", current->color);
++        if (current->command != NULL) DLOG("command = %s\n", current->command);
+     }
+     DLOG("end of dump\n");
+     return 1;
+diff -ruN i3-4.4/i3bar/src/xcb.c i3-4.4.mine/i3bar/src/xcb.c
+--- i3-4.4/i3bar/src/xcb.c	2012-12-12 00:08:17.000000000 +0100
++++ i3-4.4.mine/i3bar/src/xcb.c	2012-12-24 14:00:13.387152314 +0100
+@@ -271,6 +271,17 @@
+ #undef PARSE_COLOR
+ }
+ 
++static void start_application(const char *command) {
++    DLOG("executing: %s\n", command);
++    if (fork() == 0) {
++        static const char *shell = NULL;
++        if (shell == NULL)
++            if ((shell = getenv("SHELL")) == NULL)
++                shell = "/bin/sh";
++        execl(shell, shell, "-c", command, (void*)NULL);
++    }
++}
++
+ /*
+  * Handle a button-press-event (i.e. a mouse click on one of our bars).
+  * We determine, whether the click occured on a ws-button or if the scroll-
+@@ -312,8 +323,10 @@
+ 
+     switch (event->detail) {
+         case 1:
++        {
+             /* Left Mousbutton. We determine, which button was clicked
+              * and set cur_ws accordingly */
++            int xorig = x;
+             TAILQ_FOREACH(cur_ws, walk->workspaces, tailq) {
+                 DLOG("x = %d\n", x);
+                 if (x >= 0 && x < cur_ws->name_width + 10) {
+@@ -322,9 +335,31 @@
+                 x -= cur_ws->name_width + 11;
+             }
+             if (cur_ws == NULL) {
++                trayclient *trayclient;
++                int traypx = 0;
++                TAILQ_FOREACH(trayclient, walk->trayclients, tailq) {
++                    if (!trayclient->mapped)
++                        continue;
++                    traypx += font.height + 2;
++                }
++                if (traypx > 0)
++                    traypx += 2;
++                x = xorig;
++                struct status_block *block, *clicked_block = NULL;
++                int xinit = walk->rect.w - statusline_width - traypx - 4;
++                TAILQ_FOREACH(block, &statusline_head, blocks) {
++                    if (x > xinit && x < xinit + block->width) {
++                        clicked_block = block;
++                        break;
++                    }
++                    xinit += block->width;
++                }
++                if (clicked_block != NULL && clicked_block->command != NULL)
++                    start_application(clicked_block->command);    
+                 return;
+             }
+             break;
++        }
+         case 4:
+             /* Mouse wheel up. We select the previous ws, if any.
+              * If there is no more workspace, don?t even send the workspace
+
+From fjvazquezaraujo at gmail.com  Mon Dec 24 15:29:16 2012
+From: fjvazquezaraujo at gmail.com (Francisco J. Vazquez)
+Date: Mon, 24 Dec 2012 15:29:16 +0100
+Subject: [i3] [PATCH] Customizable click actions on i3bar
+In-Reply-To: <CAH2Exs5uGNH++SzB4pPYwexBk8bbXW9QrDzzB40MyFa55oNDjA@mail.gmail.com>
+References: <CAH2Exs5uGNH++SzB4pPYwexBk8bbXW9QrDzzB40MyFa55oNDjA@mail.gmail.com>
+Message-ID: <20121224142916.GA18131@phenom>
+
+And this is the i3status part. I just added the command option to some
+of the modules (run_watch, wireless, time, mixer) as examples. Adding it
+to the rest is trivial.
+
+Fran
+
+
+diff -ruN i3status-2.6/i3status.c i3status-2.6.mine/i3status.c
+--- i3status-2.6/i3status.c	2012-10-03 13:44:44.000000000 +0200
++++ i3status-2.6.mine/i3status.c	2012-12-23 22:02:38.617000931 +0100
+@@ -190,12 +190,14 @@
+         cfg_opt_t run_watch_opts[] = {
+                 CFG_STR("pidfile", NULL, CFGF_NONE),
+                 CFG_STR("format", "%title: %status", CFGF_NONE),
++                CFG_STR("command", "urxvt", CFGF_NONE),
+                 CFG_END()
+         };
+ 
+         cfg_opt_t wireless_opts[] = {
+                 CFG_STR("format_up", "W: (%quality at %essid, %bitrate) %ip", CFGF_NONE),
+                 CFG_STR("format_down", "W: down", CFGF_NONE),
++                CFG_STR("command", "wpa_gui", CFGF_NONE),
+                 CFG_END()
+         };
+ 
+@@ -222,6 +224,7 @@
+ 
+         cfg_opt_t time_opts[] = {
+                 CFG_STR("format", "%d.%m.%Y %H:%M:%S", CFGF_NONE),
++                CFG_STR("command", "urxvt -hold -e cal -y", CFGF_NONE),
+                 CFG_END()
+         };
+ 
+@@ -256,6 +274,7 @@
+                 CFG_STR("device", "default", CFGF_NONE),
+                 CFG_STR("mixer", "Master", CFGF_NONE),
+                 CFG_INT("mixer_idx", 0, CFGF_NONE),
++                CFG_STR("command", "urxvt -e alsamixer", CFGF_NONE),
+                 CFG_END()
+         };
+ 
+@@ -403,7 +424,7 @@
+ 
+                         CASE_SEC_TITLE("wireless") {
+                                 SEC_OPEN_MAP("wireless");
+-                                print_wireless_info(json_gen, buffer, title, cfg_getstr(sec, "format_up"), cfg_getstr(sec, "format_down"));
++                                print_wireless_info(json_gen, buffer, title, cfg_getstr(sec, "format_up"), cfg_getstr(sec, "format_down"), cfg_getstr(sec, "command"));
+                                 SEC_CLOSE_MAP;
+                         }
+ 
+@@ -421,7 +442,7 @@
+ 
+                         CASE_SEC_TITLE("run_watch") {
+                                 SEC_OPEN_MAP("run_watch");
+-                                print_run_watch(json_gen, buffer, title, cfg_getstr(sec, "pidfile"), cfg_getstr(sec, "format"));
++                                print_run_watch(json_gen, buffer, title, cfg_getstr(sec, "pidfile"), cfg_getstr(sec, "format"), cfg_getstr(sec, "command"));
+                                 SEC_CLOSE_MAP;
+                         }
+ 
+@@ -439,7 +460,7 @@
+ 
+                         CASE_SEC("time") {
+                                 SEC_OPEN_MAP("time");
+-                                print_time(json_gen, buffer, cfg_getstr(sec, "format"), current_tm);
++                                print_time(json_gen, buffer, cfg_getstr(sec, "format"), current_tm, cfg_getstr(sec, "command"));
+                                 SEC_CLOSE_MAP;
+                         }
+ 
+@@ -454,7 +475,8 @@
+                                 print_volume(json_gen, buffer, cfg_getstr(sec, "format"),
+                                              cfg_getstr(sec, "device"),
+                                              cfg_getstr(sec, "mixer"),
+-                                             cfg_getint(sec, "mixer_idx"));
++                                             cfg_getint(sec, "mixer_idx"),
++                                             cfg_getstr(sec, "command"));
+                                 SEC_CLOSE_MAP;
+                         }
+ 
+diff -ruN i3status-2.6/include/i3status.h i3status-2.6.mine/include/i3status.h
+--- i3status-2.6/include/i3status.h	2012-10-03 13:44:44.000000000 +0200
++++ i3status-2.6.mine/include/i3status.h	2012-12-23 20:52:48.728038937 +0100
+@@ -119,6 +119,14 @@
+ 		} \
+ 	} while (0)
+ 
++#define COMMAND(command) \
++	do { \
++		if (output_format == O_I3BAR) { \
++			yajl_gen_string(json_gen, (const unsigned char *)"command", strlen("command")); \
++			yajl_gen_string(json_gen, (const unsigned char *)command, strlen(command)); \
++		} \
++	} while (0)
++
+ 
+ typedef enum { CS_DISCHARGING, CS_CHARGING, CS_FULL } charging_status_t;
+ 
+@@ -138,16 +146,16 @@
+ void print_ipv6_info(yajl_gen json_gen, char *buffer, const char *format_up, const char *format_down);
+ void print_disk_info(yajl_gen json_gen, char *buffer, const char *path, const char *format);
+ void print_battery_info(yajl_gen json_gen, char *buffer, int number, const char *path, const char *format, int low_threshold, char *threshold_type, bool last_full_capacity);
+-void print_time(yajl_gen json_gen, char *buffer, const char *format, struct tm *current_tm);
++void print_time(yajl_gen json_gen, char *buffer, const char *format, struct tm *current_tm, const char *command);
+ void print_ddate(yajl_gen json_gen, char *buffer, const char *format, struct tm *current_tm);
+ const char *get_ip_addr();
+-void print_wireless_info(yajl_gen json_gen, char *buffer, const char *interface, const char *format_up, const char *format_down);
+-void print_run_watch(yajl_gen json_gen, char *buffer, const char *title, const char *pidfile, const char *format);
++void print_wireless_info(yajl_gen json_gen, char *buffer, const char *interface, const char *format_up, const char *format_down, const char *command);
++void print_run_watch(yajl_gen json_gen, char *buffer, const char *title, const char *pidfile, const char *format, const char *command);
+ void print_cpu_temperature_info(yajl_gen json_gen, char *buffer, int zone, const char *path, const char *format);
+ void print_cpu_usage(yajl_gen json_gen, char *buffer, const char *format);
+ void print_eth_info(yajl_gen json_gen, char *buffer, const char *interface, const char *format_up, const char *format_down);
+ void print_load(yajl_gen json_gen, char *buffer, const char *format);
+-void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *device, const char *mixer, int mixer_idx);
++void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *device, const char *mixer, int mixer_idx, const char *command);
+ bool process_runs(const char *path);
+ 
+ /* socket file descriptor for general purposes */
+diff -ruN i3status-2.6/src/print_run_watch.c i3status-2.6.mine/src/print_run_watch.c
+--- i3status-2.6/src/print_run_watch.c	2012-10-03 13:44:44.000000000 +0200
++++ i3status-2.6.mine/src/print_run_watch.c	2012-12-23 20:52:48.730038842 +0100
+@@ -4,7 +4,7 @@
+ #include <yajl/yajl_version.h>
+ #include "i3status.h"
+ 
+-void print_run_watch(yajl_gen json_gen, char *buffer, const char *title, const char *pidfile, const char *format) {
++void print_run_watch(yajl_gen json_gen, char *buffer, const char *title, const char *pidfile, const char *format, const char *command) {
+ 	bool running = process_runs(pidfile);
+ 	const char *walk;
+ 	char *outwalk = buffer;
+@@ -29,5 +29,6 @@
+         }
+ 
+ 	END_COLOR;
++	COMMAND(command);
+ 	OUTPUT_FULL_TEXT(buffer);
+ }
+diff -ruN i3status-2.6/src/print_time.c i3status-2.6.mine/src/print_time.c
+--- i3status-2.6/src/print_time.c	2012-10-03 13:44:44.000000000 +0200
++++ i3status-2.6.mine/src/print_time.c	2012-12-23 20:52:48.731038797 +0100
+@@ -7,12 +7,13 @@
+ 
+ #include "i3status.h"
+ 
+-void print_time(yajl_gen json_gen, char *buffer, const char *format, struct tm *current_tm) {
++void print_time(yajl_gen json_gen, char *buffer, const char *format, struct tm *current_tm, const char *command) {
+         char *outwalk = buffer;
+         if (current_tm == NULL)
+                 return;
+         /* Get date & time */
+         outwalk += strftime(outwalk, 4095, format, current_tm);
+         *outwalk = '\0';
++        COMMAND(command);
+         OUTPUT_FULL_TEXT(buffer);
+ }
+diff -ruN i3status-2.6/src/print_volume.c i3status-2.6.mine/src/print_volume.c
+--- i3status-2.6/src/print_volume.c	2012-10-03 13:44:44.000000000 +0200
++++ i3status-2.6.mine/src/print_volume.c	2012-12-23 20:52:48.731038797 +0100
+@@ -49,7 +49,7 @@
+ }
+ #endif
+ 
+-void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *device, const char *mixer, int mixer_idx) {
++void print_volume(yajl_gen json_gen, char *buffer, const char *fmt, const char *device, const char *mixer, int mixer_idx, const char *command) {
+         char *outwalk = buffer;
+ 
+         /* Printing volume only works with ALSA at the moment */
+@@ -200,6 +200,7 @@
+ #endif
+ 
+         *outwalk = '\0';
++        COMMAND(command);
+         OUTPUT_FULL_TEXT(buffer);
+ 
+         if (!pbval)
+diff -ruN i3status-2.6/src/print_wireless_info.c i3status-2.6.mine/src/print_wireless_info.c
+--- i3status-2.6/src/print_wireless_info.c	2012-10-03 13:44:44.000000000 +0200
++++ i3status-2.6.mine/src/print_wireless_info.c	2012-12-23 20:52:48.732038752 +0100
+@@ -223,7 +223,7 @@
+ 	return 0;
+ }
+ 
+-void print_wireless_info(yajl_gen json_gen, char *buffer, const char *interface, const char *format_up, const char *format_down) {
++void print_wireless_info(yajl_gen json_gen, char *buffer, const char *interface, const char *format_up, const char *format_down, const char *command) {
+         const char *walk;
+         char *outwalk = buffer;
+         wireless_info_t info;
+@@ -309,5 +309,6 @@
+         }
+ 
+         END_COLOR;
++        COMMAND(command);
+         OUTPUT_FULL_TEXT(buffer);
+ }
+
+From sib at tormail.org  Tue Dec 25 22:39:49 2012
+From: sib at tormail.org (sib at tormail.org)
+Date: Tue, 25 Dec 2012 21:39:49 -0000
+Subject: [i3] i3 maintainer for FreeBSD
+Message-ID: <1TncE1-0005yN-0m@internal.tormail.org>
+
+Hello list.
+
+I'm an i3 user on FreeBSD, and really love the WM. I think we need a new
+maintainer for the port(1) in FreeBSD, though, because current one doesn't
+ever update it and ignores my mails. 4.4 has been out a little while, but
+we only have 4.2. I'd like to follow the latest versions. Can anyone
+volunteer to become the new maintainer? Sorry for my english.
+
+(1) http://www.freshports.org/x11-wm/i3
+
+-simon
+
+
+From baptiste.daroussin at gmail.com  Wed Dec 26 23:26:35 2012
+From: baptiste.daroussin at gmail.com (Baptiste Daroussin)
+Date: Wed, 26 Dec 2012 23:26:35 +0100
+Subject: [i3] i3 maintainer for FreeBSD
+In-Reply-To: <1TncE1-0005yN-0m@internal.tormail.org>
+References: <1TncE1-0005yN-0m@internal.tormail.org>
+Message-ID: <CAPKC6oJbUCr68=d_F-4Qe-hWNZ+TRZuLhnE0d8_iSi_c31eU3Q@mail.gmail.com>
+
+2012/12/25  <sib at tormail.org>:
+> Hello list.
+>
+> I'm an i3 user on FreeBSD, and really love the WM. I think we need a new
+> maintainer for the port(1) in FreeBSD, though, because current one doesn't
+> ever update it and ignores my mails. 4.4 has been out a little while, but
+> we only have 4.2. I'd like to follow the latest versions. Can anyone
+> volunteer to become the new maintainer? Sorry for my english.
+>
+> (1) http://www.freshports.org/x11-wm/i3
+>
+> -simon
+>
+
+Current maintainer is quite busy right now, I have already proposed to
+him to give me maintainership of this port, as I'm already a
+contributor of i3 (at least was :))
+
+Let me try to convince him once again.
+
+regards,
+Bapt
+
+From baptiste.daroussin at gmail.com  Sat Dec 29 01:53:04 2012
+From: baptiste.daroussin at gmail.com (Baptiste Daroussin)
+Date: Sat, 29 Dec 2012 01:53:04 +0100
+Subject: [i3] [i3status] implement mute on oss need testers
+Message-ID: <CAPKC6oLnS96Qc-xJHQr=O4o_-0-21jenuqrm1D-g=5AtKz5fEA@mail.gmail.com>
+
+Hi all
+
+Dear OpenBSD, Dragonfly, and FreeBSD users, while I was working on
+porting i3status 2.6 on FreeBSD yes I know I'm late :) I discovered on
+Linux they have colors on the volume if mute is activated.
+
+Here is a patch to implement it on our OSes (based on master):
+
+http://people.freebsd.org/~bapt/0001-Implement-mute-on-oss.patch
+
+This is blind code, it needs to be tested, as I can't test it right
+now, I would love if one of you can test it
+
+regards,
+Bapt
+
+From baptiste.daroussin at gmail.com  Sat Dec 29 01:58:58 2012
+From: baptiste.daroussin at gmail.com (Baptiste Daroussin)
+Date: Sat, 29 Dec 2012 01:58:58 +0100
+Subject: [i3] [i3status] implement mute on oss need testers
+In-Reply-To: <CAPKC6oLnS96Qc-xJHQr=O4o_-0-21jenuqrm1D-g=5AtKz5fEA@mail.gmail.com>
+References: <CAPKC6oLnS96Qc-xJHQr=O4o_-0-21jenuqrm1D-g=5AtKz5fEA@mail.gmail.com>
+Message-ID: <CAPKC6oLb_KYU_ZEBn3G75q5hjAH_AWf+jTbFGj39GB39LSm4+g@mail.gmail.com>
+
+2012/12/29 Baptiste Daroussin <baptiste.daroussin at gmail.com>:
+> Hi all
+>
+> Dear OpenBSD, Dragonfly, and FreeBSD users, while I was working on
+> porting i3status 2.6 on FreeBSD yes I know I'm late :) I discovered on
+> Linux they have colors on the volume if mute is activated.
+>
+> Here is a patch to implement it on our OSes (based on master):
+>
+> http://people.freebsd.org/~bapt/0001-Implement-mute-on-oss.patch
+>
+> This is blind code, it needs to be tested, as I can't test it right
+> now, I would love if one of you can test it
+>
+> regards,
+> Bapt
+
+I forgot if you are a freebsd user you can just apply the following
+patch to the x11/i3status port
+http://people.freebsd.org/~bapt/i3status-2.6.diff
+
+From bapt at FreeBSD.org  Sat Dec 29 19:34:39 2012
+From: bapt at FreeBSD.org (Baptiste Daroussin)
+Date: Sat, 29 Dec 2012 19:34:39 +0100
+Subject: [i3] i3 maintainer for FreeBSD
+In-Reply-To: <1TncE1-0005yN-0m@internal.tormail.org>
+References: <1TncE1-0005yN-0m@internal.tormail.org>
+Message-ID: <20121229183439.GF66011@ithaqua.etoilebsd.net>
+
+On Tue, Dec 25, 2012 at 09:39:49PM -0000, sib at tormail.org wrote:
+> Hello list.
+> 
+> I'm an i3 user on FreeBSD, and really love the WM. I think we need a new
+> maintainer for the port(1) in FreeBSD, though, because current one doesn't
+> ever update it and ignores my mails. 4.4 has been out a little while, but
+> we only have 4.2. I'd like to follow the latest versions. Can anyone
+> volunteer to become the new maintainer? Sorry for my english.
+> 
+> (1) http://www.freshports.org/x11-wm/i3
+> 
+> -simon
+> 
+
+For your information, I have taken maintainership or i3 after discussing with
+dhn@ he is really busy right now, I take it as an interim maintainership, as
+soon as he has time again, if he wants to claim it back I will give him back the
+maintainership with pleasure.
+
+Now i3 in the ports tree is the latest version.
+
+regards,
+Bapt
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: not available
+Type: application/pgp-signature
+Size: 196 bytes
+Desc: not available
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20121229/adf6a24a/attachment.sig>
+

@@ -1,0 +1,1117 @@
+From karkhaz at gmail.com  Tue Jun  2 23:20:33 2015
+From: karkhaz at gmail.com (Kareem Khazem)
+Date: Tue, 2 Jun 2015 22:20:33 +0100
+Subject: [i3] IPC scripting with Ruby
+Message-ID: <20150602212033.GA3897@red_water.cs.ucl.ac.uk>
+
+Hi all, wondering if somebody could tell me what's wrong with my
+script that's trying to talk with i3's IPC.
+
+Whenever I try to read a reply from the socket, I apparently just get
+an empty string.
+
+I've already read the warning about using a library and not
+implementing my own, thanks, but the Ruby library is unmaintained and
+doesn't include recent IPC features.
+
+I'm doing this:
+
+___________________ 8>< snip ><8 _____________________________________
+#!/usr/bin/env ruby
+require 'socket'
+socket  = Socket.unix(`i3 --get-socketpath`.strip)
+
+payload = "restart"
+type    = 0
+length  = payload.length
+
+bytes = socket.write("i3-ipc#{[length, type].pack("LL")}#{payload}")
+
+response = socket.read.unpack("L")
+______________________________________________________________________
+
+
+`bytes' gets the number of bytes written, as expected, and i3 does
+indeed restart, so the message was successful. But `response' seems to
+be nil. If I just ask for socket.read, I just get the empty string.
+
+Can anyone help? thanks!
+
+-- 
+Kareem
+
+From tony at dubstepdish.com  Tue Jun  2 21:14:42 2015
+From: tony at dubstepdish.com (Tony Crisci)
+Date: Tue, 02 Jun 2015 15:14:42 -0400
+Subject: [i3] IPC scripting with Ruby
+In-Reply-To: <20150602212033.GA3897@red_water.cs.ucl.ac.uk>
+References: <20150602212033.GA3897@red_water.cs.ucl.ac.uk>
+Message-ID: <556E00A2.2020001@dubstepdish.com>
+
+This is a known bug with i3. Any command that does not include a
+`restart` should work correctly. Try to use `reload` whenever you can.
+If `reload` does not do something you think it should do that `restart`
+does, make an issue on github.
+
+https://github.com/i3/i3/issues/1581
+
+On 06/02/2015 05:20 PM, Kareem Khazem wrote:
+> Hi all, wondering if somebody could tell me what's wrong with my
+> script that's trying to talk with i3's IPC.
+> 
+> Whenever I try to read a reply from the socket, I apparently just get
+> an empty string.
+> 
+> I've already read the warning about using a library and not
+> implementing my own, thanks, but the Ruby library is unmaintained and
+> doesn't include recent IPC features.
+> 
+> I'm doing this:
+> 
+> ___________________ 8>< snip ><8 _____________________________________
+> #!/usr/bin/env ruby
+> require 'socket'
+> socket  = Socket.unix(`i3 --get-socketpath`.strip)
+> 
+> payload = "restart"
+> type    = 0
+> length  = payload.length
+> 
+> bytes = socket.write("i3-ipc#{[length, type].pack("LL")}#{payload}")
+> 
+> response = socket.read.unpack("L")
+> ______________________________________________________________________
+> 
+> 
+> `bytes' gets the number of bytes written, as expected, and i3 does
+> indeed restart, so the message was successful. But `response' seems to
+> be nil. If I just ask for socket.read, I just get the empty string.
+> 
+> Can anyone help? thanks!
+> 
+
+From nbercher at yahoo.fr  Tue Jun 16 19:02:09 2015
+From: nbercher at yahoo.fr (Nicolas Bercher)
+Date: Tue, 16 Jun 2015 19:02:09 +0200
+Subject: [i3] About accessing workspaces by name
+Message-ID: <55805691.5030204@yahoo.fr>
+
+Hi the list!
+
+I run i3 since a week now and I switch to it from wmii (nearly for the
+same reasons that the i3 developers expose on i3 web site).
+
+I really appreciate its stability, xrandr support and conf/i3
+reloading/restarting on the fy!
+
+Anyway, can any one tell me:
+
+  1. why and/or "switch to workspace by name" and "move window to
+     workspace by name" are not implemented?
+     (namely M-t <wpname> / M-S-t <wpname> under wmii.)
+
+  2. (if I'm not wrong) why can't we set/unset windows to appear in
+     several workspaces?
+     (namely M-S-t +<wpname> / M-S-t -<wpname> under wmii.)
+
+I mean, I used to create a lot of temporary workspaces and name them
+depending on my instant needs (say debug, admin, tmp, rsync, etc.) but
+in the end, I feel that i3 restricts me a lot for what can be done from
+the keyboard bindings (i.e., to 0...9, for named or not workspaces).
+
+Thanks for whom will have the willing to answer!
+
+Nicolas
+
+From karkhaz at gmail.com  Tue Jun 16 19:08:43 2015
+From: karkhaz at gmail.com (Kareem Khazem)
+Date: Tue, 16 Jun 2015 18:08:43 +0100
+Subject: [i3] About accessing workspaces by name
+In-Reply-To: <55805691.5030204@yahoo.fr>
+References: <55805691.5030204@yahoo.fr>
+Message-ID: <20150616170843.GA22670@red_water.cs.ucl.ac.uk>
+
+On 2015-06-16 1902, Nicolas Bercher wrote:
+>  why and/or "switch to workspace by name" and "move window to
+>  workspace by name" are not implemented?
+>  (namely M-t <wpname> / M-S-t <wpname> under wmii.)
+
+Hi Nicholas,
+
+You can use i3-msg to do this from the command line. I use a
+combination of i3-msg and dmenu to do this.
+
+I wrote a script (ws_menu.rb) that finds the names of all workspaces
+on DisplayPort-1, and lists them in dmenu, and when I type the name of
+a workspace it switches to that one. If I type a name which is not
+currently a workspace, then it creates a new workspace with that name
+on DisplayPort-1.
+
+You simply write this in your i3 config:
+bindsym $mod+f exec /home/kareem/script/ws_menu.rb
+
+And here is the script:
+
+______________________________________________________________________
+#!/usr/bin/env ruby
+
+require 'json'
+
+# Get workspaces on a particular output
+workspaces = JSON.parse `i3-msg -t get_workspaces`
+workspaces.select! {|ws| ws['output'] == "DisplayPort-1"}
+
+# Build string of names
+names = workspaces.map {|ws| ws['name']}
+names = names.inject("") {|acc, e| e + "\n" + acc}
+
+result = `echo "#{names}" | dmenu -p "Select Workspace:"`
+
+if names.include? result
+  exec "i3-msg -t command workspace #{result}"
+else
+  system "i3-msg -t command workspace new"
+  exec "i3-msg -t command rename workspace to #{result}"
+end
+______________________________________________________________________
+
+Hope this helps
+
+-- 
+Kareem
+
+From nbercher at yahoo.fr  Tue Jun 16 20:20:15 2015
+From: nbercher at yahoo.fr (Nicolas Bercher)
+Date: Tue, 16 Jun 2015 20:20:15 +0200
+Subject: [i3] About accessing workspaces by name
+In-Reply-To: <20150616170843.GA22670@red_water.cs.ucl.ac.uk>
+References: <55805691.5030204@yahoo.fr>
+ <20150616170843.GA22670@red_water.cs.ucl.ac.uk>
+Message-ID: <558068DF.5090407@yahoo.fr>
+
+On 16/06/2015 19:08, Kareem Khazem wrote:
+> Hi Nicholas,
+>
+> You can use i3-msg to do this from the command line. I use a
+> combination of i3-msg and dmenu to do this.
+
+Hi Kareem,
+
+I was thinking vaguely to do things like that but didn't get to the idea
+of using dmenu!  For sure your approach will be mine (but I think I'll
+do it in some mix of Python and bash maybe that will be flawlessly
+integrated together with my bunch of wmii scripts).
+
+Thanks a lot!
+
+Nicolas
+
+From thomas.sanchz at gmail.com  Tue Jun 16 21:03:40 2015
+From: thomas.sanchz at gmail.com (Thomas Sanchez)
+Date: Tue, 16 Jun 2015 21:03:40 +0200
+Subject: [i3] About accessing workspaces by name
+In-Reply-To: <558068DF.5090407@yahoo.fr>
+References: <55805691.5030204@yahoo.fr>
+ <20150616170843.GA22670@red_water.cs.ucl.ac.uk>
+ <558068DF.5090407@yahoo.fr>
+Message-ID: <CAHR9pOGhNkwcsb3v_vPCUHGA0XbDcoocpBUQbwzhfe=3+2JuuQ@mail.gmail.com>
+
+2015-06-16 20:20 GMT+02:00 Nicolas Bercher <nbercher at yahoo.fr>:
+> [...]
+>
+> I was thinking vaguely to do things like that but didn't get to the idea
+> of using dmenu!  For sure your approach will be mine (but I think I'll
+> do it in some mix of Python and bash maybe that will be flawlessly
+> integrated together with my bunch of wmii scripts).
+>
+
+I'll do a shameless self promotion :)
+I already wrote such a script, I hope this can help:
+https://github.com/daedric/i3scripts/blob/master/select_workspace.py
+
+Have fun !
+
+
+-- 
+Thomas Sanchez
+
+From steven at knight.cx  Tue Jun 16 21:07:36 2015
+From: steven at knight.cx (Steven K Knight)
+Date: Tue, 16 Jun 2015 19:07:36 +0000
+Subject: [i3] About accessing workspaces by name
+In-Reply-To: <558068DF.5090407@yahoo.fr>
+References: <558068DF.5090407@yahoo.fr> <55805691.5030204@yahoo.fr>
+ <20150616170843.GA22670@red_water.cs.ucl.ac.uk>
+Message-ID: <347ea732152de1d2bea3d75147b8f8e0@mail.knight.cx>
+
+June 16 2015 2:21 PM, "Nicolas Bercher" <nbercher at yahoo.fr> wrote:
+> On 16/06/2015 19:08, Kareem Khazem wrote:
+> 
+>> Hi Nicholas,
+>> 
+>> You can use i3-msg to do this from the command line. I use a
+>> combination of i3-msg and dmenu to do this.
+> 
+> Hi Kareem,
+> 
+> I was thinking vaguely to do things like that but didn't get to the idea
+> of using dmenu! For sure your approach will be mine (but I think I'll
+> do it in some mix of Python and bash maybe that will be flawlessly
+> integrated together with my bunch of wmii scripts).
+> 
+> Thanks a lot!
+> 
+> Nicolas
+
+Hi,
+
+I've been a find of https://github.com/proxypoke/quickswitch-for-i3.  It provide for switching between workspaces: https://github.com/proxypoke/quickswitch-for-i3#workspaces
+
+Thanks,
+
+--
+Steven Knight <steven at knight.cx>
+
+From Dave.Sargrad at saabsensis.com  Wed Jun 17 13:05:58 2015
+From: Dave.Sargrad at saabsensis.com (Sargrad, Dave)
+Date: Wed, 17 Jun 2015 11:05:58 +0000
+Subject: [i3] 4.8.1 -> 4.10.2 append_layout creates rather than appends
+Message-ID: <85EA6F68AC24DA48B220EBEA7A8C08B828139C48@corpmail01.corp.sensis.com>
+
+I've migrated to 4.10.2. I had been using 4.8.1.
+
+I have saved layouts that I would like to append to my workspace.
+
+Rather than the layout getting appended, I am seeing an "unnamed" workspace created with the layout content.
+
+This is the type of command that I use to append:
+
+i3-msg "workspace my_workspace; append_layout /home/user/.i3/my_layout.json"
+
+Why is append_layout creating a new workspace rather than appending to an existing named workspace?
+
+
+This is the layout json file that I am using:
+
+{
+    "border": "normal",
+    "floating": "auto_off",
+    "fullscreen_mode": 1,
+    "layout": "splith",
+    "nodes": [
+        {
+            "border": "normal",
+            "current_border_width": 2,
+            "floating": "auto_off",
+            "geometry": {
+                "height": 485,
+                "width": 818,
+                "x": 0,
+                "y": 0
+            },
+            "layout": "splith",
+            "name": "Terminal - root at sensis-8930: /var/www/cwpmash",
+            "percent": 0.3416666666666666,
+            "swallows": [
+                {
+                    "class": "^XTerm$"
+                }
+            ],
+            "type": "con"
+        },
+        {
+            "border": "normal",
+            "current_border_width": 2,
+            "floating": "auto_off",
+            "geometry": {
+                "height": 485,
+                "width": 818,
+                "x": 0,
+                "y": 0
+            },
+            "layout": "splith",
+            "name": "Terminal - ubuntu at sensis-8930: ~",
+            "percent": 0.3333333333333333,
+            "swallows": [
+                {
+                    "class": "^XTerm$"
+                }
+            ],
+            "type": "con"
+        },
+        {
+            "border": "normal",
+            "current_border_width": 2,
+            "floating": "auto_off",
+            "geometry": {
+                "height": 1026,
+                "width": 1440,
+                "x": 0,
+                "y": 0
+            },
+            "layout": "splith",
+            "name": "Sign In - mashup - Mozilla Firefox",
+            "percent": 0.325,
+            "swallows": [
+                {
+                    "class": "^Firefox$"
+                }
+            ],
+            "type": "con"
+        }
+    ],
+    "percent": null,
+    "type": "workspace"
+}
+
+This message is intended only for the addressee and may contain information that is company confidential or privileged. Any technical data in this message may be exported only in accordance with the U.S. International Traffic in Arms Regulations (22 CFR Parts 120-130) or the Export Administration Regulations (15 CFR Parts 730-774). Unauthorized use is strictly prohibited and may be unlawful. If you are not the intended recipient, or the person responsible for delivering to the intended recipient, you should not read, copy, disclose or otherwise use this message. If you have received this email in error, please delete it, and advise the sender immediately.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150617/74c598f7/attachment.html>
+
+From Dave.Sargrad at saabsensis.com  Wed Jun 17 13:48:39 2015
+From: Dave.Sargrad at saabsensis.com (Sargrad, Dave)
+Date: Wed, 17 Jun 2015 11:48:39 +0000
+Subject: [i3] 4.8.1 -> 4.10.2 append_layout creates rather than appends
+In-Reply-To: <85EA6F68AC24DA48B220EBEA7A8C08B828139C48@corpmail01.corp.sensis.com>
+References: <85EA6F68AC24DA48B220EBEA7A8C08B828139C48@corpmail01.corp.sensis.com>
+Message-ID: <85EA6F68AC24DA48B220EBEA7A8C08B828139CBE@corpmail01.corp.sensis.com>
+
+I figured it out.. it's the workspace type that does this.. easy for me to fix my layout specs. When I delete this the append works as I'd expect.
+
+    "type": "workspace"
+
+
+
+
+From: Sargrad, Dave
+Sent: Wednesday, June 17, 2015 7:06 AM
+To: 'i3-discuss at i3.zekjur.net'
+Subject: 4.8.1 -> 4.10.2 append_layout creates rather than appends
+
+I've migrated to 4.10.2. I had been using 4.8.1.
+
+I have saved layouts that I would like to append to my workspace.
+
+Rather than the layout getting appended, I am seeing an "unnamed" workspace created with the layout content.
+
+This is the type of command that I use to append:
+
+i3-msg "workspace my_workspace; append_layout /home/user/.i3/my_layout.json"
+
+Why is append_layout creating a new workspace rather than appending to an existing named workspace?
+
+
+This is the layout json file that I am using:
+
+{
+    "border": "normal",
+    "floating": "auto_off",
+    "fullscreen_mode": 1,
+    "layout": "splith",
+    "nodes": [
+        {
+            "border": "normal",
+            "current_border_width": 2,
+            "floating": "auto_off",
+            "geometry": {
+                "height": 485,
+                "width": 818,
+                "x": 0,
+                "y": 0
+            },
+            "layout": "splith",
+            "name": "Terminal - root at sensis-8930: /var/www/cwpmash",
+            "percent": 0.3416666666666666,
+            "swallows": [
+                {
+                    "class": "^XTerm$"
+                }
+            ],
+            "type": "con"
+        },
+        {
+            "border": "normal",
+            "current_border_width": 2,
+            "floating": "auto_off",
+            "geometry": {
+                "height": 485,
+                "width": 818,
+                "x": 0,
+                "y": 0
+            },
+            "layout": "splith",
+            "name": "Terminal - ubuntu at sensis-8930: ~",
+            "percent": 0.3333333333333333,
+            "swallows": [
+                {
+                    "class": "^XTerm$"
+                }
+            ],
+            "type": "con"
+        },
+        {
+            "border": "normal",
+            "current_border_width": 2,
+            "floating": "auto_off",
+            "geometry": {
+                "height": 1026,
+                "width": 1440,
+                "x": 0,
+                "y": 0
+            },
+            "layout": "splith",
+            "name": "Sign In - mashup - Mozilla Firefox",
+            "percent": 0.325,
+            "swallows": [
+                {
+                    "class": "^Firefox$"
+                }
+            ],
+            "type": "con"
+        }
+    ],
+    "percent": null,
+    "type": "workspace"
+}
+
+This message is intended only for the addressee and may contain information that is company confidential or privileged. Any technical data in this message may be exported only in accordance with the U.S. International Traffic in Arms Regulations (22 CFR Parts 120-130) or the Export Administration Regulations (15 CFR Parts 730-774). Unauthorized use is strictly prohibited and may be unlawful. If you are not the intended recipient, or the person responsible for delivering to the intended recipient, you should not read, copy, disclose or otherwise use this message. If you have received this email in error, please delete it, and advise the sender immediately.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150617/b291a839/attachment-0001.html>
+
+From nbercher at yahoo.fr  Wed Jun 17 20:05:54 2015
+From: nbercher at yahoo.fr (Nicolas Bercher)
+Date: Wed, 17 Jun 2015 20:05:54 +0200
+Subject: [i3] Troubles using Mod4
+Message-ID: <5581B702.8030507@yahoo.fr>
+
+Hi,
+
+I have troubles using Mod4+<any>.
+
+Here is my configuration sample:
+
+   bindsym Mod4+Up exec alsa-volume-increase
+   bindsym Mod4+Down exec alsa-volume-decrease
+   bindsym Mod4+m exec alsa-volume-toggle-mute
+
+where alsa-volume-* are bash script that do work very well
+from the shell.
+
+I've checked (and fixed) under xmodmap the association of Mod4 to
+Super_L (and Super_R is fine also):
+
+   $ xmodmap -pm
+   xmodmap:  up to 3 keys per modifier, (keycodes in parentheses):
+
+   shift       Shift_L (0x32),  Shift_R (0x3e)
+   lock        Caps_Lock (0x42)
+   control     Control_L (0x25),  Control_R (0x69)
+   mod1        Alt_L (0x40),  Meta_L (0xcd)
+   mod2        Num_Lock (0x4d)
+   mod3
+   mod4        Super_L (0x85),  Super_R (0x86),  Super_L (0xce)
+   mod5        ISO_Level3_Shift (0x5c),  Mode_switch (0xcb)
+
+And xev says me (for a press-release sequence on "Win Left"):
+
+   KeyPress event, serial 32, synthetic NO, window 0x3c00001,
+       root 0xcb, subw 0x0, time 29561418, (238,-7), root:(1202,721),
+       state 0x0, keycode 133 (keysym 0xffeb, Super_L), same_screen YES,
+       XLookupString gives 0 bytes:
+       XmbLookupString gives 0 bytes:
+       XFilterEvent returns: False
+
+   KeyRelease event, serial 32, synthetic NO, window 0x3c00001,
+       root 0xcb, subw 0x0, time 29562442, (238,-7), root:(1202,721),
+       state 0x40, keycode 133 (keysym 0xffeb, Super_L), same_screen YES,
+       XLookupString gives 0 bytes:
+       XFilterEvent returns: False
+
+Under xev, is it normal that I get two different key codes for Super_L,
+namely 0x85 and 0xce?
+
+Do any one knows what's wrong?
+
+Thanks a lot,
+Nicolas
+
+From karkhaz at gmail.com  Wed Jun 17 20:16:17 2015
+From: karkhaz at gmail.com (Kareem Khazem)
+Date: Wed, 17 Jun 2015 19:16:17 +0100
+Subject: [i3] Troubles using Mod4
+In-Reply-To: <5581B702.8030507@yahoo.fr>
+References: <5581B702.8030507@yahoo.fr>
+Message-ID: <20150617181617.GA11451@red_water.cs.ucl.ac.uk>
+
+On 2015-06-17 2005, Nicolas Bercher wrote:
+>   $ xmodmap -pm
+>   xmodmap:  up to 3 keys per modifier, (keycodes in parentheses):
+> 
+>   mod4        Super_L (0x85),  Super_R (0x86),  Super_L (0xce)
+> 
+> [...]
+> 
+> Under xev, is it normal that I get two different key codes for Super_L,
+> namely 0x85 and 0xce?
+> 
+> Do any one knows what's wrong?
+
+Not sure what's wrong, but I get the same keycodes for Super_L as you
+do when running xmodmap. I get the same output for xev also (keycode
+133) when pressing Left Super.
+
+I use the super/win keys on i3, works fine over here.
+
+-- 
+Kareem
+
+From nbercher at yahoo.fr  Wed Jun 17 20:18:20 2015
+From: nbercher at yahoo.fr (Nicolas Bercher)
+Date: Wed, 17 Jun 2015 20:18:20 +0200
+Subject: [i3] About accessing workspaces by name
+In-Reply-To: <CAHR9pOGhNkwcsb3v_vPCUHGA0XbDcoocpBUQbwzhfe=3+2JuuQ@mail.gmail.com>
+References: <55805691.5030204@yahoo.fr>
+ <20150616170843.GA22670@red_water.cs.ucl.ac.uk> <558068DF.5090407@yahoo.fr>
+ <CAHR9pOGhNkwcsb3v_vPCUHGA0XbDcoocpBUQbwzhfe=3+2JuuQ@mail.gmail.com>
+Message-ID: <5581B9EC.9080404@yahoo.fr>
+
+On 16/06/2015 21:03, Thomas Sanchez wrote:
+> 2015-06-16 20:20 GMT+02:00 Nicolas Bercher <nbercher at yahoo.fr>:
+>> [...]
+>>
+>> I was thinking vaguely to do things like that but didn't get to the idea
+>> of using dmenu!  For sure your approach will be mine (but I think I'll
+>> do it in some mix of Python and bash maybe that will be flawlessly
+>> integrated together with my bunch of wmii scripts).
+>>
+>
+> I'll do a shameless self promotion :)
+> I already wrote such a script, I hope this can help:
+> https://github.com/daedric/i3scripts/blob/master/select_workspace.py
+>
+> Have fun !
+
+This looks great, but where do you get i3 Python module?
+
+Thanks!
+Nicolas
+
+From nbercher at yahoo.fr  Wed Jun 17 20:20:25 2015
+From: nbercher at yahoo.fr (Nicolas Bercher)
+Date: Wed, 17 Jun 2015 20:20:25 +0200
+Subject: [i3] About accessing workspaces by name
+In-Reply-To: <347ea732152de1d2bea3d75147b8f8e0@mail.knight.cx>
+References: <558068DF.5090407@yahoo.fr> <55805691.5030204@yahoo.fr>
+ <20150616170843.GA22670@red_water.cs.ucl.ac.uk>
+ <347ea732152de1d2bea3d75147b8f8e0@mail.knight.cx>
+Message-ID: <5581BA69.3030101@yahoo.fr>
+
+On 16/06/2015 21:07, Steven K Knight wrote:
+> Hi,
+>
+> I've been a find of https://github.com/proxypoke/quickswitch-for-i3.  It provide for switching between workspaces: https://github.com/proxypoke/quickswitch-for-i3#workspaces
+>
+> Thanks,
+>
+> --
+> Steven Knight <steven at knight.cx>
+
+Thank you a lot, all of the answers seems very nice to me!
+
+Nicolas
+
+From karkhaz at gmail.com  Wed Jun 17 20:25:26 2015
+From: karkhaz at gmail.com (Kareem)
+Date: Wed, 17 Jun 2015 19:25:26 +0100
+Subject: [i3] Troubles using Mod4
+In-Reply-To: <5581B702.8030507@yahoo.fr>
+References: <5581B702.8030507@yahoo.fr>
+Message-ID: <20150617182525.GA14140@red_water.cs.ucl.ac.uk>
+
+On 2015-06-17 2005, Nicolas Bercher wrote:
+> I have troubles using Mod4+<any>.
+> 
+> Here is my configuration sample:
+> 
+>   bindsym Mod4+Up exec alsa-volume-increase
+>   bindsym Mod4+Down exec alsa-volume-decrease
+>   bindsym Mod4+m exec alsa-volume-toggle-mute
+> 
+> where alsa-volume-* are bash script that do work very well
+> from the shell.
+
+I think the problem is that you haven't written the full path to your
+script. I think i3 doesn't care about your $PATH, it's kind-of like
+cron.
+
+-- 
+Kareem
+
+From nbercher at yahoo.fr  Wed Jun 17 20:31:34 2015
+From: nbercher at yahoo.fr (Nicolas Bercher)
+Date: Wed, 17 Jun 2015 20:31:34 +0200
+Subject: [i3] Troubles using Mod4
+In-Reply-To: <20150617182525.GA14140@red_water.cs.ucl.ac.uk>
+References: <5581B702.8030507@yahoo.fr>
+ <20150617182525.GA14140@red_water.cs.ucl.ac.uk>
+Message-ID: <5581BD06.8010501@yahoo.fr>
+
+On 17/06/2015 20:25, Kareem wrote:
+> On 2015-06-17 2005, Nicolas Bercher wrote:
+>> I have troubles using Mod4+<any>.
+>>
+>> Here is my configuration sample:
+>>
+>>    bindsym Mod4+Up exec alsa-volume-increase
+>>    bindsym Mod4+Down exec alsa-volume-decrease
+>>    bindsym Mod4+m exec alsa-volume-toggle-mute
+>>
+>> where alsa-volume-* are bash script that do work very well
+>> from the shell.
+>
+> I think the problem is that you haven't written the full path to your
+> script. I think i3 doesn't care about your $PATH, it's kind-of like
+> cron.
+
+Good point, but I do use absolute path (and are correct), but my sample
+conf was just simplified for the discussion here.
+
+But the trouble IS relate to $PATH anyway: my scripts source other bash
+source files (kind of bash libs), so my question now is (since I've
+investigated a lot around PATH yet):
+
+How do I set a more large, user-dependent, PATH so that i3 is aware of,
+say, my ~/bin/ folder (or any other as well) ?
+
+I've tried to define a correct ~/.xsessionrc, actually it points to my
+~/.profile which in turn sources ~/.bashrc.
+
+Would that be correct a approach?  (since everything is OK from a bash
+session).
+
+Thanks a lot,
+Nicolas
+
+From nbercher at yahoo.fr  Wed Jun 17 20:32:25 2015
+From: nbercher at yahoo.fr (Nicolas Bercher)
+Date: Wed, 17 Jun 2015 20:32:25 +0200
+Subject: [i3] Troubles using Mod4
+In-Reply-To: <20150617181617.GA11451@red_water.cs.ucl.ac.uk>
+References: <5581B702.8030507@yahoo.fr>
+ <20150617181617.GA11451@red_water.cs.ucl.ac.uk>
+Message-ID: <5581BD39.1010204@yahoo.fr>
+
+On 17/06/2015 20:16, Kareem Khazem wrote:
+> On 2015-06-17 2005, Nicolas Bercher wrote:
+>>    $ xmodmap -pm
+>>    xmodmap:  up to 3 keys per modifier, (keycodes in parentheses):
+>>
+>>    mod4        Super_L (0x85),  Super_R (0x86),  Super_L (0xce)
+>>
+>> [...]
+>>
+>> Under xev, is it normal that I get two different key codes for Super_L,
+>> namely 0x85 and 0xce?
+>>
+>> Do any one knows what's wrong?
+>
+> Not sure what's wrong, but I get the same keycodes for Super_L as you
+> do when running xmodmap. I get the same output for xev also (keycode
+> 133) when pressing Left Super.
+>
+> I use the super/win keys on i3, works fine over here.
+
+OK, thank you for the feedback.  I'm sure now it's related to a PATH
+issue (cf. my other e-mail).
+
+Nicolas
+
+From thomas.sanchz at gmail.com  Wed Jun 17 20:50:05 2015
+From: thomas.sanchz at gmail.com (Thomas Sanchez)
+Date: Wed, 17 Jun 2015 20:50:05 +0200
+Subject: [i3] About accessing workspaces by name
+In-Reply-To: <5581B9EC.9080404@yahoo.fr>
+References: <55805691.5030204@yahoo.fr>
+ <20150616170843.GA22670@red_water.cs.ucl.ac.uk> <558068DF.5090407@yahoo.fr>
+ <CAHR9pOGhNkwcsb3v_vPCUHGA0XbDcoocpBUQbwzhfe=3+2JuuQ@mail.gmail.com>
+ <5581B9EC.9080404@yahoo.fr>
+Message-ID: <5581c17d.c755c20a.29a0.ffffde35@mx.google.com>
+
+Look on pip :) pip install i3 IIRC
+
+Sent from my phone 
+
+-----Message d'origine-----
+De : "Nicolas Bercher" <nbercher at yahoo.fr>
+Envoyé : ‎17/‎06/‎2015 20:18
+À : "Discussions/Questions about the i3 window manager" <i3-discuss at i3.zekjur.net>
+Objet : Re: [i3] About accessing workspaces by name
+
+On 16/06/2015 21:03, Thomas Sanchez wrote:
+> 2015-06-16 20:20 GMT+02:00 Nicolas Bercher <nbercher at yahoo.fr>:
+>> [...]
+>>
+>> I was thinking vaguely to do things like that but didn't get to the idea
+>> of using dmenu!  For sure your approach will be mine (but I think I'll
+>> do it in some mix of Python and bash maybe that will be flawlessly
+>> integrated together with my bunch of wmii scripts).
+>>
+>
+> I'll do a shameless self promotion :)
+> I already wrote such a script, I hope this can help:
+> https://github.com/daedric/i3scripts/blob/master/select_workspace.py
+>
+> Have fun !
+
+This looks great, but where do you get i3 Python module?
+
+Thanks!
+Nicolas
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150617/4c2f6338/attachment-0001.html>
+
+From nbercher at yahoo.fr  Thu Jun 18 00:18:58 2015
+From: nbercher at yahoo.fr (Nicolas Bercher)
+Date: Thu, 18 Jun 2015 00:18:58 +0200
+Subject: [i3] [solved] Troubles using Mod4
+In-Reply-To: <5581B702.8030507@yahoo.fr>
+References: <5581B702.8030507@yahoo.fr>
+Message-ID: <5581F252.4010607@yahoo.fr>
+
+OK, in the end, I had no trouble with Mod4 at all.
+
+It's just that every binding I had trouble with were using Mod4!
+
+My issue was related to PATH to properly populated before i3 is fired,
+and this is because I was giving a try to xdm at the same time.
+For a reason I do not fully understand yet, xdm does not make use of
+/etc/profile (and thus ignores /etc/profile.d/*.sh) nor user-defined
+PATH (but maybe this is a collateral effect of /etc/profile.d/*.sh
+being ignored).
+
+In the end, I switched back to my previous DM, that is kdm-trinity.
+
+It's a long PATH to the zenity, but it worth it.  A lot.
+
+Thanks to everybody here!
+Nicolas
+
+On 17/06/2015 20:05, Nicolas Bercher wrote:
+> Hi,
+>
+> I have troubles using Mod4+<any>.
+>
+> Here is my configuration sample:
+>
+> bindsym Mod4+Up exec alsa-volume-increase bindsym Mod4+Down exec
+> alsa-volume-decrease bindsym Mod4+m exec alsa-volume-toggle-mute
+>
+> where alsa-volume-* are bash script that do work very well from the
+> shell.
+>
+> I've checked (and fixed) under xmodmap the association of Mod4 to
+> Super_L (and Super_R is fine also):
+>
+> $ xmodmap -pm xmodmap:  up to 3 keys per modifier, (keycodes in
+> parentheses):
+>
+> shift       Shift_L (0x32),  Shift_R (0x3e) lock        Caps_Lock
+> (0x42) control     Control_L (0x25),  Control_R (0x69) mod1
+> Alt_L (0x40),  Meta_L (0xcd) mod2        Num_Lock (0x4d) mod3 mod4
+> Super_L (0x85),  Super_R (0x86),  Super_L (0xce) mod5
+> ISO_Level3_Shift (0x5c),  Mode_switch (0xcb)
+>
+> And xev says me (for a press-release sequence on "Win Left"):
+>
+> KeyPress event, serial 32, synthetic NO, window 0x3c00001, root 0xcb,
+> subw 0x0, time 29561418, (238,-7), root:(1202,721), state 0x0,
+> keycode 133 (keysym 0xffeb, Super_L), same_screen YES, XLookupString
+> gives 0 bytes: XmbLookupString gives 0 bytes: XFilterEvent returns:
+> False
+>
+> KeyRelease event, serial 32, synthetic NO, window 0x3c00001, root
+> 0xcb, subw 0x0, time 29562442, (238,-7), root:(1202,721), state 0x40,
+> keycode 133 (keysym 0xffeb, Super_L), same_screen YES, XLookupString
+> gives 0 bytes: XFilterEvent returns: False
+>
+> Under xev, is it normal that I get two different key codes for
+> Super_L, namely 0x85 and 0xce?
+>
+> Do any one knows what's wrong?
+>
+> Thanks a lot, Nicolas
+
+
+From anton.lofgren at gmail.com  Thu Jun 18 08:09:35 2015
+From: anton.lofgren at gmail.com (=?ISO-8859-1?Q?Anton_L=F6fgren?=)
+Date: Thu, 18 Jun 2015 08:09:35 +0200
+Subject: [i3] About accessing workspaces by name
+In-Reply-To: <347ea732152de1d2bea3d75147b8f8e0@mail.knight.cx>
+References: <558068DF.5090407@yahoo.fr> <55805691.5030204@yahoo.fr>
+ <20150616170843.GA22670@red_water.cs.ucl.ac.uk>
+ <347ea732152de1d2bea3d75147b8f8e0@mail.knight.cx>
+Message-ID: <1CAFF0A9-235D-45DE-9EC1-6D866420DD92@gmail.com>
+
+
+
+On June 16, 2015 9:07:36 PM CEST, Steven K Knight <steven at knight.cx> wrote:
+>June 16 2015 2:21 PM, "Nicolas Bercher" <nbercher at yahoo.fr> wrote:
+>> On 16/06/2015 19:08, Kareem Khazem wrote:
+>> 
+>>> Hi Nicholas,
+>>> 
+>>> You can use i3-msg to do this from the command line. I use a
+>>> combination of i3-msg and dmenu to do this.
+>> 
+>> Hi Kareem,
+>> 
+>> I was thinking vaguely to do things like that but didn't get to the
+>idea
+>> of using dmenu! For sure your approach will be mine (but I think I'll
+>> do it in some mix of Python and bash maybe that will be flawlessly
+>> integrated together with my bunch of wmii scripts).
+>> 
+>> Thanks a lot!
+>> 
+>> Nicolas
+>
+>Hi,
+>
+>I've been a find of https://github.com/proxypoke/quickswitch-for-i3. 
+>It provide for switching between workspaces:
+>https://github.com/proxypoke/quickswitch-for-i3#workspaces
+>
+>Thanks,
+>
+>--
+>Steven Knight <steven at knight.cx>
+
+After using quickswitch for a couple of years, I've recently switched to rofi (https://davedavenport.github.io/rofi/), and can highly recommend looking into that as well. Highlights include dmenu compatibility, pango font rendering and a sweet ssh launcher. 
+
+Besides, I think the quickswitch project is pretty much unmaintained these days, which is what triggered my looking for a replacement in the first place. 
+-- 
+Sent from my Android device with K-9 Mail. Please excuse my brevity.
+
+From Dave.Sargrad at saabsensis.com  Thu Jun 18 15:15:33 2015
+From: Dave.Sargrad at saabsensis.com (Sargrad, Dave)
+Date: Thu, 18 Jun 2015 13:15:33 +0000
+Subject: [i3] i3 4.10.2 crash
+In-Reply-To: <85EA6F68AC24DA48B220EBEA7A8C08B828139C48@corpmail01.corp.sensis.com>
+References: <85EA6F68AC24DA48B220EBEA7A8C08B828139C48@corpmail01.corp.sensis.com>
+Message-ID: <85EA6F68AC24DA48B220EBEA7A8C08B82813CD3F@corpmail01.corp.sensis.com>
+
+I3 4.10.2 has crashed on me. I've seen crashes before but have ignored them. I'm interested in seeing if I can isolate the crash, particularly since I think I know how to repeat the crash. Once isolated I can provide feedback to the dev team.
+
+I am currently presented with the "crash response window" (red border with options to: attach gdb, save a backtracke, restart i3 in place, forget the current layout and restart i3).
+
+When I putty into the box and see what i3 processes are running (with an eye towards attaching gdb), I see the following:
+
+ubuntu at sensis-8930:~$ ps -aef | grep i3
+ubuntu    2349  2075  0 Jun17 ?        00:00:01 i3-with-shmlog
+ubuntu    2420  2349  0 Jun17 ?        00:00:00 /usr/bin/ssh-agent /usr/bin/dbus                                                      -launch --exit-with-session /usr/bin/im-launch i3-with-shmlog
+ubuntu    2423     1  0 Jun17 ?        00:00:00 /usr/bin/dbus-launch --exit-with                                                      -session /usr/bin/im-launch i3-with-shmlog
+ubuntu    2484     1  0 Jun17 ?        00:00:00 /bin/sh -c i3bar --bar_id=bar-0                                                       --socket="/run/user/1000/i3/ipc-socket.2349"
+ubuntu    2485  2484  0 Jun17 ?        00:00:29 i3bar --bar_id=bar-0 --socket=/r                                                      un/user/1000/i3/ipc-socket.2349
+ubuntu    2487  2485  0 Jun17 ?        00:00:00 /bin/sh -c i3status
+ubuntu    2489  2487  0 Jun17 ?        00:00:24 i3status
+ubuntu    2510     1  0 Jun17 ?        00:00:00 /bin/sh -c i3-sensible-terminal
+ubuntu    6031  6005  0 12:12 pts/1    00:00:00 grep --color=auto i3
+
+
+The area that I built i3 out of is:  /home/ubuntu/work/i3/i3-4.10.2
+
+This is where I should be able to find the source code and symbol files required by gdb.
+
+I've attached gdb to debuggable processes in the past (I don't need help with that). I do need some guidance relative to the following questions:
+1] If I save a backtrace, where will that get saved on the system
+2] Of the processes listed above, which one do I attach to (I don't see i3.. perhaps i3-with-shmlog)?
+3] What are the commands that I should enter into gdb so that it loads the proper symbol files?
+
+Thanks for any thoughts or guidance.
+
+ubuntu at sensis-8930:~/work/i3$ ls
+i3-4.10.2  i3-4.10.2.tar.bz2  i3status-2.9  i3status-2.9.tar.bz2
+
+
+This message is intended only for the addressee and may contain information that is company confidential or privileged. Any technical data in this message may be exported only in accordance with the U.S. International Traffic in Arms Regulations (22 CFR Parts 120-130) or the Export Administration Regulations (15 CFR Parts 730-774). Unauthorized use is strictly prohibited and may be unlawful. If you are not the intended recipient, or the person responsible for delivering to the intended recipient, you should not read, copy, disclose or otherwise use this message. If you have received this email in error, please delete it, and advise the sender immediately.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150618/6cf5339e/attachment.html>
+
+From Dave.Sargrad at saabsensis.com  Thu Jun 18 16:43:01 2015
+From: Dave.Sargrad at saabsensis.com (Sargrad, Dave)
+Date: Thu, 18 Jun 2015 14:43:01 +0000
+Subject: [i3] i3 4.10.2 i3-save-tree perl module missing
+References: <85EA6F68AC24DA48B220EBEA7A8C08B828139C48@corpmail01.corp.sensis.com> 
+Message-ID: <85EA6F68AC24DA48B220EBEA7A8C08B82813D306@corpmail01.corp.sensis.com>
+
+I'm using ubuntu 14.04. Can someone please provide guidance relative to how to fix the following. What package do I need to install?
+
+ubuntu at sensis-8930:/var/www/cwpmash/app$ i3-save-tree
+Can't locate AnyEvent/I3.pm in @INC (you may need to install the AnyEvent::I3 module) (@INC contains: /etc/perl /usr/local/lib/perl/5.18.2 /usr/local/share/perl/5.18.2 /usr/lib/perl5 /usr/share/perl5 /usr/lib/perl/5.18 /usr/share/perl/5.18 /usr/local/lib/site_perl .) at /usr/bin/i3-save-tree line 19.
+BEGIN failed--compilation aborted at /usr/bin/i3-save-tree line 19.
+
+This message is intended only for the addressee and may contain information that is company confidential or privileged. Any technical data in this message may be exported only in accordance with the U.S. International Traffic in Arms Regulations (22 CFR Parts 120-130) or the Export Administration Regulations (15 CFR Parts 730-774). Unauthorized use is strictly prohibited and may be unlawful. If you are not the intended recipient, or the person responsible for delivering to the intended recipient, you should not read, copy, disclose or otherwise use this message. If you have received this email in error, please delete it, and advise the sender immediately.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150618/b56877d5/attachment.html>
+
+From Dave.Sargrad at saabsensis.com  Thu Jun 18 15:35:37 2015
+From: Dave.Sargrad at saabsensis.com (Sargrad, Dave)
+Date: Thu, 18 Jun 2015 13:35:37 +0000
+Subject: [i3] i3 4.10.2 crash ----   isolated
+References: <85EA6F68AC24DA48B220EBEA7A8C08B828139C48@corpmail01.corp.sensis.com> 
+Message-ID: <85EA6F68AC24DA48B220EBEA7A8C08B82813D269@corpmail01.corp.sensis.com>
+
+One crash location found (con.c line 393), reference through null pointer:
+[cid:image001.png at 01D0A9AA.222B9380]
+
+
+I3-with-shmlog is indeed the process to attach to. I started i3 clean, and then as root I was able to attach to this process. For some reason, though i3 is running as ubuntu, I was not able to attach as ubuntu. Once attached, I then initiated the sequence of events that I expected to crash i3, the crash did indeed occur (so this is quite repeatable).
+
+I'll continue to see if I can isolate other crash points.
+
+I'll post a bug on the bug tracker to ensure that this hits Michael's radar.
+
+
+
+
+
+From: Sargrad, Dave
+Sent: Thursday, June 18, 2015 9:16 AM
+To: 'i3-discuss at i3.zekjur.net'
+Subject: i3 4.10.2 crash
+
+I3 4.10.2 has crashed on me. I've seen crashes before but have ignored them. I'm interested in seeing if I can isolate the crash, particularly since I think I know how to repeat the crash. Once isolated I can provide feedback to the dev team.
+
+I am currently presented with the "crash response window" (red border with options to: attach gdb, save a backtracke, restart i3 in place, forget the current layout and restart i3).
+
+When I putty into the box and see what i3 processes are running (with an eye towards attaching gdb), I see the following:
+
+ubuntu at sensis-8930:~$ ps -aef | grep i3
+ubuntu    2349  2075  0 Jun17 ?        00:00:01 i3-with-shmlog
+ubuntu    2420  2349  0 Jun17 ?        00:00:00 /usr/bin/ssh-agent /usr/bin/dbus                                                      -launch --exit-with-session /usr/bin/im-launch i3-with-shmlog
+ubuntu    2423     1  0 Jun17 ?        00:00:00 /usr/bin/dbus-launch --exit-with                                                      -session /usr/bin/im-launch i3-with-shmlog
+ubuntu    2484     1  0 Jun17 ?        00:00:00 /bin/sh -c i3bar --bar_id=bar-0                                                       --socket="/run/user/1000/i3/ipc-socket.2349"
+ubuntu    2485  2484  0 Jun17 ?        00:00:29 i3bar --bar_id=bar-0 --socket=/r                                                      un/user/1000/i3/ipc-socket.2349
+ubuntu    2487  2485  0 Jun17 ?        00:00:00 /bin/sh -c i3status
+ubuntu    2489  2487  0 Jun17 ?        00:00:24 i3status
+ubuntu    2510     1  0 Jun17 ?        00:00:00 /bin/sh -c i3-sensible-terminal
+ubuntu    6031  6005  0 12:12 pts/1    00:00:00 grep --color=auto i3
+
+
+The area that I built i3 out of is:  /home/ubuntu/work/i3/i3-4.10.2
+
+This is where I should be able to find the source code and symbol files required by gdb.
+
+I've attached gdb to debuggable processes in the past (I don't need help with that). I do need some guidance relative to the following questions:
+1] If I save a backtrace, where will that get saved on the system
+2] Of the processes listed above, which one do I attach to (I don't see i3.. perhaps i3-with-shmlog)?
+3] What are the commands that I should enter into gdb so that it loads the proper symbol files?
+
+Thanks for any thoughts or guidance.
+
+ubuntu at sensis-8930:~/work/i3$ ls
+i3-4.10.2  i3-4.10.2.tar.bz2  i3status-2.9  i3status-2.9.tar.bz2
+
+
+This message is intended only for the addressee and may contain information that is company confidential or privileged. Any technical data in this message may be exported only in accordance with the U.S. International Traffic in Arms Regulations (22 CFR Parts 120-130) or the Export Administration Regulations (15 CFR Parts 730-774). Unauthorized use is strictly prohibited and may be unlawful. If you are not the intended recipient, or the person responsible for delivering to the intended recipient, you should not read, copy, disclose or otherwise use this message. If you have received this email in error, please delete it, and advise the sender immediately.
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150618/29217c00/attachment-0001.html>
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: image001.png
+Type: image/png
+Size: 29311 bytes
+Desc: image001.png
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150618/29217c00/attachment-0001.png>
+
+From michael at i3wm.org  Thu Jun 18 18:23:49 2015
+From: michael at i3wm.org (Michael Stapelberg)
+Date: Thu, 18 Jun 2015 18:23:49 +0200
+Subject: [i3] i3 4.10.2 i3-save-tree perl module missing
+In-Reply-To: <85EA6F68AC24DA48B220EBEA7A8C08B82813D306@corpmail01.corp.sensis.com>
+References: <85EA6F68AC24DA48B220EBEA7A8C08B828139C48@corpmail01.corp.sensis.com>
+ <85EA6F68AC24DA48B220EBEA7A8C08B82813D306@corpmail01.corp.sensis.com>
+Message-ID: <CANnVG6nx1VR6f7uf=AWthG7Op9fynxnxwng_=eSt=VF79_c1LQ@mail.gmail.com>
+
+On Thu, Jun 18, 2015 at 4:43 PM, Sargrad, Dave <Dave.Sargrad at saabsensis.com>
+wrote:
+
+>  I’m using ubuntu 14.04. Can someone please provide guidance relative to
+> how to fix the following. What package do I need to install?
+>
+>
+>
+> ubuntu at sensis-8930:/var/www/cwpmash/app$ i3-save-tree
+>
+> Can't locate AnyEvent/I3.pm in @INC (you may need to install the
+> AnyEvent::I3 module)
+>
+
+The error message mentions that you should install the AnyEvent::I3 module,
+and
+http://packages.ubuntu.com/search?suite=trusty&searchon=names&keywords=anyevent
+reveals libanyevent-i3-perl, so try installing that.
+
+The package http://packages.ubuntu.com/trusty/i3-wm also recommends
+libanyevent-i3-perl, so please don’t turn off the installation of
+recommended packages if you’re not willing to do this kind of digging
+yourself :).
+
+
+> (@INC contains: /etc/perl /usr/local/lib/perl/5.18.2
+> /usr/local/share/perl/5.18.2 /usr/lib/perl5 /usr/share/perl5
+> /usr/lib/perl/5.18 /usr/share/perl/5.18 /usr/local/lib/site_perl .) at
+> /usr/bin/i3-save-tree line 19.
+>
+> BEGIN failed--compilation aborted at /usr/bin/i3-save-tree line 19.
+>
+> *This message is intended only for the addressee and may contain
+> information that is company confidential or privileged. Any technical data
+> in this message may be exported only in accordance with the U.S.
+> International Traffic in Arms Regulations (22 CFR Parts 120-130) or the
+> Export Administration Regulations (15 CFR Parts 730-774). Unauthorized use
+> is strictly prohibited and may be unlawful. If you are not the intended
+> recipient, or the person responsible for delivering to the intended
+> recipient, you should not read, copy, disclose or otherwise use this
+> message. If you have received this email in error, please delete it, and
+> advise the sender immediately. *
+>
+
+
+
+-- 
+Best regards,
+Michael
+-------------- next part --------------
+An HTML attachment was scrubbed...
+URL: <http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20150618/10448d0c/attachment.html>
+
+From gk at goetzkluge.de  Fri Jun 19 22:11:40 2015
+From: gk at goetzkluge.de (Goetz Kluge)
+Date: Fri, 19 Jun 2015 22:11:40 +0200
+Subject: [i3]  i3-wm in Linux Mint 17.1 MATE using the MATE settings
+In-Reply-To: <55805691.5030204@yahoo.fr>
+References: <55805691.5030204@yahoo.fr>
+Message-ID: <5584777C.70508@goetzkluge.de>
+
+Hi,
+
+I have a portable SSD with Linux Mint MATE, 32 bits version. For old PCs with small memory (or just for fun) I use the i3-wm. I also have Linux Mint on an old EeePC 901, which is very slow. For the EeePC I use i3 as default wm.
+
+The config is configured in a way which sets buttons, colors, letter rendering etc. to what I have configured for MATE. This is done by calling the mate-settings-daemon on start up of i3. You'll see that in config. (However, the cursor settings from the MATE configuration only work in some apps. This is a minor issue.)
+
+The config is here:
+http://wahlspezial.de/modified-i3-configuration-from-wattos-r9-microwatt-for-linuxmint-17-1/
+(The config is based on the i3 config of WattOS R9 MicroWATT, which is a nice distro too.)
+
+Have fun,
+Goetz
+
+
+

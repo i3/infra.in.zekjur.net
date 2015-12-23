@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Layout saving/restoring (PREVIEW)
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Layout%20saving/restoring%20%28PREVIEW%29&In-Reply-To=%3CCAMJW5%3D2U00Q9WpHM82EFf6pijocipa1A2yFk1W-p%2BaPQN1EdHQ%40mail.gmail.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001602.html">
+   <LINK REL="Next"  HREF="001619.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Layout saving/restoring (PREVIEW)</H1>
+    <B>Yuxuan Shui</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Layout%20saving/restoring%20%28PREVIEW%29&In-Reply-To=%3CCAMJW5%3D2U00Q9WpHM82EFf6pijocipa1A2yFk1W-p%2BaPQN1EdHQ%40mail.gmail.com%3E"
+       TITLE="[i3] Layout saving/restoring (PREVIEW)">yshuiv7 at gmail.com
+       </A><BR>
+    <I>Mon Mar  3 07:30:33 CET 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001602.html">[i3] Layout saving/restoring (PREVIEW)
+</A></li>
+        <LI>Next message: <A HREF="001619.html">[i3] Layout saving/restoring (PREVIEW)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1603">[ date ]</a>
+              <a href="thread.html#1603">[ thread ]</a>
+              <a href="subject.html#1603">[ subject ]</a>
+              <a href="author.html#1603">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>On Mon, Mar 3, 2014 at 2:12 PM, Yuxuan Shui &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">yshuiv7 at gmail.com</A>&gt; wrote:
+&gt;<i> Hi,
+</I>&gt;<i>
+</I>&gt;<i> On Mon, Dec 16, 2013 at 5:11 AM, Michael Stapelberg &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">michael at i3wm.org</A>&gt; wrote:
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I have been working on layout/session saving/restoring this
+</I>&gt;&gt;<i> weekend. The title is a mouthful, but what it&#8217;s about is saving parts of
+</I>&gt;&gt;<i> your layout (say, an entire workspace) to a JSON file and later loading
+</I>&gt;&gt;<i> that into i3.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> This is useful for multiple things:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 1) Restoring a certain layout when starting up your x session.
+</I>&gt;&gt;<i>    People used to do this with shell scripts and hacks such as
+</I>&gt;&gt;<i>    i3-exec-wait until now.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> 2) Defining a more elaborate default layout for certain workspaces. As
+</I>&gt;&gt;<i>    an example, on my big screen I like to have three columns of stacked
+</I>&gt;&gt;<i>    containers with terminals in them, where the middle one is larger
+</I>&gt;&gt;<i>    than the left and right ones.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> I uploaded a video to demonstrate how it looks:
+</I>&gt;&gt;<i> <A HREF="http://youtu.be/CaDOfwxXc9g">http://youtu.be/CaDOfwxXc9g</A>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> To save a layout, there is i3-save-tree(1), which requires the Perl
+</I>&gt;&gt;<i> modules AnyEvent::I3&#185; and JSON::XS&#178;. i3-save-tree --workspace=1 prints
+</I>&gt;&gt;<i> workspace 1&#8217;s layout to stdout. You are expected to edit that layout
+</I>&gt;&gt;<i> file briefly, especially the &#8220;swallows&#8221; sections of each container. The
+</I>&gt;&gt;<i> criteria should be familiar to you, e.g. from for_window.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Once you have done that, you can use the append_layout command to load a
+</I>&gt;&gt;<i> layout file.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> As for the code, I just pushed the branch &#8220;session-saving&#8221;, which you
+</I>&gt;&gt;<i> can build and use right now. It&#8217;s stable enough that I&#8217;m using it on my
+</I>&gt;&gt;<i> main machine. But, since this is a very new feature, be prepared to
+</I>&gt;&gt;<i> encounter some stability issues (e.g. layout files that could crash
+</I>&gt;&gt;<i> i3). You have been warned! :)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Also note that I reserve the right to break this feature in any way that
+</I>&gt;&gt;<i> I deem necessary, and you have no right to complain about layout file or
+</I>&gt;&gt;<i> new command breakage :).
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> As for the release plan: I intend to release i3 4.7 soonish (maybe in a
+</I>&gt;&gt;<i> week or so). After that is done, I&#8217;ll merge the session-saving branch
+</I>&gt;&gt;<i> into the &#8220;next&#8221; branch, i.e. the earliest i3 release that can possibly
+</I>&gt;&gt;<i> have this feature will be 4.8.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> &#9312; <A HREF="http://michael.stapelberg.de/cpan/#AnyEvent::I3">http://michael.stapelberg.de/cpan/#AnyEvent::I3</A>
+</I>&gt;&gt;<i> &#9313; <A HREF="http://michael.stapelberg.de/cpan/#JSON::XS">http://michael.stapelberg.de/cpan/#JSON::XS</A>
+</I>&gt;<i>
+</I>&gt;<i> This is great.
+</I>&gt;<i>
+</I>&gt;<i> It will be better if i3 could automatically start all the programs for
+</I>&gt;<i> me. I think it's possible for programs that support startup
+</I>&gt;<i> notification.
+</I>I got it wrong here. Startup notification is not needed, we could use
+_NET_WM_PID.
+
+&gt;<i>
+</I>&gt;<i> Could this feature be added, or is it too much to integrate into i3?
+</I>&gt;<i>
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> --
+</I>&gt;&gt;<i> Best regards,
+</I>&gt;&gt;<i> Michael
+</I>&gt;<i>
+</I>&gt;<i> Regards
+</I>&gt;<i> Yuxuan Shui
+</I></PRE>
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001602.html">[i3] Layout saving/restoring (PREVIEW)
+</A></li>
+	<LI>Next message: <A HREF="001619.html">[i3] Layout saving/restoring (PREVIEW)
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1603">[ date ]</a>
+              <a href="thread.html#1603">[ thread ]</a>
+              <a href="subject.html#1603">[ subject ]</a>
+              <a href="author.html#1603">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

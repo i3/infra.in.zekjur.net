@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] i3bar POC: workspace button with focused window name
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3bar%20POC%3A%20workspace%20button%20with%20focused%20window%20name&In-Reply-To=%3C514B5025.5070008%40ultrabug.net%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=us-ascii">
+   <LINK REL="Previous"  HREF="001232.html">
+   <LINK REL="Next"  HREF="001234.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] i3bar POC: workspace button with focused window name</H1>
+    <B>Ultrabug</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20i3bar%20POC%3A%20workspace%20button%20with%20focused%20window%20name&In-Reply-To=%3C514B5025.5070008%40ultrabug.net%3E"
+       TITLE="[i3] i3bar POC: workspace button with focused window name">ultrabug at ultrabug.net
+       </A><BR>
+    <I>Thu Mar 21 19:23:33 CET 2013</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001232.html">[i3] i3bar POC: workspace button with focused window name
+</A></li>
+        <LI>Next message: <A HREF="001234.html">[i3] i3bar POC: workspace button with focused window name
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1233">[ date ]</a>
+              <a href="thread.html#1233">[ thread ]</a>
+              <a href="subject.html#1233">[ subject ]</a>
+              <a href="author.html#1233">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>Hi,
+
+On 21/03/2013 14:41, Fam Zheng wrote:
+&gt;<i> OK, I get it. So the remaining is events, and possibly number syntax in rename.
+</I>&gt;<i>
+</I>&gt;<i> Best regards!
+</I>&gt;<i> Fam Zheng
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> On Thu, Mar 21, 2013 at 9:13 PM, Axel Wagner &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">mail at merovius.de</A>&gt; wrote:
+</I>&gt;&gt;<i> Hi,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> what justus said was also my first reaction. Everything you explained in
+</I>&gt;&gt;<i> your second mail is pretty much implemented conceptually, with the
+</I>&gt;&gt;<i> &#8220;caption&#8221; being called name and &#8220;identifier&#8221; being the number.
+</I>&gt;&gt;<i> The complexity of the needed ipc-script is reduced accordingly, you only
+</I>&gt;&gt;<i> need something like:
+</I>&gt;&gt;<i> while true:
+</I>&gt;&gt;<i>      wait_for_event
+</I>&gt;&gt;<i>      workspaces = get_workspaces
+</I>&gt;&gt;<i>      for each workspace:
+</I>&gt;&gt;<i>          active_con = null
+</I>&gt;&gt;<i>          for each container:
+</I>&gt;&gt;<i>              if container.focused:
+</I>&gt;&gt;<i>                  active_con = container
+</I>&gt;&gt;<i>                  break
+</I>&gt;&gt;<i>          workspace.rename(&quot;%d: %s&quot;, workspace.number, active_con.title)
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> With one of the libraries existing that encapsulate the
+</I>&gt;&gt;<i> i3-protocol a working script should not be very much longer than the
+</I>&gt;&gt;<i> pseudocode above (I'm actually not sure wether the number-syntax works
+</I>&gt;&gt;<i> in the rename command, if not, that would be a nice thing to implement
+</I>&gt;&gt;<i> too, imho ;).
+</I>You got my mind running on this, I thought this would be easily done 
+with a custom class using py3status [1] :)
+I'm glad to attach the implementation, it works great and should answer 
+your initial request.
+
+Basically, with a standard 1sec interval py3status usage, you will have 
+a pretty responsive renaming going on. Few thoughts if we wanted to push 
+it further :
+     - We could an event subscription to handle this in a thread
+     - We could avoid using i3-py by using the standard i3-msg so this 
+wouldn't need any dependency and would work out of the box
+
+  [1] <A HREF="https://github.com/ultrabug/py3status">https://github.com/ultrabug/py3status</A>
+
+One limitation which I didnt have the time to try to fix is that 
+renaming the workspaces breaks the window assignment you may have 
+configured.
+&gt;&gt;<i> I also presume that a change as you originally proposed would not be
+</I>&gt;&gt;<i> accepted in the mainline i3, for the reasons I mentioned, but I only
+</I>&gt;&gt;<i> extrapolate from similar proposals in the past.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Kind regards,
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> Axel
+</I>Hope this helps
+
+Ultrabug
+-------------- next part --------------
+A non-text attachment was scrubbed...
+Name: rename_workspace.py
+Type: text/x-python
+Size: 1890 bytes
+Desc: not available
+URL: &lt;<A HREF="http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130321/ab9dc089/attachment-0001.py">http://infra.in.zekjur.net/pipermail/i3-discuss/attachments/20130321/ab9dc089/attachment-0001.py</A>&gt;
+</PRE>
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001232.html">[i3] i3bar POC: workspace button with focused window name
+</A></li>
+	<LI>Next message: <A HREF="001234.html">[i3] i3bar POC: workspace button with focused window name
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1233">[ date ]</a>
+              <a href="thread.html#1233">[ thread ]</a>
+              <a href="subject.html#1233">[ subject ]</a>
+              <a href="author.html#1233">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

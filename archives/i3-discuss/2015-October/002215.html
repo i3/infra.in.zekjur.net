@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] Killing a window's process
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Killing%20a%20window%27s%20process&In-Reply-To=%3C560E4C01.2010905%40airblader.de%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="002214.html">
+   <LINK REL="Next"  HREF="002216.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] Killing a window's process</H1>
+    <B>Ingo Bürk</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20Killing%20a%20window%27s%20process&In-Reply-To=%3C560E4C01.2010905%40airblader.de%3E"
+       TITLE="[i3] Killing a window's process">admin at airblader.de
+       </A><BR>
+    <I>Fri Oct  2 11:18:57 CEST 2015</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="002214.html">[i3] Killing a window's process
+</A></li>
+        <LI>Next message: <A HREF="002216.html">[i3] Killing a window's process
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2215">[ date ]</a>
+              <a href="thread.html#2215">[ thread ]</a>
+              <a href="subject.html#2215">[ subject ]</a>
+              <a href="author.html#2215">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>xkill?
+
+On 10/02/2015 11:12 AM, Jeff Abrahamson wrote:
+&gt;<i> I have a window whose process is not responding.  No problem, i3 lets me
+</I>&gt;<i> kill windows, so I type that key combination.  Usually it works, but this
+</I>&gt;<i> time it doesn't.
+</I>&gt;<i>
+</I>&gt;<i> My work-around is to use wininfo to find the window id of the dead but
+</I>&gt;<i> mapped thing, bc to convert to decimal, use &quot;ps aeww | grep&quot; to find the
+</I>&gt;<i> process with that window id in its environment, then send it a kill -15
+</I>&gt;<i> (does nothing visible) and then a kill -9 (still mapped, but process now
+</I>&gt;<i> shows as defunct).
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> So the* problem* (obviously not critical, since I have a work-around) is
+</I>&gt;<i> how could I have avoided the wininfo -&gt; ps -&gt; bc -&gt; kill thing.  Looking at
+</I>&gt;<i> the code, it looks like i3's kill window is cmd_kill
+</I>&gt;<i> &lt;<A HREF="https://github.com/i3/i3/blob/next/src/commands.c#L1298">https://github.com/i3/i3/blob/next/src/commands.c#L1298</A>&gt;() in commands.c.
+</I>&gt;<i> (How can that get called with kill_mode_str == &quot;client&quot;?)  The chain is
+</I>&gt;<i> then to call tree_close_con
+</I>&gt;<i> &lt;<A HREF="https://github.com/i3/i3/blob/next/src/tree.c#L369">https://github.com/i3/i3/blob/next/src/tree.c#L369</A>&gt;() -&gt; tree_close
+</I>&gt;<i> &lt;<A HREF="https://github.com/i3/i3/blob/next/src/tree.c#L192">https://github.com/i3/i3/blob/next/src/tree.c#L192</A>&gt;() -&gt; x_window_kill
+</I>&gt;<i> &lt;<A HREF="https://github.com/i3/i3/blob/next/src/x.c#L283">https://github.com/i3/i3/blob/next/src/x.c#L283</A>&gt;() -&gt; one_of {
+</I>&gt;<i> xcb_destroy_window
+</I>&gt;<i> &lt;<A HREF="http://www.x.org/archive/current/doc/man/man3/xcb_destroy_window.3.xhtml">http://www.x.org/archive/current/doc/man/man3/xcb_destroy_window.3.xhtml</A>&gt;(),
+</I>&gt;<i> xcb_kill_client
+</I>&gt;<i> &lt;<A HREF="http://www.x.org/archive/current/doc/man/man3/xcb_kill_client.3.xhtml">http://www.x.org/archive/current/doc/man/man3/xcb_kill_client.3.xhtml</A>&gt;() }.
+</I>&gt;<i>
+</I>&gt;<i> I think to answer that I'l have to run i3 with logging so I can see which
+</I>&gt;<i> path it's taking at the end.  And wait for an appropriately hung process.
+</I>&gt;<i> My initial hypothesis is that the window supports WM_DELETE_WINDOW but,
+</I>&gt;<i> since the proc is hung, it never processes it.
+</I>&gt;<i>
+</I>&gt;<i>
+</I>&gt;<i> Anyway, thanks for any insights.  Clearly this is as much about me learning
+</I>&gt;<i> as anything else.
+</I>&gt;<i>
+</I>&gt;<i> Jeff Abrahamson
+</I>&gt;<i> +33 6 24 40 01 57
+</I>&gt;<i> +44 7920 594 255    &lt;-- only when I'm in the UK
+</I>&gt;<i>
+</I>&gt;<i> *<A HREF="http://www.ml-week.com/fr/*">http://www.ml-week.com/fr/*</A> &lt;<A HREF="http://www.ml-week.com/fr/">http://www.ml-week.com/fr/</A>&gt;*     2-5 novembre
+</I>&gt;<i> 2015*
+</I>&gt;<i>
+</I>&gt;<i> <A HREF="http://jeff.purple.com/">http://jeff.purple.com/</A>
+</I>&gt;<i> <A HREF="http://blog.purple.com/jeff/">http://blog.purple.com/jeff/</A>
+</I>&gt;<i>
+</I>
+</PRE>
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="002214.html">[i3] Killing a window's process
+</A></li>
+	<LI>Next message: <A HREF="002216.html">[i3] Killing a window's process
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#2215">[ date ]</a>
+              <a href="thread.html#2215">[ thread ]</a>
+              <a href="subject.html#2215">[ subject ]</a>
+              <a href="author.html#2215">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>

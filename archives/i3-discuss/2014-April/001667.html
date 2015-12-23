@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+ <HEAD>
+   <TITLE> [i3] IPC window close event
+   </TITLE>
+   <LINK REL="Index" HREF="index.html" >
+   <LINK REL="made" HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20IPC%20window%20close%20event&In-Reply-To=%3C5346C9E5.7010408%40dubstepdish.com%3E">
+   <META NAME="robots" CONTENT="index,nofollow">
+   <style type="text/css">
+       pre {
+           white-space: pre-wrap;       /* css-2.1, curent FF, Opera, Safari */
+           }
+   </style>
+   <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <LINK REL="Previous"  HREF="001664.html">
+   <LINK REL="Next"  HREF="001668.html">
+ </HEAD>
+ <BODY BGCOLOR="#ffffff">
+   <H1>[i3] IPC window close event</H1>
+    <B>Tony</B> 
+    <A HREF="mailto:i3-discuss%40i3.zekjur.net?Subject=Re%3A%20%5Bi3%5D%20IPC%20window%20close%20event&In-Reply-To=%3C5346C9E5.7010408%40dubstepdish.com%3E"
+       TITLE="[i3] IPC window close event">tony at dubstepdish.com
+       </A><BR>
+    <I>Thu Apr 10 18:42:13 CEST 2014</I>
+    <P><UL>
+        <LI>Previous message: <A HREF="001664.html">[i3] IPC window close event
+</A></li>
+        <LI>Next message: <A HREF="001668.html">[i3] IPC window close event
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1667">[ date ]</a>
+              <a href="thread.html#1667">[ thread ]</a>
+              <a href="subject.html#1667">[ subject ]</a>
+              <a href="author.html#1667">[ author ]</a>
+         </LI>
+       </UL>
+    <HR>  
+<!--beginarticle-->
+<PRE>I think sending the focus stack is a good idea because it could be used to
+determine what window is focused (or focused-inactive) on the workspace. I
+would like to see some tests that confirm that an empty array does indeed
+indicate an empty workspace as well.
+
+Also, I would like this &quot;workspace&quot; member to be part of every window event
+and the new property of the &quot;workspace reply&quot; object to be included in
+GET_WORKSPACE replies as well to maintain some consistency in the api.
+
+Other than that, the only kinds of properties I have trouble with are 
+nullable
+non-pointer types, nullable lists, and lists with mixed-type members. 
+For more
+information on my data structures, see this part of the i3ipc-GLib docs:
+
+&lt;<A HREF="http://dubstepdish.com/i3ipc-glib/i3ipc-glib-i3ipc-reply-types.html#i3ipcWorkspaceReply-struct">http://dubstepdish.com/i3ipc-glib/i3ipc-glib-i3ipc-reply-types.html#i3ipcWorkspaceReply-struct</A>&gt;
+&lt;<A HREF="http://dubstepdish.com/i3ipc-glib/i3ipc-glib-i3ipc-event-types.html#i3ipcWindowEvent-struct">http://dubstepdish.com/i3ipc-glib/i3ipc-glib-i3ipc-event-types.html#i3ipcWindowEvent-struct</A>&gt;
+
+
+On 04/09/2014 04:32 PM, Michael Stapelberg wrote:
+&gt;<i> Hi Marco,
+</I>&gt;<i>
+</I>&gt;<i> Marco Hunsicker &lt;<A HREF="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">i3 at hunsicker.de</A>&gt; writes:
+</I>&gt;&gt;<i> regarding the implementation of the proposed IPC window close event, I
+</I>&gt;&gt;<i> have one question.
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> The workspace reply should indicate whether the workspace is empty.
+</I>&gt;&gt;<i> There are several possibilities:
+</I>&gt;&gt;<i>
+</I>&gt;&gt;<i> + a boolean field with the empty state
+</I>&gt;&gt;<i> + an integer field with the number of opened application windows
+</I>&gt;&gt;<i> + an array with the window ids of the opened application windows
+</I>&gt;<i> I think the last two are both more useful than the first one. In fact,
+</I>&gt;<i> the last one (array with window IDs) is consistent with what we already
+</I>&gt;<i> have in the GET_TREE reply (“focus” property), so I think it makes most
+</I>&gt;<i> sense to go with that one.
+</I>&gt;<i>
+</I>
+</PRE>
+
+
+
+
+
+
+
+
+<!--endarticle-->
+    <HR>
+    <P><UL>
+        <!--threads-->
+	<LI>Previous message: <A HREF="001664.html">[i3] IPC window close event
+</A></li>
+	<LI>Next message: <A HREF="001668.html">[i3] IPC window close event
+</A></li>
+         <LI> <B>Messages sorted by:</B> 
+              <a href="date.html#1667">[ date ]</a>
+              <a href="thread.html#1667">[ thread ]</a>
+              <a href="subject.html#1667">[ subject ]</a>
+              <a href="author.html#1667">[ author ]</a>
+         </LI>
+       </UL>
+
+<hr>
+<a href="http://infra.in.zekjur.net/cgi-bin/mailman/listinfo/i3-discuss">More information about the i3-discuss
+mailing list</a><br>
+</body></html>
